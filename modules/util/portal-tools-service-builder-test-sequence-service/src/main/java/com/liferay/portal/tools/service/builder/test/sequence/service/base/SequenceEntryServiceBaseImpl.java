@@ -27,14 +27,10 @@ import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.tools.service.builder.test.sequence.model.SequenceEntry;
 import com.liferay.portal.tools.service.builder.test.sequence.service.SequenceEntryService;
-import com.liferay.portal.tools.service.builder.test.sequence.service.SequenceEntryServiceUtil;
 import com.liferay.portal.tools.service.builder.test.sequence.service.persistence.SequenceEntryPersistence;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,25 +51,13 @@ public abstract class SequenceEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SequenceEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SequenceEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SequenceEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.sequence.service.SequenceEntryServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			SequenceEntryService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		sequenceEntryService = (SequenceEntryService)aopProxy;
-
-		_setServiceUtilService(sequenceEntryService);
 	}
 
 	/**
@@ -115,22 +99,6 @@ public abstract class SequenceEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		SequenceEntryService sequenceEntryService) {
-
-		try {
-			Field field = SequenceEntryServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, sequenceEntryService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

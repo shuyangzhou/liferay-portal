@@ -16,7 +16,6 @@ package com.liferay.dynamic.data.mapping.service.base;
 
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureService;
-import com.liferay.dynamic.data.mapping.service.DDMStructureServiceUtil;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMStructureFinder;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMStructurePersistence;
 import com.liferay.portal.aop.AopService;
@@ -31,11 +30,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,25 +52,13 @@ public abstract class DDMStructureServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DDMStructureService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DDMStructureServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DDMStructureService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.dynamic.data.mapping.service.DDMStructureServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			DDMStructureService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		ddmStructureService = (DDMStructureService)aopProxy;
-
-		_setServiceUtilService(ddmStructureService);
 	}
 
 	/**
@@ -116,22 +100,6 @@ public abstract class DDMStructureServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		DDMStructureService ddmStructureService) {
-
-		try {
-			Field field = DDMStructureServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, ddmStructureService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -16,7 +16,6 @@ package com.liferay.commerce.notification.service.base;
 
 import com.liferay.commerce.notification.model.CommerceNotificationAttachment;
 import com.liferay.commerce.notification.service.CommerceNotificationAttachmentLocalService;
-import com.liferay.commerce.notification.service.CommerceNotificationAttachmentLocalServiceUtil;
 import com.liferay.commerce.notification.service.persistence.CommerceNotificationAttachmentPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
@@ -53,13 +52,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -81,7 +77,7 @@ public abstract class CommerceNotificationAttachmentLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceNotificationAttachmentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceNotificationAttachmentLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceNotificationAttachmentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.notification.service.CommerceNotificationAttachmentLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -568,25 +564,12 @@ public abstract class CommerceNotificationAttachmentLocalServiceBaseImpl
 			commerceNotificationAttachment);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceNotificationAttachmentLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceNotificationAttachmentLocalService =
-			(CommerceNotificationAttachmentLocalService)aopProxy;
-
-		_setLocalServiceUtilService(commerceNotificationAttachmentLocalService);
 	}
 
 	/**
@@ -629,24 +612,6 @@ public abstract class CommerceNotificationAttachmentLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommerceNotificationAttachmentLocalService
-			commerceNotificationAttachmentLocalService) {
-
-		try {
-			Field field =
-				CommerceNotificationAttachmentLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceNotificationAttachmentLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

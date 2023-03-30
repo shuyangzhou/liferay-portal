@@ -15,15 +15,22 @@
 package com.liferay.commerce.service;
 
 import com.liferay.commerce.model.CommerceOrderPayment;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for CommerceOrderPayment. This utility wraps
@@ -346,9 +353,35 @@ public class CommerceOrderPaymentLocalServiceUtil {
 	}
 
 	public static CommerceOrderPaymentLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommerceOrderPaymentLocalServiceUtil::_getService);
 	}
 
-	private static volatile CommerceOrderPaymentLocalService _service;
+	private static CommerceOrderPaymentLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CommerceOrderPaymentLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommerceOrderPaymentLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				CommerceOrderPaymentLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CommerceOrderPaymentLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

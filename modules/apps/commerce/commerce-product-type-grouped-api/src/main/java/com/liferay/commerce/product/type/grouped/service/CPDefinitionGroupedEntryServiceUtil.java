@@ -15,10 +15,17 @@
 package com.liferay.commerce.product.type.grouped.service;
 
 import com.liferay.commerce.product.type.grouped.model.CPDefinitionGroupedEntry;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for CPDefinitionGroupedEntry. This utility wraps
@@ -126,9 +133,35 @@ public class CPDefinitionGroupedEntryServiceUtil {
 	}
 
 	public static CPDefinitionGroupedEntryService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CPDefinitionGroupedEntryServiceUtil::_getService);
 	}
 
-	private static volatile CPDefinitionGroupedEntryService _service;
+	private static CPDefinitionGroupedEntryService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CPDefinitionGroupedEntryServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CPDefinitionGroupedEntryService> serviceReference =
+			bundleContext.getServiceReference(
+				CPDefinitionGroupedEntryService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CPDefinitionGroupedEntryService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

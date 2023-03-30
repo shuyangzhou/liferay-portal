@@ -14,10 +14,17 @@
 
 package com.liferay.social.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.social.kernel.model.SocialActivity;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for SocialActivity. This utility wraps
@@ -627,9 +634,34 @@ public class SocialActivityServiceUtil {
 	}
 
 	public static SocialActivityService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			SocialActivityServiceUtil::_getService);
 	}
 
-	private static volatile SocialActivityService _service;
+	private static SocialActivityService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			SocialActivityServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<SocialActivityService> serviceReference =
+			bundleContext.getServiceReference(SocialActivityService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<SocialActivityService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

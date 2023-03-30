@@ -26,11 +26,8 @@ import com.liferay.portal.kernel.model.PluginSetting;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.PluginSettingService;
-import com.liferay.portal.kernel.service.PluginSettingServiceUtil;
 import com.liferay.portal.kernel.service.persistence.PluginSettingPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -52,7 +49,7 @@ public abstract class PluginSettingServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PluginSettingService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PluginSettingServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>PluginSettingService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.PluginSettingServiceUtil</code>.
 	 */
 
 	/**
@@ -142,11 +139,9 @@ public abstract class PluginSettingServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(pluginSettingService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
 	}
 
 	/**
@@ -188,22 +183,6 @@ public abstract class PluginSettingServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		PluginSettingService pluginSettingService) {
-
-		try {
-			Field field = PluginSettingServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, pluginSettingService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

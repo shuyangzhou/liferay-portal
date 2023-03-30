@@ -16,7 +16,6 @@ package com.liferay.portlet.asset.service.base;
 
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
-import com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil;
 import com.liferay.asset.kernel.service.persistence.AssetVocabularyFinder;
 import com.liferay.asset.kernel.service.persistence.AssetVocabularyPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
@@ -56,8 +55,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -80,7 +77,7 @@ public abstract class AssetVocabularyLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AssetVocabularyLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AssetVocabularyLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AssetVocabularyLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -632,15 +629,11 @@ public abstract class AssetVocabularyLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.asset.kernel.model.AssetVocabulary",
 			assetVocabularyLocalService);
-
-		_setLocalServiceUtilService(assetVocabularyLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.asset.kernel.model.AssetVocabulary");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -697,23 +690,6 @@ public abstract class AssetVocabularyLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		AssetVocabularyLocalService assetVocabularyLocalService) {
-
-		try {
-			Field field =
-				AssetVocabularyLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, assetVocabularyLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

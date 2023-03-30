@@ -25,11 +25,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.LayoutTemplateLocalService;
-import com.liferay.portal.kernel.service.LayoutTemplateLocalServiceUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -51,7 +48,7 @@ public abstract class LayoutTemplateLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LayoutTemplateLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LayoutTemplateLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LayoutTemplateLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.LayoutTemplateLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -98,11 +95,9 @@ public abstract class LayoutTemplateLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setLocalServiceUtilService(layoutTemplateLocalService);
 	}
 
 	public void destroy() {
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -136,22 +131,6 @@ public abstract class LayoutTemplateLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		LayoutTemplateLocalService layoutTemplateLocalService) {
-
-		try {
-			Field field = LayoutTemplateLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, layoutTemplateLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

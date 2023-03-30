@@ -15,15 +15,22 @@
 package com.liferay.oauth2.provider.service;
 
 import com.liferay.oauth2.provider.model.OAuth2ScopeGrant;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for OAuth2ScopeGrant. This utility wraps
@@ -495,9 +502,35 @@ public class OAuth2ScopeGrantLocalServiceUtil {
 	}
 
 	public static OAuth2ScopeGrantLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			OAuth2ScopeGrantLocalServiceUtil::_getService);
 	}
 
-	private static volatile OAuth2ScopeGrantLocalService _service;
+	private static OAuth2ScopeGrantLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			OAuth2ScopeGrantLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<OAuth2ScopeGrantLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				OAuth2ScopeGrantLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<OAuth2ScopeGrantLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

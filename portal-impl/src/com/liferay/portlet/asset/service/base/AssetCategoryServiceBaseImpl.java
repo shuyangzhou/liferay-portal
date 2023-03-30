@@ -16,7 +16,6 @@ package com.liferay.portlet.asset.service.base;
 
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.service.AssetCategoryService;
-import com.liferay.asset.kernel.service.AssetCategoryServiceUtil;
 import com.liferay.asset.kernel.service.persistence.AssetCategoryFinder;
 import com.liferay.asset.kernel.service.persistence.AssetCategoryPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -30,8 +29,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -53,7 +50,7 @@ public abstract class AssetCategoryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AssetCategoryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AssetCategoryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AssetCategoryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.asset.kernel.service.AssetCategoryServiceUtil</code>.
 	 */
 
 	/**
@@ -163,11 +160,9 @@ public abstract class AssetCategoryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(assetCategoryService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
 	}
 
 	/**
@@ -209,22 +204,6 @@ public abstract class AssetCategoryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		AssetCategoryService assetCategoryService) {
-
-		try {
-			Field field = AssetCategoryServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, assetCategoryService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -15,10 +15,17 @@
 package com.liferay.knowledge.base.service;
 
 import com.liferay.knowledge.base.model.KBFolder;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for KBFolder. This utility wraps
@@ -163,9 +170,33 @@ public class KBFolderServiceUtil {
 	}
 
 	public static KBFolderService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			KBFolderServiceUtil::_getService);
 	}
 
-	private static volatile KBFolderService _service;
+	private static KBFolderService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(KBFolderServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<KBFolderService> serviceReference =
+			bundleContext.getServiceReference(KBFolderService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<KBFolderService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

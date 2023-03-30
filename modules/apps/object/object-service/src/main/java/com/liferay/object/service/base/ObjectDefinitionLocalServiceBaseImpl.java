@@ -21,7 +21,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.ObjectDefinitionLocalService;
-import com.liferay.object.service.ObjectDefinitionLocalServiceUtil;
 import com.liferay.object.service.persistence.ObjectDefinitionPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -53,13 +52,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -81,7 +77,7 @@ public abstract class ObjectDefinitionLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ObjectDefinitionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ObjectDefinitionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ObjectDefinitionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.object.service.ObjectDefinitionLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -519,24 +515,12 @@ public abstract class ObjectDefinitionLocalServiceBaseImpl
 		return objectDefinitionPersistence.update(objectDefinition);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			ObjectDefinitionLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		objectDefinitionLocalService = (ObjectDefinitionLocalService)aopProxy;
-
-		_setLocalServiceUtilService(objectDefinitionLocalService);
 	}
 
 	/**
@@ -578,23 +562,6 @@ public abstract class ObjectDefinitionLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		ObjectDefinitionLocalService objectDefinitionLocalService) {
-
-		try {
-			Field field =
-				ObjectDefinitionLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, objectDefinitionLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

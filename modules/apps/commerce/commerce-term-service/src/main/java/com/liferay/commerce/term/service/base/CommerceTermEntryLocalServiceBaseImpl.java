@@ -17,7 +17,6 @@ package com.liferay.commerce.term.service.base;
 import com.liferay.commerce.term.model.CTermEntryLocalization;
 import com.liferay.commerce.term.model.CommerceTermEntry;
 import com.liferay.commerce.term.service.CommerceTermEntryLocalService;
-import com.liferay.commerce.term.service.CommerceTermEntryLocalServiceUtil;
 import com.liferay.commerce.term.service.persistence.CTermEntryLocalizationPersistence;
 import com.liferay.commerce.term.service.persistence.CommerceTermEntryPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
@@ -63,8 +62,6 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,7 +69,6 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -94,7 +90,7 @@ public abstract class CommerceTermEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceTermEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceTermEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceTermEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.term.service.CommerceTermEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -740,24 +736,12 @@ public abstract class CommerceTermEntryLocalServiceBaseImpl
 		return cTermEntryLocalizationPersistence.update(cTermEntryLocalization);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceTermEntryLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceTermEntryLocalService = (CommerceTermEntryLocalService)aopProxy;
-
-		_setLocalServiceUtilService(commerceTermEntryLocalService);
 	}
 
 	/**
@@ -800,23 +784,6 @@ public abstract class CommerceTermEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommerceTermEntryLocalService commerceTermEntryLocalService) {
-
-		try {
-			Field field =
-				CommerceTermEntryLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceTermEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -16,7 +16,6 @@ package com.liferay.portlet.announcements.service.base;
 
 import com.liferay.announcements.kernel.model.AnnouncementsDelivery;
 import com.liferay.announcements.kernel.service.AnnouncementsDeliveryLocalService;
-import com.liferay.announcements.kernel.service.AnnouncementsDeliveryLocalServiceUtil;
 import com.liferay.announcements.kernel.service.persistence.AnnouncementsDeliveryPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -47,8 +46,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -71,7 +68,7 @@ public abstract class AnnouncementsDeliveryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AnnouncementsDeliveryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AnnouncementsDeliveryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AnnouncementsDeliveryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.announcements.kernel.service.AnnouncementsDeliveryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -468,15 +465,11 @@ public abstract class AnnouncementsDeliveryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.announcements.kernel.model.AnnouncementsDelivery",
 			announcementsDeliveryLocalService);
-
-		_setLocalServiceUtilService(announcementsDeliveryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.announcements.kernel.model.AnnouncementsDelivery");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -519,23 +512,6 @@ public abstract class AnnouncementsDeliveryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		AnnouncementsDeliveryLocalService announcementsDeliveryLocalService) {
-
-		try {
-			Field field =
-				AnnouncementsDeliveryLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, announcementsDeliveryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

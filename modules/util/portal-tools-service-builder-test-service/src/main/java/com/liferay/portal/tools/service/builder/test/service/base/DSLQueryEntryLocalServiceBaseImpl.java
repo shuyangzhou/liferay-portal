@@ -43,12 +43,9 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.DSLQueryEntry;
 import com.liferay.portal.tools.service.builder.test.service.DSLQueryEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.DSLQueryEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.DSLQueryEntryPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -72,7 +69,7 @@ public abstract class DSLQueryEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DSLQueryEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DSLQueryEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DSLQueryEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.DSLQueryEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -451,15 +448,11 @@ public abstract class DSLQueryEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.DSLQueryEntry",
 			dslQueryEntryLocalService);
-
-		_setLocalServiceUtilService(dslQueryEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.DSLQueryEntry");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -501,22 +494,6 @@ public abstract class DSLQueryEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		DSLQueryEntryLocalService dslQueryEntryLocalService) {
-
-		try {
-			Field field = DSLQueryEntryLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, dslQueryEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

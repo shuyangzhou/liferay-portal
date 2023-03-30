@@ -15,10 +15,17 @@
 package com.liferay.commerce.shop.by.diagram.service;
 
 import com.liferay.commerce.shop.by.diagram.model.CSDiagramEntry;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for CSDiagramEntry. This utility wraps
@@ -131,9 +138,34 @@ public class CSDiagramEntryServiceUtil {
 	}
 
 	public static CSDiagramEntryService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CSDiagramEntryServiceUtil::_getService);
 	}
 
-	private static volatile CSDiagramEntryService _service;
+	private static CSDiagramEntryService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CSDiagramEntryServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CSDiagramEntryService> serviceReference =
+			bundleContext.getServiceReference(CSDiagramEntryService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CSDiagramEntryService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

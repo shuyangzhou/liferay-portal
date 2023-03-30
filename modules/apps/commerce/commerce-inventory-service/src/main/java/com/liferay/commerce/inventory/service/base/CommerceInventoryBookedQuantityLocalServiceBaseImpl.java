@@ -16,7 +16,6 @@ package com.liferay.commerce.inventory.service.base;
 
 import com.liferay.commerce.inventory.model.CommerceInventoryBookedQuantity;
 import com.liferay.commerce.inventory.service.CommerceInventoryBookedQuantityLocalService;
-import com.liferay.commerce.inventory.service.CommerceInventoryBookedQuantityLocalServiceUtil;
 import com.liferay.commerce.inventory.service.persistence.CommerceInventoryBookedQuantityPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -75,7 +71,7 @@ public abstract class CommerceInventoryBookedQuantityLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceInventoryBookedQuantityLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceInventoryBookedQuantityLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceInventoryBookedQuantityLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.inventory.service.CommerceInventoryBookedQuantityLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -425,26 +421,12 @@ public abstract class CommerceInventoryBookedQuantityLocalServiceBaseImpl
 			commerceInventoryBookedQuantity);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceInventoryBookedQuantityLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceInventoryBookedQuantityLocalService =
-			(CommerceInventoryBookedQuantityLocalService)aopProxy;
-
-		_setLocalServiceUtilService(
-			commerceInventoryBookedQuantityLocalService);
 	}
 
 	/**
@@ -487,24 +469,6 @@ public abstract class CommerceInventoryBookedQuantityLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommerceInventoryBookedQuantityLocalService
-			commerceInventoryBookedQuantityLocalService) {
-
-		try {
-			Field field =
-				CommerceInventoryBookedQuantityLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceInventoryBookedQuantityLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

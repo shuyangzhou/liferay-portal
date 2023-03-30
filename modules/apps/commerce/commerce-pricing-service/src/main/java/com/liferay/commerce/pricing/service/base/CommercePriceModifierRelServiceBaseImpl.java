@@ -16,7 +16,6 @@ package com.liferay.commerce.pricing.service.base;
 
 import com.liferay.commerce.pricing.model.CommercePriceModifierRel;
 import com.liferay.commerce.pricing.service.CommercePriceModifierRelService;
-import com.liferay.commerce.pricing.service.CommercePriceModifierRelServiceUtil;
 import com.liferay.commerce.pricing.service.persistence.CommercePriceModifierRelFinder;
 import com.liferay.commerce.pricing.service.persistence.CommercePriceModifierRelPersistence;
 import com.liferay.portal.aop.AopService;
@@ -31,11 +30,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -57,26 +53,13 @@ public abstract class CommercePriceModifierRelServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommercePriceModifierRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommercePriceModifierRelServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommercePriceModifierRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.pricing.service.CommercePriceModifierRelServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommercePriceModifierRelService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commercePriceModifierRelService =
-			(CommercePriceModifierRelService)aopProxy;
-
-		_setServiceUtilService(commercePriceModifierRelService);
 	}
 
 	/**
@@ -119,23 +102,6 @@ public abstract class CommercePriceModifierRelServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CommercePriceModifierRelService commercePriceModifierRelService) {
-
-		try {
-			Field field =
-				CommercePriceModifierRelServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commercePriceModifierRelService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

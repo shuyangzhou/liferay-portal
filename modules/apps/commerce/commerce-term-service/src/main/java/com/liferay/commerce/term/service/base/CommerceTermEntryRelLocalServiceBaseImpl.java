@@ -16,7 +16,6 @@ package com.liferay.commerce.term.service.base;
 
 import com.liferay.commerce.term.model.CommerceTermEntryRel;
 import com.liferay.commerce.term.service.CommerceTermEntryRelLocalService;
-import com.liferay.commerce.term.service.CommerceTermEntryRelLocalServiceUtil;
 import com.liferay.commerce.term.service.persistence.CommerceTermEntryRelPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -75,7 +71,7 @@ public abstract class CommerceTermEntryRelLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceTermEntryRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceTermEntryRelLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceTermEntryRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.term.service.CommerceTermEntryRelLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -412,25 +408,12 @@ public abstract class CommerceTermEntryRelLocalServiceBaseImpl
 		return commerceTermEntryRelPersistence.update(commerceTermEntryRel);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceTermEntryRelLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceTermEntryRelLocalService =
-			(CommerceTermEntryRelLocalService)aopProxy;
-
-		_setLocalServiceUtilService(commerceTermEntryRelLocalService);
 	}
 
 	/**
@@ -473,23 +456,6 @@ public abstract class CommerceTermEntryRelLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommerceTermEntryRelLocalService commerceTermEntryRelLocalService) {
-
-		try {
-			Field field =
-				CommerceTermEntryRelLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceTermEntryRelLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

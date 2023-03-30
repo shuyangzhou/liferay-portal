@@ -15,7 +15,14 @@
 package com.liferay.fragment.service;
 
 import com.liferay.fragment.model.FragmentEntryLink;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for FragmentEntryLink. This utility wraps
@@ -86,9 +93,34 @@ public class FragmentEntryLinkServiceUtil {
 	}
 
 	public static FragmentEntryLinkService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			FragmentEntryLinkServiceUtil::_getService);
 	}
 
-	private static volatile FragmentEntryLinkService _service;
+	private static FragmentEntryLinkService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			FragmentEntryLinkServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<FragmentEntryLinkService> serviceReference =
+			bundleContext.getServiceReference(FragmentEntryLinkService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<FragmentEntryLinkService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

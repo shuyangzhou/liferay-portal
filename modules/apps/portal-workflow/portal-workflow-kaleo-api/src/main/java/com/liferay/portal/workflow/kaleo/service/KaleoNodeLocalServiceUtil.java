@@ -14,16 +14,23 @@
 
 package com.liferay.portal.workflow.kaleo.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.workflow.kaleo.model.KaleoNode;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for KaleoNode. This utility wraps
@@ -320,9 +327,34 @@ public class KaleoNodeLocalServiceUtil {
 	}
 
 	public static KaleoNodeLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			KaleoNodeLocalServiceUtil::_getService);
 	}
 
-	private static volatile KaleoNodeLocalService _service;
+	private static KaleoNodeLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			KaleoNodeLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<KaleoNodeLocalService> serviceReference =
+			bundleContext.getServiceReference(KaleoNodeLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<KaleoNodeLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

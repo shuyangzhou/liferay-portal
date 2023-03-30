@@ -14,11 +14,18 @@
 
 package com.liferay.exportimport.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for Staging. This utility wraps
@@ -117,9 +124,33 @@ public class StagingServiceUtil {
 	}
 
 	public static StagingService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			StagingServiceUtil::_getService);
 	}
 
-	private static volatile StagingService _service;
+	private static StagingService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(StagingServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<StagingService> serviceReference =
+			bundleContext.getServiceReference(StagingService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<StagingService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

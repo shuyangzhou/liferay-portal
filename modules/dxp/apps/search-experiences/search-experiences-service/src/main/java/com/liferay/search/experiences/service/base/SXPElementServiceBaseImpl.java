@@ -27,14 +27,10 @@ import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.search.experiences.model.SXPElement;
 import com.liferay.search.experiences.service.SXPElementService;
-import com.liferay.search.experiences.service.SXPElementServiceUtil;
 import com.liferay.search.experiences.service.persistence.SXPElementPersistence;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,25 +51,13 @@ public abstract class SXPElementServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SXPElementService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SXPElementServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SXPElementService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.search.experiences.service.SXPElementServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			SXPElementService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		sxpElementService = (SXPElementService)aopProxy;
-
-		_setServiceUtilService(sxpElementService);
 	}
 
 	/**
@@ -115,20 +99,6 @@ public abstract class SXPElementServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(SXPElementService sxpElementService) {
-		try {
-			Field field = SXPElementServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, sxpElementService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

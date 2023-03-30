@@ -15,16 +15,23 @@
 package com.liferay.analytics.message.storage.service;
 
 import com.liferay.analytics.message.storage.model.AnalyticsMessage;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.InputStream;
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for AnalyticsMessage. This utility wraps
@@ -345,9 +352,35 @@ public class AnalyticsMessageLocalServiceUtil {
 	}
 
 	public static AnalyticsMessageLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			AnalyticsMessageLocalServiceUtil::_getService);
 	}
 
-	private static volatile AnalyticsMessageLocalService _service;
+	private static AnalyticsMessageLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			AnalyticsMessageLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<AnalyticsMessageLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				AnalyticsMessageLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<AnalyticsMessageLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

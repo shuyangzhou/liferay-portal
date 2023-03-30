@@ -16,7 +16,6 @@ package com.liferay.commerce.product.service.base;
 
 import com.liferay.commerce.product.model.CPInstance;
 import com.liferay.commerce.product.service.CPInstanceService;
-import com.liferay.commerce.product.service.CPInstanceServiceUtil;
 import com.liferay.commerce.product.service.persistence.CPInstanceFinder;
 import com.liferay.commerce.product.service.persistence.CPInstancePersistence;
 import com.liferay.portal.aop.AopService;
@@ -31,11 +30,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,25 +52,13 @@ public abstract class CPInstanceServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CPInstanceService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CPInstanceServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CPInstanceService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.product.service.CPInstanceServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CPInstanceService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		cpInstanceService = (CPInstanceService)aopProxy;
-
-		_setServiceUtilService(cpInstanceService);
 	}
 
 	/**
@@ -116,20 +100,6 @@ public abstract class CPInstanceServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(CPInstanceService cpInstanceService) {
-		try {
-			Field field = CPInstanceServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, cpInstanceService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -15,10 +15,17 @@
 package com.liferay.object.service;
 
 import com.liferay.object.model.ObjectLayout;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for ObjectLayout. This utility wraps
@@ -81,9 +88,33 @@ public class ObjectLayoutServiceUtil {
 	}
 
 	public static ObjectLayoutService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			ObjectLayoutServiceUtil::_getService);
 	}
 
-	private static volatile ObjectLayoutService _service;
+	private static ObjectLayoutService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(ObjectLayoutServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<ObjectLayoutService> serviceReference =
+			bundleContext.getServiceReference(ObjectLayoutService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<ObjectLayoutService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

@@ -15,10 +15,17 @@
 package com.liferay.layout.utility.page.service;
 
 import com.liferay.layout.utility.page.model.LayoutUtilityPageEntry;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for LayoutUtilityPageEntry. This utility wraps
@@ -151,9 +158,35 @@ public class LayoutUtilityPageEntryServiceUtil {
 	}
 
 	public static LayoutUtilityPageEntryService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			LayoutUtilityPageEntryServiceUtil::_getService);
 	}
 
-	private static volatile LayoutUtilityPageEntryService _service;
+	private static LayoutUtilityPageEntryService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			LayoutUtilityPageEntryServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<LayoutUtilityPageEntryService> serviceReference =
+			bundleContext.getServiceReference(
+				LayoutUtilityPageEntryService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<LayoutUtilityPageEntryService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

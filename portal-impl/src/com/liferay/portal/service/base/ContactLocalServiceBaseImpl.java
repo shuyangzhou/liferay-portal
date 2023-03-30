@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.ContactLocalService;
-import com.liferay.portal.kernel.service.ContactLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ContactPersistence;
@@ -46,8 +45,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -71,7 +68,7 @@ public abstract class ContactLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ContactLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ContactLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ContactLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.ContactLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -440,15 +437,11 @@ public abstract class ContactLocalServiceBaseImpl
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.Contact", contactLocalService);
-
-		_setLocalServiceUtilService(contactLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.Contact");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -490,22 +483,6 @@ public abstract class ContactLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		ContactLocalService contactLocalService) {
-
-		try {
-			Field field = ContactLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, contactLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

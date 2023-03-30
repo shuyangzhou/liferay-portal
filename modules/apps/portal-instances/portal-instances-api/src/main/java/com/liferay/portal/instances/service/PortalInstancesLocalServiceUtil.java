@@ -14,7 +14,14 @@
 
 package com.liferay.portal.instances.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for PortalInstances. This utility wraps
@@ -110,9 +117,35 @@ public class PortalInstancesLocalServiceUtil {
 	}
 
 	public static PortalInstancesLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			PortalInstancesLocalServiceUtil::_getService);
 	}
 
-	private static volatile PortalInstancesLocalService _service;
+	private static PortalInstancesLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			PortalInstancesLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<PortalInstancesLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				PortalInstancesLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<PortalInstancesLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

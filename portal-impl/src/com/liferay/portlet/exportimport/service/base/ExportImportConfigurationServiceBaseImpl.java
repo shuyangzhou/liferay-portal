@@ -16,7 +16,6 @@ package com.liferay.portlet.exportimport.service.base;
 
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationService;
-import com.liferay.exportimport.kernel.service.ExportImportConfigurationServiceUtil;
 import com.liferay.exportimport.kernel.service.persistence.ExportImportConfigurationFinder;
 import com.liferay.exportimport.kernel.service.persistence.ExportImportConfigurationPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -30,8 +29,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -53,7 +50,7 @@ public abstract class ExportImportConfigurationServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ExportImportConfigurationService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ExportImportConfigurationServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ExportImportConfigurationService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.exportimport.kernel.service.ExportImportConfigurationServiceUtil</code>.
 	 */
 
 	/**
@@ -175,11 +172,9 @@ public abstract class ExportImportConfigurationServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(exportImportConfigurationService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
 	}
 
 	/**
@@ -222,23 +217,6 @@ public abstract class ExportImportConfigurationServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		ExportImportConfigurationService exportImportConfigurationService) {
-
-		try {
-			Field field =
-				ExportImportConfigurationServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, exportImportConfigurationService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

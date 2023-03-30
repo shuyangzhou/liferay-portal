@@ -16,7 +16,6 @@ package com.liferay.commerce.price.list.service.base;
 
 import com.liferay.commerce.price.list.model.CommercePriceList;
 import com.liferay.commerce.price.list.service.CommercePriceListService;
-import com.liferay.commerce.price.list.service.CommercePriceListServiceUtil;
 import com.liferay.commerce.price.list.service.persistence.CommercePriceListFinder;
 import com.liferay.commerce.price.list.service.persistence.CommercePriceListPersistence;
 import com.liferay.portal.aop.AopService;
@@ -31,11 +30,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,25 +52,13 @@ public abstract class CommercePriceListServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommercePriceListService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommercePriceListServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommercePriceListService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.price.list.service.CommercePriceListServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommercePriceListService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commercePriceListService = (CommercePriceListService)aopProxy;
-
-		_setServiceUtilService(commercePriceListService);
 	}
 
 	/**
@@ -117,22 +101,6 @@ public abstract class CommercePriceListServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CommercePriceListService commercePriceListService) {
-
-		try {
-			Field field = CommercePriceListServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commercePriceListService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

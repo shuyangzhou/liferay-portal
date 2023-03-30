@@ -15,15 +15,22 @@
 package com.liferay.data.engine.service;
 
 import com.liferay.data.engine.model.DEDataDefinitionFieldLink;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for DEDataDefinitionFieldLink. This utility wraps
@@ -493,9 +500,35 @@ public class DEDataDefinitionFieldLinkLocalServiceUtil {
 	}
 
 	public static DEDataDefinitionFieldLinkLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			DEDataDefinitionFieldLinkLocalServiceUtil::_getService);
 	}
 
-	private static volatile DEDataDefinitionFieldLinkLocalService _service;
+	private static DEDataDefinitionFieldLinkLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			DEDataDefinitionFieldLinkLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<DEDataDefinitionFieldLinkLocalService>
+			serviceReference = bundleContext.getServiceReference(
+				DEDataDefinitionFieldLinkLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<DEDataDefinitionFieldLinkLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

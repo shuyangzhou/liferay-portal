@@ -26,11 +26,8 @@ import com.liferay.portal.kernel.model.Website;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.WebsiteService;
-import com.liferay.portal.kernel.service.WebsiteServiceUtil;
 import com.liferay.portal.kernel.service.persistence.WebsitePersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -51,7 +48,7 @@ public abstract class WebsiteServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>WebsiteService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>WebsiteServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>WebsiteService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.WebsiteServiceUtil</code>.
 	 */
 
 	/**
@@ -137,11 +134,9 @@ public abstract class WebsiteServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(websiteService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
 	}
 
 	/**
@@ -183,19 +178,6 @@ public abstract class WebsiteServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(WebsiteService websiteService) {
-		try {
-			Field field = WebsiteServiceUtil.class.getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, websiteService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

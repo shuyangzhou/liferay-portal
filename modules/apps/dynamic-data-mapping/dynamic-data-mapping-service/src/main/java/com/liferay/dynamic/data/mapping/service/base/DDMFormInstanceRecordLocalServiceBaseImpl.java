@@ -16,7 +16,6 @@ package com.liferay.dynamic.data.mapping.service.base;
 
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecord;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceRecordLocalService;
-import com.liferay.dynamic.data.mapping.service.DDMFormInstanceRecordLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMFormInstanceRecordFinder;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMFormInstanceRecordPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
@@ -57,13 +56,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -85,7 +81,7 @@ public abstract class DDMFormInstanceRecordLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DDMFormInstanceRecordLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DDMFormInstanceRecordLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DDMFormInstanceRecordLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.dynamic.data.mapping.service.DDMFormInstanceRecordLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -557,11 +553,6 @@ public abstract class DDMFormInstanceRecordLocalServiceBaseImpl
 		return ddmFormInstanceRecordPersistence.update(ddmFormInstanceRecord);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -569,14 +560,6 @@ public abstract class DDMFormInstanceRecordLocalServiceBaseImpl
 			IdentifiableOSGiService.class, CTService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		ddmFormInstanceRecordLocalService =
-			(DDMFormInstanceRecordLocalService)aopProxy;
-
-		_setLocalServiceUtilService(ddmFormInstanceRecordLocalService);
 	}
 
 	/**
@@ -634,23 +617,6 @@ public abstract class DDMFormInstanceRecordLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		DDMFormInstanceRecordLocalService ddmFormInstanceRecordLocalService) {
-
-		try {
-			Field field =
-				DDMFormInstanceRecordLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, ddmFormInstanceRecordLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -16,7 +16,6 @@ package com.liferay.commerce.product.type.grouped.service.base;
 
 import com.liferay.commerce.product.type.grouped.model.CPDefinitionGroupedEntry;
 import com.liferay.commerce.product.type.grouped.service.CPDefinitionGroupedEntryLocalService;
-import com.liferay.commerce.product.type.grouped.service.CPDefinitionGroupedEntryLocalServiceUtil;
 import com.liferay.commerce.product.type.grouped.service.persistence.CPDefinitionGroupedEntryPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
@@ -53,13 +52,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -81,7 +77,7 @@ public abstract class CPDefinitionGroupedEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CPDefinitionGroupedEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CPDefinitionGroupedEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CPDefinitionGroupedEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.product.type.grouped.service.CPDefinitionGroupedEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -559,25 +555,12 @@ public abstract class CPDefinitionGroupedEntryLocalServiceBaseImpl
 			cpDefinitionGroupedEntry);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CPDefinitionGroupedEntryLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		cpDefinitionGroupedEntryLocalService =
-			(CPDefinitionGroupedEntryLocalService)aopProxy;
-
-		_setLocalServiceUtilService(cpDefinitionGroupedEntryLocalService);
 	}
 
 	/**
@@ -620,24 +603,6 @@ public abstract class CPDefinitionGroupedEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CPDefinitionGroupedEntryLocalService
-			cpDefinitionGroupedEntryLocalService) {
-
-		try {
-			Field field =
-				CPDefinitionGroupedEntryLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, cpDefinitionGroupedEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

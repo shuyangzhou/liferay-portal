@@ -16,7 +16,6 @@ package com.liferay.commerce.discount.service.base;
 
 import com.liferay.commerce.discount.model.CommerceDiscountAccountRel;
 import com.liferay.commerce.discount.service.CommerceDiscountAccountRelLocalService;
-import com.liferay.commerce.discount.service.CommerceDiscountAccountRelLocalServiceUtil;
 import com.liferay.commerce.discount.service.persistence.CommerceDiscountAccountRelFinder;
 import com.liferay.commerce.discount.service.persistence.CommerceDiscountAccountRelPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
@@ -54,13 +53,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -82,7 +78,7 @@ public abstract class CommerceDiscountAccountRelLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceDiscountAccountRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceDiscountAccountRelLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceDiscountAccountRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.discount.service.CommerceDiscountAccountRelLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -529,25 +525,12 @@ public abstract class CommerceDiscountAccountRelLocalServiceBaseImpl
 			commerceDiscountAccountRel);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceDiscountAccountRelLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceDiscountAccountRelLocalService =
-			(CommerceDiscountAccountRelLocalService)aopProxy;
-
-		_setLocalServiceUtilService(commerceDiscountAccountRelLocalService);
 	}
 
 	/**
@@ -590,24 +573,6 @@ public abstract class CommerceDiscountAccountRelLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommerceDiscountAccountRelLocalService
-			commerceDiscountAccountRelLocalService) {
-
-		try {
-			Field field =
-				CommerceDiscountAccountRelLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceDiscountAccountRelLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

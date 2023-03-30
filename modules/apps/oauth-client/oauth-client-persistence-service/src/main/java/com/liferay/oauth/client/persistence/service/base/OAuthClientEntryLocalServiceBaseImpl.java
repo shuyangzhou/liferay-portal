@@ -16,7 +16,6 @@ package com.liferay.oauth.client.persistence.service.base;
 
 import com.liferay.oauth.client.persistence.model.OAuthClientEntry;
 import com.liferay.oauth.client.persistence.service.OAuthClientEntryLocalService;
-import com.liferay.oauth.client.persistence.service.OAuthClientEntryLocalServiceUtil;
 import com.liferay.oauth.client.persistence.service.persistence.OAuthClientEntryPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -75,7 +71,7 @@ public abstract class OAuthClientEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>OAuthClientEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>OAuthClientEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>OAuthClientEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.oauth.client.persistence.service.OAuthClientEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -398,24 +394,12 @@ public abstract class OAuthClientEntryLocalServiceBaseImpl
 		return oAuthClientEntryPersistence.update(oAuthClientEntry);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			OAuthClientEntryLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		oAuthClientEntryLocalService = (OAuthClientEntryLocalService)aopProxy;
-
-		_setLocalServiceUtilService(oAuthClientEntryLocalService);
 	}
 
 	/**
@@ -457,23 +441,6 @@ public abstract class OAuthClientEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		OAuthClientEntryLocalService oAuthClientEntryLocalService) {
-
-		try {
-			Field field =
-				OAuthClientEntryLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, oAuthClientEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

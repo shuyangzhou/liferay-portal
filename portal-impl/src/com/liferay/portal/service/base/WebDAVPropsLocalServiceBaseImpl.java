@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.WebDAVPropsLocalService;
-import com.liferay.portal.kernel.service.WebDAVPropsLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.WebDAVPropsPersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -46,8 +45,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -71,7 +68,7 @@ public abstract class WebDAVPropsLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>WebDAVPropsLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>WebDAVPropsLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>WebDAVPropsLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.WebDAVPropsLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -449,15 +446,11 @@ public abstract class WebDAVPropsLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.WebDAVProps",
 			webDAVPropsLocalService);
-
-		_setLocalServiceUtilService(webDAVPropsLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.WebDAVProps");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -499,22 +492,6 @@ public abstract class WebDAVPropsLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		WebDAVPropsLocalService webDAVPropsLocalService) {
-
-		try {
-			Field field = WebDAVPropsLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, webDAVPropsLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

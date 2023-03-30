@@ -54,13 +54,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.style.book.model.StyleBookEntry;
 import com.liferay.style.book.model.StyleBookEntryVersion;
 import com.liferay.style.book.service.StyleBookEntryLocalService;
-import com.liferay.style.book.service.StyleBookEntryLocalServiceUtil;
 import com.liferay.style.book.service.persistence.StyleBookEntryPersistence;
 import com.liferay.style.book.service.persistence.StyleBookEntryVersionPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.Collections;
 import java.util.List;
@@ -69,7 +66,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -91,7 +87,7 @@ public abstract class StyleBookEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>StyleBookEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>StyleBookEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>StyleBookEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.style.book.service.StyleBookEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -491,24 +487,12 @@ public abstract class StyleBookEntryLocalServiceBaseImpl
 		return updateDraft(draftStyleBookEntry);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			StyleBookEntryLocalService.class, IdentifiableOSGiService.class,
 			CTService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		styleBookEntryLocalService = (StyleBookEntryLocalService)aopProxy;
-
-		_setLocalServiceUtilService(styleBookEntryLocalService);
 	}
 
 	@Indexable(type = IndexableType.REINDEX)
@@ -977,22 +961,6 @@ public abstract class StyleBookEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		StyleBookEntryLocalService styleBookEntryLocalService) {
-
-		try {
-			Field field = StyleBookEntryLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, styleBookEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

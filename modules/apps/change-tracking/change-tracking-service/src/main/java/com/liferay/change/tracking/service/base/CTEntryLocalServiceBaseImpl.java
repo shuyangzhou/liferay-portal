@@ -16,7 +16,6 @@ package com.liferay.change.tracking.service.base;
 
 import com.liferay.change.tracking.model.CTEntry;
 import com.liferay.change.tracking.service.CTEntryLocalService;
-import com.liferay.change.tracking.service.CTEntryLocalServiceUtil;
 import com.liferay.change.tracking.service.persistence.CTEntryPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -74,7 +70,7 @@ public abstract class CTEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CTEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CTEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CTEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.change.tracking.service.CTEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -380,24 +376,12 @@ public abstract class CTEntryLocalServiceBaseImpl
 		return ctEntryPersistence.update(ctEntry);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CTEntryLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		ctEntryLocalService = (CTEntryLocalService)aopProxy;
-
-		_setLocalServiceUtilService(ctEntryLocalService);
 	}
 
 	/**
@@ -439,22 +423,6 @@ public abstract class CTEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CTEntryLocalService ctEntryLocalService) {
-
-		try {
-			Field field = CTEntryLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, ctEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

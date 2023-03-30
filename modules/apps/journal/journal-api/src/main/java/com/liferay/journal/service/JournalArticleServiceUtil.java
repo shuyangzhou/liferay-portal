@@ -15,11 +15,18 @@
 package com.liferay.journal.service;
 
 import com.liferay.journal.model.JournalArticle;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for JournalArticle. This utility wraps
@@ -1928,9 +1935,34 @@ public class JournalArticleServiceUtil {
 	}
 
 	public static JournalArticleService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			JournalArticleServiceUtil::_getService);
 	}
 
-	private static volatile JournalArticleService _service;
+	private static JournalArticleService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			JournalArticleServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<JournalArticleService> serviceReference =
+			bundleContext.getServiceReference(JournalArticleService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<JournalArticleService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

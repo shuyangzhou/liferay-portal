@@ -21,7 +21,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.object.model.ObjectFieldSetting;
 import com.liferay.object.service.ObjectFieldSettingLocalService;
-import com.liferay.object.service.ObjectFieldSettingLocalServiceUtil;
 import com.liferay.object.service.persistence.ObjectFieldSettingPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -53,13 +52,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -81,7 +77,7 @@ public abstract class ObjectFieldSettingLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ObjectFieldSettingLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ObjectFieldSettingLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ObjectFieldSettingLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.object.service.ObjectFieldSettingLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -510,25 +506,12 @@ public abstract class ObjectFieldSettingLocalServiceBaseImpl
 		return objectFieldSettingPersistence.update(objectFieldSetting);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			ObjectFieldSettingLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		objectFieldSettingLocalService =
-			(ObjectFieldSettingLocalService)aopProxy;
-
-		_setLocalServiceUtilService(objectFieldSettingLocalService);
 	}
 
 	/**
@@ -571,23 +554,6 @@ public abstract class ObjectFieldSettingLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		ObjectFieldSettingLocalService objectFieldSettingLocalService) {
-
-		try {
-			Field field =
-				ObjectFieldSettingLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, objectFieldSettingLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

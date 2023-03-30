@@ -16,7 +16,6 @@ package com.liferay.client.extension.service.base;
 
 import com.liferay.client.extension.model.ClientExtensionEntryRel;
 import com.liferay.client.extension.service.ClientExtensionEntryRelLocalService;
-import com.liferay.client.extension.service.ClientExtensionEntryRelLocalServiceUtil;
 import com.liferay.client.extension.service.persistence.ClientExtensionEntryRelPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
@@ -58,13 +57,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -86,7 +82,7 @@ public abstract class ClientExtensionEntryRelLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ClientExtensionEntryRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ClientExtensionEntryRelLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ClientExtensionEntryRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.client.extension.service.ClientExtensionEntryRelLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -609,11 +605,6 @@ public abstract class ClientExtensionEntryRelLocalServiceBaseImpl
 			clientExtensionEntryRel);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -621,14 +612,6 @@ public abstract class ClientExtensionEntryRelLocalServiceBaseImpl
 			IdentifiableOSGiService.class, CTService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		clientExtensionEntryRelLocalService =
-			(ClientExtensionEntryRelLocalService)aopProxy;
-
-		_setLocalServiceUtilService(clientExtensionEntryRelLocalService);
 	}
 
 	/**
@@ -686,24 +669,6 @@ public abstract class ClientExtensionEntryRelLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		ClientExtensionEntryRelLocalService
-			clientExtensionEntryRelLocalService) {
-
-		try {
-			Field field =
-				ClientExtensionEntryRelLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, clientExtensionEntryRelLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

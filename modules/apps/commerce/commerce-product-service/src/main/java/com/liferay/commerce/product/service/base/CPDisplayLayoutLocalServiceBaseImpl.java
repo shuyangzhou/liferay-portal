@@ -16,7 +16,6 @@ package com.liferay.commerce.product.service.base;
 
 import com.liferay.commerce.product.model.CPDisplayLayout;
 import com.liferay.commerce.product.service.CPDisplayLayoutLocalService;
-import com.liferay.commerce.product.service.CPDisplayLayoutLocalServiceUtil;
 import com.liferay.commerce.product.service.persistence.CPDisplayLayoutPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
@@ -58,13 +57,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -86,7 +82,7 @@ public abstract class CPDisplayLayoutLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CPDisplayLayoutLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CPDisplayLayoutLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CPDisplayLayoutLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.product.service.CPDisplayLayoutLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -556,24 +552,12 @@ public abstract class CPDisplayLayoutLocalServiceBaseImpl
 		return cpDisplayLayoutPersistence.update(cpDisplayLayout);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CPDisplayLayoutLocalService.class, IdentifiableOSGiService.class,
 			CTService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		cpDisplayLayoutLocalService = (CPDisplayLayoutLocalService)aopProxy;
-
-		_setLocalServiceUtilService(cpDisplayLayoutLocalService);
 	}
 
 	/**
@@ -630,23 +614,6 @@ public abstract class CPDisplayLayoutLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CPDisplayLayoutLocalService cpDisplayLayoutLocalService) {
-
-		try {
-			Field field =
-				CPDisplayLayoutLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, cpDisplayLayoutLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -16,7 +16,6 @@ package com.liferay.object.service.base;
 
 import com.liferay.object.model.ObjectRelationship;
 import com.liferay.object.service.ObjectRelationshipService;
-import com.liferay.object.service.ObjectRelationshipServiceUtil;
 import com.liferay.object.service.persistence.ObjectRelationshipPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,25 +51,13 @@ public abstract class ObjectRelationshipServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ObjectRelationshipService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ObjectRelationshipServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ObjectRelationshipService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.object.service.ObjectRelationshipServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			ObjectRelationshipService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		objectRelationshipService = (ObjectRelationshipService)aopProxy;
-
-		_setServiceUtilService(objectRelationshipService);
 	}
 
 	/**
@@ -116,22 +100,6 @@ public abstract class ObjectRelationshipServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		ObjectRelationshipService objectRelationshipService) {
-
-		try {
-			Field field = ObjectRelationshipServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, objectRelationshipService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

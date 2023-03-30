@@ -43,12 +43,9 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.RedundantIndexEntry;
 import com.liferay.portal.tools.service.builder.test.service.RedundantIndexEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.RedundantIndexEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.RedundantIndexEntryPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -72,7 +69,7 @@ public abstract class RedundantIndexEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>RedundantIndexEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>RedundantIndexEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>RedundantIndexEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.RedundantIndexEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -476,15 +473,11 @@ public abstract class RedundantIndexEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.RedundantIndexEntry",
 			redundantIndexEntryLocalService);
-
-		_setLocalServiceUtilService(redundantIndexEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.RedundantIndexEntry");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -527,23 +520,6 @@ public abstract class RedundantIndexEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		RedundantIndexEntryLocalService redundantIndexEntryLocalService) {
-
-		try {
-			Field field =
-				RedundantIndexEntryLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, redundantIndexEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

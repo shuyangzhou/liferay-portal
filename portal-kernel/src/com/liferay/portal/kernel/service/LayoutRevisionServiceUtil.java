@@ -14,8 +14,15 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.LayoutRevision;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for LayoutRevision. This utility wraps
@@ -63,9 +70,34 @@ public class LayoutRevisionServiceUtil {
 	}
 
 	public static LayoutRevisionService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			LayoutRevisionServiceUtil::_getService);
 	}
 
-	private static volatile LayoutRevisionService _service;
+	private static LayoutRevisionService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			LayoutRevisionServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<LayoutRevisionService> serviceReference =
+			bundleContext.getServiceReference(LayoutRevisionService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<LayoutRevisionService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

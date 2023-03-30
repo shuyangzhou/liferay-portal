@@ -26,11 +26,8 @@ import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.PhoneService;
-import com.liferay.portal.kernel.service.PhoneServiceUtil;
 import com.liferay.portal.kernel.service.persistence.PhonePersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -51,7 +48,7 @@ public abstract class PhoneServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PhoneService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PhoneServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>PhoneService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.PhoneServiceUtil</code>.
 	 */
 
 	/**
@@ -136,11 +133,9 @@ public abstract class PhoneServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(phoneService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
 	}
 
 	/**
@@ -182,19 +177,6 @@ public abstract class PhoneServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(PhoneService phoneService) {
-		try {
-			Field field = PhoneServiceUtil.class.getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, phoneService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

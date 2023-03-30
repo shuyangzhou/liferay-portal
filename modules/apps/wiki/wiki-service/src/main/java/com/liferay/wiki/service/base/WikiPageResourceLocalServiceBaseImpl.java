@@ -45,18 +45,14 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.wiki.model.WikiPageResource;
 import com.liferay.wiki.service.WikiPageResourceLocalService;
-import com.liferay.wiki.service.WikiPageResourceLocalServiceUtil;
 import com.liferay.wiki.service.persistence.WikiPageResourcePersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -78,7 +74,7 @@ public abstract class WikiPageResourceLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>WikiPageResourceLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>WikiPageResourceLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>WikiPageResourceLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.wiki.service.WikiPageResourceLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -461,24 +457,12 @@ public abstract class WikiPageResourceLocalServiceBaseImpl
 		return wikiPageResourcePersistence.update(wikiPageResource);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			WikiPageResourceLocalService.class, IdentifiableOSGiService.class,
 			CTService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		wikiPageResourceLocalService = (WikiPageResourceLocalService)aopProxy;
-
-		_setLocalServiceUtilService(wikiPageResourceLocalService);
 	}
 
 	/**
@@ -535,23 +519,6 @@ public abstract class WikiPageResourceLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		WikiPageResourceLocalService wikiPageResourceLocalService) {
-
-		try {
-			Field field =
-				WikiPageResourceLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, wikiPageResourceLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

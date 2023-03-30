@@ -43,12 +43,9 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.RenameFinderColumnEntry;
 import com.liferay.portal.tools.service.builder.test.service.RenameFinderColumnEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.RenameFinderColumnEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.RenameFinderColumnEntryPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -72,7 +69,7 @@ public abstract class RenameFinderColumnEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>RenameFinderColumnEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>RenameFinderColumnEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>RenameFinderColumnEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.RenameFinderColumnEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -488,15 +485,11 @@ public abstract class RenameFinderColumnEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.RenameFinderColumnEntry",
 			renameFinderColumnEntryLocalService);
-
-		_setLocalServiceUtilService(renameFinderColumnEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.RenameFinderColumnEntry");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -539,24 +532,6 @@ public abstract class RenameFinderColumnEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		RenameFinderColumnEntryLocalService
-			renameFinderColumnEntryLocalService) {
-
-		try {
-			Field field =
-				RenameFinderColumnEntryLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, renameFinderColumnEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

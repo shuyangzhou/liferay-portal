@@ -16,7 +16,6 @@ package com.liferay.commerce.product.service.base;
 
 import com.liferay.commerce.product.model.CPDefinitionLink;
 import com.liferay.commerce.product.service.CPDefinitionLinkLocalService;
-import com.liferay.commerce.product.service.CPDefinitionLinkLocalServiceUtil;
 import com.liferay.commerce.product.service.persistence.CPDefinitionLinkPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
@@ -56,13 +55,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -84,7 +80,7 @@ public abstract class CPDefinitionLinkLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CPDefinitionLinkLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CPDefinitionLinkLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CPDefinitionLinkLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.product.service.CPDefinitionLinkLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -536,24 +532,12 @@ public abstract class CPDefinitionLinkLocalServiceBaseImpl
 		return cpDefinitionLinkPersistence.update(cpDefinitionLink);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CPDefinitionLinkLocalService.class, IdentifiableOSGiService.class,
 			CTService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		cpDefinitionLinkLocalService = (CPDefinitionLinkLocalService)aopProxy;
-
-		_setLocalServiceUtilService(cpDefinitionLinkLocalService);
 	}
 
 	/**
@@ -610,23 +594,6 @@ public abstract class CPDefinitionLinkLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CPDefinitionLinkLocalService cpDefinitionLinkLocalService) {
-
-		try {
-			Field field =
-				CPDefinitionLinkLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, cpDefinitionLinkLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

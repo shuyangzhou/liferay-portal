@@ -21,7 +21,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.oauth2.provider.model.OAuth2Application;
 import com.liferay.oauth2.provider.service.OAuth2ApplicationLocalService;
-import com.liferay.oauth2.provider.service.OAuth2ApplicationLocalServiceUtil;
 import com.liferay.oauth2.provider.service.persistence.OAuth2ApplicationPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -53,13 +52,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -81,7 +77,7 @@ public abstract class OAuth2ApplicationLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>OAuth2ApplicationLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>OAuth2ApplicationLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>OAuth2ApplicationLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.oauth2.provider.service.OAuth2ApplicationLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -521,24 +517,12 @@ public abstract class OAuth2ApplicationLocalServiceBaseImpl
 		return oAuth2ApplicationPersistence.update(oAuth2Application);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			OAuth2ApplicationLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		oAuth2ApplicationLocalService = (OAuth2ApplicationLocalService)aopProxy;
-
-		_setLocalServiceUtilService(oAuth2ApplicationLocalService);
 	}
 
 	/**
@@ -581,23 +565,6 @@ public abstract class OAuth2ApplicationLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		OAuth2ApplicationLocalService oAuth2ApplicationLocalService) {
-
-		try {
-			Field field =
-				OAuth2ApplicationLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, oAuth2ApplicationLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

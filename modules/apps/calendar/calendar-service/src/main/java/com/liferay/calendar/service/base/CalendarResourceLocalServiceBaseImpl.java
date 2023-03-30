@@ -16,7 +16,6 @@ package com.liferay.calendar.service.base;
 
 import com.liferay.calendar.model.CalendarResource;
 import com.liferay.calendar.service.CalendarResourceLocalService;
-import com.liferay.calendar.service.CalendarResourceLocalServiceUtil;
 import com.liferay.calendar.service.persistence.CalendarResourceFinder;
 import com.liferay.calendar.service.persistence.CalendarResourcePersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
@@ -59,13 +58,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -87,7 +83,7 @@ public abstract class CalendarResourceLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CalendarResourceLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CalendarResourceLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CalendarResourceLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.calendar.service.CalendarResourceLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -567,24 +563,12 @@ public abstract class CalendarResourceLocalServiceBaseImpl
 		return calendarResourcePersistence.update(calendarResource);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CalendarResourceLocalService.class, IdentifiableOSGiService.class,
 			CTService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		calendarResourceLocalService = (CalendarResourceLocalService)aopProxy;
-
-		_setLocalServiceUtilService(calendarResourceLocalService);
 	}
 
 	/**
@@ -641,23 +625,6 @@ public abstract class CalendarResourceLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CalendarResourceLocalService calendarResourceLocalService) {
-
-		try {
-			Field field =
-				CalendarResourceLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, calendarResourceLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

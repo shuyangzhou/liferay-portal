@@ -16,7 +16,6 @@ package com.liferay.adaptive.media.image.service.base;
 
 import com.liferay.adaptive.media.image.model.AMImageEntry;
 import com.liferay.adaptive.media.image.service.AMImageEntryLocalService;
-import com.liferay.adaptive.media.image.service.AMImageEntryLocalServiceUtil;
 import com.liferay.adaptive.media.image.service.persistence.AMImageEntryPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -74,7 +70,7 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AMImageEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AMImageEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AMImageEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.adaptive.media.image.service.AMImageEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -449,24 +445,12 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 		return amImageEntryPersistence.update(amImageEntry);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			AMImageEntryLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		amImageEntryLocalService = (AMImageEntryLocalService)aopProxy;
-
-		_setLocalServiceUtilService(amImageEntryLocalService);
 	}
 
 	/**
@@ -508,22 +492,6 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		AMImageEntryLocalService amImageEntryLocalService) {
-
-		try {
-			Field field = AMImageEntryLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, amImageEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

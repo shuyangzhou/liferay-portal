@@ -44,12 +44,9 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.social.kernel.model.SocialActivityLimit;
 import com.liferay.social.kernel.service.SocialActivityLimitLocalService;
-import com.liferay.social.kernel.service.SocialActivityLimitLocalServiceUtil;
 import com.liferay.social.kernel.service.persistence.SocialActivityLimitPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -73,7 +70,7 @@ public abstract class SocialActivityLimitLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SocialActivityLimitLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SocialActivityLimitLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SocialActivityLimitLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.social.kernel.service.SocialActivityLimitLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -468,15 +465,11 @@ public abstract class SocialActivityLimitLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.social.kernel.model.SocialActivityLimit",
 			socialActivityLimitLocalService);
-
-		_setLocalServiceUtilService(socialActivityLimitLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.social.kernel.model.SocialActivityLimit");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -534,23 +527,6 @@ public abstract class SocialActivityLimitLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		SocialActivityLimitLocalService socialActivityLimitLocalService) {
-
-		try {
-			Field field =
-				SocialActivityLimitLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, socialActivityLimitLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

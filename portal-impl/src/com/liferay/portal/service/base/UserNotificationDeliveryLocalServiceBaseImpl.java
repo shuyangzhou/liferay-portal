@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.UserNotificationDeliveryLocalService;
-import com.liferay.portal.kernel.service.UserNotificationDeliveryLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.UserNotificationDeliveryPersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -46,8 +45,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -71,7 +68,7 @@ public abstract class UserNotificationDeliveryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>UserNotificationDeliveryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>UserNotificationDeliveryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>UserNotificationDeliveryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.UserNotificationDeliveryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -488,15 +485,11 @@ public abstract class UserNotificationDeliveryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.UserNotificationDelivery",
 			userNotificationDeliveryLocalService);
-
-		_setLocalServiceUtilService(userNotificationDeliveryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.UserNotificationDelivery");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -539,24 +532,6 @@ public abstract class UserNotificationDeliveryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		UserNotificationDeliveryLocalService
-			userNotificationDeliveryLocalService) {
-
-		try {
-			Field field =
-				UserNotificationDeliveryLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, userNotificationDeliveryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

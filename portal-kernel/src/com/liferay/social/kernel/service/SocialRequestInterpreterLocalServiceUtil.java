@@ -14,6 +14,14 @@
 
 package com.liferay.social.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
+
 /**
  * Provides the local service utility for SocialRequestInterpreter. This utility wraps
  * <code>com.liferay.portlet.social.service.impl.SocialRequestInterpreterLocalServiceImpl</code> and
@@ -39,7 +47,7 @@ public class SocialRequestInterpreterLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static java.lang.String getOSGiServiceIdentifier() {
+	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -111,9 +119,35 @@ public class SocialRequestInterpreterLocalServiceUtil {
 	}
 
 	public static SocialRequestInterpreterLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			SocialRequestInterpreterLocalServiceUtil::_getService);
 	}
 
-	private static volatile SocialRequestInterpreterLocalService _service;
+	private static SocialRequestInterpreterLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			SocialRequestInterpreterLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<SocialRequestInterpreterLocalService>
+			serviceReference = bundleContext.getServiceReference(
+				SocialRequestInterpreterLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<SocialRequestInterpreterLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

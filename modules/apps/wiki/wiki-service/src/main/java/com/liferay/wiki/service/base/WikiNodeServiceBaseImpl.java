@@ -27,14 +27,10 @@ import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.service.WikiNodeService;
-import com.liferay.wiki.service.WikiNodeServiceUtil;
 import com.liferay.wiki.service.persistence.WikiNodePersistence;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,25 +51,13 @@ public abstract class WikiNodeServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>WikiNodeService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>WikiNodeServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>WikiNodeService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.wiki.service.WikiNodeServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			WikiNodeService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		wikiNodeService = (WikiNodeService)aopProxy;
-
-		_setServiceUtilService(wikiNodeService);
 	}
 
 	/**
@@ -115,20 +99,6 @@ public abstract class WikiNodeServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(WikiNodeService wikiNodeService) {
-		try {
-			Field field = WikiNodeServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, wikiNodeService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

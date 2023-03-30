@@ -14,10 +14,17 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.LayoutSetBranch;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for LayoutSetBranch. This utility wraps
@@ -97,9 +104,34 @@ public class LayoutSetBranchServiceUtil {
 	}
 
 	public static LayoutSetBranchService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			LayoutSetBranchServiceUtil::_getService);
 	}
 
-	private static volatile LayoutSetBranchService _service;
+	private static LayoutSetBranchService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			LayoutSetBranchServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<LayoutSetBranchService> serviceReference =
+			bundleContext.getServiceReference(LayoutSetBranchService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<LayoutSetBranchService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

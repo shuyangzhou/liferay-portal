@@ -16,7 +16,6 @@ package com.liferay.commerce.product.service.base;
 
 import com.liferay.commerce.product.model.CommerceChannelAccountEntryRel;
 import com.liferay.commerce.product.service.CommerceChannelAccountEntryRelLocalService;
-import com.liferay.commerce.product.service.CommerceChannelAccountEntryRelLocalServiceUtil;
 import com.liferay.commerce.product.service.persistence.CommerceChannelAccountEntryRelPersistence;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
@@ -50,13 +49,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -78,7 +74,7 @@ public abstract class CommerceChannelAccountEntryRelLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceChannelAccountEntryRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceChannelAccountEntryRelLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceChannelAccountEntryRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.product.service.CommerceChannelAccountEntryRelLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -426,11 +422,6 @@ public abstract class CommerceChannelAccountEntryRelLocalServiceBaseImpl
 			commerceChannelAccountEntryRel);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -438,14 +429,6 @@ public abstract class CommerceChannelAccountEntryRelLocalServiceBaseImpl
 			IdentifiableOSGiService.class, CTService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceChannelAccountEntryRelLocalService =
-			(CommerceChannelAccountEntryRelLocalService)aopProxy;
-
-		_setLocalServiceUtilService(commerceChannelAccountEntryRelLocalService);
 	}
 
 	/**
@@ -504,24 +487,6 @@ public abstract class CommerceChannelAccountEntryRelLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommerceChannelAccountEntryRelLocalService
-			commerceChannelAccountEntryRelLocalService) {
-
-		try {
-			Field field =
-				CommerceChannelAccountEntryRelLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceChannelAccountEntryRelLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

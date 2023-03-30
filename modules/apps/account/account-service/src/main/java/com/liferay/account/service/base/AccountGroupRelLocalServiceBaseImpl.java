@@ -16,7 +16,6 @@ package com.liferay.account.service.base;
 
 import com.liferay.account.model.AccountGroupRel;
 import com.liferay.account.service.AccountGroupRelLocalService;
-import com.liferay.account.service.AccountGroupRelLocalServiceUtil;
 import com.liferay.account.service.persistence.AccountGroupRelPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -75,7 +71,7 @@ public abstract class AccountGroupRelLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AccountGroupRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AccountGroupRelLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AccountGroupRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.account.service.AccountGroupRelLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -391,24 +387,12 @@ public abstract class AccountGroupRelLocalServiceBaseImpl
 		return accountGroupRelPersistence.update(accountGroupRel);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			AccountGroupRelLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		accountGroupRelLocalService = (AccountGroupRelLocalService)aopProxy;
-
-		_setLocalServiceUtilService(accountGroupRelLocalService);
 	}
 
 	/**
@@ -450,23 +434,6 @@ public abstract class AccountGroupRelLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		AccountGroupRelLocalService accountGroupRelLocalService) {
-
-		try {
-			Field field =
-				AccountGroupRelLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, accountGroupRelLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

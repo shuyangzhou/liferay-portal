@@ -25,11 +25,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.PermissionService;
-import com.liferay.portal.kernel.service.PermissionServiceUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -51,7 +48,7 @@ public abstract class PermissionServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PermissionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PermissionServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>PermissionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.PermissionServiceUtil</code>.
 	 */
 
 	/**
@@ -96,11 +93,9 @@ public abstract class PermissionServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(permissionService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
 	}
 
 	/**
@@ -134,20 +129,6 @@ public abstract class PermissionServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(PermissionService permissionService) {
-		try {
-			Field field = PermissionServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, permissionService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

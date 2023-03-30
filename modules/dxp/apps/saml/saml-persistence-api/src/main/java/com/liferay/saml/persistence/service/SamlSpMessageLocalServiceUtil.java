@@ -14,16 +14,23 @@
 
 package com.liferay.saml.persistence.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.saml.persistence.model.SamlSpMessage;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for SamlSpMessage. This utility wraps
@@ -325,9 +332,34 @@ public class SamlSpMessageLocalServiceUtil {
 	}
 
 	public static SamlSpMessageLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			SamlSpMessageLocalServiceUtil::_getService);
 	}
 
-	private static volatile SamlSpMessageLocalService _service;
+	private static SamlSpMessageLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			SamlSpMessageLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<SamlSpMessageLocalService> serviceReference =
+			bundleContext.getServiceReference(SamlSpMessageLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<SamlSpMessageLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

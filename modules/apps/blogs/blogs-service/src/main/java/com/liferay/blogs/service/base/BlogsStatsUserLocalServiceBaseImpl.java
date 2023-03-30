@@ -15,7 +15,6 @@
 package com.liferay.blogs.service.base;
 
 import com.liferay.blogs.service.BlogsStatsUserLocalService;
-import com.liferay.blogs.service.BlogsStatsUserLocalServiceUtil;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -29,11 +28,8 @@ import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -54,25 +50,13 @@ public abstract class BlogsStatsUserLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>BlogsStatsUserLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>BlogsStatsUserLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>BlogsStatsUserLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.blogs.service.BlogsStatsUserLocalServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			BlogsStatsUserLocalService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		blogsStatsUserLocalService = (BlogsStatsUserLocalService)aopProxy;
-
-		_setLocalServiceUtilService(blogsStatsUserLocalService);
 	}
 
 	/**
@@ -106,22 +90,6 @@ public abstract class BlogsStatsUserLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		BlogsStatsUserLocalService blogsStatsUserLocalService) {
-
-		try {
-			Field field = BlogsStatsUserLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, blogsStatsUserLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

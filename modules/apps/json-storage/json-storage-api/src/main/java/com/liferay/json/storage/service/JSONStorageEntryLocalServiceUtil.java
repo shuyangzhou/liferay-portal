@@ -15,15 +15,22 @@
 package com.liferay.json.storage.service;
 
 import com.liferay.json.storage.model.JSONStorageEntry;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for JSONStorageEntry. This utility wraps
@@ -371,9 +378,35 @@ public class JSONStorageEntryLocalServiceUtil {
 	}
 
 	public static JSONStorageEntryLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			JSONStorageEntryLocalServiceUtil::_getService);
 	}
 
-	private static volatile JSONStorageEntryLocalService _service;
+	private static JSONStorageEntryLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			JSONStorageEntryLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<JSONStorageEntryLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				JSONStorageEntryLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<JSONStorageEntryLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

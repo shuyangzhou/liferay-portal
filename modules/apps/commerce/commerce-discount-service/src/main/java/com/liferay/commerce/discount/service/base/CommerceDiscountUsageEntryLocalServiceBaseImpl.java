@@ -16,7 +16,6 @@ package com.liferay.commerce.discount.service.base;
 
 import com.liferay.commerce.discount.model.CommerceDiscountUsageEntry;
 import com.liferay.commerce.discount.service.CommerceDiscountUsageEntryLocalService;
-import com.liferay.commerce.discount.service.CommerceDiscountUsageEntryLocalServiceUtil;
 import com.liferay.commerce.discount.service.persistence.CommerceDiscountUsageEntryPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -75,7 +71,7 @@ public abstract class CommerceDiscountUsageEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceDiscountUsageEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceDiscountUsageEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceDiscountUsageEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.discount.service.CommerceDiscountUsageEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -417,25 +413,12 @@ public abstract class CommerceDiscountUsageEntryLocalServiceBaseImpl
 			commerceDiscountUsageEntry);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceDiscountUsageEntryLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceDiscountUsageEntryLocalService =
-			(CommerceDiscountUsageEntryLocalService)aopProxy;
-
-		_setLocalServiceUtilService(commerceDiscountUsageEntryLocalService);
 	}
 
 	/**
@@ -478,24 +461,6 @@ public abstract class CommerceDiscountUsageEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommerceDiscountUsageEntryLocalService
-			commerceDiscountUsageEntryLocalService) {
-
-		try {
-			Field field =
-				CommerceDiscountUsageEntryLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceDiscountUsageEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

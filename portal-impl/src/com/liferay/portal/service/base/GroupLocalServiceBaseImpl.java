@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.GroupLocalService;
-import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.GroupFinder;
@@ -53,8 +52,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -78,7 +75,7 @@ public abstract class GroupLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>GroupLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>GroupLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>GroupLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.GroupLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1002,15 +999,11 @@ public abstract class GroupLocalServiceBaseImpl
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.Group", groupLocalService);
-
-		_setLocalServiceUtilService(groupLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.Group");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1066,22 +1059,6 @@ public abstract class GroupLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		GroupLocalService groupLocalService) {
-
-		try {
-			Field field = GroupLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, groupLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

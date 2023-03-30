@@ -14,16 +14,23 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.UserTrackerPath;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for UserTrackerPath. This utility wraps
@@ -308,9 +315,35 @@ public class UserTrackerPathLocalServiceUtil {
 	}
 
 	public static UserTrackerPathLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			UserTrackerPathLocalServiceUtil::_getService);
 	}
 
-	private static volatile UserTrackerPathLocalService _service;
+	private static UserTrackerPathLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			UserTrackerPathLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<UserTrackerPathLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				UserTrackerPathLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<UserTrackerPathLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

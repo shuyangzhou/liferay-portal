@@ -16,7 +16,6 @@ package com.liferay.commerce.shipping.engine.fixed.service.base;
 
 import com.liferay.commerce.shipping.engine.fixed.model.CommerceShippingFixedOptionQualifier;
 import com.liferay.commerce.shipping.engine.fixed.service.CommerceShippingFixedOptionQualifierLocalService;
-import com.liferay.commerce.shipping.engine.fixed.service.CommerceShippingFixedOptionQualifierLocalServiceUtil;
 import com.liferay.commerce.shipping.engine.fixed.service.persistence.CommerceShippingFixedOptionQualifierPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -75,7 +71,7 @@ public abstract class CommerceShippingFixedOptionQualifierLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceShippingFixedOptionQualifierLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceShippingFixedOptionQualifierLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceShippingFixedOptionQualifierLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.shipping.engine.fixed.service.CommerceShippingFixedOptionQualifierLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -433,26 +429,12 @@ public abstract class CommerceShippingFixedOptionQualifierLocalServiceBaseImpl
 			commerceShippingFixedOptionQualifier);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceShippingFixedOptionQualifierLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceShippingFixedOptionQualifierLocalService =
-			(CommerceShippingFixedOptionQualifierLocalService)aopProxy;
-
-		_setLocalServiceUtilService(
-			commerceShippingFixedOptionQualifierLocalService);
 	}
 
 	/**
@@ -495,24 +477,6 @@ public abstract class CommerceShippingFixedOptionQualifierLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommerceShippingFixedOptionQualifierLocalService
-			commerceShippingFixedOptionQualifierLocalService) {
-
-		try {
-			Field field =
-				CommerceShippingFixedOptionQualifierLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceShippingFixedOptionQualifierLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

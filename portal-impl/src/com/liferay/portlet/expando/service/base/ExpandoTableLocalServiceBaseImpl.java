@@ -16,7 +16,6 @@ package com.liferay.portlet.expando.service.base;
 
 import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.service.ExpandoTableLocalService;
-import com.liferay.expando.kernel.service.ExpandoTableLocalServiceUtil;
 import com.liferay.expando.kernel.service.persistence.ExpandoTablePersistence;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
@@ -49,8 +48,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -73,7 +70,7 @@ public abstract class ExpandoTableLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ExpandoTableLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ExpandoTableLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ExpandoTableLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.expando.kernel.service.ExpandoTableLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -452,15 +449,11 @@ public abstract class ExpandoTableLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.expando.kernel.model.ExpandoTable",
 			expandoTableLocalService);
-
-		_setLocalServiceUtilService(expandoTableLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.expando.kernel.model.ExpandoTable");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -517,22 +510,6 @@ public abstract class ExpandoTableLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		ExpandoTableLocalService expandoTableLocalService) {
-
-		try {
-			Field field = ExpandoTableLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, expandoTableLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

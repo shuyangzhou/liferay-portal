@@ -27,15 +27,11 @@ import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiPageService;
-import com.liferay.wiki.service.WikiPageServiceUtil;
 import com.liferay.wiki.service.persistence.WikiPageFinder;
 import com.liferay.wiki.service.persistence.WikiPagePersistence;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,25 +52,13 @@ public abstract class WikiPageServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>WikiPageService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>WikiPageServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>WikiPageService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.wiki.service.WikiPageServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			WikiPageService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		wikiPageService = (WikiPageService)aopProxy;
-
-		_setServiceUtilService(wikiPageService);
 	}
 
 	/**
@@ -116,20 +100,6 @@ public abstract class WikiPageServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(WikiPageService wikiPageService) {
-		try {
-			Field field = WikiPageServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, wikiPageService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

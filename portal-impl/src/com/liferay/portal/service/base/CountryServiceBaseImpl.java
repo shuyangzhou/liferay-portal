@@ -26,12 +26,9 @@ import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.CountryService;
-import com.liferay.portal.kernel.service.CountryServiceUtil;
 import com.liferay.portal.kernel.service.persistence.CountryLocalizationPersistence;
 import com.liferay.portal.kernel.service.persistence.CountryPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -52,7 +49,7 @@ public abstract class CountryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CountryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CountryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CountryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.CountryServiceUtil</code>.
 	 */
 
 	/**
@@ -158,11 +155,9 @@ public abstract class CountryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(countryService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
 	}
 
 	/**
@@ -204,19 +199,6 @@ public abstract class CountryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(CountryService countryService) {
-		try {
-			Field field = CountryServiceUtil.class.getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, countryService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

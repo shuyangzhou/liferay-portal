@@ -43,12 +43,9 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.FinderWhereClauseEntry;
 import com.liferay.portal.tools.service.builder.test.service.FinderWhereClauseEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.FinderWhereClauseEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.FinderWhereClauseEntryPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -72,7 +69,7 @@ public abstract class FinderWhereClauseEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>FinderWhereClauseEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>FinderWhereClauseEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>FinderWhereClauseEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.FinderWhereClauseEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -483,15 +480,11 @@ public abstract class FinderWhereClauseEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.FinderWhereClauseEntry",
 			finderWhereClauseEntryLocalService);
-
-		_setLocalServiceUtilService(finderWhereClauseEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.FinderWhereClauseEntry");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -534,23 +527,6 @@ public abstract class FinderWhereClauseEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		FinderWhereClauseEntryLocalService finderWhereClauseEntryLocalService) {
-
-		try {
-			Field field =
-				FinderWhereClauseEntryLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, finderWhereClauseEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

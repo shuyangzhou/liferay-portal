@@ -14,16 +14,23 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.Release;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for Release. This utility wraps
@@ -344,9 +351,33 @@ public class ReleaseLocalServiceUtil {
 	}
 
 	public static ReleaseLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			ReleaseLocalServiceUtil::_getService);
 	}
 
-	private static volatile ReleaseLocalService _service;
+	private static ReleaseLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(ReleaseLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<ReleaseLocalService> serviceReference =
+			bundleContext.getServiceReference(ReleaseLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<ReleaseLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

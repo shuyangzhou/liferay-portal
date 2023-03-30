@@ -16,7 +16,6 @@ package com.liferay.change.tracking.service.base;
 
 import com.liferay.change.tracking.model.CTPreferences;
 import com.liferay.change.tracking.service.CTPreferencesLocalService;
-import com.liferay.change.tracking.service.CTPreferencesLocalServiceUtil;
 import com.liferay.change.tracking.service.persistence.CTPreferencesPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -74,7 +70,7 @@ public abstract class CTPreferencesLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CTPreferencesLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CTPreferencesLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CTPreferencesLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.change.tracking.service.CTPreferencesLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -386,24 +382,12 @@ public abstract class CTPreferencesLocalServiceBaseImpl
 		return ctPreferencesPersistence.update(ctPreferences);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CTPreferencesLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		ctPreferencesLocalService = (CTPreferencesLocalService)aopProxy;
-
-		_setLocalServiceUtilService(ctPreferencesLocalService);
 	}
 
 	/**
@@ -445,22 +429,6 @@ public abstract class CTPreferencesLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CTPreferencesLocalService ctPreferencesLocalService) {
-
-		try {
-			Field field = CTPreferencesLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, ctPreferencesLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -21,7 +21,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.message.boards.model.MBDiscussion;
 import com.liferay.message.boards.service.MBDiscussionLocalService;
-import com.liferay.message.boards.service.MBDiscussionLocalServiceUtil;
 import com.liferay.message.boards.service.persistence.MBDiscussionPersistence;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
@@ -58,13 +57,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -85,7 +81,7 @@ public abstract class MBDiscussionLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>MBDiscussionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>MBDiscussionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>MBDiscussionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.message.boards.service.MBDiscussionLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -554,24 +550,12 @@ public abstract class MBDiscussionLocalServiceBaseImpl
 		return mbDiscussionPersistence.update(mbDiscussion);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			MBDiscussionLocalService.class, IdentifiableOSGiService.class,
 			CTService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		mbDiscussionLocalService = (MBDiscussionLocalService)aopProxy;
-
-		_setLocalServiceUtilService(mbDiscussionLocalService);
 	}
 
 	/**
@@ -628,22 +612,6 @@ public abstract class MBDiscussionLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		MBDiscussionLocalService mbDiscussionLocalService) {
-
-		try {
-			Field field = MBDiscussionLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, mbDiscussionLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

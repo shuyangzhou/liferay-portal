@@ -16,7 +16,6 @@ package com.liferay.commerce.product.type.virtual.order.service.base;
 
 import com.liferay.commerce.product.type.virtual.order.model.CommerceVirtualOrderItem;
 import com.liferay.commerce.product.type.virtual.order.service.CommerceVirtualOrderItemLocalService;
-import com.liferay.commerce.product.type.virtual.order.service.CommerceVirtualOrderItemLocalServiceUtil;
 import com.liferay.commerce.product.type.virtual.order.service.persistence.CommerceVirtualOrderItemFinder;
 import com.liferay.commerce.product.type.virtual.order.service.persistence.CommerceVirtualOrderItemPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
@@ -54,13 +53,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -82,7 +78,7 @@ public abstract class CommerceVirtualOrderItemLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceVirtualOrderItemLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceVirtualOrderItemLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceVirtualOrderItemLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.product.type.virtual.order.service.CommerceVirtualOrderItemLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -560,25 +556,12 @@ public abstract class CommerceVirtualOrderItemLocalServiceBaseImpl
 			commerceVirtualOrderItem);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceVirtualOrderItemLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceVirtualOrderItemLocalService =
-			(CommerceVirtualOrderItemLocalService)aopProxy;
-
-		_setLocalServiceUtilService(commerceVirtualOrderItemLocalService);
 	}
 
 	/**
@@ -621,24 +604,6 @@ public abstract class CommerceVirtualOrderItemLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommerceVirtualOrderItemLocalService
-			commerceVirtualOrderItemLocalService) {
-
-		try {
-			Field field =
-				CommerceVirtualOrderItemLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceVirtualOrderItemLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

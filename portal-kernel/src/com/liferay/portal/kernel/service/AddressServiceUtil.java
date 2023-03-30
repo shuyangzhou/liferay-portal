@@ -14,10 +14,17 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Address;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for Address. This utility wraps
@@ -85,9 +92,33 @@ public class AddressServiceUtil {
 	}
 
 	public static AddressService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			AddressServiceUtil::_getService);
 	}
 
-	private static volatile AddressService _service;
+	private static AddressService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(AddressServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<AddressService> serviceReference =
+			bundleContext.getServiceReference(AddressService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<AddressService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

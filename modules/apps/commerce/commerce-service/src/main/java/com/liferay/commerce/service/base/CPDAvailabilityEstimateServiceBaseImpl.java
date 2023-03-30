@@ -16,7 +16,6 @@ package com.liferay.commerce.service.base;
 
 import com.liferay.commerce.model.CPDAvailabilityEstimate;
 import com.liferay.commerce.service.CPDAvailabilityEstimateService;
-import com.liferay.commerce.service.CPDAvailabilityEstimateServiceUtil;
 import com.liferay.commerce.service.persistence.CPDAvailabilityEstimatePersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,26 +52,13 @@ public abstract class CPDAvailabilityEstimateServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CPDAvailabilityEstimateService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CPDAvailabilityEstimateServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CPDAvailabilityEstimateService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.service.CPDAvailabilityEstimateServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CPDAvailabilityEstimateService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		cpdAvailabilityEstimateService =
-			(CPDAvailabilityEstimateService)aopProxy;
-
-		_setServiceUtilService(cpdAvailabilityEstimateService);
 	}
 
 	/**
@@ -118,23 +101,6 @@ public abstract class CPDAvailabilityEstimateServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CPDAvailabilityEstimateService cpdAvailabilityEstimateService) {
-
-		try {
-			Field field =
-				CPDAvailabilityEstimateServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, cpdAvailabilityEstimateService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -27,14 +27,10 @@ import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.segments.model.SegmentsExperimentRel;
 import com.liferay.segments.service.SegmentsExperimentRelService;
-import com.liferay.segments.service.SegmentsExperimentRelServiceUtil;
 import com.liferay.segments.service.persistence.SegmentsExperimentRelPersistence;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,25 +52,13 @@ public abstract class SegmentsExperimentRelServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SegmentsExperimentRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SegmentsExperimentRelServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SegmentsExperimentRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.segments.service.SegmentsExperimentRelServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			SegmentsExperimentRelService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		segmentsExperimentRelService = (SegmentsExperimentRelService)aopProxy;
-
-		_setServiceUtilService(segmentsExperimentRelService);
 	}
 
 	/**
@@ -117,23 +101,6 @@ public abstract class SegmentsExperimentRelServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		SegmentsExperimentRelService segmentsExperimentRelService) {
-
-		try {
-			Field field =
-				SegmentsExperimentRelServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, segmentsExperimentRelService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -15,7 +15,6 @@
 package com.liferay.portlet.exportimport.service.base;
 
 import com.liferay.exportimport.kernel.service.StagingService;
-import com.liferay.exportimport.kernel.service.StagingServiceUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -28,8 +27,6 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -50,7 +47,7 @@ public abstract class StagingServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>StagingService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>StagingServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>StagingService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.exportimport.kernel.service.StagingServiceUtil</code>.
 	 */
 
 	/**
@@ -118,11 +115,9 @@ public abstract class StagingServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(stagingService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
 	}
 
 	/**
@@ -156,19 +151,6 @@ public abstract class StagingServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(StagingService stagingService) {
-		try {
-			Field field = StagingServiceUtil.class.getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, stagingService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

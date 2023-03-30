@@ -14,16 +14,23 @@
 
 package com.liferay.push.notifications.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.push.notifications.model.PushNotificationsDevice;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for PushNotificationsDevice. This utility wraps
@@ -355,9 +362,35 @@ public class PushNotificationsDeviceLocalServiceUtil {
 	}
 
 	public static PushNotificationsDeviceLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			PushNotificationsDeviceLocalServiceUtil::_getService);
 	}
 
-	private static volatile PushNotificationsDeviceLocalService _service;
+	private static PushNotificationsDeviceLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			PushNotificationsDeviceLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<PushNotificationsDeviceLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				PushNotificationsDeviceLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<PushNotificationsDeviceLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

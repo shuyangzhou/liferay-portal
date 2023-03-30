@@ -15,7 +15,14 @@
 package com.liferay.notification.service;
 
 import com.liferay.notification.model.NotificationQueueEntry;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for NotificationQueueEntry. This utility wraps
@@ -69,9 +76,35 @@ public class NotificationQueueEntryServiceUtil {
 	}
 
 	public static NotificationQueueEntryService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			NotificationQueueEntryServiceUtil::_getService);
 	}
 
-	private static volatile NotificationQueueEntryService _service;
+	private static NotificationQueueEntryService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			NotificationQueueEntryServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<NotificationQueueEntryService> serviceReference =
+			bundleContext.getServiceReference(
+				NotificationQueueEntryService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<NotificationQueueEntryService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

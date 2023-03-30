@@ -16,7 +16,6 @@ package com.liferay.commerce.wish.list.service.base;
 
 import com.liferay.commerce.wish.list.model.CommerceWishList;
 import com.liferay.commerce.wish.list.service.CommerceWishListService;
-import com.liferay.commerce.wish.list.service.CommerceWishListServiceUtil;
 import com.liferay.commerce.wish.list.service.persistence.CommerceWishListPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,25 +51,13 @@ public abstract class CommerceWishListServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceWishListService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceWishListServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceWishListService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.wish.list.service.CommerceWishListServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceWishListService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceWishListService = (CommerceWishListService)aopProxy;
-
-		_setServiceUtilService(commerceWishListService);
 	}
 
 	/**
@@ -115,22 +99,6 @@ public abstract class CommerceWishListServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CommerceWishListService commerceWishListService) {
-
-		try {
-			Field field = CommerceWishListServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceWishListService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -27,14 +27,10 @@ import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.translation.model.TranslationEntry;
 import com.liferay.translation.service.TranslationEntryService;
-import com.liferay.translation.service.TranslationEntryServiceUtil;
 import com.liferay.translation.service.persistence.TranslationEntryPersistence;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,25 +51,13 @@ public abstract class TranslationEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>TranslationEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>TranslationEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>TranslationEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.translation.service.TranslationEntryServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			TranslationEntryService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		translationEntryService = (TranslationEntryService)aopProxy;
-
-		_setServiceUtilService(translationEntryService);
 	}
 
 	/**
@@ -115,22 +99,6 @@ public abstract class TranslationEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		TranslationEntryService translationEntryService) {
-
-		try {
-			Field field = TranslationEntryServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, translationEntryService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

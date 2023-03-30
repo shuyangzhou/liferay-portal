@@ -15,15 +15,22 @@
 package com.liferay.commerce.qualifier.service;
 
 import com.liferay.commerce.qualifier.model.CommerceQualifierEntry;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for CommerceQualifierEntry. This utility wraps
@@ -404,9 +411,35 @@ public class CommerceQualifierEntryLocalServiceUtil {
 	}
 
 	public static CommerceQualifierEntryLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommerceQualifierEntryLocalServiceUtil::_getService);
 	}
 
-	private static volatile CommerceQualifierEntryLocalService _service;
+	private static CommerceQualifierEntryLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CommerceQualifierEntryLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommerceQualifierEntryLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				CommerceQualifierEntryLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CommerceQualifierEntryLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

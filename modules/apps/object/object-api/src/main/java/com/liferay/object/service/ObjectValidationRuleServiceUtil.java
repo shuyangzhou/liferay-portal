@@ -15,9 +15,16 @@
 package com.liferay.object.service;
 
 import com.liferay.object.model.ObjectValidationRule;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for ObjectValidationRule. This utility wraps
@@ -83,9 +90,35 @@ public class ObjectValidationRuleServiceUtil {
 	}
 
 	public static ObjectValidationRuleService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			ObjectValidationRuleServiceUtil::_getService);
 	}
 
-	private static volatile ObjectValidationRuleService _service;
+	private static ObjectValidationRuleService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			ObjectValidationRuleServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<ObjectValidationRuleService> serviceReference =
+			bundleContext.getServiceReference(
+				ObjectValidationRuleService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<ObjectValidationRuleService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

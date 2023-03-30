@@ -14,12 +14,19 @@
 
 package com.liferay.portal.reports.engine.console.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.reports.engine.console.model.Source;
 
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for Source. This utility wraps
@@ -98,9 +105,33 @@ public class SourceServiceUtil {
 	}
 
 	public static SourceService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			SourceServiceUtil::_getService);
 	}
 
-	private static volatile SourceService _service;
+	private static SourceService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(SourceServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<SourceService> serviceReference =
+			bundleContext.getServiceReference(SourceService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<SourceService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

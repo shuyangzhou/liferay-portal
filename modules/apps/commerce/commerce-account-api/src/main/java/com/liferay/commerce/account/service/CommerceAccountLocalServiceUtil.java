@@ -15,13 +15,20 @@
 package com.liferay.commerce.account.service;
 
 import com.liferay.commerce.account.model.CommerceAccount;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.io.Serializable;
 
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for CommerceAccount. This utility wraps
@@ -342,9 +349,35 @@ public class CommerceAccountLocalServiceUtil {
 	}
 
 	public static CommerceAccountLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommerceAccountLocalServiceUtil::_getService);
 	}
 
-	private static volatile CommerceAccountLocalService _service;
+	private static CommerceAccountLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CommerceAccountLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommerceAccountLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				CommerceAccountLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CommerceAccountLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

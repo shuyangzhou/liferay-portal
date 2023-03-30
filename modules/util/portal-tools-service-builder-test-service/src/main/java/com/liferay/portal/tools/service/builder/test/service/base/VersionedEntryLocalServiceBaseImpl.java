@@ -46,13 +46,10 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.VersionedEntry;
 import com.liferay.portal.tools.service.builder.test.model.VersionedEntryVersion;
 import com.liferay.portal.tools.service.builder.test.service.VersionedEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.VersionedEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.VersionedEntryPersistence;
 import com.liferay.portal.tools.service.builder.test.service.persistence.VersionedEntryVersionPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.Collections;
 import java.util.List;
@@ -80,7 +77,7 @@ public abstract class VersionedEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>VersionedEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>VersionedEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>VersionedEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.VersionedEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -506,15 +503,11 @@ public abstract class VersionedEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.VersionedEntry",
 			versionedEntryLocalService);
-
-		_setLocalServiceUtilService(versionedEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.VersionedEntry");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	@Indexable(type = IndexableType.REINDEX)
@@ -948,22 +941,6 @@ public abstract class VersionedEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		VersionedEntryLocalService versionedEntryLocalService) {
-
-		try {
-			Field field = VersionedEntryLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, versionedEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

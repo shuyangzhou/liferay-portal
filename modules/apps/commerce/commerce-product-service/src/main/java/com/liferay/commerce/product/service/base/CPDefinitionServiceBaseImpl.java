@@ -16,7 +16,6 @@ package com.liferay.commerce.product.service.base;
 
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.service.CPDefinitionService;
-import com.liferay.commerce.product.service.CPDefinitionServiceUtil;
 import com.liferay.commerce.product.service.persistence.CPDefinitionFinder;
 import com.liferay.commerce.product.service.persistence.CPDefinitionLocalizationPersistence;
 import com.liferay.commerce.product.service.persistence.CPDefinitionPersistence;
@@ -32,11 +31,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -57,25 +53,13 @@ public abstract class CPDefinitionServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CPDefinitionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CPDefinitionServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CPDefinitionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.product.service.CPDefinitionServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CPDefinitionService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		cpDefinitionService = (CPDefinitionService)aopProxy;
-
-		_setServiceUtilService(cpDefinitionService);
 	}
 
 	/**
@@ -117,22 +101,6 @@ public abstract class CPDefinitionServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CPDefinitionService cpDefinitionService) {
-
-		try {
-			Field field = CPDefinitionServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, cpDefinitionService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

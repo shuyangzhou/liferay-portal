@@ -14,8 +14,16 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+
 import java.util.List;
 import java.util.Set;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for LayoutTemplate. This utility wraps
@@ -116,9 +124,34 @@ public class LayoutTemplateLocalServiceUtil {
 	}
 
 	public static LayoutTemplateLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			LayoutTemplateLocalServiceUtil::_getService);
 	}
 
-	private static volatile LayoutTemplateLocalService _service;
+	private static LayoutTemplateLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			LayoutTemplateLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<LayoutTemplateLocalService> serviceReference =
+			bundleContext.getServiceReference(LayoutTemplateLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<LayoutTemplateLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

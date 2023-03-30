@@ -42,18 +42,14 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.sharepoint.rest.oauth2.model.SharepointOAuth2TokenEntry;
 import com.liferay.sharepoint.rest.oauth2.service.SharepointOAuth2TokenEntryLocalService;
-import com.liferay.sharepoint.rest.oauth2.service.SharepointOAuth2TokenEntryLocalServiceUtil;
 import com.liferay.sharepoint.rest.oauth2.service.persistence.SharepointOAuth2TokenEntryPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -75,7 +71,7 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SharepointOAuth2TokenEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SharepointOAuth2TokenEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SharepointOAuth2TokenEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.sharepoint.rest.oauth2.service.SharepointOAuth2TokenEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -417,25 +413,12 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 			sharepointOAuth2TokenEntry);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			SharepointOAuth2TokenEntryLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		sharepointOAuth2TokenEntryLocalService =
-			(SharepointOAuth2TokenEntryLocalService)aopProxy;
-
-		_setLocalServiceUtilService(sharepointOAuth2TokenEntryLocalService);
 	}
 
 	/**
@@ -478,24 +461,6 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		SharepointOAuth2TokenEntryLocalService
-			sharepointOAuth2TokenEntryLocalService) {
-
-		try {
-			Field field =
-				SharepointOAuth2TokenEntryLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, sharepointOAuth2TokenEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

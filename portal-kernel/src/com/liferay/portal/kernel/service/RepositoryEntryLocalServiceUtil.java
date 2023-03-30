@@ -14,16 +14,23 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.RepositoryEntry;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for RepositoryEntry. This utility wraps
@@ -418,9 +425,35 @@ public class RepositoryEntryLocalServiceUtil {
 	}
 
 	public static RepositoryEntryLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			RepositoryEntryLocalServiceUtil::_getService);
 	}
 
-	private static volatile RepositoryEntryLocalService _service;
+	private static RepositoryEntryLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			RepositoryEntryLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<RepositoryEntryLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				RepositoryEntryLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<RepositoryEntryLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

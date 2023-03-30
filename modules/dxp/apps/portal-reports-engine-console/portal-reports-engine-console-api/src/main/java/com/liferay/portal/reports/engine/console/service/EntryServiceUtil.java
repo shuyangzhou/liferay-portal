@@ -14,11 +14,18 @@
 
 package com.liferay.portal.reports.engine.console.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.reports.engine.console.model.Entry;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for Entry. This utility wraps
@@ -111,9 +118,32 @@ public class EntryServiceUtil {
 	}
 
 	public static EntryService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(EntryServiceUtil::_getService);
 	}
 
-	private static volatile EntryService _service;
+	private static EntryService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(EntryServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<EntryService> serviceReference =
+			bundleContext.getServiceReference(EntryService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<EntryService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

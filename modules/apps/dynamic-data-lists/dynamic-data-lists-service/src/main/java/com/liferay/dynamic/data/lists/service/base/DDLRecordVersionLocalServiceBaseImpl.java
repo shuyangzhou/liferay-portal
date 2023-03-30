@@ -16,7 +16,6 @@ package com.liferay.dynamic.data.lists.service.base;
 
 import com.liferay.dynamic.data.lists.model.DDLRecordVersion;
 import com.liferay.dynamic.data.lists.service.DDLRecordVersionLocalService;
-import com.liferay.dynamic.data.lists.service.DDLRecordVersionLocalServiceUtil;
 import com.liferay.dynamic.data.lists.service.persistence.DDLRecordVersionPersistence;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
@@ -50,13 +49,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -78,7 +74,7 @@ public abstract class DDLRecordVersionLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DDLRecordVersionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DDLRecordVersionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DDLRecordVersionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.dynamic.data.lists.service.DDLRecordVersionLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -398,24 +394,12 @@ public abstract class DDLRecordVersionLocalServiceBaseImpl
 		return ddlRecordVersionPersistence.update(ddlRecordVersion);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			DDLRecordVersionLocalService.class, IdentifiableOSGiService.class,
 			CTService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		ddlRecordVersionLocalService = (DDLRecordVersionLocalService)aopProxy;
-
-		_setLocalServiceUtilService(ddlRecordVersionLocalService);
 	}
 
 	/**
@@ -472,23 +456,6 @@ public abstract class DDLRecordVersionLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		DDLRecordVersionLocalService ddlRecordVersionLocalService) {
-
-		try {
-			Field field =
-				DDLRecordVersionLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, ddlRecordVersionLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -26,11 +26,8 @@ import com.liferay.portal.kernel.model.MembershipRequest;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.MembershipRequestService;
-import com.liferay.portal.kernel.service.MembershipRequestServiceUtil;
 import com.liferay.portal.kernel.service.persistence.MembershipRequestPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -52,7 +49,7 @@ public abstract class MembershipRequestServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>MembershipRequestService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>MembershipRequestServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>MembershipRequestService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.MembershipRequestServiceUtil</code>.
 	 */
 
 	/**
@@ -142,11 +139,9 @@ public abstract class MembershipRequestServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(membershipRequestService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
 	}
 
 	/**
@@ -189,22 +184,6 @@ public abstract class MembershipRequestServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		MembershipRequestService membershipRequestService) {
-
-		try {
-			Field field = MembershipRequestServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, membershipRequestService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

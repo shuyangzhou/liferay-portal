@@ -16,7 +16,6 @@ package com.liferay.commerce.product.service.base;
 
 import com.liferay.commerce.product.model.CPAttachmentFileEntry;
 import com.liferay.commerce.product.service.CPAttachmentFileEntryService;
-import com.liferay.commerce.product.service.CPAttachmentFileEntryServiceUtil;
 import com.liferay.commerce.product.service.persistence.CPAttachmentFileEntryFinder;
 import com.liferay.commerce.product.service.persistence.CPAttachmentFileEntryPersistence;
 import com.liferay.portal.aop.AopService;
@@ -31,11 +30,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -57,25 +53,13 @@ public abstract class CPAttachmentFileEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CPAttachmentFileEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CPAttachmentFileEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CPAttachmentFileEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.product.service.CPAttachmentFileEntryServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CPAttachmentFileEntryService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		cpAttachmentFileEntryService = (CPAttachmentFileEntryService)aopProxy;
-
-		_setServiceUtilService(cpAttachmentFileEntryService);
 	}
 
 	/**
@@ -118,23 +102,6 @@ public abstract class CPAttachmentFileEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CPAttachmentFileEntryService cpAttachmentFileEntryService) {
-
-		try {
-			Field field =
-				CPAttachmentFileEntryServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, cpAttachmentFileEntryService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -16,16 +16,12 @@ package com.liferay.commerce.account.service.base;
 
 import com.liferay.commerce.account.model.CommerceAccountGroupCommerceAccountRel;
 import com.liferay.commerce.account.service.CommerceAccountGroupCommerceAccountRelLocalService;
-import com.liferay.commerce.account.service.CommerceAccountGroupCommerceAccountRelLocalServiceUtil;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 
-import java.lang.reflect.Field;
-
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -47,28 +43,14 @@ public abstract class CommerceAccountGroupCommerceAccountRelLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceAccountGroupCommerceAccountRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceAccountGroupCommerceAccountRelLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceAccountGroupCommerceAccountRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.account.service.CommerceAccountGroupCommerceAccountRelLocalServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceAccountGroupCommerceAccountRelLocalService.class,
 			IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceAccountGroupCommerceAccountRelLocalService =
-			(CommerceAccountGroupCommerceAccountRelLocalService)aopProxy;
-
-		_setLocalServiceUtilService(
-			commerceAccountGroupCommerceAccountRelLocalService);
 	}
 
 	/**
@@ -88,24 +70,6 @@ public abstract class CommerceAccountGroupCommerceAccountRelLocalServiceBaseImpl
 
 	protected String getModelClassName() {
 		return CommerceAccountGroupCommerceAccountRel.class.getName();
-	}
-
-	private void _setLocalServiceUtilService(
-		CommerceAccountGroupCommerceAccountRelLocalService
-			commerceAccountGroupCommerceAccountRelLocalService) {
-
-		try {
-			Field field =
-				CommerceAccountGroupCommerceAccountRelLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceAccountGroupCommerceAccountRelLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	protected CommerceAccountGroupCommerceAccountRelLocalService

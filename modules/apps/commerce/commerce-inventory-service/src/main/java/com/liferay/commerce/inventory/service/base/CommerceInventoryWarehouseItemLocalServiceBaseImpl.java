@@ -16,7 +16,6 @@ package com.liferay.commerce.inventory.service.base;
 
 import com.liferay.commerce.inventory.model.CommerceInventoryWarehouseItem;
 import com.liferay.commerce.inventory.service.CommerceInventoryWarehouseItemLocalService;
-import com.liferay.commerce.inventory.service.CommerceInventoryWarehouseItemLocalServiceUtil;
 import com.liferay.commerce.inventory.service.persistence.CommerceInventoryWarehouseItemFinder;
 import com.liferay.commerce.inventory.service.persistence.CommerceInventoryWarehouseItemPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
@@ -54,13 +53,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -82,7 +78,7 @@ public abstract class CommerceInventoryWarehouseItemLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceInventoryWarehouseItemLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceInventoryWarehouseItemLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceInventoryWarehouseItemLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.inventory.service.CommerceInventoryWarehouseItemLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -551,25 +547,12 @@ public abstract class CommerceInventoryWarehouseItemLocalServiceBaseImpl
 			commerceInventoryWarehouseItem);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceInventoryWarehouseItemLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceInventoryWarehouseItemLocalService =
-			(CommerceInventoryWarehouseItemLocalService)aopProxy;
-
-		_setLocalServiceUtilService(commerceInventoryWarehouseItemLocalService);
 	}
 
 	/**
@@ -612,24 +595,6 @@ public abstract class CommerceInventoryWarehouseItemLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommerceInventoryWarehouseItemLocalService
-			commerceInventoryWarehouseItemLocalService) {
-
-		try {
-			Field field =
-				CommerceInventoryWarehouseItemLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceInventoryWarehouseItemLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

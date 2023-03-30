@@ -15,15 +15,22 @@
 package com.liferay.layout.page.template.service;
 
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for LayoutPageTemplateStructureRel. This utility wraps
@@ -479,9 +486,36 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	}
 
 	public static LayoutPageTemplateStructureRelLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			LayoutPageTemplateStructureRelLocalServiceUtil::_getService);
 	}
 
-	private static volatile LayoutPageTemplateStructureRelLocalService _service;
+	private static LayoutPageTemplateStructureRelLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			LayoutPageTemplateStructureRelLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<LayoutPageTemplateStructureRelLocalService>
+			serviceReference = bundleContext.getServiceReference(
+				LayoutPageTemplateStructureRelLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton
+		<LayoutPageTemplateStructureRelLocalService> _serviceDCLSingleton =
+			new DCLSingleton<>();
 
 }

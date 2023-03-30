@@ -15,10 +15,17 @@
 package com.liferay.account.service;
 
 import com.liferay.account.model.AccountEntry;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for AccountEntry. This utility wraps
@@ -193,9 +200,33 @@ public class AccountEntryServiceUtil {
 	}
 
 	public static AccountEntryService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			AccountEntryServiceUtil::_getService);
 	}
 
-	private static volatile AccountEntryService _service;
+	private static AccountEntryService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(AccountEntryServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<AccountEntryService> serviceReference =
+			bundleContext.getServiceReference(AccountEntryService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<AccountEntryService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

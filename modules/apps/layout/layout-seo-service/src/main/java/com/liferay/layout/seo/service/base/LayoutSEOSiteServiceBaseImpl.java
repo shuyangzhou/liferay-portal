@@ -16,7 +16,6 @@ package com.liferay.layout.seo.service.base;
 
 import com.liferay.layout.seo.model.LayoutSEOSite;
 import com.liferay.layout.seo.service.LayoutSEOSiteService;
-import com.liferay.layout.seo.service.LayoutSEOSiteServiceUtil;
 import com.liferay.layout.seo.service.persistence.LayoutSEOSitePersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,25 +51,13 @@ public abstract class LayoutSEOSiteServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LayoutSEOSiteService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LayoutSEOSiteServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LayoutSEOSiteService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.layout.seo.service.LayoutSEOSiteServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			LayoutSEOSiteService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		layoutSEOSiteService = (LayoutSEOSiteService)aopProxy;
-
-		_setServiceUtilService(layoutSEOSiteService);
 	}
 
 	/**
@@ -115,22 +99,6 @@ public abstract class LayoutSEOSiteServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		LayoutSEOSiteService layoutSEOSiteService) {
-
-		try {
-			Field field = LayoutSEOSiteServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, layoutSEOSiteService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

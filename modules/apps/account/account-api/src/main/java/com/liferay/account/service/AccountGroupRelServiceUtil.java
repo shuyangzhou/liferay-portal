@@ -15,7 +15,14 @@
 package com.liferay.account.service;
 
 import com.liferay.account.model.AccountGroupRel;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for AccountGroupRel. This utility wraps
@@ -69,9 +76,34 @@ public class AccountGroupRelServiceUtil {
 	}
 
 	public static AccountGroupRelService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			AccountGroupRelServiceUtil::_getService);
 	}
 
-	private static volatile AccountGroupRelService _service;
+	private static AccountGroupRelService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			AccountGroupRelServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<AccountGroupRelService> serviceReference =
+			bundleContext.getServiceReference(AccountGroupRelService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<AccountGroupRelService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

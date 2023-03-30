@@ -16,16 +16,12 @@ package com.liferay.commerce.account.service.base;
 
 import com.liferay.commerce.account.model.CommerceAccount;
 import com.liferay.commerce.account.service.CommerceAccountService;
-import com.liferay.commerce.account.service.CommerceAccountServiceUtil;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 
-import java.lang.reflect.Field;
-
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -49,25 +45,13 @@ public abstract class CommerceAccountServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceAccountService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceAccountServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceAccountService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.account.service.CommerceAccountServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceAccountService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceAccountService = (CommerceAccountService)aopProxy;
-
-		_setServiceUtilService(commerceAccountService);
 	}
 
 	/**
@@ -86,22 +70,6 @@ public abstract class CommerceAccountServiceBaseImpl
 
 	protected String getModelClassName() {
 		return CommerceAccount.class.getName();
-	}
-
-	private void _setServiceUtilService(
-		CommerceAccountService commerceAccountService) {
-
-		try {
-			Field field = CommerceAccountServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceAccountService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@Reference

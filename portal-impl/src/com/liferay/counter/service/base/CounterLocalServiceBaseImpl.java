@@ -16,15 +16,12 @@ package com.liferay.counter.service.base;
 
 import com.liferay.counter.kernel.model.Counter;
 import com.liferay.counter.kernel.service.CounterLocalService;
-import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.counter.kernel.service.persistence.CounterFinder;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
-
-import java.lang.reflect.Field;
 
 /**
  * Provides the base implementation for the counter local service.
@@ -44,7 +41,7 @@ public abstract class CounterLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CounterLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CounterLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CounterLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.counter.kernel.service.CounterLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -86,11 +83,9 @@ public abstract class CounterLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setLocalServiceUtilService(counterLocalService);
 	}
 
 	public void destroy() {
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -109,22 +104,6 @@ public abstract class CounterLocalServiceBaseImpl
 
 	protected String getModelClassName() {
 		return Counter.class.getName();
-	}
-
-	private void _setLocalServiceUtilService(
-		CounterLocalService counterLocalService) {
-
-		try {
-			Field field = CounterLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, counterLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@BeanReference(type = CounterLocalService.class)

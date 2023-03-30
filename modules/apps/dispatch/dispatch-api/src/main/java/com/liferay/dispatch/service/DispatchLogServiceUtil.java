@@ -15,10 +15,17 @@
 package com.liferay.dispatch.service;
 
 import com.liferay.dispatch.model.DispatchLog;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for DispatchLog. This utility wraps
@@ -83,9 +90,33 @@ public class DispatchLogServiceUtil {
 	}
 
 	public static DispatchLogService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			DispatchLogServiceUtil::_getService);
 	}
 
-	private static volatile DispatchLogService _service;
+	private static DispatchLogService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(DispatchLogServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<DispatchLogService> serviceReference =
+			bundleContext.getServiceReference(DispatchLogService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<DispatchLogService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

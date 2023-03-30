@@ -26,11 +26,8 @@ import com.liferay.portal.kernel.model.LayoutSetBranch;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.LayoutSetBranchService;
-import com.liferay.portal.kernel.service.LayoutSetBranchServiceUtil;
 import com.liferay.portal.kernel.service.persistence.LayoutSetBranchPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -52,7 +49,7 @@ public abstract class LayoutSetBranchServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LayoutSetBranchService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LayoutSetBranchServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LayoutSetBranchService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.LayoutSetBranchServiceUtil</code>.
 	 */
 
 	/**
@@ -142,11 +139,9 @@ public abstract class LayoutSetBranchServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(layoutSetBranchService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
 	}
 
 	/**
@@ -188,22 +183,6 @@ public abstract class LayoutSetBranchServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		LayoutSetBranchService layoutSetBranchService) {
-
-		try {
-			Field field = LayoutSetBranchServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, layoutSetBranchService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

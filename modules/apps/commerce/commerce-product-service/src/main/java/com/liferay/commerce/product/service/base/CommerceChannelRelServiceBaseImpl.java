@@ -16,7 +16,6 @@ package com.liferay.commerce.product.service.base;
 
 import com.liferay.commerce.product.model.CommerceChannelRel;
 import com.liferay.commerce.product.service.CommerceChannelRelService;
-import com.liferay.commerce.product.service.CommerceChannelRelServiceUtil;
 import com.liferay.commerce.product.service.persistence.CommerceChannelRelFinder;
 import com.liferay.commerce.product.service.persistence.CommerceChannelRelPersistence;
 import com.liferay.portal.aop.AopService;
@@ -31,11 +30,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,25 +52,13 @@ public abstract class CommerceChannelRelServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceChannelRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceChannelRelServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceChannelRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.product.service.CommerceChannelRelServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceChannelRelService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceChannelRelService = (CommerceChannelRelService)aopProxy;
-
-		_setServiceUtilService(commerceChannelRelService);
 	}
 
 	/**
@@ -117,22 +101,6 @@ public abstract class CommerceChannelRelServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CommerceChannelRelService commerceChannelRelService) {
-
-		try {
-			Field field = CommerceChannelRelServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceChannelRelService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

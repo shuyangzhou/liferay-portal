@@ -15,10 +15,17 @@
 package com.liferay.blogs.service;
 
 import com.liferay.blogs.model.BlogsEntry;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for BlogsEntry. This utility wraps
@@ -330,9 +337,33 @@ public class BlogsEntryServiceUtil {
 	}
 
 	public static BlogsEntryService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			BlogsEntryServiceUtil::_getService);
 	}
 
-	private static volatile BlogsEntryService _service;
+	private static BlogsEntryService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(BlogsEntryServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<BlogsEntryService> serviceReference =
+			bundleContext.getServiceReference(BlogsEntryService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<BlogsEntryService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

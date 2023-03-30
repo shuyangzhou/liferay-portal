@@ -16,7 +16,6 @@ package com.liferay.commerce.inventory.service.base;
 
 import com.liferay.commerce.inventory.model.CommerceInventoryAudit;
 import com.liferay.commerce.inventory.service.CommerceInventoryAuditLocalService;
-import com.liferay.commerce.inventory.service.CommerceInventoryAuditLocalServiceUtil;
 import com.liferay.commerce.inventory.service.persistence.CommerceInventoryAuditPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -75,7 +71,7 @@ public abstract class CommerceInventoryAuditLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceInventoryAuditLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceInventoryAuditLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceInventoryAuditLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.inventory.service.CommerceInventoryAuditLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -413,25 +409,12 @@ public abstract class CommerceInventoryAuditLocalServiceBaseImpl
 		return commerceInventoryAuditPersistence.update(commerceInventoryAudit);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceInventoryAuditLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceInventoryAuditLocalService =
-			(CommerceInventoryAuditLocalService)aopProxy;
-
-		_setLocalServiceUtilService(commerceInventoryAuditLocalService);
 	}
 
 	/**
@@ -474,23 +457,6 @@ public abstract class CommerceInventoryAuditLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommerceInventoryAuditLocalService commerceInventoryAuditLocalService) {
-
-		try {
-			Field field =
-				CommerceInventoryAuditLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceInventoryAuditLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

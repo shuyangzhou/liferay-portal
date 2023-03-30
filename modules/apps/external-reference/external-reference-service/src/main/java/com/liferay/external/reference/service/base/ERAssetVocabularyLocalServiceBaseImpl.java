@@ -15,7 +15,6 @@
 package com.liferay.external.reference.service.base;
 
 import com.liferay.external.reference.service.ERAssetVocabularyLocalService;
-import com.liferay.external.reference.service.ERAssetVocabularyLocalServiceUtil;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -29,11 +28,8 @@ import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,25 +51,13 @@ public abstract class ERAssetVocabularyLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ERAssetVocabularyLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ERAssetVocabularyLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ERAssetVocabularyLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.external.reference.service.ERAssetVocabularyLocalServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			ERAssetVocabularyLocalService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		erAssetVocabularyLocalService = (ERAssetVocabularyLocalService)aopProxy;
-
-		_setLocalServiceUtilService(erAssetVocabularyLocalService);
 	}
 
 	/**
@@ -107,23 +91,6 @@ public abstract class ERAssetVocabularyLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		ERAssetVocabularyLocalService erAssetVocabularyLocalService) {
-
-		try {
-			Field field =
-				ERAssetVocabularyLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, erAssetVocabularyLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

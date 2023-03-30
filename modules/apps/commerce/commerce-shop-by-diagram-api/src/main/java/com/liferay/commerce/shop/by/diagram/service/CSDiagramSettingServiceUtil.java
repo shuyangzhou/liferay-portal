@@ -15,7 +15,14 @@
 package com.liferay.commerce.shop.by.diagram.service;
 
 import com.liferay.commerce.shop.by.diagram.model.CSDiagramSetting;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for CSDiagramSetting. This utility wraps
@@ -85,9 +92,34 @@ public class CSDiagramSettingServiceUtil {
 	}
 
 	public static CSDiagramSettingService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CSDiagramSettingServiceUtil::_getService);
 	}
 
-	private static volatile CSDiagramSettingService _service;
+	private static CSDiagramSettingService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CSDiagramSettingServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CSDiagramSettingService> serviceReference =
+			bundleContext.getServiceReference(CSDiagramSettingService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CSDiagramSettingService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

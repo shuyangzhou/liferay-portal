@@ -15,15 +15,22 @@
 package com.liferay.external.data.source.test.service;
 
 import com.liferay.external.data.source.test.model.TestEntity;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for TestEntity. This utility wraps
@@ -288,9 +295,34 @@ public class TestEntityLocalServiceUtil {
 	}
 
 	public static TestEntityLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			TestEntityLocalServiceUtil::_getService);
 	}
 
-	private static volatile TestEntityLocalService _service;
+	private static TestEntityLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			TestEntityLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<TestEntityLocalService> serviceReference =
+			bundleContext.getServiceReference(TestEntityLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<TestEntityLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

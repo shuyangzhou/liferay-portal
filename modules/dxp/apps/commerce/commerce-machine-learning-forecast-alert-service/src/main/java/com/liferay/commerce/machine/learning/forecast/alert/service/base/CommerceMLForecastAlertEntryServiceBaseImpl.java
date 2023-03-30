@@ -16,7 +16,6 @@ package com.liferay.commerce.machine.learning.forecast.alert.service.base;
 
 import com.liferay.commerce.machine.learning.forecast.alert.model.CommerceMLForecastAlertEntry;
 import com.liferay.commerce.machine.learning.forecast.alert.service.CommerceMLForecastAlertEntryService;
-import com.liferay.commerce.machine.learning.forecast.alert.service.CommerceMLForecastAlertEntryServiceUtil;
 import com.liferay.commerce.machine.learning.forecast.alert.service.persistence.CommerceMLForecastAlertEntryPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,27 +52,14 @@ public abstract class CommerceMLForecastAlertEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceMLForecastAlertEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceMLForecastAlertEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceMLForecastAlertEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.machine.learning.forecast.alert.service.CommerceMLForecastAlertEntryServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceMLForecastAlertEntryService.class,
 			IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceMLForecastAlertEntryService =
-			(CommerceMLForecastAlertEntryService)aopProxy;
-
-		_setServiceUtilService(commerceMLForecastAlertEntryService);
 	}
 
 	/**
@@ -119,24 +102,6 @@ public abstract class CommerceMLForecastAlertEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CommerceMLForecastAlertEntryService
-			commerceMLForecastAlertEntryService) {
-
-		try {
-			Field field =
-				CommerceMLForecastAlertEntryServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceMLForecastAlertEntryService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

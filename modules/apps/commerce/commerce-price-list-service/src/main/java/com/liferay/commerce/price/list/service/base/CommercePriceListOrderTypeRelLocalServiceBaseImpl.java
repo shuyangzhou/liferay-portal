@@ -16,7 +16,6 @@ package com.liferay.commerce.price.list.service.base;
 
 import com.liferay.commerce.price.list.model.CommercePriceListOrderTypeRel;
 import com.liferay.commerce.price.list.service.CommercePriceListOrderTypeRelLocalService;
-import com.liferay.commerce.price.list.service.CommercePriceListOrderTypeRelLocalServiceUtil;
 import com.liferay.commerce.price.list.service.persistence.CommercePriceListOrderTypeRelPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
@@ -56,13 +55,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -84,7 +80,7 @@ public abstract class CommercePriceListOrderTypeRelLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommercePriceListOrderTypeRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommercePriceListOrderTypeRelLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommercePriceListOrderTypeRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.price.list.service.CommercePriceListOrderTypeRelLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -534,11 +530,6 @@ public abstract class CommercePriceListOrderTypeRelLocalServiceBaseImpl
 			commercePriceListOrderTypeRel);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -546,14 +537,6 @@ public abstract class CommercePriceListOrderTypeRelLocalServiceBaseImpl
 			IdentifiableOSGiService.class, CTService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commercePriceListOrderTypeRelLocalService =
-			(CommercePriceListOrderTypeRelLocalService)aopProxy;
-
-		_setLocalServiceUtilService(commercePriceListOrderTypeRelLocalService);
 	}
 
 	/**
@@ -612,24 +595,6 @@ public abstract class CommercePriceListOrderTypeRelLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommercePriceListOrderTypeRelLocalService
-			commercePriceListOrderTypeRelLocalService) {
-
-		try {
-			Field field =
-				CommercePriceListOrderTypeRelLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commercePriceListOrderTypeRelLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

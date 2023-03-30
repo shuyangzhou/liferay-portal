@@ -16,7 +16,6 @@ package com.liferay.calendar.service.base;
 
 import com.liferay.calendar.model.CalendarNotificationTemplate;
 import com.liferay.calendar.service.CalendarNotificationTemplateService;
-import com.liferay.calendar.service.CalendarNotificationTemplateServiceUtil;
 import com.liferay.calendar.service.persistence.CalendarNotificationTemplatePersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,27 +52,14 @@ public abstract class CalendarNotificationTemplateServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CalendarNotificationTemplateService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CalendarNotificationTemplateServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CalendarNotificationTemplateService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.calendar.service.CalendarNotificationTemplateServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CalendarNotificationTemplateService.class,
 			IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		calendarNotificationTemplateService =
-			(CalendarNotificationTemplateService)aopProxy;
-
-		_setServiceUtilService(calendarNotificationTemplateService);
 	}
 
 	/**
@@ -119,24 +102,6 @@ public abstract class CalendarNotificationTemplateServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CalendarNotificationTemplateService
-			calendarNotificationTemplateService) {
-
-		try {
-			Field field =
-				CalendarNotificationTemplateServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, calendarNotificationTemplateService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

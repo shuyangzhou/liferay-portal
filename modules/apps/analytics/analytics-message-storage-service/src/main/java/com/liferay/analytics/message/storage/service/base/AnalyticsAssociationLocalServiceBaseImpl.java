@@ -16,7 +16,6 @@ package com.liferay.analytics.message.storage.service.base;
 
 import com.liferay.analytics.message.storage.model.AnalyticsAssociation;
 import com.liferay.analytics.message.storage.service.AnalyticsAssociationLocalService;
-import com.liferay.analytics.message.storage.service.AnalyticsAssociationLocalServiceUtil;
 import com.liferay.analytics.message.storage.service.persistence.AnalyticsAssociationPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -75,7 +71,7 @@ public abstract class AnalyticsAssociationLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AnalyticsAssociationLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AnalyticsAssociationLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AnalyticsAssociationLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.analytics.message.storage.service.AnalyticsAssociationLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -410,25 +406,12 @@ public abstract class AnalyticsAssociationLocalServiceBaseImpl
 		return analyticsAssociationPersistence.update(analyticsAssociation);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			AnalyticsAssociationLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		analyticsAssociationLocalService =
-			(AnalyticsAssociationLocalService)aopProxy;
-
-		_setLocalServiceUtilService(analyticsAssociationLocalService);
 	}
 
 	/**
@@ -471,23 +454,6 @@ public abstract class AnalyticsAssociationLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		AnalyticsAssociationLocalService analyticsAssociationLocalService) {
-
-		try {
-			Field field =
-				AnalyticsAssociationLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, analyticsAssociationLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -21,7 +21,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.frontend.view.state.model.FVSCustomEntry;
 import com.liferay.frontend.view.state.service.FVSCustomEntryLocalService;
-import com.liferay.frontend.view.state.service.FVSCustomEntryLocalServiceUtil;
 import com.liferay.frontend.view.state.service.persistence.FVSCustomEntryPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -53,13 +52,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -80,7 +76,7 @@ public abstract class FVSCustomEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>FVSCustomEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>FVSCustomEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>FVSCustomEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.frontend.view.state.service.FVSCustomEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -490,24 +486,12 @@ public abstract class FVSCustomEntryLocalServiceBaseImpl
 		return fvsCustomEntryPersistence.update(fvsCustomEntry);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			FVSCustomEntryLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		fvsCustomEntryLocalService = (FVSCustomEntryLocalService)aopProxy;
-
-		_setLocalServiceUtilService(fvsCustomEntryLocalService);
 	}
 
 	/**
@@ -549,22 +533,6 @@ public abstract class FVSCustomEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		FVSCustomEntryLocalService fvsCustomEntryLocalService) {
-
-		try {
-			Field field = FVSCustomEntryLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, fvsCustomEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

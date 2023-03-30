@@ -15,10 +15,17 @@
 package com.liferay.commerce.service;
 
 import com.liferay.commerce.model.CommerceOrder;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for CommerceOrder. This utility wraps
@@ -689,9 +696,33 @@ public class CommerceOrderServiceUtil {
 	}
 
 	public static CommerceOrderService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommerceOrderServiceUtil::_getService);
 	}
 
-	private static volatile CommerceOrderService _service;
+	private static CommerceOrderService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(CommerceOrderServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommerceOrderService> serviceReference =
+			bundleContext.getServiceReference(CommerceOrderService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CommerceOrderService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

@@ -14,16 +14,23 @@
 
 package com.liferay.view.count.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.view.count.model.ViewCountEntry;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for ViewCountEntry. This utility wraps
@@ -339,9 +346,34 @@ public class ViewCountEntryLocalServiceUtil {
 	}
 
 	public static ViewCountEntryLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			ViewCountEntryLocalServiceUtil::_getService);
 	}
 
-	private static volatile ViewCountEntryLocalService _service;
+	private static ViewCountEntryLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			ViewCountEntryLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<ViewCountEntryLocalService> serviceReference =
+			bundleContext.getServiceReference(ViewCountEntryLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<ViewCountEntryLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

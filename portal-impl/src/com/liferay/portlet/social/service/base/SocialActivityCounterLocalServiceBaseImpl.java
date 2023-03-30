@@ -44,13 +44,10 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.social.kernel.model.SocialActivityCounter;
 import com.liferay.social.kernel.service.SocialActivityCounterLocalService;
-import com.liferay.social.kernel.service.SocialActivityCounterLocalServiceUtil;
 import com.liferay.social.kernel.service.persistence.SocialActivityCounterFinder;
 import com.liferay.social.kernel.service.persistence.SocialActivityCounterPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -74,7 +71,7 @@ public abstract class SocialActivityCounterLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SocialActivityCounterLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SocialActivityCounterLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SocialActivityCounterLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.social.kernel.service.SocialActivityCounterLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -500,15 +497,11 @@ public abstract class SocialActivityCounterLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.social.kernel.model.SocialActivityCounter",
 			socialActivityCounterLocalService);
-
-		_setLocalServiceUtilService(socialActivityCounterLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.social.kernel.model.SocialActivityCounter");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -566,23 +559,6 @@ public abstract class SocialActivityCounterLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		SocialActivityCounterLocalService socialActivityCounterLocalService) {
-
-		try {
-			Field field =
-				SocialActivityCounterLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, socialActivityCounterLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

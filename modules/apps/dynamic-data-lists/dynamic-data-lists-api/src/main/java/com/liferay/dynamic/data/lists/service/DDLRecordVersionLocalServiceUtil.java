@@ -15,15 +15,22 @@
 package com.liferay.dynamic.data.lists.service;
 
 import com.liferay.dynamic.data.lists.model.DDLRecordVersion;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for DDLRecordVersion. This utility wraps
@@ -398,9 +405,35 @@ public class DDLRecordVersionLocalServiceUtil {
 	}
 
 	public static DDLRecordVersionLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			DDLRecordVersionLocalServiceUtil::_getService);
 	}
 
-	private static volatile DDLRecordVersionLocalService _service;
+	private static DDLRecordVersionLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			DDLRecordVersionLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<DDLRecordVersionLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				DDLRecordVersionLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<DDLRecordVersionLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

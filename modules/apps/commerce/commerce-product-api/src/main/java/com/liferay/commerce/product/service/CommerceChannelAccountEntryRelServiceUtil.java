@@ -15,10 +15,17 @@
 package com.liferay.commerce.product.service;
 
 import com.liferay.commerce.product.model.CommerceChannelAccountEntryRel;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for CommerceChannelAccountEntryRel. This utility wraps
@@ -134,9 +141,35 @@ public class CommerceChannelAccountEntryRelServiceUtil {
 	}
 
 	public static CommerceChannelAccountEntryRelService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommerceChannelAccountEntryRelServiceUtil::_getService);
 	}
 
-	private static volatile CommerceChannelAccountEntryRelService _service;
+	private static CommerceChannelAccountEntryRelService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CommerceChannelAccountEntryRelServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommerceChannelAccountEntryRelService>
+			serviceReference = bundleContext.getServiceReference(
+				CommerceChannelAccountEntryRelService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CommerceChannelAccountEntryRelService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

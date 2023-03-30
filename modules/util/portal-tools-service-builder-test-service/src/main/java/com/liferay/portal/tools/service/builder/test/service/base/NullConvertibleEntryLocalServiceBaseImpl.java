@@ -43,12 +43,9 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.NullConvertibleEntry;
 import com.liferay.portal.tools.service.builder.test.service.NullConvertibleEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.NullConvertibleEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.NullConvertibleEntryPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -72,7 +69,7 @@ public abstract class NullConvertibleEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>NullConvertibleEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>NullConvertibleEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>NullConvertibleEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.NullConvertibleEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -479,15 +476,11 @@ public abstract class NullConvertibleEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.NullConvertibleEntry",
 			nullConvertibleEntryLocalService);
-
-		_setLocalServiceUtilService(nullConvertibleEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.NullConvertibleEntry");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -530,23 +523,6 @@ public abstract class NullConvertibleEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		NullConvertibleEntryLocalService nullConvertibleEntryLocalService) {
-
-		try {
-			Field field =
-				NullConvertibleEntryLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, nullConvertibleEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

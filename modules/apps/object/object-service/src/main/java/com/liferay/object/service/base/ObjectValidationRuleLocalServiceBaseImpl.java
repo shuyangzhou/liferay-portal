@@ -21,7 +21,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.object.model.ObjectValidationRule;
 import com.liferay.object.service.ObjectValidationRuleLocalService;
-import com.liferay.object.service.ObjectValidationRuleLocalServiceUtil;
 import com.liferay.object.service.persistence.ObjectValidationRulePersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -53,13 +52,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -81,7 +77,7 @@ public abstract class ObjectValidationRuleLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ObjectValidationRuleLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ObjectValidationRuleLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ObjectValidationRuleLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.object.service.ObjectValidationRuleLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -517,25 +513,12 @@ public abstract class ObjectValidationRuleLocalServiceBaseImpl
 		return objectValidationRulePersistence.update(objectValidationRule);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			ObjectValidationRuleLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		objectValidationRuleLocalService =
-			(ObjectValidationRuleLocalService)aopProxy;
-
-		_setLocalServiceUtilService(objectValidationRuleLocalService);
 	}
 
 	/**
@@ -578,23 +561,6 @@ public abstract class ObjectValidationRuleLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		ObjectValidationRuleLocalService objectValidationRuleLocalService) {
-
-		try {
-			Field field =
-				ObjectValidationRuleLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, objectValidationRuleLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -16,7 +16,6 @@ package com.liferay.dynamic.data.mapping.service.base;
 
 import com.liferay.dynamic.data.mapping.model.DDMStructureLayout;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLayoutLocalService;
-import com.liferay.dynamic.data.mapping.service.DDMStructureLayoutLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMStructureLayoutPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
@@ -58,13 +57,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -86,7 +82,7 @@ public abstract class DDMStructureLayoutLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DDMStructureLayoutLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DDMStructureLayoutLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DDMStructureLayoutLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.dynamic.data.mapping.service.DDMStructureLayoutLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -564,25 +560,12 @@ public abstract class DDMStructureLayoutLocalServiceBaseImpl
 		return ddmStructureLayoutPersistence.update(ddmStructureLayout);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			DDMStructureLayoutLocalService.class, IdentifiableOSGiService.class,
 			CTService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		ddmStructureLayoutLocalService =
-			(DDMStructureLayoutLocalService)aopProxy;
-
-		_setLocalServiceUtilService(ddmStructureLayoutLocalService);
 	}
 
 	/**
@@ -640,23 +623,6 @@ public abstract class DDMStructureLayoutLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		DDMStructureLayoutLocalService ddmStructureLayoutLocalService) {
-
-		try {
-			Field field =
-				DDMStructureLayoutLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, ddmStructureLayoutLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

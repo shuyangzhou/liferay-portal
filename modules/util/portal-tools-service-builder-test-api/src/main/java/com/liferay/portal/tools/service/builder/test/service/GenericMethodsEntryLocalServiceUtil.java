@@ -14,9 +14,17 @@
 
 package com.liferay.portal.tools.service.builder.test.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for GenericMethodsEntry. This utility wraps
@@ -90,9 +98,35 @@ public class GenericMethodsEntryLocalServiceUtil {
 	}
 
 	public static GenericMethodsEntryLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			GenericMethodsEntryLocalServiceUtil::_getService);
 	}
 
-	private static volatile GenericMethodsEntryLocalService _service;
+	private static GenericMethodsEntryLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			GenericMethodsEntryLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<GenericMethodsEntryLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				GenericMethodsEntryLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<GenericMethodsEntryLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

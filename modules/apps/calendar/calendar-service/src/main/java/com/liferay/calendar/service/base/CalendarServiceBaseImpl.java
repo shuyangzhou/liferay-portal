@@ -16,7 +16,6 @@ package com.liferay.calendar.service.base;
 
 import com.liferay.calendar.model.Calendar;
 import com.liferay.calendar.service.CalendarService;
-import com.liferay.calendar.service.CalendarServiceUtil;
 import com.liferay.calendar.service.persistence.CalendarFinder;
 import com.liferay.calendar.service.persistence.CalendarPersistence;
 import com.liferay.portal.aop.AopService;
@@ -31,11 +30,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,25 +52,13 @@ public abstract class CalendarServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CalendarService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CalendarServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CalendarService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.calendar.service.CalendarServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CalendarService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		calendarService = (CalendarService)aopProxy;
-
-		_setServiceUtilService(calendarService);
 	}
 
 	/**
@@ -116,20 +100,6 @@ public abstract class CalendarServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(CalendarService calendarService) {
-		try {
-			Field field = CalendarServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, calendarService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

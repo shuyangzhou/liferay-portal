@@ -16,7 +16,6 @@ package com.liferay.commerce.notification.service.base;
 
 import com.liferay.commerce.notification.model.CommerceNotificationQueueEntry;
 import com.liferay.commerce.notification.service.CommerceNotificationQueueEntryLocalService;
-import com.liferay.commerce.notification.service.CommerceNotificationQueueEntryLocalServiceUtil;
 import com.liferay.commerce.notification.service.persistence.CommerceNotificationQueueEntryPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -75,7 +71,7 @@ public abstract class CommerceNotificationQueueEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceNotificationQueueEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceNotificationQueueEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceNotificationQueueEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.notification.service.CommerceNotificationQueueEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -421,25 +417,12 @@ public abstract class CommerceNotificationQueueEntryLocalServiceBaseImpl
 			commerceNotificationQueueEntry);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceNotificationQueueEntryLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceNotificationQueueEntryLocalService =
-			(CommerceNotificationQueueEntryLocalService)aopProxy;
-
-		_setLocalServiceUtilService(commerceNotificationQueueEntryLocalService);
 	}
 
 	/**
@@ -482,24 +465,6 @@ public abstract class CommerceNotificationQueueEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommerceNotificationQueueEntryLocalService
-			commerceNotificationQueueEntryLocalService) {
-
-		try {
-			Field field =
-				CommerceNotificationQueueEntryLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceNotificationQueueEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

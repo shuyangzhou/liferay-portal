@@ -14,11 +14,18 @@
 
 package com.liferay.site.navigation.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.site.navigation.model.SiteNavigationMenu;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for SiteNavigationMenu. This utility wraps
@@ -166,9 +173,34 @@ public class SiteNavigationMenuServiceUtil {
 	}
 
 	public static SiteNavigationMenuService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			SiteNavigationMenuServiceUtil::_getService);
 	}
 
-	private static volatile SiteNavigationMenuService _service;
+	private static SiteNavigationMenuService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			SiteNavigationMenuServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<SiteNavigationMenuService> serviceReference =
+			bundleContext.getServiceReference(SiteNavigationMenuService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<SiteNavigationMenuService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

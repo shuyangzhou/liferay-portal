@@ -15,7 +15,14 @@
 package com.liferay.announcements.kernel.service;
 
 import com.liferay.announcements.kernel.model.AnnouncementsFlag;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for AnnouncementsFlag. This utility wraps
@@ -60,9 +67,34 @@ public class AnnouncementsFlagServiceUtil {
 	}
 
 	public static AnnouncementsFlagService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			AnnouncementsFlagServiceUtil::_getService);
 	}
 
-	private static volatile AnnouncementsFlagService _service;
+	private static AnnouncementsFlagService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			AnnouncementsFlagServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<AnnouncementsFlagService> serviceReference =
+			bundleContext.getServiceReference(AnnouncementsFlagService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<AnnouncementsFlagService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

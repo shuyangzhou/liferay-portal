@@ -16,7 +16,6 @@ package com.liferay.commerce.order.rule.service.base;
 
 import com.liferay.commerce.order.rule.model.COREntryRel;
 import com.liferay.commerce.order.rule.service.COREntryRelLocalService;
-import com.liferay.commerce.order.rule.service.COREntryRelLocalServiceUtil;
 import com.liferay.commerce.order.rule.service.persistence.COREntryRelPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -74,7 +70,7 @@ public abstract class COREntryRelLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>COREntryRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>COREntryRelLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>COREntryRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.order.rule.service.COREntryRelLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -388,24 +384,12 @@ public abstract class COREntryRelLocalServiceBaseImpl
 		return corEntryRelPersistence.update(corEntryRel);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			COREntryRelLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		corEntryRelLocalService = (COREntryRelLocalService)aopProxy;
-
-		_setLocalServiceUtilService(corEntryRelLocalService);
 	}
 
 	/**
@@ -447,22 +431,6 @@ public abstract class COREntryRelLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		COREntryRelLocalService corEntryRelLocalService) {
-
-		try {
-			Field field = COREntryRelLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, corEntryRelLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

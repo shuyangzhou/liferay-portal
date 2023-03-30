@@ -44,7 +44,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.LayoutFriendlyURLLocalService;
-import com.liferay.portal.kernel.service.LayoutFriendlyURLLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.LayoutFriendlyURLPersistence;
@@ -54,8 +53,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -79,7 +76,7 @@ public abstract class LayoutFriendlyURLLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LayoutFriendlyURLLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LayoutFriendlyURLLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LayoutFriendlyURLLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.LayoutFriendlyURLLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -601,15 +598,11 @@ public abstract class LayoutFriendlyURLLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.LayoutFriendlyURL",
 			layoutFriendlyURLLocalService);
-
-		_setLocalServiceUtilService(layoutFriendlyURLLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.LayoutFriendlyURL");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -667,23 +660,6 @@ public abstract class LayoutFriendlyURLLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		LayoutFriendlyURLLocalService layoutFriendlyURLLocalService) {
-
-		try {
-			Field field =
-				LayoutFriendlyURLLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, layoutFriendlyURLLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

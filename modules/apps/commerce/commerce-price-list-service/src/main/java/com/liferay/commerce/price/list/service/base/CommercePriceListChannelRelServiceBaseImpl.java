@@ -16,7 +16,6 @@ package com.liferay.commerce.price.list.service.base;
 
 import com.liferay.commerce.price.list.model.CommercePriceListChannelRel;
 import com.liferay.commerce.price.list.service.CommercePriceListChannelRelService;
-import com.liferay.commerce.price.list.service.CommercePriceListChannelRelServiceUtil;
 import com.liferay.commerce.price.list.service.persistence.CommercePriceListChannelRelFinder;
 import com.liferay.commerce.price.list.service.persistence.CommercePriceListChannelRelPersistence;
 import com.liferay.portal.aop.AopService;
@@ -31,11 +30,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -57,27 +53,14 @@ public abstract class CommercePriceListChannelRelServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommercePriceListChannelRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommercePriceListChannelRelServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommercePriceListChannelRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.price.list.service.CommercePriceListChannelRelServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommercePriceListChannelRelService.class,
 			IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commercePriceListChannelRelService =
-			(CommercePriceListChannelRelService)aopProxy;
-
-		_setServiceUtilService(commercePriceListChannelRelService);
 	}
 
 	/**
@@ -120,23 +103,6 @@ public abstract class CommercePriceListChannelRelServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CommercePriceListChannelRelService commercePriceListChannelRelService) {
-
-		try {
-			Field field =
-				CommercePriceListChannelRelServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commercePriceListChannelRelService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

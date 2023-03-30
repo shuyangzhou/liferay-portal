@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.PluginSettingLocalService;
-import com.liferay.portal.kernel.service.PluginSettingLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.PluginSettingPersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -46,8 +45,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -71,7 +68,7 @@ public abstract class PluginSettingLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PluginSettingLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PluginSettingLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>PluginSettingLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.PluginSettingLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -450,15 +447,11 @@ public abstract class PluginSettingLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.PluginSetting",
 			pluginSettingLocalService);
-
-		_setLocalServiceUtilService(pluginSettingLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.PluginSetting");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -500,22 +493,6 @@ public abstract class PluginSettingLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		PluginSettingLocalService pluginSettingLocalService) {
-
-		try {
-			Field field = PluginSettingLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, pluginSettingLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

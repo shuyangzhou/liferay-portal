@@ -15,9 +15,16 @@
 package com.liferay.commerce.account.service;
 
 import com.liferay.commerce.account.model.CommerceAccountGroupCommerceAccountRel;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for CommerceAccountGroupCommerceAccountRel. This utility wraps
@@ -92,10 +99,36 @@ public class CommerceAccountGroupCommerceAccountRelServiceUtil {
 	}
 
 	public static CommerceAccountGroupCommerceAccountRelService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommerceAccountGroupCommerceAccountRelServiceUtil::_getService);
 	}
 
-	private static volatile CommerceAccountGroupCommerceAccountRelService
-		_service;
+	private static CommerceAccountGroupCommerceAccountRelService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CommerceAccountGroupCommerceAccountRelServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommerceAccountGroupCommerceAccountRelService>
+			serviceReference = bundleContext.getServiceReference(
+				CommerceAccountGroupCommerceAccountRelService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton
+		<CommerceAccountGroupCommerceAccountRelService> _serviceDCLSingleton =
+			new DCLSingleton<>();
 
 }

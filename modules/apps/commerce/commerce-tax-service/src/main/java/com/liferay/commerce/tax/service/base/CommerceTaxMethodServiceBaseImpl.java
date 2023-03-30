@@ -16,7 +16,6 @@ package com.liferay.commerce.tax.service.base;
 
 import com.liferay.commerce.tax.model.CommerceTaxMethod;
 import com.liferay.commerce.tax.service.CommerceTaxMethodService;
-import com.liferay.commerce.tax.service.CommerceTaxMethodServiceUtil;
 import com.liferay.commerce.tax.service.persistence.CommerceTaxMethodPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,25 +51,13 @@ public abstract class CommerceTaxMethodServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceTaxMethodService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceTaxMethodServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceTaxMethodService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.tax.service.CommerceTaxMethodServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceTaxMethodService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceTaxMethodService = (CommerceTaxMethodService)aopProxy;
-
-		_setServiceUtilService(commerceTaxMethodService);
 	}
 
 	/**
@@ -116,22 +100,6 @@ public abstract class CommerceTaxMethodServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CommerceTaxMethodService commerceTaxMethodService) {
-
-		try {
-			Field field = CommerceTaxMethodServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceTaxMethodService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

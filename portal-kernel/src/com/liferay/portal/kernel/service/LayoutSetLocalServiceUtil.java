@@ -14,17 +14,24 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.InputStream;
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for LayoutSet. This utility wraps
@@ -440,9 +447,34 @@ public class LayoutSetLocalServiceUtil {
 	}
 
 	public static LayoutSetLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			LayoutSetLocalServiceUtil::_getService);
 	}
 
-	private static volatile LayoutSetLocalService _service;
+	private static LayoutSetLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			LayoutSetLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<LayoutSetLocalService> serviceReference =
+			bundleContext.getServiceReference(LayoutSetLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<LayoutSetLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

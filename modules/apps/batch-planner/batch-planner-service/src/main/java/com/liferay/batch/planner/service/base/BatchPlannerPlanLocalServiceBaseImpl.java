@@ -16,7 +16,6 @@ package com.liferay.batch.planner.service.base;
 
 import com.liferay.batch.planner.model.BatchPlannerPlan;
 import com.liferay.batch.planner.service.BatchPlannerPlanLocalService;
-import com.liferay.batch.planner.service.BatchPlannerPlanLocalServiceUtil;
 import com.liferay.batch.planner.service.persistence.BatchPlannerPlanPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -75,7 +71,7 @@ public abstract class BatchPlannerPlanLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>BatchPlannerPlanLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>BatchPlannerPlanLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>BatchPlannerPlanLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.batch.planner.service.BatchPlannerPlanLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -398,24 +394,12 @@ public abstract class BatchPlannerPlanLocalServiceBaseImpl
 		return batchPlannerPlanPersistence.update(batchPlannerPlan);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			BatchPlannerPlanLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		batchPlannerPlanLocalService = (BatchPlannerPlanLocalService)aopProxy;
-
-		_setLocalServiceUtilService(batchPlannerPlanLocalService);
 	}
 
 	/**
@@ -457,23 +441,6 @@ public abstract class BatchPlannerPlanLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		BatchPlannerPlanLocalService batchPlannerPlanLocalService) {
-
-		try {
-			Field field =
-				BatchPlannerPlanLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, batchPlannerPlanLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

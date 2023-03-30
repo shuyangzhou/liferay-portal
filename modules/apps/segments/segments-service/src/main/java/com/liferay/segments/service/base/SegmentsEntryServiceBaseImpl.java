@@ -27,14 +27,10 @@ import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.segments.model.SegmentsEntry;
 import com.liferay.segments.service.SegmentsEntryService;
-import com.liferay.segments.service.SegmentsEntryServiceUtil;
 import com.liferay.segments.service.persistence.SegmentsEntryPersistence;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,25 +51,13 @@ public abstract class SegmentsEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SegmentsEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SegmentsEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SegmentsEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.segments.service.SegmentsEntryServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			SegmentsEntryService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		segmentsEntryService = (SegmentsEntryService)aopProxy;
-
-		_setServiceUtilService(segmentsEntryService);
 	}
 
 	/**
@@ -115,22 +99,6 @@ public abstract class SegmentsEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		SegmentsEntryService segmentsEntryService) {
-
-		try {
-			Field field = SegmentsEntryServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, segmentsEntryService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

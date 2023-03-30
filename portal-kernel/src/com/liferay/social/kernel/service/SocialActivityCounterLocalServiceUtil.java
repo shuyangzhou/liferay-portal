@@ -14,16 +14,23 @@
 
 package com.liferay.social.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.social.kernel.model.SocialActivityCounter;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for SocialActivityCounter. This utility wraps
@@ -709,9 +716,35 @@ public class SocialActivityCounterLocalServiceUtil {
 	}
 
 	public static SocialActivityCounterLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			SocialActivityCounterLocalServiceUtil::_getService);
 	}
 
-	private static volatile SocialActivityCounterLocalService _service;
+	private static SocialActivityCounterLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			SocialActivityCounterLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<SocialActivityCounterLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				SocialActivityCounterLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<SocialActivityCounterLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

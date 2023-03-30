@@ -14,10 +14,17 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Phone;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for Phone. This utility wraps
@@ -81,9 +88,32 @@ public class PhoneServiceUtil {
 	}
 
 	public static PhoneService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(PhoneServiceUtil::_getService);
 	}
 
-	private static volatile PhoneService _service;
+	private static PhoneService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(PhoneServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<PhoneService> serviceReference =
+			bundleContext.getServiceReference(PhoneService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<PhoneService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

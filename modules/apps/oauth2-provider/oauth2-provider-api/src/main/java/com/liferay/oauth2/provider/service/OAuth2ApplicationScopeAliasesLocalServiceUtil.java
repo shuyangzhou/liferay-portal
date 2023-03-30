@@ -15,15 +15,22 @@
 package com.liferay.oauth2.provider.service;
 
 import com.liferay.oauth2.provider.model.OAuth2ApplicationScopeAliases;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for OAuth2ApplicationScopeAliases. This utility wraps
@@ -367,9 +374,35 @@ public class OAuth2ApplicationScopeAliasesLocalServiceUtil {
 	}
 
 	public static OAuth2ApplicationScopeAliasesLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			OAuth2ApplicationScopeAliasesLocalServiceUtil::_getService);
 	}
 
-	private static volatile OAuth2ApplicationScopeAliasesLocalService _service;
+	private static OAuth2ApplicationScopeAliasesLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			OAuth2ApplicationScopeAliasesLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<OAuth2ApplicationScopeAliasesLocalService>
+			serviceReference = bundleContext.getServiceReference(
+				OAuth2ApplicationScopeAliasesLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<OAuth2ApplicationScopeAliasesLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

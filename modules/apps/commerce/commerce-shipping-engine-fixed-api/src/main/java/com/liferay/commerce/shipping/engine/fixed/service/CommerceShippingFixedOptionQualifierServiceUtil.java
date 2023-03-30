@@ -15,10 +15,17 @@
 package com.liferay.commerce.shipping.engine.fixed.service;
 
 import com.liferay.commerce.shipping.engine.fixed.model.CommerceShippingFixedOptionQualifier;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for CommerceShippingFixedOptionQualifier. This utility wraps
@@ -172,10 +179,36 @@ public class CommerceShippingFixedOptionQualifierServiceUtil {
 	}
 
 	public static CommerceShippingFixedOptionQualifierService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommerceShippingFixedOptionQualifierServiceUtil::_getService);
 	}
 
-	private static volatile CommerceShippingFixedOptionQualifierService
-		_service;
+	private static CommerceShippingFixedOptionQualifierService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CommerceShippingFixedOptionQualifierServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommerceShippingFixedOptionQualifierService>
+			serviceReference = bundleContext.getServiceReference(
+				CommerceShippingFixedOptionQualifierService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton
+		<CommerceShippingFixedOptionQualifierService> _serviceDCLSingleton =
+			new DCLSingleton<>();
 
 }

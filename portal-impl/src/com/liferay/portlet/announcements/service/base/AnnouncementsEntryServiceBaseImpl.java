@@ -16,7 +16,6 @@ package com.liferay.portlet.announcements.service.base;
 
 import com.liferay.announcements.kernel.model.AnnouncementsEntry;
 import com.liferay.announcements.kernel.service.AnnouncementsEntryService;
-import com.liferay.announcements.kernel.service.AnnouncementsEntryServiceUtil;
 import com.liferay.announcements.kernel.service.persistence.AnnouncementsEntryFinder;
 import com.liferay.announcements.kernel.service.persistence.AnnouncementsEntryPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -30,8 +29,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -53,7 +50,7 @@ public abstract class AnnouncementsEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AnnouncementsEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AnnouncementsEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AnnouncementsEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.announcements.kernel.service.AnnouncementsEntryServiceUtil</code>.
 	 */
 
 	/**
@@ -164,11 +161,9 @@ public abstract class AnnouncementsEntryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(announcementsEntryService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
 	}
 
 	/**
@@ -211,22 +206,6 @@ public abstract class AnnouncementsEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		AnnouncementsEntryService announcementsEntryService) {
-
-		try {
-			Field field = AnnouncementsEntryServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, announcementsEntryService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

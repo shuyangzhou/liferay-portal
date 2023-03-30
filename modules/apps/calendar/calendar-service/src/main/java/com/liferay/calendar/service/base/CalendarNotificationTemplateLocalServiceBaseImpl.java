@@ -16,7 +16,6 @@ package com.liferay.calendar.service.base;
 
 import com.liferay.calendar.model.CalendarNotificationTemplate;
 import com.liferay.calendar.service.CalendarNotificationTemplateLocalService;
-import com.liferay.calendar.service.CalendarNotificationTemplateLocalServiceUtil;
 import com.liferay.calendar.service.persistence.CalendarNotificationTemplatePersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
@@ -56,13 +55,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -84,7 +80,7 @@ public abstract class CalendarNotificationTemplateLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CalendarNotificationTemplateLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CalendarNotificationTemplateLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CalendarNotificationTemplateLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.calendar.service.CalendarNotificationTemplateLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -571,11 +567,6 @@ public abstract class CalendarNotificationTemplateLocalServiceBaseImpl
 			calendarNotificationTemplate);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -583,14 +574,6 @@ public abstract class CalendarNotificationTemplateLocalServiceBaseImpl
 			IdentifiableOSGiService.class, CTService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		calendarNotificationTemplateLocalService =
-			(CalendarNotificationTemplateLocalService)aopProxy;
-
-		_setLocalServiceUtilService(calendarNotificationTemplateLocalService);
 	}
 
 	/**
@@ -649,24 +632,6 @@ public abstract class CalendarNotificationTemplateLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CalendarNotificationTemplateLocalService
-			calendarNotificationTemplateLocalService) {
-
-		try {
-			Field field =
-				CalendarNotificationTemplateLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, calendarNotificationTemplateLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

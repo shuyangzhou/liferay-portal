@@ -16,7 +16,6 @@ package com.liferay.dynamic.data.lists.service.base;
 
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
 import com.liferay.dynamic.data.lists.service.DDLRecordSetService;
-import com.liferay.dynamic.data.lists.service.DDLRecordSetServiceUtil;
 import com.liferay.dynamic.data.lists.service.persistence.DDLRecordSetFinder;
 import com.liferay.dynamic.data.lists.service.persistence.DDLRecordSetPersistence;
 import com.liferay.portal.aop.AopService;
@@ -31,11 +30,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,25 +52,13 @@ public abstract class DDLRecordSetServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DDLRecordSetService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DDLRecordSetServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DDLRecordSetService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.dynamic.data.lists.service.DDLRecordSetServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			DDLRecordSetService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		ddlRecordSetService = (DDLRecordSetService)aopProxy;
-
-		_setServiceUtilService(ddlRecordSetService);
 	}
 
 	/**
@@ -116,22 +100,6 @@ public abstract class DDLRecordSetServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		DDLRecordSetService ddlRecordSetService) {
-
-		try {
-			Field field = DDLRecordSetServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, ddlRecordSetService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

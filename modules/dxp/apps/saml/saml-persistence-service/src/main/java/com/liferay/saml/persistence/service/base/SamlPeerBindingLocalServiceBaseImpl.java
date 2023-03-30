@@ -42,18 +42,14 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.saml.persistence.model.SamlPeerBinding;
 import com.liferay.saml.persistence.service.SamlPeerBindingLocalService;
-import com.liferay.saml.persistence.service.SamlPeerBindingLocalServiceUtil;
 import com.liferay.saml.persistence.service.persistence.SamlPeerBindingPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -75,7 +71,7 @@ public abstract class SamlPeerBindingLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SamlPeerBindingLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SamlPeerBindingLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SamlPeerBindingLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.saml.persistence.service.SamlPeerBindingLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -391,24 +387,12 @@ public abstract class SamlPeerBindingLocalServiceBaseImpl
 		return samlPeerBindingPersistence.update(samlPeerBinding);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			SamlPeerBindingLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		samlPeerBindingLocalService = (SamlPeerBindingLocalService)aopProxy;
-
-		_setLocalServiceUtilService(samlPeerBindingLocalService);
 	}
 
 	/**
@@ -450,23 +434,6 @@ public abstract class SamlPeerBindingLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		SamlPeerBindingLocalService samlPeerBindingLocalService) {
-
-		try {
-			Field field =
-				SamlPeerBindingLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, samlPeerBindingLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

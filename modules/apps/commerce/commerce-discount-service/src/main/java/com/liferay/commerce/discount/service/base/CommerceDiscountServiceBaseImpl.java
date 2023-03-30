@@ -16,7 +16,6 @@ package com.liferay.commerce.discount.service.base;
 
 import com.liferay.commerce.discount.model.CommerceDiscount;
 import com.liferay.commerce.discount.service.CommerceDiscountService;
-import com.liferay.commerce.discount.service.CommerceDiscountServiceUtil;
 import com.liferay.commerce.discount.service.persistence.CommerceDiscountFinder;
 import com.liferay.commerce.discount.service.persistence.CommerceDiscountPersistence;
 import com.liferay.portal.aop.AopService;
@@ -31,11 +30,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,25 +52,13 @@ public abstract class CommerceDiscountServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceDiscountService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceDiscountServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceDiscountService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.discount.service.CommerceDiscountServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceDiscountService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceDiscountService = (CommerceDiscountService)aopProxy;
-
-		_setServiceUtilService(commerceDiscountService);
 	}
 
 	/**
@@ -116,22 +100,6 @@ public abstract class CommerceDiscountServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CommerceDiscountService commerceDiscountService) {
-
-		try {
-			Field field = CommerceDiscountServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceDiscountService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

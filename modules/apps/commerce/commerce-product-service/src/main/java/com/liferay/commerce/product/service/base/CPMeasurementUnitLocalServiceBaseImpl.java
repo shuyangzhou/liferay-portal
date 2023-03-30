@@ -16,7 +16,6 @@ package com.liferay.commerce.product.service.base;
 
 import com.liferay.commerce.product.model.CPMeasurementUnit;
 import com.liferay.commerce.product.service.CPMeasurementUnitLocalService;
-import com.liferay.commerce.product.service.CPMeasurementUnitLocalServiceUtil;
 import com.liferay.commerce.product.service.persistence.CPMeasurementUnitPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
@@ -56,13 +55,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -84,7 +80,7 @@ public abstract class CPMeasurementUnitLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CPMeasurementUnitLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CPMeasurementUnitLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CPMeasurementUnitLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.product.service.CPMeasurementUnitLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -556,24 +552,12 @@ public abstract class CPMeasurementUnitLocalServiceBaseImpl
 		return cpMeasurementUnitPersistence.update(cpMeasurementUnit);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CPMeasurementUnitLocalService.class, IdentifiableOSGiService.class,
 			CTService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		cpMeasurementUnitLocalService = (CPMeasurementUnitLocalService)aopProxy;
-
-		_setLocalServiceUtilService(cpMeasurementUnitLocalService);
 	}
 
 	/**
@@ -631,23 +615,6 @@ public abstract class CPMeasurementUnitLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CPMeasurementUnitLocalService cpMeasurementUnitLocalService) {
-
-		try {
-			Field field =
-				CPMeasurementUnitLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, cpMeasurementUnitLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

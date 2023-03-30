@@ -21,7 +21,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.service.FragmentEntryLinkLocalService;
-import com.liferay.fragment.service.FragmentEntryLinkLocalServiceUtil;
 import com.liferay.fragment.service.persistence.FragmentEntryLinkFinder;
 import com.liferay.fragment.service.persistence.FragmentEntryLinkPersistence;
 import com.liferay.petra.function.UnsafeFunction;
@@ -59,13 +58,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -87,7 +83,7 @@ public abstract class FragmentEntryLinkLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>FragmentEntryLinkLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>FragmentEntryLinkLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>FragmentEntryLinkLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.fragment.service.FragmentEntryLinkLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -567,24 +563,12 @@ public abstract class FragmentEntryLinkLocalServiceBaseImpl
 		return fragmentEntryLinkPersistence.update(fragmentEntryLink);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			FragmentEntryLinkLocalService.class, IdentifiableOSGiService.class,
 			CTService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		fragmentEntryLinkLocalService = (FragmentEntryLinkLocalService)aopProxy;
-
-		_setLocalServiceUtilService(fragmentEntryLinkLocalService);
 	}
 
 	/**
@@ -642,23 +626,6 @@ public abstract class FragmentEntryLinkLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		FragmentEntryLinkLocalService fragmentEntryLinkLocalService) {
-
-		try {
-			Field field =
-				FragmentEntryLinkLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, fragmentEntryLinkLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -14,7 +14,14 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for Permission. This utility wraps
@@ -73,9 +80,33 @@ public class PermissionServiceUtil {
 	}
 
 	public static PermissionService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			PermissionServiceUtil::_getService);
 	}
 
-	private static volatile PermissionService _service;
+	private static PermissionService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(PermissionServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<PermissionService> serviceReference =
+			bundleContext.getServiceReference(PermissionService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<PermissionService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

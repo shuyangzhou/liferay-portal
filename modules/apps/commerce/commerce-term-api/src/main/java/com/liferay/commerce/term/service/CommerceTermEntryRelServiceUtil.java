@@ -15,10 +15,17 @@
 package com.liferay.commerce.term.service;
 
 import com.liferay.commerce.term.model.CommerceTermEntryRel;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for CommerceTermEntryRel. This utility wraps
@@ -133,9 +140,35 @@ public class CommerceTermEntryRelServiceUtil {
 	}
 
 	public static CommerceTermEntryRelService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommerceTermEntryRelServiceUtil::_getService);
 	}
 
-	private static volatile CommerceTermEntryRelService _service;
+	private static CommerceTermEntryRelService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CommerceTermEntryRelServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommerceTermEntryRelService> serviceReference =
+			bundleContext.getServiceReference(
+				CommerceTermEntryRelService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CommerceTermEntryRelService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

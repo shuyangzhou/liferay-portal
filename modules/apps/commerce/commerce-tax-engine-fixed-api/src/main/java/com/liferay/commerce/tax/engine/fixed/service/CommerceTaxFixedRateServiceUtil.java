@@ -15,10 +15,17 @@
 package com.liferay.commerce.tax.engine.fixed.service;
 
 import com.liferay.commerce.tax.engine.fixed.model.CommerceTaxFixedRate;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for CommerceTaxFixedRate. This utility wraps
@@ -118,9 +125,35 @@ public class CommerceTaxFixedRateServiceUtil {
 	}
 
 	public static CommerceTaxFixedRateService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommerceTaxFixedRateServiceUtil::_getService);
 	}
 
-	private static volatile CommerceTaxFixedRateService _service;
+	private static CommerceTaxFixedRateService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CommerceTaxFixedRateServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommerceTaxFixedRateService> serviceReference =
+			bundleContext.getServiceReference(
+				CommerceTaxFixedRateService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CommerceTaxFixedRateService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

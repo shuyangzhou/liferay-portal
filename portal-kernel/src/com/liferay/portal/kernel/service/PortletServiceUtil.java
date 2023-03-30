@@ -14,8 +14,15 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for Portlet. This utility wraps
@@ -62,9 +69,33 @@ public class PortletServiceUtil {
 	}
 
 	public static PortletService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			PortletServiceUtil::_getService);
 	}
 
-	private static volatile PortletService _service;
+	private static PortletService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(PortletServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<PortletService> serviceReference =
+			bundleContext.getServiceReference(PortletService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<PortletService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

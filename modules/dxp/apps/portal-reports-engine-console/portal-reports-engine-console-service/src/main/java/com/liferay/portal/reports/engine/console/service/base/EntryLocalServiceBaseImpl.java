@@ -42,19 +42,15 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.reports.engine.console.model.Entry;
 import com.liferay.portal.reports.engine.console.service.EntryLocalService;
-import com.liferay.portal.reports.engine.console.service.EntryLocalServiceUtil;
 import com.liferay.portal.reports.engine.console.service.persistence.EntryFinder;
 import com.liferay.portal.reports.engine.console.service.persistence.EntryPersistence;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -75,7 +71,7 @@ public abstract class EntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>EntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>EntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>EntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.reports.engine.console.service.EntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -378,24 +374,12 @@ public abstract class EntryLocalServiceBaseImpl
 		return entryPersistence.update(entry);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			EntryLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		entryLocalService = (EntryLocalService)aopProxy;
-
-		_setLocalServiceUtilService(entryLocalService);
 	}
 
 	/**
@@ -437,22 +421,6 @@ public abstract class EntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		EntryLocalService entryLocalService) {
-
-		try {
-			Field field = EntryLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, entryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

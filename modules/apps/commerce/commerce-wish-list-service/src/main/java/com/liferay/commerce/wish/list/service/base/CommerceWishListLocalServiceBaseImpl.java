@@ -16,7 +16,6 @@ package com.liferay.commerce.wish.list.service.base;
 
 import com.liferay.commerce.wish.list.model.CommerceWishList;
 import com.liferay.commerce.wish.list.service.CommerceWishListLocalService;
-import com.liferay.commerce.wish.list.service.CommerceWishListLocalServiceUtil;
 import com.liferay.commerce.wish.list.service.persistence.CommerceWishListPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
@@ -53,13 +52,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -81,7 +77,7 @@ public abstract class CommerceWishListLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceWishListLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceWishListLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceWishListLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.wish.list.service.CommerceWishListLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -531,24 +527,12 @@ public abstract class CommerceWishListLocalServiceBaseImpl
 		return commerceWishListPersistence.update(commerceWishList);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceWishListLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceWishListLocalService = (CommerceWishListLocalService)aopProxy;
-
-		_setLocalServiceUtilService(commerceWishListLocalService);
 	}
 
 	/**
@@ -590,23 +574,6 @@ public abstract class CommerceWishListLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommerceWishListLocalService commerceWishListLocalService) {
-
-		try {
-			Field field =
-				CommerceWishListLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceWishListLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

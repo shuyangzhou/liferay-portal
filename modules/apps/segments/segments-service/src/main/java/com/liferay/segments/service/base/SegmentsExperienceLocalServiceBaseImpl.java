@@ -53,18 +53,14 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.segments.model.SegmentsExperience;
 import com.liferay.segments.service.SegmentsExperienceLocalService;
-import com.liferay.segments.service.SegmentsExperienceLocalServiceUtil;
 import com.liferay.segments.service.persistence.SegmentsExperiencePersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -86,7 +82,7 @@ public abstract class SegmentsExperienceLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SegmentsExperienceLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SegmentsExperienceLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SegmentsExperienceLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.segments.service.SegmentsExperienceLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -576,25 +572,12 @@ public abstract class SegmentsExperienceLocalServiceBaseImpl
 		return segmentsExperiencePersistence.update(segmentsExperience);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			SegmentsExperienceLocalService.class, IdentifiableOSGiService.class,
 			CTService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		segmentsExperienceLocalService =
-			(SegmentsExperienceLocalService)aopProxy;
-
-		_setLocalServiceUtilService(segmentsExperienceLocalService);
 	}
 
 	/**
@@ -652,23 +635,6 @@ public abstract class SegmentsExperienceLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		SegmentsExperienceLocalService segmentsExperienceLocalService) {
-
-		try {
-			Field field =
-				SegmentsExperienceLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, segmentsExperienceLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

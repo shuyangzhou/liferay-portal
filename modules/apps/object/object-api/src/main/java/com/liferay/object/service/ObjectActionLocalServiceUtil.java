@@ -15,16 +15,23 @@
 package com.liferay.object.service;
 
 import com.liferay.object.model.ObjectAction;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for ObjectAction. This utility wraps
@@ -412,9 +419,34 @@ public class ObjectActionLocalServiceUtil {
 	}
 
 	public static ObjectActionLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			ObjectActionLocalServiceUtil::_getService);
 	}
 
-	private static volatile ObjectActionLocalService _service;
+	private static ObjectActionLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			ObjectActionLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<ObjectActionLocalService> serviceReference =
+			bundleContext.getServiceReference(ObjectActionLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<ObjectActionLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

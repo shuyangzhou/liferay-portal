@@ -16,7 +16,6 @@ package com.liferay.list.type.service.base;
 
 import com.liferay.list.type.model.ListTypeDefinition;
 import com.liferay.list.type.service.ListTypeDefinitionService;
-import com.liferay.list.type.service.ListTypeDefinitionServiceUtil;
 import com.liferay.list.type.service.persistence.ListTypeDefinitionPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,25 +51,13 @@ public abstract class ListTypeDefinitionServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ListTypeDefinitionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ListTypeDefinitionServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ListTypeDefinitionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.list.type.service.ListTypeDefinitionServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			ListTypeDefinitionService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		listTypeDefinitionService = (ListTypeDefinitionService)aopProxy;
-
-		_setServiceUtilService(listTypeDefinitionService);
 	}
 
 	/**
@@ -116,22 +100,6 @@ public abstract class ListTypeDefinitionServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		ListTypeDefinitionService listTypeDefinitionService) {
-
-		try {
-			Field field = ListTypeDefinitionServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, listTypeDefinitionService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

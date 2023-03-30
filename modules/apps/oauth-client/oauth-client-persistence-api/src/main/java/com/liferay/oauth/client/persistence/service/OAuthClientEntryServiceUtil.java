@@ -15,9 +15,16 @@
 package com.liferay.oauth.client.persistence.service;
 
 import com.liferay.oauth.client.persistence.model.OAuthClientEntry;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for OAuthClientEntry. This utility wraps
@@ -127,9 +134,34 @@ public class OAuthClientEntryServiceUtil {
 	}
 
 	public static OAuthClientEntryService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			OAuthClientEntryServiceUtil::_getService);
 	}
 
-	private static volatile OAuthClientEntryService _service;
+	private static OAuthClientEntryService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			OAuthClientEntryServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<OAuthClientEntryService> serviceReference =
+			bundleContext.getServiceReference(OAuthClientEntryService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<OAuthClientEntryService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

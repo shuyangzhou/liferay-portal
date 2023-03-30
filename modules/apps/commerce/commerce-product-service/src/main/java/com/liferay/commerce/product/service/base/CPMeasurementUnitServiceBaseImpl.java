@@ -16,7 +16,6 @@ package com.liferay.commerce.product.service.base;
 
 import com.liferay.commerce.product.model.CPMeasurementUnit;
 import com.liferay.commerce.product.service.CPMeasurementUnitService;
-import com.liferay.commerce.product.service.CPMeasurementUnitServiceUtil;
 import com.liferay.commerce.product.service.persistence.CPMeasurementUnitPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,25 +51,13 @@ public abstract class CPMeasurementUnitServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CPMeasurementUnitService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CPMeasurementUnitServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CPMeasurementUnitService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.product.service.CPMeasurementUnitServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CPMeasurementUnitService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		cpMeasurementUnitService = (CPMeasurementUnitService)aopProxy;
-
-		_setServiceUtilService(cpMeasurementUnitService);
 	}
 
 	/**
@@ -116,22 +100,6 @@ public abstract class CPMeasurementUnitServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CPMeasurementUnitService cpMeasurementUnitService) {
-
-		try {
-			Field field = CPMeasurementUnitServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, cpMeasurementUnitService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -15,7 +15,6 @@
 package com.liferay.flags.service.base;
 
 import com.liferay.flags.service.FlagsEntryService;
-import com.liferay.flags.service.FlagsEntryServiceUtil;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -29,11 +28,8 @@ import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -54,25 +50,13 @@ public abstract class FlagsEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>FlagsEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>FlagsEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>FlagsEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.flags.service.FlagsEntryServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			FlagsEntryService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		flagsEntryService = (FlagsEntryService)aopProxy;
-
-		_setServiceUtilService(flagsEntryService);
 	}
 
 	/**
@@ -106,20 +90,6 @@ public abstract class FlagsEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(FlagsEntryService flagsEntryService) {
-		try {
-			Field field = FlagsEntryServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, flagsEntryService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

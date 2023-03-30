@@ -27,10 +27,7 @@ import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.social.kernel.model.SocialActivitySetting;
 import com.liferay.social.kernel.service.SocialActivitySettingService;
-import com.liferay.social.kernel.service.SocialActivitySettingServiceUtil;
 import com.liferay.social.kernel.service.persistence.SocialActivitySettingPersistence;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -52,7 +49,7 @@ public abstract class SocialActivitySettingServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SocialActivitySettingService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SocialActivitySettingServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SocialActivitySettingService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.social.kernel.service.SocialActivitySettingServiceUtil</code>.
 	 */
 
 	/**
@@ -146,11 +143,9 @@ public abstract class SocialActivitySettingServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(socialActivitySettingService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
 	}
 
 	/**
@@ -193,23 +188,6 @@ public abstract class SocialActivitySettingServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		SocialActivitySettingService socialActivitySettingService) {
-
-		try {
-			Field field =
-				SocialActivitySettingServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, socialActivitySettingService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

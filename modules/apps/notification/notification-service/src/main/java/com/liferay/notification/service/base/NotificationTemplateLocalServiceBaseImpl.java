@@ -21,7 +21,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.notification.model.NotificationTemplate;
 import com.liferay.notification.service.NotificationTemplateLocalService;
-import com.liferay.notification.service.NotificationTemplateLocalServiceUtil;
 import com.liferay.notification.service.persistence.NotificationTemplatePersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -53,13 +52,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -81,7 +77,7 @@ public abstract class NotificationTemplateLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>NotificationTemplateLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>NotificationTemplateLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>NotificationTemplateLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.notification.service.NotificationTemplateLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -537,25 +533,12 @@ public abstract class NotificationTemplateLocalServiceBaseImpl
 		return notificationTemplatePersistence.update(notificationTemplate);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			NotificationTemplateLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		notificationTemplateLocalService =
-			(NotificationTemplateLocalService)aopProxy;
-
-		_setLocalServiceUtilService(notificationTemplateLocalService);
 	}
 
 	/**
@@ -598,23 +581,6 @@ public abstract class NotificationTemplateLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		NotificationTemplateLocalService notificationTemplateLocalService) {
-
-		try {
-			Field field =
-				NotificationTemplateLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, notificationTemplateLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

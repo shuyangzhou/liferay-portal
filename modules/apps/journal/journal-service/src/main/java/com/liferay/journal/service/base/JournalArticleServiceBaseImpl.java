@@ -16,7 +16,6 @@ package com.liferay.journal.service.base;
 
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleService;
-import com.liferay.journal.service.JournalArticleServiceUtil;
 import com.liferay.journal.service.persistence.JournalArticleFinder;
 import com.liferay.journal.service.persistence.JournalArticlePersistence;
 import com.liferay.portal.aop.AopService;
@@ -31,11 +30,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,25 +52,13 @@ public abstract class JournalArticleServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>JournalArticleService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>JournalArticleServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>JournalArticleService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.journal.service.JournalArticleServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			JournalArticleService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		journalArticleService = (JournalArticleService)aopProxy;
-
-		_setServiceUtilService(journalArticleService);
 	}
 
 	/**
@@ -116,22 +100,6 @@ public abstract class JournalArticleServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		JournalArticleService journalArticleService) {
-
-		try {
-			Field field = JournalArticleServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, journalArticleService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

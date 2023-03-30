@@ -14,10 +14,12 @@
 
 package com.liferay.portal.reports.engine.console.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.reports.engine.console.model.Definition;
 
@@ -26,6 +28,11 @@ import java.io.Serializable;
 
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for Definition. This utility wraps
@@ -427,9 +434,34 @@ public class DefinitionLocalServiceUtil {
 	}
 
 	public static DefinitionLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			DefinitionLocalServiceUtil::_getService);
 	}
 
-	private static volatile DefinitionLocalService _service;
+	private static DefinitionLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			DefinitionLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<DefinitionLocalService> serviceReference =
+			bundleContext.getServiceReference(DefinitionLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<DefinitionLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

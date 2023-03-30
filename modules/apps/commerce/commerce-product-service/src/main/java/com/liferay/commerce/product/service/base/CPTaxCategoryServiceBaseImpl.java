@@ -16,7 +16,6 @@ package com.liferay.commerce.product.service.base;
 
 import com.liferay.commerce.product.model.CPTaxCategory;
 import com.liferay.commerce.product.service.CPTaxCategoryService;
-import com.liferay.commerce.product.service.CPTaxCategoryServiceUtil;
 import com.liferay.commerce.product.service.persistence.CPTaxCategoryFinder;
 import com.liferay.commerce.product.service.persistence.CPTaxCategoryPersistence;
 import com.liferay.portal.aop.AopService;
@@ -31,11 +30,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,25 +52,13 @@ public abstract class CPTaxCategoryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CPTaxCategoryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CPTaxCategoryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CPTaxCategoryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.product.service.CPTaxCategoryServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CPTaxCategoryService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		cpTaxCategoryService = (CPTaxCategoryService)aopProxy;
-
-		_setServiceUtilService(cpTaxCategoryService);
 	}
 
 	/**
@@ -116,22 +100,6 @@ public abstract class CPTaxCategoryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CPTaxCategoryService cpTaxCategoryService) {
-
-		try {
-			Field field = CPTaxCategoryServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, cpTaxCategoryService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

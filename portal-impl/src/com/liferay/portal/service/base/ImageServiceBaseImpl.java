@@ -26,11 +26,8 @@ import com.liferay.portal.kernel.model.Image;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.ImageService;
-import com.liferay.portal.kernel.service.ImageServiceUtil;
 import com.liferay.portal.kernel.service.persistence.ImagePersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -51,7 +48,7 @@ public abstract class ImageServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ImageService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ImageServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ImageService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.ImageServiceUtil</code>.
 	 */
 
 	/**
@@ -136,11 +133,9 @@ public abstract class ImageServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(imageService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
 	}
 
 	/**
@@ -182,19 +177,6 @@ public abstract class ImageServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(ImageService imageService) {
-		try {
-			Field field = ImageServiceUtil.class.getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, imageService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

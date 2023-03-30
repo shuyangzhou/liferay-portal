@@ -16,7 +16,6 @@ package com.liferay.journal.service.base;
 
 import com.liferay.journal.model.JournalContentSearch;
 import com.liferay.journal.service.JournalContentSearchLocalService;
-import com.liferay.journal.service.JournalContentSearchLocalServiceUtil;
 import com.liferay.journal.service.persistence.JournalContentSearchPersistence;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
@@ -50,13 +49,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -78,7 +74,7 @@ public abstract class JournalContentSearchLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>JournalContentSearchLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>JournalContentSearchLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>JournalContentSearchLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.journal.service.JournalContentSearchLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -409,11 +405,6 @@ public abstract class JournalContentSearchLocalServiceBaseImpl
 		return journalContentSearchPersistence.update(journalContentSearch);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -421,14 +412,6 @@ public abstract class JournalContentSearchLocalServiceBaseImpl
 			IdentifiableOSGiService.class, CTService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		journalContentSearchLocalService =
-			(JournalContentSearchLocalService)aopProxy;
-
-		_setLocalServiceUtilService(journalContentSearchLocalService);
 	}
 
 	/**
@@ -486,23 +469,6 @@ public abstract class JournalContentSearchLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		JournalContentSearchLocalService journalContentSearchLocalService) {
-
-		try {
-			Field field =
-				JournalContentSearchLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, journalContentSearchLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

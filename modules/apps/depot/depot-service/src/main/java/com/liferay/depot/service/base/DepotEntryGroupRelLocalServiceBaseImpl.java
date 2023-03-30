@@ -16,7 +16,6 @@ package com.liferay.depot.service.base;
 
 import com.liferay.depot.model.DepotEntryGroupRel;
 import com.liferay.depot.service.DepotEntryGroupRelLocalService;
-import com.liferay.depot.service.DepotEntryGroupRelLocalServiceUtil;
 import com.liferay.depot.service.persistence.DepotEntryGroupRelPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
@@ -53,13 +52,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -81,7 +77,7 @@ public abstract class DepotEntryGroupRelLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DepotEntryGroupRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DepotEntryGroupRelLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DepotEntryGroupRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.depot.service.DepotEntryGroupRelLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -544,25 +540,12 @@ public abstract class DepotEntryGroupRelLocalServiceBaseImpl
 		return depotEntryGroupRelPersistence.update(depotEntryGroupRel);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			DepotEntryGroupRelLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		depotEntryGroupRelLocalService =
-			(DepotEntryGroupRelLocalService)aopProxy;
-
-		_setLocalServiceUtilService(depotEntryGroupRelLocalService);
 	}
 
 	/**
@@ -605,23 +588,6 @@ public abstract class DepotEntryGroupRelLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		DepotEntryGroupRelLocalService depotEntryGroupRelLocalService) {
-
-		try {
-			Field field =
-				DepotEntryGroupRelLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, depotEntryGroupRelLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

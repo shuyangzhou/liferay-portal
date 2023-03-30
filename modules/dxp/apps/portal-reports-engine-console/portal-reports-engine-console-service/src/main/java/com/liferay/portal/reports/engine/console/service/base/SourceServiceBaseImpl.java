@@ -27,15 +27,11 @@ import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.reports.engine.console.model.Source;
 import com.liferay.portal.reports.engine.console.service.SourceService;
-import com.liferay.portal.reports.engine.console.service.SourceServiceUtil;
 import com.liferay.portal.reports.engine.console.service.persistence.SourceFinder;
 import com.liferay.portal.reports.engine.console.service.persistence.SourcePersistence;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,25 +52,13 @@ public abstract class SourceServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SourceService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SourceServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SourceService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.reports.engine.console.service.SourceServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			SourceService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		sourceService = (SourceService)aopProxy;
-
-		_setServiceUtilService(sourceService);
 	}
 
 	/**
@@ -116,19 +100,6 @@ public abstract class SourceServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(SourceService sourceService) {
-		try {
-			Field field = SourceServiceUtil.class.getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, sourceService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

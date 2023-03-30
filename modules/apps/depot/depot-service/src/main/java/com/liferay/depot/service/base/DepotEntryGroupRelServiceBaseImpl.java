@@ -16,7 +16,6 @@ package com.liferay.depot.service.base;
 
 import com.liferay.depot.model.DepotEntryGroupRel;
 import com.liferay.depot.service.DepotEntryGroupRelService;
-import com.liferay.depot.service.DepotEntryGroupRelServiceUtil;
 import com.liferay.depot.service.persistence.DepotEntryGroupRelPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,25 +51,13 @@ public abstract class DepotEntryGroupRelServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DepotEntryGroupRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DepotEntryGroupRelServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DepotEntryGroupRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.depot.service.DepotEntryGroupRelServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			DepotEntryGroupRelService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		depotEntryGroupRelService = (DepotEntryGroupRelService)aopProxy;
-
-		_setServiceUtilService(depotEntryGroupRelService);
 	}
 
 	/**
@@ -116,22 +100,6 @@ public abstract class DepotEntryGroupRelServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		DepotEntryGroupRelService depotEntryGroupRelService) {
-
-		try {
-			Field field = DepotEntryGroupRelServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, depotEntryGroupRelService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

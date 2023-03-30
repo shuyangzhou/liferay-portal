@@ -15,11 +15,18 @@
 package com.liferay.dynamic.data.mapping.service;
 
 import com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for DDMDataProviderInstance. This utility wraps
@@ -156,9 +163,35 @@ public class DDMDataProviderInstanceServiceUtil {
 	}
 
 	public static DDMDataProviderInstanceService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			DDMDataProviderInstanceServiceUtil::_getService);
 	}
 
-	private static volatile DDMDataProviderInstanceService _service;
+	private static DDMDataProviderInstanceService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			DDMDataProviderInstanceServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<DDMDataProviderInstanceService> serviceReference =
+			bundleContext.getServiceReference(
+				DDMDataProviderInstanceService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<DDMDataProviderInstanceService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

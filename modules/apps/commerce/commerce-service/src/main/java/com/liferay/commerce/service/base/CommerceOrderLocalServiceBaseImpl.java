@@ -16,7 +16,6 @@ package com.liferay.commerce.service.base;
 
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.service.CommerceOrderLocalService;
-import com.liferay.commerce.service.CommerceOrderLocalServiceUtil;
 import com.liferay.commerce.service.persistence.CommerceOrderFinder;
 import com.liferay.commerce.service.persistence.CommerceOrderPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
@@ -62,13 +61,10 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -89,7 +85,7 @@ public abstract class CommerceOrderLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceOrderLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceOrderLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceOrderLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.service.CommerceOrderLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -585,24 +581,12 @@ public abstract class CommerceOrderLocalServiceBaseImpl
 		return commerceOrderPersistence.update(commerceOrder);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceOrderLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceOrderLocalService = (CommerceOrderLocalService)aopProxy;
-
-		_setLocalServiceUtilService(commerceOrderLocalService);
 	}
 
 	/**
@@ -644,22 +628,6 @@ public abstract class CommerceOrderLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommerceOrderLocalService commerceOrderLocalService) {
-
-		try {
-			Field field = CommerceOrderLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceOrderLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

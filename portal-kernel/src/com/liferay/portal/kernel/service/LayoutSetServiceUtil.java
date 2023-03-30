@@ -14,10 +14,17 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.LayoutSet;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.io.InputStream;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for LayoutSet. This utility wraps
@@ -143,9 +150,33 @@ public class LayoutSetServiceUtil {
 	}
 
 	public static LayoutSetService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			LayoutSetServiceUtil::_getService);
 	}
 
-	private static volatile LayoutSetService _service;
+	private static LayoutSetService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(LayoutSetServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<LayoutSetService> serviceReference =
+			bundleContext.getServiceReference(LayoutSetService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<LayoutSetService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

@@ -23,7 +23,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.fragment.model.FragmentComposition;
 import com.liferay.fragment.service.FragmentCompositionLocalService;
-import com.liferay.fragment.service.FragmentCompositionLocalServiceUtil;
 import com.liferay.fragment.service.persistence.FragmentCompositionPersistence;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
@@ -65,13 +64,10 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -93,7 +89,7 @@ public abstract class FragmentCompositionLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>FragmentCompositionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>FragmentCompositionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>FragmentCompositionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.fragment.service.FragmentCompositionLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -623,11 +619,6 @@ public abstract class FragmentCompositionLocalServiceBaseImpl
 		return fragmentCompositionPersistence.update(fragmentComposition);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -635,14 +626,6 @@ public abstract class FragmentCompositionLocalServiceBaseImpl
 			IdentifiableOSGiService.class, CTService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		fragmentCompositionLocalService =
-			(FragmentCompositionLocalService)aopProxy;
-
-		_setLocalServiceUtilService(fragmentCompositionLocalService);
 	}
 
 	/**
@@ -700,23 +683,6 @@ public abstract class FragmentCompositionLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		FragmentCompositionLocalService fragmentCompositionLocalService) {
-
-		try {
-			Field field =
-				FragmentCompositionLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, fragmentCompositionLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

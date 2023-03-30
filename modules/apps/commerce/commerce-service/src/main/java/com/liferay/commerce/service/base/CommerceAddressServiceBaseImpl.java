@@ -16,16 +16,12 @@ package com.liferay.commerce.service.base;
 
 import com.liferay.commerce.model.CommerceAddress;
 import com.liferay.commerce.service.CommerceAddressService;
-import com.liferay.commerce.service.CommerceAddressServiceUtil;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 
-import java.lang.reflect.Field;
-
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -46,25 +42,13 @@ public abstract class CommerceAddressServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceAddressService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceAddressServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceAddressService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.service.CommerceAddressServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceAddressService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceAddressService = (CommerceAddressService)aopProxy;
-
-		_setServiceUtilService(commerceAddressService);
 	}
 
 	/**
@@ -83,22 +67,6 @@ public abstract class CommerceAddressServiceBaseImpl
 
 	protected String getModelClassName() {
 		return CommerceAddress.class.getName();
-	}
-
-	private void _setServiceUtilService(
-		CommerceAddressService commerceAddressService) {
-
-		try {
-			Field field = CommerceAddressServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceAddressService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@Reference

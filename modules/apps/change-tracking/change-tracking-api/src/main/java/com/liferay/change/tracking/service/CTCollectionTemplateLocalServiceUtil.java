@@ -15,16 +15,23 @@
 package com.liferay.change.tracking.service;
 
 import com.liferay.change.tracking.model.CTCollectionTemplate;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
 import java.util.Set;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for CTCollectionTemplate. This utility wraps
@@ -338,9 +345,35 @@ public class CTCollectionTemplateLocalServiceUtil {
 	}
 
 	public static CTCollectionTemplateLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CTCollectionTemplateLocalServiceUtil::_getService);
 	}
 
-	private static volatile CTCollectionTemplateLocalService _service;
+	private static CTCollectionTemplateLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CTCollectionTemplateLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CTCollectionTemplateLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				CTCollectionTemplateLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CTCollectionTemplateLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

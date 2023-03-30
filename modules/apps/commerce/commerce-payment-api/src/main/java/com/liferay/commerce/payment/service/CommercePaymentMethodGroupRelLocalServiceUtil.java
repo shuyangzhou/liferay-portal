@@ -15,16 +15,23 @@
 package com.liferay.commerce.payment.service;
 
 import com.liferay.commerce.payment.model.CommercePaymentMethodGroupRel;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for CommercePaymentMethodGroupRel. This utility wraps
@@ -487,9 +494,35 @@ public class CommercePaymentMethodGroupRelLocalServiceUtil {
 	}
 
 	public static CommercePaymentMethodGroupRelLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommercePaymentMethodGroupRelLocalServiceUtil::_getService);
 	}
 
-	private static volatile CommercePaymentMethodGroupRelLocalService _service;
+	private static CommercePaymentMethodGroupRelLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CommercePaymentMethodGroupRelLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommercePaymentMethodGroupRelLocalService>
+			serviceReference = bundleContext.getServiceReference(
+				CommercePaymentMethodGroupRelLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CommercePaymentMethodGroupRelLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

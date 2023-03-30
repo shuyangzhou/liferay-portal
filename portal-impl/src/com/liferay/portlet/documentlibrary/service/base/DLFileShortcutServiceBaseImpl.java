@@ -16,7 +16,6 @@ package com.liferay.portlet.documentlibrary.service.base;
 
 import com.liferay.document.library.kernel.model.DLFileShortcut;
 import com.liferay.document.library.kernel.service.DLFileShortcutService;
-import com.liferay.document.library.kernel.service.DLFileShortcutServiceUtil;
 import com.liferay.document.library.kernel.service.persistence.DLFileShortcutPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -29,8 +28,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -52,7 +49,7 @@ public abstract class DLFileShortcutServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DLFileShortcutService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DLFileShortcutServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DLFileShortcutService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.document.library.kernel.service.DLFileShortcutServiceUtil</code>.
 	 */
 
 	/**
@@ -143,11 +140,9 @@ public abstract class DLFileShortcutServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(dlFileShortcutService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
 	}
 
 	/**
@@ -189,22 +184,6 @@ public abstract class DLFileShortcutServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		DLFileShortcutService dlFileShortcutService) {
-
-		try {
-			Field field = DLFileShortcutServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, dlFileShortcutService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

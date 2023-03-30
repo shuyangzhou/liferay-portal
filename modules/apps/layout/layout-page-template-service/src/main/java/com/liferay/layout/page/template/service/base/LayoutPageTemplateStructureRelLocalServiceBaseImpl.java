@@ -23,7 +23,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel;
 import com.liferay.layout.page.template.service.LayoutPageTemplateStructureRelLocalService;
-import com.liferay.layout.page.template.service.LayoutPageTemplateStructureRelLocalServiceUtil;
 import com.liferay.layout.page.template.service.persistence.LayoutPageTemplateStructureRelPersistence;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
@@ -65,13 +64,10 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -93,7 +89,7 @@ public abstract class LayoutPageTemplateStructureRelLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LayoutPageTemplateStructureRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LayoutPageTemplateStructureRelLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LayoutPageTemplateStructureRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.layout.page.template.service.LayoutPageTemplateStructureRelLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -642,11 +638,6 @@ public abstract class LayoutPageTemplateStructureRelLocalServiceBaseImpl
 			layoutPageTemplateStructureRel);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -654,14 +645,6 @@ public abstract class LayoutPageTemplateStructureRelLocalServiceBaseImpl
 			IdentifiableOSGiService.class, CTService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		layoutPageTemplateStructureRelLocalService =
-			(LayoutPageTemplateStructureRelLocalService)aopProxy;
-
-		_setLocalServiceUtilService(layoutPageTemplateStructureRelLocalService);
 	}
 
 	/**
@@ -720,24 +703,6 @@ public abstract class LayoutPageTemplateStructureRelLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		LayoutPageTemplateStructureRelLocalService
-			layoutPageTemplateStructureRelLocalService) {
-
-		try {
-			Field field =
-				LayoutPageTemplateStructureRelLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, layoutPageTemplateStructureRelLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

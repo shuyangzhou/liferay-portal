@@ -15,10 +15,17 @@
 package com.liferay.commerce.inventory.service;
 
 import com.liferay.commerce.inventory.model.CommerceInventoryWarehouseRel;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for CommerceInventoryWarehouseRel. This utility wraps
@@ -150,9 +157,35 @@ public class CommerceInventoryWarehouseRelServiceUtil {
 	}
 
 	public static CommerceInventoryWarehouseRelService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommerceInventoryWarehouseRelServiceUtil::_getService);
 	}
 
-	private static volatile CommerceInventoryWarehouseRelService _service;
+	private static CommerceInventoryWarehouseRelService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CommerceInventoryWarehouseRelServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommerceInventoryWarehouseRelService>
+			serviceReference = bundleContext.getServiceReference(
+				CommerceInventoryWarehouseRelService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CommerceInventoryWarehouseRelService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

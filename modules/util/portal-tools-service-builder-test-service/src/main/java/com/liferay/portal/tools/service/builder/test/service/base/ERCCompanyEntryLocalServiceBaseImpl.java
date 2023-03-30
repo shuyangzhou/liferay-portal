@@ -43,12 +43,9 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.ERCCompanyEntry;
 import com.liferay.portal.tools.service.builder.test.service.ERCCompanyEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.ERCCompanyEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.ERCCompanyEntryPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -72,7 +69,7 @@ public abstract class ERCCompanyEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ERCCompanyEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ERCCompanyEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ERCCompanyEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.ERCCompanyEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -504,15 +501,11 @@ public abstract class ERCCompanyEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.ERCCompanyEntry",
 			ercCompanyEntryLocalService);
-
-		_setLocalServiceUtilService(ercCompanyEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.ERCCompanyEntry");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -554,23 +547,6 @@ public abstract class ERCCompanyEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		ERCCompanyEntryLocalService ercCompanyEntryLocalService) {
-
-		try {
-			Field field =
-				ERCCompanyEntryLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, ercCompanyEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

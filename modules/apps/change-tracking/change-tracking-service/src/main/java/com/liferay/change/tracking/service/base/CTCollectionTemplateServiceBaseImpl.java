@@ -16,7 +16,6 @@ package com.liferay.change.tracking.service.base;
 
 import com.liferay.change.tracking.model.CTCollectionTemplate;
 import com.liferay.change.tracking.service.CTCollectionTemplateService;
-import com.liferay.change.tracking.service.CTCollectionTemplateServiceUtil;
 import com.liferay.change.tracking.service.persistence.CTCollectionTemplatePersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,25 +52,13 @@ public abstract class CTCollectionTemplateServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CTCollectionTemplateService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CTCollectionTemplateServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CTCollectionTemplateService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.change.tracking.service.CTCollectionTemplateServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CTCollectionTemplateService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		ctCollectionTemplateService = (CTCollectionTemplateService)aopProxy;
-
-		_setServiceUtilService(ctCollectionTemplateService);
 	}
 
 	/**
@@ -117,23 +101,6 @@ public abstract class CTCollectionTemplateServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CTCollectionTemplateService ctCollectionTemplateService) {
-
-		try {
-			Field field =
-				CTCollectionTemplateServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, ctCollectionTemplateService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

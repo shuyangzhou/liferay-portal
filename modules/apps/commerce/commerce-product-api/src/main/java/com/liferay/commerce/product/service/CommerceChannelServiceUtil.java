@@ -15,9 +15,16 @@
 package com.liferay.commerce.product.service;
 
 import com.liferay.commerce.product.model.CommerceChannel;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for CommerceChannel. This utility wraps
@@ -171,9 +178,34 @@ public class CommerceChannelServiceUtil {
 	}
 
 	public static CommerceChannelService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommerceChannelServiceUtil::_getService);
 	}
 
-	private static volatile CommerceChannelService _service;
+	private static CommerceChannelService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CommerceChannelServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommerceChannelService> serviceReference =
+			bundleContext.getServiceReference(CommerceChannelService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CommerceChannelService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

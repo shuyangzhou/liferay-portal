@@ -14,16 +14,23 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.PluginSetting;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for PluginSetting. This utility wraps
@@ -327,9 +334,34 @@ public class PluginSettingLocalServiceUtil {
 	}
 
 	public static PluginSettingLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			PluginSettingLocalServiceUtil::_getService);
 	}
 
-	private static volatile PluginSettingLocalService _service;
+	private static PluginSettingLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			PluginSettingLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<PluginSettingLocalService> serviceReference =
+			bundleContext.getServiceReference(PluginSettingLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<PluginSettingLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

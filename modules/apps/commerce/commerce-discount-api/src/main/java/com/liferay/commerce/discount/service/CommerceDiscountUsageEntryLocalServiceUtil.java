@@ -15,15 +15,22 @@
 package com.liferay.commerce.discount.service;
 
 import com.liferay.commerce.discount.model.CommerceDiscountUsageEntry;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for CommerceDiscountUsageEntry. This utility wraps
@@ -373,9 +380,35 @@ public class CommerceDiscountUsageEntryLocalServiceUtil {
 	}
 
 	public static CommerceDiscountUsageEntryLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommerceDiscountUsageEntryLocalServiceUtil::_getService);
 	}
 
-	private static volatile CommerceDiscountUsageEntryLocalService _service;
+	private static CommerceDiscountUsageEntryLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CommerceDiscountUsageEntryLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommerceDiscountUsageEntryLocalService>
+			serviceReference = bundleContext.getServiceReference(
+				CommerceDiscountUsageEntryLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CommerceDiscountUsageEntryLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

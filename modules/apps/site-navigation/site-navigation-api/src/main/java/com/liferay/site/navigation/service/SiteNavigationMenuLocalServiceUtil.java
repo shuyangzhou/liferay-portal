@@ -14,16 +14,23 @@
 
 package com.liferay.site.navigation.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.site.navigation.model.SiteNavigationMenu;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for SiteNavigationMenu. This utility wraps
@@ -494,9 +501,35 @@ public class SiteNavigationMenuLocalServiceUtil {
 	}
 
 	public static SiteNavigationMenuLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			SiteNavigationMenuLocalServiceUtil::_getService);
 	}
 
-	private static volatile SiteNavigationMenuLocalService _service;
+	private static SiteNavigationMenuLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			SiteNavigationMenuLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<SiteNavigationMenuLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				SiteNavigationMenuLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<SiteNavigationMenuLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

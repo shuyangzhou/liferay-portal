@@ -16,16 +16,12 @@ package com.liferay.commerce.account.service.base;
 
 import com.liferay.commerce.account.model.CommerceAccountGroupCommerceAccountRel;
 import com.liferay.commerce.account.service.CommerceAccountGroupCommerceAccountRelService;
-import com.liferay.commerce.account.service.CommerceAccountGroupCommerceAccountRelServiceUtil;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 
-import java.lang.reflect.Field;
-
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -47,27 +43,14 @@ public abstract class CommerceAccountGroupCommerceAccountRelServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceAccountGroupCommerceAccountRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceAccountGroupCommerceAccountRelServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceAccountGroupCommerceAccountRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.account.service.CommerceAccountGroupCommerceAccountRelServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceAccountGroupCommerceAccountRelService.class,
 			IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceAccountGroupCommerceAccountRelService =
-			(CommerceAccountGroupCommerceAccountRelService)aopProxy;
-
-		_setServiceUtilService(commerceAccountGroupCommerceAccountRelService);
 	}
 
 	/**
@@ -86,24 +69,6 @@ public abstract class CommerceAccountGroupCommerceAccountRelServiceBaseImpl
 
 	protected String getModelClassName() {
 		return CommerceAccountGroupCommerceAccountRel.class.getName();
-	}
-
-	private void _setServiceUtilService(
-		CommerceAccountGroupCommerceAccountRelService
-			commerceAccountGroupCommerceAccountRelService) {
-
-		try {
-			Field field =
-				CommerceAccountGroupCommerceAccountRelServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceAccountGroupCommerceAccountRelService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@Reference

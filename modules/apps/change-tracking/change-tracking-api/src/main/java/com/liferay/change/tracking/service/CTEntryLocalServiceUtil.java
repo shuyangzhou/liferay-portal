@@ -15,15 +15,22 @@
 package com.liferay.change.tracking.service;
 
 import com.liferay.change.tracking.model.CTEntry;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for CTEntry. This utility wraps
@@ -356,9 +363,33 @@ public class CTEntryLocalServiceUtil {
 	}
 
 	public static CTEntryLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CTEntryLocalServiceUtil::_getService);
 	}
 
-	private static volatile CTEntryLocalService _service;
+	private static CTEntryLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(CTEntryLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CTEntryLocalService> serviceReference =
+			bundleContext.getServiceReference(CTEntryLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CTEntryLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

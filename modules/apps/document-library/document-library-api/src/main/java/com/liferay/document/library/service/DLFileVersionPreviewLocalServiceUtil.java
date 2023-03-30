@@ -15,15 +15,22 @@
 package com.liferay.document.library.service;
 
 import com.liferay.document.library.model.DLFileVersionPreview;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for DLFileVersionPreview. This utility wraps
@@ -368,9 +375,35 @@ public class DLFileVersionPreviewLocalServiceUtil {
 	}
 
 	public static DLFileVersionPreviewLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			DLFileVersionPreviewLocalServiceUtil::_getService);
 	}
 
-	private static volatile DLFileVersionPreviewLocalService _service;
+	private static DLFileVersionPreviewLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			DLFileVersionPreviewLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<DLFileVersionPreviewLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				DLFileVersionPreviewLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<DLFileVersionPreviewLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

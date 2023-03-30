@@ -16,7 +16,6 @@ package com.liferay.notification.service.base;
 
 import com.liferay.notification.model.NotificationQueueEntry;
 import com.liferay.notification.service.NotificationQueueEntryService;
-import com.liferay.notification.service.NotificationQueueEntryServiceUtil;
 import com.liferay.notification.service.persistence.NotificationQueueEntryPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,25 +52,13 @@ public abstract class NotificationQueueEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>NotificationQueueEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>NotificationQueueEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>NotificationQueueEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.notification.service.NotificationQueueEntryServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			NotificationQueueEntryService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		notificationQueueEntryService = (NotificationQueueEntryService)aopProxy;
-
-		_setServiceUtilService(notificationQueueEntryService);
 	}
 
 	/**
@@ -117,23 +101,6 @@ public abstract class NotificationQueueEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		NotificationQueueEntryService notificationQueueEntryService) {
-
-		try {
-			Field field =
-				NotificationQueueEntryServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, notificationQueueEntryService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

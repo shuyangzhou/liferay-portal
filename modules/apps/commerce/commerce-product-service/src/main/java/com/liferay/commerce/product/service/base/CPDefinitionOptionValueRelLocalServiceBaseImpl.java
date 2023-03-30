@@ -16,7 +16,6 @@ package com.liferay.commerce.product.service.base;
 
 import com.liferay.commerce.product.model.CPDefinitionOptionValueRel;
 import com.liferay.commerce.product.service.CPDefinitionOptionValueRelLocalService;
-import com.liferay.commerce.product.service.CPDefinitionOptionValueRelLocalServiceUtil;
 import com.liferay.commerce.product.service.persistence.CPDefinitionOptionValueRelPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
@@ -56,13 +55,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -84,7 +80,7 @@ public abstract class CPDefinitionOptionValueRelLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CPDefinitionOptionValueRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CPDefinitionOptionValueRelLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CPDefinitionOptionValueRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.product.service.CPDefinitionOptionValueRelLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -567,11 +563,6 @@ public abstract class CPDefinitionOptionValueRelLocalServiceBaseImpl
 			cpDefinitionOptionValueRel);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -579,14 +570,6 @@ public abstract class CPDefinitionOptionValueRelLocalServiceBaseImpl
 			IdentifiableOSGiService.class, CTService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		cpDefinitionOptionValueRelLocalService =
-			(CPDefinitionOptionValueRelLocalService)aopProxy;
-
-		_setLocalServiceUtilService(cpDefinitionOptionValueRelLocalService);
 	}
 
 	/**
@@ -645,24 +628,6 @@ public abstract class CPDefinitionOptionValueRelLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CPDefinitionOptionValueRelLocalService
-			cpDefinitionOptionValueRelLocalService) {
-
-		try {
-			Field field =
-				CPDefinitionOptionValueRelLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, cpDefinitionOptionValueRelLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

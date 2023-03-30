@@ -15,9 +15,16 @@
 package com.liferay.commerce.product.service;
 
 import com.liferay.commerce.product.model.CommerceCatalog;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for CommerceCatalog. This utility wraps
@@ -130,9 +137,34 @@ public class CommerceCatalogServiceUtil {
 	}
 
 	public static CommerceCatalogService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommerceCatalogServiceUtil::_getService);
 	}
 
-	private static volatile CommerceCatalogService _service;
+	private static CommerceCatalogService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CommerceCatalogServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommerceCatalogService> serviceReference =
+			bundleContext.getServiceReference(CommerceCatalogService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CommerceCatalogService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

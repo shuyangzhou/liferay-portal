@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PasswordPolicyRelLocalService;
-import com.liferay.portal.kernel.service.PasswordPolicyRelLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.PasswordPolicyRelPersistence;
@@ -46,8 +45,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -71,7 +68,7 @@ public abstract class PasswordPolicyRelLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PasswordPolicyRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PasswordPolicyRelLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>PasswordPolicyRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.PasswordPolicyRelLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -460,15 +457,11 @@ public abstract class PasswordPolicyRelLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.PasswordPolicyRel",
 			passwordPolicyRelLocalService);
-
-		_setLocalServiceUtilService(passwordPolicyRelLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.PasswordPolicyRel");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -511,23 +504,6 @@ public abstract class PasswordPolicyRelLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		PasswordPolicyRelLocalService passwordPolicyRelLocalService) {
-
-		try {
-			Field field =
-				PasswordPolicyRelLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, passwordPolicyRelLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

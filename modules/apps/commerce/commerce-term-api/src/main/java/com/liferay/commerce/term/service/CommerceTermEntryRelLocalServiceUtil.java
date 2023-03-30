@@ -15,15 +15,22 @@
 package com.liferay.commerce.term.service;
 
 import com.liferay.commerce.term.model.CommerceTermEntryRel;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for CommerceTermEntryRel. This utility wraps
@@ -371,9 +378,35 @@ public class CommerceTermEntryRelLocalServiceUtil {
 	}
 
 	public static CommerceTermEntryRelLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommerceTermEntryRelLocalServiceUtil::_getService);
 	}
 
-	private static volatile CommerceTermEntryRelLocalService _service;
+	private static CommerceTermEntryRelLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CommerceTermEntryRelLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommerceTermEntryRelLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				CommerceTermEntryRelLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CommerceTermEntryRelLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

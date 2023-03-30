@@ -14,9 +14,16 @@
 
 package com.liferay.message.boards.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for MBStatsUser. This utility wraps
@@ -87,9 +94,34 @@ public class MBStatsUserLocalServiceUtil {
 	}
 
 	public static MBStatsUserLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			MBStatsUserLocalServiceUtil::_getService);
 	}
 
-	private static volatile MBStatsUserLocalService _service;
+	private static MBStatsUserLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			MBStatsUserLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<MBStatsUserLocalService> serviceReference =
+			bundleContext.getServiceReference(MBStatsUserLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<MBStatsUserLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

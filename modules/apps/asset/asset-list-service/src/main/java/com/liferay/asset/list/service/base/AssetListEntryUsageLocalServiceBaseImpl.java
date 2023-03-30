@@ -16,7 +16,6 @@ package com.liferay.asset.list.service.base;
 
 import com.liferay.asset.list.model.AssetListEntryUsage;
 import com.liferay.asset.list.service.AssetListEntryUsageLocalService;
-import com.liferay.asset.list.service.AssetListEntryUsageLocalServiceUtil;
 import com.liferay.asset.list.service.persistence.AssetListEntryUsagePersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
@@ -58,13 +57,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -86,7 +82,7 @@ public abstract class AssetListEntryUsageLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AssetListEntryUsageLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AssetListEntryUsageLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AssetListEntryUsageLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.asset.list.service.AssetListEntryUsageLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -580,11 +576,6 @@ public abstract class AssetListEntryUsageLocalServiceBaseImpl
 		return assetListEntryUsagePersistence.update(assetListEntryUsage);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -592,14 +583,6 @@ public abstract class AssetListEntryUsageLocalServiceBaseImpl
 			IdentifiableOSGiService.class, CTService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		assetListEntryUsageLocalService =
-			(AssetListEntryUsageLocalService)aopProxy;
-
-		_setLocalServiceUtilService(assetListEntryUsageLocalService);
 	}
 
 	/**
@@ -657,23 +640,6 @@ public abstract class AssetListEntryUsageLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		AssetListEntryUsageLocalService assetListEntryUsageLocalService) {
-
-		try {
-			Field field =
-				AssetListEntryUsageLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, assetListEntryUsageLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

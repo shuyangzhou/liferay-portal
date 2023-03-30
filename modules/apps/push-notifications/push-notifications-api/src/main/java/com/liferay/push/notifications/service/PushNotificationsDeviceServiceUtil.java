@@ -14,10 +14,17 @@
 
 package com.liferay.push.notifications.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.push.notifications.model.PushNotificationsDevice;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for PushNotificationsDevice. This utility wraps
@@ -83,9 +90,35 @@ public class PushNotificationsDeviceServiceUtil {
 	}
 
 	public static PushNotificationsDeviceService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			PushNotificationsDeviceServiceUtil::_getService);
 	}
 
-	private static volatile PushNotificationsDeviceService _service;
+	private static PushNotificationsDeviceService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			PushNotificationsDeviceServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<PushNotificationsDeviceService> serviceReference =
+			bundleContext.getServiceReference(
+				PushNotificationsDeviceService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<PushNotificationsDeviceService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

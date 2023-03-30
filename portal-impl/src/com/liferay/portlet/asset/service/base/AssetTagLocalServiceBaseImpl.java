@@ -16,7 +16,6 @@ package com.liferay.portlet.asset.service.base;
 
 import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.asset.kernel.service.AssetTagLocalService;
-import com.liferay.asset.kernel.service.AssetTagLocalServiceUtil;
 import com.liferay.asset.kernel.service.persistence.AssetEntryPersistence;
 import com.liferay.asset.kernel.service.persistence.AssetTagFinder;
 import com.liferay.asset.kernel.service.persistence.AssetTagPersistence;
@@ -57,8 +56,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -81,7 +78,7 @@ public abstract class AssetTagLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AssetTagLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AssetTagLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AssetTagLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.asset.kernel.service.AssetTagLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -730,15 +727,11 @@ public abstract class AssetTagLocalServiceBaseImpl
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.asset.kernel.model.AssetTag", assetTagLocalService);
-
-		_setLocalServiceUtilService(assetTagLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.asset.kernel.model.AssetTag");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -794,22 +787,6 @@ public abstract class AssetTagLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		AssetTagLocalService assetTagLocalService) {
-
-		try {
-			Field field = AssetTagLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, assetTagLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

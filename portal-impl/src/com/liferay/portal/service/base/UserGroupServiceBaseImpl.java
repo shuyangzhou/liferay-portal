@@ -26,15 +26,12 @@ import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.UserGroupService;
-import com.liferay.portal.kernel.service.UserGroupServiceUtil;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.TeamPersistence;
 import com.liferay.portal.kernel.service.persistence.UserGroupFinder;
 import com.liferay.portal.kernel.service.persistence.UserGroupPersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -56,7 +53,7 @@ public abstract class UserGroupServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>UserGroupService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>UserGroupServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>UserGroupService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.UserGroupServiceUtil</code>.
 	 */
 
 	/**
@@ -162,11 +159,9 @@ public abstract class UserGroupServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(userGroupService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
 	}
 
 	/**
@@ -208,20 +203,6 @@ public abstract class UserGroupServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(UserGroupService userGroupService) {
-		try {
-			Field field = UserGroupServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, userGroupService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

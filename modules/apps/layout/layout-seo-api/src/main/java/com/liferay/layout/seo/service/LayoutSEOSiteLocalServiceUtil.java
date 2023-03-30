@@ -15,16 +15,23 @@
 package com.liferay.layout.seo.service;
 
 import com.liferay.layout.seo.model.LayoutSEOSite;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for LayoutSEOSite. This utility wraps
@@ -387,9 +394,34 @@ public class LayoutSEOSiteLocalServiceUtil {
 	}
 
 	public static LayoutSEOSiteLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			LayoutSEOSiteLocalServiceUtil::_getService);
 	}
 
-	private static volatile LayoutSEOSiteLocalService _service;
+	private static LayoutSEOSiteLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			LayoutSEOSiteLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<LayoutSEOSiteLocalService> serviceReference =
+			bundleContext.getServiceReference(LayoutSEOSiteLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<LayoutSEOSiteLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

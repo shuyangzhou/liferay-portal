@@ -16,7 +16,6 @@ package com.liferay.commerce.shop.by.diagram.service.base;
 
 import com.liferay.commerce.shop.by.diagram.model.CSDiagramPin;
 import com.liferay.commerce.shop.by.diagram.service.CSDiagramPinService;
-import com.liferay.commerce.shop.by.diagram.service.CSDiagramPinServiceUtil;
 import com.liferay.commerce.shop.by.diagram.service.persistence.CSDiagramPinPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,25 +51,13 @@ public abstract class CSDiagramPinServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CSDiagramPinService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CSDiagramPinServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CSDiagramPinService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.shop.by.diagram.service.CSDiagramPinServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CSDiagramPinService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		csDiagramPinService = (CSDiagramPinService)aopProxy;
-
-		_setServiceUtilService(csDiagramPinService);
 	}
 
 	/**
@@ -115,22 +99,6 @@ public abstract class CSDiagramPinServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CSDiagramPinService csDiagramPinService) {
-
-		try {
-			Field field = CSDiagramPinServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, csDiagramPinService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

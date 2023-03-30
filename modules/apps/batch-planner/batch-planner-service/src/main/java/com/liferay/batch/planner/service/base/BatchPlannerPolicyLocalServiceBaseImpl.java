@@ -16,7 +16,6 @@ package com.liferay.batch.planner.service.base;
 
 import com.liferay.batch.planner.model.BatchPlannerPolicy;
 import com.liferay.batch.planner.service.BatchPlannerPolicyLocalService;
-import com.liferay.batch.planner.service.BatchPlannerPolicyLocalServiceUtil;
 import com.liferay.batch.planner.service.persistence.BatchPlannerPolicyPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -75,7 +71,7 @@ public abstract class BatchPlannerPolicyLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>BatchPlannerPolicyLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>BatchPlannerPolicyLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>BatchPlannerPolicyLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.batch.planner.service.BatchPlannerPolicyLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -407,25 +403,12 @@ public abstract class BatchPlannerPolicyLocalServiceBaseImpl
 		return batchPlannerPolicyPersistence.update(batchPlannerPolicy);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			BatchPlannerPolicyLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		batchPlannerPolicyLocalService =
-			(BatchPlannerPolicyLocalService)aopProxy;
-
-		_setLocalServiceUtilService(batchPlannerPolicyLocalService);
 	}
 
 	/**
@@ -468,23 +451,6 @@ public abstract class BatchPlannerPolicyLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		BatchPlannerPolicyLocalService batchPlannerPolicyLocalService) {
-
-		try {
-			Field field =
-				BatchPlannerPolicyLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, batchPlannerPolicyLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

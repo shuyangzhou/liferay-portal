@@ -15,15 +15,22 @@
 package com.liferay.depot.service;
 
 import com.liferay.depot.model.DepotEntryGroupRel;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for DepotEntryGroupRel. This utility wraps
@@ -457,9 +464,35 @@ public class DepotEntryGroupRelLocalServiceUtil {
 	}
 
 	public static DepotEntryGroupRelLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			DepotEntryGroupRelLocalServiceUtil::_getService);
 	}
 
-	private static volatile DepotEntryGroupRelLocalService _service;
+	private static DepotEntryGroupRelLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			DepotEntryGroupRelLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<DepotEntryGroupRelLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				DepotEntryGroupRelLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<DepotEntryGroupRelLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

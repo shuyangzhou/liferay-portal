@@ -16,7 +16,6 @@ package com.liferay.commerce.product.service.base;
 
 import com.liferay.commerce.product.model.CPDefinitionOptionValueRel;
 import com.liferay.commerce.product.service.CPDefinitionOptionValueRelService;
-import com.liferay.commerce.product.service.CPDefinitionOptionValueRelServiceUtil;
 import com.liferay.commerce.product.service.persistence.CPDefinitionOptionValueRelPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,27 +52,14 @@ public abstract class CPDefinitionOptionValueRelServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CPDefinitionOptionValueRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CPDefinitionOptionValueRelServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CPDefinitionOptionValueRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.product.service.CPDefinitionOptionValueRelServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CPDefinitionOptionValueRelService.class,
 			IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		cpDefinitionOptionValueRelService =
-			(CPDefinitionOptionValueRelService)aopProxy;
-
-		_setServiceUtilService(cpDefinitionOptionValueRelService);
 	}
 
 	/**
@@ -119,23 +102,6 @@ public abstract class CPDefinitionOptionValueRelServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CPDefinitionOptionValueRelService cpDefinitionOptionValueRelService) {
-
-		try {
-			Field field =
-				CPDefinitionOptionValueRelServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, cpDefinitionOptionValueRelService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

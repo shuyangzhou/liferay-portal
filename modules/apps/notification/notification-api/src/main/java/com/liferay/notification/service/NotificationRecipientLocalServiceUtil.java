@@ -15,15 +15,22 @@
 package com.liferay.notification.service;
 
 import com.liferay.notification.model.NotificationRecipient;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for NotificationRecipient. This utility wraps
@@ -354,9 +361,35 @@ public class NotificationRecipientLocalServiceUtil {
 	}
 
 	public static NotificationRecipientLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			NotificationRecipientLocalServiceUtil::_getService);
 	}
 
-	private static volatile NotificationRecipientLocalService _service;
+	private static NotificationRecipientLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			NotificationRecipientLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<NotificationRecipientLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				NotificationRecipientLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<NotificationRecipientLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

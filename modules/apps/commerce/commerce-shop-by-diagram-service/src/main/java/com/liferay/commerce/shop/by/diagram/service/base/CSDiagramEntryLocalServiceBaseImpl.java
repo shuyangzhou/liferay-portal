@@ -16,7 +16,6 @@ package com.liferay.commerce.shop.by.diagram.service.base;
 
 import com.liferay.commerce.shop.by.diagram.model.CSDiagramEntry;
 import com.liferay.commerce.shop.by.diagram.service.CSDiagramEntryLocalService;
-import com.liferay.commerce.shop.by.diagram.service.CSDiagramEntryLocalServiceUtil;
 import com.liferay.commerce.shop.by.diagram.service.persistence.CSDiagramEntryPersistence;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
@@ -50,13 +49,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -77,7 +73,7 @@ public abstract class CSDiagramEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CSDiagramEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CSDiagramEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CSDiagramEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.shop.by.diagram.service.CSDiagramEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -392,24 +388,12 @@ public abstract class CSDiagramEntryLocalServiceBaseImpl
 		return csDiagramEntryPersistence.update(csDiagramEntry);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CSDiagramEntryLocalService.class, IdentifiableOSGiService.class,
 			CTService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		csDiagramEntryLocalService = (CSDiagramEntryLocalService)aopProxy;
-
-		_setLocalServiceUtilService(csDiagramEntryLocalService);
 	}
 
 	/**
@@ -466,22 +450,6 @@ public abstract class CSDiagramEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CSDiagramEntryLocalService csDiagramEntryLocalService) {
-
-		try {
-			Field field = CSDiagramEntryLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, csDiagramEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

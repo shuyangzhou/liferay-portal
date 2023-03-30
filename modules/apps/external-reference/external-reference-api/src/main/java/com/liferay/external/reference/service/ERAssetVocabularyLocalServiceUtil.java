@@ -14,9 +14,16 @@
 
 package com.liferay.external.reference.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for ERAssetVocabulary. This utility wraps
@@ -60,9 +67,35 @@ public class ERAssetVocabularyLocalServiceUtil {
 	}
 
 	public static ERAssetVocabularyLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			ERAssetVocabularyLocalServiceUtil::_getService);
 	}
 
-	private static volatile ERAssetVocabularyLocalService _service;
+	private static ERAssetVocabularyLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			ERAssetVocabularyLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<ERAssetVocabularyLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				ERAssetVocabularyLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<ERAssetVocabularyLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

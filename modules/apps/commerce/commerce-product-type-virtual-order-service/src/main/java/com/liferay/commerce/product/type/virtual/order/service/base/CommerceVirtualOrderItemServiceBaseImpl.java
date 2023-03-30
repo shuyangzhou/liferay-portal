@@ -16,7 +16,6 @@ package com.liferay.commerce.product.type.virtual.order.service.base;
 
 import com.liferay.commerce.product.type.virtual.order.model.CommerceVirtualOrderItem;
 import com.liferay.commerce.product.type.virtual.order.service.CommerceVirtualOrderItemService;
-import com.liferay.commerce.product.type.virtual.order.service.CommerceVirtualOrderItemServiceUtil;
 import com.liferay.commerce.product.type.virtual.order.service.persistence.CommerceVirtualOrderItemFinder;
 import com.liferay.commerce.product.type.virtual.order.service.persistence.CommerceVirtualOrderItemPersistence;
 import com.liferay.portal.aop.AopService;
@@ -31,11 +30,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -57,26 +53,13 @@ public abstract class CommerceVirtualOrderItemServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceVirtualOrderItemService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceVirtualOrderItemServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceVirtualOrderItemService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.product.type.virtual.order.service.CommerceVirtualOrderItemServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceVirtualOrderItemService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceVirtualOrderItemService =
-			(CommerceVirtualOrderItemService)aopProxy;
-
-		_setServiceUtilService(commerceVirtualOrderItemService);
 	}
 
 	/**
@@ -119,23 +102,6 @@ public abstract class CommerceVirtualOrderItemServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CommerceVirtualOrderItemService commerceVirtualOrderItemService) {
-
-		try {
-			Field field =
-				CommerceVirtualOrderItemServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceVirtualOrderItemService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

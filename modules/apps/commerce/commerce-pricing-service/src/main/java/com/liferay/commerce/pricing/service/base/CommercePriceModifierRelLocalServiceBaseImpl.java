@@ -16,7 +16,6 @@ package com.liferay.commerce.pricing.service.base;
 
 import com.liferay.commerce.pricing.model.CommercePriceModifierRel;
 import com.liferay.commerce.pricing.service.CommercePriceModifierRelLocalService;
-import com.liferay.commerce.pricing.service.CommercePriceModifierRelLocalServiceUtil;
 import com.liferay.commerce.pricing.service.persistence.CommercePriceModifierRelFinder;
 import com.liferay.commerce.pricing.service.persistence.CommercePriceModifierRelPersistence;
 import com.liferay.petra.function.UnsafeFunction;
@@ -51,13 +50,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -79,7 +75,7 @@ public abstract class CommercePriceModifierRelLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommercePriceModifierRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommercePriceModifierRelLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommercePriceModifierRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.pricing.service.CommercePriceModifierRelLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -423,11 +419,6 @@ public abstract class CommercePriceModifierRelLocalServiceBaseImpl
 			commercePriceModifierRel);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -435,14 +426,6 @@ public abstract class CommercePriceModifierRelLocalServiceBaseImpl
 			IdentifiableOSGiService.class, CTService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commercePriceModifierRelLocalService =
-			(CommercePriceModifierRelLocalService)aopProxy;
-
-		_setLocalServiceUtilService(commercePriceModifierRelLocalService);
 	}
 
 	/**
@@ -500,24 +483,6 @@ public abstract class CommercePriceModifierRelLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommercePriceModifierRelLocalService
-			commercePriceModifierRelLocalService) {
-
-		try {
-			Field field =
-				CommercePriceModifierRelLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commercePriceModifierRelLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

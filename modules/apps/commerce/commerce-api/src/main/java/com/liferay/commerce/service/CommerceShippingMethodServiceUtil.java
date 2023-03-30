@@ -15,11 +15,18 @@
 package com.liferay.commerce.service;
 
 import com.liferay.commerce.model.CommerceShippingMethod;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for CommerceShippingMethod. This utility wraps
@@ -201,9 +208,35 @@ public class CommerceShippingMethodServiceUtil {
 	}
 
 	public static CommerceShippingMethodService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommerceShippingMethodServiceUtil::_getService);
 	}
 
-	private static volatile CommerceShippingMethodService _service;
+	private static CommerceShippingMethodService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CommerceShippingMethodServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommerceShippingMethodService> serviceReference =
+			bundleContext.getServiceReference(
+				CommerceShippingMethodService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CommerceShippingMethodService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

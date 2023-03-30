@@ -14,10 +14,17 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ListType;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for ListType. This utility wraps
@@ -72,9 +79,33 @@ public class ListTypeServiceUtil {
 	}
 
 	public static ListTypeService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			ListTypeServiceUtil::_getService);
 	}
 
-	private static volatile ListTypeService _service;
+	private static ListTypeService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(ListTypeServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<ListTypeService> serviceReference =
+			bundleContext.getServiceReference(ListTypeService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<ListTypeService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

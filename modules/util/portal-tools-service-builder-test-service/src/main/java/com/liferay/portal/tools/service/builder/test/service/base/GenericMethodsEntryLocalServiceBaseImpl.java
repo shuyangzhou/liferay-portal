@@ -28,9 +28,6 @@ import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.service.GenericMethodsEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.GenericMethodsEntryLocalServiceUtil;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -52,7 +49,7 @@ public abstract class GenericMethodsEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>GenericMethodsEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>GenericMethodsEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>GenericMethodsEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.GenericMethodsEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -101,11 +98,9 @@ public abstract class GenericMethodsEntryLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setLocalServiceUtilService(genericMethodsEntryLocalService);
 	}
 
 	public void destroy() {
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -139,23 +134,6 @@ public abstract class GenericMethodsEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		GenericMethodsEntryLocalService genericMethodsEntryLocalService) {
-
-		try {
-			Field field =
-				GenericMethodsEntryLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, genericMethodsEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

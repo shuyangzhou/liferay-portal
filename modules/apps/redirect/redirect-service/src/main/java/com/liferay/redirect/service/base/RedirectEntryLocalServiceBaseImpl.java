@@ -48,18 +48,14 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.redirect.model.RedirectEntry;
 import com.liferay.redirect.service.RedirectEntryLocalService;
-import com.liferay.redirect.service.RedirectEntryLocalServiceUtil;
 import com.liferay.redirect.service.persistence.RedirectEntryPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -80,7 +76,7 @@ public abstract class RedirectEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>RedirectEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>RedirectEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>RedirectEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.redirect.service.RedirectEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -524,24 +520,12 @@ public abstract class RedirectEntryLocalServiceBaseImpl
 		return redirectEntryPersistence.update(redirectEntry);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			RedirectEntryLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		redirectEntryLocalService = (RedirectEntryLocalService)aopProxy;
-
-		_setLocalServiceUtilService(redirectEntryLocalService);
 	}
 
 	/**
@@ -583,22 +567,6 @@ public abstract class RedirectEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		RedirectEntryLocalService redirectEntryLocalService) {
-
-		try {
-			Field field = RedirectEntryLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, redirectEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

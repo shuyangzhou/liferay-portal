@@ -16,7 +16,6 @@ package com.liferay.invitation.invite.members.service.base;
 
 import com.liferay.invitation.invite.members.model.MemberRequest;
 import com.liferay.invitation.invite.members.service.MemberRequestLocalService;
-import com.liferay.invitation.invite.members.service.MemberRequestLocalServiceUtil;
 import com.liferay.invitation.invite.members.service.persistence.MemberRequestPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -74,7 +70,7 @@ public abstract class MemberRequestLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>MemberRequestLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>MemberRequestLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>MemberRequestLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.invitation.invite.members.service.MemberRequestLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -386,24 +382,12 @@ public abstract class MemberRequestLocalServiceBaseImpl
 		return memberRequestPersistence.update(memberRequest);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			MemberRequestLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		memberRequestLocalService = (MemberRequestLocalService)aopProxy;
-
-		_setLocalServiceUtilService(memberRequestLocalService);
 	}
 
 	/**
@@ -445,22 +429,6 @@ public abstract class MemberRequestLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		MemberRequestLocalService memberRequestLocalService) {
-
-		try {
-			Field field = MemberRequestLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, memberRequestLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

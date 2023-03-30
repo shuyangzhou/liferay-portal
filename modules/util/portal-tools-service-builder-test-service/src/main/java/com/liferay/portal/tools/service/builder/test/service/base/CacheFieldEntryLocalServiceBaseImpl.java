@@ -43,12 +43,9 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.CacheFieldEntry;
 import com.liferay.portal.tools.service.builder.test.service.CacheFieldEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.CacheFieldEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.CacheFieldEntryPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -72,7 +69,7 @@ public abstract class CacheFieldEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CacheFieldEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CacheFieldEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CacheFieldEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.CacheFieldEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -455,15 +452,11 @@ public abstract class CacheFieldEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.CacheFieldEntry",
 			cacheFieldEntryLocalService);
-
-		_setLocalServiceUtilService(cacheFieldEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.CacheFieldEntry");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -505,23 +498,6 @@ public abstract class CacheFieldEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CacheFieldEntryLocalService cacheFieldEntryLocalService) {
-
-		try {
-			Field field =
-				CacheFieldEntryLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, cacheFieldEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

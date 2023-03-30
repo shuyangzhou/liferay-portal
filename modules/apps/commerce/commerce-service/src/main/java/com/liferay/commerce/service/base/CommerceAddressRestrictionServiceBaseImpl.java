@@ -16,7 +16,6 @@ package com.liferay.commerce.service.base;
 
 import com.liferay.commerce.model.CommerceAddressRestriction;
 import com.liferay.commerce.service.CommerceAddressRestrictionService;
-import com.liferay.commerce.service.CommerceAddressRestrictionServiceUtil;
 import com.liferay.commerce.service.persistence.CommerceAddressRestrictionPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,27 +52,14 @@ public abstract class CommerceAddressRestrictionServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceAddressRestrictionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceAddressRestrictionServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceAddressRestrictionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.service.CommerceAddressRestrictionServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceAddressRestrictionService.class,
 			IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceAddressRestrictionService =
-			(CommerceAddressRestrictionService)aopProxy;
-
-		_setServiceUtilService(commerceAddressRestrictionService);
 	}
 
 	/**
@@ -119,23 +102,6 @@ public abstract class CommerceAddressRestrictionServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CommerceAddressRestrictionService commerceAddressRestrictionService) {
-
-		try {
-			Field field =
-				CommerceAddressRestrictionServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceAddressRestrictionService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

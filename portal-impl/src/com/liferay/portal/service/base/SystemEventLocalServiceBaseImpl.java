@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.SystemEventLocalService;
-import com.liferay.portal.kernel.service.SystemEventLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.SystemEventPersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
@@ -48,8 +47,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -73,7 +70,7 @@ public abstract class SystemEventLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SystemEventLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SystemEventLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SystemEventLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.SystemEventLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -451,15 +448,11 @@ public abstract class SystemEventLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.SystemEvent",
 			systemEventLocalService);
-
-		_setLocalServiceUtilService(systemEventLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.SystemEvent");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -516,22 +509,6 @@ public abstract class SystemEventLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		SystemEventLocalService systemEventLocalService) {
-
-		try {
-			Field field = SystemEventLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, systemEventLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

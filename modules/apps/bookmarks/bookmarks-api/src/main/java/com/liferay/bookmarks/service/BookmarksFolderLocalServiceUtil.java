@@ -15,15 +15,22 @@
 package com.liferay.bookmarks.service;
 
 import com.liferay.bookmarks.model.BookmarksFolder;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for BookmarksFolder. This utility wraps
@@ -587,9 +594,35 @@ public class BookmarksFolderLocalServiceUtil {
 	}
 
 	public static BookmarksFolderLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			BookmarksFolderLocalServiceUtil::_getService);
 	}
 
-	private static volatile BookmarksFolderLocalService _service;
+	private static BookmarksFolderLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			BookmarksFolderLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<BookmarksFolderLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				BookmarksFolderLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<BookmarksFolderLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

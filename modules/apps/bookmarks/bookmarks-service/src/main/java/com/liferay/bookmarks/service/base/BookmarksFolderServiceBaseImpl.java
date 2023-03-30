@@ -16,7 +16,6 @@ package com.liferay.bookmarks.service.base;
 
 import com.liferay.bookmarks.model.BookmarksFolder;
 import com.liferay.bookmarks.service.BookmarksFolderService;
-import com.liferay.bookmarks.service.BookmarksFolderServiceUtil;
 import com.liferay.bookmarks.service.persistence.BookmarksFolderFinder;
 import com.liferay.bookmarks.service.persistence.BookmarksFolderPersistence;
 import com.liferay.portal.aop.AopService;
@@ -31,11 +30,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,25 +52,13 @@ public abstract class BookmarksFolderServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>BookmarksFolderService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>BookmarksFolderServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>BookmarksFolderService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.bookmarks.service.BookmarksFolderServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			BookmarksFolderService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		bookmarksFolderService = (BookmarksFolderService)aopProxy;
-
-		_setServiceUtilService(bookmarksFolderService);
 	}
 
 	/**
@@ -116,22 +100,6 @@ public abstract class BookmarksFolderServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		BookmarksFolderService bookmarksFolderService) {
-
-		try {
-			Field field = BookmarksFolderServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, bookmarksFolderService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

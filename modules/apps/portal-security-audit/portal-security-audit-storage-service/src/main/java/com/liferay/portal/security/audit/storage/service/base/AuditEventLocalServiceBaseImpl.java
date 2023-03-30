@@ -42,18 +42,14 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.security.audit.storage.model.AuditEvent;
 import com.liferay.portal.security.audit.storage.service.AuditEventLocalService;
-import com.liferay.portal.security.audit.storage.service.AuditEventLocalServiceUtil;
 import com.liferay.portal.security.audit.storage.service.persistence.AuditEventPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -74,7 +70,7 @@ public abstract class AuditEventLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AuditEventLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AuditEventLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AuditEventLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.security.audit.storage.service.AuditEventLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -383,24 +379,12 @@ public abstract class AuditEventLocalServiceBaseImpl
 		return auditEventPersistence.update(auditEvent);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			AuditEventLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		auditEventLocalService = (AuditEventLocalService)aopProxy;
-
-		_setLocalServiceUtilService(auditEventLocalService);
 	}
 
 	/**
@@ -442,22 +426,6 @@ public abstract class AuditEventLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		AuditEventLocalService auditEventLocalService) {
-
-		try {
-			Field field = AuditEventLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, auditEventLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

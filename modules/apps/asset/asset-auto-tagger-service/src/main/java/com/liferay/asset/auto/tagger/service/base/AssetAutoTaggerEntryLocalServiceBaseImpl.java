@@ -16,7 +16,6 @@ package com.liferay.asset.auto.tagger.service.base;
 
 import com.liferay.asset.auto.tagger.model.AssetAutoTaggerEntry;
 import com.liferay.asset.auto.tagger.service.AssetAutoTaggerEntryLocalService;
-import com.liferay.asset.auto.tagger.service.AssetAutoTaggerEntryLocalServiceUtil;
 import com.liferay.asset.auto.tagger.service.persistence.AssetAutoTaggerEntryPersistence;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
@@ -50,13 +49,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -78,7 +74,7 @@ public abstract class AssetAutoTaggerEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AssetAutoTaggerEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AssetAutoTaggerEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AssetAutoTaggerEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.asset.auto.tagger.service.AssetAutoTaggerEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -413,11 +409,6 @@ public abstract class AssetAutoTaggerEntryLocalServiceBaseImpl
 		return assetAutoTaggerEntryPersistence.update(assetAutoTaggerEntry);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -425,14 +416,6 @@ public abstract class AssetAutoTaggerEntryLocalServiceBaseImpl
 			IdentifiableOSGiService.class, CTService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		assetAutoTaggerEntryLocalService =
-			(AssetAutoTaggerEntryLocalService)aopProxy;
-
-		_setLocalServiceUtilService(assetAutoTaggerEntryLocalService);
 	}
 
 	/**
@@ -490,23 +473,6 @@ public abstract class AssetAutoTaggerEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		AssetAutoTaggerEntryLocalService assetAutoTaggerEntryLocalService) {
-
-		try {
-			Field field =
-				AssetAutoTaggerEntryLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, assetAutoTaggerEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

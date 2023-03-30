@@ -51,18 +51,14 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.site.navigation.model.SiteNavigationMenuItem;
 import com.liferay.site.navigation.service.SiteNavigationMenuItemLocalService;
-import com.liferay.site.navigation.service.SiteNavigationMenuItemLocalServiceUtil;
 import com.liferay.site.navigation.service.persistence.SiteNavigationMenuItemPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -84,7 +80,7 @@ public abstract class SiteNavigationMenuItemLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SiteNavigationMenuItemLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SiteNavigationMenuItemLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SiteNavigationMenuItemLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.site.navigation.service.SiteNavigationMenuItemLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -559,11 +555,6 @@ public abstract class SiteNavigationMenuItemLocalServiceBaseImpl
 		return siteNavigationMenuItemPersistence.update(siteNavigationMenuItem);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -571,14 +562,6 @@ public abstract class SiteNavigationMenuItemLocalServiceBaseImpl
 			IdentifiableOSGiService.class, CTService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		siteNavigationMenuItemLocalService =
-			(SiteNavigationMenuItemLocalService)aopProxy;
-
-		_setLocalServiceUtilService(siteNavigationMenuItemLocalService);
 	}
 
 	/**
@@ -636,23 +619,6 @@ public abstract class SiteNavigationMenuItemLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		SiteNavigationMenuItemLocalService siteNavigationMenuItemLocalService) {
-
-		try {
-			Field field =
-				SiteNavigationMenuItemLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, siteNavigationMenuItemLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

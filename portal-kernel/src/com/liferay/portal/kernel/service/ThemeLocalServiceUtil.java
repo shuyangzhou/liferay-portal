@@ -14,7 +14,15 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for Theme. This utility wraps
@@ -133,9 +141,33 @@ public class ThemeLocalServiceUtil {
 	}
 
 	public static ThemeLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			ThemeLocalServiceUtil::_getService);
 	}
 
-	private static volatile ThemeLocalService _service;
+	private static ThemeLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(ThemeLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<ThemeLocalService> serviceReference =
+			bundleContext.getServiceReference(ThemeLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<ThemeLocalService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

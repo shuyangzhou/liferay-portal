@@ -15,10 +15,17 @@
 package com.liferay.depot.service;
 
 import com.liferay.depot.model.DepotEntry;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for DepotEntry. This utility wraps
@@ -112,9 +119,33 @@ public class DepotEntryServiceUtil {
 	}
 
 	public static DepotEntryService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			DepotEntryServiceUtil::_getService);
 	}
 
-	private static volatile DepotEntryService _service;
+	private static DepotEntryService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(DepotEntryServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<DepotEntryService> serviceReference =
+			bundleContext.getServiceReference(DepotEntryService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<DepotEntryService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

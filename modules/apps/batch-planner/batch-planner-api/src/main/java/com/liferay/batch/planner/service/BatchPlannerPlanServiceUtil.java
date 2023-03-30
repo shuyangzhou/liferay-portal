@@ -15,10 +15,17 @@
 package com.liferay.batch.planner.service;
 
 import com.liferay.batch.planner.model.BatchPlannerPlan;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for BatchPlannerPlan. This utility wraps
@@ -174,9 +181,34 @@ public class BatchPlannerPlanServiceUtil {
 	}
 
 	public static BatchPlannerPlanService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			BatchPlannerPlanServiceUtil::_getService);
 	}
 
-	private static volatile BatchPlannerPlanService _service;
+	private static BatchPlannerPlanService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			BatchPlannerPlanServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<BatchPlannerPlanService> serviceReference =
+			bundleContext.getServiceReference(BatchPlannerPlanService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<BatchPlannerPlanService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

@@ -15,9 +15,16 @@
 package com.liferay.asset.category.property.service;
 
 import com.liferay.asset.category.property.model.AssetCategoryProperty;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for AssetCategoryProperty. This utility wraps
@@ -89,9 +96,35 @@ public class AssetCategoryPropertyServiceUtil {
 	}
 
 	public static AssetCategoryPropertyService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			AssetCategoryPropertyServiceUtil::_getService);
 	}
 
-	private static volatile AssetCategoryPropertyService _service;
+	private static AssetCategoryPropertyService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			AssetCategoryPropertyServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<AssetCategoryPropertyService> serviceReference =
+			bundleContext.getServiceReference(
+				AssetCategoryPropertyService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<AssetCategoryPropertyService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

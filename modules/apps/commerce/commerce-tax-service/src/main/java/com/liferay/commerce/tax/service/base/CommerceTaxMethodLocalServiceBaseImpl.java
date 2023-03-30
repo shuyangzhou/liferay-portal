@@ -16,7 +16,6 @@ package com.liferay.commerce.tax.service.base;
 
 import com.liferay.commerce.tax.model.CommerceTaxMethod;
 import com.liferay.commerce.tax.service.CommerceTaxMethodLocalService;
-import com.liferay.commerce.tax.service.CommerceTaxMethodLocalServiceUtil;
 import com.liferay.commerce.tax.service.persistence.CommerceTaxMethodPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -75,7 +71,7 @@ public abstract class CommerceTaxMethodLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceTaxMethodLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceTaxMethodLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceTaxMethodLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.tax.service.CommerceTaxMethodLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -397,24 +393,12 @@ public abstract class CommerceTaxMethodLocalServiceBaseImpl
 		return commerceTaxMethodPersistence.update(commerceTaxMethod);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceTaxMethodLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceTaxMethodLocalService = (CommerceTaxMethodLocalService)aopProxy;
-
-		_setLocalServiceUtilService(commerceTaxMethodLocalService);
 	}
 
 	/**
@@ -457,23 +441,6 @@ public abstract class CommerceTaxMethodLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommerceTaxMethodLocalService commerceTaxMethodLocalService) {
-
-		try {
-			Field field =
-				CommerceTaxMethodLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceTaxMethodLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

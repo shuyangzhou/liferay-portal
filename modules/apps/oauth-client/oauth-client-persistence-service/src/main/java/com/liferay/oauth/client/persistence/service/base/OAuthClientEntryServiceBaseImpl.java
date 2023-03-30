@@ -16,7 +16,6 @@ package com.liferay.oauth.client.persistence.service.base;
 
 import com.liferay.oauth.client.persistence.model.OAuthClientEntry;
 import com.liferay.oauth.client.persistence.service.OAuthClientEntryService;
-import com.liferay.oauth.client.persistence.service.OAuthClientEntryServiceUtil;
 import com.liferay.oauth.client.persistence.service.persistence.OAuthClientEntryPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,25 +51,13 @@ public abstract class OAuthClientEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>OAuthClientEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>OAuthClientEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>OAuthClientEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.oauth.client.persistence.service.OAuthClientEntryServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			OAuthClientEntryService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		oAuthClientEntryService = (OAuthClientEntryService)aopProxy;
-
-		_setServiceUtilService(oAuthClientEntryService);
 	}
 
 	/**
@@ -115,22 +99,6 @@ public abstract class OAuthClientEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		OAuthClientEntryService oAuthClientEntryService) {
-
-		try {
-			Field field = OAuthClientEntryServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, oAuthClientEntryService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

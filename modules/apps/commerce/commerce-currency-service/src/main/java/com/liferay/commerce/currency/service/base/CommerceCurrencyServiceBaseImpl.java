@@ -16,7 +16,6 @@ package com.liferay.commerce.currency.service.base;
 
 import com.liferay.commerce.currency.model.CommerceCurrency;
 import com.liferay.commerce.currency.service.CommerceCurrencyService;
-import com.liferay.commerce.currency.service.CommerceCurrencyServiceUtil;
 import com.liferay.commerce.currency.service.persistence.CommerceCurrencyFinder;
 import com.liferay.commerce.currency.service.persistence.CommerceCurrencyPersistence;
 import com.liferay.portal.aop.AopService;
@@ -31,11 +30,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,25 +52,13 @@ public abstract class CommerceCurrencyServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceCurrencyService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceCurrencyServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceCurrencyService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.currency.service.CommerceCurrencyServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceCurrencyService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceCurrencyService = (CommerceCurrencyService)aopProxy;
-
-		_setServiceUtilService(commerceCurrencyService);
 	}
 
 	/**
@@ -116,22 +100,6 @@ public abstract class CommerceCurrencyServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CommerceCurrencyService commerceCurrencyService) {
-
-		try {
-			Field field = CommerceCurrencyServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceCurrencyService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

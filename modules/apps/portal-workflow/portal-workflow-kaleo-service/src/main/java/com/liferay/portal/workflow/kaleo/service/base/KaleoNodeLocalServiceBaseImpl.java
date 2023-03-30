@@ -45,18 +45,14 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.workflow.kaleo.model.KaleoNode;
 import com.liferay.portal.workflow.kaleo.service.KaleoNodeLocalService;
-import com.liferay.portal.workflow.kaleo.service.KaleoNodeLocalServiceUtil;
 import com.liferay.portal.workflow.kaleo.service.persistence.KaleoNodePersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -77,7 +73,7 @@ public abstract class KaleoNodeLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>KaleoNodeLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>KaleoNodeLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>KaleoNodeLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.workflow.kaleo.service.KaleoNodeLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -383,24 +379,12 @@ public abstract class KaleoNodeLocalServiceBaseImpl
 		return kaleoNodePersistence.update(kaleoNode);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			KaleoNodeLocalService.class, IdentifiableOSGiService.class,
 			CTService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		kaleoNodeLocalService = (KaleoNodeLocalService)aopProxy;
-
-		_setLocalServiceUtilService(kaleoNodeLocalService);
 	}
 
 	/**
@@ -456,22 +440,6 @@ public abstract class KaleoNodeLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		KaleoNodeLocalService kaleoNodeLocalService) {
-
-		try {
-			Field field = KaleoNodeLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, kaleoNodeLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

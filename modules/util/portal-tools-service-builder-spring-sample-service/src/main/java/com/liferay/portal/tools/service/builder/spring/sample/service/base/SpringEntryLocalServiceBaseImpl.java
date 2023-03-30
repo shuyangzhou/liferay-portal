@@ -43,12 +43,9 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.spring.sample.model.SpringEntry;
 import com.liferay.portal.tools.service.builder.spring.sample.service.SpringEntryLocalService;
-import com.liferay.portal.tools.service.builder.spring.sample.service.SpringEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.spring.sample.service.persistence.SpringEntryPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -72,7 +69,7 @@ public abstract class SpringEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SpringEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SpringEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SpringEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.spring.sample.service.SpringEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -481,15 +478,11 @@ public abstract class SpringEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.spring.sample.model.SpringEntry",
 			springEntryLocalService);
-
-		_setLocalServiceUtilService(springEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.spring.sample.model.SpringEntry");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -531,22 +524,6 @@ public abstract class SpringEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		SpringEntryLocalService springEntryLocalService) {
-
-		try {
-			Field field = SpringEntryLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, springEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -14,6 +14,14 @@
 
 package com.liferay.object.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
+
 /**
  * Provides the remote service utility for ObjectLayoutTab. This utility wraps
  * <code>com.liferay.object.service.impl.ObjectLayoutTabServiceImpl</code> and is an
@@ -39,14 +47,39 @@ public class ObjectLayoutTabServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static java.lang.String getOSGiServiceIdentifier() {
+	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static ObjectLayoutTabService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			ObjectLayoutTabServiceUtil::_getService);
 	}
 
-	private static volatile ObjectLayoutTabService _service;
+	private static ObjectLayoutTabService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			ObjectLayoutTabServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<ObjectLayoutTabService> serviceReference =
+			bundleContext.getServiceReference(ObjectLayoutTabService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<ObjectLayoutTabService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

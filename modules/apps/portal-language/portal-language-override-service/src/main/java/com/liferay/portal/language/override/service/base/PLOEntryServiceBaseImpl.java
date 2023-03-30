@@ -27,14 +27,10 @@ import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.language.override.model.PLOEntry;
 import com.liferay.portal.language.override.service.PLOEntryService;
-import com.liferay.portal.language.override.service.PLOEntryServiceUtil;
 import com.liferay.portal.language.override.service.persistence.PLOEntryPersistence;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,25 +51,13 @@ public abstract class PLOEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PLOEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PLOEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>PLOEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.language.override.service.PLOEntryServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			PLOEntryService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		ploEntryService = (PLOEntryService)aopProxy;
-
-		_setServiceUtilService(ploEntryService);
 	}
 
 	/**
@@ -115,20 +99,6 @@ public abstract class PLOEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(PLOEntryService ploEntryService) {
-		try {
-			Field field = PLOEntryServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, ploEntryService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

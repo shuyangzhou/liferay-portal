@@ -14,16 +14,23 @@
 
 package com.liferay.social.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.social.kernel.model.SocialRequest;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for SocialRequest. This utility wraps
@@ -645,9 +652,34 @@ public class SocialRequestLocalServiceUtil {
 	}
 
 	public static SocialRequestLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			SocialRequestLocalServiceUtil::_getService);
 	}
 
-	private static volatile SocialRequestLocalService _service;
+	private static SocialRequestLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			SocialRequestLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<SocialRequestLocalService> serviceReference =
+			bundleContext.getServiceReference(SocialRequestLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<SocialRequestLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

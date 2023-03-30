@@ -15,15 +15,22 @@
 package com.liferay.asset.display.page.service;
 
 import com.liferay.asset.display.page.model.AssetDisplayPageEntry;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for AssetDisplayPageEntry. This utility wraps
@@ -472,9 +479,35 @@ public class AssetDisplayPageEntryLocalServiceUtil {
 	}
 
 	public static AssetDisplayPageEntryLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			AssetDisplayPageEntryLocalServiceUtil::_getService);
 	}
 
-	private static volatile AssetDisplayPageEntryLocalService _service;
+	private static AssetDisplayPageEntryLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			AssetDisplayPageEntryLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<AssetDisplayPageEntryLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				AssetDisplayPageEntryLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<AssetDisplayPageEntryLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

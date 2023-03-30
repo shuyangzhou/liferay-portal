@@ -15,10 +15,17 @@
 package com.liferay.layout.page.template.service;
 
 import com.liferay.layout.page.template.model.LayoutPageTemplateCollection;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for LayoutPageTemplateCollection. This utility wraps
@@ -136,9 +143,35 @@ public class LayoutPageTemplateCollectionServiceUtil {
 	}
 
 	public static LayoutPageTemplateCollectionService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			LayoutPageTemplateCollectionServiceUtil::_getService);
 	}
 
-	private static volatile LayoutPageTemplateCollectionService _service;
+	private static LayoutPageTemplateCollectionService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			LayoutPageTemplateCollectionServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<LayoutPageTemplateCollectionService> serviceReference =
+			bundleContext.getServiceReference(
+				LayoutPageTemplateCollectionService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<LayoutPageTemplateCollectionService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

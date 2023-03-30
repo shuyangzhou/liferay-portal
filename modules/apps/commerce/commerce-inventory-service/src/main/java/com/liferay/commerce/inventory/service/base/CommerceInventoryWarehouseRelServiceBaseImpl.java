@@ -16,7 +16,6 @@ package com.liferay.commerce.inventory.service.base;
 
 import com.liferay.commerce.inventory.model.CommerceInventoryWarehouseRel;
 import com.liferay.commerce.inventory.service.CommerceInventoryWarehouseRelService;
-import com.liferay.commerce.inventory.service.CommerceInventoryWarehouseRelServiceUtil;
 import com.liferay.commerce.inventory.service.persistence.CommerceInventoryWarehouseRelPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,27 +52,14 @@ public abstract class CommerceInventoryWarehouseRelServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceInventoryWarehouseRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceInventoryWarehouseRelServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceInventoryWarehouseRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.inventory.service.CommerceInventoryWarehouseRelServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceInventoryWarehouseRelService.class,
 			IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceInventoryWarehouseRelService =
-			(CommerceInventoryWarehouseRelService)aopProxy;
-
-		_setServiceUtilService(commerceInventoryWarehouseRelService);
 	}
 
 	/**
@@ -119,24 +102,6 @@ public abstract class CommerceInventoryWarehouseRelServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CommerceInventoryWarehouseRelService
-			commerceInventoryWarehouseRelService) {
-
-		try {
-			Field field =
-				CommerceInventoryWarehouseRelServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceInventoryWarehouseRelService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

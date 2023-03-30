@@ -15,11 +15,18 @@
 package com.liferay.commerce.product.service;
 
 import com.liferay.commerce.product.model.CPDefinitionSpecificationOptionValue;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for CPDefinitionSpecificationOptionValue. This utility wraps
@@ -138,10 +145,36 @@ public class CPDefinitionSpecificationOptionValueServiceUtil {
 	}
 
 	public static CPDefinitionSpecificationOptionValueService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CPDefinitionSpecificationOptionValueServiceUtil::_getService);
 	}
 
-	private static volatile CPDefinitionSpecificationOptionValueService
-		_service;
+	private static CPDefinitionSpecificationOptionValueService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CPDefinitionSpecificationOptionValueServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CPDefinitionSpecificationOptionValueService>
+			serviceReference = bundleContext.getServiceReference(
+				CPDefinitionSpecificationOptionValueService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton
+		<CPDefinitionSpecificationOptionValueService> _serviceDCLSingleton =
+			new DCLSingleton<>();
 
 }

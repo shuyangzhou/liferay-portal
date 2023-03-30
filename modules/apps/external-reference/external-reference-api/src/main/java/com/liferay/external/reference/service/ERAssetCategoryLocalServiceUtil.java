@@ -14,9 +14,16 @@
 
 package com.liferay.external.reference.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for ERAssetCategory. This utility wraps
@@ -61,9 +68,35 @@ public class ERAssetCategoryLocalServiceUtil {
 	}
 
 	public static ERAssetCategoryLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			ERAssetCategoryLocalServiceUtil::_getService);
 	}
 
-	private static volatile ERAssetCategoryLocalService _service;
+	private static ERAssetCategoryLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			ERAssetCategoryLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<ERAssetCategoryLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				ERAssetCategoryLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<ERAssetCategoryLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

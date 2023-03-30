@@ -14,16 +14,23 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PasswordPolicy;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for PasswordPolicy. This utility wraps
@@ -442,9 +449,34 @@ public class PasswordPolicyLocalServiceUtil {
 	}
 
 	public static PasswordPolicyLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			PasswordPolicyLocalServiceUtil::_getService);
 	}
 
-	private static volatile PasswordPolicyLocalService _service;
+	private static PasswordPolicyLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			PasswordPolicyLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<PasswordPolicyLocalService> serviceReference =
+			bundleContext.getServiceReference(PasswordPolicyLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<PasswordPolicyLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

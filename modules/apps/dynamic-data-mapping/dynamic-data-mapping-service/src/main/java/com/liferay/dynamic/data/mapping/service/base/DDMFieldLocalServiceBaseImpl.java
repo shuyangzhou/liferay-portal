@@ -16,7 +16,6 @@ package com.liferay.dynamic.data.mapping.service.base;
 
 import com.liferay.dynamic.data.mapping.model.DDMField;
 import com.liferay.dynamic.data.mapping.service.DDMFieldLocalService;
-import com.liferay.dynamic.data.mapping.service.DDMFieldLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMFieldPersistence;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
@@ -50,13 +49,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -77,7 +73,7 @@ public abstract class DDMFieldLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DDMFieldLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DDMFieldLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DDMFieldLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.dynamic.data.mapping.service.DDMFieldLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -382,24 +378,12 @@ public abstract class DDMFieldLocalServiceBaseImpl
 		return ddmFieldPersistence.update(ddmField);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			DDMFieldLocalService.class, IdentifiableOSGiService.class,
 			CTService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		ddmFieldLocalService = (DDMFieldLocalService)aopProxy;
-
-		_setLocalServiceUtilService(ddmFieldLocalService);
 	}
 
 	/**
@@ -455,22 +439,6 @@ public abstract class DDMFieldLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		DDMFieldLocalService ddmFieldLocalService) {
-
-		try {
-			Field field = DDMFieldLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, ddmFieldLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

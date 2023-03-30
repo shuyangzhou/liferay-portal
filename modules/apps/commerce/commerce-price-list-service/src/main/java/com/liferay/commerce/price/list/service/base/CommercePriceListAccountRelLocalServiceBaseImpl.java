@@ -16,7 +16,6 @@ package com.liferay.commerce.price.list.service.base;
 
 import com.liferay.commerce.price.list.model.CommercePriceListAccountRel;
 import com.liferay.commerce.price.list.service.CommercePriceListAccountRelLocalService;
-import com.liferay.commerce.price.list.service.CommercePriceListAccountRelLocalServiceUtil;
 import com.liferay.commerce.price.list.service.persistence.CommercePriceListAccountRelFinder;
 import com.liferay.commerce.price.list.service.persistence.CommercePriceListAccountRelPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
@@ -57,13 +56,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -85,7 +81,7 @@ public abstract class CommercePriceListAccountRelLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommercePriceListAccountRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommercePriceListAccountRelLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommercePriceListAccountRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.price.list.service.CommercePriceListAccountRelLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -532,11 +528,6 @@ public abstract class CommercePriceListAccountRelLocalServiceBaseImpl
 			commercePriceListAccountRel);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -544,14 +535,6 @@ public abstract class CommercePriceListAccountRelLocalServiceBaseImpl
 			IdentifiableOSGiService.class, CTService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commercePriceListAccountRelLocalService =
-			(CommercePriceListAccountRelLocalService)aopProxy;
-
-		_setLocalServiceUtilService(commercePriceListAccountRelLocalService);
 	}
 
 	/**
@@ -610,24 +593,6 @@ public abstract class CommercePriceListAccountRelLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommercePriceListAccountRelLocalService
-			commercePriceListAccountRelLocalService) {
-
-		try {
-			Field field =
-				CommercePriceListAccountRelLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commercePriceListAccountRelLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

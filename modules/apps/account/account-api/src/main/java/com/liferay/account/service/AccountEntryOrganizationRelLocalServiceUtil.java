@@ -15,15 +15,22 @@
 package com.liferay.account.service;
 
 import com.liferay.account.model.AccountEntryOrganizationRel;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for AccountEntryOrganizationRel. This utility wraps
@@ -444,9 +451,35 @@ public class AccountEntryOrganizationRelLocalServiceUtil {
 	}
 
 	public static AccountEntryOrganizationRelLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			AccountEntryOrganizationRelLocalServiceUtil::_getService);
 	}
 
-	private static volatile AccountEntryOrganizationRelLocalService _service;
+	private static AccountEntryOrganizationRelLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			AccountEntryOrganizationRelLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<AccountEntryOrganizationRelLocalService>
+			serviceReference = bundleContext.getServiceReference(
+				AccountEntryOrganizationRelLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<AccountEntryOrganizationRelLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

@@ -15,9 +15,16 @@
 package com.liferay.object.service;
 
 import com.liferay.object.model.ObjectAction;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for ObjectAction. This utility wraps
@@ -94,9 +101,33 @@ public class ObjectActionServiceUtil {
 	}
 
 	public static ObjectActionService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			ObjectActionServiceUtil::_getService);
 	}
 
-	private static volatile ObjectActionService _service;
+	private static ObjectActionService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(ObjectActionServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<ObjectActionService> serviceReference =
+			bundleContext.getServiceReference(ObjectActionService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<ObjectActionService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

@@ -15,7 +15,14 @@
 package com.liferay.journal.service;
 
 import com.liferay.journal.model.JournalFeed;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for JournalFeed. This utility wraps
@@ -100,9 +107,33 @@ public class JournalFeedServiceUtil {
 	}
 
 	public static JournalFeedService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			JournalFeedServiceUtil::_getService);
 	}
 
-	private static volatile JournalFeedService _service;
+	private static JournalFeedService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(JournalFeedServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<JournalFeedService> serviceReference =
+			bundleContext.getServiceReference(JournalFeedService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<JournalFeedService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

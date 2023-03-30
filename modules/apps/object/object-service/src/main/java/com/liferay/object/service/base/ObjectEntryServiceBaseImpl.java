@@ -16,7 +16,6 @@ package com.liferay.object.service.base;
 
 import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.service.ObjectEntryService;
-import com.liferay.object.service.ObjectEntryServiceUtil;
 import com.liferay.object.service.persistence.ObjectEntryPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,25 +51,13 @@ public abstract class ObjectEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ObjectEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ObjectEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ObjectEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.object.service.ObjectEntryServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			ObjectEntryService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		objectEntryService = (ObjectEntryService)aopProxy;
-
-		_setServiceUtilService(objectEntryService);
 	}
 
 	/**
@@ -115,20 +99,6 @@ public abstract class ObjectEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(ObjectEntryService objectEntryService) {
-		try {
-			Field field = ObjectEntryServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, objectEntryService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

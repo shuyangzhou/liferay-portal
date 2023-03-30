@@ -14,8 +14,15 @@
 
 package com.liferay.social.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.social.kernel.model.SocialRequest;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for SocialRequest. This utility wraps
@@ -55,9 +62,33 @@ public class SocialRequestServiceUtil {
 	}
 
 	public static SocialRequestService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			SocialRequestServiceUtil::_getService);
 	}
 
-	private static volatile SocialRequestService _service;
+	private static SocialRequestService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(SocialRequestServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<SocialRequestService> serviceReference =
+			bundleContext.getServiceReference(SocialRequestService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<SocialRequestService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

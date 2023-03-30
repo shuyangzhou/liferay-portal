@@ -16,7 +16,6 @@ package com.liferay.commerce.inventory.service.base;
 
 import com.liferay.commerce.inventory.model.CommerceInventoryWarehouseItem;
 import com.liferay.commerce.inventory.service.CommerceInventoryWarehouseItemService;
-import com.liferay.commerce.inventory.service.CommerceInventoryWarehouseItemServiceUtil;
 import com.liferay.commerce.inventory.service.persistence.CommerceInventoryWarehouseItemFinder;
 import com.liferay.commerce.inventory.service.persistence.CommerceInventoryWarehouseItemPersistence;
 import com.liferay.portal.aop.AopService;
@@ -31,11 +30,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -57,27 +53,14 @@ public abstract class CommerceInventoryWarehouseItemServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceInventoryWarehouseItemService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceInventoryWarehouseItemServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceInventoryWarehouseItemService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.inventory.service.CommerceInventoryWarehouseItemServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceInventoryWarehouseItemService.class,
 			IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceInventoryWarehouseItemService =
-			(CommerceInventoryWarehouseItemService)aopProxy;
-
-		_setServiceUtilService(commerceInventoryWarehouseItemService);
 	}
 
 	/**
@@ -120,24 +103,6 @@ public abstract class CommerceInventoryWarehouseItemServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CommerceInventoryWarehouseItemService
-			commerceInventoryWarehouseItemService) {
-
-		try {
-			Field field =
-				CommerceInventoryWarehouseItemServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceInventoryWarehouseItemService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

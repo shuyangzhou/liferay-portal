@@ -16,7 +16,6 @@ package com.liferay.commerce.notification.service.base;
 
 import com.liferay.commerce.notification.model.CommerceNotificationTemplate;
 import com.liferay.commerce.notification.service.CommerceNotificationTemplateService;
-import com.liferay.commerce.notification.service.CommerceNotificationTemplateServiceUtil;
 import com.liferay.commerce.notification.service.persistence.CommerceNotificationTemplatePersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,27 +52,14 @@ public abstract class CommerceNotificationTemplateServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceNotificationTemplateService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceNotificationTemplateServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceNotificationTemplateService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.notification.service.CommerceNotificationTemplateServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceNotificationTemplateService.class,
 			IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceNotificationTemplateService =
-			(CommerceNotificationTemplateService)aopProxy;
-
-		_setServiceUtilService(commerceNotificationTemplateService);
 	}
 
 	/**
@@ -119,24 +102,6 @@ public abstract class CommerceNotificationTemplateServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CommerceNotificationTemplateService
-			commerceNotificationTemplateService) {
-
-		try {
-			Field field =
-				CommerceNotificationTemplateServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceNotificationTemplateService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

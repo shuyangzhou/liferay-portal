@@ -15,10 +15,17 @@
 package com.liferay.asset.list.service;
 
 import com.liferay.asset.list.model.AssetListEntry;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for AssetListEntry. This utility wraps
@@ -292,9 +299,34 @@ public class AssetListEntryServiceUtil {
 	}
 
 	public static AssetListEntryService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			AssetListEntryServiceUtil::_getService);
 	}
 
-	private static volatile AssetListEntryService _service;
+	private static AssetListEntryService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			AssetListEntryServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<AssetListEntryService> serviceReference =
+			bundleContext.getServiceReference(AssetListEntryService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<AssetListEntryService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

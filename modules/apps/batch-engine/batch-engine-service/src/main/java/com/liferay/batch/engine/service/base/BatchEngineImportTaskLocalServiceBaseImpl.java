@@ -17,7 +17,6 @@ package com.liferay.batch.engine.service.base;
 import com.liferay.batch.engine.model.BatchEngineImportTask;
 import com.liferay.batch.engine.model.BatchEngineImportTaskContentBlobModel;
 import com.liferay.batch.engine.service.BatchEngineImportTaskLocalService;
-import com.liferay.batch.engine.service.BatchEngineImportTaskLocalServiceUtil;
 import com.liferay.batch.engine.service.persistence.BatchEngineImportTaskPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
@@ -60,8 +59,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import java.io.InputStream;
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.sql.Blob;
 
 import java.util.List;
@@ -69,7 +66,6 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -91,7 +87,7 @@ public abstract class BatchEngineImportTaskLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>BatchEngineImportTaskLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>BatchEngineImportTaskLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>BatchEngineImportTaskLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.batch.engine.service.BatchEngineImportTaskLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -607,25 +603,12 @@ public abstract class BatchEngineImportTaskLocalServiceBaseImpl
 		}
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			BatchEngineImportTaskLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		batchEngineImportTaskLocalService =
-			(BatchEngineImportTaskLocalService)aopProxy;
-
-		_setLocalServiceUtilService(batchEngineImportTaskLocalService);
 	}
 
 	/**
@@ -668,23 +651,6 @@ public abstract class BatchEngineImportTaskLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		BatchEngineImportTaskLocalService batchEngineImportTaskLocalService) {
-
-		try {
-			Field field =
-				BatchEngineImportTaskLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, batchEngineImportTaskLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

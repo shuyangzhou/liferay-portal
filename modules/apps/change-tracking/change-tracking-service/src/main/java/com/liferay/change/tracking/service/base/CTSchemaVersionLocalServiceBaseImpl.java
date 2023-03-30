@@ -16,7 +16,6 @@ package com.liferay.change.tracking.service.base;
 
 import com.liferay.change.tracking.model.CTSchemaVersion;
 import com.liferay.change.tracking.service.CTSchemaVersionLocalService;
-import com.liferay.change.tracking.service.CTSchemaVersionLocalServiceUtil;
 import com.liferay.change.tracking.service.persistence.CTSchemaVersionPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -75,7 +71,7 @@ public abstract class CTSchemaVersionLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CTSchemaVersionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CTSchemaVersionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CTSchemaVersionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.change.tracking.service.CTSchemaVersionLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -391,24 +387,12 @@ public abstract class CTSchemaVersionLocalServiceBaseImpl
 		return ctSchemaVersionPersistence.update(ctSchemaVersion);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CTSchemaVersionLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		ctSchemaVersionLocalService = (CTSchemaVersionLocalService)aopProxy;
-
-		_setLocalServiceUtilService(ctSchemaVersionLocalService);
 	}
 
 	/**
@@ -450,23 +434,6 @@ public abstract class CTSchemaVersionLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CTSchemaVersionLocalService ctSchemaVersionLocalService) {
-
-		try {
-			Field field =
-				CTSchemaVersionLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, ctSchemaVersionLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

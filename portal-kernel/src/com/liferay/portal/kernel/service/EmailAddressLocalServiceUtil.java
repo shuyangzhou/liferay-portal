@@ -14,16 +14,23 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.EmailAddress;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for EmailAddress. This utility wraps
@@ -364,9 +371,34 @@ public class EmailAddressLocalServiceUtil {
 	}
 
 	public static EmailAddressLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			EmailAddressLocalServiceUtil::_getService);
 	}
 
-	private static volatile EmailAddressLocalService _service;
+	private static EmailAddressLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			EmailAddressLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<EmailAddressLocalService> serviceReference =
+			bundleContext.getServiceReference(EmailAddressLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<EmailAddressLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

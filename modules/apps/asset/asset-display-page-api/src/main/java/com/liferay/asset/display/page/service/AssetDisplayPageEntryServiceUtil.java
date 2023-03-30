@@ -15,9 +15,16 @@
 package com.liferay.asset.display.page.service;
 
 import com.liferay.asset.display.page.model.AssetDisplayPageEntry;
+import com.liferay.petra.concurrent.DCLSingleton;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for AssetDisplayPageEntry. This utility wraps
@@ -141,9 +148,35 @@ public class AssetDisplayPageEntryServiceUtil {
 	}
 
 	public static AssetDisplayPageEntryService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			AssetDisplayPageEntryServiceUtil::_getService);
 	}
 
-	private static volatile AssetDisplayPageEntryService _service;
+	private static AssetDisplayPageEntryService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			AssetDisplayPageEntryServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<AssetDisplayPageEntryService> serviceReference =
+			bundleContext.getServiceReference(
+				AssetDisplayPageEntryService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<AssetDisplayPageEntryService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

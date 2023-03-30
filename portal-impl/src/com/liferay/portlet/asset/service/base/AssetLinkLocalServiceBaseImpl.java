@@ -16,7 +16,6 @@ package com.liferay.portlet.asset.service.base;
 
 import com.liferay.asset.kernel.model.AssetLink;
 import com.liferay.asset.kernel.service.AssetLinkLocalService;
-import com.liferay.asset.kernel.service.AssetLinkLocalServiceUtil;
 import com.liferay.asset.kernel.service.persistence.AssetLinkFinder;
 import com.liferay.asset.kernel.service.persistence.AssetLinkPersistence;
 import com.liferay.petra.function.UnsafeFunction;
@@ -50,8 +49,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -74,7 +71,7 @@ public abstract class AssetLinkLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AssetLinkLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AssetLinkLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AssetLinkLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.asset.kernel.service.AssetLinkLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -463,15 +460,11 @@ public abstract class AssetLinkLocalServiceBaseImpl
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.asset.kernel.model.AssetLink", assetLinkLocalService);
-
-		_setLocalServiceUtilService(assetLinkLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.asset.kernel.model.AssetLink");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -527,22 +520,6 @@ public abstract class AssetLinkLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		AssetLinkLocalService assetLinkLocalService) {
-
-		try {
-			Field field = AssetLinkLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, assetLinkLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

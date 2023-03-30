@@ -51,18 +51,14 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.segments.model.SegmentsEntry;
 import com.liferay.segments.service.SegmentsEntryLocalService;
-import com.liferay.segments.service.SegmentsEntryLocalServiceUtil;
 import com.liferay.segments.service.persistence.SegmentsEntryPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -83,7 +79,7 @@ public abstract class SegmentsEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SegmentsEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SegmentsEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SegmentsEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.segments.service.SegmentsEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -530,24 +526,12 @@ public abstract class SegmentsEntryLocalServiceBaseImpl
 		return segmentsEntryPersistence.update(segmentsEntry);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			SegmentsEntryLocalService.class, IdentifiableOSGiService.class,
 			CTService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		segmentsEntryLocalService = (SegmentsEntryLocalService)aopProxy;
-
-		_setLocalServiceUtilService(segmentsEntryLocalService);
 	}
 
 	/**
@@ -604,22 +588,6 @@ public abstract class SegmentsEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		SegmentsEntryLocalService segmentsEntryLocalService) {
-
-		try {
-			Field field = SegmentsEntryLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, segmentsEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -15,9 +15,16 @@
 package com.liferay.commerce.qualifier.service;
 
 import com.liferay.commerce.qualifier.model.CommerceQualifierEntry;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for CommerceQualifierEntry. This utility wraps
@@ -143,9 +150,35 @@ public class CommerceQualifierEntryServiceUtil {
 	}
 
 	public static CommerceQualifierEntryService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommerceQualifierEntryServiceUtil::_getService);
 	}
 
-	private static volatile CommerceQualifierEntryService _service;
+	private static CommerceQualifierEntryService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CommerceQualifierEntryServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommerceQualifierEntryService> serviceReference =
+			bundleContext.getServiceReference(
+				CommerceQualifierEntryService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CommerceQualifierEntryService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

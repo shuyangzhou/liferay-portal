@@ -21,7 +21,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.object.model.ObjectAction;
 import com.liferay.object.service.ObjectActionLocalService;
-import com.liferay.object.service.ObjectActionLocalServiceUtil;
 import com.liferay.object.service.persistence.ObjectActionPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -53,13 +52,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -80,7 +76,7 @@ public abstract class ObjectActionLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ObjectActionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ObjectActionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ObjectActionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.object.service.ObjectActionLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -490,24 +486,12 @@ public abstract class ObjectActionLocalServiceBaseImpl
 		return objectActionPersistence.update(objectAction);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			ObjectActionLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		objectActionLocalService = (ObjectActionLocalService)aopProxy;
-
-		_setLocalServiceUtilService(objectActionLocalService);
 	}
 
 	/**
@@ -549,22 +533,6 @@ public abstract class ObjectActionLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		ObjectActionLocalService objectActionLocalService) {
-
-		try {
-			Field field = ObjectActionLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, objectActionLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

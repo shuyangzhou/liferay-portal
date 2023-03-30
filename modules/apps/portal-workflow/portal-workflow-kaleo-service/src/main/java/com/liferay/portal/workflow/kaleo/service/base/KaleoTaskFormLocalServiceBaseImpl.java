@@ -45,18 +45,14 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskForm;
 import com.liferay.portal.workflow.kaleo.service.KaleoTaskFormLocalService;
-import com.liferay.portal.workflow.kaleo.service.KaleoTaskFormLocalServiceUtil;
 import com.liferay.portal.workflow.kaleo.service.persistence.KaleoTaskFormPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -77,7 +73,7 @@ public abstract class KaleoTaskFormLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>KaleoTaskFormLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>KaleoTaskFormLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>KaleoTaskFormLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.workflow.kaleo.service.KaleoTaskFormLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -389,24 +385,12 @@ public abstract class KaleoTaskFormLocalServiceBaseImpl
 		return kaleoTaskFormPersistence.update(kaleoTaskForm);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			KaleoTaskFormLocalService.class, IdentifiableOSGiService.class,
 			CTService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		kaleoTaskFormLocalService = (KaleoTaskFormLocalService)aopProxy;
-
-		_setLocalServiceUtilService(kaleoTaskFormLocalService);
 	}
 
 	/**
@@ -463,22 +447,6 @@ public abstract class KaleoTaskFormLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		KaleoTaskFormLocalService kaleoTaskFormLocalService) {
-
-		try {
-			Field field = KaleoTaskFormLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, kaleoTaskFormLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

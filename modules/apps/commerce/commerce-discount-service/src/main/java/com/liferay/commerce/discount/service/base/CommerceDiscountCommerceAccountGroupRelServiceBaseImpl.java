@@ -16,7 +16,6 @@ package com.liferay.commerce.discount.service.base;
 
 import com.liferay.commerce.discount.model.CommerceDiscountCommerceAccountGroupRel;
 import com.liferay.commerce.discount.service.CommerceDiscountCommerceAccountGroupRelService;
-import com.liferay.commerce.discount.service.CommerceDiscountCommerceAccountGroupRelServiceUtil;
 import com.liferay.commerce.discount.service.persistence.CommerceDiscountCommerceAccountGroupRelFinder;
 import com.liferay.commerce.discount.service.persistence.CommerceDiscountCommerceAccountGroupRelPersistence;
 import com.liferay.portal.aop.AopService;
@@ -31,11 +30,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -57,27 +53,14 @@ public abstract class CommerceDiscountCommerceAccountGroupRelServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceDiscountCommerceAccountGroupRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceDiscountCommerceAccountGroupRelServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceDiscountCommerceAccountGroupRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.discount.service.CommerceDiscountCommerceAccountGroupRelServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceDiscountCommerceAccountGroupRelService.class,
 			IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceDiscountCommerceAccountGroupRelService =
-			(CommerceDiscountCommerceAccountGroupRelService)aopProxy;
-
-		_setServiceUtilService(commerceDiscountCommerceAccountGroupRelService);
 	}
 
 	/**
@@ -121,24 +104,6 @@ public abstract class CommerceDiscountCommerceAccountGroupRelServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CommerceDiscountCommerceAccountGroupRelService
-			commerceDiscountCommerceAccountGroupRelService) {
-
-		try {
-			Field field =
-				CommerceDiscountCommerceAccountGroupRelServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceDiscountCommerceAccountGroupRelService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

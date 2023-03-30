@@ -14,8 +14,15 @@
 
 package com.liferay.translation.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.translation.model.TranslationEntry;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for TranslationEntry. This utility wraps
@@ -76,9 +83,34 @@ public class TranslationEntryServiceUtil {
 	}
 
 	public static TranslationEntryService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			TranslationEntryServiceUtil::_getService);
 	}
 
-	private static volatile TranslationEntryService _service;
+	private static TranslationEntryService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			TranslationEntryServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<TranslationEntryService> serviceReference =
+			bundleContext.getServiceReference(TranslationEntryService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<TranslationEntryService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

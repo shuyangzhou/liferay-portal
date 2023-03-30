@@ -16,7 +16,6 @@ package com.liferay.change.tracking.service.base;
 
 import com.liferay.change.tracking.model.CTComment;
 import com.liferay.change.tracking.service.CTCommentLocalService;
-import com.liferay.change.tracking.service.CTCommentLocalServiceUtil;
 import com.liferay.change.tracking.service.persistence.CTCommentPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -74,7 +70,7 @@ public abstract class CTCommentLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CTCommentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CTCommentLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CTCommentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.change.tracking.service.CTCommentLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -380,24 +376,12 @@ public abstract class CTCommentLocalServiceBaseImpl
 		return ctCommentPersistence.update(ctComment);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CTCommentLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		ctCommentLocalService = (CTCommentLocalService)aopProxy;
-
-		_setLocalServiceUtilService(ctCommentLocalService);
 	}
 
 	/**
@@ -439,22 +423,6 @@ public abstract class CTCommentLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CTCommentLocalService ctCommentLocalService) {
-
-		try {
-			Field field = CTCommentLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, ctCommentLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

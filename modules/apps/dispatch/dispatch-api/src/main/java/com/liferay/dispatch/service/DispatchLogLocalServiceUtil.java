@@ -15,15 +15,22 @@
 package com.liferay.dispatch.service;
 
 import com.liferay.dispatch.model.DispatchLog;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for DispatchLog. This utility wraps
@@ -347,9 +354,34 @@ public class DispatchLogLocalServiceUtil {
 	}
 
 	public static DispatchLogLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			DispatchLogLocalServiceUtil::_getService);
 	}
 
-	private static volatile DispatchLogLocalService _service;
+	private static DispatchLogLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			DispatchLogLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<DispatchLogLocalService> serviceReference =
+			bundleContext.getServiceReference(DispatchLogLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<DispatchLogLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

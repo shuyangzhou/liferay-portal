@@ -14,10 +14,17 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Website;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for Website. This utility wraps
@@ -78,9 +85,33 @@ public class WebsiteServiceUtil {
 	}
 
 	public static WebsiteService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			WebsiteServiceUtil::_getService);
 	}
 
-	private static volatile WebsiteService _service;
+	private static WebsiteService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(WebsiteServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<WebsiteService> serviceReference =
+			bundleContext.getServiceReference(WebsiteService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<WebsiteService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

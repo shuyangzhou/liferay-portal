@@ -16,7 +16,6 @@ package com.liferay.document.library.service.base;
 
 import com.liferay.document.library.model.DLStorageQuota;
 import com.liferay.document.library.service.DLStorageQuotaLocalService;
-import com.liferay.document.library.service.DLStorageQuotaLocalServiceUtil;
 import com.liferay.document.library.service.persistence.DLStorageQuotaPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -74,7 +70,7 @@ public abstract class DLStorageQuotaLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DLStorageQuotaLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DLStorageQuotaLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DLStorageQuotaLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.document.library.service.DLStorageQuotaLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -386,24 +382,12 @@ public abstract class DLStorageQuotaLocalServiceBaseImpl
 		return dlStorageQuotaPersistence.update(dlStorageQuota);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			DLStorageQuotaLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		dlStorageQuotaLocalService = (DLStorageQuotaLocalService)aopProxy;
-
-		_setLocalServiceUtilService(dlStorageQuotaLocalService);
 	}
 
 	/**
@@ -445,22 +429,6 @@ public abstract class DLStorageQuotaLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		DLStorageQuotaLocalService dlStorageQuotaLocalService) {
-
-		try {
-			Field field = DLStorageQuotaLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, dlStorageQuotaLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -42,18 +42,14 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.tools.service.builder.test.sequence.model.SequenceEntry;
 import com.liferay.portal.tools.service.builder.test.sequence.service.SequenceEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.sequence.service.SequenceEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.sequence.service.persistence.SequenceEntryPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -74,7 +70,7 @@ public abstract class SequenceEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SequenceEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SequenceEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SequenceEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.sequence.service.SequenceEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -418,24 +414,12 @@ public abstract class SequenceEntryLocalServiceBaseImpl
 		return sequenceEntryPersistence.update(sequenceEntry);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			SequenceEntryLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		sequenceEntryLocalService = (SequenceEntryLocalService)aopProxy;
-
-		_setLocalServiceUtilService(sequenceEntryLocalService);
 	}
 
 	/**
@@ -477,22 +461,6 @@ public abstract class SequenceEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		SequenceEntryLocalService sequenceEntryLocalService) {
-
-		try {
-			Field field = SequenceEntryLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, sequenceEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

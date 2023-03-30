@@ -16,7 +16,6 @@ package com.liferay.akismet.service.base;
 
 import com.liferay.akismet.model.AkismetEntry;
 import com.liferay.akismet.service.AkismetEntryLocalService;
-import com.liferay.akismet.service.AkismetEntryLocalServiceUtil;
 import com.liferay.akismet.service.persistence.AkismetEntryPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -74,7 +70,7 @@ public abstract class AkismetEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AkismetEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AkismetEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AkismetEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.akismet.service.AkismetEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -386,24 +382,12 @@ public abstract class AkismetEntryLocalServiceBaseImpl
 		return akismetEntryPersistence.update(akismetEntry);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			AkismetEntryLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		akismetEntryLocalService = (AkismetEntryLocalService)aopProxy;
-
-		_setLocalServiceUtilService(akismetEntryLocalService);
 	}
 
 	/**
@@ -445,22 +429,6 @@ public abstract class AkismetEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		AkismetEntryLocalService akismetEntryLocalService) {
-
-		try {
-			Field field = AkismetEntryLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, akismetEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

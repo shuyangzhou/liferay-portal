@@ -16,7 +16,6 @@ package com.liferay.commerce.pricing.service.base;
 
 import com.liferay.commerce.pricing.model.CommercePricingClassCPDefinitionRel;
 import com.liferay.commerce.pricing.service.CommercePricingClassCPDefinitionRelLocalService;
-import com.liferay.commerce.pricing.service.CommercePricingClassCPDefinitionRelLocalServiceUtil;
 import com.liferay.commerce.pricing.service.persistence.CommercePricingClassCPDefinitionRelFinder;
 import com.liferay.commerce.pricing.service.persistence.CommercePricingClassCPDefinitionRelPersistence;
 import com.liferay.petra.function.UnsafeFunction;
@@ -51,13 +50,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -79,7 +75,7 @@ public abstract class CommercePricingClassCPDefinitionRelLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommercePricingClassCPDefinitionRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommercePricingClassCPDefinitionRelLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommercePricingClassCPDefinitionRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.pricing.service.CommercePricingClassCPDefinitionRelLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -439,11 +435,6 @@ public abstract class CommercePricingClassCPDefinitionRelLocalServiceBaseImpl
 			commercePricingClassCPDefinitionRel);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -451,15 +442,6 @@ public abstract class CommercePricingClassCPDefinitionRelLocalServiceBaseImpl
 			IdentifiableOSGiService.class, CTService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commercePricingClassCPDefinitionRelLocalService =
-			(CommercePricingClassCPDefinitionRelLocalService)aopProxy;
-
-		_setLocalServiceUtilService(
-			commercePricingClassCPDefinitionRelLocalService);
 	}
 
 	/**
@@ -521,24 +503,6 @@ public abstract class CommercePricingClassCPDefinitionRelLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommercePricingClassCPDefinitionRelLocalService
-			commercePricingClassCPDefinitionRelLocalService) {
-
-		try {
-			Field field =
-				CommercePricingClassCPDefinitionRelLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commercePricingClassCPDefinitionRelLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

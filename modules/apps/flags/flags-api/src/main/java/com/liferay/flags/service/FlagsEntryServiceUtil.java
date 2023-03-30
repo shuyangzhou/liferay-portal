@@ -14,7 +14,14 @@
 
 package com.liferay.flags.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for FlagsEntry. This utility wraps
@@ -57,9 +64,33 @@ public class FlagsEntryServiceUtil {
 	}
 
 	public static FlagsEntryService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			FlagsEntryServiceUtil::_getService);
 	}
 
-	private static volatile FlagsEntryService _service;
+	private static FlagsEntryService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(FlagsEntryServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<FlagsEntryService> serviceReference =
+			bundleContext.getServiceReference(FlagsEntryService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<FlagsEntryService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

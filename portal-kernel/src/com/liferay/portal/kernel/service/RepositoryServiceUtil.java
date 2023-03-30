@@ -14,8 +14,15 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Repository;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for Repository. This utility wraps
@@ -97,9 +104,33 @@ public class RepositoryServiceUtil {
 	}
 
 	public static RepositoryService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			RepositoryServiceUtil::_getService);
 	}
 
-	private static volatile RepositoryService _service;
+	private static RepositoryService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(RepositoryServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<RepositoryService> serviceReference =
+			bundleContext.getServiceReference(RepositoryService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<RepositoryService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

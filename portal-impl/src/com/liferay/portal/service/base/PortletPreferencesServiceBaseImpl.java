@@ -26,12 +26,9 @@ import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.PortletPreferencesService;
-import com.liferay.portal.kernel.service.PortletPreferencesServiceUtil;
 import com.liferay.portal.kernel.service.persistence.PortletPreferencesFinder;
 import com.liferay.portal.kernel.service.persistence.PortletPreferencesPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -53,7 +50,7 @@ public abstract class PortletPreferencesServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PortletPreferencesService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PortletPreferencesServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>PortletPreferencesService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.PortletPreferencesServiceUtil</code>.
 	 */
 
 	/**
@@ -163,11 +160,9 @@ public abstract class PortletPreferencesServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(portletPreferencesService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
 	}
 
 	/**
@@ -210,22 +205,6 @@ public abstract class PortletPreferencesServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		PortletPreferencesService portletPreferencesService) {
-
-		try {
-			Field field = PortletPreferencesServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, portletPreferencesService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

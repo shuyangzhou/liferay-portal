@@ -15,10 +15,17 @@
 package com.liferay.object.service;
 
 import com.liferay.object.model.ObjectView;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for ObjectView. This utility wraps
@@ -91,9 +98,33 @@ public class ObjectViewServiceUtil {
 	}
 
 	public static ObjectViewService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			ObjectViewServiceUtil::_getService);
 	}
 
-	private static volatile ObjectViewService _service;
+	private static ObjectViewService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(ObjectViewServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<ObjectViewService> serviceReference =
+			bundleContext.getServiceReference(ObjectViewService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<ObjectViewService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

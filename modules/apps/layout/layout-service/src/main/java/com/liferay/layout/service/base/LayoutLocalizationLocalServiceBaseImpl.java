@@ -21,7 +21,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.layout.model.LayoutLocalization;
 import com.liferay.layout.service.LayoutLocalizationLocalService;
-import com.liferay.layout.service.LayoutLocalizationLocalServiceUtil;
 import com.liferay.layout.service.persistence.LayoutLocalizationPersistence;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
@@ -56,13 +55,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -84,7 +80,7 @@ public abstract class LayoutLocalizationLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LayoutLocalizationLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LayoutLocalizationLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LayoutLocalizationLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.layout.service.LayoutLocalizationLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -544,25 +540,12 @@ public abstract class LayoutLocalizationLocalServiceBaseImpl
 		return layoutLocalizationPersistence.update(layoutLocalization);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			LayoutLocalizationLocalService.class, IdentifiableOSGiService.class,
 			CTService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		layoutLocalizationLocalService =
-			(LayoutLocalizationLocalService)aopProxy;
-
-		_setLocalServiceUtilService(layoutLocalizationLocalService);
 	}
 
 	/**
@@ -620,23 +603,6 @@ public abstract class LayoutLocalizationLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		LayoutLocalizationLocalService layoutLocalizationLocalService) {
-
-		try {
-			Field field =
-				LayoutLocalizationLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, layoutLocalizationLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

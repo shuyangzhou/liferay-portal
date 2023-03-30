@@ -15,7 +15,9 @@
 package com.liferay.document.library.kernel.service;
 
 import com.liferay.document.library.kernel.model.DLFileEntry;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.InputStream;
@@ -23,6 +25,11 @@ import java.io.Serializable;
 
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for DLFileEntry. This utility wraps
@@ -471,9 +478,33 @@ public class DLFileEntryServiceUtil {
 	}
 
 	public static DLFileEntryService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			DLFileEntryServiceUtil::_getService);
 	}
 
-	private static volatile DLFileEntryService _service;
+	private static DLFileEntryService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(DLFileEntryServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<DLFileEntryService> serviceReference =
+			bundleContext.getServiceReference(DLFileEntryService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<DLFileEntryService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

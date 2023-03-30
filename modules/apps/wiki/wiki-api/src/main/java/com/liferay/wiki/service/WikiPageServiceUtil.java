@@ -14,13 +14,20 @@
 
 package com.liferay.wiki.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.wiki.model.WikiPage;
 
 import java.io.InputStream;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for WikiPage. This utility wraps
@@ -466,9 +473,33 @@ public class WikiPageServiceUtil {
 	}
 
 	public static WikiPageService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			WikiPageServiceUtil::_getService);
 	}
 
-	private static volatile WikiPageService _service;
+	private static WikiPageService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(WikiPageServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<WikiPageService> serviceReference =
+			bundleContext.getServiceReference(WikiPageService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<WikiPageService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

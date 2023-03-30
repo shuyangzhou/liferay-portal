@@ -15,16 +15,23 @@
 package com.liferay.account.service;
 
 import com.liferay.account.model.AccountRole;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for AccountRole. This utility wraps
@@ -396,9 +403,34 @@ public class AccountRoleLocalServiceUtil {
 	}
 
 	public static AccountRoleLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			AccountRoleLocalServiceUtil::_getService);
 	}
 
-	private static volatile AccountRoleLocalService _service;
+	private static AccountRoleLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			AccountRoleLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<AccountRoleLocalService> serviceReference =
+			bundleContext.getServiceReference(AccountRoleLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<AccountRoleLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

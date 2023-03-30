@@ -16,7 +16,6 @@ package com.liferay.commerce.term.service.base;
 
 import com.liferay.commerce.term.model.CommerceTermEntryRel;
 import com.liferay.commerce.term.service.CommerceTermEntryRelService;
-import com.liferay.commerce.term.service.CommerceTermEntryRelServiceUtil;
 import com.liferay.commerce.term.service.persistence.CommerceTermEntryRelPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,25 +52,13 @@ public abstract class CommerceTermEntryRelServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceTermEntryRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceTermEntryRelServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceTermEntryRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.term.service.CommerceTermEntryRelServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceTermEntryRelService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceTermEntryRelService = (CommerceTermEntryRelService)aopProxy;
-
-		_setServiceUtilService(commerceTermEntryRelService);
 	}
 
 	/**
@@ -117,23 +101,6 @@ public abstract class CommerceTermEntryRelServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CommerceTermEntryRelService commerceTermEntryRelService) {
-
-		try {
-			Field field =
-				CommerceTermEntryRelServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceTermEntryRelService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

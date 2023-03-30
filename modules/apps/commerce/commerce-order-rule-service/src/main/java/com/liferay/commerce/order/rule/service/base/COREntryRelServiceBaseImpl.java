@@ -16,7 +16,6 @@ package com.liferay.commerce.order.rule.service.base;
 
 import com.liferay.commerce.order.rule.model.COREntryRel;
 import com.liferay.commerce.order.rule.service.COREntryRelService;
-import com.liferay.commerce.order.rule.service.COREntryRelServiceUtil;
 import com.liferay.commerce.order.rule.service.persistence.COREntryRelPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,25 +51,13 @@ public abstract class COREntryRelServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>COREntryRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>COREntryRelServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>COREntryRelService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.order.rule.service.COREntryRelServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			COREntryRelService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		corEntryRelService = (COREntryRelService)aopProxy;
-
-		_setServiceUtilService(corEntryRelService);
 	}
 
 	/**
@@ -115,20 +99,6 @@ public abstract class COREntryRelServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(COREntryRelService corEntryRelService) {
-		try {
-			Field field = COREntryRelServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, corEntryRelService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

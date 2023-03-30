@@ -44,12 +44,9 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.social.kernel.model.SocialActivityAchievement;
 import com.liferay.social.kernel.service.SocialActivityAchievementLocalService;
-import com.liferay.social.kernel.service.SocialActivityAchievementLocalServiceUtil;
 import com.liferay.social.kernel.service.persistence.SocialActivityAchievementPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -73,7 +70,7 @@ public abstract class SocialActivityAchievementLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SocialActivityAchievementLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SocialActivityAchievementLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SocialActivityAchievementLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.social.kernel.service.SocialActivityAchievementLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -490,15 +487,11 @@ public abstract class SocialActivityAchievementLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.social.kernel.model.SocialActivityAchievement",
 			socialActivityAchievementLocalService);
-
-		_setLocalServiceUtilService(socialActivityAchievementLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.social.kernel.model.SocialActivityAchievement");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -556,24 +549,6 @@ public abstract class SocialActivityAchievementLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		SocialActivityAchievementLocalService
-			socialActivityAchievementLocalService) {
-
-		try {
-			Field field =
-				SocialActivityAchievementLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, socialActivityAchievementLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

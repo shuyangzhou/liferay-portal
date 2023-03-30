@@ -15,11 +15,18 @@
 package com.liferay.calendar.service;
 
 import com.liferay.calendar.model.Calendar;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for Calendar. This utility wraps
@@ -231,9 +238,33 @@ public class CalendarServiceUtil {
 	}
 
 	public static CalendarService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CalendarServiceUtil::_getService);
 	}
 
-	private static volatile CalendarService _service;
+	private static CalendarService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(CalendarServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CalendarService> serviceReference =
+			bundleContext.getServiceReference(CalendarService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CalendarService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

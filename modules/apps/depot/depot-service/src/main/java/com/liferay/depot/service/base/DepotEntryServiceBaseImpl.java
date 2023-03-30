@@ -16,7 +16,6 @@ package com.liferay.depot.service.base;
 
 import com.liferay.depot.model.DepotEntry;
 import com.liferay.depot.service.DepotEntryService;
-import com.liferay.depot.service.DepotEntryServiceUtil;
 import com.liferay.depot.service.persistence.DepotEntryPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,25 +51,13 @@ public abstract class DepotEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DepotEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DepotEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DepotEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.depot.service.DepotEntryServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			DepotEntryService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		depotEntryService = (DepotEntryService)aopProxy;
-
-		_setServiceUtilService(depotEntryService);
 	}
 
 	/**
@@ -115,20 +99,6 @@ public abstract class DepotEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(DepotEntryService depotEntryService) {
-		try {
-			Field field = DepotEntryServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, depotEntryService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

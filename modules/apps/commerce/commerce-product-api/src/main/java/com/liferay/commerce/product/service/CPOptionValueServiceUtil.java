@@ -15,10 +15,17 @@
 package com.liferay.commerce.product.service;
 
 import com.liferay.commerce.product.model.CPOptionValue;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for CPOptionValue. This utility wraps
@@ -137,9 +144,33 @@ public class CPOptionValueServiceUtil {
 	}
 
 	public static CPOptionValueService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CPOptionValueServiceUtil::_getService);
 	}
 
-	private static volatile CPOptionValueService _service;
+	private static CPOptionValueService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(CPOptionValueServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CPOptionValueService> serviceReference =
+			bundleContext.getServiceReference(CPOptionValueService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CPOptionValueService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

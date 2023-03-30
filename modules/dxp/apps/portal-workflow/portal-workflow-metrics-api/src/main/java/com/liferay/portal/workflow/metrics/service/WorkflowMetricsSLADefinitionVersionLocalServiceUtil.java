@@ -14,16 +14,23 @@
 
 package com.liferay.portal.workflow.metrics.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.workflow.metrics.model.WorkflowMetricsSLADefinitionVersion;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for WorkflowMetricsSLADefinitionVersion. This utility wraps
@@ -439,10 +446,38 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	}
 
 	public static WorkflowMetricsSLADefinitionVersionLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			WorkflowMetricsSLADefinitionVersionLocalServiceUtil::_getService);
 	}
 
-	private static volatile WorkflowMetricsSLADefinitionVersionLocalService
-		_service;
+	private static WorkflowMetricsSLADefinitionVersionLocalService
+		_getService() {
+
+		Bundle bundle = FrameworkUtil.getBundle(
+			WorkflowMetricsSLADefinitionVersionLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<WorkflowMetricsSLADefinitionVersionLocalService>
+			serviceReference = bundleContext.getServiceReference(
+				WorkflowMetricsSLADefinitionVersionLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton
+		<WorkflowMetricsSLADefinitionVersionLocalService> _serviceDCLSingleton =
+			new DCLSingleton<>();
 
 }

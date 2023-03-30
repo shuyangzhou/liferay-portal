@@ -15,9 +15,16 @@
 package com.liferay.commerce.product.type.virtual.service;
 
 import com.liferay.commerce.product.type.virtual.model.CPDefinitionVirtualSetting;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for CPDefinitionVirtualSetting. This utility wraps
@@ -123,9 +130,35 @@ public class CPDefinitionVirtualSettingServiceUtil {
 	}
 
 	public static CPDefinitionVirtualSettingService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CPDefinitionVirtualSettingServiceUtil::_getService);
 	}
 
-	private static volatile CPDefinitionVirtualSettingService _service;
+	private static CPDefinitionVirtualSettingService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CPDefinitionVirtualSettingServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CPDefinitionVirtualSettingService> serviceReference =
+			bundleContext.getServiceReference(
+				CPDefinitionVirtualSettingService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CPDefinitionVirtualSettingService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

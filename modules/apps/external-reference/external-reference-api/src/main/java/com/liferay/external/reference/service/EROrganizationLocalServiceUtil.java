@@ -14,7 +14,14 @@
 
 package com.liferay.external.reference.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for EROrganization. This utility wraps
@@ -60,9 +67,34 @@ public class EROrganizationLocalServiceUtil {
 	}
 
 	public static EROrganizationLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			EROrganizationLocalServiceUtil::_getService);
 	}
 
-	private static volatile EROrganizationLocalService _service;
+	private static EROrganizationLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			EROrganizationLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<EROrganizationLocalService> serviceReference =
+			bundleContext.getServiceReference(EROrganizationLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<EROrganizationLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

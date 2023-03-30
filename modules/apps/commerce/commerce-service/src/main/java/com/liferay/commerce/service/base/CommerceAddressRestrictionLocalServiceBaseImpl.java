@@ -16,7 +16,6 @@ package com.liferay.commerce.service.base;
 
 import com.liferay.commerce.model.CommerceAddressRestriction;
 import com.liferay.commerce.service.CommerceAddressRestrictionLocalService;
-import com.liferay.commerce.service.CommerceAddressRestrictionLocalServiceUtil;
 import com.liferay.commerce.service.persistence.CommerceAddressRestrictionPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -75,7 +71,7 @@ public abstract class CommerceAddressRestrictionLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceAddressRestrictionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceAddressRestrictionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceAddressRestrictionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.service.CommerceAddressRestrictionLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -417,25 +413,12 @@ public abstract class CommerceAddressRestrictionLocalServiceBaseImpl
 			commerceAddressRestriction);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceAddressRestrictionLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceAddressRestrictionLocalService =
-			(CommerceAddressRestrictionLocalService)aopProxy;
-
-		_setLocalServiceUtilService(commerceAddressRestrictionLocalService);
 	}
 
 	/**
@@ -478,24 +461,6 @@ public abstract class CommerceAddressRestrictionLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommerceAddressRestrictionLocalService
-			commerceAddressRestrictionLocalService) {
-
-		try {
-			Field field =
-				CommerceAddressRestrictionLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceAddressRestrictionLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

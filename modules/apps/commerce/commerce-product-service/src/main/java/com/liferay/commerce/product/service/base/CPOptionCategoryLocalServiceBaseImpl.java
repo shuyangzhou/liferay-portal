@@ -16,7 +16,6 @@ package com.liferay.commerce.product.service.base;
 
 import com.liferay.commerce.product.model.CPOptionCategory;
 import com.liferay.commerce.product.service.CPOptionCategoryLocalService;
-import com.liferay.commerce.product.service.CPOptionCategoryLocalServiceUtil;
 import com.liferay.commerce.product.service.persistence.CPOptionCategoryPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
@@ -56,13 +55,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -84,7 +80,7 @@ public abstract class CPOptionCategoryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CPOptionCategoryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CPOptionCategoryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CPOptionCategoryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.product.service.CPOptionCategoryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -505,24 +501,12 @@ public abstract class CPOptionCategoryLocalServiceBaseImpl
 		return cpOptionCategoryPersistence.update(cpOptionCategory);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CPOptionCategoryLocalService.class, IdentifiableOSGiService.class,
 			CTService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		cpOptionCategoryLocalService = (CPOptionCategoryLocalService)aopProxy;
-
-		_setLocalServiceUtilService(cpOptionCategoryLocalService);
 	}
 
 	/**
@@ -579,23 +563,6 @@ public abstract class CPOptionCategoryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CPOptionCategoryLocalService cpOptionCategoryLocalService) {
-
-		try {
-			Field field =
-				CPOptionCategoryLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, cpOptionCategoryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -48,7 +48,6 @@ import com.liferay.portal.tools.service.builder.test.model.LVEntryLocalization;
 import com.liferay.portal.tools.service.builder.test.model.LVEntryLocalizationVersion;
 import com.liferay.portal.tools.service.builder.test.model.LVEntryVersion;
 import com.liferay.portal.tools.service.builder.test.service.LVEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.LVEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.BigDecimalEntryPersistence;
 import com.liferay.portal.tools.service.builder.test.service.persistence.LVEntryLocalizationPersistence;
 import com.liferay.portal.tools.service.builder.test.service.persistence.LVEntryLocalizationVersionPersistence;
@@ -56,8 +55,6 @@ import com.liferay.portal.tools.service.builder.test.service.persistence.LVEntry
 import com.liferay.portal.tools.service.builder.test.service.persistence.LVEntryVersionPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -88,7 +85,7 @@ public abstract class LVEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LVEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LVEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LVEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.LVEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -888,15 +885,11 @@ public abstract class LVEntryLocalServiceBaseImpl
 			lvEntryLocalService);
 
 		registerListener(new LVEntryLocalizationVersionServiceListener());
-
-		_setLocalServiceUtilService(lvEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.LVEntry");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	@Indexable(type = IndexableType.REINDEX)
@@ -1287,22 +1280,6 @@ public abstract class LVEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		LVEntryLocalService lvEntryLocalService) {
-
-		try {
-			Field field = LVEntryLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, lvEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

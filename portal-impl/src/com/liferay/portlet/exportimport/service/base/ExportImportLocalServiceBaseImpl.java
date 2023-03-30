@@ -15,7 +15,6 @@
 package com.liferay.portlet.exportimport.service.base;
 
 import com.liferay.exportimport.kernel.service.ExportImportLocalService;
-import com.liferay.exportimport.kernel.service.ExportImportLocalServiceUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -28,8 +27,6 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -51,7 +48,7 @@ public abstract class ExportImportLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ExportImportLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ExportImportLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ExportImportLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.exportimport.kernel.service.ExportImportLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -98,11 +95,9 @@ public abstract class ExportImportLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setLocalServiceUtilService(exportImportLocalService);
 	}
 
 	public void destroy() {
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -136,22 +131,6 @@ public abstract class ExportImportLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		ExportImportLocalService exportImportLocalService) {
-
-		try {
-			Field field = ExportImportLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, exportImportLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

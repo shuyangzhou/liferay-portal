@@ -16,7 +16,6 @@ package com.liferay.portlet.documentlibrary.service.base;
 
 import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.document.library.kernel.service.DLFileEntryTypeService;
-import com.liferay.document.library.kernel.service.DLFileEntryTypeServiceUtil;
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryTypeFinder;
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryTypePersistence;
 import com.liferay.document.library.kernel.service.persistence.DLFolderPersistence;
@@ -31,8 +30,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -54,7 +51,7 @@ public abstract class DLFileEntryTypeServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DLFileEntryTypeService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DLFileEntryTypeServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DLFileEntryTypeService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.document.library.kernel.service.DLFileEntryTypeServiceUtil</code>.
 	 */
 
 	/**
@@ -165,11 +162,9 @@ public abstract class DLFileEntryTypeServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(dlFileEntryTypeService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
 	}
 
 	/**
@@ -211,22 +206,6 @@ public abstract class DLFileEntryTypeServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		DLFileEntryTypeService dlFileEntryTypeService) {
-
-		try {
-			Field field = DLFileEntryTypeServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, dlFileEntryTypeService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

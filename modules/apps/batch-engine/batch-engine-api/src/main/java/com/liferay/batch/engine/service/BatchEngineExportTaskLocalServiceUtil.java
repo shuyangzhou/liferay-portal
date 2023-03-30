@@ -15,10 +15,12 @@
 package com.liferay.batch.engine.service;
 
 import com.liferay.batch.engine.model.BatchEngineExportTask;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.InputStream;
@@ -26,6 +28,11 @@ import java.io.Serializable;
 
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for BatchEngineExportTask. This utility wraps
@@ -416,9 +423,35 @@ public class BatchEngineExportTaskLocalServiceUtil {
 	}
 
 	public static BatchEngineExportTaskLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			BatchEngineExportTaskLocalServiceUtil::_getService);
 	}
 
-	private static volatile BatchEngineExportTaskLocalService _service;
+	private static BatchEngineExportTaskLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			BatchEngineExportTaskLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<BatchEngineExportTaskLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				BatchEngineExportTaskLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<BatchEngineExportTaskLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

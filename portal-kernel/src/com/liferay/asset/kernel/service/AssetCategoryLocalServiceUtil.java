@@ -15,16 +15,23 @@
 package com.liferay.asset.kernel.service;
 
 import com.liferay.asset.kernel.model.AssetCategory;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for AssetCategory. This utility wraps
@@ -672,9 +679,34 @@ public class AssetCategoryLocalServiceUtil {
 	}
 
 	public static AssetCategoryLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			AssetCategoryLocalServiceUtil::_getService);
 	}
 
-	private static volatile AssetCategoryLocalService _service;
+	private static AssetCategoryLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			AssetCategoryLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<AssetCategoryLocalService> serviceReference =
+			bundleContext.getServiceReference(AssetCategoryLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<AssetCategoryLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

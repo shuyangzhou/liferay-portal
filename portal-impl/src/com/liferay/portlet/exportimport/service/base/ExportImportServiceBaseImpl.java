@@ -15,7 +15,6 @@
 package com.liferay.portlet.exportimport.service.base;
 
 import com.liferay.exportimport.kernel.service.ExportImportService;
-import com.liferay.exportimport.kernel.service.ExportImportServiceUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -28,8 +27,6 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -51,7 +48,7 @@ public abstract class ExportImportServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ExportImportService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ExportImportServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ExportImportService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.exportimport.kernel.service.ExportImportServiceUtil</code>.
 	 */
 
 	/**
@@ -121,11 +118,9 @@ public abstract class ExportImportServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(exportImportService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
 	}
 
 	/**
@@ -159,22 +154,6 @@ public abstract class ExportImportServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		ExportImportService exportImportService) {
-
-		try {
-			Field field = ExportImportServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, exportImportService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

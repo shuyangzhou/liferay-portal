@@ -16,7 +16,6 @@ package com.liferay.account.service.base;
 
 import com.liferay.account.model.AccountGroup;
 import com.liferay.account.service.AccountGroupService;
-import com.liferay.account.service.AccountGroupServiceUtil;
 import com.liferay.account.service.persistence.AccountGroupPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,25 +51,13 @@ public abstract class AccountGroupServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AccountGroupService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AccountGroupServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AccountGroupService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.account.service.AccountGroupServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			AccountGroupService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		accountGroupService = (AccountGroupService)aopProxy;
-
-		_setServiceUtilService(accountGroupService);
 	}
 
 	/**
@@ -115,22 +99,6 @@ public abstract class AccountGroupServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		AccountGroupService accountGroupService) {
-
-		try {
-			Field field = AccountGroupServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, accountGroupService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

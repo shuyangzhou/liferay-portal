@@ -16,7 +16,6 @@ package com.liferay.analytics.message.storage.service.base;
 
 import com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage;
 import com.liferay.analytics.message.storage.service.AnalyticsDeleteMessageLocalService;
-import com.liferay.analytics.message.storage.service.AnalyticsDeleteMessageLocalServiceUtil;
 import com.liferay.analytics.message.storage.service.persistence.AnalyticsDeleteMessagePersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -75,7 +71,7 @@ public abstract class AnalyticsDeleteMessageLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AnalyticsDeleteMessageLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AnalyticsDeleteMessageLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AnalyticsDeleteMessageLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.analytics.message.storage.service.AnalyticsDeleteMessageLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -413,25 +409,12 @@ public abstract class AnalyticsDeleteMessageLocalServiceBaseImpl
 		return analyticsDeleteMessagePersistence.update(analyticsDeleteMessage);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			AnalyticsDeleteMessageLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		analyticsDeleteMessageLocalService =
-			(AnalyticsDeleteMessageLocalService)aopProxy;
-
-		_setLocalServiceUtilService(analyticsDeleteMessageLocalService);
 	}
 
 	/**
@@ -474,23 +457,6 @@ public abstract class AnalyticsDeleteMessageLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		AnalyticsDeleteMessageLocalService analyticsDeleteMessageLocalService) {
-
-		try {
-			Field field =
-				AnalyticsDeleteMessageLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, analyticsDeleteMessageLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

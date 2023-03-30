@@ -16,7 +16,6 @@ package com.liferay.commerce.product.service.base;
 
 import com.liferay.commerce.product.model.CPAttachmentFileEntry;
 import com.liferay.commerce.product.service.CPAttachmentFileEntryLocalService;
-import com.liferay.commerce.product.service.CPAttachmentFileEntryLocalServiceUtil;
 import com.liferay.commerce.product.service.persistence.CPAttachmentFileEntryFinder;
 import com.liferay.commerce.product.service.persistence.CPAttachmentFileEntryPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
@@ -66,13 +65,10 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -94,7 +90,7 @@ public abstract class CPAttachmentFileEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CPAttachmentFileEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CPAttachmentFileEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CPAttachmentFileEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.product.service.CPAttachmentFileEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -670,11 +666,6 @@ public abstract class CPAttachmentFileEntryLocalServiceBaseImpl
 		return cpAttachmentFileEntryPersistence.update(cpAttachmentFileEntry);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -682,14 +673,6 @@ public abstract class CPAttachmentFileEntryLocalServiceBaseImpl
 			IdentifiableOSGiService.class, CTService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		cpAttachmentFileEntryLocalService =
-			(CPAttachmentFileEntryLocalService)aopProxy;
-
-		_setLocalServiceUtilService(cpAttachmentFileEntryLocalService);
 	}
 
 	/**
@@ -747,23 +730,6 @@ public abstract class CPAttachmentFileEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CPAttachmentFileEntryLocalService cpAttachmentFileEntryLocalService) {
-
-		try {
-			Field field =
-				CPAttachmentFileEntryLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, cpAttachmentFileEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

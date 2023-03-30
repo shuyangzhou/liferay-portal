@@ -16,7 +16,6 @@ package com.liferay.commerce.service.base;
 
 import com.liferay.commerce.model.CommerceShipmentItem;
 import com.liferay.commerce.service.CommerceShipmentItemLocalService;
-import com.liferay.commerce.service.CommerceShipmentItemLocalServiceUtil;
 import com.liferay.commerce.service.persistence.CommerceShipmentItemFinder;
 import com.liferay.commerce.service.persistence.CommerceShipmentItemPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
@@ -54,13 +53,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -82,7 +78,7 @@ public abstract class CommerceShipmentItemLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceShipmentItemLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceShipmentItemLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceShipmentItemLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.service.CommerceShipmentItemLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -569,25 +565,12 @@ public abstract class CommerceShipmentItemLocalServiceBaseImpl
 		return commerceShipmentItemPersistence.update(commerceShipmentItem);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceShipmentItemLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceShipmentItemLocalService =
-			(CommerceShipmentItemLocalService)aopProxy;
-
-		_setLocalServiceUtilService(commerceShipmentItemLocalService);
 	}
 
 	/**
@@ -630,23 +613,6 @@ public abstract class CommerceShipmentItemLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommerceShipmentItemLocalService commerceShipmentItemLocalService) {
-
-		try {
-			Field field =
-				CommerceShipmentItemLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceShipmentItemLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

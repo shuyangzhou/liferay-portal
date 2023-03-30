@@ -14,16 +14,23 @@
 
 package com.liferay.portal.security.sso.openid.connect.persistence.service;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.security.sso.openid.connect.persistence.model.OpenIdConnectSession;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for OpenIdConnectSession. This utility wraps
@@ -332,9 +339,35 @@ public class OpenIdConnectSessionLocalServiceUtil {
 	}
 
 	public static OpenIdConnectSessionLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			OpenIdConnectSessionLocalServiceUtil::_getService);
 	}
 
-	private static volatile OpenIdConnectSessionLocalService _service;
+	private static OpenIdConnectSessionLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			OpenIdConnectSessionLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<OpenIdConnectSessionLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				OpenIdConnectSessionLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<OpenIdConnectSessionLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

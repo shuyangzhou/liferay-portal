@@ -15,15 +15,22 @@
 package com.liferay.commerce.shipping.engine.fixed.service;
 
 import com.liferay.commerce.shipping.engine.fixed.model.CommerceShippingFixedOptionQualifier;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for CommerceShippingFixedOptionQualifier. This utility wraps
@@ -432,10 +439,38 @@ public class CommerceShippingFixedOptionQualifierLocalServiceUtil {
 	public static CommerceShippingFixedOptionQualifierLocalService
 		getService() {
 
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommerceShippingFixedOptionQualifierLocalServiceUtil::_getService);
 	}
 
-	private static volatile CommerceShippingFixedOptionQualifierLocalService
-		_service;
+	private static CommerceShippingFixedOptionQualifierLocalService
+		_getService() {
+
+		Bundle bundle = FrameworkUtil.getBundle(
+			CommerceShippingFixedOptionQualifierLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommerceShippingFixedOptionQualifierLocalService>
+			serviceReference = bundleContext.getServiceReference(
+				CommerceShippingFixedOptionQualifierLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton
+		<CommerceShippingFixedOptionQualifierLocalService>
+			_serviceDCLSingleton = new DCLSingleton<>();
 
 }

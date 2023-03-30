@@ -15,9 +15,16 @@
 package com.liferay.commerce.discount.service;
 
 import com.liferay.commerce.discount.model.CommerceDiscount;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for CommerceDiscount. This utility wraps
@@ -401,9 +408,34 @@ public class CommerceDiscountServiceUtil {
 	}
 
 	public static CommerceDiscountService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommerceDiscountServiceUtil::_getService);
 	}
 
-	private static volatile CommerceDiscountService _service;
+	private static CommerceDiscountService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CommerceDiscountServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommerceDiscountService> serviceReference =
+			bundleContext.getServiceReference(CommerceDiscountService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CommerceDiscountService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

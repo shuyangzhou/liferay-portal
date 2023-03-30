@@ -16,7 +16,6 @@ package com.liferay.dynamic.data.mapping.service.base;
 
 import com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance;
 import com.liferay.dynamic.data.mapping.service.DDMDataProviderInstanceService;
-import com.liferay.dynamic.data.mapping.service.DDMDataProviderInstanceServiceUtil;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMDataProviderInstanceFinder;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMDataProviderInstancePersistence;
 import com.liferay.portal.aop.AopService;
@@ -31,11 +30,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -57,26 +53,13 @@ public abstract class DDMDataProviderInstanceServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DDMDataProviderInstanceService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DDMDataProviderInstanceServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DDMDataProviderInstanceService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.dynamic.data.mapping.service.DDMDataProviderInstanceServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			DDMDataProviderInstanceService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		ddmDataProviderInstanceService =
-			(DDMDataProviderInstanceService)aopProxy;
-
-		_setServiceUtilService(ddmDataProviderInstanceService);
 	}
 
 	/**
@@ -119,23 +102,6 @@ public abstract class DDMDataProviderInstanceServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		DDMDataProviderInstanceService ddmDataProviderInstanceService) {
-
-		try {
-			Field field =
-				DDMDataProviderInstanceServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, ddmDataProviderInstanceService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

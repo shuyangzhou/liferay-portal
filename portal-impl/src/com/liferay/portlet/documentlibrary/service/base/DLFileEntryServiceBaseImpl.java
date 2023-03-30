@@ -16,7 +16,6 @@ package com.liferay.portlet.documentlibrary.service.base;
 
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.service.DLFileEntryService;
-import com.liferay.document.library.kernel.service.DLFileEntryServiceUtil;
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryFinder;
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -30,8 +29,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -53,7 +50,7 @@ public abstract class DLFileEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DLFileEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DLFileEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DLFileEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.document.library.kernel.service.DLFileEntryServiceUtil</code>.
 	 */
 
 	/**
@@ -159,11 +156,9 @@ public abstract class DLFileEntryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(dlFileEntryService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
 	}
 
 	/**
@@ -205,20 +200,6 @@ public abstract class DLFileEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(DLFileEntryService dlFileEntryService) {
-		try {
-			Field field = DLFileEntryServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, dlFileEntryService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

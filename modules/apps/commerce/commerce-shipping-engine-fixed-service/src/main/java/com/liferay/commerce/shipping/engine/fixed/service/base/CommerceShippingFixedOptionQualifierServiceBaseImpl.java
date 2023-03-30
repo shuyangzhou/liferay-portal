@@ -16,7 +16,6 @@ package com.liferay.commerce.shipping.engine.fixed.service.base;
 
 import com.liferay.commerce.shipping.engine.fixed.model.CommerceShippingFixedOptionQualifier;
 import com.liferay.commerce.shipping.engine.fixed.service.CommerceShippingFixedOptionQualifierService;
-import com.liferay.commerce.shipping.engine.fixed.service.CommerceShippingFixedOptionQualifierServiceUtil;
 import com.liferay.commerce.shipping.engine.fixed.service.persistence.CommerceShippingFixedOptionQualifierPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,27 +52,14 @@ public abstract class CommerceShippingFixedOptionQualifierServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceShippingFixedOptionQualifierService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceShippingFixedOptionQualifierServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceShippingFixedOptionQualifierService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.shipping.engine.fixed.service.CommerceShippingFixedOptionQualifierServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceShippingFixedOptionQualifierService.class,
 			IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceShippingFixedOptionQualifierService =
-			(CommerceShippingFixedOptionQualifierService)aopProxy;
-
-		_setServiceUtilService(commerceShippingFixedOptionQualifierService);
 	}
 
 	/**
@@ -119,24 +102,6 @@ public abstract class CommerceShippingFixedOptionQualifierServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CommerceShippingFixedOptionQualifierService
-			commerceShippingFixedOptionQualifierService) {
-
-		try {
-			Field field =
-				CommerceShippingFixedOptionQualifierServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceShippingFixedOptionQualifierService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

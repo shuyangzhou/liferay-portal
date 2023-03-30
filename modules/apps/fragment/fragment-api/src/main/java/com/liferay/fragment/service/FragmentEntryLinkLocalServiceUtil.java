@@ -15,15 +15,22 @@
 package com.liferay.fragment.service;
 
 import com.liferay.fragment.model.FragmentEntryLink;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for FragmentEntryLink. This utility wraps
@@ -690,9 +697,35 @@ public class FragmentEntryLinkLocalServiceUtil {
 	}
 
 	public static FragmentEntryLinkLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			FragmentEntryLinkLocalServiceUtil::_getService);
 	}
 
-	private static volatile FragmentEntryLinkLocalService _service;
+	private static FragmentEntryLinkLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			FragmentEntryLinkLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<FragmentEntryLinkLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				FragmentEntryLinkLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<FragmentEntryLinkLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

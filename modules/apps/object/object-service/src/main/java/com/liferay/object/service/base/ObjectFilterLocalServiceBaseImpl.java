@@ -21,7 +21,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.object.model.ObjectFilter;
 import com.liferay.object.service.ObjectFilterLocalService;
-import com.liferay.object.service.ObjectFilterLocalServiceUtil;
 import com.liferay.object.service.persistence.ObjectFilterPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -53,13 +52,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -80,7 +76,7 @@ public abstract class ObjectFilterLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ObjectFilterLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ObjectFilterLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ObjectFilterLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.object.service.ObjectFilterLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -490,24 +486,12 @@ public abstract class ObjectFilterLocalServiceBaseImpl
 		return objectFilterPersistence.update(objectFilter);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			ObjectFilterLocalService.class, IdentifiableOSGiService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		objectFilterLocalService = (ObjectFilterLocalService)aopProxy;
-
-		_setLocalServiceUtilService(objectFilterLocalService);
 	}
 
 	/**
@@ -549,22 +533,6 @@ public abstract class ObjectFilterLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		ObjectFilterLocalService objectFilterLocalService) {
-
-		try {
-			Field field = ObjectFilterLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, objectFilterLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

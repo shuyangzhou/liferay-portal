@@ -16,7 +16,6 @@ package com.liferay.notification.service.base;
 
 import com.liferay.notification.model.NotificationQueueEntryAttachment;
 import com.liferay.notification.service.NotificationQueueEntryAttachmentLocalService;
-import com.liferay.notification.service.NotificationQueueEntryAttachmentLocalServiceUtil;
 import com.liferay.notification.service.persistence.NotificationQueueEntryAttachmentPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -75,7 +71,7 @@ public abstract class NotificationQueueEntryAttachmentLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>NotificationQueueEntryAttachmentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>NotificationQueueEntryAttachmentLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>NotificationQueueEntryAttachmentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.notification.service.NotificationQueueEntryAttachmentLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -426,26 +422,12 @@ public abstract class NotificationQueueEntryAttachmentLocalServiceBaseImpl
 			notificationQueueEntryAttachment);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			NotificationQueueEntryAttachmentLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		notificationQueueEntryAttachmentLocalService =
-			(NotificationQueueEntryAttachmentLocalService)aopProxy;
-
-		_setLocalServiceUtilService(
-			notificationQueueEntryAttachmentLocalService);
 	}
 
 	/**
@@ -488,24 +470,6 @@ public abstract class NotificationQueueEntryAttachmentLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		NotificationQueueEntryAttachmentLocalService
-			notificationQueueEntryAttachmentLocalService) {
-
-		try {
-			Field field =
-				NotificationQueueEntryAttachmentLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, notificationQueueEntryAttachmentLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

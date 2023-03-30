@@ -16,7 +16,6 @@ package com.liferay.commerce.payment.service.base;
 
 import com.liferay.commerce.payment.model.CommercePaymentMethodGroupRelQualifier;
 import com.liferay.commerce.payment.service.CommercePaymentMethodGroupRelQualifierLocalService;
-import com.liferay.commerce.payment.service.CommercePaymentMethodGroupRelQualifierLocalServiceUtil;
 import com.liferay.commerce.payment.service.persistence.CommercePaymentMethodGroupRelQualifierPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -47,13 +46,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -75,7 +71,7 @@ public abstract class CommercePaymentMethodGroupRelQualifierLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommercePaymentMethodGroupRelQualifierLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommercePaymentMethodGroupRelQualifierLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommercePaymentMethodGroupRelQualifierLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.payment.service.CommercePaymentMethodGroupRelQualifierLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -436,26 +432,12 @@ public abstract class CommercePaymentMethodGroupRelQualifierLocalServiceBaseImpl
 			commercePaymentMethodGroupRelQualifier);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommercePaymentMethodGroupRelQualifierLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commercePaymentMethodGroupRelQualifierLocalService =
-			(CommercePaymentMethodGroupRelQualifierLocalService)aopProxy;
-
-		_setLocalServiceUtilService(
-			commercePaymentMethodGroupRelQualifierLocalService);
 	}
 
 	/**
@@ -500,24 +482,6 @@ public abstract class CommercePaymentMethodGroupRelQualifierLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommercePaymentMethodGroupRelQualifierLocalService
-			commercePaymentMethodGroupRelQualifierLocalService) {
-
-		try {
-			Field field =
-				CommercePaymentMethodGroupRelQualifierLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commercePaymentMethodGroupRelQualifierLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

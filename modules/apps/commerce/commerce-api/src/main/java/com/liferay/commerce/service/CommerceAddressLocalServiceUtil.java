@@ -15,10 +15,17 @@
 package com.liferay.commerce.service;
 
 import com.liferay.commerce.model.CommerceAddress;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the local service utility for CommerceAddress. This utility wraps
@@ -369,9 +376,35 @@ public class CommerceAddressLocalServiceUtil {
 	}
 
 	public static CommerceAddressLocalService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommerceAddressLocalServiceUtil::_getService);
 	}
 
-	private static volatile CommerceAddressLocalService _service;
+	private static CommerceAddressLocalService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CommerceAddressLocalServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommerceAddressLocalService> serviceReference =
+			bundleContext.getServiceReference(
+				CommerceAddressLocalService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CommerceAddressLocalService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

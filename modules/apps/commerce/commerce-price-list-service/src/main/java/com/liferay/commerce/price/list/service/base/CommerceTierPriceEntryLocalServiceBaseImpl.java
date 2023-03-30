@@ -16,7 +16,6 @@ package com.liferay.commerce.price.list.service.base;
 
 import com.liferay.commerce.price.list.model.CommerceTierPriceEntry;
 import com.liferay.commerce.price.list.service.CommerceTierPriceEntryLocalService;
-import com.liferay.commerce.price.list.service.CommerceTierPriceEntryLocalServiceUtil;
 import com.liferay.commerce.price.list.service.persistence.CommerceTierPriceEntryPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
@@ -64,13 +63,10 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -92,7 +88,7 @@ public abstract class CommerceTierPriceEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceTierPriceEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceTierPriceEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceTierPriceEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.price.list.service.CommerceTierPriceEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -587,11 +583,6 @@ public abstract class CommerceTierPriceEntryLocalServiceBaseImpl
 		return commerceTierPriceEntryPersistence.update(commerceTierPriceEntry);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -599,14 +590,6 @@ public abstract class CommerceTierPriceEntryLocalServiceBaseImpl
 			IdentifiableOSGiService.class, CTService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceTierPriceEntryLocalService =
-			(CommerceTierPriceEntryLocalService)aopProxy;
-
-		_setLocalServiceUtilService(commerceTierPriceEntryLocalService);
 	}
 
 	/**
@@ -664,23 +647,6 @@ public abstract class CommerceTierPriceEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommerceTierPriceEntryLocalService commerceTierPriceEntryLocalService) {
-
-		try {
-			Field field =
-				CommerceTierPriceEntryLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceTierPriceEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

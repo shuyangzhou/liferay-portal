@@ -44,12 +44,9 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.social.kernel.model.SocialRequest;
 import com.liferay.social.kernel.service.SocialRequestLocalService;
-import com.liferay.social.kernel.service.SocialRequestLocalServiceUtil;
 import com.liferay.social.kernel.service.persistence.SocialRequestPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -73,7 +70,7 @@ public abstract class SocialRequestLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SocialRequestLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SocialRequestLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SocialRequestLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.social.kernel.service.SocialRequestLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -514,15 +511,11 @@ public abstract class SocialRequestLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.social.kernel.model.SocialRequest",
 			socialRequestLocalService);
-
-		_setLocalServiceUtilService(socialRequestLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.social.kernel.model.SocialRequest");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -579,22 +572,6 @@ public abstract class SocialRequestLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		SocialRequestLocalService socialRequestLocalService) {
-
-		try {
-			Field field = SocialRequestLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, socialRequestLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -16,7 +16,6 @@ package com.liferay.client.extension.service.base;
 
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.service.ClientExtensionEntryService;
-import com.liferay.client.extension.service.ClientExtensionEntryServiceUtil;
 import com.liferay.client.extension.service.persistence.ClientExtensionEntryPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,11 +29,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,25 +52,13 @@ public abstract class ClientExtensionEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ClientExtensionEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ClientExtensionEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ClientExtensionEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.client.extension.service.ClientExtensionEntryServiceUtil</code>.
 	 */
-	@Deactivate
-	protected void deactivate() {
-		_setServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			ClientExtensionEntryService.class, IdentifiableOSGiService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		clientExtensionEntryService = (ClientExtensionEntryService)aopProxy;
-
-		_setServiceUtilService(clientExtensionEntryService);
 	}
 
 	/**
@@ -117,23 +101,6 @@ public abstract class ClientExtensionEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		ClientExtensionEntryService clientExtensionEntryService) {
-
-		try {
-			Field field =
-				ClientExtensionEntryServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, clientExtensionEntryService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

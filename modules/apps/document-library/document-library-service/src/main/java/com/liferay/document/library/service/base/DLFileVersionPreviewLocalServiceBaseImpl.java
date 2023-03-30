@@ -16,7 +16,6 @@ package com.liferay.document.library.service.base;
 
 import com.liferay.document.library.model.DLFileVersionPreview;
 import com.liferay.document.library.service.DLFileVersionPreviewLocalService;
-import com.liferay.document.library.service.DLFileVersionPreviewLocalServiceUtil;
 import com.liferay.document.library.service.persistence.DLFileVersionPreviewPersistence;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
@@ -50,13 +49,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -78,7 +74,7 @@ public abstract class DLFileVersionPreviewLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DLFileVersionPreviewLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DLFileVersionPreviewLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DLFileVersionPreviewLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.document.library.service.DLFileVersionPreviewLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -413,11 +409,6 @@ public abstract class DLFileVersionPreviewLocalServiceBaseImpl
 		return dlFileVersionPreviewPersistence.update(dlFileVersionPreview);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -425,14 +416,6 @@ public abstract class DLFileVersionPreviewLocalServiceBaseImpl
 			IdentifiableOSGiService.class, CTService.class,
 			PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		dlFileVersionPreviewLocalService =
-			(DLFileVersionPreviewLocalService)aopProxy;
-
-		_setLocalServiceUtilService(dlFileVersionPreviewLocalService);
 	}
 
 	/**
@@ -490,23 +473,6 @@ public abstract class DLFileVersionPreviewLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		DLFileVersionPreviewLocalService dlFileVersionPreviewLocalService) {
-
-		try {
-			Field field =
-				DLFileVersionPreviewLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, dlFileVersionPreviewLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

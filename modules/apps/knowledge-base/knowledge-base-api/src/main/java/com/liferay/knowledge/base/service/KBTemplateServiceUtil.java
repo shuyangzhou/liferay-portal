@@ -15,10 +15,17 @@
 package com.liferay.knowledge.base.service;
 
 import com.liferay.knowledge.base.model.KBTemplate;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for KBTemplate. This utility wraps
@@ -110,9 +117,33 @@ public class KBTemplateServiceUtil {
 	}
 
 	public static KBTemplateService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			KBTemplateServiceUtil::_getService);
 	}
 
-	private static volatile KBTemplateService _service;
+	private static KBTemplateService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(KBTemplateServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<KBTemplateService> serviceReference =
+			bundleContext.getServiceReference(KBTemplateService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<KBTemplateService> _serviceDCLSingleton =
+		new DCLSingleton<>();
 
 }

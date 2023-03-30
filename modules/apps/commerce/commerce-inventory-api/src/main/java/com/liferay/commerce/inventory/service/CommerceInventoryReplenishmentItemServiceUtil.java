@@ -15,9 +15,16 @@
 package com.liferay.commerce.inventory.service;
 
 import com.liferay.commerce.inventory.model.CommerceInventoryReplenishmentItem;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for CommerceInventoryReplenishmentItem. This utility wraps
@@ -153,9 +160,35 @@ public class CommerceInventoryReplenishmentItemServiceUtil {
 	}
 
 	public static CommerceInventoryReplenishmentItemService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommerceInventoryReplenishmentItemServiceUtil::_getService);
 	}
 
-	private static volatile CommerceInventoryReplenishmentItemService _service;
+	private static CommerceInventoryReplenishmentItemService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CommerceInventoryReplenishmentItemServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommerceInventoryReplenishmentItemService>
+			serviceReference = bundleContext.getServiceReference(
+				CommerceInventoryReplenishmentItemService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CommerceInventoryReplenishmentItemService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }

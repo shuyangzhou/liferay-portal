@@ -16,7 +16,6 @@ package com.liferay.commerce.machine.learning.forecast.alert.service.base;
 
 import com.liferay.commerce.machine.learning.forecast.alert.model.CommerceMLForecastAlertEntry;
 import com.liferay.commerce.machine.learning.forecast.alert.service.CommerceMLForecastAlertEntryLocalService;
-import com.liferay.commerce.machine.learning.forecast.alert.service.CommerceMLForecastAlertEntryLocalServiceUtil;
 import com.liferay.commerce.machine.learning.forecast.alert.service.persistence.CommerceMLForecastAlertEntryPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
@@ -53,13 +52,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -81,7 +77,7 @@ public abstract class CommerceMLForecastAlertEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CommerceMLForecastAlertEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CommerceMLForecastAlertEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CommerceMLForecastAlertEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.commerce.machine.learning.forecast.alert.service.CommerceMLForecastAlertEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -529,25 +525,12 @@ public abstract class CommerceMLForecastAlertEntryLocalServiceBaseImpl
 			commerceMLForecastAlertEntry);
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		_setLocalServiceUtilService(null);
-	}
-
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			CommerceMLForecastAlertEntryLocalService.class,
 			IdentifiableOSGiService.class, PersistedModelLocalService.class
 		};
-	}
-
-	@Override
-	public void setAopProxy(Object aopProxy) {
-		commerceMLForecastAlertEntryLocalService =
-			(CommerceMLForecastAlertEntryLocalService)aopProxy;
-
-		_setLocalServiceUtilService(commerceMLForecastAlertEntryLocalService);
 	}
 
 	/**
@@ -590,24 +573,6 @@ public abstract class CommerceMLForecastAlertEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CommerceMLForecastAlertEntryLocalService
-			commerceMLForecastAlertEntryLocalService) {
-
-		try {
-			Field field =
-				CommerceMLForecastAlertEntryLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceMLForecastAlertEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

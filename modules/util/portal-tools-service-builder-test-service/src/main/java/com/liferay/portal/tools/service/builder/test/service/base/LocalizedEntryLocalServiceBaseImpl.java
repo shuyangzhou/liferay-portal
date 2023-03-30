@@ -44,13 +44,10 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.LocalizedEntry;
 import com.liferay.portal.tools.service.builder.test.model.LocalizedEntryLocalization;
 import com.liferay.portal.tools.service.builder.test.service.LocalizedEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.LocalizedEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.LocalizedEntryLocalizationPersistence;
 import com.liferay.portal.tools.service.builder.test.service.persistence.LocalizedEntryPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,7 +74,7 @@ public abstract class LocalizedEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LocalizedEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LocalizedEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LocalizedEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.LocalizedEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -645,15 +642,11 @@ public abstract class LocalizedEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.LocalizedEntry",
 			localizedEntryLocalService);
-
-		_setLocalServiceUtilService(localizedEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.LocalizedEntry");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -695,22 +688,6 @@ public abstract class LocalizedEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		LocalizedEntryLocalService localizedEntryLocalService) {
-
-		try {
-			Field field = LocalizedEntryLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, localizedEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

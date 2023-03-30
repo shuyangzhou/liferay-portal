@@ -15,10 +15,17 @@
 package com.liferay.commerce.wish.list.service;
 
 import com.liferay.commerce.wish.list.model.CommerceWishList;
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Provides the remote service utility for CommerceWishList. This utility wraps
@@ -124,9 +131,34 @@ public class CommerceWishListServiceUtil {
 	}
 
 	public static CommerceWishListService getService() {
-		return _service;
+		return _serviceDCLSingleton.getSingleton(
+			CommerceWishListServiceUtil::_getService);
 	}
 
-	private static volatile CommerceWishListService _service;
+	private static CommerceWishListService _getService() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			CommerceWishListServiceUtil.class);
+
+		BundleContext bundleContext;
+
+		if (bundle == null) {
+			bundleContext = SystemBundleUtil.getBundleContext();
+		}
+		else {
+			bundleContext = bundle.getBundleContext();
+		}
+
+		ServiceReference<CommerceWishListService> serviceReference =
+			bundleContext.getServiceReference(CommerceWishListService.class);
+
+		if (serviceReference == null) {
+			return null;
+		}
+
+		return bundleContext.getService(serviceReference);
+	}
+
+	private static final DCLSingleton<CommerceWishListService>
+		_serviceDCLSingleton = new DCLSingleton<>();
 
 }
