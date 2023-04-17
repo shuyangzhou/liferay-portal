@@ -15,7 +15,6 @@
 package com.liferay.portal.upgrade.internal.registry;
 
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -91,47 +90,10 @@ public class UpgradeStepRegistry implements UpgradeStepRegistrator.Registry {
 			return;
 		}
 
-		String upgradeInfoFromSchemaVersionString = fromSchemaVersionString;
-
-		List<UpgradeStep> upgradeStepsList = new ArrayList<>();
-
-		for (UpgradeStep upgradeStep : upgradeSteps) {
-			if (upgradeStep instanceof UpgradeProcess) {
-				UpgradeProcess upgradeProcess = (UpgradeProcess)upgradeStep;
-
-				for (UpgradeStep innerUpgradeStep :
-						upgradeProcess.getUpgradeSteps()) {
-
-					upgradeStepsList.add(innerUpgradeStep);
-				}
-			}
-			else {
-				upgradeStepsList.add(upgradeStep);
-			}
-		}
-
-		for (int i = 0; i < (upgradeStepsList.size() - 1); i++) {
-			UpgradeStep upgradeStep = upgradeStepsList.get(i);
-
-			String upgradeInfoToSchemaVersionString =
-				toSchemaVersionString + ".step" +
-					(i - upgradeStepsList.size() + 1);
-
-			UpgradeInfo upgradeInfo = new UpgradeInfo(
-				upgradeInfoFromSchemaVersionString,
-				upgradeInfoToSchemaVersionString, buildNumber, upgradeStep);
-
-			_upgradeInfos.add(upgradeInfo);
-
-			upgradeInfoFromSchemaVersionString =
-				upgradeInfoToSchemaVersionString;
-		}
-
-		UpgradeInfo upgradeInfo = new UpgradeInfo(
-			upgradeInfoFromSchemaVersionString, toSchemaVersionString,
-			buildNumber, upgradeStepsList.get(upgradeStepsList.size() - 1));
-
-		_upgradeInfos.add(upgradeInfo);
+		_upgradeInfos.add(
+			new UpgradeInfo(
+				fromSchemaVersionString, toSchemaVersionString, buildNumber,
+				_mergeUpgradeSteps(upgradeSteps)));
 	}
 
 	private String _getFinalSchemaVersion(List<UpgradeInfo> upgradeInfos) {
@@ -154,6 +116,18 @@ public class UpgradeStepRegistry implements UpgradeStepRegistrator.Registry {
 		}
 
 		return finalSchemaVersion.toString();
+	}
+
+	private UpgradeStep _mergeUpgradeSteps(UpgradeStep[] upgradeSteps) {
+		if (upgradeSteps.length == 1) {
+			return upgradeSteps[0];
+		}
+
+		return dbProcessContext -> {
+			for (UpgradeStep upgradeStep : upgradeSteps) {
+				upgradeStep.upgrade(dbProcessContext);
+			}
+		};
 	}
 
 	private final int _buildNumber;
