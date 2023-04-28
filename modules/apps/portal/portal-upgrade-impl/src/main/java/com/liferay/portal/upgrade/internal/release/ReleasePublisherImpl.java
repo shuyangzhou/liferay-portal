@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.service.ReleaseLocalService;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.upgrade.internal.model.listener.ReleaseModelListener;
+import com.liferay.portal.upgrade.release.ReleasePublisher;
 
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -44,8 +45,9 @@ import org.osgi.service.component.annotations.Reference;
  * @author Carlos Sierra Andrés
  */
 @Component(service = ReleasePublisher.class)
-public class ReleasePublisher {
+public class ReleasePublisherImpl implements ReleasePublisher {
 
+	@Override
 	public ServiceRegistration<Release> publish(
 		Release release, boolean initialRelease) {
 
@@ -78,12 +80,14 @@ public class ReleasePublisher {
 			release.getServletContextName(), newServiceRegistration);
 	}
 
+	@Override
 	public ServiceRegistration<Release> publishInProgress(Release release) {
 		release.setState(_STATE_IN_PROGRESS);
 
 		return publish(release, false);
 	}
 
+	@Override
 	public void unpublish(Release release) {
 		TransactionCommitCallbackUtil.registerCallback(
 			() -> {
@@ -128,7 +132,7 @@ public class ReleasePublisher {
 	private static final int _STATE_IN_PROGRESS = -1;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ReleasePublisher.class);
+		ReleasePublisherImpl.class);
 
 	private BundleContext _bundleContext;
 
