@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.spring.extender.internal.upgrade;
+package com.liferay.portal.spring.extender.internal;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -23,12 +23,14 @@ import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Release;
+import com.liferay.portal.kernel.model.ReleaseConstants;
+import com.liferay.portal.kernel.service.ReleaseLocalService;
 import com.liferay.portal.kernel.upgrade.UpgradeException;
-import com.liferay.portal.kernel.upgrade.UpgradeStep;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.hibernate.DialectDetector;
+import com.liferay.portal.upgrade.release.ReleasePublisher;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -39,62 +41,30 @@ import javax.sql.DataSource;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.wiring.BundleWiring;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Shuyang Zhou
  */
-public class InitialUpgradeStep implements UpgradeStep {
+@Component(service = InitialTablesCreator.class)
+public class InitialTablesCreator {
 
-	public InitialUpgradeStep(Bundle bundle, DataSource dataSource) {
-		_bundle = bundle;
-		_dataSource = dataSource;
-	}
+	public void create(Bundle bundle, DataSource dataSource)
+		throws UpgradeException {
 
-	public Dictionary<String, Object> buildServiceProperties() {
-		Dictionary<String, Object> properties = new HashMapDictionary<>();
+		Release release = _releaseLocalService.fetchRelease(
+			bundle.getSymbolicName());
 
-		BundleWiring bundleWiring = _bundle.adapt(BundleWiring.class);
-
-		Configuration configuration = ConfigurationFactoryUtil.getConfiguration(
-			bundleWiring.getClassLoader(), "service");
-
-		if (configuration != null) {
-			String buildNumber = configuration.get("build.number");
-
-			if (buildNumber != null) {
-				properties.put("build.number", buildNumber);
-			}
+		if (release != null) {
+			return;
 		}
 
-		properties.put(
-			"upgrade.bundle.symbolic.name", _bundle.getSymbolicName());
-		properties.put("upgrade.from.schema.version", "0.0.0");
-		properties.put("upgrade.initial.database.creation", "true");
-
-		Dictionary<String, String> headers = _bundle.getHeaders(
-			StringPool.BLANK);
-
-		String upgradeToSchemaVersion = GetterUtil.getString(
-			headers.get("Liferay-Require-SchemaVersion"),
-			headers.get("Bundle-Version"));
-
-		properties.put("upgrade.to.schema.version", upgradeToSchemaVersion);
-
-		return properties;
-	}
-
-	@Override
-	public String toString() {
-		return "Initial Database Creation";
-	}
-
-	@Override
-	public void upgrade() throws UpgradeException {
-		_db = DBManagerUtil.getDB(
-			DialectDetector.getDialect(_dataSource), _dataSource);
+		DB db = DBManagerUtil.getDB(
+			DialectDetector.getDialect(dataSource), dataSource);
 
 		try {
-			_db.process(
+			db.process(
 				companyId -> {
 					if (_log.isInfoEnabled() &&
 						Validator.isNotNull(companyId)) {
@@ -102,31 +72,62 @@ public class InitialUpgradeStep implements UpgradeStep {
 						_log.info(
 							StringBundler.concat(
 								toString(), StringPool.SPACE,
-								_bundle.getSymbolicName(), "#", companyId));
+								bundle.getSymbolicName(), "#", companyId));
 					}
 
-					_upgrade();
+					_upgrade(bundle, dataSource, db);
 				});
+
+			Dictionary<String, String> headers = bundle.getHeaders(
+				StringPool.BLANK);
+
+			release = _releaseLocalService.addRelease(
+				bundle.getSymbolicName(),
+				GetterUtil.getString(
+					headers.get("Liferay-Require-SchemaVersion"),
+					headers.get("Bundle-Version")));
+
+			BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
+
+			Configuration configuration =
+				ConfigurationFactoryUtil.getConfiguration(
+					bundleWiring.getClassLoader(), "service");
+
+			if (configuration != null) {
+				String buildNumber = configuration.get("build.number");
+
+				if (buildNumber != null) {
+					release.setBuildNumber(GetterUtil.getInteger(buildNumber));
+				}
+			}
+
+			release.setVerified(true);
+			release.setState(ReleaseConstants.STATE_GOOD);
+
+			_releasePublisher.publish(
+				_releaseLocalService.updateRelease(release), true);
 		}
 		catch (Exception exception) {
 			throw new UpgradeException(exception);
 		}
 	}
 
-	private void _upgrade() throws UpgradeException {
-		String indexesSQL = DBResourceUtil.getModuleIndexesSQL(_bundle);
-		String sequencesSQL = DBResourceUtil.getModuleSequencesSQL(_bundle);
-		String tablesSQL = DBResourceUtil.getModuleTablesSQL(_bundle);
+	private void _upgrade(Bundle bundle, DataSource dataSource, DB db)
+		throws UpgradeException {
 
-		try (Connection connection = _dataSource.getConnection()) {
+		String indexesSQL = DBResourceUtil.getModuleIndexesSQL(bundle);
+		String sequencesSQL = DBResourceUtil.getModuleSequencesSQL(bundle);
+		String tablesSQL = DBResourceUtil.getModuleTablesSQL(bundle);
+
+		try (Connection connection = dataSource.getConnection()) {
 			if (tablesSQL != null) {
 				try {
-					_db.runSQLTemplateString(connection, tablesSQL, true);
+					db.runSQLTemplateString(connection, tablesSQL, true);
 				}
 				catch (Exception exception) {
 					throw new UpgradeException(
 						StringBundler.concat(
-							"Bundle ", _bundle,
+							"Bundle ", bundle,
 							" has invalid content in tables.sql:\n", tablesSQL),
 						exception);
 				}
@@ -134,12 +135,12 @@ public class InitialUpgradeStep implements UpgradeStep {
 
 			if (sequencesSQL != null) {
 				try {
-					_db.runSQLTemplateString(connection, sequencesSQL, true);
+					db.runSQLTemplateString(connection, sequencesSQL, true);
 				}
 				catch (Exception exception) {
 					throw new UpgradeException(
 						StringBundler.concat(
-							"Bundle ", _bundle,
+							"Bundle ", bundle,
 							" has invalid content in sequences.sql:\n",
 							sequencesSQL),
 						exception);
@@ -148,12 +149,12 @@ public class InitialUpgradeStep implements UpgradeStep {
 
 			if (indexesSQL != null) {
 				try {
-					_db.runSQLTemplateString(connection, indexesSQL, true);
+					db.runSQLTemplateString(connection, indexesSQL, true);
 				}
 				catch (Exception exception) {
 					throw new UpgradeException(
 						StringBundler.concat(
-							"Bundle ", _bundle,
+							"Bundle ", bundle,
 							" has invalid content in indexes.sql:\n",
 							indexesSQL),
 						exception);
@@ -166,10 +167,12 @@ public class InitialUpgradeStep implements UpgradeStep {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		InitialUpgradeStep.class);
+		InitialTablesCreator.class);
 
-	private final Bundle _bundle;
-	private final DataSource _dataSource;
-	private DB _db;
+	@Reference
+	private ReleaseLocalService _releaseLocalService;
+
+	@Reference
+	private ReleasePublisher _releasePublisher;
 
 }
