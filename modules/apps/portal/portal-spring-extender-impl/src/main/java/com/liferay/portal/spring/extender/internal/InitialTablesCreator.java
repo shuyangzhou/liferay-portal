@@ -56,7 +56,9 @@ public class InitialTablesCreator {
 		Release release = _releaseLocalService.fetchRelease(
 			bundle.getSymbolicName());
 
-		if (release != null) {
+		if ((release != null) &&
+			Validator.isNotNull(release.getSchemaVersion())) {
+
 			return;
 		}
 
@@ -81,11 +83,17 @@ public class InitialTablesCreator {
 			Dictionary<String, String> headers = bundle.getHeaders(
 				StringPool.BLANK);
 
-			release = _releaseLocalService.addRelease(
-				bundle.getSymbolicName(),
-				GetterUtil.getString(
-					headers.get("Liferay-Require-SchemaVersion"),
-					headers.get("Bundle-Version")));
+			String schemaVersion = GetterUtil.getString(
+				headers.get("Liferay-Require-SchemaVersion"),
+				headers.get("Bundle-Version"));
+
+			if (release == null) {
+				release = _releaseLocalService.addRelease(
+					bundle.getSymbolicName(), schemaVersion);
+			}
+			else {
+				release.setSchemaVersion(schemaVersion);
+			}
 
 			BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
 
