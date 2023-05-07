@@ -558,23 +558,15 @@ public class BackgroundTaskManagerImpl implements BackgroundTaskManager {
 		if (!_clusterMasterExecutor.isEnabled() ||
 			_clusterMasterExecutor.isMaster()) {
 
-			FutureTask<Void> futureTask = new FutureTask<>(
-				() -> {
-					cleanUpBackgroundTasks();
+			DependencyManagerSyncUtil.registerSyncFutureTask(
+				new FutureTask<>(
+					() -> {
+						cleanUpBackgroundTasks();
 
-					return null;
-				});
-
-			Thread bundleTrackerOpenerThread = new Thread(
-				futureTask,
+						return null;
+					}),
 				BackgroundTaskManagerImpl.class.getName() +
 					"-BackgroundTaskCleaner");
-
-			bundleTrackerOpenerThread.setDaemon(true);
-
-			bundleTrackerOpenerThread.start();
-
-			DependencyManagerSyncUtil.registerSyncFuture(futureTask);
 		}
 	}
 
