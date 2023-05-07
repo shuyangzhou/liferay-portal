@@ -14,6 +14,7 @@
 
 package com.liferay.portal.osgi.debug.internal.osgi.commands;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -56,10 +57,7 @@ public class SystemCheckOSGiCommands {
 	protected void activate(
 		BundleContext bundleContext, Map<String, Object> properties) {
 
-		_serviceTracker = new ServiceTracker<>(
-			bundleContext, SystemChecker.class, null);
-
-		_serviceTracker.open();
+		_bundleContext = bundleContext;
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
@@ -99,12 +97,24 @@ public class SystemCheckOSGiCommands {
 	protected void deactivate() {
 		_serviceRegistration.unregister();
 
-		_serviceTracker.close();
+		_serviceTrackerDCLSingleton.destroy(ServiceTracker::close);
 	}
 
 	private void _check(boolean useSystemOut) {
+		ServiceTracker<SystemChecker, SystemChecker> serviceTracker =
+			_serviceTrackerDCLSingleton.getSingleton(
+				() -> {
+					ServiceTracker<SystemChecker, SystemChecker>
+						newServiceTracker = new ServiceTracker<>(
+							_bundleContext, SystemChecker.class, null);
+
+					newServiceTracker.open();
+
+					return newServiceTracker;
+				});
+
 		Map<ServiceReference<SystemChecker>, SystemChecker> systemCheckerMap =
-			_serviceTracker.getTracked();
+			serviceTracker.getTracked();
 
 		Collection<SystemChecker> systemCheckers = systemCheckerMap.values();
 
@@ -161,6 +171,8 @@ public class SystemCheckOSGiCommands {
 	private static final Log _log = LogFactoryUtil.getLog(
 		SystemCheckOSGiCommands.class);
 
+	private BundleContext _bundleContext;
+
 	@Reference(target = ModuleServiceLifecycle.SYSTEM_CHECK)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
 
@@ -168,6 +180,7 @@ public class SystemCheckOSGiCommands {
 	private Props _props;
 
 	private ServiceRegistration<?> _serviceRegistration;
-	private ServiceTracker<SystemChecker, SystemChecker> _serviceTracker;
+	private final DCLSingleton<ServiceTracker<SystemChecker, SystemChecker>>
+		_serviceTrackerDCLSingleton = new DCLSingleton<>();
 
 }
