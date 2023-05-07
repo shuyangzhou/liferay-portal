@@ -30,6 +30,7 @@ import com.liferay.portal.osgi.debug.SystemChecker;
 import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Map;
+import java.util.concurrent.FutureTask;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -69,13 +70,25 @@ public class SystemCheckOSGiCommands {
 			_props.get(PropsKeys.INITIAL_SYSTEM_CHECK_ENABLED), true);
 
 		if (checkEnabled) {
-			DependencyManagerSyncUtil.sync();
+			_futureTask = new FutureTask<>(
+				() -> {
+					DependencyManagerSyncUtil.sync();
 
-			if (_log.isInfoEnabled()) {
-				_log.info("Running system check");
-			}
+					if (_log.isInfoEnabled()) {
+						_log.info("Running system check");
+					}
 
-			_check(false);
+					_check(false);
+				},
+				null);
+
+			Thread systemCheckerThread = new Thread(
+				_futureTask,
+				SystemCheckOSGiCommands.class.getName() + "-SystemChecker");
+
+			systemCheckerThread.setDaemon(true);
+
+			systemCheckerThread.start();
 		}
 
 		Dictionary<String, Object> osgiCommandProperties =
@@ -96,6 +109,10 @@ public class SystemCheckOSGiCommands {
 	@Deactivate
 	protected void deactivate() {
 		_serviceRegistration.unregister();
+
+		if (_futureTask != null) {
+			_futureTask.cancel(true);
+		}
 
 		_serviceTrackerDCLSingleton.destroy(ServiceTracker::close);
 	}
@@ -172,6 +189,7 @@ public class SystemCheckOSGiCommands {
 		SystemCheckOSGiCommands.class);
 
 	private BundleContext _bundleContext;
+	private FutureTask<?> _futureTask;
 
 	@Reference(target = ModuleServiceLifecycle.SYSTEM_CHECK)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
