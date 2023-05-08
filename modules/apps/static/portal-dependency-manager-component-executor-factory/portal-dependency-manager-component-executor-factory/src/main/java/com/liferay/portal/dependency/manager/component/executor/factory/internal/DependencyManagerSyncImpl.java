@@ -83,7 +83,7 @@ public class DependencyManagerSyncImpl implements DependencyManagerSync {
 	}
 
 	@Override
-	public void sync() {
+	public synchronized void sync() {
 		if (_syncDefaultNoticeableFuture.isDone()) {
 			return;
 		}
