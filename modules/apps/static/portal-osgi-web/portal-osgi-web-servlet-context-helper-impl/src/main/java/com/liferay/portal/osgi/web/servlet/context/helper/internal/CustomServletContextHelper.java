@@ -80,8 +80,6 @@ public class CustomServletContextHelper
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
 		ServletContextClassLoaderPool.unregister(
 			_servletContext.getServletContextName());
-
-		_servletContext = null;
 	}
 
 	@Override
