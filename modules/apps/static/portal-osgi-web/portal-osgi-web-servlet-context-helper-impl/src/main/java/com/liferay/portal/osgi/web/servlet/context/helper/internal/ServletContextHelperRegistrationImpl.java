@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.PortletServlet;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -82,12 +81,10 @@ public class ServletContextHelperRegistrationImpl
 
 	public ServletContextHelperRegistrationImpl(
 		Bundle bundle, JSPServletFactory jspServletFactory,
-		SAXParserFactory saxParserFactory, Map<String, Object> properties,
-		ExecutorService executorService) {
+		SAXParserFactory saxParserFactory, ExecutorService executorService) {
 
 		_bundle = bundle;
 		_jspServletFactory = jspServletFactory;
-		_properties = properties;
 		_executorService = executorService;
 
 		String contextPath = _getContextPath();
@@ -350,34 +347,18 @@ public class ServletContextHelperRegistrationImpl
 	}
 
 	private ServiceRegistration<Servlet> _createJspServlet() {
-		Dictionary<String, Object> properties = new HashMapDictionary<>();
-
-		for (Map.Entry<String, Object> entry : _properties.entrySet()) {
-			String key = entry.getKey();
-
-			if (!key.startsWith(_JSP_SERVLET_INIT_PARAM_PREFIX)) {
-				continue;
-			}
-
-			String name =
-				_SERVLET_INIT_PARAM_PREFIX +
-					key.substring(_JSP_SERVLET_INIT_PARAM_PREFIX.length());
-
-			properties.put(name, entry.getValue());
-		}
-
-		properties.put(
-			HttpWhiteboardConstants.HTTP_WHITEBOARD_CONTEXT_SELECT,
-			_servletContextName);
-		properties.put(
-			HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_NAME,
-			JspServletWrapper.class.getName());
-		properties.put(
-			HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_PATTERN,
-			new String[] {"*.jsp", "*.jspx"});
-
 		return _bundleContext.registerService(
-			Servlet.class, _jspServletFactory.createJSPServlet(), properties);
+			Servlet.class, _jspServletFactory.createJSPServlet(),
+			HashMapDictionaryBuilder.<String, Object>put(
+				HttpWhiteboardConstants.HTTP_WHITEBOARD_CONTEXT_SELECT,
+				_servletContextName
+			).put(
+				HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_NAME,
+				JspServletWrapper.class.getName()
+			).put(
+				HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_PATTERN,
+				new String[] {"*.jsp", "*.jspx"}
+			).build());
 	}
 
 	private ServiceRegistration<Servlet> _createPortletServlet() {
@@ -604,12 +585,6 @@ public class ServletContextHelperRegistrationImpl
 
 	private static final String[] _BLACKLIST;
 
-	private static final String _JSP_SERVLET_INIT_PARAM_PREFIX =
-		"jsp.servlet.init.param.";
-
-	private static final String _SERVLET_INIT_PARAM_PREFIX =
-		HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_INIT_PARAM_PREFIX;
-
 	private static final String[] _WHITELIST;
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -648,7 +623,6 @@ public class ServletContextHelperRegistrationImpl
 	private final ServiceRegistration<Servlet> _jspServletServiceRegistration;
 	private final ServiceRegistration<Servlet>
 		_portletServletServiceRegistration;
-	private final Map<String, Object> _properties;
 	private final ServiceRegistration<ServletContextHelper>
 		_servletContextHelperServiceRegistration;
 	private final ServiceRegistration<ServletContextListener>

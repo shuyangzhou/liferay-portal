@@ -20,7 +20,6 @@ import com.liferay.portal.osgi.web.servlet.JSPServletFactory;
 import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperFactory;
 import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperRegistration;
 
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -45,10 +44,7 @@ public class ServletContextHelperFactoryImpl
 	implements ServletContextHelperFactory {
 
 	@Activate
-	protected void activate(
-			BundleContext bundleContext, Map<String, Object> properties)
-		throws Exception {
-
+	protected void activate(BundleContext bundleContext) throws Exception {
 		_saxParserFactory.setNamespaceAware(false);
 		_saxParserFactory.setValidating(false);
 		_saxParserFactory.setXIncludeAware(false);
@@ -73,8 +69,7 @@ public class ServletContextHelperFactoryImpl
 		_serviceRegistration = bundleContext.registerService(
 			ServletContextHelperRegistration.class.getName(),
 			new ServletContextHelperRegistrationServiceFactory(
-				_jspServletFactory, _saxParserFactory, properties,
-				_executorService),
+				_jspServletFactory, _saxParserFactory, _executorService),
 			null);
 	}
 
