@@ -138,7 +138,18 @@ public class ServletContextHelperRegistrationImpl
 
 		_defaultServletServiceRegistration = _createDefaultServlet();
 
-		_jspServletServiceRegistration = _createJspServlet();
+		_jspServletServiceRegistration = _bundleContext.registerService(
+			Servlet.class, _jspServletFactory.createJSPServlet(),
+			HashMapDictionaryBuilder.<String, Object>put(
+				HttpWhiteboardConstants.HTTP_WHITEBOARD_CONTEXT_SELECT,
+				_servletContextName
+			).put(
+				HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_NAME,
+				JspServletWrapper.class.getName()
+			).put(
+				HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_PATTERN,
+				new String[] {"*.jsp", "*.jspx"}
+			).build());
 
 		_portletServletServiceRegistration = _createPortletServlet();
 	}
@@ -343,21 +354,6 @@ public class ServletContextHelperRegistrationImpl
 				HttpWhiteboardConstants.HTTP_WHITEBOARD_RESOURCE_PATTERN, "/*"
 			).put(
 				HttpWhiteboardConstants.HTTP_WHITEBOARD_RESOURCE_PREFIX, prefix
-			).build());
-	}
-
-	private ServiceRegistration<Servlet> _createJspServlet() {
-		return _bundleContext.registerService(
-			Servlet.class, _jspServletFactory.createJSPServlet(),
-			HashMapDictionaryBuilder.<String, Object>put(
-				HttpWhiteboardConstants.HTTP_WHITEBOARD_CONTEXT_SELECT,
-				_servletContextName
-			).put(
-				HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_NAME,
-				JspServletWrapper.class.getName()
-			).put(
-				HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_PATTERN,
-				new String[] {"*.jsp", "*.jspx"}
 			).build());
 	}
 
