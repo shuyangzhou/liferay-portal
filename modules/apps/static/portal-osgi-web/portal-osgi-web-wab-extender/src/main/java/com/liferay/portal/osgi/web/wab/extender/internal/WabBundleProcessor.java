@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.osgi.web.servlet.JSPServletFactory;
 import com.liferay.portal.osgi.web.servlet.JSPTaglibHelper;
 import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperRegistration;
+import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperRegistrationFactory;
 import com.liferay.portal.osgi.web.servlet.context.helper.definition.FilterDefinition;
 import com.liferay.portal.osgi.web.servlet.context.helper.definition.ListenerDefinition;
 import com.liferay.portal.osgi.web.servlet.context.helper.definition.ServletDefinition;
@@ -80,7 +81,6 @@ import javax.servlet.http.HttpSessionListener;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
-import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.framework.wiring.BundleWiring;
 import org.osgi.service.http.whiteboard.HttpWhiteboardConstants;
@@ -93,11 +93,15 @@ public class WabBundleProcessor {
 
 	public WabBundleProcessor(
 		Bundle bundle, JSPServletFactory jspServletFactory,
-		JSPTaglibHelper jspTaglibHelper) {
+		JSPTaglibHelper jspTaglibHelper,
+		ServletContextHelperRegistrationFactory
+			servletContextHelperRegistrationFactory) {
 
 		_bundle = bundle;
 		_jspServletFactory = jspServletFactory;
 		_jspTaglibHelper = jspTaglibHelper;
+		_servletContextHelperRegistrationFactory =
+			servletContextHelperRegistrationFactory;
 
 		BundleWiring bundleWiring = _bundle.adapt(BundleWiring.class);
 
@@ -120,8 +124,7 @@ public class WabBundleProcessor {
 
 			_destroyListeners();
 
-			_bundleContext.ungetService(
-				_servletContextHelperRegistrationServiceReference);
+			_servletContextHelperRegistration.close();
 		}
 		finally {
 			currentThread.setContextClassLoader(contextClassLoader);
@@ -136,18 +139,17 @@ public class WabBundleProcessor {
 		try {
 			currentThread.setContextClassLoader(_bundleClassLoader);
 
-			ServletContextHelperRegistration servletContextHelperRegistration =
-				_initContext();
+			_servletContextHelperRegistration = _initContext();
 
 			boolean wabShapedBundle =
-				servletContextHelperRegistration.isWabShapedBundle();
+				_servletContextHelperRegistration.isWabShapedBundle();
 
 			if (!wabShapedBundle) {
 				return;
 			}
 
 			WebXMLDefinition webXMLDefinition =
-				servletContextHelperRegistration.getWebXMLDefinition();
+				_servletContextHelperRegistration.getWebXMLDefinition();
 
 			Exception exception = webXMLDefinition.getException();
 
@@ -158,14 +160,14 @@ public class WabBundleProcessor {
 			ServletContext servletContext =
 				ModifiableServletContextAdapter.createInstance(
 					_bundle.getBundleContext(),
-					servletContextHelperRegistration.getServletContext(),
+					_servletContextHelperRegistration.getServletContext(),
 					_jspServletFactory, webXMLDefinition);
 
 			Set<Class<?>> allClasses =
-				servletContextHelperRegistration.getClasses();
+				_servletContextHelperRegistration.getClasses();
 
 			Set<Class<?>> annotatedClasses =
-				servletContextHelperRegistration.getAnnotatedClasses();
+				_servletContextHelperRegistration.getAnnotatedClasses();
 
 			_initServletContainerInitializers(
 				_bundle, servletContext, allClasses, annotatedClasses);
@@ -203,11 +205,11 @@ public class WabBundleProcessor {
 				Map<String, ServletRegistrationImpl> servletRegistrationImpls =
 					modifiableServletContext.getServletRegistrationImpls();
 
-				servletContextHelperRegistration.setProperties(
+				_servletContextHelperRegistration.setProperties(
 					unregisteredInitParameters);
 
 				ServletContext newServletContext =
-					servletContextHelperRegistration.getServletContext();
+					_servletContextHelperRegistration.getServletContext();
 
 				servletContext = ModifiableServletContextAdapter.createInstance(
 					_bundle.getBundleContext(), newServletContext,
@@ -451,13 +453,8 @@ public class WabBundleProcessor {
 	}
 
 	private ServletContextHelperRegistration _initContext() {
-		_servletContextHelperRegistrationServiceReference =
-			_bundleContext.getServiceReference(
-				ServletContextHelperRegistration.class);
-
 		ServletContextHelperRegistration servletContextHelperRegistration =
-			_bundleContext.getService(
-				_servletContextHelperRegistrationServiceReference);
+			_servletContextHelperRegistrationFactory.create(_bundle);
 
 		WebXMLDefinition webXMLDefinition =
 			servletContextHelperRegistration.getWebXMLDefinition();
@@ -912,8 +909,9 @@ public class WabBundleProcessor {
 	private final Set<ServiceRegistration<?>> _listenerServiceRegistrations =
 		new ConcurrentSkipListSet<>(
 			new ListenerServiceRegistrationComparator());
-	private ServiceReference<ServletContextHelperRegistration>
-		_servletContextHelperRegistrationServiceReference;
+	private ServletContextHelperRegistration _servletContextHelperRegistration;
+	private final ServletContextHelperRegistrationFactory
+		_servletContextHelperRegistrationFactory;
 	private final Set<ServiceRegistration<Servlet>>
 		_servletServiceRegistrations = new ConcurrentSkipListSet<>();
 

@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.osgi.web.servlet.JSPServletFactory;
 import com.liferay.portal.osgi.web.servlet.JSPTaglibHelper;
-import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperFactory;
+import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperRegistrationFactory;
 import com.liferay.portal.osgi.web.wab.extender.internal.configuration.WabExtenderConfiguration;
 import com.liferay.portal.profile.PortalProfile;
 
@@ -134,7 +134,8 @@ public class WabFactory
 			WabExtenderConfiguration.class, properties);
 
 		_webBundleDeployer = new WebBundleDeployer(
-			bundleContext, _jspServletFactory, _jspTaglibHelper, properties);
+			bundleContext, _jspServletFactory, _jspTaglibHelper,
+			_servletContextHelperRegistrationFactory, properties);
 
 		_bundleTracker = new BundleTracker<>(
 			bundleContext, Bundle.ACTIVE, this);
@@ -179,7 +180,8 @@ public class WabFactory
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
 
 	@Reference
-	private ServletContextHelperFactory _servletContextHelperFactory;
+	private ServletContextHelperRegistrationFactory
+		_servletContextHelperRegistrationFactory;
 
 	private WabExtenderConfiguration _wabExtenderConfiguration;
 	private WebBundleDeployer _webBundleDeployer;

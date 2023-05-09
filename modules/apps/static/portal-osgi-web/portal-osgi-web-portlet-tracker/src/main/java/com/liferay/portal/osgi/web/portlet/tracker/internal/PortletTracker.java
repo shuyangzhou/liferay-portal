@@ -66,8 +66,8 @@ import com.liferay.portal.kernel.xml.SAXReader;
 import com.liferay.portal.model.impl.EventDefinitionImpl;
 import com.liferay.portal.model.impl.PortletURLListenerImpl;
 import com.liferay.portal.model.impl.PublicRenderParameterImpl;
-import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperFactory;
 import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperRegistration;
+import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperRegistrationFactory;
 import com.liferay.portal.service.impl.ResourcePermissionLocalServiceImpl.IndividualPortletResourcePermissionProvider;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.WebAppPool;
@@ -1291,15 +1291,11 @@ public class PortletTracker
 			return portletApp;
 		}
 
-		BundleContext bundleContext = bundle.getBundleContext();
-
-		_servletContextHelperRegistrationServiceReference =
-			bundleContext.getServiceReference(
-				ServletContextHelperRegistration.class);
-
 		ServletContextHelperRegistration servletContextHelperRegistration =
-			bundleContext.getService(
-				_servletContextHelperRegistrationServiceReference);
+			_servletContextHelperRegistrationFactory.create(bundle);
+
+		serviceRegistrations.setServletContextHelperRegistration(
+			servletContextHelperRegistration);
 
 		BundlePortletAppDelegate bundlePortletAppDelegate =
 			new BundlePortletAppDelegate(
@@ -1523,10 +1519,8 @@ public class PortletTracker
 		_serviceTracker;
 
 	@Reference
-	private ServletContextHelperFactory _servletContextHelperFactory;
-
-	private ServiceReference<ServletContextHelperRegistration>
-		_servletContextHelperRegistrationServiceReference;
+	private ServletContextHelperRegistrationFactory
+		_servletContextHelperRegistrationFactory;
 
 	private static class StartupIndividualPortletResourcePermissionProvider
 		implements IndividualPortletResourcePermissionProvider {
@@ -1594,21 +1588,18 @@ public class PortletTracker
 
 			_serviceRegistrations.remove(_bundle.getBundleId());
 
-			BundleContext bundleContext = _bundle.getBundleContext();
-
-			try {
-				bundleContext.ungetService(
-					_servletContextHelperRegistrationServiceReference);
-			}
-			catch (IllegalStateException illegalStateException) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(illegalStateException);
-				}
-			}
+			_servletContextHelperRegistration.close();
 		}
 
 		public synchronized void setPortletApp(PortletApp portletApp) {
 			_portletApp = portletApp;
+		}
+
+		public synchronized void setServletContextHelperRegistration(
+			ServletContextHelperRegistration servletContextHelperRegistration) {
+
+			_servletContextHelperRegistration =
+				servletContextHelperRegistration;
 		}
 
 		protected synchronized void doConfiguration(ClassLoader classLoader) {
@@ -1649,6 +1640,8 @@ public class PortletTracker
 		private PortletApp _portletApp;
 		private final List<ServiceReference<Portlet>> _serviceReferences =
 			new ArrayList<>();
+		private ServletContextHelperRegistration
+			_servletContextHelperRegistration;
 		private String[] _sources;
 
 	}

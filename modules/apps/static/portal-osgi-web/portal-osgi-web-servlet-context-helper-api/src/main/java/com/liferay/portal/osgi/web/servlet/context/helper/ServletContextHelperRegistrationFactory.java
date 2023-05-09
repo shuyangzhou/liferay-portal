@@ -14,8 +14,13 @@
 
 package com.liferay.portal.osgi.web.servlet.context.helper;
 
+import org.osgi.framework.Bundle;
+
 /**
- * @author Matthew Tambara
+ * @author Shuyang Zhou
  */
-public interface ServletContextHelperFactory {
+public interface ServletContextHelperRegistrationFactory {
+
+	public ServletContextHelperRegistration create(Bundle bundle);
+
 }

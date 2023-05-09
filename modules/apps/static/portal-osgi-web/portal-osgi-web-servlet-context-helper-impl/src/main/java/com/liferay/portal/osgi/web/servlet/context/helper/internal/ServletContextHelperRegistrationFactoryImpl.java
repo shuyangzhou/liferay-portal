@@ -17,21 +17,20 @@ package com.liferay.portal.osgi.web.servlet.context.helper.internal;
 import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.osgi.web.servlet.JSPServletFactory;
-import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperFactory;
 import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperRegistration;
+import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperRegistrationFactory;
 
 import java.util.concurrent.ExecutorService;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.http.runtime.HttpServiceRuntime;
 
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
@@ -39,9 +38,15 @@ import org.xml.sax.SAXNotSupportedException;
 /**
  * @author Raymond Augé
  */
-@Component(service = ServletContextHelperFactory.class)
-public class ServletContextHelperFactoryImpl
-	implements ServletContextHelperFactory {
+@Component(service = ServletContextHelperRegistrationFactory.class)
+public class ServletContextHelperRegistrationFactoryImpl
+	implements ServletContextHelperRegistrationFactory {
+
+	@Override
+	public ServletContextHelperRegistration create(Bundle bundle) {
+		return new ServletContextHelperRegistrationImpl(
+			bundle, _jspServletFactory, _saxParserFactory, _executorService);
+	}
 
 	@Activate
 	protected void activate(BundleContext bundleContext) throws Exception {
@@ -64,19 +69,11 @@ public class ServletContextHelperFactoryImpl
 		}
 
 		_executorService = _portalExecutorManager.getPortalExecutor(
-			ServletContextHelperFactoryImpl.class.getName());
-
-		_serviceRegistration = bundleContext.registerService(
-			ServletContextHelperRegistration.class.getName(),
-			new ServletContextHelperRegistrationServiceFactory(
-				_jspServletFactory, _saxParserFactory, _executorService),
-			null);
+			ServletContextHelperRegistrationFactoryImpl.class.getName());
 	}
 
 	@Deactivate
 	protected void deactivate(BundleContext bundleContext) throws Exception {
-		_serviceRegistration.unregister();
-
 		_executorService.shutdownNow();
 	}
 
@@ -95,9 +92,6 @@ public class ServletContextHelperFactoryImpl
 	private ExecutorService _executorService;
 
 	@Reference
-	private HttpServiceRuntime _httpServiceRuntime;
-
-	@Reference
 	private JSPServletFactory _jspServletFactory;
 
 	@Reference
@@ -105,7 +99,5 @@ public class ServletContextHelperFactoryImpl
 
 	@Reference
 	private SAXParserFactory _saxParserFactory;
-
-	private ServiceRegistration<?> _serviceRegistration;
 
 }
