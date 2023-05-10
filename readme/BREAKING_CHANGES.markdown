@@ -1311,3 +1311,26 @@ This affects anyone calling the `CTSQLModeThreadLocal` class from their code.
 ### Why was this change made?
 
 To resolve [LPS-181233](https://issues.liferay.com/browse/LPS-181233), the value of the `CTSQLModeThreadLocal` must be set from the `portal-kernel` module. Moving the class into the `portal-kernel` module allows it to be referenced as required.
+
+---------------------------------------
+
+## Remove verifyDB function from Server Administration
+
+- **Date:** 2023-May-10
+- **JIRA Ticket:** [LPS-X](https://issues.liferay.com/browse/LPS-X)
+
+### What changed?
+
+The verifyDB() method was removed from ServiceComponentLocalService. The "Verify database tables of all plugins." function was removed from "Server Administration" -> "Verification Actions"
+
+### Who is affected?
+
+This affects anyone calling the `ServiceComponentLocalService.verifyDB()` method from their code and using the UI function.
+
+### How should I update my code?
+
+Remove usage of `ServiceComponentLocalService.verifyDB()`
+
+### Why was this change made?
+
+Upgrade framework manages all modules' tables and Release record creation. This verifyDB function does not do anything.
