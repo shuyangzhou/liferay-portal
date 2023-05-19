@@ -12,26 +12,17 @@
  * details.
  */
 
-package com.liferay.portal.upgrade.internal.model.listener;
+package com.liferay.portal.upgrade.release;
 
-import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.Release;
-import com.liferay.portal.upgrade.release.ReleasePublisher;
 
 /**
  * @author Shuyang Zhou
  */
-public class ReleaseModelListener extends BaseModelListener<Release> {
+public interface ReleasePublisher {
 
-	public ReleaseModelListener(ReleasePublisher releasePublisher) {
-		_releasePublisher = releasePublisher;
-	}
+	public void publish(Release release, boolean initialRelease);
 
-	@Override
-	public void onAfterRemove(Release release) {
-		_releasePublisher.unpublish(release);
-	}
-
-	private final ReleasePublisher _releasePublisher;
+	public void unpublish(Release release);
 
 }
