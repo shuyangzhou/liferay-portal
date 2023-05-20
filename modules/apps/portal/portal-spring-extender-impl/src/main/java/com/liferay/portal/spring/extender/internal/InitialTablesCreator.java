@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
+import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
@@ -36,11 +37,16 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import java.util.Dictionary;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import javax.sql.DataSource;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.wiring.BundleWiring;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -112,12 +118,32 @@ public class InitialTablesCreator {
 			release.setVerified(true);
 			release.setState(ReleaseConstants.STATE_GOOD);
 
-			_releasePublisher.publish(
-				_releaseLocalService.updateRelease(release), true);
+			Release publishRelease = _releaseLocalService.updateRelease(
+				release);
+
+			_executorService.submit(
+				() -> _releasePublisher.publish(publishRelease, true));
 		}
 		catch (Exception exception) {
 			throw new UpgradeException(exception);
 		}
+	}
+
+	@Activate
+	protected void activate() {
+		_executorService = new ThreadPoolExecutor(
+			1, 1, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(),
+			runnable -> new Thread(
+				runnable,
+				InitialTablesCreator.class.getName() + "-ReleasePublisher"),
+			new ThreadPoolExecutor.CallerRunsPolicy());
+
+		DependencyManagerSyncUtil.registerSyncCallable(
+			() -> {
+				_executorService.shutdownNow();
+
+				return null;
+			});
 	}
 
 	private void _upgrade(Bundle bundle, DataSource dataSource, DB db)
@@ -176,6 +202,8 @@ public class InitialTablesCreator {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		InitialTablesCreator.class);
+
+	private ExecutorService _executorService;
 
 	@Reference
 	private ReleaseLocalService _releaseLocalService;
