@@ -56,6 +56,7 @@ import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
+import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.service.GroupLocalService;
@@ -92,6 +93,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.FutureTask;
 
 import javax.servlet.ServletContext;
 
@@ -199,7 +201,14 @@ public class SiteInitializerExtender
 		_bundleTracker = new BundleTracker<>(
 			bundleContext, Bundle.ACTIVE, this);
 
-		_bundleTracker.open();
+		DependencyManagerSyncUtil.registerSyncFutureTask(
+			new FutureTask<>(
+				() -> {
+					_bundleTracker.open();
+
+					return null;
+				}),
+			SiteInitializerExtender.class.getName() + "-BundleTrackerOpener");
 
 		File siteInitializersDirectoryFile = new File(
 			PropsValues.LIFERAY_HOME, "site-initializers");
