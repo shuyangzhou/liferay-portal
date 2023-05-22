@@ -60,6 +60,14 @@ import java.util.List;
  */
 public class RepositoryProviderImpl implements RepositoryProvider {
 
+	public static void setDLFileEntryModelResourcePermission(
+		ModelResourcePermission<DLFileEntry>
+			dlFileEntryModelResourcePermission) {
+
+		_dlFileEntryModelResourcePermission =
+			dlFileEntryModelResourcePermission;
+	}
+
 	@Override
 	public LocalRepository fetchFileEntryLocalRepository(long fileEntryId)
 		throws PortalException {

@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
@@ -43,11 +44,13 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
+import com.liferay.portal.repository.RepositoryProviderImpl;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.site.initializer.SiteInitializer;
 
 import java.util.List;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -105,6 +108,12 @@ public class AddDefaultLayoutPortalInstanceLifecycleListener
 		}
 	}
 
+	@Activate
+	protected void activate() {
+		RepositoryProviderImpl.setDLFileEntryModelResourcePermission(
+			_modelResourcePermission);
+	}
+
 	private User _getUser(long companyId) throws PortalException {
 		Role role = _roleLocalService.fetchRole(
 			companyId, RoleConstants.ADMINISTRATOR);
@@ -142,6 +151,11 @@ public class AddDefaultLayoutPortalInstanceLifecycleListener
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.document.library.kernel.model.DLFileEntry)"
+	)
+	private ModelResourcePermission<DLFileEntry> _modelResourcePermission;
 
 	@Reference(target = ModuleServiceLifecycle.PORTLETS_INITIALIZED)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
