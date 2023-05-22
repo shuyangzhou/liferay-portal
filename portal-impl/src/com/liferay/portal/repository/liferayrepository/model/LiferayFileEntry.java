@@ -55,6 +55,14 @@ import java.util.Objects;
  */
 public class LiferayFileEntry extends LiferayModel implements FileEntry {
 
+	public static void setDLFileEntryModelResourcePermission(
+		ModelResourcePermission<DLFileEntry>
+			dlFileEntryModelResourcePermission) {
+
+		_dlFileEntryModelResourcePermission =
+			dlFileEntryModelResourcePermission;
+	}
+
 	public LiferayFileEntry(DLFileEntry dlFileEntry) {
 		this(dlFileEntry, dlFileEntry.isEscapedModel());
 	}
