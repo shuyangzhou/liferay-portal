@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.role.RoleConstants;
@@ -150,6 +151,11 @@ public class AddDefaultLayoutPortalInstanceLifecycleListener
 		target = "(javax.portlet.name=" + DLPortletKeys.DOCUMENT_LIBRARY_ADMIN + ")"
 	)
 	private Portlet _portlet;
+
+	@Reference(
+		target = "(release.bundle.symbolic.name=com.liferay.document.library.service)"
+	)
+	private Release _release;
 
 	@Reference
 	private RoleLocalService _roleLocalService;
