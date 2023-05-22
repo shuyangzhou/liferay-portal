@@ -413,6 +413,10 @@ public class LayoutLocalServiceStagingAdvice {
 
 		Object target = aopInvocationHandler.getTarget();
 
+		System.out.println(
+			"^^^^Initializing LayoutLocalServiceStagingInvocationHandler " +
+				"with target : " + target);
+
 		aopInvocationHandler.setTarget(
 			ProxyUtil.newProxyInstance(
 				AggregateClassLoader.getAggregateClassLoader(
@@ -868,6 +872,11 @@ public class LayoutLocalServiceStagingAdvice {
 			throws Throwable {
 
 			try {
+				System.out.println(
+					"####Invoking method : " + method + " on target : " +
+						_targetObject + " with args : " +
+						Arrays.toString(arguments));
+
 				return method.invoke(_targetObject, arguments);
 			}
 			catch (InvocationTargetException invocationTargetException) {
