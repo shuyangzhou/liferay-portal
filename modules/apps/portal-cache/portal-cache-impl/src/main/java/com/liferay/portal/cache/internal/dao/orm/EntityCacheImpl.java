@@ -286,6 +286,15 @@ public class EntityCacheImpl
 		portalCacheManager.registerPortalCacheManagerListener(this);
 	}
 
+	private FinderCacheImpl _getFinderCacheImpl() {
+		try {
+			return (FinderCacheImpl)_finderCacheSnapshot.get();
+		}
+		catch (IllegalStateException illegalStateException) {
+			return null;
+		}
+	}
+
 	private boolean _isLocalCacheEnabled() {
 		if (_localCache == null) {
 			return false;
@@ -301,8 +310,7 @@ public class EntityCacheImpl
 				CompanyThreadLocal.setWithSafeCloseable(
 					CompanyThreadLocal.getCompanyId())) {
 
-			FinderCacheImpl finderCacheImpl =
-				(FinderCacheImpl)_finderCacheSnapshot.get();
+			FinderCacheImpl finderCacheImpl = _getFinderCacheImpl();
 
 			if (finderCacheImpl == null) {
 				return;
