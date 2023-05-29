@@ -14,6 +14,10 @@ package org.eclipse.osgi.internal.serviceregistry;
 import java.security.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.eclipse.osgi.container.Module;
 import org.eclipse.osgi.container.ModuleRevision;
 import org.eclipse.osgi.framework.eventmgr.*;
@@ -50,15 +54,18 @@ public class ServiceRegistry {
 	 * in the natural order of ServiceRegistrationImpl and also are sets in that
 	 * there must be no two entries in a List which are equal.
 	 */
-	/* @GuardedBy("this") */
 	private final Map<String, List<ServiceRegistrationImpl<?>>> publishedServicesByClass;
 
 	/** All published services. 
 	 * The List is both sorted in the natural order of ServiceRegistrationImpl and also is a
 	 * set in that there must be no two entries in the List which are equal.
 	 */
-	/* @GuardedBy("this") */
 	private final List<ServiceRegistrationImpl<?>> allPublishedServices;
+
+	private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+
+	private final Lock readLock = readWriteLock.readLock();
+	private final Lock writeLock = readWriteLock.writeLock();
 
 	/** Published services by BundleContextImpl.  
 	 * The {@literal List<ServiceRegistrationImpl<?>>}s are NOT sorted 
@@ -69,8 +76,7 @@ public class ServiceRegistry {
 	private final Map<BundleContextImpl, List<ServiceRegistrationImpl<?>>> publishedServicesByContext;
 
 	/** next free service id. */
-	/* @GuardedBy("this") */
-	private long serviceid;
+	private final AtomicLong serviceid = new AtomicLong(1);
 
 	/** Active Service Listeners.
 	 * {@literal Map<BundleContextImpl,CopyOnWriteIdentityMap<ServiceListener,FilteredServiceListener>>}.
@@ -94,7 +100,6 @@ public class ServiceRegistry {
 	public ServiceRegistry(EquinoxContainer container) {
 		this.container = container;
 		this.debug = container.getConfiguration().getDebug();
-		serviceid = 1;
 		publishedServicesByClass = new HashMap<>(initialCapacity);
 		publishedServicesByContext = new HashMap<>(initialCapacity);
 		allPublishedServices = new ArrayList<>(initialCapacity);
@@ -951,10 +956,8 @@ public class ServiceRegistry {
 	 * 
 	 * @return next service id.
 	 */
-	synchronized long getNextServiceId() {
-		long id = serviceid;
-		serviceid = id + 1;
-		return id;
+	long getNextServiceId() {
+		return serviceid.getAndIncrement();
 	}
 
 	/**
@@ -975,25 +978,32 @@ public class ServiceRegistry {
 		// The list is NOT sorted, so we just add
 		contextServices.add(registration);
 
-		// Add the ServiceRegistrationImpl to the list of Services published by Class Name.
-		int insertIndex;
-		for (String clazz : registration.getClasses()) {
-			List<ServiceRegistrationImpl<?>> services = publishedServicesByClass.get(clazz);
+		writeLock.lock();
 
-			if (services == null) {
-				services = new ArrayList<>(initialSubCapacity);
-				publishedServicesByClass.put(clazz, services);
+		try {
+			// Add the ServiceRegistrationImpl to the list of Services published by Class Name.
+			int insertIndex;
+			for (String clazz : registration.getClasses()) {
+				List<ServiceRegistrationImpl<?>> services = publishedServicesByClass.get(clazz);
+
+				if (services == null) {
+					services = new ArrayList<>(initialSubCapacity);
+					publishedServicesByClass.put(clazz, services);
+				}
+
+				// The list is sorted, so we must find the proper location to insert
+				insertIndex = -Collections.binarySearch(services, registration) - 1;
+				services.add(insertIndex, registration);
 			}
 
+			// Add the ServiceRegistrationImpl to the list of all published Services.
 			// The list is sorted, so we must find the proper location to insert
-			insertIndex = -Collections.binarySearch(services, registration) - 1;
-			services.add(insertIndex, registration);
+			insertIndex = -Collections.binarySearch(allPublishedServices, registration) - 1;
+			allPublishedServices.add(insertIndex, registration);
 		}
-
-		// Add the ServiceRegistrationImpl to the list of all published Services.
-		// The list is sorted, so we must find the proper location to insert
-		insertIndex = -Collections.binarySearch(allPublishedServices, registration) - 1;
-		allPublishedServices.add(insertIndex, registration);
+		finally {
+			writeLock.unlock();
+		}
 	}
 
 	/**
@@ -1010,21 +1020,28 @@ public class ServiceRegistry {
 
 		// Remove the ServiceRegistrationImpl from the list of Services published by Class Name
 		// and then add at the correct index.
-		int insertIndex;
-		for (String clazz : registration.getClasses()) {
-			List<ServiceRegistrationImpl<?>> services = publishedServicesByClass.get(clazz);
-			services.remove(registration);
-			// The list is sorted, so we must find the proper location to insert
-			insertIndex = -Collections.binarySearch(services, registration) - 1;
-			services.add(insertIndex, registration);
-		}
+		writeLock.lock();
 
-		// Remove the ServiceRegistrationImpl from the list of all published Services
-		// and then add at the correct index.
-		allPublishedServices.remove(registration);
-		// The list is sorted, so we must find the proper location to insert
-		insertIndex = -Collections.binarySearch(allPublishedServices, registration) - 1;
-		allPublishedServices.add(insertIndex, registration);
+		try {
+			int insertIndex;
+			for (String clazz : registration.getClasses()) {
+				List<ServiceRegistrationImpl<?>> services = publishedServicesByClass.get(clazz);
+				services.remove(registration);
+				// The list is sorted, so we must find the proper location to insert
+				insertIndex = -Collections.binarySearch(services, registration) - 1;
+				services.add(insertIndex, registration);
+			}
+
+			// Remove the ServiceRegistrationImpl from the list of all published Services
+			// and then add at the correct index.
+			allPublishedServices.remove(registration);
+			// The list is sorted, so we must find the proper location to insert
+			insertIndex = -Collections.binarySearch(allPublishedServices, registration) - 1;
+			allPublishedServices.add(insertIndex, registration);
+		}
+		finally {
+			writeLock.unlock();
+		}
 	}
 
 	/**
@@ -1042,17 +1059,24 @@ public class ServiceRegistry {
 			contextServices.remove(registration);
 		}
 
-		// Remove the ServiceRegistrationImpl from the list of Services published by Class Name.
-		for (String clazz : registration.getClasses()) {
-			List<ServiceRegistrationImpl<?>> services = publishedServicesByClass.get(clazz);
-			services.remove(registration);
-			if (services.isEmpty()) { // remove empty list
-				publishedServicesByClass.remove(clazz);
-			}
-		}
+		writeLock.lock();
 
-		// Remove the ServiceRegistrationImpl from the list of all published Services.
-		allPublishedServices.remove(registration);
+		try {
+			// Remove the ServiceRegistrationImpl from the list of Services published by Class Name.
+			for (String clazz : registration.getClasses()) {
+				List<ServiceRegistrationImpl<?>> services = publishedServicesByClass.get(clazz);
+				services.remove(registration);
+				if (services.isEmpty()) { // remove empty list
+					publishedServicesByClass.remove(clazz);
+				}
+			}
+
+			// Remove the ServiceRegistrationImpl from the list of all published Services.
+			allPublishedServices.remove(registration);
+		}
+		finally {
+			writeLock.unlock();
+		}
 	}
 
 	/**
@@ -1071,7 +1095,10 @@ public class ServiceRegistry {
 		}
 
 		List<ServiceRegistrationImpl<?>> result;
-		synchronized (this) {
+
+		readLock.lock();
+
+		try {
 			if (clazz == null) { /* all services */
 				result = allPublishedServices;
 			} else {
@@ -1089,6 +1116,9 @@ public class ServiceRegistry {
 			}
 
 			result = new LinkedList<>(result); /* make a new list since we don't want to change the real list */
+		}
+		finally {
+			readLock.unlock();
 		}
 
 		for (Iterator<ServiceRegistrationImpl<?>> iter = result.iterator(); iter.hasNext();) {
