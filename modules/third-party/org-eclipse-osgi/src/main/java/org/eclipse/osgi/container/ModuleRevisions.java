@@ -12,6 +12,9 @@ package org.eclipse.osgi.container;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.wiring.BundleRevision;
 import org.osgi.framework.wiring.BundleRevisions;
@@ -39,6 +42,11 @@ public final class ModuleRevisions implements BundleRevisions {
 	ModuleRevisions(Module module, ModuleContainer container) {
 		this.module = module;
 		this.container = container;
+
+		ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+
+		readLock = readWriteLock.readLock();
+		writeLock = readWriteLock.writeLock();
 	}
 
 	public Module getModule() {
@@ -56,8 +64,13 @@ public final class ModuleRevisions implements BundleRevisions {
 
 	@Override
 	public List<BundleRevision> getRevisions() {
-		synchronized (monitor) {
+		readLock.lock();
+
+		try {
 			return new ArrayList<BundleRevision>(revisions);
+		}
+		finally {
+			readLock.unlock();
 		}
 	}
 
@@ -67,8 +80,13 @@ public final class ModuleRevisions implements BundleRevisions {
 	 * @return the list of module revisions
 	 */
 	public List<ModuleRevision> getModuleRevisions() {
-		synchronized (monitor) {
+		readLock.lock();
+
+		try {
 			return new ArrayList<>(revisions);
+		}
+		finally {
+			readLock.unlock();
 		}
 	}
 
@@ -79,7 +97,9 @@ public final class ModuleRevisions implements BundleRevisions {
 	 *     or {@code null} if the current revision does not exist.
 	 */
 	ModuleRevision getCurrentRevision() {
-		synchronized (monitor) {
+		readLock.lock();
+
+		try {
 			if (uninstalled) {
 				return uninstalledCurrent;
 			}
@@ -88,33 +108,51 @@ public final class ModuleRevisions implements BundleRevisions {
 			}
 			return revisions.get(0);
 		}
+		finally {
+			readLock.unlock();
+		}
 	}
 
 	ModuleRevision addRevision(ModuleRevision revision) {
-		synchronized (monitor) {
+		writeLock.lock();
+
+		try {
 			revisions.add(0, revision);
 		}
+		finally {
+			writeLock.unlock();
+		}
+
 		return revision;
 	}
 
 	boolean removeRevision(ModuleRevision revision) {
+		writeLock.lock();
+
 		try {
-			synchronized (monitor) {
-				return revisions.remove(revision);
-			}
+			return revisions.remove(revision);
 		} finally {
 			module.cleanup(revision);
+
+			writeLock.unlock();
 		}
 	}
 
 	boolean isUninstalled() {
-		synchronized (monitor) {
+		readLock.lock();
+
+		try {
 			return uninstalled;
+		}
+		finally {
+			readLock.unlock();
 		}
 	}
 
 	void uninstall() {
-		synchronized (monitor) {
+		writeLock.lock();
+
+		try {
 			uninstalled = true;
 			// save off the current revision
 			if (revisions.isEmpty()) {
@@ -122,9 +160,17 @@ public final class ModuleRevisions implements BundleRevisions {
 			}
 			uninstalledCurrent = revisions.get(0);
 		}
+		finally {
+			writeLock.unlock();
+		}
 	}
 
 	public String toString() {
 		return "moduleID=" + module.getId(); //$NON-NLS-1$
 	}
+
+	private final Lock readLock;
+	private final Lock writeLock;
+
 }
+/* @generated */
