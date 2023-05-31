@@ -111,17 +111,16 @@ public class ServiceRegistrationImpl<S> implements ServiceRegistration<S>, Compa
 	 */
 	void register(Dictionary<String, ?> props) {
 		final ServiceReferenceImpl<S> ref;
-		synchronized (registry) {
-			context.checkValid();
-			synchronized (registrationLock) {
-				ref = reference; /* used to publish event outside sync */
-				this.properties = createProperties(props); /* must be valid after unregister is called. */
-			}
-			if (registry.debug.DEBUG_SERVICES) {
-				Debug.println("registerService[" + bundle + "](" + this + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			}
-			registry.addServiceRegistration(context, this);
+
+		context.checkValid();
+		synchronized (registrationLock) {
+			ref = reference; /* used to publish event outside sync */
+			this.properties = createProperties(props); /* must be valid after unregister is called. */
 		}
+		if (registry.debug.DEBUG_SERVICES) {
+			Debug.println("registerService[" + bundle + "](" + this + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+		registry.addServiceRegistration(context, this);
 
 		/* must not hold the registrations lock when this event is published */
 		registry.publishServiceEvent(new ServiceEvent(ServiceEvent.REGISTERED, ref));
@@ -152,18 +151,18 @@ public class ServiceRegistrationImpl<S> implements ServiceRegistration<S>, Compa
 	public void setProperties(Dictionary<String, ?> props) {
 		final ServiceReferenceImpl<S> ref;
 		final Map<String, Object> previousProperties;
-		synchronized (registry) {
-			synchronized (registrationLock) {
-				if (state != REGISTERED) { /* in the process of unregisterING */
-					throw new IllegalStateException(Msg.SERVICE_ALREADY_UNREGISTERED_EXCEPTION);
-				}
 
-				ref = reference; /* used to publish event outside sync */
-				previousProperties = this.properties;
-				this.properties = createProperties(props);
+		synchronized (registrationLock) {
+			if (state != REGISTERED) { /* in the process of unregisterING */
+				throw new IllegalStateException(Msg.SERVICE_ALREADY_UNREGISTERED_EXCEPTION);
 			}
-			registry.modifyServiceRegistration(context, this);
+
+			ref = reference; /* used to publish event outside sync */
+			previousProperties = this.properties;
+			this.properties = createProperties(props);
 		}
+		registry.modifyServiceRegistration(context, this);
+
 		/* must not hold the registrationLock when this event is published */
 		registry.publishServiceEvent(new ModifiedServiceEvent(ref, previousProperties));
 	}
@@ -200,22 +199,21 @@ public class ServiceRegistrationImpl<S> implements ServiceRegistration<S>, Compa
 	 */
 	public void unregister() {
 		final ServiceReferenceImpl<S> ref;
-		synchronized (registry) {
-			synchronized (registrationLock) {
-				if (state != REGISTERED) { /* in the process of unregisterING */
-					throw new IllegalStateException(Msg.SERVICE_ALREADY_UNREGISTERED_EXCEPTION);
-				}
 
-				/* remove this object from the service registry */
-				if (registry.debug.DEBUG_SERVICES) {
-					Debug.println("unregisterService[" + bundle + "](" + this + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				}
-
-				registry.removeServiceRegistration(context, this);
-
-				state = UNREGISTERING; /* mark unregisterING */
-				ref = reference; /* used to publish event outside sync */
+		synchronized (registrationLock) {
+			if (state != REGISTERED) { /* in the process of unregisterING */
+				throw new IllegalStateException(Msg.SERVICE_ALREADY_UNREGISTERED_EXCEPTION);
 			}
+
+			/* remove this object from the service registry */
+			if (registry.debug.DEBUG_SERVICES) {
+				Debug.println("unregisterService[" + bundle + "](" + this + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			}
+
+			registry.removeServiceRegistration(context, this);
+
+			state = UNREGISTERING; /* mark unregisterING */
+			ref = reference; /* used to publish event outside sync */
 		}
 
 		/* must not hold the registrationLock when this event is published */
