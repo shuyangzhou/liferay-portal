@@ -1,0 +1,90 @@
+diff --git a/org/eclipse/osgi/internal/loader/BundleLoader.java b/org/eclipse/osgi/internal/loader/BundleLoader.java
+index d797d422f869..a69399574ace 100644
+--- a/org/eclipse/osgi/internal/loader/BundleLoader.java
++++ b/org/eclipse/osgi/internal/loader/BundleLoader.java
+@@ -27,6 +27,9 @@ import java.util.List;
+ import java.util.Map;
+ import java.util.Set;
+ import java.util.concurrent.atomic.AtomicBoolean;
++import java.util.concurrent.locks.Lock;
++import java.util.concurrent.locks.ReadWriteLock;
++import java.util.concurrent.locks.ReentrantReadWriteLock;
+ import java.util.regex.Matcher;
+ import java.util.regex.Pattern;
+ import org.eclipse.osgi.container.Module;
+@@ -101,6 +104,12 @@ public class BundleLoader extends ModuleLoader {
+ 	private final Collection<String> exportedPackages;
+ 	private final BundleLoaderSources exportSources;
+ 
++	private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
++
++	private final Lock readLock = readWriteLock.readLock();
++
++	private final Lock writeLock = readWriteLock.writeLock();
++
+ 	/* cache of required package sources. Key is packagename, value is PackageSource */
+ 	private final KeyedHashSet requiredSources = new KeyedHashSet(false);
+ 	/* cache of imported packages. Key is packagename, Value is PackageSource */
+@@ -108,7 +117,7 @@ public class BundleLoader extends ModuleLoader {
+ 	private final List<ModuleWire> requiredBundleWires;
+ 
+ 	/* @GuardedBy("importedSources") */
+-	private boolean importsInitialized = false;
++	private volatile boolean importsInitialized = false;
+ 	/* @GuardedBy("importedSources") */
+ 	private boolean dynamicAllPackages;
+ 	/* If not null, list of package stems to import dynamically. */
+@@ -1133,6 +1142,10 @@ public class BundleLoader extends ModuleLoader {
+ 	}
+ 
+ 	private KeyedHashSet getImportedSources(Collection<BundleLoader> visited) {
++		if (importsInitialized) {
++			return importedSources;
++		}
++
+ 		synchronized (importedSources) {
+ 			if (importsInitialized) {
+ 				return importedSources;
+@@ -1173,11 +1186,17 @@ public class BundleLoader extends ModuleLoader {
+ 	}
+ 
+ 	private PackageSource findRequiredSource(String pkgName, Collection<BundleLoader> visited) {
+-		synchronized (requiredSources) {
++		readLock.lock();
++
++		try {
+ 			PackageSource result = (PackageSource) requiredSources.getByKey(pkgName);
+ 			if (result != null)
+ 				return result.isNullSource() ? null : result;
+ 		}
++		finally {
++			readLock.unlock();
++		}
++
+ 		if (visited == null)
+ 			visited = new ArrayList<>();
+ 		if (!visited.contains(this))
+@@ -1203,9 +1222,16 @@ public class BundleLoader extends ModuleLoader {
+ 			PackageSource[] srcs = result.toArray(new PackageSource[result.size()]);
+ 			source = createMultiSource(pkgName, srcs);
+ 		}
+-		synchronized (requiredSources) {
++
++		writeLock.lock();
++
++		try {
+ 			requiredSources.add(source);
+ 		}
++		finally {
++			writeLock.unlock();
++		}
++
+ 		return source.isNullSource() ? null : source;
+ 	}
+ 
+@@ -1244,3 +1270,4 @@ public class BundleLoader extends ModuleLoader {
+ 		return triggerClassLoaded.get();
+ 	}
+ }
++/* @generated */
+\ No newline at end of file
