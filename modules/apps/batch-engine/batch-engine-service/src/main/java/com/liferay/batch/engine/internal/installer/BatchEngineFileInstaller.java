@@ -18,6 +18,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.liferay.batch.engine.BatchEngineImportTaskExecutor;
 import com.liferay.batch.engine.BatchEngineTaskExecuteStatus;
+import com.liferay.batch.engine.BatchEngineTaskItemDelegate;
+import com.liferay.batch.engine.BatchEngineTaskItemDelegateRegistry;
 import com.liferay.batch.engine.BatchEngineTaskOperation;
 import com.liferay.batch.engine.constants.BatchEngineImportTaskConstants;
 import com.liferay.batch.engine.model.BatchEngineImportTask;
@@ -25,6 +27,7 @@ import com.liferay.batch.engine.service.BatchEngineImportTaskLocalService;
 import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.petra.io.StreamUtil;
 import com.liferay.petra.io.unsync.UnsyncByteArrayOutputStream;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.file.install.FileInstaller;
 import com.liferay.portal.kernel.deploy.auto.AutoDeployException;
@@ -82,31 +85,47 @@ public class BatchEngineFileInstaller implements FileInstaller {
 					_getBatchEngineZipUnits(zipFile)) {
 
 				if (!batchEngineZipUnit.isValid()) {
-					continue;
+					return false;
 				}
 
 				BatchEngineImportConfiguration batchEngineImportConfiguration =
 					_getBatchEngineImportConfiguration(batchEngineZipUnit);
 
-				if ((batchEngineImportConfiguration != null) &&
-					(batchEngineImportConfiguration.companyId > 0) &&
-					(batchEngineImportConfiguration.userId > 0) &&
-					Validator.isNotNull(
-						batchEngineImportConfiguration.className) &&
-					Validator.isNotNull(
-						batchEngineImportConfiguration.version)) {
+				if ((batchEngineImportConfiguration == null) ||
+					(batchEngineImportConfiguration.companyId <= 0) ||
+					(batchEngineImportConfiguration.userId <= 0) ||
+					Validator.isNull(
+						batchEngineImportConfiguration.className) ||
+					Validator.isNull(batchEngineImportConfiguration.version)) {
 
-					return true;
+					return false;
+				}
+
+				BatchEngineTaskItemDelegate<?> batchEngineTaskItemDelegate =
+					_batchEngineTaskItemDelegateRegistry.
+						getBatchEngineTaskItemDelegate(
+							batchEngineImportConfiguration.getClassName(),
+							batchEngineImportConfiguration.
+								getTaskItemDelegateName());
+
+				if (batchEngineTaskItemDelegate == null) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							StringBundler.concat(
+								"No batch engine delegate available for class ",
+								"name ",
+								batchEngineImportConfiguration.getClassName()));
+
+						return false;
+					}
 				}
 			}
 		}
 		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(new AutoDeployException(exception));
-			}
+			_log.error(new AutoDeployException(exception));
 		}
 
-		return false;
+		return true;
 	}
 
 	public boolean isBatchEngineTechnical(String zipEntryName) {
@@ -470,6 +489,10 @@ public class BatchEngineFileInstaller implements FileInstaller {
 	@Reference
 	private BatchEngineImportTaskLocalService
 		_batchEngineImportTaskLocalService;
+
+	@Reference
+	private BatchEngineTaskItemDelegateRegistry
+		_batchEngineTaskItemDelegateRegistry;
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
