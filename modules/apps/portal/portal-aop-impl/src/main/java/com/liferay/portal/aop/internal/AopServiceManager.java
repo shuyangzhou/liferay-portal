@@ -16,12 +16,17 @@ package com.liferay.portal.aop.internal;
 
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.concurrent.SystemExecutorServiceUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.spring.transaction.TransactionExecutor;
 
 import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.FutureTask;
+import java.util.function.Supplier;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -67,7 +72,7 @@ public class AopServiceManager {
 		_transactionExecutorServiceTrackerMap.close();
 	}
 
-	private ServiceTracker<AopService, AopServiceRegistrar>
+	private ServiceTracker<AopService, Supplier<AopServiceRegistrar>>
 		_aopServiceServiceTracker;
 	private BundleContext _bundleContext;
 
@@ -78,10 +83,11 @@ public class AopServiceManager {
 		_transactionExecutorServiceTrackerMap;
 
 	private class AopServiceServiceTrackerCustomizer
-		implements ServiceTrackerCustomizer<AopService, AopServiceRegistrar> {
+		implements ServiceTrackerCustomizer
+			<AopService, Supplier<AopServiceRegistrar>> {
 
 		@Override
-		public AopServiceRegistrar addingService(
+		public Supplier<AopServiceRegistrar> addingService(
 			ServiceReference<AopService> serviceReference) {
 
 			AopService aopService = _bundleContext.getService(serviceReference);
@@ -95,35 +101,58 @@ public class AopServiceManager {
 						" without a service interface"));
 			}
 
-			AopServiceRegistrar aopServiceRegistrar = new AopServiceRegistrar(
-				serviceReference, aopService, aopInterfaces);
+			FutureTask<AopServiceRegistrar> futureTask = new FutureTask<>(
+				() -> {
+					AopServiceRegistrar aopServiceRegistrar =
+						new AopServiceRegistrar(
+							serviceReference, aopService, aopInterfaces);
 
-			if (aopServiceRegistrar.isLiferayService()) {
-				Long bundleId = (Long)serviceReference.getProperty(
-					Constants.SERVICE_BUNDLEID);
+					if (aopServiceRegistrar.isLiferayService()) {
+						Long bundleId = (Long)serviceReference.getProperty(
+							Constants.SERVICE_BUNDLEID);
 
-				TransactionExecutor transactionExecutor =
-					_transactionExecutorServiceTrackerMap.getService(bundleId);
+						TransactionExecutor transactionExecutor =
+							_transactionExecutorServiceTrackerMap.getService(
+								bundleId);
 
-				if (transactionExecutor == null) {
-					throw new IllegalStateException(
-						"Unable to locate transaction executor for bundle " +
-							bundleId);
+						if (transactionExecutor == null) {
+							throw new IllegalStateException(
+								"Unable to locate transaction executor for " +
+									"bundle " + bundleId);
+						}
+
+						aopServiceRegistrar.register(transactionExecutor);
+					}
+					else {
+						aopServiceRegistrar.register(
+							_portalTransactionExecutor);
+					}
+
+					return aopServiceRegistrar;
+				});
+
+			ExecutorService executorService =
+				SystemExecutorServiceUtil.getExecutorService();
+
+			executorService.submit(futureTask);
+
+			return () -> {
+				try {
+					return futureTask.get();
 				}
-
-				aopServiceRegistrar.register(transactionExecutor);
-			}
-			else {
-				aopServiceRegistrar.register(_portalTransactionExecutor);
-			}
-
-			return aopServiceRegistrar;
+				catch (Exception exception) {
+					return ReflectionUtil.throwException(exception);
+				}
+			};
 		}
 
 		@Override
 		public void modifiedService(
 			ServiceReference<AopService> serviceReference,
-			AopServiceRegistrar aopServiceRegistrar) {
+			Supplier<AopServiceRegistrar> aopServiceRegistrarSupplier) {
+
+			AopServiceRegistrar aopServiceRegistrar =
+				aopServiceRegistrarSupplier.get();
 
 			aopServiceRegistrar.updateProperties();
 		}
@@ -131,7 +160,10 @@ public class AopServiceManager {
 		@Override
 		public void removedService(
 			ServiceReference<AopService> serviceReference,
-			AopServiceRegistrar aopServiceRegistrar) {
+			Supplier<AopServiceRegistrar> aopServiceRegistrarSupplier) {
+
+			AopServiceRegistrar aopServiceRegistrar =
+				aopServiceRegistrarSupplier.get();
 
 			aopServiceRegistrar.unregister();
 
