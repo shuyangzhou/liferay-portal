@@ -146,7 +146,12 @@ public class BatchEngineUnitProcessorImpl implements BatchEngineUnitProcessor {
 				BatchEngineImportTaskConstants.IMPORT_STRATEGY_ON_ERROR_FAIL,
 				BatchEngineTaskOperation.CREATE.name(),
 				batchEngineUnitConfiguration.getParameters(),
-				batchEngineUnitConfiguration.getTaskItemDelegateName());
+				batchEngineUnitConfiguration.getTaskItemDelegateName(),
+				_retryBatchEngineTaskItemDelegateRegistry.
+					getBatchEngineTaskItemDelegate(
+						batchEngineUnitConfiguration.getClassName(),
+						batchEngineUnitConfiguration.
+							getTaskItemDelegateName()));
 
 		executorService.submit(
 			() -> {
@@ -219,6 +224,10 @@ public class BatchEngineUnitProcessorImpl implements BatchEngineUnitProcessor {
 
 	@Reference
 	private PortalExecutorManager _portalExecutorManager;
+
+	@Reference
+	private RetryBatchEngineTaskItemDelegateRegistry
+		_retryBatchEngineTaskItemDelegateRegistry;
 
 	@Reference
 	private UserLocalService _userLocalService;
