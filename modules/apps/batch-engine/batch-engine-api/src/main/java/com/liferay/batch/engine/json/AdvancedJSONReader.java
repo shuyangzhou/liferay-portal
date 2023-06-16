@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.batch.engine.internal.json;
+package com.liferay.batch.engine.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

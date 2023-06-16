@@ -1,12 +1,13 @@
 Bundle-Name: Liferay Batch Engine API
 Bundle-SymbolicName: com.liferay.batch.engine.api
-Bundle-Version: 20.4.1
+Bundle-Version: 20.5.0
 Export-Package:\
 	com.liferay.batch.engine,\
 	com.liferay.batch.engine.configuration,\
 	com.liferay.batch.engine.constants,\
 	com.liferay.batch.engine.exception,\
 	com.liferay.batch.engine.jaxrs.uri,\
+	com.liferay.batch.engine.json,\
 	com.liferay.batch.engine.model,\
 	com.liferay.batch.engine.pagination,\
 	com.liferay.batch.engine.service,\

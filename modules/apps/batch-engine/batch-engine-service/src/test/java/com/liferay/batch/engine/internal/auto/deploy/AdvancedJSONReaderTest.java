@@ -14,7 +14,7 @@
 
 package com.liferay.batch.engine.internal.auto.deploy;
 
-import com.liferay.batch.engine.internal.json.AdvancedJSONReader;
+import com.liferay.batch.engine.json.AdvancedJSONReader;
 import com.liferay.batch.engine.unit.BatchEngineUnitConfiguration;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;

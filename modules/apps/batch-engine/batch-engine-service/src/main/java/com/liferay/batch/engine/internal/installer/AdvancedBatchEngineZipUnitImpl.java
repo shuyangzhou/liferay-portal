@@ -14,7 +14,7 @@
 
 package com.liferay.batch.engine.internal.installer;
 
-import com.liferay.batch.engine.internal.json.AdvancedJSONReader;
+import com.liferay.batch.engine.json.AdvancedJSONReader;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
