@@ -9,7 +9,6 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.model.ReleaseConstants;
 import com.liferay.portal.kernel.service.ReleaseLocalService;
-import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
@@ -20,6 +19,7 @@ import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
+import com.liferay.portal.upgrade.release.ReleasePublisher;
 
 import java.util.Collection;
 
@@ -104,9 +104,7 @@ public class ReleasePublisherTest {
 		release.setServletContextName(_bundleSymbolicName);
 		release.setSchemaVersion("0.0.0");
 
-		ReflectionTestUtil.invoke(
-			_releasePublisher, "publish",
-			new Class<?>[] {Release.class, boolean.class}, release, false);
+		_releasePublisher.publish(release, false);
 
 		Assert.assertEquals(1, _getReleaseServiceReferences().size());
 
@@ -177,11 +175,8 @@ public class ReleasePublisherTest {
 	@Inject
 	private ReleaseLocalService _releaseLocalService;
 
-	@Inject(
-		filter = "component.name=com.liferay.portal.upgrade.internal.release.ReleasePublisher",
-		type = Inject.NoType.class
-	)
-	private Object _releasePublisher;
+	@Inject
+	private ReleasePublisher _releasePublisher;
 
 	@Inject
 	private ServiceComponentRuntime _serviceComponentRuntime;
