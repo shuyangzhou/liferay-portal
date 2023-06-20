@@ -30,6 +30,7 @@ import com.liferay.portal.upgrade.PortalUpgradeProcess;
 import com.liferay.portal.upgrade.internal.executor.UpgradeExecutor;
 import com.liferay.portal.upgrade.internal.graph.ReleaseGraphManager;
 import com.liferay.portal.upgrade.internal.registry.UpgradeInfo;
+import com.liferay.portal.upgrade.release.ReleasePublisher;
 
 import java.sql.Connection;
 import java.sql.SQLException;
