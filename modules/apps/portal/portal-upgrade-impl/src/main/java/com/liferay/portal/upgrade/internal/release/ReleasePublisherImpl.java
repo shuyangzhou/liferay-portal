@@ -1,5 +1,5 @@
 /**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2023 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.service.ReleaseLocalService;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.upgrade.internal.model.listener.ReleaseModelListener;
+import com.liferay.portal.upgrade.release.ReleasePublisher;
 
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -36,8 +37,9 @@ import org.osgi.service.component.annotations.Reference;
  * @author Carlos Sierra Andrés
  */
 @Component(service = ReleasePublisher.class)
-public class ReleasePublisher {
+public class ReleasePublisherImpl implements ReleasePublisher {
 
+	@Override
 	public void publish(Release release, boolean initialRelease) {
 		Dictionary<String, Object> properties = new Hashtable<>();
 
@@ -71,6 +73,7 @@ public class ReleasePublisher {
 		}
 	}
 
+	@Override
 	public void unpublish(Release release) {
 		TransactionCommitCallbackUtil.registerCallback(
 			() -> {
@@ -117,7 +120,7 @@ public class ReleasePublisher {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ReleasePublisher.class);
+		ReleasePublisherImpl.class);
 
 	private BundleContext _bundleContext;
 

@@ -7,7 +7,7 @@ package com.liferay.portal.upgrade.internal.model.listener;
 
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.Release;
-import com.liferay.portal.upgrade.internal.release.ReleasePublisher;
+import com.liferay.portal.upgrade.release.ReleasePublisher;
 
 /**
  * @author Shuyang Zhou
