@@ -22,8 +22,8 @@ import com.liferay.portal.kernel.version.Version;
 import com.liferay.portal.upgrade.internal.graph.ReleaseGraphManager;
 import com.liferay.portal.upgrade.internal.registry.UpgradeInfo;
 import com.liferay.portal.upgrade.internal.registry.UpgradeStepRegistratorTracker;
-import com.liferay.portal.upgrade.internal.release.ReleasePublisher;
 import com.liferay.portal.upgrade.log.UpgradeLogContext;
+import com.liferay.portal.upgrade.release.ReleasePublisher;
 
 import java.util.Dictionary;
 import java.util.List;
