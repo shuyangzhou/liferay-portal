@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.configurator.ConfigurableApplicationContextConfigurator;
+import com.liferay.portal.spring.extender.internal.InitialTablesCreator;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -121,6 +122,7 @@ public class ModuleApplicationContextExtender
 
 			_component.setImplementation(
 				new ModuleApplicationContextRegistrator(
+					_initialTablesCreator,
 					_configurableApplicationContextConfigurator, _bundle,
 					bundleContext.getBundle()));
 
@@ -260,6 +262,9 @@ public class ModuleApplicationContextExtender
 	@Reference
 	private ConfigurableApplicationContextConfigurator
 		_configurableApplicationContextConfigurator;
+
+	@Reference
+	private InitialTablesCreator _initialTablesCreator;
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
