@@ -6,6 +6,7 @@
 package com.liferay.portal.upgrade.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.model.ReleaseConstants;
 import com.liferay.portal.kernel.service.ReleaseLocalService;
@@ -20,6 +21,7 @@ import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
+import com.liferay.portal.upgrade.release.ReleasePublisher;
 
 import java.util.Collection;
 
@@ -37,9 +39,6 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
-import org.osgi.service.component.runtime.ServiceComponentRuntime;
-import org.osgi.service.component.runtime.dto.ComponentDescriptionDTO;
-import org.osgi.util.promise.Promise;
 
 /**
  * @author Alberto Chaparro
@@ -104,9 +103,7 @@ public class ReleasePublisherTest {
 		release.setServletContextName(_bundleSymbolicName);
 		release.setSchemaVersion("0.0.0");
 
-		ReflectionTestUtil.invoke(
-			_releasePublisher, "publish",
-			new Class<?>[] {Release.class, boolean.class}, release, false);
+		_releasePublisher.publish(release, false);
 
 		Assert.assertEquals(1, _getReleaseServiceReferences().size());
 
@@ -116,17 +113,18 @@ public class ReleasePublisherTest {
 	}
 
 	private void _addReleaseBeforeActivation(int state) throws Exception {
-		Class<?> clazz = _releasePublisher.getClass();
+		ServiceRegistration<?> serviceRegistration =
+			ReflectionTestUtil.getFieldValue(
+				_releasePublisher, "_serviceRegistration");
 
-		ComponentDescriptionDTO componentDescriptionDTO =
-			_serviceComponentRuntime.getComponentDescriptionDTO(
-				FrameworkUtil.getBundle(_releasePublisher.getClass()),
-				clazz.getName());
+		BundleContext bundleContext = ReflectionTestUtil.getFieldValue(
+			_releasePublisher, "_bundleContext");
 
-		Promise<?> promise = _serviceComponentRuntime.disableComponent(
-			componentDescriptionDTO);
+		ModelListener<?> modelListener =
+			(ModelListener<?>)bundleContext.getService(
+				serviceRegistration.getReference());
 
-		promise.getValue();
+		serviceRegistration.unregister();
 
 		_release = _releaseLocalService.addRelease(
 			_bundleSymbolicName, "0.0.0");
@@ -135,10 +133,16 @@ public class ReleasePublisherTest {
 
 		_release = _releaseLocalService.updateRelease(_release);
 
-		promise = _serviceComponentRuntime.enableComponent(
-			componentDescriptionDTO);
+		Bundle bundle = FrameworkUtil.getBundle(_releasePublisher.getClass());
 
-		promise.getValue();
+		ReflectionTestUtil.invoke(
+			_releasePublisher, "activate", new Class<?>[] {BundleContext.class},
+			bundle.getBundleContext());
+
+		ReflectionTestUtil.setFieldValue(
+			_releasePublisher, "_serviceRegistration",
+			bundleContext.registerService(
+				ModelListener.class, modelListener, null));
 	}
 
 	private Collection<ServiceReference<Release>> _getReleaseServiceReferences()
@@ -177,14 +181,8 @@ public class ReleasePublisherTest {
 	@Inject
 	private ReleaseLocalService _releaseLocalService;
 
-	@Inject(
-		filter = "component.name=com.liferay.portal.upgrade.internal.release.ReleasePublisher",
-		type = Inject.NoType.class
-	)
-	private Object _releasePublisher;
-
 	@Inject
-	private ServiceComponentRuntime _serviceComponentRuntime;
+	private ReleasePublisher _releasePublisher;
 
 	private ServiceRegistration<UpgradeStepRegistrator> _serviceRegistration;
 
