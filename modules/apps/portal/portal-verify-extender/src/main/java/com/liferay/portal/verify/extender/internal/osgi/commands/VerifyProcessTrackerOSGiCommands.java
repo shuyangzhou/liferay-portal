@@ -21,6 +21,7 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapper;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.events.StartupHelperUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -228,7 +229,9 @@ public class VerifyProcessTrackerOSGiCommands {
 
 						_executeVerifyProcess(verifyProcess, release);
 					}
-					else if (release == null) {
+					else if ((release == null) &&
+							 !_isServiceBundle(serviceReference.getBundle())) {
+
 						release = _releaseLocalService.createRelease(
 							_counterLocalService.increment());
 
@@ -383,6 +386,19 @@ public class VerifyProcessTrackerOSGiCommands {
 		}
 
 		return false;
+	}
+
+	private boolean _isServiceBundle(Bundle bundle) {
+		Dictionary<String, String> headers = bundle.getHeaders(
+			StringPool.BLANK);
+
+		if ((headers.get("Liferay-Service") == null) &&
+			(headers.get("Liferay-Spring-Context") == null)) {
+
+			return false;
+		}
+
+		return true;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
