@@ -134,13 +134,6 @@ public class LiferayServiceExtender
 			BundleContext extendeeBundleContext =
 				_extendeeBundle.getBundleContext();
 
-			_serviceRegistrations.add(
-				extendeeBundleContext.registerService(
-					DataSource.class, _dataSource,
-					MapUtil.singletonDictionary(
-						"origin.bundle.symbolic.name",
-						_extendeeBundle.getSymbolicName())));
-
 			ClassLoader classLoader = new ModuleAggregareClassLoader(
 				extendeeClassLoader, _extendeeBundle.getSymbolicName());
 
@@ -152,6 +145,24 @@ public class LiferayServiceExtender
 			_sessionFactoryImplementor =
 				(SessionFactoryImplementor)
 					portletHibernateConfiguration.getObject();
+
+			DefaultTransactionExecutor defaultTransactionExecutor =
+				_getTransactionExecutor(
+					_dataSource, _sessionFactoryImplementor);
+
+			_serviceRegistrations.add(
+				extendeeBundleContext.registerService(
+					TransactionExecutor.class, defaultTransactionExecutor,
+					MapUtil.singletonDictionary(
+						"origin.bundle.symbolic.name",
+						_extendeeBundle.getSymbolicName())));
+
+			_serviceRegistrations.add(
+				extendeeBundleContext.registerService(
+					DataSource.class, _dataSource,
+					MapUtil.singletonDictionary(
+						"origin.bundle.symbolic.name",
+						_extendeeBundle.getSymbolicName())));
 
 			SessionFactoryImpl sessionFactoryImpl = new SessionFactoryImpl();
 
@@ -166,17 +177,6 @@ public class LiferayServiceExtender
 			_serviceRegistrations.add(
 				extendeeBundleContext.registerService(
 					SessionFactory.class, sessionFactory,
-					MapUtil.singletonDictionary(
-						"origin.bundle.symbolic.name",
-						_extendeeBundle.getSymbolicName())));
-
-			DefaultTransactionExecutor defaultTransactionExecutor =
-				_getTransactionExecutor(
-					_dataSource, _sessionFactoryImplementor);
-
-			_serviceRegistrations.add(
-				extendeeBundleContext.registerService(
-					TransactionExecutor.class, defaultTransactionExecutor,
 					MapUtil.singletonDictionary(
 						"origin.bundle.symbolic.name",
 						_extendeeBundle.getSymbolicName())));
