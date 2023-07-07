@@ -25,7 +25,10 @@ import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserConstants;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.spring.orm.LastSessionRecorderHelperUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.TimeZoneThreadLocal;
 
 import java.sql.Connection;
@@ -127,6 +130,10 @@ public class CompanyThreadLocal {
 				ctCollectionId);
 
 		return () -> {
+			if (_DATABASE_PARTITION_ENABLED) {
+				LastSessionRecorderHelperUtil.syncLastSessionState();
+			}
+
 			_companyId.set(currentCompanyId);
 			LocaleThreadLocal.setDefaultLocale(defaultLocale);
 			TimeZoneThreadLocal.setDefaultTimeZone(defaultTimeZone);
@@ -239,6 +246,9 @@ public class CompanyThreadLocal {
 			_log.error(exception);
 		}
 	}
+
+	private static final boolean _DATABASE_PARTITION_ENABLED =
+		GetterUtil.getBoolean(PropsUtil.get("database.partition.enabled"));
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CompanyThreadLocal.class);
