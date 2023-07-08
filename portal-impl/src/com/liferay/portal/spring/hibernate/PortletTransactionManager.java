@@ -144,6 +144,8 @@ public class PortletTransactionManager implements PlatformTransactionManager {
 			_portletSessionFactory,
 			_createSessionHolder(portletSession, portalSessionHolder));
 
+		LastSessionRecorderUtil.setLastSession(portletSession);
+
 		return new TransactionStatusWrapper(
 			portalTransactionStatus, _portletSessionFactory,
 			portletSessionHolder, portletSession);

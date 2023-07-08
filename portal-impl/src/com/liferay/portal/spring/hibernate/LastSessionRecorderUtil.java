@@ -21,6 +21,10 @@ import com.liferay.portal.kernel.transaction.TransactionAttribute;
 import com.liferay.portal.kernel.transaction.TransactionLifecycleListener;
 import com.liferay.portal.kernel.transaction.TransactionStatus;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.hibernate.Session;
 
 /**
@@ -42,27 +46,39 @@ public class LastSessionRecorderUtil {
 		};
 
 	public static void syncLastSessionState() {
-		Session session = _lastSessionThreadLocal.get();
+		List<Session> sessions = _lastSessionThreadLocal.get();
 
-		if ((session != null) && session.isOpen()) {
-			try {
-				session.flush();
+		Iterator<Session> iterator = sessions.iterator();
 
-				session.clear();
+		while (iterator.hasNext()) {
+			Session session = iterator.next();
+
+			if (session.isOpen()) {
+				try {
+					session.flush();
+
+					session.clear();
+				}
+				catch (Exception exception) {
+					throw new SystemException(exception);
+				}
 			}
-			catch (Exception exception) {
-				throw new SystemException(exception);
+			else {
+				iterator.remove();
 			}
 		}
 	}
 
 	protected static void setLastSession(Session session) {
-		_lastSessionThreadLocal.set(session);
+		List<Session> sessions = _lastSessionThreadLocal.get();
+
+		sessions.add(session);
 	}
 
-	private static final ThreadLocal<Session> _lastSessionThreadLocal =
+	private static final ThreadLocal<List<Session>> _lastSessionThreadLocal =
 		new CentralizedThreadLocal<>(
 			LastSessionRecorderUtil.class.getName() +
-				"._lastSessionThreadLocal");
+				"._lastSessionThreadLocal",
+			ArrayList::new);
 
 }
