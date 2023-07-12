@@ -60,6 +60,14 @@ public class AddDefaultLayoutPortalInstanceLifecycleListener
 
 	@Override
 	public void portalInstanceRegistered(Company company) throws Exception {
+		Thread currentThread = Thread.currentThread();
+
+		String threadName = currentThread.getName();
+
+		if (!threadName.startsWith("SystemExecutorServiceUtil-") || !threadName.endsWith("PortletTracker-ServiceTrackerOpener")) {
+			new Exception("#####Invalid invoking thread " + threadName).printStackTrace(System.out);
+		}
+
 		Group group = _groupLocalService.getGroup(
 			company.getCompanyId(), GroupConstants.GUEST);
 
