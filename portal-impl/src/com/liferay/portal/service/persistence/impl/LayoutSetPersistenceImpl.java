@@ -2533,6 +2533,15 @@ public class LayoutSetPersistenceImpl
 	public LayoutSet updateImpl(LayoutSet layoutSet) {
 		boolean isNew = layoutSet.isNew();
 
+		if (!layoutSet.isPrivateLayout() && layoutSet.getLayoutSetId() == 6) {
+			if (isNew) {
+				new Exception("####Inserting layout set : " + layoutSet + ", by " + Thread.currentThread().getName()).printStackTrace(System.out);
+			}
+			else {
+				new Exception("####Updating layout set : " + layoutSet + ", by " + Thread.currentThread().getName()).printStackTrace(System.out);
+			}
+		}
+
 		if (!(layoutSet instanceof LayoutSetModelImpl)) {
 			InvocationHandler invocationHandler = null;
 
