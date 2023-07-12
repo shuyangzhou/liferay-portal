@@ -14,7 +14,6 @@
 
 package com.liferay.site.welcome.site.initializer.internal.instance.lifecycle;
 
-import com.liferay.document.library.constants.DLPortletKeys;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.fragment.contributor.FragmentCollectionContributor;
@@ -153,11 +152,6 @@ public class AddDefaultLayoutPortalInstanceLifecycleListener
 
 	@Reference(target = ModuleServiceLifecycle.PORTLETS_INITIALIZED)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
-
-	@Reference(
-		target = "(javax.portlet.name=" + DLPortletKeys.DOCUMENT_LIBRARY_ADMIN + ")"
-	)
-	private Portlet _portlet;
 
 	@Reference
 	private RoleLocalService _roleLocalService;
