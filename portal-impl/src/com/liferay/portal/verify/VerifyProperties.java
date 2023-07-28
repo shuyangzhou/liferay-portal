@@ -1729,6 +1729,7 @@ public class VerifyProperties {
 		"default.user.public.layout.wap.color.scheme.id",
 		"default.user.public.layout.wap.theme.id",
 		"default.wap.color.scheme.id", "default.wap.theme.id",
+		"dependency.manager.thread.pool.enabled",
 		"discussion.subscribe.by.default", "discussion.thread.view",
 		"dl.file.entry.image.exif.metadata.rotation.enabled",
 		"dl.file.entry.open.in.ms.office.manual.check.in.required",
@@ -2154,11 +2155,6 @@ public class VerifyProperties {
 		{
 			"module.framework.properties.dependency.manager.sync.timeout",
 			"dependency.manager.sync.timeout"
-		},
-		{
-			"module.framework.properties.dependency.manager.thread.pool." +
-				"enabled",
-			"dependency.manager.thread.pool.enabled"
 		},
 		{
 			"module.framework.properties.felix.fileinstall.bundles.new.start",
