@@ -78,7 +78,7 @@ public class ServiceConfigurationInitializer {
 
 	protected void start() {
 		DependencyManagerSyncUtil.registerSyncFutureTask(
-			new FutureTask<>(_futureTask, null),
+			_futureTask,
 			ServiceConfigurationInitializer.class.getName() + "-" +
 				_bundle.getSymbolicName());
 	}
