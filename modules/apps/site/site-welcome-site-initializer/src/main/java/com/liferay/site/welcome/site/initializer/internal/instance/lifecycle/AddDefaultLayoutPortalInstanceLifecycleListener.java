@@ -11,6 +11,7 @@ import com.liferay.document.library.kernel.store.Store;
 import com.liferay.fragment.contributor.FragmentCollectionContributor;
 import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener;
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
+import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -51,49 +52,56 @@ public class AddDefaultLayoutPortalInstanceLifecycleListener
 
 	@Override
 	public void portalInstanceRegistered(Company company) throws Exception {
-		Group group = _groupLocalService.getGroup(
-			company.getCompanyId(), GroupConstants.GUEST);
+		DependencyManagerSyncUtil.registerSyncCallable(
+			() -> {
+				Group group = _groupLocalService.getGroup(
+					company.getCompanyId(), GroupConstants.GUEST);
 
-		String friendlyURL = _friendlyURLNormalizer.normalizeWithEncoding(
-			PropsValues.DEFAULT_GUEST_PUBLIC_LAYOUT_FRIENDLY_URL);
+				String friendlyURL =
+					_friendlyURLNormalizer.normalizeWithEncoding(
+						PropsValues.DEFAULT_GUEST_PUBLIC_LAYOUT_FRIENDLY_URL);
 
-		Layout defaultLayout = _layoutLocalService.fetchLayoutByFriendlyURL(
-			group.getGroupId(), false, friendlyURL);
+				Layout defaultLayout =
+					_layoutLocalService.fetchLayoutByFriendlyURL(
+						group.getGroupId(), false, friendlyURL);
 
-		if (defaultLayout == null) {
-			defaultLayout = _layoutLocalService.fetchFirstLayout(
-				group.getGroupId(), false,
-				LayoutConstants.DEFAULT_PARENT_LAYOUT_ID, false);
+				if (defaultLayout == null) {
+					defaultLayout = _layoutLocalService.fetchFirstLayout(
+						group.getGroupId(), false,
+						LayoutConstants.DEFAULT_PARENT_LAYOUT_ID, false);
 
-			if (defaultLayout == null) {
-				String name = PrincipalThreadLocal.getName();
+					if (defaultLayout == null) {
+						String name = PrincipalThreadLocal.getName();
 
-				PermissionChecker permissionChecker =
-					PermissionThreadLocal.getPermissionChecker();
+						PermissionChecker permissionChecker =
+							PermissionThreadLocal.getPermissionChecker();
 
-				try {
-					User user = _getUser(company.getCompanyId());
+						try {
+							User user = _getUser(company.getCompanyId());
 
-					PrincipalThreadLocal.setName(user.getUserId());
+							PrincipalThreadLocal.setName(user.getUserId());
 
-					PermissionThreadLocal.setPermissionChecker(
-						_defaultPermissionCheckerFactory.create(user));
+							PermissionThreadLocal.setPermissionChecker(
+								_defaultPermissionCheckerFactory.create(user));
 
-					ServiceContextThreadLocal.pushServiceContext(
-						new ServiceContext());
+							ServiceContextThreadLocal.pushServiceContext(
+								new ServiceContext());
 
-					_siteInitializer.initialize(group.getGroupId());
+							_siteInitializer.initialize(group.getGroupId());
+						}
+						finally {
+							PrincipalThreadLocal.setName(name);
+
+							PermissionThreadLocal.setPermissionChecker(
+								permissionChecker);
+
+							ServiceContextThreadLocal.popServiceContext();
+						}
+					}
 				}
-				finally {
-					PrincipalThreadLocal.setName(name);
 
-					PermissionThreadLocal.setPermissionChecker(
-						permissionChecker);
-
-					ServiceContextThreadLocal.popServiceContext();
-				}
-			}
-		}
+				return null;
+			});
 	}
 
 	private User _getUser(long companyId) throws PortalException {
