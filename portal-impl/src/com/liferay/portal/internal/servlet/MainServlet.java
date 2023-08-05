@@ -46,6 +46,7 @@ import com.liferay.portal.kernel.service.LayoutTemplateLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.InactiveRequestHandler;
+import com.liferay.portal.kernel.servlet.InitialRequestSyncUtil;
 import com.liferay.portal.kernel.servlet.PortalSessionThreadLocal;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.upgrade.ReleaseManager;
@@ -126,6 +127,8 @@ public class MainServlet extends HttpServlet {
 
 	@Override
 	public void destroy() {
+		InitialRequestSyncUtil.sync();
+
 		ShutdownHelperUtil.setShutdown(true);
 
 		ListIterator<ServiceRegistration<?>> listIterator =
