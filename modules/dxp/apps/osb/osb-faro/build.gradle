@@ -61,7 +61,7 @@ createDocker {
 	dependsOn buildAppDockerImage, removeDocker
 
 	containerName = dockerContainerId
-	portBindings = ["8000:8000", "8080:8080", "11311:11311"]
+	hostConfig.portBindings = ["8000:8000", "8080:8080", "11311:11311"]
 
 	targetImageId {
 		dockerImageUser + "/" + dockerImageId
