@@ -10,6 +10,7 @@ import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.fragment.contributor.FragmentCollectionContributor;
 import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener;
+import com.liferay.portal.instance.lifecycle.EveryNodeEveryStartup;
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
@@ -33,6 +34,7 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.servlet.InitialRequestSyncUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.site.initializer.SiteInitializer;
@@ -47,10 +49,38 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(service = PortalInstanceLifecycleListener.class)
 public class AddDefaultLayoutPortalInstanceLifecycleListener
-	extends BasePortalInstanceLifecycleListener {
+	extends BasePortalInstanceLifecycleListener
+	implements EveryNodeEveryStartup {
 
 	@Override
 	public void portalInstanceRegistered(Company company) throws Exception {
+		InitialRequestSyncUtil.registerSyncCallable(
+			() -> {
+				_portalInstanceRegistered(company);
+
+				return null;
+			});
+	}
+
+	private User _getUser(long companyId) throws PortalException {
+		Role role = _roleLocalService.fetchRole(
+			companyId, RoleConstants.ADMINISTRATOR);
+
+		if (role == null) {
+			return _userLocalService.getGuestUser(companyId);
+		}
+
+		List<User> adminUsers = _userLocalService.getRoleUsers(
+			role.getRoleId(), 0, 1);
+
+		if (adminUsers.isEmpty()) {
+			return _userLocalService.getGuestUser(companyId);
+		}
+
+		return adminUsers.get(0);
+	}
+
+	private void _portalInstanceRegistered(Company company) throws Exception {
 		Group group = _groupLocalService.getGroup(
 			company.getCompanyId(), GroupConstants.GUEST);
 
@@ -94,24 +124,6 @@ public class AddDefaultLayoutPortalInstanceLifecycleListener
 				}
 			}
 		}
-	}
-
-	private User _getUser(long companyId) throws PortalException {
-		Role role = _roleLocalService.fetchRole(
-			companyId, RoleConstants.ADMINISTRATOR);
-
-		if (role == null) {
-			return _userLocalService.getGuestUser(companyId);
-		}
-
-		List<User> adminUsers = _userLocalService.getRoleUsers(
-			role.getRoleId(), 0, 1);
-
-		if (adminUsers.isEmpty()) {
-			return _userLocalService.getGuestUser(companyId);
-		}
-
-		return adminUsers.get(0);
 	}
 
 	@Reference
