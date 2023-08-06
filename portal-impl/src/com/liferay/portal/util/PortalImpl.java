@@ -188,6 +188,7 @@ import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.ServerDetector;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.StringComparator;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
@@ -214,6 +215,7 @@ import com.liferay.portlet.LiferayPortletUtil;
 import com.liferay.portlet.PortletPreferencesImpl;
 import com.liferay.portlet.PortletPreferencesWrapper;
 import com.liferay.portlet.admin.util.OmniadminUtil;
+import com.liferay.sites.kernel.util.DefaultLayoutCreator;
 import com.liferay.sites.kernel.util.Sites;
 import com.liferay.sites.kernel.util.SitesUtil;
 import com.liferay.social.kernel.model.SocialRelationConstants;
@@ -8469,7 +8471,22 @@ public class PortalImpl implements Portal {
 		return sb.toString();
 	}
 
-	private Layout _getLayout(long groupId, boolean privateLayout) {
+	private Layout _getLayout(long groupId, boolean privateLayout)
+		throws PortalException {
+
+		if (!privateLayout) {
+			Group group = GroupLocalServiceUtil.getGroup(groupId);
+
+			if (group.isGuest()) {
+				Layout defaultLayout = LayoutLocalServiceUtil.fetchFirstLayout(
+					groupId, false, LayoutConstants.DEFAULT_PARENT_LAYOUT_ID,
+					false);
+
+				if (defaultLayout == null) {
+					_defaultLayoutCreator.create(group);
+				}
+			}
+		}
 
 		// We need to ensure that virtual layouts are merged
 
@@ -8887,6 +8904,10 @@ public class PortalImpl implements Portal {
 		new ConcurrentHashMap<>();
 	private static final Map<Long, String> _cdnHostHttpsMap =
 		new ConcurrentHashMap<>();
+	private static volatile DefaultLayoutCreator _defaultLayoutCreator =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			DefaultLayoutCreator.class, PortalImpl.class,
+			"_defaultLayoutCreator", false);
 	private static final MethodHandler _resetCDNHostsMethodHandler =
 		new MethodHandler(new MethodKey(PortalUtil.class, "resetCDNHosts"));
 	private static final Date _upTime = new Date();
