@@ -65,6 +65,7 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.CompanyLocalService;
@@ -609,6 +610,11 @@ public class DDMServiceUpgradeStepRegistrator
 
 	@Reference
 	private Language _language;
+
+	@Reference(
+		target = "(release.bundle.symbolic.name=com.liferay.fragment.service)"
+	)
+	private Release _release;
 
 	@Reference
 	private ResourceActionLocalService _resourceActionLocalService;
