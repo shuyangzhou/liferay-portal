@@ -15,6 +15,7 @@ import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.spring.extender.internal.jdbc.DataSourceUtil;
@@ -24,6 +25,7 @@ import com.liferay.portal.spring.hibernate.PortletTransactionManager;
 import com.liferay.portal.spring.transaction.DefaultTransactionExecutor;
 import com.liferay.portal.spring.transaction.TransactionExecutor;
 import com.liferay.portal.spring.transaction.TransactionManagerFactory;
+import com.liferay.portal.tools.DBUpgrader;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
@@ -261,6 +263,18 @@ public class LiferayServiceExtender
 						supplier.get();
 					}
 
+					if (DBUpgrader.isUpgradeClient() ||
+						DBUpgrader.isUpgradeDatabaseAutoRunEnabled()) {
+
+						_serviceRegistration = bundleContext.registerService(
+							ModuleServiceLifecycle.class,
+							new ModuleServiceLifecycle() {
+							},
+							MapUtil.singletonDictionary(
+								"module.service.lifecycle",
+								"service.bundle.initial.tracked"));
+					}
+
 					return null;
 				}),
 			LiferayServiceExtender.class.getName() + "-BundleTrackerOpener");
@@ -268,6 +282,10 @@ public class LiferayServiceExtender
 
 	@Deactivate
 	protected void deactivate() {
+		if (_serviceRegistration != null) {
+			_serviceRegistration.unregister();
+		}
+
 		_bundleTracker.close();
 	}
 
@@ -278,5 +296,7 @@ public class LiferayServiceExtender
 
 	@Reference
 	private InitialTablesCreator _initialTablesCreator;
+
+	private ServiceRegistration<?> _serviceRegistration;
 
 }

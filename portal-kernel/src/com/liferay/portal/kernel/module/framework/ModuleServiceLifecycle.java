@@ -26,6 +26,9 @@ public interface ModuleServiceLifecycle {
 	public String PORTLETS_INITIALIZED =
 		"(module.service.lifecycle=portlets.initialized)";
 
+	public String SERVICE_BUNDLE_INITIAL_TRACKED =
+		"(module.service.lifecycle=service.bundle.initial.tracked)";
+
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
 	 */

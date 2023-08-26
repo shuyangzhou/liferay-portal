@@ -14,11 +14,14 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.model.ReleaseConstants;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.module.util.BundleUtil;
+import com.liferay.portal.kernel.module.util.ServiceLatch;
 import com.liferay.portal.kernel.service.ReleaseLocalService;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.version.Version;
+import com.liferay.portal.tools.DBUpgrader;
 import com.liferay.portal.upgrade.internal.graph.ReleaseGraphManager;
 import com.liferay.portal.upgrade.internal.registry.UpgradeInfo;
 import com.liferay.portal.upgrade.internal.registry.UpgradeStepRegistratorTracker;
@@ -166,7 +169,20 @@ public class UpgradeExecutor {
 		_upgradeStepRegistratorTracker = new UpgradeStepRegistratorTracker(
 			bundleContext, _releaseLocalService, this);
 
-		_upgradeStepRegistratorTracker.open();
+		if (DBUpgrader.isUpgradeClient() ||
+			DBUpgrader.isUpgradeDatabaseAutoRunEnabled()) {
+
+			ServiceLatch serviceLatch = new ServiceLatch(bundleContext);
+
+			serviceLatch.waitFor(
+				ModuleServiceLifecycle.SERVICE_BUNDLE_INITIAL_TRACKED
+			).openOn(
+				_upgradeStepRegistratorTracker::open
+			);
+		}
+		else {
+			_upgradeStepRegistratorTracker.open();
+		}
 	}
 
 	@Deactivate
