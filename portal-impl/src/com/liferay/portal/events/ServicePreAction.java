@@ -5,12 +5,6 @@
 
 package com.liferay.portal.events;
 
-import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationSettingsMapFactoryUtil;
-import com.liferay.exportimport.kernel.configuration.constants.ExportImportConfigurationConstants;
-import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
-import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
-import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalServiceUtil;
-import com.liferay.exportimport.kernel.service.ExportImportLocalServiceUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.cookies.CookiesManagerUtil;
@@ -75,7 +69,6 @@ import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -99,9 +92,6 @@ import com.liferay.portal.util.LayoutTypeAccessPolicyTracker;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.sites.kernel.util.SitesUtil;
-
-import java.io.File;
-import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -130,10 +120,6 @@ import org.apache.commons.lang.time.StopWatch;
  * @author Jorge Ferrer
  */
 public class ServicePreAction extends Action {
-
-	public ServicePreAction() {
-		_initImportLARFiles();
-	}
 
 	@Override
 	public void run(
@@ -194,9 +180,6 @@ public class ServicePreAction extends Action {
 		}
 	}
 
-	protected File privateLARFile;
-	protected File publicLARFile;
-
 	protected class LayoutComposite {
 
 		protected LayoutComposite(Layout layout, List<Layout> layouts) {
@@ -215,59 +198,6 @@ public class ServicePreAction extends Action {
 		private final Layout _layout;
 		private final List<Layout> _layouts;
 
-	}
-
-	private void _addDefaultLayoutsByLAR(
-			long userId, long groupId, boolean privateLayout, File larFile)
-		throws Exception {
-
-		User user = UserLocalServiceUtil.getUser(userId);
-
-		Map<String, Serializable> importLayoutSettingsMap =
-			ExportImportConfigurationSettingsMapFactoryUtil.
-				buildImportLayoutSettingsMap(
-					user, groupId, privateLayout, null,
-					HashMapBuilder.put(
-						PortletDataHandlerKeys.PERMISSIONS,
-						new String[] {Boolean.TRUE.toString()}
-					).put(
-						PortletDataHandlerKeys.PORTLET_ARCHIVED_SETUPS_ALL,
-						new String[] {Boolean.TRUE.toString()}
-					).put(
-						PortletDataHandlerKeys.PORTLET_CONFIGURATION,
-						new String[] {Boolean.TRUE.toString()}
-					).put(
-						PortletDataHandlerKeys.PORTLET_CONFIGURATION_ALL,
-						new String[] {Boolean.TRUE.toString()}
-					).put(
-						PortletDataHandlerKeys.PORTLET_DATA,
-						new String[] {Boolean.TRUE.toString()}
-					).put(
-						PortletDataHandlerKeys.PORTLET_DATA_ALL,
-						new String[] {Boolean.TRUE.toString()}
-					).put(
-						PortletDataHandlerKeys.PORTLET_DATA_CONTROL_DEFAULT,
-						new String[] {Boolean.TRUE.toString()}
-					).put(
-						PortletDataHandlerKeys.PORTLET_SETUP_ALL,
-						new String[] {Boolean.TRUE.toString()}
-					).put(
-						PortletDataHandlerKeys.PORTLET_USER_PREFERENCES_ALL,
-						new String[] {Boolean.TRUE.toString()}
-					).put(
-						PortletDataHandlerKeys.THEME_REFERENCE,
-						new String[] {Boolean.TRUE.toString()}
-					).build());
-
-		ExportImportConfiguration exportImportConfiguration =
-			ExportImportConfigurationLocalServiceUtil.
-				addDraftExportImportConfiguration(
-					user.getUserId(),
-					ExportImportConfigurationConstants.TYPE_IMPORT_LAYOUT,
-					importLayoutSettingsMap);
-
-		ExportImportLocalServiceUtil.importLayouts(
-			exportImportConfiguration, larFile);
 	}
 
 	private void _addDefaultUserPrivateLayoutByProperties(
@@ -342,14 +272,8 @@ public class ServicePreAction extends Action {
 	private void _addDefaultUserPrivateLayouts(User user) throws Exception {
 		Group group = user.getGroup();
 
-		if (privateLARFile != null) {
-			_addDefaultLayoutsByLAR(
-				user.getUserId(), group.getGroupId(), true, privateLARFile);
-		}
-		else {
-			_addDefaultUserPrivateLayoutByProperties(
-				user.getUserId(), group.getGroupId());
-		}
+		_addDefaultUserPrivateLayoutByProperties(
+			user.getUserId(), group.getGroupId());
 	}
 
 	private void _addDefaultUserPublicLayoutByProperties(
@@ -423,14 +347,8 @@ public class ServicePreAction extends Action {
 	private void _addDefaultUserPublicLayouts(User user) throws Exception {
 		Group userGroup = user.getGroup();
 
-		if (publicLARFile != null) {
-			_addDefaultLayoutsByLAR(
-				user.getUserId(), userGroup.getGroupId(), false, publicLARFile);
-		}
-		else {
-			_addDefaultUserPublicLayoutByProperties(
-				user.getUserId(), userGroup.getGroupId());
-		}
+		_addDefaultUserPublicLayoutByProperties(
+			user.getUserId(), userGroup.getGroupId());
 	}
 
 	private void _deleteDefaultUserPrivateLayouts(User user) throws Exception {
@@ -737,53 +655,6 @@ public class ServicePreAction extends Action {
 		return RoleLocalServiceUtil.hasUserRole(
 			user.getUserId(), user.getCompanyId(), RoleConstants.POWER_USER,
 			true);
-	}
-
-	private void _initImportLARFiles() {
-		String privateLARFileName =
-			PropsValues.DEFAULT_USER_PRIVATE_LAYOUTS_LAR;
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Reading private LAR file " + privateLARFileName);
-		}
-
-		if (Validator.isNotNull(privateLARFileName)) {
-			privateLARFile = new File(privateLARFileName);
-
-			if (!privateLARFile.exists()) {
-				_log.error(
-					"Private LAR file " + privateLARFile + " does not exist");
-
-				privateLARFile = null;
-			}
-			else {
-				if (_log.isDebugEnabled()) {
-					_log.debug("Using private LAR file " + privateLARFileName);
-				}
-			}
-		}
-
-		String publicLARFileName = PropsValues.DEFAULT_USER_PUBLIC_LAYOUTS_LAR;
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Reading public LAR file " + publicLARFileName);
-		}
-
-		if (Validator.isNotNull(publicLARFileName)) {
-			publicLARFile = new File(publicLARFileName);
-
-			if (!publicLARFile.exists()) {
-				_log.error(
-					"Public LAR file " + publicLARFile + " does not exist");
-
-				publicLARFile = null;
-			}
-			else {
-				if (_log.isDebugEnabled()) {
-					_log.debug("Using public LAR file " + publicLARFileName);
-				}
-			}
-		}
 	}
 
 	private ThemeDisplay _initThemeDisplay(

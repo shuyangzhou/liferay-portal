@@ -635,9 +635,6 @@ public interface PropsKeys {
 	public static final String DEFAULT_USER_PRIVATE_LAYOUT_TEMPLATE_ID =
 		"default.user.private.layout.template.id";
 
-	public static final String DEFAULT_USER_PRIVATE_LAYOUTS_LAR =
-		"default.user.private.layouts.lar";
-
 	public static final String DEFAULT_USER_PUBLIC_LAYOUT_FRIENDLY_URL =
 		"default.user.public.layout.friendly.url";
 
@@ -656,9 +653,6 @@ public interface PropsKeys {
 
 	public static final String DEFAULT_USER_PUBLIC_LAYOUT_TEMPLATE_ID =
 		"default.user.public.layout.template.id";
-
-	public static final String DEFAULT_USER_PUBLIC_LAYOUTS_LAR =
-		"default.user.public.layouts.lar";
 
 	public static final String DEPENDENCY_MANAGER_SYNC_TIMEOUT =
 		"dependency.manager.sync.timeout";

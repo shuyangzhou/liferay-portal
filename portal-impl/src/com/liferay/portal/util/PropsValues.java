@@ -540,9 +540,6 @@ public class PropsValues {
 	public static final String DEFAULT_USER_PRIVATE_LAYOUT_TEMPLATE_ID =
 		PropsUtil.get(PropsKeys.DEFAULT_USER_PRIVATE_LAYOUT_TEMPLATE_ID);
 
-	public static final String DEFAULT_USER_PRIVATE_LAYOUTS_LAR = PropsUtil.get(
-		PropsKeys.DEFAULT_USER_PRIVATE_LAYOUTS_LAR);
-
 	public static final String DEFAULT_USER_PUBLIC_LAYOUT_FRIENDLY_URL =
 		PropsUtil.get(PropsKeys.DEFAULT_USER_PUBLIC_LAYOUT_FRIENDLY_URL);
 
@@ -558,9 +555,6 @@ public class PropsValues {
 
 	public static final String DEFAULT_USER_PUBLIC_LAYOUT_TEMPLATE_ID =
 		PropsUtil.get(PropsKeys.DEFAULT_USER_PUBLIC_LAYOUT_TEMPLATE_ID);
-
-	public static final String DEFAULT_USER_PUBLIC_LAYOUTS_LAR = PropsUtil.get(
-		PropsKeys.DEFAULT_USER_PUBLIC_LAYOUTS_LAR);
 
 	public static final boolean DIRECT_SERVLET_CONTEXT_ENABLED =
 		GetterUtil.getBoolean(
