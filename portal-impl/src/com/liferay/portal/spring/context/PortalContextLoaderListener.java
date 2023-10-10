@@ -343,7 +343,10 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 
 		dynamicProxyCreator.clear();
 
-		if (DBUpgrader.isUpgradeDatabaseAutoRunEnabled()) {
+		boolean upgradeDatabaseAutoRun =
+			DBUpgrader.isUpgradeDatabaseAutoRunEnabled();
+
+		if (upgradeDatabaseAutoRun) {
 			StartupHelperUtil.setUpgrading(true);
 
 			try {
@@ -353,7 +356,12 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 				throw new RuntimeException(exception);
 			}
 		}
-		else {
+
+		ModuleFrameworkUtil.registerContext(applicationContext);
+
+		CustomJspBagRegistryUtil.getCustomJspBags();
+
+		if (!upgradeDatabaseAutoRun) {
 
 			// Check class names
 
@@ -369,10 +377,6 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 				throw new RuntimeException(exception);
 			}
 		}
-
-		ModuleFrameworkUtil.registerContext(applicationContext);
-
-		CustomJspBagRegistryUtil.getCustomJspBags();
 	}
 
 	protected void clearFilteredPropertyDescriptorsCache(
