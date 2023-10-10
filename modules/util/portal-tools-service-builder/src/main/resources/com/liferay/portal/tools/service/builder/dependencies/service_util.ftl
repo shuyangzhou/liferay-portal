@@ -9,6 +9,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.InputStream;
@@ -125,13 +126,19 @@ public class ${entity.name}${sessionTypeName}ServiceUtil {
 	</#if>
 
 	public static ${entity.name}${sessionTypeName}Service getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(${entity.name}${sessionTypeName}Service service) {
-		_service = service;
-	}
+	<#if serviceBuilder.isVersionLTE_7_3_0()>
+		public static void setService(${entity.name}${sessionTypeName}Service service) {
+			_service = service;
+		}
+	</#if>
 
-	private static volatile ${entity.name}${sessionTypeName}Service _service;
+	<#if serviceBuilder.isVersionGTE_7_4_0()>
+		private static final Snapshot<${entity.name}${sessionTypeName}Service> _serviceSnapshot = new Snapshot<>(${entity.name}${sessionTypeName}ServiceUtil.class, ${entity.name}${sessionTypeName}Service.class);
+	<#else>
+		private static volatile ${entity.name}${sessionTypeName}Service _service;
+	</#if>
 
 }

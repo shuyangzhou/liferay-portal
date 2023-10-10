@@ -1628,7 +1628,9 @@ import org.osgi.service.component.annotations.Reference;
 				}
 			</#if>
 
-			${entity.name}${sessionTypeName}ServiceUtil.setService(${entity.variableName}${sessionTypeName}Service);
+			<#if serviceBuilder.isVersionLTE_7_3_0()>
+				${entity.name}${sessionTypeName}ServiceUtil.setService(${entity.variableName}${sessionTypeName}Service);
+			</#if>
 		}
 	</#if>
 
@@ -1658,7 +1660,9 @@ import org.osgi.service.component.annotations.Reference;
 
 		@Deactivate
 		protected void deactivate() {
-			${entity.name}${sessionTypeName}ServiceUtil.setService(null);
+			<#if serviceBuilder.isVersionLTE_7_3_0()>
+				${entity.name}${sessionTypeName}ServiceUtil.setService(null);
+			</#if>
 		}
 
 		@Override
@@ -1680,7 +1684,9 @@ import org.osgi.service.component.annotations.Reference;
 		public void setAopProxy(Object aopProxy) {
 			${entity.variableName}${sessionTypeName}Service = (${entity.name}${sessionTypeName}Service)aopProxy;
 
-			${entity.name}${sessionTypeName}ServiceUtil.setService(${entity.variableName}${sessionTypeName}Service);
+			<#if serviceBuilder.isVersionLTE_7_3_0()>
+				${entity.name}${sessionTypeName}ServiceUtil.setService(${entity.variableName}${sessionTypeName}Service);
+			</#if>
 		}
 	<#else>
 		public void destroy() {
@@ -1692,7 +1698,9 @@ import org.osgi.service.component.annotations.Reference;
 				</#if>
 			</#if>
 
-			${entity.name}${sessionTypeName}ServiceUtil.setService(null);
+			<#if serviceBuilder.isVersionLTE_7_3_0()>
+				${entity.name}${sessionTypeName}ServiceUtil.setService(null);
+			</#if>
 		}
 	</#if>
 
