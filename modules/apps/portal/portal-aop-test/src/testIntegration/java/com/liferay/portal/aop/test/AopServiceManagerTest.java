@@ -9,6 +9,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.concurrent.DefaultNoticeableFuture;
 import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.concurrent.SystemExecutorServiceUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.transaction.Isolation;
@@ -28,7 +29,12 @@ import java.lang.reflect.Method;
 
 import java.util.Dictionary;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -76,6 +82,21 @@ public class AopServiceManagerTest {
 		_getServiceMethod = serviceObjectsClass.getMethod("getService");
 		_ungetServiceMethod = serviceObjectsClass.getMethod(
 			"ungetService", Object.class);
+
+		_executorService = SystemExecutorServiceUtil.getExecutorService();
+
+		ReflectionTestUtil.setFieldValue(
+			SystemExecutorServiceUtil.class, "_executorService",
+			new ThreadPoolExecutor(
+				1, 1, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>(),
+				new ThreadPoolExecutor.CallerRunsPolicy()));
+	}
+
+	@After
+	public void tearDown() {
+		ReflectionTestUtil.setFieldValue(
+			SystemExecutorServiceUtil.class, "_executorService",
+			_executorService);
 	}
 
 	@Test
@@ -276,6 +297,7 @@ public class AopServiceManagerTest {
 	}
 
 	private BundleContext _bundleContext;
+	private ExecutorService _executorService;
 	private Method _getServiceMethod;
 	private Method _getServiceObjectsMethod;
 
