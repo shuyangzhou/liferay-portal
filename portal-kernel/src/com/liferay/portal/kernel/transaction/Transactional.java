@@ -46,7 +46,7 @@ public @interface Transactional {
 	/**
 	 * Returns the {@link Isolation} setting.
 	 */
-	public Isolation isolation() default Isolation.DEFAULT;
+	public Isolation isolation() default Isolation.PORTAL;
 
 	/**
 	 * Returns exception classes that should not cause the transaction to be
