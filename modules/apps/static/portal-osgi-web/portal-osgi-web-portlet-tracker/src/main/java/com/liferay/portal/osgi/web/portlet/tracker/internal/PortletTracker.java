@@ -6,7 +6,6 @@
 package com.liferay.portal.osgi.web.portlet.tracker.internal;
 
 import com.liferay.osgi.util.StringPlus;
-import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
@@ -318,9 +317,6 @@ public class PortletTracker
 
 		_parallel = StartupHelperUtil.isDBWarmed();
 
-		_executorService = _portalExecutorManager.getPortalExecutor(
-			PortletTracker.class.getName());
-
 		_serviceTracker = new ServiceTracker<>(
 			_bundleContext, Portlet.class, this);
 
@@ -360,8 +356,6 @@ public class PortletTracker
 	@Deactivate
 	protected void deactivate() {
 		_serviceTracker.close();
-
-		_executorService.shutdownNow();
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Deactivated");
@@ -1368,9 +1362,12 @@ public class PortletTracker
 
 		List<Company> companies = _companyLocalService.getCompanies();
 
+		ExecutorService executorService =
+			SystemExecutorServiceUtil.getExecutorService();
+
 		for (Company company : companies) {
 			futures.add(
-				_executorService.submit(
+				executorService.submit(
 					() -> {
 						_portletLocalService.deployRemotePortlet(
 							new long[] {company.getCompanyId()}, portletModel,
@@ -1494,8 +1491,6 @@ public class PortletTracker
 	@Reference
 	private DelegateProxyFactory _delegateProxyFactory;
 
-	private ExecutorService _executorService;
-
 	@Reference
 	private HttpServiceRuntime _httpServiceRuntime;
 
@@ -1508,9 +1503,6 @@ public class PortletTracker
 
 	@Reference
 	private Portal _portal;
-
-	@Reference
-	private PortalExecutorManager _portalExecutorManager;
 
 	private com.liferay.portal.kernel.model.Portlet _portalPortletModel;
 
