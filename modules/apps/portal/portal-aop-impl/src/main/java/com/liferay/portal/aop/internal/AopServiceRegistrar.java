@@ -5,6 +5,7 @@
 
 package com.liferay.portal.aop.internal;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.module.util.BundleUtil;
@@ -16,17 +17,21 @@ import com.liferay.portal.spring.aop.AopCacheManager;
 import com.liferay.portal.spring.aop.AopInvocationHandler;
 import com.liferay.portal.spring.transaction.TransactionExecutor;
 
+import java.lang.reflect.Method;
+
 import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.PrototypeServiceFactory;
+import org.osgi.framework.ServiceFactory;
 import org.osgi.framework.ServiceObjects;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
@@ -38,11 +43,12 @@ import org.osgi.service.component.ComponentConstants;
 public class AopServiceRegistrar {
 
 	public AopServiceRegistrar(
-		ServiceReference<AopService> serviceReference, AopService aopService,
+		ServiceReference<AopService> serviceReference,
+		ServiceReferenceHelper serviceReferenceHelper,
 		Class<?>[] aopServiceInterfaces) {
 
 		_serviceReference = serviceReference;
-		_aopService = aopService;
+		_serviceReferenceHelper = serviceReferenceHelper;
 		_aopServiceInterfaces = aopServiceInterfaces;
 
 		if (BundleUtil.isLiferayServiceBundle(serviceReference.getBundle()) &&
@@ -91,6 +97,8 @@ public class AopServiceRegistrar {
 			_serviceRegistration.unregister();
 
 			_serviceRegistration = null;
+
+			_serviceReferenceHelper.dispose();
 		}
 	}
 
@@ -133,18 +141,7 @@ public class AopServiceRegistrar {
 				transactionExecutor);
 		}
 
-		_aopInvocationHandler = AopCacheManager.create(
-			_aopService, transactionExecutor);
-
-		Class<? extends AopService> aopServiceClass = _aopService.getClass();
-
-		Object aopProxy = ProxyUtil.newProxyInstance(
-			aopServiceClass.getClassLoader(), _aopServiceInterfaces,
-			_aopInvocationHandler);
-
-		_aopService.setAopProxy(aopProxy);
-
-		return aopProxy;
+		return new SingletonServiceFactory(transactionExecutor);
 	}
 
 	private static final Set<String> _frameworkKeys = new HashSet<>(
@@ -154,10 +151,10 @@ public class AopServiceRegistrar {
 			Constants.SERVICE_ID, Constants.SERVICE_SCOPE));
 
 	private AopInvocationHandler _aopInvocationHandler;
-	private final AopService _aopService;
 	private final Class<?>[] _aopServiceInterfaces;
 	private final boolean _liferayService;
 	private final ServiceReference<AopService> _serviceReference;
+	private final ServiceReferenceHelper _serviceReferenceHelper;
 	private ServiceRegistration<?> _serviceRegistration;
 
 	private class AopServicePrototypeServiceFactory
@@ -188,7 +185,7 @@ public class AopServiceRegistrar {
 			}
 
 			AopInvocationHandler aopInvocationHandler = AopCacheManager.create(
-				aopService, _transactionExecutor);
+				() -> aopService, _transactionExecutor);
 
 			_aopServices.put(aopInvocationHandler, aopService);
 
@@ -227,6 +224,93 @@ public class AopServiceRegistrar {
 		private final Map<AopInvocationHandler, AopService> _aopServices =
 			new ConcurrentHashMap<>();
 		private final ServiceObjects<AopService> _serviceObjects;
+		private final TransactionExecutor _transactionExecutor;
+
+	}
+
+	private class SetAopProxyInvocationHandler extends AopInvocationHandler {
+
+		@Override
+		public Object getTarget() {
+			return _aopInvocationHandler.getTarget();
+		}
+
+		@Override
+		public Object invoke(Object proxy, Method method, Object[] args)
+			throws Throwable {
+
+			_proxyDCLSingleton.getSingleton(() -> _setAopProxy(proxy));
+
+			return _aopInvocationHandler.invoke(proxy, method, args);
+		}
+
+		@Override
+		public void setTarget(Object target) {
+			_aopInvocationHandler.setTarget(target);
+		}
+
+		private SetAopProxyInvocationHandler(
+			Supplier<AopService> aopServiceSupplier,
+			AopInvocationHandler aopInvocationHandler) {
+
+			super(null, null, null);
+
+			_aopServiceSupplier = aopServiceSupplier;
+			_aopInvocationHandler = aopInvocationHandler;
+		}
+
+		private Object _setAopProxy(Object proxy) {
+			ProxyUtil.setInvocationHandler(proxy, _aopInvocationHandler);
+
+			AopService aopService = _aopServiceSupplier.get();
+
+			aopService.setAopProxy(proxy);
+
+			return proxy;
+		}
+
+		private final AopInvocationHandler _aopInvocationHandler;
+		private final Supplier<AopService> _aopServiceSupplier;
+		private final DCLSingleton<Object> _proxyDCLSingleton =
+			new DCLSingleton<>();
+
+	}
+
+	private class SingletonServiceFactory implements ServiceFactory<Object> {
+
+		@Override
+		public Object getService(
+			Bundle bundle, ServiceRegistration<Object> serviceRegistration) {
+
+			return _serviceDCLSingleton.getSingleton(this::_createServiceProxy);
+		}
+
+		@Override
+		public void ungetService(
+			Bundle bundle, ServiceRegistration<Object> serviceRegistration,
+			Object service) {
+		}
+
+		private SingletonServiceFactory(
+			TransactionExecutor transactionExecutor) {
+
+			_transactionExecutor = transactionExecutor;
+		}
+
+		private Object _createServiceProxy() {
+			_aopInvocationHandler = AopCacheManager.create(
+				_serviceReferenceHelper::getAopService, _transactionExecutor);
+
+			return ProxyUtil.newProxyInstance(
+				_serviceReferenceHelper.getAopServiceClassLoader(),
+				_aopServiceInterfaces,
+				new SetAopProxyInvocationHandler(
+					_serviceReferenceHelper::getAopService,
+					_aopInvocationHandler));
+		}
+
+		private final DCLSingleton<Object> _serviceDCLSingleton =
+			new DCLSingleton<>();
 		private final TransactionExecutor _transactionExecutor;
 
 	}

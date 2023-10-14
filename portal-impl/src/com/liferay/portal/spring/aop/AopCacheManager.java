@@ -23,6 +23,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -35,10 +36,11 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 public class AopCacheManager {
 
 	public static synchronized AopInvocationHandler create(
-		Object target, TransactionExecutor transactionExecutor) {
+		Supplier<Object> targetSupplier,
+		TransactionExecutor transactionExecutor) {
 
 		AopInvocationHandler aopInvocationHandler = new AopInvocationHandler(
-			target,
+			targetSupplier,
 			_chainableMethodAdvices.toArray(new ChainableMethodAdvice[0]),
 			transactionExecutor);
 
