@@ -46,7 +46,7 @@ public class AopCacheManagerTest {
 	@Before
 	public void setUp() {
 		_aopInvocationHandler = AopCacheManager.create(
-			new TestInterfaceImpl(), null);
+			() -> new TestInterfaceImpl(), null);
 
 		_testInterfaceProxy = (TestInterface)ProxyUtil.newProxyInstance(
 			AopCacheManagerTest.class.getClassLoader(),
