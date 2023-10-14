@@ -6,6 +6,7 @@
 package com.liferay.exportimport.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 import java.io.InputStream;
 
@@ -200,13 +201,11 @@ public class ExportImportServiceUtil {
 	}
 
 	public static ExportImportService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(ExportImportService service) {
-		_service = service;
-	}
-
-	private static volatile ExportImportService _service;
+	private static final Snapshot<ExportImportService> _serviceSnapshot =
+		new Snapshot<>(
+			ExportImportServiceUtil.class, ExportImportService.class);
 
 }

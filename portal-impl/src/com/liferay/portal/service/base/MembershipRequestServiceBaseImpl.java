@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.MembershipRequest;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.MembershipRequestService;
-import com.liferay.portal.kernel.service.MembershipRequestServiceUtil;
 import com.liferay.portal.kernel.service.persistence.MembershipRequestPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -41,7 +40,7 @@ public abstract class MembershipRequestServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>MembershipRequestService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>MembershipRequestServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>MembershipRequestService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.MembershipRequestServiceUtil</code>.
 	 */
 
 	/**
@@ -131,11 +130,9 @@ public abstract class MembershipRequestServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		MembershipRequestServiceUtil.setService(membershipRequestService);
 	}
 
 	public void destroy() {
-		MembershipRequestServiceUtil.setService(null);
 	}
 
 	/**

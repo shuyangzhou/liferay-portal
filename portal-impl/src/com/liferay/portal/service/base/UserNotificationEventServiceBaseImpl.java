@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.UserNotificationEvent;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.UserNotificationEventService;
-import com.liferay.portal.kernel.service.UserNotificationEventServiceUtil;
 import com.liferay.portal.kernel.service.persistence.UserNotificationEventPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -41,7 +40,7 @@ public abstract class UserNotificationEventServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>UserNotificationEventService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>UserNotificationEventServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>UserNotificationEventService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.UserNotificationEventServiceUtil</code>.
 	 */
 
 	/**
@@ -135,12 +134,9 @@ public abstract class UserNotificationEventServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		UserNotificationEventServiceUtil.setService(
-			userNotificationEventService);
 	}
 
 	public void destroy() {
-		UserNotificationEventServiceUtil.setService(null);
 	}
 
 	/**

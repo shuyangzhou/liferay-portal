@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.ERCGroupEntry;
 import com.liferay.portal.tools.service.builder.test.service.ERCGroupEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.ERCGroupEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.ERCGroupEntryPersistence;
 
 import java.io.Serializable;
@@ -61,7 +60,7 @@ public abstract class ERCGroupEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ERCGroupEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ERCGroupEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ERCGroupEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.ERCGroupEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -520,15 +519,11 @@ public abstract class ERCGroupEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.ERCGroupEntry",
 			ercGroupEntryLocalService);
-
-		ERCGroupEntryLocalServiceUtil.setService(ercGroupEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.ERCGroupEntry");
-
-		ERCGroupEntryLocalServiceUtil.setService(null);
 	}
 
 	/**

@@ -7,7 +7,6 @@ package com.liferay.portlet.documentlibrary.service.base;
 
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.service.DLFileEntryService;
-import com.liferay.document.library.kernel.service.DLFileEntryServiceUtil;
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryFinder;
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -42,7 +41,7 @@ public abstract class DLFileEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DLFileEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DLFileEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DLFileEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.document.library.kernel.service.DLFileEntryServiceUtil</code>.
 	 */
 
 	/**
@@ -148,11 +147,9 @@ public abstract class DLFileEntryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		DLFileEntryServiceUtil.setService(dlFileEntryService);
 	}
 
 	public void destroy() {
-		DLFileEntryServiceUtil.setService(null);
 	}
 
 	/**

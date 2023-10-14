@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.UserGroupRoleService;
-import com.liferay.portal.kernel.service.UserGroupRoleServiceUtil;
 import com.liferay.portal.kernel.service.persistence.UserGroupRoleFinder;
 import com.liferay.portal.kernel.service.persistence.UserGroupRolePersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -42,7 +41,7 @@ public abstract class UserGroupRoleServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>UserGroupRoleService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>UserGroupRoleServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>UserGroupRoleService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.UserGroupRoleServiceUtil</code>.
 	 */
 
 	/**
@@ -152,11 +151,9 @@ public abstract class UserGroupRoleServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		UserGroupRoleServiceUtil.setService(userGroupRoleService);
 	}
 
 	public void destroy() {
-		UserGroupRoleServiceUtil.setService(null);
 	}
 
 	/**

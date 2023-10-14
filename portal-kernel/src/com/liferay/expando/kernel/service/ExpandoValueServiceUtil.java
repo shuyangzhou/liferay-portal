@@ -7,6 +7,7 @@ package com.liferay.expando.kernel.service;
 
 import com.liferay.expando.kernel.model.ExpandoValue;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 import java.io.Serializable;
 
@@ -95,13 +96,11 @@ public class ExpandoValueServiceUtil {
 	}
 
 	public static ExpandoValueService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(ExpandoValueService service) {
-		_service = service;
-	}
-
-	private static volatile ExpandoValueService _service;
+	private static final Snapshot<ExpandoValueService> _serviceSnapshot =
+		new Snapshot<>(
+			ExpandoValueServiceUtil.class, ExpandoValueService.class);
 
 }

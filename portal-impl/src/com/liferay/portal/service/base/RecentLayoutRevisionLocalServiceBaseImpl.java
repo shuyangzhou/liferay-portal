@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.RecentLayoutRevisionLocalService;
-import com.liferay.portal.kernel.service.RecentLayoutRevisionLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.RecentLayoutRevisionPersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -60,7 +59,7 @@ public abstract class RecentLayoutRevisionLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>RecentLayoutRevisionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>RecentLayoutRevisionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>RecentLayoutRevisionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.RecentLayoutRevisionLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -467,16 +466,11 @@ public abstract class RecentLayoutRevisionLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.RecentLayoutRevision",
 			recentLayoutRevisionLocalService);
-
-		RecentLayoutRevisionLocalServiceUtil.setService(
-			recentLayoutRevisionLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.RecentLayoutRevision");
-
-		RecentLayoutRevisionLocalServiceUtil.setService(null);
 	}
 
 	/**

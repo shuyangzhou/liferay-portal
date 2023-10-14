@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.ratings.kernel.model.RatingsEntry;
 import com.liferay.ratings.kernel.service.RatingsEntryService;
-import com.liferay.ratings.kernel.service.RatingsEntryServiceUtil;
 import com.liferay.ratings.kernel.service.persistence.RatingsEntryPersistence;
 
 import javax.sql.DataSource;
@@ -41,7 +40,7 @@ public abstract class RatingsEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>RatingsEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>RatingsEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>RatingsEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.ratings.kernel.service.RatingsEntryServiceUtil</code>.
 	 */
 
 	/**
@@ -131,11 +130,9 @@ public abstract class RatingsEntryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		RatingsEntryServiceUtil.setService(ratingsEntryService);
 	}
 
 	public void destroy() {
-		RatingsEntryServiceUtil.setService(null);
 	}
 
 	/**

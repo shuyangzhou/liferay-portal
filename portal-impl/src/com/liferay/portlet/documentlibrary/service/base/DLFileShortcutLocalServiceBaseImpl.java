@@ -7,7 +7,6 @@ package com.liferay.portlet.documentlibrary.service.base;
 
 import com.liferay.document.library.kernel.model.DLFileShortcut;
 import com.liferay.document.library.kernel.service.DLFileShortcutLocalService;
-import com.liferay.document.library.kernel.service.DLFileShortcutLocalServiceUtil;
 import com.liferay.document.library.kernel.service.persistence.DLFileShortcutPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
@@ -77,7 +76,7 @@ public abstract class DLFileShortcutLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DLFileShortcutLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DLFileShortcutLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DLFileShortcutLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.document.library.kernel.service.DLFileShortcutLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -646,15 +645,11 @@ public abstract class DLFileShortcutLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.document.library.kernel.model.DLFileShortcut",
 			dlFileShortcutLocalService);
-
-		DLFileShortcutLocalServiceUtil.setService(dlFileShortcutLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.document.library.kernel.model.DLFileShortcut");
-
-		DLFileShortcutLocalServiceUtil.setService(null);
 	}
 
 	/**

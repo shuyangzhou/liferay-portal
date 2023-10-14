@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.SystemEventLocalService;
-import com.liferay.portal.kernel.service.SystemEventLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.SystemEventPersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
@@ -62,7 +61,7 @@ public abstract class SystemEventLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SystemEventLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SystemEventLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SystemEventLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.SystemEventLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -440,15 +439,11 @@ public abstract class SystemEventLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.SystemEvent",
 			systemEventLocalService);
-
-		SystemEventLocalServiceUtil.setService(systemEventLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.SystemEvent");
-
-		SystemEventLocalServiceUtil.setService(null);
 	}
 
 	/**

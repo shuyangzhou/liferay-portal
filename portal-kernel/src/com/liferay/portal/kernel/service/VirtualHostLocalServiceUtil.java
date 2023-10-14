@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.VirtualHost;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
@@ -351,13 +352,11 @@ public class VirtualHostLocalServiceUtil {
 	}
 
 	public static VirtualHostLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(VirtualHostLocalService service) {
-		_service = service;
-	}
-
-	private static volatile VirtualHostLocalService _service;
+	private static final Snapshot<VirtualHostLocalService> _serviceSnapshot =
+		new Snapshot<>(
+			VirtualHostLocalServiceUtil.class, VirtualHostLocalService.class);
 
 }

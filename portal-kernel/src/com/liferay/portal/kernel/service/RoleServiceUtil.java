@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
@@ -314,13 +315,10 @@ public class RoleServiceUtil {
 	}
 
 	public static RoleService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(RoleService service) {
-		_service = service;
-	}
-
-	private static volatile RoleService _service;
+	private static final Snapshot<RoleService> _serviceSnapshot =
+		new Snapshot<>(RoleServiceUtil.class, RoleService.class);
 
 }

@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.LayoutSetBranch;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.LayoutSetBranchService;
-import com.liferay.portal.kernel.service.LayoutSetBranchServiceUtil;
 import com.liferay.portal.kernel.service.persistence.LayoutSetBranchPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -41,7 +40,7 @@ public abstract class LayoutSetBranchServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LayoutSetBranchService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LayoutSetBranchServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LayoutSetBranchService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.LayoutSetBranchServiceUtil</code>.
 	 */
 
 	/**
@@ -131,11 +130,9 @@ public abstract class LayoutSetBranchServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		LayoutSetBranchServiceUtil.setService(layoutSetBranchService);
 	}
 
 	public void destroy() {
-		LayoutSetBranchServiceUtil.setService(null);
 	}
 
 	/**

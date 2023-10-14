@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.TicketLocalService;
-import com.liferay.portal.kernel.service.TicketLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.TicketPersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -60,7 +59,7 @@ public abstract class TicketLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>TicketLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>TicketLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>TicketLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.TicketLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -425,15 +424,11 @@ public abstract class TicketLocalServiceBaseImpl
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.Ticket", ticketLocalService);
-
-		TicketLocalServiceUtil.setService(ticketLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.Ticket");
-
-		TicketLocalServiceUtil.setService(null);
 	}
 
 	/**

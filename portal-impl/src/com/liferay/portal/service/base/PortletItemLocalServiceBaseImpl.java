@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.PortletItemLocalService;
-import com.liferay.portal.kernel.service.PortletItemLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.PortletItemPersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -60,7 +59,7 @@ public abstract class PortletItemLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PortletItemLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PortletItemLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>PortletItemLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.PortletItemLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -438,15 +437,11 @@ public abstract class PortletItemLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.PortletItem",
 			portletItemLocalService);
-
-		PortletItemLocalServiceUtil.setService(portletItemLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.PortletItem");
-
-		PortletItemLocalServiceUtil.setService(null);
 	}
 
 	/**

@@ -7,7 +7,6 @@ package com.liferay.portlet.exportimport.service.base;
 
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationService;
-import com.liferay.exportimport.kernel.service.ExportImportConfigurationServiceUtil;
 import com.liferay.exportimport.kernel.service.persistence.ExportImportConfigurationFinder;
 import com.liferay.exportimport.kernel.service.persistence.ExportImportConfigurationPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -42,7 +41,7 @@ public abstract class ExportImportConfigurationServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ExportImportConfigurationService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ExportImportConfigurationServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ExportImportConfigurationService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.exportimport.kernel.service.ExportImportConfigurationServiceUtil</code>.
 	 */
 
 	/**
@@ -164,12 +163,9 @@ public abstract class ExportImportConfigurationServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		ExportImportConfigurationServiceUtil.setService(
-			exportImportConfigurationService);
 	}
 
 	public void destroy() {
-		ExportImportConfigurationServiceUtil.setService(null);
 	}
 
 	/**

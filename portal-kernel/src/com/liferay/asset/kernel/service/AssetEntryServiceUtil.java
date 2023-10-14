@@ -7,6 +7,7 @@ package com.liferay.asset.kernel.service;
 
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 import java.util.List;
 
@@ -111,13 +112,10 @@ public class AssetEntryServiceUtil {
 	}
 
 	public static AssetEntryService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(AssetEntryService service) {
-		_service = service;
-	}
-
-	private static volatile AssetEntryService _service;
+	private static final Snapshot<AssetEntryService> _serviceSnapshot =
+		new Snapshot<>(AssetEntryServiceUtil.class, AssetEntryService.class);
 
 }

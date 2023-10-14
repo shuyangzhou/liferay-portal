@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Image;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * Provides the remote service utility for Image. This utility wraps
@@ -41,13 +42,10 @@ public class ImageServiceUtil {
 	}
 
 	public static ImageService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(ImageService service) {
-		_service = service;
-	}
-
-	private static volatile ImageService _service;
+	private static final Snapshot<ImageService> _serviceSnapshot =
+		new Snapshot<>(ImageServiceUtil.class, ImageService.class);
 
 }

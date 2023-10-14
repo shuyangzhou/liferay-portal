@@ -7,7 +7,6 @@ package com.liferay.counter.service.base;
 
 import com.liferay.counter.kernel.model.Counter;
 import com.liferay.counter.kernel.service.CounterLocalService;
-import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.counter.kernel.service.persistence.CounterFinder;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.log.Log;
@@ -33,7 +32,7 @@ public abstract class CounterLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CounterLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CounterLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CounterLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.counter.kernel.service.CounterLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -75,11 +74,9 @@ public abstract class CounterLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		CounterLocalServiceUtil.setService(counterLocalService);
 	}
 
 	public void destroy() {
-		CounterLocalServiceUtil.setService(null);
 	}
 
 	/**

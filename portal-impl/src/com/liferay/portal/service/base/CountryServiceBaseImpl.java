@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.CountryService;
-import com.liferay.portal.kernel.service.CountryServiceUtil;
 import com.liferay.portal.kernel.service.persistence.CountryLocalizationPersistence;
 import com.liferay.portal.kernel.service.persistence.CountryPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -41,7 +40,7 @@ public abstract class CountryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CountryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CountryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CountryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.CountryServiceUtil</code>.
 	 */
 
 	/**
@@ -147,11 +146,9 @@ public abstract class CountryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		CountryServiceUtil.setService(countryService);
 	}
 
 	public void destroy() {
-		CountryServiceUtil.setService(null);
 	}
 
 	/**

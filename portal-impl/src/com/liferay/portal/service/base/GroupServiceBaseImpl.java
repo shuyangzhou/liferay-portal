@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.GroupService;
-import com.liferay.portal.kernel.service.GroupServiceUtil;
 import com.liferay.portal.kernel.service.persistence.GroupFinder;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.OrganizationPersistence;
@@ -45,7 +44,7 @@ public abstract class GroupServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>GroupService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>GroupServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>GroupService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.GroupServiceUtil</code>.
 	 */
 
 	/**
@@ -148,11 +147,9 @@ public abstract class GroupServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		GroupServiceUtil.setService(groupService);
 	}
 
 	public void destroy() {
-		GroupServiceUtil.setService(null);
 	}
 
 	/**

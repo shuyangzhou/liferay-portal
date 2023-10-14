@@ -7,7 +7,6 @@ package com.liferay.portlet.expando.service.base;
 
 import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.service.ExpandoTableLocalService;
-import com.liferay.expando.kernel.service.ExpandoTableLocalServiceUtil;
 import com.liferay.expando.kernel.service.persistence.ExpandoTablePersistence;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
@@ -62,7 +61,7 @@ public abstract class ExpandoTableLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ExpandoTableLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ExpandoTableLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ExpandoTableLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.expando.kernel.service.ExpandoTableLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -441,15 +440,11 @@ public abstract class ExpandoTableLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.expando.kernel.model.ExpandoTable",
 			expandoTableLocalService);
-
-		ExpandoTableLocalServiceUtil.setService(expandoTableLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.expando.kernel.model.ExpandoTable");
-
-		ExpandoTableLocalServiceUtil.setService(null);
 	}
 
 	/**

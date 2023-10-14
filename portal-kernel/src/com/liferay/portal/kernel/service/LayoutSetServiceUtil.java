@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.LayoutSet;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 import java.io.InputStream;
 
@@ -134,13 +135,10 @@ public class LayoutSetServiceUtil {
 	}
 
 	public static LayoutSetService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(LayoutSetService service) {
-		_service = service;
-	}
-
-	private static volatile LayoutSetService _service;
+	private static final Snapshot<LayoutSetService> _serviceSnapshot =
+		new Snapshot<>(LayoutSetServiceUtil.class, LayoutSetService.class);
 
 }

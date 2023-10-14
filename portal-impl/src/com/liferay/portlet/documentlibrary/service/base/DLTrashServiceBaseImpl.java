@@ -6,7 +6,6 @@
 package com.liferay.portlet.documentlibrary.service.base;
 
 import com.liferay.document.library.kernel.service.DLTrashService;
-import com.liferay.document.library.kernel.service.DLTrashServiceUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -39,7 +38,7 @@ public abstract class DLTrashServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DLTrashService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DLTrashServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DLTrashService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.document.library.kernel.service.DLTrashServiceUtil</code>.
 	 */
 
 	/**
@@ -107,11 +106,9 @@ public abstract class DLTrashServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		DLTrashServiceUtil.setService(dlTrashService);
 	}
 
 	public void destroy() {
-		DLTrashServiceUtil.setService(null);
 	}
 
 	/**

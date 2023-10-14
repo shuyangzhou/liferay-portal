@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Address;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 import java.util.List;
 
@@ -76,13 +77,10 @@ public class AddressServiceUtil {
 	}
 
 	public static AddressService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(AddressService service) {
-		_service = service;
-	}
-
-	private static volatile AddressService _service;
+	private static final Snapshot<AddressService> _serviceSnapshot =
+		new Snapshot<>(AddressServiceUtil.class, AddressService.class);
 
 }

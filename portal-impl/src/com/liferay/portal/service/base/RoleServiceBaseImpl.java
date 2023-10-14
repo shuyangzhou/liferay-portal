@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.RoleService;
-import com.liferay.portal.kernel.service.RoleServiceUtil;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.RoleFinder;
 import com.liferay.portal.kernel.service.persistence.RolePersistence;
@@ -43,7 +42,7 @@ public abstract class RoleServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>RoleService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>RoleServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>RoleService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.RoleServiceUtil</code>.
 	 */
 
 	/**
@@ -146,11 +145,9 @@ public abstract class RoleServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		RoleServiceUtil.setService(roleService);
 	}
 
 	public void destroy() {
-		RoleServiceUtil.setService(null);
 	}
 
 	/**

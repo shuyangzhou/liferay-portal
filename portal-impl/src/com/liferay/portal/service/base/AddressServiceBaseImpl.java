@@ -16,7 +16,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.AddressService;
-import com.liferay.portal.kernel.service.AddressServiceUtil;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.persistence.AddressPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -40,7 +39,7 @@ public abstract class AddressServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AddressService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AddressServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AddressService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.AddressServiceUtil</code>.
 	 */
 
 	/**
@@ -126,11 +125,9 @@ public abstract class AddressServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		AddressServiceUtil.setService(addressService);
 	}
 
 	public void destroy() {
-		AddressServiceUtil.setService(null);
 	}
 
 	/**

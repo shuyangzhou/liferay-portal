@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.OrgLabor;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.OrgLaborService;
-import com.liferay.portal.kernel.service.OrgLaborServiceUtil;
 import com.liferay.portal.kernel.service.persistence.OrgLaborPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -41,7 +40,7 @@ public abstract class OrgLaborServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>OrgLaborService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>OrgLaborServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>OrgLaborService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.OrgLaborServiceUtil</code>.
 	 */
 
 	/**
@@ -129,11 +128,9 @@ public abstract class OrgLaborServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		OrgLaborServiceUtil.setService(orgLaborService);
 	}
 
 	public void destroy() {
-		OrgLaborServiceUtil.setService(null);
 	}
 
 	/**

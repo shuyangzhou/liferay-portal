@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
@@ -679,13 +680,10 @@ public class GroupServiceUtil {
 	}
 
 	public static GroupService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(GroupService service) {
-		_service = service;
-	}
-
-	private static volatile GroupService _service;
+	private static final Snapshot<GroupService> _serviceSnapshot =
+		new Snapshot<>(GroupServiceUtil.class, GroupService.class);
 
 }

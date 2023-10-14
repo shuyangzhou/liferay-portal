@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.WebsiteLocalService;
-import com.liferay.portal.kernel.service.WebsiteLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.WebsitePersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -68,7 +67,7 @@ public abstract class WebsiteLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>WebsiteLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>WebsiteLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>WebsiteLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.WebsiteLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -555,15 +554,11 @@ public abstract class WebsiteLocalServiceBaseImpl
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.Website", websiteLocalService);
-
-		WebsiteLocalServiceUtil.setService(websiteLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.Website");
-
-		WebsiteLocalServiceUtil.setService(null);
 	}
 
 	/**

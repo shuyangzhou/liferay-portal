@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.LayoutRevision;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.LayoutRevisionService;
-import com.liferay.portal.kernel.service.LayoutRevisionServiceUtil;
 import com.liferay.portal.kernel.service.persistence.LayoutRevisionPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -41,7 +40,7 @@ public abstract class LayoutRevisionServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LayoutRevisionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LayoutRevisionServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LayoutRevisionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.LayoutRevisionServiceUtil</code>.
 	 */
 
 	/**
@@ -131,11 +130,9 @@ public abstract class LayoutRevisionServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		LayoutRevisionServiceUtil.setService(layoutRevisionService);
 	}
 
 	public void destroy() {
-		LayoutRevisionServiceUtil.setService(null);
 	}
 
 	/**

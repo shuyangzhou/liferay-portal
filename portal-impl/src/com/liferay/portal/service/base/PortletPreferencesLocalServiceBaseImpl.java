@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
-import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.PortletPreferencesFinder;
 import com.liferay.portal.kernel.service.persistence.PortletPreferencesPersistence;
@@ -63,7 +62,7 @@ public abstract class PortletPreferencesLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PortletPreferencesLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PortletPreferencesLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>PortletPreferencesLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -482,16 +481,11 @@ public abstract class PortletPreferencesLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.PortletPreferences",
 			portletPreferencesLocalService);
-
-		PortletPreferencesLocalServiceUtil.setService(
-			portletPreferencesLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.PortletPreferences");
-
-		PortletPreferencesLocalServiceUtil.setService(null);
 	}
 
 	/**

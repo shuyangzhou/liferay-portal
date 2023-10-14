@@ -7,6 +7,7 @@ package com.liferay.announcements.kernel.service;
 
 import com.liferay.announcements.kernel.model.AnnouncementsDelivery;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * Provides the remote service utility for AnnouncementsDelivery. This utility wraps
@@ -45,13 +46,12 @@ public class AnnouncementsDeliveryServiceUtil {
 	}
 
 	public static AnnouncementsDeliveryService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(AnnouncementsDeliveryService service) {
-		_service = service;
-	}
-
-	private static volatile AnnouncementsDeliveryService _service;
+	private static final Snapshot<AnnouncementsDeliveryService>
+		_serviceSnapshot = new Snapshot<>(
+			AnnouncementsDeliveryServiceUtil.class,
+			AnnouncementsDeliveryService.class);
 
 }

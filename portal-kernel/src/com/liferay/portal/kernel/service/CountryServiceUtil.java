@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Country;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
@@ -233,13 +234,10 @@ public class CountryServiceUtil {
 	}
 
 	public static CountryService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(CountryService service) {
-		_service = service;
-	}
-
-	private static volatile CountryService _service;
+	private static final Snapshot<CountryService> _serviceSnapshot =
+		new Snapshot<>(CountryServiceUtil.class, CountryService.class);
 
 }

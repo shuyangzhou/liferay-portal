@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.service.GenericMethodsEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.GenericMethodsEntryLocalServiceUtil;
 
 import javax.sql.DataSource;
 
@@ -41,7 +40,7 @@ public abstract class GenericMethodsEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>GenericMethodsEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>GenericMethodsEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>GenericMethodsEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.GenericMethodsEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -90,12 +89,9 @@ public abstract class GenericMethodsEntryLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		GenericMethodsEntryLocalServiceUtil.setService(
-			genericMethodsEntryLocalService);
 	}
 
 	public void destroy() {
-		GenericMethodsEntryLocalServiceUtil.setService(null);
 	}
 
 	/**

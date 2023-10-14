@@ -7,7 +7,6 @@ package com.liferay.portlet.documentlibrary.service.base;
 
 import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.document.library.kernel.service.DLFolderService;
-import com.liferay.document.library.kernel.service.DLFolderServiceUtil;
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryTypePersistence;
 import com.liferay.document.library.kernel.service.persistence.DLFolderFinder;
 import com.liferay.document.library.kernel.service.persistence.DLFolderPersistence;
@@ -43,7 +42,7 @@ public abstract class DLFolderServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DLFolderService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DLFolderServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DLFolderService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.document.library.kernel.service.DLFolderServiceUtil</code>.
 	 */
 
 	/**
@@ -149,11 +148,9 @@ public abstract class DLFolderServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		DLFolderServiceUtil.setService(dlFolderService);
 	}
 
 	public void destroy() {
-		DLFolderServiceUtil.setService(null);
 	}
 
 	/**

@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.CountryLocalService;
-import com.liferay.portal.kernel.service.CountryLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.CountryLocalizationPersistence;
@@ -71,7 +70,7 @@ public abstract class CountryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CountryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CountryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CountryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.CountryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -689,15 +688,11 @@ public abstract class CountryLocalServiceBaseImpl
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.Country", countryLocalService);
-
-		CountryLocalServiceUtil.setService(countryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.Country");
-
-		CountryLocalServiceUtil.setService(null);
 	}
 
 	/**

@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.PhoneLocalService;
-import com.liferay.portal.kernel.service.PhoneLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.PhonePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
@@ -70,7 +69,7 @@ public abstract class PhoneLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PhoneLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PhoneLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>PhoneLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.PhoneLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -550,15 +549,11 @@ public abstract class PhoneLocalServiceBaseImpl
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.Phone", phoneLocalService);
-
-		PhoneLocalServiceUtil.setService(phoneLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.Phone");
-
-		PhoneLocalServiceUtil.setService(null);
 	}
 
 	/**

@@ -7,7 +7,6 @@ package com.liferay.portlet.announcements.service.base;
 
 import com.liferay.announcements.kernel.model.AnnouncementsDelivery;
 import com.liferay.announcements.kernel.service.AnnouncementsDeliveryService;
-import com.liferay.announcements.kernel.service.AnnouncementsDeliveryServiceUtil;
 import com.liferay.announcements.kernel.service.persistence.AnnouncementsDeliveryPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -41,7 +40,7 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AnnouncementsDeliveryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AnnouncementsDeliveryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AnnouncementsDeliveryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.announcements.kernel.service.AnnouncementsDeliveryServiceUtil</code>.
 	 */
 
 	/**
@@ -138,12 +137,9 @@ public abstract class AnnouncementsDeliveryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		AnnouncementsDeliveryServiceUtil.setService(
-			announcementsDeliveryService);
 	}
 
 	public void destroy() {
-		AnnouncementsDeliveryServiceUtil.setService(null);
 	}
 
 	/**

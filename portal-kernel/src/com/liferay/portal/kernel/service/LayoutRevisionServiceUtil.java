@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.LayoutRevision;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * Provides the remote service utility for LayoutRevision. This utility wraps
@@ -54,13 +55,11 @@ public class LayoutRevisionServiceUtil {
 	}
 
 	public static LayoutRevisionService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(LayoutRevisionService service) {
-		_service = service;
-	}
-
-	private static volatile LayoutRevisionService _service;
+	private static final Snapshot<LayoutRevisionService> _serviceSnapshot =
+		new Snapshot<>(
+			LayoutRevisionServiceUtil.class, LayoutRevisionService.class);
 
 }

@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.ReleaseLocalService;
-import com.liferay.portal.kernel.service.ReleaseLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ReleasePersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -60,7 +59,7 @@ public abstract class ReleaseLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ReleaseLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ReleaseLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ReleaseLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.ReleaseLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -429,15 +428,11 @@ public abstract class ReleaseLocalServiceBaseImpl
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.Release", releaseLocalService);
-
-		ReleaseLocalServiceUtil.setService(releaseLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.Release");
-
-		ReleaseLocalServiceUtil.setService(null);
 	}
 
 	/**

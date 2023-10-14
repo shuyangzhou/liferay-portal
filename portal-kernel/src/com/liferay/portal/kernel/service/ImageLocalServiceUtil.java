@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Image;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.InputStream;
@@ -401,13 +402,10 @@ public class ImageLocalServiceUtil {
 	}
 
 	public static ImageLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(ImageLocalService service) {
-		_service = service;
-	}
-
-	private static volatile ImageLocalService _service;
+	private static final Snapshot<ImageLocalService> _serviceSnapshot =
+		new Snapshot<>(ImageLocalServiceUtil.class, ImageLocalService.class);
 
 }

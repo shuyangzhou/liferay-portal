@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.UserIdMapper;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
@@ -312,13 +313,11 @@ public class UserIdMapperLocalServiceUtil {
 	}
 
 	public static UserIdMapperLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(UserIdMapperLocalService service) {
-		_service = service;
-	}
-
-	private static volatile UserIdMapperLocalService _service;
+	private static final Snapshot<UserIdMapperLocalService> _serviceSnapshot =
+		new Snapshot<>(
+			UserIdMapperLocalServiceUtil.class, UserIdMapperLocalService.class);
 
 }

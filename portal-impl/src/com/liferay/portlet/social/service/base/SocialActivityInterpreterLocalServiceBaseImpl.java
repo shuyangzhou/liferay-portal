@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.social.kernel.service.SocialActivityInterpreterLocalService;
-import com.liferay.social.kernel.service.SocialActivityInterpreterLocalServiceUtil;
 
 import javax.sql.DataSource;
 
@@ -40,7 +39,7 @@ public abstract class SocialActivityInterpreterLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SocialActivityInterpreterLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SocialActivityInterpreterLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SocialActivityInterpreterLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.social.kernel.service.SocialActivityInterpreterLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -91,12 +90,9 @@ public abstract class SocialActivityInterpreterLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		SocialActivityInterpreterLocalServiceUtil.setService(
-			socialActivityInterpreterLocalService);
 	}
 
 	public void destroy() {
-		SocialActivityInterpreterLocalServiceUtil.setService(null);
 	}
 
 	/**

@@ -5,6 +5,8 @@
 
 package com.liferay.counter.kernel.service;
 
+import com.liferay.portal.kernel.module.service.Snapshot;
+
 import java.util.List;
 
 /**
@@ -64,13 +66,11 @@ public class CounterLocalServiceUtil {
 	}
 
 	public static CounterLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(CounterLocalService service) {
-		_service = service;
-	}
-
-	private static volatile CounterLocalService _service;
+	private static final Snapshot<CounterLocalService> _serviceSnapshot =
+		new Snapshot<>(
+			CounterLocalServiceUtil.class, CounterLocalService.class);
 
 }

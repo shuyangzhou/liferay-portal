@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.UserIdMapperLocalService;
-import com.liferay.portal.kernel.service.UserIdMapperLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.UserIdMapperPersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -60,7 +59,7 @@ public abstract class UserIdMapperLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>UserIdMapperLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>UserIdMapperLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>UserIdMapperLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.UserIdMapperLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -439,15 +438,11 @@ public abstract class UserIdMapperLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.UserIdMapper",
 			userIdMapperLocalService);
-
-		UserIdMapperLocalServiceUtil.setService(userIdMapperLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.UserIdMapper");
-
-		UserIdMapperLocalServiceUtil.setService(null);
 	}
 
 	/**

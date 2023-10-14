@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.Image;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.ImageService;
-import com.liferay.portal.kernel.service.ImageServiceUtil;
 import com.liferay.portal.kernel.service.persistence.ImagePersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -40,7 +39,7 @@ public abstract class ImageServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ImageService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ImageServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ImageService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.ImageServiceUtil</code>.
 	 */
 
 	/**
@@ -125,11 +124,9 @@ public abstract class ImageServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		ImageServiceUtil.setService(imageService);
 	}
 
 	public void destroy() {
-		ImageServiceUtil.setService(null);
 	}
 
 	/**

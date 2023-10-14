@@ -7,7 +7,6 @@ package com.liferay.depot.service.base;
 
 import com.liferay.depot.model.DepotAppCustomization;
 import com.liferay.depot.service.DepotAppCustomizationLocalService;
-import com.liferay.depot.service.DepotAppCustomizationLocalServiceUtil;
 import com.liferay.depot.service.persistence.DepotAppCustomizationPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
@@ -64,7 +63,7 @@ public abstract class DepotAppCustomizationLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DepotAppCustomizationLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DepotAppCustomizationLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DepotAppCustomizationLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.depot.service.DepotAppCustomizationLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -401,7 +400,6 @@ public abstract class DepotAppCustomizationLocalServiceBaseImpl
 
 	@Deactivate
 	protected void deactivate() {
-		DepotAppCustomizationLocalServiceUtil.setService(null);
 	}
 
 	@Override
@@ -416,9 +414,6 @@ public abstract class DepotAppCustomizationLocalServiceBaseImpl
 	public void setAopProxy(Object aopProxy) {
 		depotAppCustomizationLocalService =
 			(DepotAppCustomizationLocalService)aopProxy;
-
-		DepotAppCustomizationLocalServiceUtil.setService(
-			depotAppCustomizationLocalService);
 	}
 
 	/**

@@ -7,7 +7,6 @@ package com.liferay.portlet.documentlibrary.service.base;
 
 import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalService;
-import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalServiceUtil;
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryTypeFinder;
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryTypePersistence;
 import com.liferay.document.library.kernel.service.persistence.DLFolderPersistence;
@@ -70,7 +69,7 @@ public abstract class DLFileEntryTypeLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DLFileEntryTypeLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DLFileEntryTypeLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DLFileEntryTypeLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.document.library.kernel.service.DLFileEntryTypeLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -760,15 +759,11 @@ public abstract class DLFileEntryTypeLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.document.library.kernel.model.DLFileEntryType",
 			dlFileEntryTypeLocalService);
-
-		DLFileEntryTypeLocalServiceUtil.setService(dlFileEntryTypeLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.document.library.kernel.model.DLFileEntryType");
-
-		DLFileEntryTypeLocalServiceUtil.setService(null);
 	}
 
 	/**

@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.social.kernel.model.SocialActivityLimit;
 import com.liferay.social.kernel.service.SocialActivityLimitLocalService;
-import com.liferay.social.kernel.service.SocialActivityLimitLocalServiceUtil;
 import com.liferay.social.kernel.service.persistence.SocialActivityLimitPersistence;
 
 import java.io.Serializable;
@@ -62,7 +61,7 @@ public abstract class SocialActivityLimitLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SocialActivityLimitLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SocialActivityLimitLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SocialActivityLimitLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.social.kernel.service.SocialActivityLimitLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -457,16 +456,11 @@ public abstract class SocialActivityLimitLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.social.kernel.model.SocialActivityLimit",
 			socialActivityLimitLocalService);
-
-		SocialActivityLimitLocalServiceUtil.setService(
-			socialActivityLimitLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.social.kernel.model.SocialActivityLimit");
-
-		SocialActivityLimitLocalServiceUtil.setService(null);
 	}
 
 	/**

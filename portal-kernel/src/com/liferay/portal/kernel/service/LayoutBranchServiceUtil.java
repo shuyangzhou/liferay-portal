@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.LayoutBranch;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * Provides the remote service utility for LayoutBranch. This utility wraps
@@ -61,13 +62,11 @@ public class LayoutBranchServiceUtil {
 	}
 
 	public static LayoutBranchService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(LayoutBranchService service) {
-		_service = service;
-	}
-
-	private static volatile LayoutBranchService _service;
+	private static final Snapshot<LayoutBranchService> _serviceSnapshot =
+		new Snapshot<>(
+			LayoutBranchServiceUtil.class, LayoutBranchService.class);
 
 }

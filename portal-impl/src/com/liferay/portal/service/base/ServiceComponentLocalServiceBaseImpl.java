@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.ServiceComponentLocalService;
-import com.liferay.portal.kernel.service.ServiceComponentLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ServiceComponentFinder;
 import com.liferay.portal.kernel.service.persistence.ServiceComponentPersistence;
@@ -61,7 +60,7 @@ public abstract class ServiceComponentLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ServiceComponentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ServiceComponentLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ServiceComponentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.ServiceComponentLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -469,16 +468,11 @@ public abstract class ServiceComponentLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.ServiceComponent",
 			serviceComponentLocalService);
-
-		ServiceComponentLocalServiceUtil.setService(
-			serviceComponentLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.ServiceComponent");
-
-		ServiceComponentLocalServiceUtil.setService(null);
 	}
 
 	/**

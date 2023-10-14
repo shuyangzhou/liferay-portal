@@ -7,6 +7,7 @@ package com.liferay.document.library.kernel.service;
 
 import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
@@ -397,13 +398,10 @@ public class DLFolderServiceUtil {
 	}
 
 	public static DLFolderService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(DLFolderService service) {
-		_service = service;
-	}
-
-	private static volatile DLFolderService _service;
+	private static final Snapshot<DLFolderService> _serviceSnapshot =
+		new Snapshot<>(DLFolderServiceUtil.class, DLFolderService.class);
 
 }

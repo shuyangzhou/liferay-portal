@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.ratings.kernel.model.RatingsStats;
 import com.liferay.ratings.kernel.service.RatingsStatsLocalService;
-import com.liferay.ratings.kernel.service.RatingsStatsLocalServiceUtil;
 import com.liferay.ratings.kernel.service.persistence.RatingsStatsPersistence;
 
 import java.io.Serializable;
@@ -62,7 +61,7 @@ public abstract class RatingsStatsLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>RatingsStatsLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>RatingsStatsLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>RatingsStatsLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.ratings.kernel.service.RatingsStatsLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -438,15 +437,11 @@ public abstract class RatingsStatsLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.ratings.kernel.model.RatingsStats",
 			ratingsStatsLocalService);
-
-		RatingsStatsLocalServiceUtil.setService(ratingsStatsLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.ratings.kernel.model.RatingsStats");
-
-		RatingsStatsLocalServiceUtil.setService(null);
 	}
 
 	/**

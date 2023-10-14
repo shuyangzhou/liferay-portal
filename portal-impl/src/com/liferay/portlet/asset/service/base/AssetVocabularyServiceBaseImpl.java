@@ -7,7 +7,6 @@ package com.liferay.portlet.asset.service.base;
 
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetVocabularyService;
-import com.liferay.asset.kernel.service.AssetVocabularyServiceUtil;
 import com.liferay.asset.kernel.service.persistence.AssetVocabularyPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -41,7 +40,7 @@ public abstract class AssetVocabularyServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AssetVocabularyService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AssetVocabularyServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AssetVocabularyService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.asset.kernel.service.AssetVocabularyServiceUtil</code>.
 	 */
 
 	/**
@@ -131,11 +130,9 @@ public abstract class AssetVocabularyServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		AssetVocabularyServiceUtil.setService(assetVocabularyService);
 	}
 
 	public void destroy() {
-		AssetVocabularyServiceUtil.setService(null);
 	}
 
 	/**

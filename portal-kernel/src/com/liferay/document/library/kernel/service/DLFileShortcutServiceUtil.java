@@ -7,6 +7,7 @@ package com.liferay.document.library.kernel.service;
 
 import com.liferay.document.library.kernel.model.DLFileShortcut;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * Provides the remote service utility for DLFileShortcut. This utility wraps
@@ -76,13 +77,11 @@ public class DLFileShortcutServiceUtil {
 	}
 
 	public static DLFileShortcutService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(DLFileShortcutService service) {
-		_service = service;
-	}
-
-	private static volatile DLFileShortcutService _service;
+	private static final Snapshot<DLFileShortcutService> _serviceSnapshot =
+		new Snapshot<>(
+			DLFileShortcutServiceUtil.class, DLFileShortcutService.class);
 
 }

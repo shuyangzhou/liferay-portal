@@ -7,6 +7,7 @@ package com.liferay.announcements.kernel.service;
 
 import com.liferay.announcements.kernel.model.AnnouncementsFlag;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * Provides the remote service utility for AnnouncementsFlag. This utility wraps
@@ -51,13 +52,11 @@ public class AnnouncementsFlagServiceUtil {
 	}
 
 	public static AnnouncementsFlagService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(AnnouncementsFlagService service) {
-		_service = service;
-	}
-
-	private static volatile AnnouncementsFlagService _service;
+	private static final Snapshot<AnnouncementsFlagService> _serviceSnapshot =
+		new Snapshot<>(
+			AnnouncementsFlagServiceUtil.class, AnnouncementsFlagService.class);
 
 }

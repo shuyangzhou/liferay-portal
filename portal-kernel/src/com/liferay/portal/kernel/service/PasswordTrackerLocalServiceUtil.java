@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PasswordTracker;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
@@ -316,13 +317,12 @@ public class PasswordTrackerLocalServiceUtil {
 	}
 
 	public static PasswordTrackerLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(PasswordTrackerLocalService service) {
-		_service = service;
-	}
-
-	private static volatile PasswordTrackerLocalService _service;
+	private static final Snapshot<PasswordTrackerLocalService>
+		_serviceSnapshot = new Snapshot<>(
+			PasswordTrackerLocalServiceUtil.class,
+			PasswordTrackerLocalService.class);
 
 }

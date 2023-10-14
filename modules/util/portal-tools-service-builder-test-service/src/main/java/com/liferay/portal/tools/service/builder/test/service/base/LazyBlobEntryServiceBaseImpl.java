@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.LazyBlobEntry;
 import com.liferay.portal.tools.service.builder.test.service.LazyBlobEntryService;
-import com.liferay.portal.tools.service.builder.test.service.LazyBlobEntryServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.LazyBlobEntryPersistence;
 
 import javax.sql.DataSource;
@@ -42,7 +41,7 @@ public abstract class LazyBlobEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LazyBlobEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LazyBlobEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LazyBlobEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.LazyBlobEntryServiceUtil</code>.
 	 */
 
 	/**
@@ -132,11 +131,9 @@ public abstract class LazyBlobEntryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		LazyBlobEntryServiceUtil.setService(lazyBlobEntryService);
 	}
 
 	public void destroy() {
-		LazyBlobEntryServiceUtil.setService(null);
 	}
 
 	/**

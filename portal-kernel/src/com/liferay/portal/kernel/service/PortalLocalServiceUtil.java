@@ -5,6 +5,8 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.portal.kernel.module.service.Snapshot;
+
 /**
  * Provides the local service utility for Portal. This utility wraps
  * <code>com.liferay.portal.service.impl.PortalLocalServiceImpl</code> and
@@ -30,18 +32,15 @@ public class PortalLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static java.lang.String getOSGiServiceIdentifier() {
+	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static PortalLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(PortalLocalService service) {
-		_service = service;
-	}
-
-	private static volatile PortalLocalService _service;
+	private static final Snapshot<PortalLocalService> _serviceSnapshot =
+		new Snapshot<>(PortalLocalServiceUtil.class, PortalLocalService.class);
 
 }

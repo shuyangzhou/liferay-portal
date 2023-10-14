@@ -5,6 +5,8 @@
 
 package com.liferay.social.kernel.service;
 
+import com.liferay.portal.kernel.module.service.Snapshot;
+
 /**
  * Provides the local service utility for SocialRequestInterpreter. This utility wraps
  * <code>com.liferay.portlet.social.service.impl.SocialRequestInterpreterLocalServiceImpl</code> and
@@ -30,7 +32,7 @@ public class SocialRequestInterpreterLocalServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static java.lang.String getOSGiServiceIdentifier() {
+	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -102,15 +104,12 @@ public class SocialRequestInterpreterLocalServiceUtil {
 	}
 
 	public static SocialRequestInterpreterLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(
-		SocialRequestInterpreterLocalService service) {
-
-		_service = service;
-	}
-
-	private static volatile SocialRequestInterpreterLocalService _service;
+	private static final Snapshot<SocialRequestInterpreterLocalService>
+		_serviceSnapshot = new Snapshot<>(
+			SocialRequestInterpreterLocalServiceUtil.class,
+			SocialRequestInterpreterLocalService.class);
 
 }

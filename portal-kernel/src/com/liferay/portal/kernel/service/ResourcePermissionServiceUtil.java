@@ -6,6 +6,7 @@
 package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 import java.util.Map;
 
@@ -201,13 +202,12 @@ public class ResourcePermissionServiceUtil {
 	}
 
 	public static ResourcePermissionService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(ResourcePermissionService service) {
-		_service = service;
-	}
-
-	private static volatile ResourcePermissionService _service;
+	private static final Snapshot<ResourcePermissionService> _serviceSnapshot =
+		new Snapshot<>(
+			ResourcePermissionServiceUtil.class,
+			ResourcePermissionService.class);
 
 }

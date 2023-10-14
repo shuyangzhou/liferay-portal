@@ -6,6 +6,7 @@
 package com.liferay.exportimport.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 import java.io.Serializable;
 
@@ -108,13 +109,10 @@ public class StagingServiceUtil {
 	}
 
 	public static StagingService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(StagingService service) {
-		_service = service;
-	}
-
-	private static volatile StagingService _service;
+	private static final Snapshot<StagingService> _serviceSnapshot =
+		new Snapshot<>(StagingServiceUtil.class, StagingService.class);
 
 }

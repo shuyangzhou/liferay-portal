@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.LayoutSetBranchLocalService;
-import com.liferay.portal.kernel.service.LayoutSetBranchLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.LayoutSetBranchPersistence;
@@ -60,7 +59,7 @@ public abstract class LayoutSetBranchLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LayoutSetBranchLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LayoutSetBranchLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LayoutSetBranchLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.LayoutSetBranchLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -445,15 +444,11 @@ public abstract class LayoutSetBranchLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.LayoutSetBranch",
 			layoutSetBranchLocalService);
-
-		LayoutSetBranchLocalServiceUtil.setService(layoutSetBranchLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.LayoutSetBranch");
-
-		LayoutSetBranchLocalServiceUtil.setService(null);
 	}
 
 	/**

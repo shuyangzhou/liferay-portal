@@ -6,6 +6,7 @@
 package com.liferay.ratings.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.ratings.kernel.model.RatingsEntry;
 
 /**
@@ -50,13 +51,11 @@ public class RatingsEntryServiceUtil {
 	}
 
 	public static RatingsEntryService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(RatingsEntryService service) {
-		_service = service;
-	}
-
-	private static volatile RatingsEntryService _service;
+	private static final Snapshot<RatingsEntryService> _serviceSnapshot =
+		new Snapshot<>(
+			RatingsEntryServiceUtil.class, RatingsEntryService.class);
 
 }

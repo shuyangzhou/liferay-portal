@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.UserGroupGroupRole;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
@@ -396,13 +397,12 @@ public class UserGroupGroupRoleLocalServiceUtil {
 	}
 
 	public static UserGroupGroupRoleLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(UserGroupGroupRoleLocalService service) {
-		_service = service;
-	}
-
-	private static volatile UserGroupGroupRoleLocalService _service;
+	private static final Snapshot<UserGroupGroupRoleLocalService>
+		_serviceSnapshot = new Snapshot<>(
+			UserGroupGroupRoleLocalServiceUtil.class,
+			UserGroupGroupRoleLocalService.class);
 
 }

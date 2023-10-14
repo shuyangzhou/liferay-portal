@@ -7,6 +7,7 @@ package com.liferay.asset.kernel.service;
 
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
@@ -286,13 +287,11 @@ public class AssetVocabularyServiceUtil {
 	}
 
 	public static AssetVocabularyService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(AssetVocabularyService service) {
-		_service = service;
-	}
-
-	private static volatile AssetVocabularyService _service;
+	private static final Snapshot<AssetVocabularyService> _serviceSnapshot =
+		new Snapshot<>(
+			AssetVocabularyServiceUtil.class, AssetVocabularyService.class);
 
 }

@@ -7,6 +7,7 @@ package com.liferay.expando.kernel.service;
 
 import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * Provides the remote service utility for ExpandoColumn. This utility wraps
@@ -81,13 +82,11 @@ public class ExpandoColumnServiceUtil {
 	}
 
 	public static ExpandoColumnService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(ExpandoColumnService service) {
-		_service = service;
-	}
-
-	private static volatile ExpandoColumnService _service;
+	private static final Snapshot<ExpandoColumnService> _serviceSnapshot =
+		new Snapshot<>(
+			ExpandoColumnServiceUtil.class, ExpandoColumnService.class);
 
 }

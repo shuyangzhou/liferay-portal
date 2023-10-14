@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.social.kernel.model.SocialActivitySetting;
 import com.liferay.social.kernel.service.SocialActivitySettingLocalService;
-import com.liferay.social.kernel.service.SocialActivitySettingLocalServiceUtil;
 import com.liferay.social.kernel.service.persistence.SocialActivitySettingPersistence;
 
 import java.io.Serializable;
@@ -62,7 +61,7 @@ public abstract class SocialActivitySettingLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SocialActivitySettingLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SocialActivitySettingLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SocialActivitySettingLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.social.kernel.service.SocialActivitySettingLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -468,16 +467,11 @@ public abstract class SocialActivitySettingLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.social.kernel.model.SocialActivitySetting",
 			socialActivitySettingLocalService);
-
-		SocialActivitySettingLocalServiceUtil.setService(
-			socialActivitySettingLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.social.kernel.model.SocialActivitySetting");
-
-		SocialActivitySettingLocalServiceUtil.setService(null);
 	}
 
 	/**

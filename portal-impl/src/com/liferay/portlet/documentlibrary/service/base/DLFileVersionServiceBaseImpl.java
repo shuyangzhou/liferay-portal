@@ -7,7 +7,6 @@ package com.liferay.portlet.documentlibrary.service.base;
 
 import com.liferay.document.library.kernel.model.DLFileVersion;
 import com.liferay.document.library.kernel.service.DLFileVersionService;
-import com.liferay.document.library.kernel.service.DLFileVersionServiceUtil;
 import com.liferay.document.library.kernel.service.persistence.DLFileVersionPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -41,7 +40,7 @@ public abstract class DLFileVersionServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DLFileVersionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DLFileVersionServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DLFileVersionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.document.library.kernel.service.DLFileVersionServiceUtil</code>.
 	 */
 
 	/**
@@ -131,11 +130,9 @@ public abstract class DLFileVersionServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		DLFileVersionServiceUtil.setService(dlFileVersionService);
 	}
 
 	public void destroy() {
-		DLFileVersionServiceUtil.setService(null);
 	}
 
 	/**

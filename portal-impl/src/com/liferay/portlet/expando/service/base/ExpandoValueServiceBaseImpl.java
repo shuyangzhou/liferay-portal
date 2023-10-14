@@ -7,7 +7,6 @@ package com.liferay.portlet.expando.service.base;
 
 import com.liferay.expando.kernel.model.ExpandoValue;
 import com.liferay.expando.kernel.service.ExpandoValueService;
-import com.liferay.expando.kernel.service.ExpandoValueServiceUtil;
 import com.liferay.expando.kernel.service.persistence.ExpandoValuePersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -41,7 +40,7 @@ public abstract class ExpandoValueServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ExpandoValueService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ExpandoValueServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ExpandoValueService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.expando.kernel.service.ExpandoValueServiceUtil</code>.
 	 */
 
 	/**
@@ -131,11 +130,9 @@ public abstract class ExpandoValueServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		ExpandoValueServiceUtil.setService(expandoValueService);
 	}
 
 	public void destroy() {
-		ExpandoValueServiceUtil.setService(null);
 	}
 
 	/**

@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.Ticket;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
@@ -339,13 +340,10 @@ public class TicketLocalServiceUtil {
 	}
 
 	public static TicketLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(TicketLocalService service) {
-		_service = service;
-	}
-
-	private static volatile TicketLocalService _service;
+	private static final Snapshot<TicketLocalService> _serviceSnapshot =
+		new Snapshot<>(TicketLocalServiceUtil.class, TicketLocalService.class);
 
 }

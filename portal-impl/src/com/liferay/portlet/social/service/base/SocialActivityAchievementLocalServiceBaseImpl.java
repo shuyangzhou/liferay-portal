@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.social.kernel.model.SocialActivityAchievement;
 import com.liferay.social.kernel.service.SocialActivityAchievementLocalService;
-import com.liferay.social.kernel.service.SocialActivityAchievementLocalServiceUtil;
 import com.liferay.social.kernel.service.persistence.SocialActivityAchievementPersistence;
 
 import java.io.Serializable;
@@ -62,7 +61,7 @@ public abstract class SocialActivityAchievementLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SocialActivityAchievementLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SocialActivityAchievementLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SocialActivityAchievementLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.social.kernel.service.SocialActivityAchievementLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -479,16 +478,11 @@ public abstract class SocialActivityAchievementLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.social.kernel.model.SocialActivityAchievement",
 			socialActivityAchievementLocalService);
-
-		SocialActivityAchievementLocalServiceUtil.setService(
-			socialActivityAchievementLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.social.kernel.model.SocialActivityAchievement");
-
-		SocialActivityAchievementLocalServiceUtil.setService(null);
 	}
 
 	/**

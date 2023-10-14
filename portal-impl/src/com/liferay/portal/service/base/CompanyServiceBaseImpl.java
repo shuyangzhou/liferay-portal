@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.CompanyService;
-import com.liferay.portal.kernel.service.CompanyServiceUtil;
 import com.liferay.portal.kernel.service.persistence.CompanyPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -40,7 +39,7 @@ public abstract class CompanyServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CompanyService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CompanyServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CompanyService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.CompanyServiceUtil</code>.
 	 */
 
 	/**
@@ -126,11 +125,9 @@ public abstract class CompanyServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		CompanyServiceUtil.setService(companyService);
 	}
 
 	public void destroy() {
-		CompanyServiceUtil.setService(null);
 	}
 
 	/**

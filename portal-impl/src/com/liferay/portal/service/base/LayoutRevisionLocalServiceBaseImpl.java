@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.LayoutRevisionLocalService;
-import com.liferay.portal.kernel.service.LayoutRevisionLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.LayoutRevisionPersistence;
@@ -60,7 +59,7 @@ public abstract class LayoutRevisionLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LayoutRevisionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LayoutRevisionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LayoutRevisionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.LayoutRevisionLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -442,15 +441,11 @@ public abstract class LayoutRevisionLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.LayoutRevision",
 			layoutRevisionLocalService);
-
-		LayoutRevisionLocalServiceUtil.setService(layoutRevisionLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.LayoutRevision");
-
-		LayoutRevisionLocalServiceUtil.setService(null);
 	}
 
 	/**

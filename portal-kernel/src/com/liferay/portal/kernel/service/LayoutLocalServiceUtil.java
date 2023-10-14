@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
@@ -1971,13 +1972,10 @@ public class LayoutLocalServiceUtil {
 	}
 
 	public static LayoutLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(LayoutLocalService service) {
-		_service = service;
-	}
-
-	private static volatile LayoutLocalService _service;
+	private static final Snapshot<LayoutLocalService> _serviceSnapshot =
+		new Snapshot<>(LayoutLocalServiceUtil.class, LayoutLocalService.class);
 
 }

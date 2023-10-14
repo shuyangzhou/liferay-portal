@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.LayoutSetService;
-import com.liferay.portal.kernel.service.LayoutSetServiceUtil;
 import com.liferay.portal.kernel.service.persistence.LayoutSetPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -41,7 +40,7 @@ public abstract class LayoutSetServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LayoutSetService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LayoutSetServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LayoutSetService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.LayoutSetServiceUtil</code>.
 	 */
 
 	/**
@@ -129,11 +128,9 @@ public abstract class LayoutSetServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		LayoutSetServiceUtil.setService(layoutSetService);
 	}
 
 	public void destroy() {
-		LayoutSetServiceUtil.setService(null);
 	}
 
 	/**

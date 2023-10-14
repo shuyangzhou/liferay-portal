@@ -7,7 +7,6 @@ package com.liferay.portlet.documentlibrary.service.base;
 
 import com.liferay.document.library.kernel.model.DLFileEntryMetadata;
 import com.liferay.document.library.kernel.service.DLFileEntryMetadataLocalService;
-import com.liferay.document.library.kernel.service.DLFileEntryMetadataLocalServiceUtil;
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryMetadataFinder;
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryMetadataPersistence;
 import com.liferay.petra.function.UnsafeFunction;
@@ -63,7 +62,7 @@ public abstract class DLFileEntryMetadataLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DLFileEntryMetadataLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DLFileEntryMetadataLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DLFileEntryMetadataLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.document.library.kernel.service.DLFileEntryMetadataLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -516,16 +515,11 @@ public abstract class DLFileEntryMetadataLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.document.library.kernel.model.DLFileEntryMetadata",
 			dlFileEntryMetadataLocalService);
-
-		DLFileEntryMetadataLocalServiceUtil.setService(
-			dlFileEntryMetadataLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.document.library.kernel.model.DLFileEntryMetadata");
-
-		DLFileEntryMetadataLocalServiceUtil.setService(null);
 	}
 
 	/**

@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
@@ -1227,13 +1228,10 @@ public class RoleLocalServiceUtil {
 	}
 
 	public static RoleLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(RoleLocalService service) {
-		_service = service;
-	}
-
-	private static volatile RoleLocalService _service;
+	private static final Snapshot<RoleLocalService> _serviceSnapshot =
+		new Snapshot<>(RoleLocalServiceUtil.class, RoleLocalService.class);
 
 }

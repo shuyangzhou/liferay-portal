@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.PortalPreferenceValueLocalService;
-import com.liferay.portal.kernel.service.PortalPreferenceValueLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.PortalPreferenceValuePersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -60,7 +59,7 @@ public abstract class PortalPreferenceValueLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PortalPreferenceValueLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PortalPreferenceValueLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>PortalPreferenceValueLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.PortalPreferenceValueLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -468,16 +467,11 @@ public abstract class PortalPreferenceValueLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.PortalPreferenceValue",
 			portalPreferenceValueLocalService);
-
-		PortalPreferenceValueLocalServiceUtil.setService(
-			portalPreferenceValueLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.PortalPreferenceValue");
-
-		PortalPreferenceValueLocalServiceUtil.setService(null);
 	}
 
 	/**

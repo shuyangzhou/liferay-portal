@@ -9,6 +9,7 @@ import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.social.kernel.model.SocialActivityCounter;
 
@@ -700,13 +701,12 @@ public class SocialActivityCounterLocalServiceUtil {
 	}
 
 	public static SocialActivityCounterLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(SocialActivityCounterLocalService service) {
-		_service = service;
-	}
-
-	private static volatile SocialActivityCounterLocalService _service;
+	private static final Snapshot<SocialActivityCounterLocalService>
+		_serviceSnapshot = new Snapshot<>(
+			SocialActivityCounterLocalServiceUtil.class,
+			SocialActivityCounterLocalService.class);
 
 }

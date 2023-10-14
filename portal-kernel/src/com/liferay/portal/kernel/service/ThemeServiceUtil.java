@@ -5,6 +5,8 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.portal.kernel.module.service.Snapshot;
+
 import java.util.List;
 
 /**
@@ -47,13 +49,10 @@ public class ThemeServiceUtil {
 	}
 
 	public static ThemeService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(ThemeService service) {
-		_service = service;
-	}
-
-	private static volatile ThemeService _service;
+	private static final Snapshot<ThemeService> _serviceSnapshot =
+		new Snapshot<>(ThemeServiceUtil.class, ThemeService.class);
 
 }

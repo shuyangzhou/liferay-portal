@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PasswordPolicy;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
@@ -433,13 +434,12 @@ public class PasswordPolicyLocalServiceUtil {
 	}
 
 	public static PasswordPolicyLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(PasswordPolicyLocalService service) {
-		_service = service;
-	}
-
-	private static volatile PasswordPolicyLocalService _service;
+	private static final Snapshot<PasswordPolicyLocalService> _serviceSnapshot =
+		new Snapshot<>(
+			PasswordPolicyLocalServiceUtil.class,
+			PasswordPolicyLocalService.class);
 
 }

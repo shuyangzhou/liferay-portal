@@ -7,6 +7,7 @@ package com.liferay.asset.kernel.service;
 
 import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
@@ -195,13 +196,10 @@ public class AssetTagServiceUtil {
 	}
 
 	public static AssetTagService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(AssetTagService service) {
-		_service = service;
-	}
-
-	private static volatile AssetTagService _service;
+	private static final Snapshot<AssetTagService> _serviceSnapshot =
+		new Snapshot<>(AssetTagServiceUtil.class, AssetTagService.class);
 
 }

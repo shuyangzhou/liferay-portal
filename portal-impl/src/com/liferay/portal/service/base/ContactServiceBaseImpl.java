@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.ContactService;
-import com.liferay.portal.kernel.service.ContactServiceUtil;
 import com.liferay.portal.kernel.service.persistence.ContactPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -40,7 +39,7 @@ public abstract class ContactServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ContactService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ContactServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ContactService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.ContactServiceUtil</code>.
 	 */
 
 	/**
@@ -126,11 +125,9 @@ public abstract class ContactServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		ContactServiceUtil.setService(contactService);
 	}
 
 	public void destroy() {
-		ContactServiceUtil.setService(null);
 	}
 
 	/**

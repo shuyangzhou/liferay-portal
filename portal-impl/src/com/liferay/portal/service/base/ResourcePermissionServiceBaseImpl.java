@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.ResourcePermissionService;
-import com.liferay.portal.kernel.service.ResourcePermissionServiceUtil;
 import com.liferay.portal.kernel.service.persistence.ResourcePermissionFinder;
 import com.liferay.portal.kernel.service.persistence.ResourcePermissionPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -42,7 +41,7 @@ public abstract class ResourcePermissionServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ResourcePermissionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ResourcePermissionServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ResourcePermissionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.ResourcePermissionServiceUtil</code>.
 	 */
 
 	/**
@@ -152,11 +151,9 @@ public abstract class ResourcePermissionServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		ResourcePermissionServiceUtil.setService(resourcePermissionService);
 	}
 
 	public void destroy() {
-		ResourcePermissionServiceUtil.setService(null);
 	}
 
 	/**

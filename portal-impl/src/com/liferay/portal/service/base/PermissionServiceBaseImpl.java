@@ -16,7 +16,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.PermissionService;
-import com.liferay.portal.kernel.service.PermissionServiceUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -40,7 +39,7 @@ public abstract class PermissionServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PermissionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PermissionServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>PermissionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.PermissionServiceUtil</code>.
 	 */
 
 	/**
@@ -85,11 +84,9 @@ public abstract class PermissionServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		PermissionServiceUtil.setService(permissionService);
 	}
 
 	public void destroy() {
-		PermissionServiceUtil.setService(null);
 	}
 
 	/**

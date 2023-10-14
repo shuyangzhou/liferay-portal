@@ -7,7 +7,6 @@ package com.liferay.portlet.announcements.service.base;
 
 import com.liferay.announcements.kernel.model.AnnouncementsDelivery;
 import com.liferay.announcements.kernel.service.AnnouncementsDeliveryLocalService;
-import com.liferay.announcements.kernel.service.AnnouncementsDeliveryLocalServiceUtil;
 import com.liferay.announcements.kernel.service.persistence.AnnouncementsDeliveryPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -60,7 +59,7 @@ public abstract class AnnouncementsDeliveryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AnnouncementsDeliveryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AnnouncementsDeliveryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AnnouncementsDeliveryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.announcements.kernel.service.AnnouncementsDeliveryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -457,16 +456,11 @@ public abstract class AnnouncementsDeliveryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.announcements.kernel.model.AnnouncementsDelivery",
 			announcementsDeliveryLocalService);
-
-		AnnouncementsDeliveryLocalServiceUtil.setService(
-			announcementsDeliveryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.announcements.kernel.model.AnnouncementsDelivery");
-
-		AnnouncementsDeliveryLocalServiceUtil.setService(null);
 	}
 
 	/**

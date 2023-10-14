@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.PortletService;
-import com.liferay.portal.kernel.service.PortletServiceUtil;
 import com.liferay.portal.kernel.service.persistence.PortletPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -40,7 +39,7 @@ public abstract class PortletServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PortletService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PortletServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>PortletService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.PortletServiceUtil</code>.
 	 */
 
 	/**
@@ -126,11 +125,9 @@ public abstract class PortletServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		PortletServiceUtil.setService(portletService);
 	}
 
 	public void destroy() {
-		PortletServiceUtil.setService(null);
 	}
 
 	/**

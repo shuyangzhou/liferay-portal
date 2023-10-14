@@ -6,6 +6,7 @@
 package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 import java.util.List;
 
@@ -482,13 +483,11 @@ public class ResourceLocalServiceUtil {
 	}
 
 	public static ResourceLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(ResourceLocalService service) {
-		_service = service;
-	}
-
-	private static volatile ResourceLocalService _service;
+	private static final Snapshot<ResourceLocalService> _serviceSnapshot =
+		new Snapshot<>(
+			ResourceLocalServiceUtil.class, ResourceLocalService.class);
 
 }

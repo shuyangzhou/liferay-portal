@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.EagerBlobEntry;
 import com.liferay.portal.tools.service.builder.test.service.EagerBlobEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.EagerBlobEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.EagerBlobEntryPersistence;
 
 import java.io.Serializable;
@@ -61,7 +60,7 @@ public abstract class EagerBlobEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>EagerBlobEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>EagerBlobEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>EagerBlobEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.EagerBlobEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -470,15 +469,11 @@ public abstract class EagerBlobEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.EagerBlobEntry",
 			eagerBlobEntryLocalService);
-
-		EagerBlobEntryLocalServiceUtil.setService(eagerBlobEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.EagerBlobEntry");
-
-		EagerBlobEntryLocalServiceUtil.setService(null);
 	}
 
 	/**

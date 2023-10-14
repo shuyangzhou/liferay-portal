@@ -16,7 +16,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.ResourceLocalService;
-import com.liferay.portal.kernel.service.ResourceLocalServiceUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -40,7 +39,7 @@ public abstract class ResourceLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ResourceLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ResourceLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ResourceLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.ResourceLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -87,11 +86,9 @@ public abstract class ResourceLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		ResourceLocalServiceUtil.setService(resourceLocalService);
 	}
 
 	public void destroy() {
-		ResourceLocalServiceUtil.setService(null);
 	}
 
 	/**

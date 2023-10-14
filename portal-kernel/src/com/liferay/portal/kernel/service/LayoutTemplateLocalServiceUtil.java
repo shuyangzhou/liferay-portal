@@ -5,6 +5,8 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.portal.kernel.module.service.Snapshot;
+
 import java.util.List;
 import java.util.Set;
 
@@ -107,13 +109,12 @@ public class LayoutTemplateLocalServiceUtil {
 	}
 
 	public static LayoutTemplateLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(LayoutTemplateLocalService service) {
-		_service = service;
-	}
-
-	private static volatile LayoutTemplateLocalService _service;
+	private static final Snapshot<LayoutTemplateLocalService> _serviceSnapshot =
+		new Snapshot<>(
+			LayoutTemplateLocalServiceUtil.class,
+			LayoutTemplateLocalService.class);
 
 }

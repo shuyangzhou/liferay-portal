@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.OrganizationService;
-import com.liferay.portal.kernel.service.OrganizationServiceUtil;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.OrganizationFinder;
 import com.liferay.portal.kernel.service.persistence.OrganizationPersistence;
@@ -44,7 +43,7 @@ public abstract class OrganizationServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>OrganizationService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>OrganizationServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>OrganizationService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.OrganizationServiceUtil</code>.
 	 */
 
 	/**
@@ -152,11 +151,9 @@ public abstract class OrganizationServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		OrganizationServiceUtil.setService(organizationService);
 	}
 
 	public void destroy() {
-		OrganizationServiceUtil.setService(null);
 	}
 
 	/**

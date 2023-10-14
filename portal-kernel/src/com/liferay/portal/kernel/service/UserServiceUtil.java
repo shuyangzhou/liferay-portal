@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
@@ -1906,13 +1907,10 @@ public class UserServiceUtil {
 	}
 
 	public static UserService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(UserService service) {
-		_service = service;
-	}
-
-	private static volatile UserService _service;
+	private static final Snapshot<UserService> _serviceSnapshot =
+		new Snapshot<>(UserServiceUtil.class, UserService.class);
 
 }

@@ -5,6 +5,8 @@
 
 package com.liferay.portal.tools.service.builder.test.service;
 
+import com.liferay.portal.kernel.module.service.Snapshot;
+
 import java.io.Serializable;
 
 import java.util.List;
@@ -81,13 +83,12 @@ public class GenericMethodsEntryLocalServiceUtil {
 	}
 
 	public static GenericMethodsEntryLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(GenericMethodsEntryLocalService service) {
-		_service = service;
-	}
-
-	private static volatile GenericMethodsEntryLocalService _service;
+	private static final Snapshot<GenericMethodsEntryLocalService>
+		_serviceSnapshot = new Snapshot<>(
+			GenericMethodsEntryLocalServiceUtil.class,
+			GenericMethodsEntryLocalService.class);
 
 }

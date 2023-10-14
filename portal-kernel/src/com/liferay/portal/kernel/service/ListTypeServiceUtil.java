@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ListType;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 import java.util.List;
 
@@ -63,13 +64,10 @@ public class ListTypeServiceUtil {
 	}
 
 	public static ListTypeService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(ListTypeService service) {
-		_service = service;
-	}
-
-	private static volatile ListTypeService _service;
+	private static final Snapshot<ListTypeService> _serviceSnapshot =
+		new Snapshot<>(ListTypeServiceUtil.class, ListTypeService.class);
 
 }

@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.social.kernel.model.SocialRequest;
 import com.liferay.social.kernel.service.SocialRequestService;
-import com.liferay.social.kernel.service.SocialRequestServiceUtil;
 import com.liferay.social.kernel.service.persistence.SocialRequestPersistence;
 
 import javax.sql.DataSource;
@@ -41,7 +40,7 @@ public abstract class SocialRequestServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SocialRequestService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SocialRequestServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SocialRequestService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.social.kernel.service.SocialRequestServiceUtil</code>.
 	 */
 
 	/**
@@ -131,11 +130,9 @@ public abstract class SocialRequestServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		SocialRequestServiceUtil.setService(socialRequestService);
 	}
 
 	public void destroy() {
-		SocialRequestServiceUtil.setService(null);
 	}
 
 	/**

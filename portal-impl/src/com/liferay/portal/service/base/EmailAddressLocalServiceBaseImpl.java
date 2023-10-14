@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.EmailAddressLocalService;
-import com.liferay.portal.kernel.service.EmailAddressLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.EmailAddressPersistence;
@@ -70,7 +69,7 @@ public abstract class EmailAddressLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>EmailAddressLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>EmailAddressLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>EmailAddressLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.EmailAddressLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -572,15 +571,11 @@ public abstract class EmailAddressLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.EmailAddress",
 			emailAddressLocalService);
-
-		EmailAddressLocalServiceUtil.setService(emailAddressLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.EmailAddress");
-
-		EmailAddressLocalServiceUtil.setService(null);
 	}
 
 	/**

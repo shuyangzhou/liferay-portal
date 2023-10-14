@@ -6,7 +6,6 @@
 package com.liferay.portlet.exportimport.service.base;
 
 import com.liferay.exportimport.kernel.service.StagingService;
-import com.liferay.exportimport.kernel.service.StagingServiceUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -39,7 +38,7 @@ public abstract class StagingServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>StagingService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>StagingServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>StagingService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.exportimport.kernel.service.StagingServiceUtil</code>.
 	 */
 
 	/**
@@ -107,11 +106,9 @@ public abstract class StagingServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		StagingServiceUtil.setService(stagingService);
 	}
 
 	public void destroy() {
-		StagingServiceUtil.setService(null);
 	}
 
 	/**

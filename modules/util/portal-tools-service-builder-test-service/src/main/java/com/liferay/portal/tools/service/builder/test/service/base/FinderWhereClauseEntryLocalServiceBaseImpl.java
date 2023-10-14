@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.FinderWhereClauseEntry;
 import com.liferay.portal.tools.service.builder.test.service.FinderWhereClauseEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.FinderWhereClauseEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.FinderWhereClauseEntryPersistence;
 
 import java.io.Serializable;
@@ -61,7 +60,7 @@ public abstract class FinderWhereClauseEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>FinderWhereClauseEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>FinderWhereClauseEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>FinderWhereClauseEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.FinderWhereClauseEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -472,16 +471,11 @@ public abstract class FinderWhereClauseEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.FinderWhereClauseEntry",
 			finderWhereClauseEntryLocalService);
-
-		FinderWhereClauseEntryLocalServiceUtil.setService(
-			finderWhereClauseEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.FinderWhereClauseEntry");
-
-		FinderWhereClauseEntryLocalServiceUtil.setService(null);
 	}
 
 	/**

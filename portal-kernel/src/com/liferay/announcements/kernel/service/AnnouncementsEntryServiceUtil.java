@@ -7,6 +7,7 @@ package com.liferay.announcements.kernel.service;
 
 import com.liferay.announcements.kernel.model.AnnouncementsEntry;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * Provides the remote service utility for AnnouncementsEntry. This utility wraps
@@ -69,13 +70,12 @@ public class AnnouncementsEntryServiceUtil {
 	}
 
 	public static AnnouncementsEntryService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(AnnouncementsEntryService service) {
-		_service = service;
-	}
-
-	private static volatile AnnouncementsEntryService _service;
+	private static final Snapshot<AnnouncementsEntryService> _serviceSnapshot =
+		new Snapshot<>(
+			AnnouncementsEntryServiceUtil.class,
+			AnnouncementsEntryService.class);
 
 }

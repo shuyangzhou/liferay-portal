@@ -6,6 +6,7 @@
 package com.liferay.exportimport.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * Provides the local service utility for Staging. This utility wraps
@@ -121,13 +122,11 @@ public class StagingLocalServiceUtil {
 	}
 
 	public static StagingLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(StagingLocalService service) {
-		_service = service;
-	}
-
-	private static volatile StagingLocalService _service;
+	private static final Snapshot<StagingLocalService> _serviceSnapshot =
+		new Snapshot<>(
+			StagingLocalServiceUtil.class, StagingLocalService.class);
 
 }

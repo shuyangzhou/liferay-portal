@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.LayoutSetBranch;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 import java.util.List;
 
@@ -88,13 +89,11 @@ public class LayoutSetBranchServiceUtil {
 	}
 
 	public static LayoutSetBranchService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(LayoutSetBranchService service) {
-		_service = service;
-	}
-
-	private static volatile LayoutSetBranchService _service;
+	private static final Snapshot<LayoutSetBranchService> _serviceSnapshot =
+		new Snapshot<>(
+			LayoutSetBranchServiceUtil.class, LayoutSetBranchService.class);
 
 }

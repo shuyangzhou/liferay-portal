@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.PluginSetting;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
@@ -318,13 +319,12 @@ public class PluginSettingLocalServiceUtil {
 	}
 
 	public static PluginSettingLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(PluginSettingLocalService service) {
-		_service = service;
-	}
-
-	private static volatile PluginSettingLocalService _service;
+	private static final Snapshot<PluginSettingLocalService> _serviceSnapshot =
+		new Snapshot<>(
+			PluginSettingLocalServiceUtil.class,
+			PluginSettingLocalService.class);
 
 }

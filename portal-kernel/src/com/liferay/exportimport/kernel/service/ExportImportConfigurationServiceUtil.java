@@ -7,6 +7,7 @@ package com.liferay.exportimport.kernel.service;
 
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * Provides the remote service utility for ExportImportConfiguration. This utility wraps
@@ -63,13 +64,12 @@ public class ExportImportConfigurationServiceUtil {
 	}
 
 	public static ExportImportConfigurationService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(ExportImportConfigurationService service) {
-		_service = service;
-	}
-
-	private static volatile ExportImportConfigurationService _service;
+	private static final Snapshot<ExportImportConfigurationService>
+		_serviceSnapshot = new Snapshot<>(
+			ExportImportConfigurationServiceUtil.class,
+			ExportImportConfigurationService.class);
 
 }

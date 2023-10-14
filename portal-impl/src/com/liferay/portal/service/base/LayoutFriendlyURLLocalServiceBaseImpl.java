@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.LayoutFriendlyURLLocalService;
-import com.liferay.portal.kernel.service.LayoutFriendlyURLLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.LayoutFriendlyURLPersistence;
@@ -68,7 +67,7 @@ public abstract class LayoutFriendlyURLLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LayoutFriendlyURLLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LayoutFriendlyURLLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LayoutFriendlyURLLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.LayoutFriendlyURLLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -590,16 +589,11 @@ public abstract class LayoutFriendlyURLLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.LayoutFriendlyURL",
 			layoutFriendlyURLLocalService);
-
-		LayoutFriendlyURLLocalServiceUtil.setService(
-			layoutFriendlyURLLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.LayoutFriendlyURL");
-
-		LayoutFriendlyURLLocalServiceUtil.setService(null);
 	}
 
 	/**

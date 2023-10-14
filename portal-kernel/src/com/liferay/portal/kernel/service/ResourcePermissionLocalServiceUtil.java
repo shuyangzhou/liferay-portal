@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.ResourcePermission;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
@@ -1087,13 +1088,12 @@ public class ResourcePermissionLocalServiceUtil {
 	}
 
 	public static ResourcePermissionLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(ResourcePermissionLocalService service) {
-		_service = service;
-	}
-
-	private static volatile ResourcePermissionLocalService _service;
+	private static final Snapshot<ResourcePermissionLocalService>
+		_serviceSnapshot = new Snapshot<>(
+			ResourcePermissionLocalServiceUtil.class,
+			ResourcePermissionLocalService.class);
 
 }

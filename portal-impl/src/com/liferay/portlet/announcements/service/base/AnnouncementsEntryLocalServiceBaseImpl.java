@@ -7,7 +7,6 @@ package com.liferay.portlet.announcements.service.base;
 
 import com.liferay.announcements.kernel.model.AnnouncementsEntry;
 import com.liferay.announcements.kernel.service.AnnouncementsEntryLocalService;
-import com.liferay.announcements.kernel.service.AnnouncementsEntryLocalServiceUtil;
 import com.liferay.announcements.kernel.service.persistence.AnnouncementsEntryFinder;
 import com.liferay.announcements.kernel.service.persistence.AnnouncementsEntryPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
@@ -71,7 +70,7 @@ public abstract class AnnouncementsEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AnnouncementsEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AnnouncementsEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AnnouncementsEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.announcements.kernel.service.AnnouncementsEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -604,16 +603,11 @@ public abstract class AnnouncementsEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.announcements.kernel.model.AnnouncementsEntry",
 			announcementsEntryLocalService);
-
-		AnnouncementsEntryLocalServiceUtil.setService(
-			announcementsEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.announcements.kernel.model.AnnouncementsEntry");
-
-		AnnouncementsEntryLocalServiceUtil.setService(null);
 	}
 
 	/**

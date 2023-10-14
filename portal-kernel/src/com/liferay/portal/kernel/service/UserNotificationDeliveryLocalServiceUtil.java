@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.UserNotificationDelivery;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
@@ -350,15 +351,12 @@ public class UserNotificationDeliveryLocalServiceUtil {
 	}
 
 	public static UserNotificationDeliveryLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(
-		UserNotificationDeliveryLocalService service) {
-
-		_service = service;
-	}
-
-	private static volatile UserNotificationDeliveryLocalService _service;
+	private static final Snapshot<UserNotificationDeliveryLocalService>
+		_serviceSnapshot = new Snapshot<>(
+			UserNotificationDeliveryLocalServiceUtil.class,
+			UserNotificationDeliveryLocalService.class);
 
 }

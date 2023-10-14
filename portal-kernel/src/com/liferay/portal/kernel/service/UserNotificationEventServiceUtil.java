@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.UserNotificationEvent;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * Provides the remote service utility for UserNotificationEvent. This utility wraps
@@ -53,13 +54,12 @@ public class UserNotificationEventServiceUtil {
 	}
 
 	public static UserNotificationEventService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(UserNotificationEventService service) {
-		_service = service;
-	}
-
-	private static volatile UserNotificationEventService _service;
+	private static final Snapshot<UserNotificationEventService>
+		_serviceSnapshot = new Snapshot<>(
+			UserNotificationEventServiceUtil.class,
+			UserNotificationEventService.class);
 
 }

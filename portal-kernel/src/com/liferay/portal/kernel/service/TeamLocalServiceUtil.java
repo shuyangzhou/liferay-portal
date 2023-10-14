@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.Team;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
@@ -567,13 +568,10 @@ public class TeamLocalServiceUtil {
 	}
 
 	public static TeamLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(TeamLocalService service) {
-		_service = service;
-	}
-
-	private static volatile TeamLocalService _service;
+	private static final Snapshot<TeamLocalService> _serviceSnapshot =
+		new Snapshot<>(TeamLocalServiceUtil.class, TeamLocalService.class);
 
 }

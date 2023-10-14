@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.NestedSetsTreeEntry;
 import com.liferay.portal.tools.service.builder.test.service.NestedSetsTreeEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.NestedSetsTreeEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.NestedSetsTreeEntryPersistence;
 
 import java.io.Serializable;
@@ -61,7 +60,7 @@ public abstract class NestedSetsTreeEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>NestedSetsTreeEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>NestedSetsTreeEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>NestedSetsTreeEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.NestedSetsTreeEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -465,16 +464,11 @@ public abstract class NestedSetsTreeEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.NestedSetsTreeEntry",
 			nestedSetsTreeEntryLocalService);
-
-		NestedSetsTreeEntryLocalServiceUtil.setService(
-			nestedSetsTreeEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.NestedSetsTreeEntry");
-
-		NestedSetsTreeEntryLocalServiceUtil.setService(null);
 	}
 
 	/**

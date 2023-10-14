@@ -16,7 +16,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.PortalService;
-import com.liferay.portal.kernel.service.PortalServiceUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -39,7 +38,7 @@ public abstract class PortalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PortalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PortalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>PortalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.PortalServiceUtil</code>.
 	 */
 
 	/**
@@ -107,11 +106,9 @@ public abstract class PortalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		PortalServiceUtil.setService(portalService);
 	}
 
 	public void destroy() {
-		PortalServiceUtil.setService(null);
 	}
 
 	/**

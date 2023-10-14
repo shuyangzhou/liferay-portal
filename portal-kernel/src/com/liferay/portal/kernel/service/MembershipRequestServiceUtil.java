@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.MembershipRequest;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * Provides the remote service utility for MembershipRequest. This utility wraps
@@ -67,13 +68,11 @@ public class MembershipRequestServiceUtil {
 	}
 
 	public static MembershipRequestService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(MembershipRequestService service) {
-		_service = service;
-	}
-
-	private static volatile MembershipRequestService _service;
+	private static final Snapshot<MembershipRequestService> _serviceSnapshot =
+		new Snapshot<>(
+			MembershipRequestServiceUtil.class, MembershipRequestService.class);
 
 }

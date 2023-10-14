@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.CompanyLocalService;
-import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.CompanyPersistence;
@@ -60,7 +59,7 @@ public abstract class CompanyLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CompanyLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CompanyLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CompanyLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.CompanyLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -430,15 +429,11 @@ public abstract class CompanyLocalServiceBaseImpl
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.Company", companyLocalService);
-
-		CompanyLocalServiceUtil.setService(companyLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.Company");
-
-		CompanyLocalServiceUtil.setService(null);
 	}
 
 	/**

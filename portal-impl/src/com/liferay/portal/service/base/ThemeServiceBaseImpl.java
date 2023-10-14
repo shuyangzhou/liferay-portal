@@ -16,7 +16,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.ThemeService;
-import com.liferay.portal.kernel.service.ThemeServiceUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -39,7 +38,7 @@ public abstract class ThemeServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ThemeService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ThemeServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ThemeService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.ThemeServiceUtil</code>.
 	 */
 
 	/**
@@ -106,11 +105,9 @@ public abstract class ThemeServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		ThemeServiceUtil.setService(themeService);
 	}
 
 	public void destroy() {
-		ThemeServiceUtil.setService(null);
 	}
 
 	/**

@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.UserTracker;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
@@ -300,13 +301,11 @@ public class UserTrackerLocalServiceUtil {
 	}
 
 	public static UserTrackerLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(UserTrackerLocalService service) {
-		_service = service;
-	}
-
-	private static volatile UserTrackerLocalService _service;
+	private static final Snapshot<UserTrackerLocalService> _serviceSnapshot =
+		new Snapshot<>(
+			UserTrackerLocalServiceUtil.class, UserTrackerLocalService.class);
 
 }

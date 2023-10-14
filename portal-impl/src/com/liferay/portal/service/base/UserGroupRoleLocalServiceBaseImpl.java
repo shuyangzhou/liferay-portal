@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
-import com.liferay.portal.kernel.service.UserGroupRoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.UserGroupRoleFinder;
 import com.liferay.portal.kernel.service.persistence.UserGroupRolePersistence;
@@ -63,7 +62,7 @@ public abstract class UserGroupRoleLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>UserGroupRoleLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>UserGroupRoleLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>UserGroupRoleLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.UserGroupRoleLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -462,15 +461,11 @@ public abstract class UserGroupRoleLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.UserGroupRole",
 			userGroupRoleLocalService);
-
-		UserGroupRoleLocalServiceUtil.setService(userGroupRoleLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.UserGroupRole");
-
-		UserGroupRoleLocalServiceUtil.setService(null);
 	}
 
 	/**

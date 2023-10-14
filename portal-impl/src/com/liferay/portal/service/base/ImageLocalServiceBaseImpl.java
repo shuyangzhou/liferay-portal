@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.ImageLocalService;
-import com.liferay.portal.kernel.service.ImageLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ImagePersistence;
@@ -62,7 +61,7 @@ public abstract class ImageLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ImageLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ImageLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ImageLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.ImageLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -426,15 +425,11 @@ public abstract class ImageLocalServiceBaseImpl
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.Image", imageLocalService);
-
-		ImageLocalServiceUtil.setService(imageLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.Image");
-
-		ImageLocalServiceUtil.setService(null);
 	}
 
 	/**

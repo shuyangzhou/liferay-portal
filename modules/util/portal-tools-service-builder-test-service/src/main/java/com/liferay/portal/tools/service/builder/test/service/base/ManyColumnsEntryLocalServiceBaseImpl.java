@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.ManyColumnsEntry;
 import com.liferay.portal.tools.service.builder.test.service.ManyColumnsEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.ManyColumnsEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.ManyColumnsEntryPersistence;
 
 import java.io.Serializable;
@@ -61,7 +60,7 @@ public abstract class ManyColumnsEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ManyColumnsEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ManyColumnsEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ManyColumnsEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.ManyColumnsEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -449,16 +448,11 @@ public abstract class ManyColumnsEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.ManyColumnsEntry",
 			manyColumnsEntryLocalService);
-
-		ManyColumnsEntryLocalServiceUtil.setService(
-			manyColumnsEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.ManyColumnsEntry");
-
-		ManyColumnsEntryLocalServiceUtil.setService(null);
 	}
 
 	/**

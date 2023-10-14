@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.UserTrackerLocalService;
-import com.liferay.portal.kernel.service.UserTrackerLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.UserTrackerPersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -60,7 +59,7 @@ public abstract class UserTrackerLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>UserTrackerLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>UserTrackerLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>UserTrackerLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.UserTrackerLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -438,15 +437,11 @@ public abstract class UserTrackerLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.UserTracker",
 			userTrackerLocalService);
-
-		UserTrackerLocalServiceUtil.setService(userTrackerLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.UserTracker");
-
-		UserTrackerLocalServiceUtil.setService(null);
 	}
 
 	/**

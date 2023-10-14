@@ -6,6 +6,7 @@
 package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.model.ClassName;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * Provides the remote service utility for ClassName. This utility wraps
@@ -44,13 +45,10 @@ public class ClassNameServiceUtil {
 	}
 
 	public static ClassNameService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(ClassNameService service) {
-		_service = service;
-	}
-
-	private static volatile ClassNameService _service;
+	private static final Snapshot<ClassNameService> _serviceSnapshot =
+		new Snapshot<>(ClassNameServiceUtil.class, ClassNameService.class);
 
 }

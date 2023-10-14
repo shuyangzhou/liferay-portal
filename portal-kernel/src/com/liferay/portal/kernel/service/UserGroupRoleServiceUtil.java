@@ -6,6 +6,7 @@
 package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * Provides the remote service utility for UserGroupRole. This utility wraps
@@ -73,13 +74,11 @@ public class UserGroupRoleServiceUtil {
 	}
 
 	public static UserGroupRoleService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(UserGroupRoleService service) {
-		_service = service;
-	}
-
-	private static volatile UserGroupRoleService _service;
+	private static final Snapshot<UserGroupRoleService> _serviceSnapshot =
+		new Snapshot<>(
+			UserGroupRoleServiceUtil.class, UserGroupRoleService.class);
 
 }

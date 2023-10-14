@@ -5,6 +5,8 @@
 
 package com.liferay.portal.tools.service.builder.test.service;
 
+import com.liferay.portal.kernel.module.service.Snapshot;
+
 /**
  * Provides the remote service utility for EagerBlobEntry. This utility wraps
  * <code>com.liferay.portal.tools.service.builder.test.service.impl.EagerBlobEntryServiceImpl</code> and is an
@@ -30,18 +32,16 @@ public class EagerBlobEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static java.lang.String getOSGiServiceIdentifier() {
+	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static EagerBlobEntryService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(EagerBlobEntryService service) {
-		_service = service;
-	}
-
-	private static volatile EagerBlobEntryService _service;
+	private static final Snapshot<EagerBlobEntryService> _serviceSnapshot =
+		new Snapshot<>(
+			EagerBlobEntryServiceUtil.class, EagerBlobEntryService.class);
 
 }

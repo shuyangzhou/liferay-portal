@@ -7,7 +7,6 @@ package com.liferay.portlet.expando.service.base;
 
 import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.service.ExpandoColumnService;
-import com.liferay.expando.kernel.service.ExpandoColumnServiceUtil;
 import com.liferay.expando.kernel.service.persistence.ExpandoColumnPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -41,7 +40,7 @@ public abstract class ExpandoColumnServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ExpandoColumnService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ExpandoColumnServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ExpandoColumnService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.expando.kernel.service.ExpandoColumnServiceUtil</code>.
 	 */
 
 	/**
@@ -131,11 +130,9 @@ public abstract class ExpandoColumnServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		ExpandoColumnServiceUtil.setService(expandoColumnService);
 	}
 
 	public void destroy() {
-		ExpandoColumnServiceUtil.setService(null);
 	}
 
 	/**

@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.LayoutPrototype;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
@@ -87,13 +88,11 @@ public class LayoutPrototypeServiceUtil {
 	}
 
 	public static LayoutPrototypeService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(LayoutPrototypeService service) {
-		_service = service;
-	}
-
-	private static volatile LayoutPrototypeService _service;
+	private static final Snapshot<LayoutPrototypeService> _serviceSnapshot =
+		new Snapshot<>(
+			LayoutPrototypeServiceUtil.class, LayoutPrototypeService.class);
 
 }

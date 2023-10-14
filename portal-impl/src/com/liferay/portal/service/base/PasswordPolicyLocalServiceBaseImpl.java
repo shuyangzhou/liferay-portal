@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PasswordPolicyLocalService;
-import com.liferay.portal.kernel.service.PasswordPolicyLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.PasswordPolicyFinder;
@@ -67,7 +66,7 @@ public abstract class PasswordPolicyLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PasswordPolicyLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PasswordPolicyLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>PasswordPolicyLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.PasswordPolicyLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -567,15 +566,11 @@ public abstract class PasswordPolicyLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.PasswordPolicy",
 			passwordPolicyLocalService);
-
-		PasswordPolicyLocalServiceUtil.setService(passwordPolicyLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.PasswordPolicy");
-
-		PasswordPolicyLocalServiceUtil.setService(null);
 	}
 
 	/**

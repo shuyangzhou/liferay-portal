@@ -6,6 +6,7 @@
 package com.liferay.social.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.social.kernel.model.SocialActivitySetting;
 
 import java.util.List;
@@ -96,13 +97,12 @@ public class SocialActivitySettingServiceUtil {
 	}
 
 	public static SocialActivitySettingService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(SocialActivitySettingService service) {
-		_service = service;
-	}
-
-	private static volatile SocialActivitySettingService _service;
+	private static final Snapshot<SocialActivitySettingService>
+		_serviceSnapshot = new Snapshot<>(
+			SocialActivitySettingServiceUtil.class,
+			SocialActivitySettingService.class);
 
 }

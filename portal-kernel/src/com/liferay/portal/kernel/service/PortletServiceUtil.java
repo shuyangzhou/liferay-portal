@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * Provides the remote service utility for Portlet. This utility wraps
@@ -53,13 +54,10 @@ public class PortletServiceUtil {
 	}
 
 	public static PortletService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(PortletService service) {
-		_service = service;
-	}
-
-	private static volatile PortletService _service;
+	private static final Snapshot<PortletService> _serviceSnapshot =
+		new Snapshot<>(PortletServiceUtil.class, PortletService.class);
 
 }

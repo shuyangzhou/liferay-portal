@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 import java.io.InputStream;
 
@@ -391,13 +392,10 @@ public class CompanyServiceUtil {
 	}
 
 	public static CompanyService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(CompanyService service) {
-		_service = service;
-	}
-
-	private static volatile CompanyService _service;
+	private static final Snapshot<CompanyService> _serviceSnapshot =
+		new Snapshot<>(CompanyServiceUtil.class, CompanyService.class);
 
 }

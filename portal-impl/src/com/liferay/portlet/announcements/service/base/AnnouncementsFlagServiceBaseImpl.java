@@ -7,7 +7,6 @@ package com.liferay.portlet.announcements.service.base;
 
 import com.liferay.announcements.kernel.model.AnnouncementsFlag;
 import com.liferay.announcements.kernel.service.AnnouncementsFlagService;
-import com.liferay.announcements.kernel.service.AnnouncementsFlagServiceUtil;
 import com.liferay.announcements.kernel.service.persistence.AnnouncementsFlagPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -41,7 +40,7 @@ public abstract class AnnouncementsFlagServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AnnouncementsFlagService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AnnouncementsFlagServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AnnouncementsFlagService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.announcements.kernel.service.AnnouncementsFlagServiceUtil</code>.
 	 */
 
 	/**
@@ -132,11 +131,9 @@ public abstract class AnnouncementsFlagServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		AnnouncementsFlagServiceUtil.setService(announcementsFlagService);
 	}
 
 	public void destroy() {
-		AnnouncementsFlagServiceUtil.setService(null);
 	}
 
 	/**

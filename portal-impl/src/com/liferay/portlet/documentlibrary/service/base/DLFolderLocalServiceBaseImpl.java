@@ -7,7 +7,6 @@ package com.liferay.portlet.documentlibrary.service.base;
 
 import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.document.library.kernel.service.DLFolderLocalService;
-import com.liferay.document.library.kernel.service.DLFolderLocalServiceUtil;
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryTypePersistence;
 import com.liferay.document.library.kernel.service.persistence.DLFolderFinder;
 import com.liferay.document.library.kernel.service.persistence.DLFolderPersistence;
@@ -79,7 +78,7 @@ public abstract class DLFolderLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DLFolderLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DLFolderLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DLFolderLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.document.library.kernel.service.DLFolderLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -826,15 +825,11 @@ public abstract class DLFolderLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.document.library.kernel.model.DLFolder",
 			dlFolderLocalService);
-
-		DLFolderLocalServiceUtil.setService(dlFolderLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.document.library.kernel.model.DLFolder");
-
-		DLFolderLocalServiceUtil.setService(null);
 	}
 
 	/**

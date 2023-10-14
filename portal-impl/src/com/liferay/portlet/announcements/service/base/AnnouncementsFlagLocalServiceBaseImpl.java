@@ -7,7 +7,6 @@ package com.liferay.portlet.announcements.service.base;
 
 import com.liferay.announcements.kernel.model.AnnouncementsFlag;
 import com.liferay.announcements.kernel.service.AnnouncementsFlagLocalService;
-import com.liferay.announcements.kernel.service.AnnouncementsFlagLocalServiceUtil;
 import com.liferay.announcements.kernel.service.persistence.AnnouncementsFlagPersistence;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
@@ -62,7 +61,7 @@ public abstract class AnnouncementsFlagLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AnnouncementsFlagLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AnnouncementsFlagLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AnnouncementsFlagLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.announcements.kernel.service.AnnouncementsFlagLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -448,16 +447,11 @@ public abstract class AnnouncementsFlagLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.announcements.kernel.model.AnnouncementsFlag",
 			announcementsFlagLocalService);
-
-		AnnouncementsFlagLocalServiceUtil.setService(
-			announcementsFlagLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.announcements.kernel.model.AnnouncementsFlag");
-
-		AnnouncementsFlagLocalServiceUtil.setService(null);
 	}
 
 	/**

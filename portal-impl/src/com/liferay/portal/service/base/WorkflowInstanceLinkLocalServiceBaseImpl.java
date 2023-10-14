@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService;
-import com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.WorkflowInstanceLinkPersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
@@ -62,7 +61,7 @@ public abstract class WorkflowInstanceLinkLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>WorkflowInstanceLinkLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>WorkflowInstanceLinkLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>WorkflowInstanceLinkLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -471,16 +470,11 @@ public abstract class WorkflowInstanceLinkLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.WorkflowInstanceLink",
 			workflowInstanceLinkLocalService);
-
-		WorkflowInstanceLinkLocalServiceUtil.setService(
-			workflowInstanceLinkLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.WorkflowInstanceLink");
-
-		WorkflowInstanceLinkLocalServiceUtil.setService(null);
 	}
 
 	/**

@@ -7,6 +7,7 @@ package com.liferay.document.library.kernel.service;
 
 import com.liferay.document.library.kernel.model.DLFileVersion;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 import java.util.List;
 
@@ -72,13 +73,11 @@ public class DLFileVersionServiceUtil {
 	}
 
 	public static DLFileVersionService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(DLFileVersionService service) {
-		_service = service;
-	}
-
-	private static volatile DLFileVersionService _service;
+	private static final Snapshot<DLFileVersionService> _serviceSnapshot =
+		new Snapshot<>(
+			DLFileVersionServiceUtil.class, DLFileVersionService.class);
 
 }

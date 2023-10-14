@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Repository;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * Provides the remote service utility for Repository. This utility wraps
@@ -88,13 +89,10 @@ public class RepositoryServiceUtil {
 	}
 
 	public static RepositoryService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(RepositoryService service) {
-		_service = service;
-	}
-
-	private static volatile RepositoryService _service;
+	private static final Snapshot<RepositoryService> _serviceSnapshot =
+		new Snapshot<>(RepositoryServiceUtil.class, RepositoryService.class);
 
 }

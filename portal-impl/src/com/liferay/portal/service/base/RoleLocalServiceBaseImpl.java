@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.RoleLocalService;
-import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.RoleFinder;
@@ -73,7 +72,7 @@ public abstract class RoleLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>RoleLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>RoleLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>RoleLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.RoleLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -849,15 +848,11 @@ public abstract class RoleLocalServiceBaseImpl
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.Role", roleLocalService);
-
-		RoleLocalServiceUtil.setService(roleLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.Role");
-
-		RoleLocalServiceUtil.setService(null);
 	}
 
 	/**

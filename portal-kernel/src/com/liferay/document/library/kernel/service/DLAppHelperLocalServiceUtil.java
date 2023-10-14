@@ -6,6 +6,7 @@
 package com.liferay.document.library.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 import java.io.Serializable;
 
@@ -360,13 +361,11 @@ public class DLAppHelperLocalServiceUtil {
 	}
 
 	public static DLAppHelperLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(DLAppHelperLocalService service) {
-		_service = service;
-	}
-
-	private static volatile DLAppHelperLocalService _service;
+	private static final Snapshot<DLAppHelperLocalService> _serviceSnapshot =
+		new Snapshot<>(
+			DLAppHelperLocalServiceUtil.class, DLAppHelperLocalService.class);
 
 }

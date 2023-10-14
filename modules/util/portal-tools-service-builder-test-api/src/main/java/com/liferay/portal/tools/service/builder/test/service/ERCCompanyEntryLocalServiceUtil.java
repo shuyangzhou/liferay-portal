@@ -9,6 +9,7 @@ import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.tools.service.builder.test.model.ERCCompanyEntry;
 
@@ -338,13 +339,12 @@ public class ERCCompanyEntryLocalServiceUtil {
 	}
 
 	public static ERCCompanyEntryLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(ERCCompanyEntryLocalService service) {
-		_service = service;
-	}
-
-	private static volatile ERCCompanyEntryLocalService _service;
+	private static final Snapshot<ERCCompanyEntryLocalService>
+		_serviceSnapshot = new Snapshot<>(
+			ERCCompanyEntryLocalServiceUtil.class,
+			ERCCompanyEntryLocalService.class);
 
 }

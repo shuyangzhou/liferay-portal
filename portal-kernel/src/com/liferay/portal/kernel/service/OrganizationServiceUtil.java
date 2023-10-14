@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
@@ -510,13 +511,11 @@ public class OrganizationServiceUtil {
 	}
 
 	public static OrganizationService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(OrganizationService service) {
-		_service = service;
-	}
-
-	private static volatile OrganizationService _service;
+	private static final Snapshot<OrganizationService> _serviceSnapshot =
+		new Snapshot<>(
+			OrganizationServiceUtil.class, OrganizationService.class);
 
 }

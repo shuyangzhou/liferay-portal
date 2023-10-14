@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.NullConvertibleEntry;
 import com.liferay.portal.tools.service.builder.test.service.NullConvertibleEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.NullConvertibleEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.NullConvertibleEntryPersistence;
 
 import java.io.Serializable;
@@ -61,7 +60,7 @@ public abstract class NullConvertibleEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>NullConvertibleEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>NullConvertibleEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>NullConvertibleEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.NullConvertibleEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -468,16 +467,11 @@ public abstract class NullConvertibleEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.NullConvertibleEntry",
 			nullConvertibleEntryLocalService);
-
-		NullConvertibleEntryLocalServiceUtil.setService(
-			nullConvertibleEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.NullConvertibleEntry");
-
-		NullConvertibleEntryLocalServiceUtil.setService(null);
 	}
 
 	/**

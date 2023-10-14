@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.WebDAVPropsLocalService;
-import com.liferay.portal.kernel.service.WebDAVPropsLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.WebDAVPropsPersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -60,7 +59,7 @@ public abstract class WebDAVPropsLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>WebDAVPropsLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>WebDAVPropsLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>WebDAVPropsLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.WebDAVPropsLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -438,15 +437,11 @@ public abstract class WebDAVPropsLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.WebDAVProps",
 			webDAVPropsLocalService);
-
-		WebDAVPropsLocalServiceUtil.setService(webDAVPropsLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.WebDAVProps");
-
-		WebDAVPropsLocalServiceUtil.setService(null);
 	}
 
 	/**

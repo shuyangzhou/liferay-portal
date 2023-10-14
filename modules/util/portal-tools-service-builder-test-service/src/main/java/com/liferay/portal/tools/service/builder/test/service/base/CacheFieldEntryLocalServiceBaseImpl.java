@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.CacheFieldEntry;
 import com.liferay.portal.tools.service.builder.test.service.CacheFieldEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.CacheFieldEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.CacheFieldEntryPersistence;
 
 import java.io.Serializable;
@@ -61,7 +60,7 @@ public abstract class CacheFieldEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CacheFieldEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CacheFieldEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CacheFieldEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.CacheFieldEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -444,15 +443,11 @@ public abstract class CacheFieldEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.CacheFieldEntry",
 			cacheFieldEntryLocalService);
-
-		CacheFieldEntryLocalServiceUtil.setService(cacheFieldEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.CacheFieldEntry");
-
-		CacheFieldEntryLocalServiceUtil.setService(null);
 	}
 
 	/**

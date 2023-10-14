@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.DSLQueryStatusEntry;
 import com.liferay.portal.tools.service.builder.test.service.DSLQueryStatusEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.DSLQueryStatusEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.DSLQueryStatusEntryPersistence;
 
 import java.io.Serializable;
@@ -61,7 +60,7 @@ public abstract class DSLQueryStatusEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DSLQueryStatusEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DSLQueryStatusEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DSLQueryStatusEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.DSLQueryStatusEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -465,16 +464,11 @@ public abstract class DSLQueryStatusEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.DSLQueryStatusEntry",
 			dslQueryStatusEntryLocalService);
-
-		DSLQueryStatusEntryLocalServiceUtil.setService(
-			dslQueryStatusEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.DSLQueryStatusEntry");
-
-		DSLQueryStatusEntryLocalServiceUtil.setService(null);
 	}
 
 	/**

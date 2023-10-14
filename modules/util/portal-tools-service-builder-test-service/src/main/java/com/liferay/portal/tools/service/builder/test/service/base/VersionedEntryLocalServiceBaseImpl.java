@@ -37,7 +37,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.VersionedEntry;
 import com.liferay.portal.tools.service.builder.test.model.VersionedEntryVersion;
 import com.liferay.portal.tools.service.builder.test.service.VersionedEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.VersionedEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.VersionedEntryPersistence;
 import com.liferay.portal.tools.service.builder.test.service.persistence.VersionedEntryVersionPersistence;
 
@@ -69,7 +68,7 @@ public abstract class VersionedEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>VersionedEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>VersionedEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>VersionedEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.VersionedEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -495,15 +494,11 @@ public abstract class VersionedEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.VersionedEntry",
 			versionedEntryLocalService);
-
-		VersionedEntryLocalServiceUtil.setService(versionedEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.VersionedEntry");
-
-		VersionedEntryLocalServiceUtil.setService(null);
 	}
 
 	@Indexable(type = IndexableType.REINDEX)

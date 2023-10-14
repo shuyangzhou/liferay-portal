@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.Team;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.TeamService;
-import com.liferay.portal.kernel.service.TeamServiceUtil;
 import com.liferay.portal.kernel.service.persistence.TeamFinder;
 import com.liferay.portal.kernel.service.persistence.TeamPersistence;
 import com.liferay.portal.kernel.service.persistence.UserGroupPersistence;
@@ -43,7 +42,7 @@ public abstract class TeamServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>TeamService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>TeamServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>TeamService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.TeamServiceUtil</code>.
 	 */
 
 	/**
@@ -146,11 +145,9 @@ public abstract class TeamServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		TeamServiceUtil.setService(teamService);
 	}
 
 	public void destroy() {
-		TeamServiceUtil.setService(null);
 	}
 
 	/**

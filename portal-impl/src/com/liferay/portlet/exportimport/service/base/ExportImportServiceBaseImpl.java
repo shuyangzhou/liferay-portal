@@ -6,7 +6,6 @@
 package com.liferay.portlet.exportimport.service.base;
 
 import com.liferay.exportimport.kernel.service.ExportImportService;
-import com.liferay.exportimport.kernel.service.ExportImportServiceUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -40,7 +39,7 @@ public abstract class ExportImportServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ExportImportService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ExportImportServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ExportImportService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.exportimport.kernel.service.ExportImportServiceUtil</code>.
 	 */
 
 	/**
@@ -110,11 +109,9 @@ public abstract class ExportImportServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		ExportImportServiceUtil.setService(exportImportService);
 	}
 
 	public void destroy() {
-		ExportImportServiceUtil.setService(null);
 	}
 
 	/**

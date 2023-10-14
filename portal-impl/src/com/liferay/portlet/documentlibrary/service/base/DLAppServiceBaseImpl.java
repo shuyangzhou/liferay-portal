@@ -6,7 +6,6 @@
 package com.liferay.portlet.documentlibrary.service.base;
 
 import com.liferay.document.library.kernel.service.DLAppService;
-import com.liferay.document.library.kernel.service.DLAppServiceUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -39,7 +38,7 @@ public abstract class DLAppServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DLAppService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DLAppServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DLAppService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.document.library.kernel.service.DLAppServiceUtil</code>.
 	 */
 
 	/**
@@ -107,11 +106,9 @@ public abstract class DLAppServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		DLAppServiceUtil.setService(dlAppService);
 	}
 
 	public void destroy() {
-		DLAppServiceUtil.setService(null);
 	}
 
 	/**

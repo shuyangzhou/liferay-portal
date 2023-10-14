@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PluginSetting;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * Provides the remote service utility for PluginSetting. This utility wraps
@@ -47,13 +48,11 @@ public class PluginSettingServiceUtil {
 	}
 
 	public static PluginSettingService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(PluginSettingService service) {
-		_service = service;
-	}
-
-	private static volatile PluginSettingService _service;
+	private static final Snapshot<PluginSettingService> _serviceSnapshot =
+		new Snapshot<>(
+			PluginSettingServiceUtil.class, PluginSettingService.class);
 
 }

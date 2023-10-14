@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.SubscriptionLocalService;
-import com.liferay.portal.kernel.service.SubscriptionLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.SubscriptionPersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -63,7 +62,7 @@ public abstract class SubscriptionLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SubscriptionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SubscriptionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SubscriptionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.SubscriptionLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -445,15 +444,11 @@ public abstract class SubscriptionLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.Subscription",
 			subscriptionLocalService);
-
-		SubscriptionLocalServiceUtil.setService(subscriptionLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.Subscription");
-
-		SubscriptionLocalServiceUtil.setService(null);
 	}
 
 	/**

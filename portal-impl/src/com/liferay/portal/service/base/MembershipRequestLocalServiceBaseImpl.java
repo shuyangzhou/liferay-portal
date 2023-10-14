@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.MembershipRequestLocalService;
-import com.liferay.portal.kernel.service.MembershipRequestLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.MembershipRequestPersistence;
@@ -60,7 +59,7 @@ public abstract class MembershipRequestLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>MembershipRequestLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>MembershipRequestLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>MembershipRequestLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.MembershipRequestLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -449,16 +448,11 @@ public abstract class MembershipRequestLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.MembershipRequest",
 			membershipRequestLocalService);
-
-		MembershipRequestLocalServiceUtil.setService(
-			membershipRequestLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.MembershipRequest");
-
-		MembershipRequestLocalServiceUtil.setService(null);
 	}
 
 	/**

@@ -6,7 +6,6 @@
 package com.liferay.portlet.exportimport.service.base;
 
 import com.liferay.exportimport.kernel.service.ExportImportLocalService;
-import com.liferay.exportimport.kernel.service.ExportImportLocalServiceUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -40,7 +39,7 @@ public abstract class ExportImportLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ExportImportLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ExportImportLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ExportImportLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.exportimport.kernel.service.ExportImportLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -87,11 +86,9 @@ public abstract class ExportImportLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		ExportImportLocalServiceUtil.setService(exportImportLocalService);
 	}
 
 	public void destroy() {
-		ExportImportLocalServiceUtil.setService(null);
 	}
 
 	/**

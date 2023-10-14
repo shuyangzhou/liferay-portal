@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.LayoutPrototype;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.LayoutPrototypeService;
-import com.liferay.portal.kernel.service.LayoutPrototypeServiceUtil;
 import com.liferay.portal.kernel.service.persistence.LayoutPrototypePersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -41,7 +40,7 @@ public abstract class LayoutPrototypeServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LayoutPrototypeService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LayoutPrototypeServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LayoutPrototypeService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.LayoutPrototypeServiceUtil</code>.
 	 */
 
 	/**
@@ -131,11 +130,9 @@ public abstract class LayoutPrototypeServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		LayoutPrototypeServiceUtil.setService(layoutPrototypeService);
 	}
 
 	public void destroy() {
-		LayoutPrototypeServiceUtil.setService(null);
 	}
 
 	/**

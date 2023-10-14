@@ -7,7 +7,6 @@ package com.liferay.portlet.documentlibrary.service.base;
 
 import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.document.library.kernel.service.DLFileEntryTypeService;
-import com.liferay.document.library.kernel.service.DLFileEntryTypeServiceUtil;
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryTypeFinder;
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryTypePersistence;
 import com.liferay.document.library.kernel.service.persistence.DLFolderPersistence;
@@ -43,7 +42,7 @@ public abstract class DLFileEntryTypeServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DLFileEntryTypeService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DLFileEntryTypeServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DLFileEntryTypeService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.document.library.kernel.service.DLFileEntryTypeServiceUtil</code>.
 	 */
 
 	/**
@@ -154,11 +153,9 @@ public abstract class DLFileEntryTypeServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		DLFileEntryTypeServiceUtil.setService(dlFileEntryTypeService);
 	}
 
 	public void destroy() {
-		DLFileEntryTypeServiceUtil.setService(null);
 	}
 
 	/**

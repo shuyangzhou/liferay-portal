@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.PortletPreferencesService;
-import com.liferay.portal.kernel.service.PortletPreferencesServiceUtil;
 import com.liferay.portal.kernel.service.persistence.PortletPreferencesFinder;
 import com.liferay.portal.kernel.service.persistence.PortletPreferencesPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -42,7 +41,7 @@ public abstract class PortletPreferencesServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PortletPreferencesService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PortletPreferencesServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>PortletPreferencesService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.PortletPreferencesServiceUtil</code>.
 	 */
 
 	/**
@@ -152,11 +151,9 @@ public abstract class PortletPreferencesServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		PortletPreferencesServiceUtil.setService(portletPreferencesService);
 	}
 
 	public void destroy() {
-		PortletPreferencesServiceUtil.setService(null);
 	}
 
 	/**

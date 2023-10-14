@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.PasswordPolicy;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.PasswordPolicyService;
-import com.liferay.portal.kernel.service.PasswordPolicyServiceUtil;
 import com.liferay.portal.kernel.service.persistence.PasswordPolicyFinder;
 import com.liferay.portal.kernel.service.persistence.PasswordPolicyPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -42,7 +41,7 @@ public abstract class PasswordPolicyServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PasswordPolicyService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PasswordPolicyServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>PasswordPolicyService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.PasswordPolicyServiceUtil</code>.
 	 */
 
 	/**
@@ -152,11 +151,9 @@ public abstract class PasswordPolicyServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		PasswordPolicyServiceUtil.setService(passwordPolicyService);
 	}
 
 	public void destroy() {
-		PasswordPolicyServiceUtil.setService(null);
 	}
 
 	/**

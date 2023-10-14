@@ -7,7 +7,6 @@ package com.liferay.external.data.source.test.service.base;
 
 import com.liferay.external.data.source.test.model.TestEntity;
 import com.liferay.external.data.source.test.service.TestEntityLocalService;
-import com.liferay.external.data.source.test.service.TestEntityLocalServiceUtil;
 import com.liferay.external.data.source.test.service.persistence.TestEntityPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -61,7 +60,7 @@ public abstract class TestEntityLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>TestEntityLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>TestEntityLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>TestEntityLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.external.data.source.test.service.TestEntityLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -434,15 +433,11 @@ public abstract class TestEntityLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.external.data.source.test.model.TestEntity",
 			testEntityLocalService);
-
-		TestEntityLocalServiceUtil.setService(testEntityLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.external.data.source.test.model.TestEntity");
-
-		TestEntityLocalServiceUtil.setService(null);
 	}
 
 	/**

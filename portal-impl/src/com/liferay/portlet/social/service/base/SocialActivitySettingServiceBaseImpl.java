@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.social.kernel.model.SocialActivitySetting;
 import com.liferay.social.kernel.service.SocialActivitySettingService;
-import com.liferay.social.kernel.service.SocialActivitySettingServiceUtil;
 import com.liferay.social.kernel.service.persistence.SocialActivitySettingPersistence;
 
 import javax.sql.DataSource;
@@ -41,7 +40,7 @@ public abstract class SocialActivitySettingServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SocialActivitySettingService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SocialActivitySettingServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SocialActivitySettingService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.social.kernel.service.SocialActivitySettingServiceUtil</code>.
 	 */
 
 	/**
@@ -135,12 +134,9 @@ public abstract class SocialActivitySettingServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		SocialActivitySettingServiceUtil.setService(
-			socialActivitySettingService);
 	}
 
 	public void destroy() {
-		SocialActivitySettingServiceUtil.setService(null);
 	}
 
 	/**

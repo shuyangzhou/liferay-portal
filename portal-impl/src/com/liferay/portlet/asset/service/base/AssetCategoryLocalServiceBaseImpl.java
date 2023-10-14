@@ -7,7 +7,6 @@ package com.liferay.portlet.asset.service.base;
 
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
-import com.liferay.asset.kernel.service.AssetCategoryLocalServiceUtil;
 import com.liferay.asset.kernel.service.persistence.AssetCategoryPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
@@ -68,7 +67,7 @@ public abstract class AssetCategoryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AssetCategoryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AssetCategoryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AssetCategoryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.asset.kernel.service.AssetCategoryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -595,15 +594,11 @@ public abstract class AssetCategoryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.asset.kernel.model.AssetCategory",
 			assetCategoryLocalService);
-
-		AssetCategoryLocalServiceUtil.setService(assetCategoryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.asset.kernel.model.AssetCategory");
-
-		AssetCategoryLocalServiceUtil.setService(null);
 	}
 
 	/**

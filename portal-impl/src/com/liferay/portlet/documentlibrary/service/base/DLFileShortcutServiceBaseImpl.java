@@ -7,7 +7,6 @@ package com.liferay.portlet.documentlibrary.service.base;
 
 import com.liferay.document.library.kernel.model.DLFileShortcut;
 import com.liferay.document.library.kernel.service.DLFileShortcutService;
-import com.liferay.document.library.kernel.service.DLFileShortcutServiceUtil;
 import com.liferay.document.library.kernel.service.persistence.DLFileShortcutPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -41,7 +40,7 @@ public abstract class DLFileShortcutServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DLFileShortcutService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DLFileShortcutServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DLFileShortcutService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.document.library.kernel.service.DLFileShortcutServiceUtil</code>.
 	 */
 
 	/**
@@ -132,11 +131,9 @@ public abstract class DLFileShortcutServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		DLFileShortcutServiceUtil.setService(dlFileShortcutService);
 	}
 
 	public void destroy() {
-		DLFileShortcutServiceUtil.setService(null);
 	}
 
 	/**

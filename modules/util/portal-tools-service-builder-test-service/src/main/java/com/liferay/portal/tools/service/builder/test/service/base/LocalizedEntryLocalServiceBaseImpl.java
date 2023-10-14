@@ -35,7 +35,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.LocalizedEntry;
 import com.liferay.portal.tools.service.builder.test.model.LocalizedEntryLocalization;
 import com.liferay.portal.tools.service.builder.test.service.LocalizedEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.LocalizedEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.LocalizedEntryLocalizationPersistence;
 import com.liferay.portal.tools.service.builder.test.service.persistence.LocalizedEntryPersistence;
 
@@ -66,7 +65,7 @@ public abstract class LocalizedEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LocalizedEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LocalizedEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LocalizedEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.LocalizedEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -634,15 +633,11 @@ public abstract class LocalizedEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.LocalizedEntry",
 			localizedEntryLocalService);
-
-		LocalizedEntryLocalServiceUtil.setService(localizedEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.LocalizedEntry");
-
-		LocalizedEntryLocalServiceUtil.setService(null);
 	}
 
 	/**

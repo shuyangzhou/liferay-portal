@@ -6,6 +6,7 @@
 package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * Provides the remote service utility for Permission. This utility wraps
@@ -64,13 +65,10 @@ public class PermissionServiceUtil {
 	}
 
 	public static PermissionService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(PermissionService service) {
-		_service = service;
-	}
-
-	private static volatile PermissionService _service;
+	private static final Snapshot<PermissionService> _serviceSnapshot =
+		new Snapshot<>(PermissionServiceUtil.class, PermissionService.class);
 
 }

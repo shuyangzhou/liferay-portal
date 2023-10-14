@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.ContactLocalService;
-import com.liferay.portal.kernel.service.ContactLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ContactPersistence;
@@ -60,7 +59,7 @@ public abstract class ContactLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ContactLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ContactLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ContactLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.ContactLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -429,15 +428,11 @@ public abstract class ContactLocalServiceBaseImpl
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.Contact", contactLocalService);
-
-		ContactLocalServiceUtil.setService(contactLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.Contact");
-
-		ContactLocalServiceUtil.setService(null);
 	}
 
 	/**

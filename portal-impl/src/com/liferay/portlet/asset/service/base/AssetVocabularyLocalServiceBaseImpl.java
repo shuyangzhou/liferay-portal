@@ -7,7 +7,6 @@ package com.liferay.portlet.asset.service.base;
 
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
-import com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil;
 import com.liferay.asset.kernel.service.persistence.AssetVocabularyPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
@@ -68,7 +67,7 @@ public abstract class AssetVocabularyLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AssetVocabularyLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AssetVocabularyLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AssetVocabularyLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -600,15 +599,11 @@ public abstract class AssetVocabularyLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.asset.kernel.model.AssetVocabulary",
 			assetVocabularyLocalService);
-
-		AssetVocabularyLocalServiceUtil.setService(assetVocabularyLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.asset.kernel.model.AssetVocabulary");
-
-		AssetVocabularyLocalServiceUtil.setService(null);
 	}
 
 	/**

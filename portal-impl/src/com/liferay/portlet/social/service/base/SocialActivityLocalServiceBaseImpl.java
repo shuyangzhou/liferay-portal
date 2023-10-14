@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.social.kernel.model.SocialActivity;
 import com.liferay.social.kernel.service.SocialActivityLocalService;
-import com.liferay.social.kernel.service.SocialActivityLocalServiceUtil;
 import com.liferay.social.kernel.service.persistence.SocialActivityFinder;
 import com.liferay.social.kernel.service.persistence.SocialActivityPersistence;
 
@@ -63,7 +62,7 @@ public abstract class SocialActivityLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SocialActivityLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SocialActivityLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SocialActivityLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.social.kernel.service.SocialActivityLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -461,15 +460,11 @@ public abstract class SocialActivityLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.social.kernel.model.SocialActivity",
 			socialActivityLocalService);
-
-		SocialActivityLocalServiceUtil.setService(socialActivityLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.social.kernel.model.SocialActivity");
-
-		SocialActivityLocalServiceUtil.setService(null);
 	}
 
 	/**

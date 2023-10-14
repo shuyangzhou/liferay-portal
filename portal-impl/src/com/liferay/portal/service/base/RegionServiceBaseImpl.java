@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.RegionService;
-import com.liferay.portal.kernel.service.RegionServiceUtil;
 import com.liferay.portal.kernel.service.persistence.RegionLocalizationPersistence;
 import com.liferay.portal.kernel.service.persistence.RegionPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -41,7 +40,7 @@ public abstract class RegionServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>RegionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>RegionServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>RegionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.RegionServiceUtil</code>.
 	 */
 
 	/**
@@ -147,11 +146,9 @@ public abstract class RegionServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		RegionServiceUtil.setService(regionService);
 	}
 
 	public void destroy() {
-		RegionServiceUtil.setService(null);
 	}
 
 	/**

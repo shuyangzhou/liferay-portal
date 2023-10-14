@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.saved.content.model.SavedContentEntry;
 import com.liferay.saved.content.service.SavedContentEntryLocalService;
-import com.liferay.saved.content.service.SavedContentEntryLocalServiceUtil;
 import com.liferay.saved.content.service.persistence.SavedContentEntryPersistence;
 
 import java.io.Serializable;
@@ -67,7 +66,7 @@ public abstract class SavedContentEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SavedContentEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SavedContentEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SavedContentEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.saved.content.service.SavedContentEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -391,7 +390,6 @@ public abstract class SavedContentEntryLocalServiceBaseImpl
 
 	@Deactivate
 	protected void deactivate() {
-		SavedContentEntryLocalServiceUtil.setService(null);
 	}
 
 	@Override
@@ -405,9 +403,6 @@ public abstract class SavedContentEntryLocalServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		savedContentEntryLocalService = (SavedContentEntryLocalService)aopProxy;
-
-		SavedContentEntryLocalServiceUtil.setService(
-			savedContentEntryLocalService);
 	}
 
 	/**

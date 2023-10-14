@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.GroupLocalService;
-import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.GroupFinder;
@@ -67,7 +66,7 @@ public abstract class GroupLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>GroupLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>GroupLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>GroupLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.GroupLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1008,15 +1007,11 @@ public abstract class GroupLocalServiceBaseImpl
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.Group", groupLocalService);
-
-		GroupLocalServiceUtil.setService(groupLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.Group");
-
-		GroupLocalServiceUtil.setService(null);
 	}
 
 	/**

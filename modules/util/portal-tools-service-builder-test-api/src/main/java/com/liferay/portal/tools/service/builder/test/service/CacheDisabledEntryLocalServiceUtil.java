@@ -9,6 +9,7 @@ import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.tools.service.builder.test.model.CacheDisabledEntry;
 
@@ -297,13 +298,12 @@ public class CacheDisabledEntryLocalServiceUtil {
 	}
 
 	public static CacheDisabledEntryLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(CacheDisabledEntryLocalService service) {
-		_service = service;
-	}
-
-	private static volatile CacheDisabledEntryLocalService _service;
+	private static final Snapshot<CacheDisabledEntryLocalService>
+		_serviceSnapshot = new Snapshot<>(
+			CacheDisabledEntryLocalServiceUtil.class,
+			CacheDisabledEntryLocalService.class);
 
 }

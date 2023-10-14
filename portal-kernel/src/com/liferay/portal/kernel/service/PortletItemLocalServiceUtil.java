@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.PortletItem;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
@@ -319,13 +320,11 @@ public class PortletItemLocalServiceUtil {
 	}
 
 	public static PortletItemLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(PortletItemLocalService service) {
-		_service = service;
-	}
-
-	private static volatile PortletItemLocalService _service;
+	private static final Snapshot<PortletItemLocalService> _serviceSnapshot =
+		new Snapshot<>(
+			PortletItemLocalServiceUtil.class, PortletItemLocalService.class);
 
 }

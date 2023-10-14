@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.UADPartialEntry;
 import com.liferay.portal.tools.service.builder.test.service.UADPartialEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.UADPartialEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.UADPartialEntryPersistence;
 
 import java.io.Serializable;
@@ -61,7 +60,7 @@ public abstract class UADPartialEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>UADPartialEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>UADPartialEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>UADPartialEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.UADPartialEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -444,15 +443,11 @@ public abstract class UADPartialEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.UADPartialEntry",
 			uadPartialEntryLocalService);
-
-		UADPartialEntryLocalServiceUtil.setService(uadPartialEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.UADPartialEntry");
-
-		UADPartialEntryLocalServiceUtil.setService(null);
 	}
 
 	/**

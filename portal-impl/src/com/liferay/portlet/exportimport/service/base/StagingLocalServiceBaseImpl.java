@@ -6,7 +6,6 @@
 package com.liferay.portlet.exportimport.service.base;
 
 import com.liferay.exportimport.kernel.service.StagingLocalService;
-import com.liferay.exportimport.kernel.service.StagingLocalServiceUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -40,7 +39,7 @@ public abstract class StagingLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>StagingLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>StagingLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>StagingLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.exportimport.kernel.service.StagingLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -87,11 +86,9 @@ public abstract class StagingLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		StagingLocalServiceUtil.setService(stagingLocalService);
 	}
 
 	public void destroy() {
-		StagingLocalServiceUtil.setService(null);
 	}
 
 	/**

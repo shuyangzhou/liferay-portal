@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.BrowserTrackerLocalService;
-import com.liferay.portal.kernel.service.BrowserTrackerLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.BrowserTrackerPersistence;
@@ -60,7 +59,7 @@ public abstract class BrowserTrackerLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>BrowserTrackerLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>BrowserTrackerLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>BrowserTrackerLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.BrowserTrackerLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -439,15 +438,11 @@ public abstract class BrowserTrackerLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.BrowserTracker",
 			browserTrackerLocalService);
-
-		BrowserTrackerLocalServiceUtil.setService(browserTrackerLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.BrowserTracker");
-
-		BrowserTrackerLocalServiceUtil.setService(null);
 	}
 
 	/**

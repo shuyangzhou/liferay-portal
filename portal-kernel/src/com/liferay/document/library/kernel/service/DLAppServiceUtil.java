@@ -6,6 +6,7 @@
 package com.liferay.document.library.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.InputStream;
@@ -2451,13 +2452,10 @@ public class DLAppServiceUtil {
 	}
 
 	public static DLAppService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(DLAppService service) {
-		_service = service;
-	}
-
-	private static volatile DLAppService _service;
+	private static final Snapshot<DLAppService> _serviceSnapshot =
+		new Snapshot<>(DLAppServiceUtil.class, DLAppService.class);
 
 }

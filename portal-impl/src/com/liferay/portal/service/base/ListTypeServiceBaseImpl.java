@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.ListTypeService;
-import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 import com.liferay.portal.kernel.service.persistence.ListTypePersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -41,7 +40,7 @@ public abstract class ListTypeServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ListTypeService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ListTypeServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ListTypeService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.ListTypeServiceUtil</code>.
 	 */
 
 	/**
@@ -129,11 +128,9 @@ public abstract class ListTypeServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		ListTypeServiceUtil.setService(listTypeService);
 	}
 
 	public void destroy() {
-		ListTypeServiceUtil.setService(null);
 	}
 
 	/**

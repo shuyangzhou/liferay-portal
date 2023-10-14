@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.ClassNameService;
-import com.liferay.portal.kernel.service.ClassNameServiceUtil;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -41,7 +40,7 @@ public abstract class ClassNameServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ClassNameService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ClassNameServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ClassNameService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.ClassNameServiceUtil</code>.
 	 */
 
 	/**
@@ -129,11 +128,9 @@ public abstract class ClassNameServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		ClassNameServiceUtil.setService(classNameService);
 	}
 
 	public void destroy() {
-		ClassNameServiceUtil.setService(null);
 	}
 
 	/**

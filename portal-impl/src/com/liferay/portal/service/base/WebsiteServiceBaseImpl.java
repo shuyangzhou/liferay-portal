@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.Website;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.WebsiteService;
-import com.liferay.portal.kernel.service.WebsiteServiceUtil;
 import com.liferay.portal.kernel.service.persistence.WebsitePersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -40,7 +39,7 @@ public abstract class WebsiteServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>WebsiteService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>WebsiteServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>WebsiteService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.WebsiteServiceUtil</code>.
 	 */
 
 	/**
@@ -126,11 +125,9 @@ public abstract class WebsiteServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		WebsiteServiceUtil.setService(websiteService);
 	}
 
 	public void destroy() {
-		WebsiteServiceUtil.setService(null);
 	}
 
 	/**

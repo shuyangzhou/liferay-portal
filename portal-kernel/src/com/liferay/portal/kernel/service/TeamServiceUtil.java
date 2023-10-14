@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Team;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
@@ -106,13 +107,10 @@ public class TeamServiceUtil {
 	}
 
 	public static TeamService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(TeamService service) {
-		_service = service;
-	}
-
-	private static volatile TeamService _service;
+	private static final Snapshot<TeamService> _serviceSnapshot =
+		new Snapshot<>(TeamServiceUtil.class, TeamService.class);
 
 }

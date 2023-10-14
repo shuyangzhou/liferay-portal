@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PortletPreferences;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * Provides the remote service utility for PortletPreferences. This utility wraps
@@ -83,13 +84,12 @@ public class PortletPreferencesServiceUtil {
 	}
 
 	public static PortletPreferencesService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(PortletPreferencesService service) {
-		_service = service;
-	}
-
-	private static volatile PortletPreferencesService _service;
+	private static final Snapshot<PortletPreferencesService> _serviceSnapshot =
+		new Snapshot<>(
+			PortletPreferencesServiceUtil.class,
+			PortletPreferencesService.class);
 
 }

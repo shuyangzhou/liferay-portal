@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.PluginSetting;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.PluginSettingService;
-import com.liferay.portal.kernel.service.PluginSettingServiceUtil;
 import com.liferay.portal.kernel.service.persistence.PluginSettingPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -41,7 +40,7 @@ public abstract class PluginSettingServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PluginSettingService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PluginSettingServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>PluginSettingService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.PluginSettingServiceUtil</code>.
 	 */
 
 	/**
@@ -131,11 +130,9 @@ public abstract class PluginSettingServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		PluginSettingServiceUtil.setService(pluginSettingService);
 	}
 
 	public void destroy() {
-		PluginSettingServiceUtil.setService(null);
 	}
 
 	/**

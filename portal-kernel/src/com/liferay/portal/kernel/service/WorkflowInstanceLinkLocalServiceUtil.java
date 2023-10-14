@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.WorkflowInstanceLink;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
@@ -396,13 +397,12 @@ public class WorkflowInstanceLinkLocalServiceUtil {
 	}
 
 	public static WorkflowInstanceLinkLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(WorkflowInstanceLinkLocalService service) {
-		_service = service;
-	}
-
-	private static volatile WorkflowInstanceLinkLocalService _service;
+	private static final Snapshot<WorkflowInstanceLinkLocalService>
+		_serviceSnapshot = new Snapshot<>(
+			WorkflowInstanceLinkLocalServiceUtil.class,
+			WorkflowInstanceLinkLocalService.class);
 
 }

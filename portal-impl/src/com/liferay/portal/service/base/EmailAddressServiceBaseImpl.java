@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.EmailAddress;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.EmailAddressService;
-import com.liferay.portal.kernel.service.EmailAddressServiceUtil;
 import com.liferay.portal.kernel.service.persistence.EmailAddressPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -41,7 +40,7 @@ public abstract class EmailAddressServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>EmailAddressService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>EmailAddressServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>EmailAddressService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.EmailAddressServiceUtil</code>.
 	 */
 
 	/**
@@ -131,11 +130,9 @@ public abstract class EmailAddressServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		EmailAddressServiceUtil.setService(emailAddressService);
 	}
 
 	public void destroy() {
-		EmailAddressServiceUtil.setService(null);
 	}
 
 	/**

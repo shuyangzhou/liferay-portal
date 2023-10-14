@@ -6,6 +6,7 @@
 package com.liferay.document.library.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * Provides the remote service utility for DLTrash. This utility wraps
@@ -164,13 +165,10 @@ public class DLTrashServiceUtil {
 	}
 
 	public static DLTrashService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(DLTrashService service) {
-		_service = service;
-	}
-
-	private static volatile DLTrashService _service;
+	private static final Snapshot<DLTrashService> _serviceSnapshot =
+		new Snapshot<>(DLTrashServiceUtil.class, DLTrashService.class);
 
 }

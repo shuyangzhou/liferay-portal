@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.CacheMissEntry;
 import com.liferay.portal.tools.service.builder.test.service.CacheMissEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.CacheMissEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.CacheMissEntryPersistence;
 
 import java.io.Serializable;
@@ -65,7 +64,7 @@ public abstract class CacheMissEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CacheMissEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CacheMissEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CacheMissEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.CacheMissEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -444,15 +443,11 @@ public abstract class CacheMissEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.CacheMissEntry",
 			cacheMissEntryLocalService);
-
-		CacheMissEntryLocalServiceUtil.setService(cacheMissEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.CacheMissEntry");
-
-		CacheMissEntryLocalServiceUtil.setService(null);
 	}
 
 	/**

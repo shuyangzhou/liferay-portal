@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.EmailAddress;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 import java.util.List;
 
@@ -89,13 +90,11 @@ public class EmailAddressServiceUtil {
 	}
 
 	public static EmailAddressService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(EmailAddressService service) {
-		_service = service;
-	}
-
-	private static volatile EmailAddressService _service;
+	private static final Snapshot<EmailAddressService> _serviceSnapshot =
+		new Snapshot<>(
+			EmailAddressServiceUtil.class, EmailAddressService.class);
 
 }

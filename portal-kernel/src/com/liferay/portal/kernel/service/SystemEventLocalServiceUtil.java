@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.SystemEvent;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
@@ -341,13 +342,11 @@ public class SystemEventLocalServiceUtil {
 	}
 
 	public static SystemEventLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(SystemEventLocalService service) {
-		_service = service;
-	}
-
-	private static volatile SystemEventLocalService _service;
+	private static final Snapshot<SystemEventLocalService> _serviceSnapshot =
+		new Snapshot<>(
+			SystemEventLocalServiceUtil.class, SystemEventLocalService.class);
 
 }

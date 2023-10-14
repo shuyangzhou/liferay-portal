@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.LayoutFriendlyURL;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
@@ -492,13 +493,12 @@ public class LayoutFriendlyURLLocalServiceUtil {
 	}
 
 	public static LayoutFriendlyURLLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(LayoutFriendlyURLLocalService service) {
-		_service = service;
-	}
-
-	private static volatile LayoutFriendlyURLLocalService _service;
+	private static final Snapshot<LayoutFriendlyURLLocalService>
+		_serviceSnapshot = new Snapshot<>(
+			LayoutFriendlyURLLocalServiceUtil.class,
+			LayoutFriendlyURLLocalService.class);
 
 }

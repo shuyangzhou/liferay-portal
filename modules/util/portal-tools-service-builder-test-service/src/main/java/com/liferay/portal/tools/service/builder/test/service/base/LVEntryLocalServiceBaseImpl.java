@@ -39,7 +39,6 @@ import com.liferay.portal.tools.service.builder.test.model.LVEntryLocalization;
 import com.liferay.portal.tools.service.builder.test.model.LVEntryLocalizationVersion;
 import com.liferay.portal.tools.service.builder.test.model.LVEntryVersion;
 import com.liferay.portal.tools.service.builder.test.service.LVEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.LVEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.BigDecimalEntryPersistence;
 import com.liferay.portal.tools.service.builder.test.service.persistence.LVEntryLocalizationPersistence;
 import com.liferay.portal.tools.service.builder.test.service.persistence.LVEntryLocalizationVersionPersistence;
@@ -77,7 +76,7 @@ public abstract class LVEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LVEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LVEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LVEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.LVEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -881,15 +880,11 @@ public abstract class LVEntryLocalServiceBaseImpl
 			lvEntryLocalService);
 
 		registerListener(new LVEntryLocalizationVersionServiceListener());
-
-		LVEntryLocalServiceUtil.setService(lvEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.LVEntry");
-
-		LVEntryLocalServiceUtil.setService(null);
 	}
 
 	@Indexable(type = IndexableType.REINDEX)

@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Phone;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 import java.util.List;
 
@@ -72,13 +73,10 @@ public class PhoneServiceUtil {
 	}
 
 	public static PhoneService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(PhoneService service) {
-		_service = service;
-	}
-
-	private static volatile PhoneService _service;
+	private static final Snapshot<PhoneService> _serviceSnapshot =
+		new Snapshot<>(PhoneServiceUtil.class, PhoneService.class);
 
 }

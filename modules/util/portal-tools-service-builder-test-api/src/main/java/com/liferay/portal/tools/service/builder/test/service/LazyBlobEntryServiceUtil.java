@@ -5,6 +5,8 @@
 
 package com.liferay.portal.tools.service.builder.test.service;
 
+import com.liferay.portal.kernel.module.service.Snapshot;
+
 /**
  * Provides the remote service utility for LazyBlobEntry. This utility wraps
  * <code>com.liferay.portal.tools.service.builder.test.service.impl.LazyBlobEntryServiceImpl</code> and is an
@@ -30,18 +32,16 @@ public class LazyBlobEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static java.lang.String getOSGiServiceIdentifier() {
+	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static LazyBlobEntryService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(LazyBlobEntryService service) {
-		_service = service;
-	}
-
-	private static volatile LazyBlobEntryService _service;
+	private static final Snapshot<LazyBlobEntryService> _serviceSnapshot =
+		new Snapshot<>(
+			LazyBlobEntryServiceUtil.class, LazyBlobEntryService.class);
 
 }

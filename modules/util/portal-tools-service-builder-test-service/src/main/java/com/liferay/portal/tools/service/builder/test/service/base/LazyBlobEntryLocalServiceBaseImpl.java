@@ -41,7 +41,6 @@ import com.liferay.portal.tools.service.builder.test.model.LazyBlobEntry;
 import com.liferay.portal.tools.service.builder.test.model.LazyBlobEntryBlob1BlobModel;
 import com.liferay.portal.tools.service.builder.test.model.LazyBlobEntryBlob2BlobModel;
 import com.liferay.portal.tools.service.builder.test.service.LazyBlobEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.LazyBlobEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.LazyBlobEntryPersistence;
 
 import java.io.InputStream;
@@ -71,7 +70,7 @@ public abstract class LazyBlobEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LazyBlobEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LazyBlobEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LazyBlobEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.LazyBlobEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -584,15 +583,11 @@ public abstract class LazyBlobEntryLocalServiceBaseImpl
 
 			_useTempFile = true;
 		}
-
-		LazyBlobEntryLocalServiceUtil.setService(lazyBlobEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.LazyBlobEntry");
-
-		LazyBlobEntryLocalServiceUtil.setService(null);
 	}
 
 	/**

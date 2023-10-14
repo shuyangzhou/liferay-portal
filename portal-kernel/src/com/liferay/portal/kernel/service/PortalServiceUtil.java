@@ -6,6 +6,7 @@
 package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
  * Provides the remote service utility for Portal. This utility wraps
@@ -76,13 +77,10 @@ public class PortalServiceUtil {
 	}
 
 	public static PortalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(PortalService service) {
-		_service = service;
-	}
-
-	private static volatile PortalService _service;
+	private static final Snapshot<PortalService> _serviceSnapshot =
+		new Snapshot<>(PortalServiceUtil.class, PortalService.class);
 
 }

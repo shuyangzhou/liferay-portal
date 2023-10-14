@@ -7,6 +7,7 @@ package com.liferay.document.library.kernel.service;
 
 import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
@@ -152,13 +153,11 @@ public class DLFileEntryTypeServiceUtil {
 	}
 
 	public static DLFileEntryTypeService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(DLFileEntryTypeService service) {
-		_service = service;
-	}
-
-	private static volatile DLFileEntryTypeService _service;
+	private static final Snapshot<DLFileEntryTypeService> _serviceSnapshot =
+		new Snapshot<>(
+			DLFileEntryTypeServiceUtil.class, DLFileEntryTypeService.class);
 
 }

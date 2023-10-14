@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.model.DataLimitEntry;
 import com.liferay.portal.tools.service.builder.test.service.DataLimitEntryLocalService;
-import com.liferay.portal.tools.service.builder.test.service.DataLimitEntryLocalServiceUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.DataLimitEntryPersistence;
 
 import java.io.Serializable;
@@ -61,7 +60,7 @@ public abstract class DataLimitEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DataLimitEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DataLimitEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DataLimitEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.tools.service.builder.test.service.DataLimitEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -440,15 +439,11 @@ public abstract class DataLimitEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.tools.service.builder.test.model.DataLimitEntry",
 			dataLimitEntryLocalService);
-
-		DataLimitEntryLocalServiceUtil.setService(dataLimitEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.tools.service.builder.test.model.DataLimitEntry");
-
-		DataLimitEntryLocalServiceUtil.setService(null);
 	}
 
 	/**

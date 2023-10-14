@@ -7,7 +7,6 @@ package com.liferay.portlet.asset.service.base;
 
 import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.asset.kernel.service.AssetTagService;
-import com.liferay.asset.kernel.service.AssetTagServiceUtil;
 import com.liferay.asset.kernel.service.persistence.AssetEntryPersistence;
 import com.liferay.asset.kernel.service.persistence.AssetTagFinder;
 import com.liferay.asset.kernel.service.persistence.AssetTagPersistence;
@@ -43,7 +42,7 @@ public abstract class AssetTagServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AssetTagService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AssetTagServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AssetTagService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.asset.kernel.service.AssetTagServiceUtil</code>.
 	 */
 
 	/**
@@ -149,11 +148,9 @@ public abstract class AssetTagServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		AssetTagServiceUtil.setService(assetTagService);
 	}
 
 	public void destroy() {
-		AssetTagServiceUtil.setService(null);
 	}
 
 	/**

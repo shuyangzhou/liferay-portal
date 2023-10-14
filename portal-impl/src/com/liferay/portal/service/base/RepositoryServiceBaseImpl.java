@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.model.Repository;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.RepositoryService;
-import com.liferay.portal.kernel.service.RepositoryServiceUtil;
 import com.liferay.portal.kernel.service.persistence.RepositoryPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -41,7 +40,7 @@ public abstract class RepositoryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>RepositoryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>RepositoryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>RepositoryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.RepositoryServiceUtil</code>.
 	 */
 
 	/**
@@ -129,11 +128,9 @@ public abstract class RepositoryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		RepositoryServiceUtil.setService(repositoryService);
 	}
 
 	public void destroy() {
-		RepositoryServiceUtil.setService(null);
 	}
 
 	/**

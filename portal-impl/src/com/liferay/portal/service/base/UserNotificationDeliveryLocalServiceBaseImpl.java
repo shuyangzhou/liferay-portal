@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.UserNotificationDeliveryLocalService;
-import com.liferay.portal.kernel.service.UserNotificationDeliveryLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.UserNotificationDeliveryPersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -60,7 +59,7 @@ public abstract class UserNotificationDeliveryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>UserNotificationDeliveryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>UserNotificationDeliveryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>UserNotificationDeliveryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.UserNotificationDeliveryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -477,16 +476,11 @@ public abstract class UserNotificationDeliveryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.UserNotificationDelivery",
 			userNotificationDeliveryLocalService);
-
-		UserNotificationDeliveryLocalServiceUtil.setService(
-			userNotificationDeliveryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.UserNotificationDelivery");
-
-		UserNotificationDeliveryLocalServiceUtil.setService(null);
 	}
 
 	/**

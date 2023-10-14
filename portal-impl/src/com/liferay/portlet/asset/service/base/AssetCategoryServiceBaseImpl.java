@@ -7,7 +7,6 @@ package com.liferay.portlet.asset.service.base;
 
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.service.AssetCategoryService;
-import com.liferay.asset.kernel.service.AssetCategoryServiceUtil;
 import com.liferay.asset.kernel.service.persistence.AssetCategoryPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -41,7 +40,7 @@ public abstract class AssetCategoryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AssetCategoryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AssetCategoryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AssetCategoryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.asset.kernel.service.AssetCategoryServiceUtil</code>.
 	 */
 
 	/**
@@ -131,11 +130,9 @@ public abstract class AssetCategoryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		AssetCategoryServiceUtil.setService(assetCategoryService);
 	}
 
 	public void destroy() {
-		AssetCategoryServiceUtil.setService(null);
 	}
 
 	/**
