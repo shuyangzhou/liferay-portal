@@ -12,7 +12,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.knowledge.base.model.KBFolder;
 import com.liferay.knowledge.base.service.KBFolderLocalService;
-import com.liferay.knowledge.base.service.KBFolderLocalServiceUtil;
 import com.liferay.knowledge.base.service.persistence.KBFolderFinder;
 import com.liferay.knowledge.base.service.persistence.KBFolderPersistence;
 import com.liferay.petra.function.UnsafeFunction;
@@ -73,7 +72,7 @@ public abstract class KBFolderLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>KBFolderLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>KBFolderLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>KBFolderLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.knowledge.base.service.KBFolderLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -524,7 +523,6 @@ public abstract class KBFolderLocalServiceBaseImpl
 
 	@Deactivate
 	protected void deactivate() {
-		KBFolderLocalServiceUtil.setService(null);
 	}
 
 	@Override
@@ -538,8 +536,6 @@ public abstract class KBFolderLocalServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		kbFolderLocalService = (KBFolderLocalService)aopProxy;
-
-		KBFolderLocalServiceUtil.setService(kbFolderLocalService);
 	}
 
 	/**
