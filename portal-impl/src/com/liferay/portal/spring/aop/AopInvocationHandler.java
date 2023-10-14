@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 /**
  * @author Shuyang Zhou
@@ -27,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AopInvocationHandler implements InvocationHandler {
 
 	public Object getTarget() {
-		return _target;
+		return _targetSupplier.get();
 	}
 
 	@Override
@@ -41,16 +42,17 @@ public class AopInvocationHandler implements InvocationHandler {
 	}
 
 	public synchronized void setTarget(Object target) {
-		_target = target;
+		_targetSupplier = () -> target;
 
 		_aopMethodInvocations.clear();
 	}
 
 	protected AopInvocationHandler(
-		Object target, ChainableMethodAdvice[] chainableMethodAdvices,
+		Supplier<Object> targetSupplier,
+		ChainableMethodAdvice[] chainableMethodAdvices,
 		TransactionExecutor transactionExecutor) {
 
-		_target = target;
+		_targetSupplier = targetSupplier;
 		_chainableMethodAdvices = chainableMethodAdvices;
 
 		_transactionInterceptor = new TransactionInterceptor(
@@ -127,8 +129,8 @@ public class AopInvocationHandler implements InvocationHandler {
 
 					if (aopMethodInvocation == null) {
 						aopMethodInvocation = _createAopMethodInvocation(
-							_target, method, _chainableMethodAdvices,
-							_transactionInterceptor);
+							_targetSupplier.get(), method,
+							_chainableMethodAdvices, _transactionInterceptor);
 
 						_aopMethodInvocations.put(method, aopMethodInvocation);
 					}
@@ -138,13 +140,14 @@ public class AopInvocationHandler implements InvocationHandler {
 			return aopMethodInvocation;
 		}
 
-		return new AopMethodInvocationImpl(_target, method, null, null, null);
+		return new AopMethodInvocationImpl(
+			_targetSupplier.get(), method, null, null, null);
 	}
 
 	private final Map<Method, AopMethodInvocation> _aopMethodInvocations =
 		new ConcurrentHashMap<>();
 	private ChainableMethodAdvice[] _chainableMethodAdvices;
-	private volatile Object _target;
+	private volatile Supplier<Object> _targetSupplier;
 	private final TransactionInterceptor _transactionInterceptor;
 
 }

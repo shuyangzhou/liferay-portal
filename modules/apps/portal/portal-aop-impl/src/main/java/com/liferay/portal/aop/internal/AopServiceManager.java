@@ -14,7 +14,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.events.StartupHelperUtil;
 import com.liferay.portal.kernel.concurrent.SystemExecutorServiceUtil;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -24,7 +23,6 @@ import com.liferay.portal.spring.transaction.TransactionExecutor;
 import java.io.PrintWriter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -241,14 +239,16 @@ public class AopServiceManager {
 		public Supplier<AopServiceRegistrar> addingService(
 			ServiceReference<AopService> serviceReference) {
 
-			AopService aopService = _bundleContext.getService(serviceReference);
+			ServiceReferenceHelper serviceReferenceHelper =
+				new ServiceReferenceHelper(_bundleContext, serviceReference);
 
-			Class<?>[] aopInterfaces = _getAopInterfaces(aopService);
+			Class<?>[] aopInterfaces =
+				serviceReferenceHelper.getAopInterfaces();
 
 			if (aopInterfaces.length == 0) {
 				throw new IllegalArgumentException(
 					StringBundler.concat(
-						"Unable to register ", aopService.getClass(),
+						"Unable to register ", serviceReference,
 						" without a service interface"));
 			}
 
@@ -256,7 +256,8 @@ public class AopServiceManager {
 				() -> {
 					AopServiceRegistrar aopServiceRegistrar =
 						new AopServiceRegistrar(
-							serviceReference, aopService, aopInterfaces);
+							serviceReference, serviceReferenceHelper,
+							aopInterfaces);
 
 					if (aopServiceRegistrar.isLiferayService()) {
 						Long bundleId = (Long)serviceReference.getProperty(
@@ -326,42 +327,6 @@ public class AopServiceManager {
 				aopServiceRegistrarSupplier.get();
 
 			aopServiceRegistrar.unregister();
-
-			_bundleContext.ungetService(serviceReference);
-		}
-
-		private Class<?>[] _getAopInterfaces(AopService aopService) {
-			Class<?>[] aopInterfaces = aopService.getAopInterfaces();
-
-			Class<? extends AopService> aopServiceClass = aopService.getClass();
-
-			if (ArrayUtil.isEmpty(aopInterfaces)) {
-				return ArrayUtil.remove(
-					aopServiceClass.getInterfaces(), AopService.class);
-			}
-
-			for (Class<?> aopInterface : aopInterfaces) {
-				if (!aopInterface.isInterface()) {
-					throw new IllegalArgumentException(
-						StringBundler.concat(
-							"Unable to proxy ", aopServiceClass, " because ",
-							aopInterface, " is not an interface"));
-				}
-
-				if (!aopInterface.isAssignableFrom(aopServiceClass)) {
-					throw new IllegalArgumentException(
-						StringBundler.concat(
-							"Unable to proxy ", aopServiceClass, " because ",
-							aopInterface, " is not implemented"));
-				}
-
-				if (aopInterface == AopService.class) {
-					throw new IllegalArgumentException(
-						"Do not include AopService in service interfaces");
-				}
-			}
-
-			return Arrays.copyOf(aopInterfaces, aopInterfaces.length);
 		}
 
 	}

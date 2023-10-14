@@ -172,6 +172,21 @@ public class ProxyUtil {
 		return constructorHolder.newInstance(proxyClass, invocationHandler);
 	}
 
+	public static void setInvocationHandler(
+		Object proxy, InvocationHandler invocationHandler) {
+
+		if (!isProxyClass(proxy.getClass())) {
+			throw new IllegalArgumentException("Not a proxy instance");
+		}
+
+		try {
+			_invocationHandlerField.set(proxy, invocationHandler);
+		}
+		catch (IllegalAccessException illegalAccessException) {
+			throw new IllegalArgumentException(illegalAccessException);
+		}
+	}
+
 	private static final Class<?>[] _ARGUMENTS_CLASS = {
 		InvocationHandler.class
 	};

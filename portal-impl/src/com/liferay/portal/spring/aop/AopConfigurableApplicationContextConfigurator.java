@@ -280,7 +280,7 @@ public class AopConfigurableApplicationContextConfigurator
 		@Override
 		protected AopInvocationHandler createAopInvocationHandler(Object bean) {
 			return new AopInvocationHandler(
-				bean, _emptyChainableMethodAdvices,
+				() -> bean, _emptyChainableMethodAdvices,
 				_counterTransactionExecutor);
 		}
 
@@ -314,7 +314,7 @@ public class AopConfigurableApplicationContextConfigurator
 		@Override
 		protected AopInvocationHandler createAopInvocationHandler(Object bean) {
 			AopInvocationHandler aopInvocationHandler = AopCacheManager.create(
-				bean, _transactionExecutor);
+				() -> bean, _transactionExecutor);
 
 			_aopInvocationHandlers.add(aopInvocationHandler);
 
