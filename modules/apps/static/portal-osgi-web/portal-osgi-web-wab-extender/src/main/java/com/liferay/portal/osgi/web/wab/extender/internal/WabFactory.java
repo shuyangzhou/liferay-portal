@@ -5,7 +5,9 @@
 
 package com.liferay.portal.osgi.web.wab.extender.internal;
 
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.concurrent.SystemExecutorServiceUtil;
 import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -18,8 +20,10 @@ import com.liferay.portal.profile.PortalProfile;
 
 import java.util.Dictionary;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -42,31 +46,54 @@ import org.osgi.util.tracker.BundleTrackerCustomizer;
 	service = {}
 )
 public class WabFactory
-	implements BundleTrackerCustomizer<WabFactory.WABExtension> {
+	implements BundleTrackerCustomizer<Supplier<WabFactory.WABExtension>> {
 
 	@Override
-	public WABExtension addingBundle(Bundle bundle, BundleEvent bundleEvent) {
+	public Supplier<WABExtension> addingBundle(
+		Bundle bundle, BundleEvent bundleEvent) {
+
 		String contextPath = WabUtil.getWebContextPath(bundle);
 
 		if (contextPath == null) {
 			return null;
 		}
 
-		WABExtension wabExtension = new WABExtension(bundle);
+		FutureTask<WABExtension> futureTask = new FutureTask<>(
+			() -> {
+				WABExtension wabExtension = new WABExtension(bundle);
 
-		wabExtension.start();
+				wabExtension.start();
 
-		return wabExtension;
+				return wabExtension;
+			});
+
+		ExecutorService executorService =
+			SystemExecutorServiceUtil.getExecutorService();
+
+		executorService.submit(futureTask);
+
+		return () -> {
+			try {
+				return futureTask.get();
+			}
+			catch (Exception exception) {
+				return ReflectionUtil.throwException(exception);
+			}
+		};
 	}
 
 	@Override
 	public void modifiedBundle(
-		Bundle bundle, BundleEvent bundleEvent, WABExtension wabExtension) {
+		Bundle bundle, BundleEvent bundleEvent,
+		Supplier<WABExtension> wabExtensionSupplier) {
 	}
 
 	@Override
 	public void removedBundle(
-		Bundle bundle, BundleEvent bundleEvent, WABExtension wabExtension) {
+		Bundle bundle, BundleEvent bundleEvent,
+		Supplier<WABExtension> wabExtensionSupplier) {
+
+		WABExtension wabExtension = wabExtensionSupplier.get();
 
 		wabExtension.destroy();
 	}
