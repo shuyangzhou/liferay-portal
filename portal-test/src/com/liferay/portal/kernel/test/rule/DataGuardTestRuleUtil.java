@@ -464,9 +464,8 @@ public class DataGuardTestRuleUtil {
 				if (className.equals(
 						"com.liferay.portal.spring.aop.AopInvocationHandler")) {
 
-					persistedModelLocalService =
-						ReflectionTestUtil.getFieldValue(
-							invocationHandler, "_target");
+					persistedModelLocalService = ReflectionTestUtil.invoke(
+						invocationHandler, "getTarget", new Class<?>[0]);
 
 					continue;
 				}
