@@ -7,8 +7,6 @@ package com.liferay.osb.faro.service.impl;
 
 import com.liferay.osb.faro.exception.EmailAddressDomainException;
 import com.liferay.osb.faro.model.FaroProjectEmailDomain;
-import com.liferay.osb.faro.service.FaroProjectEmailDomainLocalService;
-import com.liferay.osb.faro.service.FaroProjectEmailDomainLocalServiceUtil;
 import com.liferay.osb.faro.service.base.FaroProjectEmailDomainLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -19,8 +17,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
-
-import java.lang.reflect.Field;
 
 import java.util.HashSet;
 import java.util.List;
@@ -72,8 +68,6 @@ public class FaroProjectEmailDomainLocalServiceImpl
 			"com.liferay.osb.faro.model.FaroProjectEmailDomain",
 			faroProjectEmailDomainLocalService);
 
-		_setLocalServiceUtilService(faroProjectEmailDomainLocalService);
-
 		ClassLoader classLoader = getClassLoader();
 
 		try (InputStream inputStream = classLoader.getResourceAsStream(
@@ -104,23 +98,6 @@ public class FaroProjectEmailDomainLocalServiceImpl
 	@Reference
 	protected PersistedModelLocalServiceRegistry
 		persistedModelLocalServiceRegistry;
-
-	private void _setLocalServiceUtilService(
-		FaroProjectEmailDomainLocalService faroProjectEmailDomainLocalService) {
-
-		try {
-			Field field =
-				FaroProjectEmailDomainLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, faroProjectEmailDomainLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
-	}
 
 	private void _validate(List<String> emailAddressDomains) {
 		Set<String> invalidEmailDomains = new HashSet<>(emailAddressDomains);
