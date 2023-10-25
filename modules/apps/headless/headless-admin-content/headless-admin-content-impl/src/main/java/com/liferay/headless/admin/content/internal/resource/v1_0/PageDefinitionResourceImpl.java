@@ -181,10 +181,6 @@ public class PageDefinitionResourceImpl extends BasePageDefinitionResourceImpl {
 		ServletContext servletContext = ServletContextPool.get(
 			StringPool.BLANK);
 
-		if (contextHttpServletRequest.getAttribute(WebKeys.CTX) == null) {
-			contextHttpServletRequest.setAttribute(WebKeys.CTX, servletContext);
-		}
-
 		Document document = Jsoup.parse(
 			ThemeUtil.include(
 				servletContext, contextHttpServletRequest,

@@ -855,10 +855,6 @@ public class SitePageResourceImpl extends BaseSitePageResourceImpl {
 		ServletContext servletContext = ServletContextPool.get(
 			StringPool.BLANK);
 
-		if (contextHttpServletRequest.getAttribute(WebKeys.CTX) == null) {
-			contextHttpServletRequest.setAttribute(WebKeys.CTX, servletContext);
-		}
-
 		layout.includeLayoutContent(
 			contextHttpServletRequest, contextHttpServletResponse);
 
