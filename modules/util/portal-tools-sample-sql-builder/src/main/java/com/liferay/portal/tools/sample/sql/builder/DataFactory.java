@@ -4334,9 +4334,19 @@ public class DataFactory {
 
 		// Audit fields
 
+		if (_journalArticleUserModelIndex ==
+				(BenchmarksPropsValues.MAX_JOURNAL_ARTICLE_COUNT *
+					BenchmarksPropsValues.MAX_JOURNAL_ARTICLE_VERSION_COUNT)) {
+
+			_journalArticleUserModelIndex = 0;
+		}
+
+		UserModel userModel = _userModels.get(
+			_journalArticleUserModelIndex % _userModels.size());
+
 		journalArticleModel.setCompanyId(_companyId);
-		journalArticleModel.setUserId(_sampleUserId);
-		journalArticleModel.setUserName(_SAMPLE_USER_NAME);
+		journalArticleModel.setUserId(userModel.getUserId());
+		journalArticleModel.setUserName(userModel.getScreenName());
 		journalArticleModel.setCreateDate(new Date());
 		journalArticleModel.setModifiedDate(new Date());
 
@@ -7583,6 +7593,7 @@ public class DataFactory {
 	private String _journalArticleContent;
 	private final Map<Long, String> _journalArticleResourceUUIDs =
 		new HashMap<>();
+	private int _journalArticleUserModelIndex;
 	private final String _journalDDMStructureContent;
 	private final String _journalDDMStructureLayoutContent;
 	private final List<String> _lastNames;
