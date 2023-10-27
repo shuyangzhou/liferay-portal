@@ -4902,7 +4902,10 @@ public class DataFactory {
 				_mbThreadUsers.get(mbThreadModel.getThreadId())));
 
 		for (int i = 2; i <= BenchmarksPropsValues.MAX_MB_MESSAGE_COUNT; i++) {
-			UserModel userModel = _userModels.get((i - 2) % _userModels.size());
+			UserModel userModel = _userModels.get(
+				_mbMessageUserIndex % _userModels.size());
+
+			_mbMessageUserIndex++;
 
 			if (i == BenchmarksPropsValues.MAX_MB_MESSAGE_COUNT) {
 				userModel = _mbThreadUsers.get(mbThreadModel.getThreadId());
@@ -7673,6 +7676,7 @@ public class DataFactory {
 	private final SimpleCounter _layoutPlidCounter;
 	private final SimpleCounter _layoutSetIdCounter;
 	private final Map<Long, UserModel> _mbCategoryUsers = new HashMap<>();
+	private int _mbMessageUserIndex;
 	private final Map<Long, UserModel> _mbMessageUsers = new HashMap<>();
 	private final Map<Long, UserModel> _mbThreadUsers = new HashMap<>();
 	private RoleModel _ownerRoleModel;
