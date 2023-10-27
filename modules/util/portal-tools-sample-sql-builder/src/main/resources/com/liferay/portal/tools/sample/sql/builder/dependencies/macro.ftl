@@ -164,7 +164,7 @@
 					_userModel=dataFactory.getDLFileEntryUser(dlFileEntryModel.fileEntryId)
 				/>
 
-				${dataFactory.toInsertSQL(dataFactory.newSocialActivityModel(dlFileEntryModel))}
+				${dataFactory.toInsertSQL(dataFactory.newSocialActivityModel(dlFileEntryModel, dataFactory.getDLFileEntryUser(dlFileEntryModel.fileEntryId)))}
 
 				<#local dlFileEntryMetadataModel = dataFactory.newDLFileEntryMetadataModel(ddmStorageLinkId, _ddmStructureId, dlFileVersionModel)>
 
@@ -225,7 +225,7 @@
 
 	${dataFactory.toInsertSQL(dataFactory.newDDMStorageLinkModel(_journalArticleModel, _journalDDMStructureModel.structureId))}
 
-	${dataFactory.toInsertSQL(dataFactory.newSocialActivityModel(_journalArticleModel))}
+	${dataFactory.toInsertSQL(dataFactory.newSocialActivityModel(_journalArticleModel, dataFactory.getJournalArticleUser(_journalArticleModel.resourcePrimKey)))}
 
 	<#if _insertAssetEntry>
 		<@insertAssetEntry
@@ -265,7 +265,7 @@
 	<#list mbMessageModels as mbMessageModel>
 		<@insertMBMessage _mbMessageModel=mbMessageModel />
 
-		${dataFactory.toInsertSQL(dataFactory.newSocialActivityModel(mbMessageModel))}
+		${dataFactory.toInsertSQL(dataFactory.newSocialActivityModel(mbMessageModel, dataFactory.getMBMessageUser(mbMessageModel.messageId)))}
 	</#list>
 
 	${dataFactory.toInsertSQL(dataFactory.newMBDiscussionModel(_groupId, _classNameId, _classPK, _mbThreadId))}

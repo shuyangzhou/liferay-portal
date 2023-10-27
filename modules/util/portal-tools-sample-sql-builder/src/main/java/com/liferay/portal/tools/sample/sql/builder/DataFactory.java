@@ -685,6 +685,10 @@ public class DataFactory {
 		return BenchmarksPropsValues.MAX_WIKI_PAGE_COMMENT_COUNT;
 	}
 
+	public UserModel getMBMessageUser(Long messageId) {
+		return _mbMessageUsers.get(messageId);
+	}
+
 	public List<Long> getNewUserGroupIds(
 		long groupId, GroupModel guestGroupModel) {
 
@@ -5567,25 +5571,25 @@ public class DataFactory {
 	}
 
 	public SocialActivityModel newSocialActivityModel(
-		BlogsEntryModel blogsEntryModel) {
+		BlogsEntryModel blogsEntryModel, UserModel userModel) {
 
 		return newSocialActivityModel(
 			blogsEntryModel.getGroupId(), getClassNameId(BlogsEntry.class),
 			blogsEntryModel.getEntryId(), BlogsActivityKeys.ADD_ENTRY,
-			"{\"title\":\"" + blogsEntryModel.getTitle() + "\"}");
+			"{\"title\":\"" + blogsEntryModel.getTitle() + "\"}", userModel);
 	}
 
 	public SocialActivityModel newSocialActivityModel(
-		DLFileEntryModel dlFileEntryModel) {
+		DLFileEntryModel dlFileEntryModel, UserModel userModel) {
 
 		return newSocialActivityModel(
 			dlFileEntryModel.getGroupId(), getClassNameId(DLFileEntry.class),
 			dlFileEntryModel.getFileEntryId(), DLActivityKeys.ADD_FILE_ENTRY,
-			StringPool.BLANK);
+			StringPool.BLANK, userModel);
 	}
 
 	public SocialActivityModel newSocialActivityModel(
-		JournalArticleModel journalArticleModel) {
+		JournalArticleModel journalArticleModel, UserModel userModel) {
 
 		int type = JournalActivityKeys.UPDATE_ARTICLE;
 
@@ -5599,11 +5603,12 @@ public class DataFactory {
 			journalArticleModel.getGroupId(),
 			getClassNameId(JournalArticle.class),
 			journalArticleModel.getResourcePrimKey(), type,
-			"{\"title\":\"" + journalArticleModel.getUrlTitle() + "\"}");
+			"{\"title\":\"" + journalArticleModel.getUrlTitle() + "\"}",
+			userModel);
 	}
 
 	public SocialActivityModel newSocialActivityModel(
-		MBMessageModel mbMessageModel) {
+		MBMessageModel mbMessageModel, UserModel userModel) {
 
 		long classNameId = mbMessageModel.getClassNameId();
 		long classPK = mbMessageModel.getClassPK();
@@ -5633,7 +5638,8 @@ public class DataFactory {
 		}
 
 		return newSocialActivityModel(
-			mbMessageModel.getGroupId(), classNameId, classPK, type, extraData);
+			mbMessageModel.getGroupId(), classNameId, classPK, type, extraData,
+			userModel);
 	}
 
 	public SubscriptionModel newSubscriptionModel(
@@ -6967,7 +6973,7 @@ public class DataFactory {
 
 	protected SocialActivityModel newSocialActivityModel(
 		long groupId, long classNameId, long classPK, int type,
-		String extraData) {
+		String extraData, UserModel userModel) {
 
 		SocialActivityModel socialActivityModel = new SocialActivityModelImpl();
 
@@ -6982,7 +6988,7 @@ public class DataFactory {
 		// Audit fields
 
 		socialActivityModel.setCompanyId(_companyId);
-		socialActivityModel.setUserId(_sampleUserId);
+		socialActivityModel.setUserId(userModel.getUserId());
 		socialActivityModel.setCreateDate(_CURRENT_TIME + _timeCounter.get());
 
 		// Other fields

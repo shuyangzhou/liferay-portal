@@ -28,7 +28,7 @@
 
 	${dataFactory.toInsertSQL(dataFactory.newSubscriptionModel(blogsEntryModel))}
 
-	${dataFactory.toInsertSQL(dataFactory.newSocialActivityModel(blogsEntryModel))}
+	${dataFactory.toInsertSQL(dataFactory.newSocialActivityModel(blogsEntryModel, dataFactory.getBlogsEntryUser(blogsEntryModel.entryId)))}
 
 	${csvFileWriter.write("blog", virtualHostModel.hostname + "," + blogsEntryModel.entryId + "," + blogsEntryModel.urlTitle + "," + mbRootMessageId + "\n")}
 </#list>
