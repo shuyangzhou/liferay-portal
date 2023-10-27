@@ -3894,10 +3894,13 @@ public class DataFactory {
 
 			treePaths.put(folderId, sb.toString());
 
+			UserModel userModel = _userModels.get((i - 1) % _userModels.size());
+
 			dlFolderModels.add(
 				newDLFolderModel(
 					folderId, groupId, parentFolderId, sb.toString(),
-					"Test Folder " + i, _sampleUserId, _SAMPLE_USER_NAME));
+					"Test Folder " + i, userModel.getUserId(),
+					userModel.getScreenName()));
 		}
 
 		return dlFolderModels;
