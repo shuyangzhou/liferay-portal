@@ -3719,6 +3719,15 @@ public class DataFactory {
 		DLFolderModel dlFolderModel, String name, String extension,
 		String mimeType, long fileEntryId) {
 
+		return newDlFileEntryModel(
+			dlFolderModel, name, extension, mimeType, fileEntryId,
+			_sampleUserId, _SAMPLE_USER_NAME);
+	}
+
+	public DLFileEntryModel newDlFileEntryModel(
+		DLFolderModel dlFolderModel, String name, String extension,
+		String mimeType, long fileEntryId, long userId, String userName) {
+
 		DLFileEntryModel dlFileEntryModel = new DLFileEntryModelImpl();
 
 		// PK fields
@@ -3732,8 +3741,8 @@ public class DataFactory {
 		// Audit fields
 
 		dlFileEntryModel.setCompanyId(_companyId);
-		dlFileEntryModel.setUserId(_sampleUserId);
-		dlFileEntryModel.setUserName(_SAMPLE_USER_NAME);
+		dlFileEntryModel.setUserId(userId);
+		dlFileEntryModel.setUserName(userName);
 		dlFileEntryModel.setCreateDate(nextFutureDate());
 		dlFileEntryModel.setModifiedDate(nextFutureDate());
 
