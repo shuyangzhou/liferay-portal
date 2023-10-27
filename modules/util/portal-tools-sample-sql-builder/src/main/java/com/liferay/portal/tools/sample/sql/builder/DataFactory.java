@@ -4933,9 +4933,11 @@ public class DataFactory {
 
 		// Audit fields
 
+		UserModel userModel = _mbThreadUsers.get(mbThreadModel.getThreadId());
+
 		mbThreadFlagModel.setCompanyId(_companyId);
-		mbThreadFlagModel.setUserId(_sampleUserId);
-		mbThreadFlagModel.setUserName(_SAMPLE_USER_NAME);
+		mbThreadFlagModel.setUserId(userModel.getUserId());
+		mbThreadFlagModel.setUserName(userModel.getScreenName());
 		mbThreadFlagModel.setCreateDate(new Date());
 		mbThreadFlagModel.setModifiedDate(new Date());
 
