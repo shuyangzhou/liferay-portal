@@ -3709,14 +3709,6 @@ public class DataFactory {
 
 	public DLFileEntryModel newDlFileEntryModel(
 		DLFolderModel dlFolderModel, String name, String extension,
-		String mimeType) {
-
-		return newDlFileEntryModel(
-			dlFolderModel, name, extension, mimeType, _counter.get());
-	}
-
-	public DLFileEntryModel newDlFileEntryModel(
-		DLFolderModel dlFolderModel, String name, String extension,
 		String mimeType, long fileEntryId) {
 
 		return newDlFileEntryModel(
@@ -3772,6 +3764,15 @@ public class DataFactory {
 		return dlFileEntryModel;
 	}
 
+	public DLFileEntryModel newDlFileEntryModel(
+		DLFolderModel dlFolderModel, String name, String extension,
+		String mimeType, UserModel userModel) {
+
+		return newDlFileEntryModel(
+			dlFolderModel, name, extension, mimeType, _counter.get(),
+			userModel.getUserId(), userModel.getScreenName());
+	}
+
 	public List<DLFileEntryModel> newDlFileEntryModels(
 		DLFolderModel dlFolderModel) {
 
@@ -3781,7 +3782,10 @@ public class DataFactory {
 		for (int i = 1; i <= BenchmarksPropsValues.MAX_DL_FILE_ENTRY_COUNT;
 			 i++) {
 
-			dlFileEntryModels.add(newDlFileEntryModel(dlFolderModel, i));
+			UserModel userModel = _userModels.get((i - 1) % _userModels.size());
+
+			dlFileEntryModels.add(
+				newDlFileEntryModel(dlFolderModel, i, userModel));
 		}
 
 		return dlFileEntryModels;
@@ -6410,10 +6414,11 @@ public class DataFactory {
 	}
 
 	protected DLFileEntryModel newDlFileEntryModel(
-		DLFolderModel dlFolderModel, int index) {
+		DLFolderModel dlFolderModel, int index, UserModel userModel) {
 
 		return newDlFileEntryModel(
-			dlFolderModel, "TestFile" + index, "txt", ContentTypes.TEXT_PLAIN);
+			dlFolderModel, "TestFile" + index, "txt", ContentTypes.TEXT_PLAIN,
+			userModel);
 	}
 
 	protected DLFolderModel newDLFolderModel(
