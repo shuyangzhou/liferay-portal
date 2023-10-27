@@ -4890,6 +4890,8 @@ public class DataFactory {
 	public MBThreadModel newMBThreadModel(
 		long threadId, long groupId, long rootMessageId) {
 
+		_currentMBThreadUserModel = _sampleUserModel;
+
 		return newMBThreadModel(
 			threadId, groupId, MBCategoryConstants.DISCUSSION_CATEGORY_ID,
 			rootMessageId);
@@ -4902,6 +4904,8 @@ public class DataFactory {
 			BenchmarksPropsValues.MAX_MB_THREAD_COUNT);
 
 		for (int i = 0; i < BenchmarksPropsValues.MAX_MB_THREAD_COUNT; i++) {
+			_currentMBThreadUserModel = _userModels.get(i % _userModels.size());
+
 			mbThreadModels.add(
 				newMBThreadModel(
 					_counter.get(), mbCategoryModel.getGroupId(),
@@ -5438,9 +5442,11 @@ public class DataFactory {
 	public UserModel newSampleUserModel() {
 		_sampleUserId = _counter.get();
 
-		return newUserModel(
+		_sampleUserModel = newUserModel(
 			_sampleUserId, _SAMPLE_USER_NAME, _SAMPLE_USER_NAME,
 			_SAMPLE_USER_NAME, UserConstants.TYPE_REGULAR);
+
+		return _sampleUserModel;
 	}
 
 	public SegmentsEntry newSegmentsEntry(long groupId, int index) {
@@ -6739,8 +6745,8 @@ public class DataFactory {
 		// Audit fields
 
 		mbThreadModel.setCompanyId(_companyId);
-		mbThreadModel.setUserId(_sampleUserId);
-		mbThreadModel.setUserName(_SAMPLE_USER_NAME);
+		mbThreadModel.setUserId(_currentMBThreadUserModel.getUserId());
+		mbThreadModel.setUserName(_currentMBThreadUserModel.getScreenName());
 		mbThreadModel.setCreateDate(new Date());
 		mbThreadModel.setModifiedDate(new Date());
 
@@ -6748,8 +6754,10 @@ public class DataFactory {
 
 		mbThreadModel.setCategoryId(categoryId);
 		mbThreadModel.setRootMessageId(rootMessageId);
-		mbThreadModel.setRootMessageUserId(_sampleUserId);
-		mbThreadModel.setLastPostByUserId(_sampleUserId);
+		mbThreadModel.setRootMessageUserId(
+			_currentMBThreadUserModel.getUserId());
+		mbThreadModel.setLastPostByUserId(
+			_currentMBThreadUserModel.getUserId());
 		mbThreadModel.setLastPostDate(new Date());
 		mbThreadModel.setLastPublishDate(new Date());
 		mbThreadModel.setStatusDate(new Date());
@@ -7516,6 +7524,7 @@ public class DataFactory {
 	private final SimpleCounter _counter;
 	private final Map<Long, CPInstanceModel> _cpInstanceModels =
 		new HashMap<>();
+	private UserModel _currentMBThreadUserModel;
 	private final PortletPreferencesImpl
 		_defaultAssetPublisherPortletPreferencesImpl;
 	private long _defaultDLDDMStructureId;
@@ -7552,6 +7561,7 @@ public class DataFactory {
 	private RoleModel _powerUserRoleModel;
 	private final SimpleCounter _resourcePermissionIdCounter;
 	private long _sampleUserId;
+	private UserModel _sampleUserModel;
 	private final Format _simpleDateFormat;
 	private RoleModel _siteMemberRoleModel;
 	private final SimpleCounter _socialActivityIdCounter;
