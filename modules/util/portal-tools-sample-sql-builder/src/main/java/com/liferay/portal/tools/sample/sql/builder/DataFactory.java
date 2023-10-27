@@ -4813,7 +4813,8 @@ public class DataFactory {
 	public MBMailingListModel newMBMailingListModel(
 		MBCategoryModel mbCategoryModel) {
 
-		UserModel userModel = _mbCategoryUsers.get(mbCategoryModel.getCategoryId());
+		UserModel userModel = _mbCategoryUsers.get(
+			mbCategoryModel.getCategoryId());
 
 		MBMailingListModel mbMailingListModel = new MBMailingListModelImpl();
 
@@ -4875,7 +4876,9 @@ public class DataFactory {
 			subject = "N/A";
 			body = "This is test comment " + index + ".";
 			urlSubject = "test-comment-" + index;
-			userModel = _userModels.get((index - 1) % _userModels.size());
+			userModel = _userModels.get(
+				_mbMessageUserIndex % _userModels.size());
+			_mbMessageUserIndex++;
 		}
 
 		return newMBMessageModel(
