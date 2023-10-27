@@ -3784,8 +3784,12 @@ public class DataFactory {
 
 			UserModel userModel = _userModels.get((i - 1) % _userModels.size());
 
-			dlFileEntryModels.add(
-				newDlFileEntryModel(dlFolderModel, i, userModel));
+			DLFileEntryModel dlFileEntryModel = newDlFileEntryModel(
+				dlFolderModel, i, userModel);
+
+			_dlFileEntryUsers.put(dlFileEntryModel.getFileEntryId(), userModel);
+
+			dlFileEntryModels.add(dlFileEntryModel);
 		}
 
 		return dlFileEntryModels;
@@ -7602,6 +7606,7 @@ public class DataFactory {
 	private final String _dlDDMStructureContent;
 	private final String _dlDDMStructureLayoutContent;
 	private final SimpleCounter _dlFileEntryIdCounter;
+	private final Map<Long, UserModel> _dlFileEntryUsers = new HashMap<>();
 	private AddressModel _firstAddressModel;
 	private final List<String> _firstNames;
 	private final FriendlyURLNormalizer _friendlyURLNormalizer;
