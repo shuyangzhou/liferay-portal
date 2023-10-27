@@ -6798,6 +6798,8 @@ public class DataFactory {
 		mBMessageModel.setUuid(uuid);
 		mBMessageModel.setExternalReferenceCode(uuid);
 
+		_mbMessageUsers.put(mBMessageModel.getMessageId(), userModel);
+
 		return mBMessageModel;
 	}
 
@@ -7641,6 +7643,7 @@ public class DataFactory {
 	private final SimpleCounter _layoutPlidCounter;
 	private final SimpleCounter _layoutSetIdCounter;
 	private final Map<Long, UserModel> _mbCategoryUsers = new HashMap<>();
+	private final Map<Long, UserModel> _mbMessageUsers = new HashMap<>();
 	private final Map<Long, UserModel> _mbThreadUsers = new HashMap<>();
 	private RoleModel _ownerRoleModel;
 	private final SimpleCounter _portletPreferenceValueIdCounter;
