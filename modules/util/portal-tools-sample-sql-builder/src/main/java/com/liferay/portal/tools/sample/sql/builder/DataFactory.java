@@ -4833,6 +4833,10 @@ public class DataFactory {
 		for (int i = 2; i <= BenchmarksPropsValues.MAX_MB_MESSAGE_COUNT; i++) {
 			UserModel userModel = _userModels.get((i - 2) % _userModels.size());
 
+			if (i == BenchmarksPropsValues.MAX_MB_MESSAGE_COUNT) {
+				userModel = _mbThreadUsers.get(mbThreadModel.getThreadId());
+			}
+
 			mbMessageModels.add(
 				newMBMessageModel(
 					mbThreadModel.getGroupId(), 0, 0,
