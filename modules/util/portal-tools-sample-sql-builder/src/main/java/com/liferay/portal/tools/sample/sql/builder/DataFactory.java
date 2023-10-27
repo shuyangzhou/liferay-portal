@@ -4379,6 +4379,9 @@ public class DataFactory {
 		journalArticleModel.setUuid(uuid);
 		journalArticleModel.setExternalReferenceCode(uuid);
 
+		_journalArticleUsers.put(
+			journalArticleModel.getResourcePrimKey(), userModel);
+
 		return journalArticleModel;
 	}
 
@@ -7594,6 +7597,7 @@ public class DataFactory {
 	private final Map<Long, String> _journalArticleResourceUUIDs =
 		new HashMap<>();
 	private int _journalArticleUserModelIndex;
+	private final Map<Long, UserModel> _journalArticleUsers = new HashMap<>();
 	private final String _journalDDMStructureContent;
 	private final String _journalDDMStructureLayoutContent;
 	private final List<String> _lastNames;
