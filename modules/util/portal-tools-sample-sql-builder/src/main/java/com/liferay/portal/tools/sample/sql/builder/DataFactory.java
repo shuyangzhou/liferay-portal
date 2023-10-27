@@ -6640,9 +6640,11 @@ public class DataFactory {
 
 		// Audit fields
 
+		UserModel userModel = _userModels.get((index - 1) % _userModels.size());
+
 		mbCategoryModel.setCompanyId(_companyId);
-		mbCategoryModel.setUserId(_sampleUserId);
-		mbCategoryModel.setUserName(_SAMPLE_USER_NAME);
+		mbCategoryModel.setUserId(userModel.getUserId());
+		mbCategoryModel.setUserName(userModel.getScreenName());
 		mbCategoryModel.setCreateDate(new Date());
 		mbCategoryModel.setModifiedDate(new Date());
 
