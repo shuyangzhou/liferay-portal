@@ -161,6 +161,7 @@
 					_maxCommentCount=0
 					_mbRootMessageId=dataFactory.getCounterNext()
 					_mbThreadId=dataFactory.getCounterNext()
+					_userModel=dataFactory.getDLFileEntryUser(dlFileEntryModel.fileEntryId)
 				/>
 
 				${dataFactory.toInsertSQL(dataFactory.newSocialActivityModel(dlFileEntryModel))}
@@ -249,8 +250,9 @@
 	_maxCommentCount
 	_mbRootMessageId
 	_mbThreadId
+	_userModel
 >
-	<#local mbThreadModel = dataFactory.newMBThreadModel(_mbThreadId, _groupId, _mbRootMessageId)>
+	<#local mbThreadModel = dataFactory.newMBThreadModel(_mbThreadId, _groupId, _mbRootMessageId, _userModel)>
 
 	${dataFactory.toInsertSQL(mbThreadModel)}
 

@@ -23,6 +23,7 @@
 		_maxCommentCount=dataFactory.maxBlogsEntryCommentCount
 		_mbRootMessageId=mbRootMessageId
 		_mbThreadId=dataFactory.getCounterNext()
+		_userModel=dataFactory.getBlogsEntryUser(blogsEntryModel.entryId)
 	/>
 
 	${dataFactory.toInsertSQL(dataFactory.newSubscriptionModel(blogsEntryModel))}

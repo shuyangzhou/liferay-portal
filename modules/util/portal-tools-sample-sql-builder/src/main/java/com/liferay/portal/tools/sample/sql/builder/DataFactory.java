@@ -539,6 +539,10 @@ public class DataFactory {
 		return getClassNameId(BlogsEntry.class);
 	}
 
+	public UserModel getBlogsEntryUser(Long entryId) {
+		return _blogsEntryUsers.get(entryId);
+	}
+
 	public long getClassNameId(Class<?> clazz) {
 		ClassNameModel classNameModel = _classNameModels.get(clazz.getName());
 
@@ -579,6 +583,10 @@ public class DataFactory {
 		return getClassNameId(DLFileEntry.class);
 	}
 
+	public UserModel getDLFileEntryUser(Long fileEntryId) {
+		return _dlFileEntryUsers.get(fileEntryId);
+	}
+
 	public RoleModel getGuestRoleModel() {
 		return _guestRoleModel;
 	}
@@ -600,6 +608,10 @@ public class DataFactory {
 		}
 
 		return sb.toString();
+	}
+
+	public UserModel getJournalArticleUser(Long resourcePrimKey) {
+		return _journalArticleUsers.get(resourcePrimKey);
 	}
 
 	public int getMaxAccountEntryCommerceOrderCount() {
@@ -752,6 +764,10 @@ public class DataFactory {
 
 	public long getWikiPageClassNameId() {
 		return getClassNameId(WikiPage.class);
+	}
+
+	public UserModel getWikiPageUser(Long resourcePrimKey) {
+		return _wikiPageUsers.get(resourcePrimKey);
 	}
 
 	public void initJournalArticleContent() {
@@ -4828,6 +4844,7 @@ public class DataFactory {
 		String subject = null;
 		String body = null;
 		String urlSubject = null;
+		UserModel userModel = null;
 
 		if (index == 0) {
 			messageId = mbThreadModel.getRootMessageId();
@@ -4835,6 +4852,7 @@ public class DataFactory {
 			subject = String.valueOf(classPK);
 			body = String.valueOf(classPK);
 			urlSubject = String.valueOf(mbThreadModel.getRootMessageId());
+			userModel = _mbThreadUsers.get(mbThreadModel.getThreadId());
 		}
 		else {
 			messageId = _counter.get();
@@ -4842,6 +4860,7 @@ public class DataFactory {
 			subject = "N/A";
 			body = "This is test comment " + index + ".";
 			urlSubject = "test-comment-" + index;
+			userModel = _userModels.get((index - 1) % _userModels.size());
 		}
 
 		return newMBMessageModel(
@@ -4849,7 +4868,7 @@ public class DataFactory {
 			MBCategoryConstants.DISCUSSION_CATEGORY_ID,
 			mbThreadModel.getThreadId(), messageId,
 			mbThreadModel.getRootMessageId(), parentMessageId, subject,
-			urlSubject, body);
+			urlSubject, body, userModel);
 	}
 
 	public List<MBMessageModel> newMBMessageModels(
@@ -4933,9 +4952,9 @@ public class DataFactory {
 	}
 
 	public MBThreadModel newMBThreadModel(
-		long threadId, long groupId, long rootMessageId) {
+		long threadId, long groupId, long rootMessageId, UserModel userModel) {
 
-		_currentMBThreadUserModel = _sampleUserModel;
+		_currentMBThreadUserModel = userModel;
 
 		return newMBThreadModel(
 			threadId, groupId, MBCategoryConstants.DISCUSSION_CATEGORY_ID,
@@ -5487,11 +5506,9 @@ public class DataFactory {
 	public UserModel newSampleUserModel() {
 		_sampleUserId = _counter.get();
 
-		_sampleUserModel = newUserModel(
+		return newUserModel(
 			_sampleUserId, _SAMPLE_USER_NAME, _SAMPLE_USER_NAME,
 			_SAMPLE_USER_NAME, UserConstants.TYPE_REGULAR);
-
-		return _sampleUserModel;
 	}
 
 	public SegmentsEntry newSegmentsEntry(long groupId, int index) {
@@ -6737,17 +6754,6 @@ public class DataFactory {
 	protected MBMessageModel newMBMessageModel(
 		long groupId, long classNameId, long classPK, long categoryId,
 		long threadId, long messageId, long rootMessageId, long parentMessageId,
-		String subject, String urlSubject, String body) {
-
-		return newMBMessageModel(
-			groupId, classNameId, classPK, categoryId, threadId, messageId,
-			rootMessageId, parentMessageId, subject, urlSubject, body,
-			_sampleUserModel);
-	}
-
-	protected MBMessageModel newMBMessageModel(
-		long groupId, long classNameId, long classPK, long categoryId,
-		long threadId, long messageId, long rootMessageId, long parentMessageId,
 		String subject, String urlSubject, String body, UserModel userModel) {
 
 		MBMessageModel mBMessageModel = new MBMessageModelImpl();
@@ -7639,7 +7645,6 @@ public class DataFactory {
 	private RoleModel _powerUserRoleModel;
 	private final SimpleCounter _resourcePermissionIdCounter;
 	private long _sampleUserId;
-	private UserModel _sampleUserModel;
 	private final Format _simpleDateFormat;
 	private RoleModel _siteMemberRoleModel;
 	private final SimpleCounter _socialActivityIdCounter;

@@ -26,6 +26,7 @@
 			_maxCommentCount=dataFactory.maxWikiPageCommentCount
 			_mbRootMessageId=mbRootMessageId
 			_mbThreadId=dataFactory.getCounterNext()
+			_userModel=dataFactory.getWikiPageUser(wikiPageModel.resourcePrimKey)
 		/>
 
 		${csvFileWriter.write("wiki", virtualHostModel.hostname + "," + wikiNodeModel.nodeId + "," + wikiNodeModel.name + "," + wikiPageModel.resourcePrimKey + "," + wikiPageModel.title + "," + mbRootMessageId + "\n")}

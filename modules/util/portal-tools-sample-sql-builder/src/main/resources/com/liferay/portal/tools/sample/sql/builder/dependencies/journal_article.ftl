@@ -38,6 +38,7 @@
 			_maxCommentCount=0
 			_mbRootMessageId=dataFactory.getCounterNext()
 			_mbThreadId=dataFactory.getCounterNext()
+			_userModel=dataFactory.getJournalArticleUser(journalArticleResourceModel.resourcePrimKey)
 		/>
 
 		${dataFactory.toInsertSQL(dataFactory.newLayoutClassedModelUsageModel(groupId, layoutModel.plid, portletIdPrefix + journalArticleCount, journalArticleResourceModel))}
