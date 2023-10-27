@@ -4831,13 +4831,16 @@ public class DataFactory {
 				_mbThreadUsers.get(mbThreadModel.getThreadId())));
 
 		for (int i = 2; i <= BenchmarksPropsValues.MAX_MB_MESSAGE_COUNT; i++) {
+			UserModel userModel = _userModels.get((i - 2) % _userModels.size());
+
 			mbMessageModels.add(
 				newMBMessageModel(
 					mbThreadModel.getGroupId(), 0, 0,
 					mbThreadModel.getCategoryId(), mbThreadModel.getThreadId(),
 					_counter.get(), mbThreadModel.getRootMessageId(),
 					mbThreadModel.getRootMessageId(), "Test Message " + i,
-					"test-message-" + i, "This is test message " + i + "."));
+					"test-message-" + i, "This is test message " + i + ".",
+					userModel));
 		}
 
 		return mbMessageModels;
