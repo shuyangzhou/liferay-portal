@@ -7010,9 +7010,11 @@ public class DataFactory {
 
 		// Audit fields
 
+		UserModel userModel = _userModels.get((index - 1) % _userModels.size());
+
 		wikiNodeModel.setCompanyId(_companyId);
-		wikiNodeModel.setUserId(_sampleUserId);
-		wikiNodeModel.setUserName(_SAMPLE_USER_NAME);
+		wikiNodeModel.setUserId(userModel.getUserId());
+		wikiNodeModel.setUserName(userModel.getScreenName());
 		wikiNodeModel.setCreateDate(new Date());
 		wikiNodeModel.setModifiedDate(new Date());
 
