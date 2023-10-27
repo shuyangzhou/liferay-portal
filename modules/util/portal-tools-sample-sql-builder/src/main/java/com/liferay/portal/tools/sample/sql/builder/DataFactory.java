@@ -3844,9 +3844,12 @@ public class DataFactory {
 
 		// Audit fields
 
+		UserModel userModel = _dlFileEntryUsers.get(
+			dlFileEntryModel.getFileEntryId());
+
 		dlFileVersionModel.setCompanyId(_companyId);
-		dlFileVersionModel.setUserId(_sampleUserId);
-		dlFileVersionModel.setUserName(_SAMPLE_USER_NAME);
+		dlFileVersionModel.setUserId(userModel.getUserId());
+		dlFileVersionModel.setUserName(userModel.getScreenName());
 		dlFileVersionModel.setCreateDate(nextFutureDate());
 		dlFileVersionModel.setModifiedDate(nextFutureDate());
 
