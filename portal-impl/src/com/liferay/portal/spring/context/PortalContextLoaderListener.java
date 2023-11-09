@@ -305,6 +305,7 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 			throw new RuntimeException(exception);
 		}
 
+		try {
 		if (springInitTask == null) {
 			super.contextInitialized(servletContextEvent);
 		}
@@ -375,6 +376,10 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 		ModuleFrameworkUtil.registerContext(applicationContext);
 
 		CustomJspBagRegistryUtil.getCustomJspBags();
+		}
+		catch (Exception exception) {
+			_log.error(exception);
+		}
 	}
 
 	protected void clearFilteredPropertyDescriptorsCache(
