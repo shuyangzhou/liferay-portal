@@ -300,6 +300,8 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 			ModuleFrameworkUtil.startFramework();
 		}
 		catch (Exception exception) {
+			_log.error("Failed to start framework", exception);
+
 			throw new RuntimeException(exception);
 		}
 

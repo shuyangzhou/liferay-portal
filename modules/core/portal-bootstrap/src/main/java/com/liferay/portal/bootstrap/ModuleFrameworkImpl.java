@@ -278,11 +278,15 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		FrameworkStartLevel frameworkStartLevel = _framework.adapt(
 			FrameworkStartLevel.class);
 
+		if (_log.isInfoEnabled()) {
+			_log.info("Before moving to runtime start level");
+		}
+
 		frameworkStartLevel.setStartLevel(
 			ModuleFrameworkPropsValues.MODULE_FRAMEWORK_RUNTIME_START_LEVEL);
 
-		if (_log.isDebugEnabled()) {
-			_log.debug("Started the OSGi framework");
+		if (_log.isInfoEnabled()) {
+			_log.info("Started the OSGi framework");
 		}
 	}
 
