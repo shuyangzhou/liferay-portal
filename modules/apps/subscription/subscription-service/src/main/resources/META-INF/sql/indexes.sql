@@ -1,6 +1,4 @@
-create index IX_80A7978 on Subscription (companyId, classNameId, classPK, ctCollectionId);
-create unique index IX_FCCD4132 on Subscription (companyId, userId, classNameId, classPK, ctCollectionId);
-create index IX_CA6E52A5 on Subscription (groupId, ctCollectionId);
-create index IX_16B6BFDF on Subscription (groupId, userId, ctCollectionId);
-create index IX_F4B715CF on Subscription (userId, classNameId, ctCollectionId);
-create index IX_55BB775B on Subscription (userId, ctCollectionId);
+create index IX_786D171A on Subscription (classNameId, companyId, classPK);
+create index IX_C4FAEA47 on Subscription (groupId);
+create unique index IX_FCCD4132 on Subscription (userId, classNameId, companyId, classPK, ctCollectionId);
+create index IX_1290B81 on Subscription (userId, groupId);
