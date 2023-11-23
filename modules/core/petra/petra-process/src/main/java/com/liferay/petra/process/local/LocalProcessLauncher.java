@@ -9,6 +9,8 @@ import com.liferay.petra.io.ClassLoaderObjectInputStream;
 import com.liferay.petra.io.unsync.UnsyncBufferedOutputStream;
 import com.liferay.petra.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.petra.io.unsync.UnsyncPrintWriter;
+import com.liferay.petra.lang.SafeCloseable;
+import com.liferay.petra.lang.ThreadContextClassLoaderUtil;
 import com.liferay.petra.process.ProcessCallable;
 import com.liferay.petra.process.ProcessException;
 import com.liferay.petra.string.StringPool;
@@ -79,10 +81,6 @@ public class LocalProcessLauncher {
 
 		System.setErr(errPrintStream);
 
-		Thread currentThread = Thread.currentThread();
-
-		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
-
 		try {
 			ObjectInputStream bootstrapObjectInputStream =
 				new ObjectInputStream(System.in);
@@ -106,31 +104,33 @@ public class LocalProcessLauncher {
 			ClassLoader classLoader = new URLClassLoader(
 				_getClassPathURLs(classPath));
 
-			currentThread.setContextClassLoader(classLoader);
+			try (SafeCloseable safeCloseable =
+					ThreadContextClassLoaderUtil.swap(classLoader)) {
 
-			ObjectInputStream objectInputStream =
-				new ClassLoaderObjectInputStream(
-					bootstrapObjectInputStream, classLoader);
+				ObjectInputStream objectInputStream =
+					new ClassLoaderObjectInputStream(
+						bootstrapObjectInputStream, classLoader);
 
-			ProcessCallable<?> processCallable =
-				(ProcessCallable<?>)objectInputStream.readObject();
+				ProcessCallable<?> processCallable =
+					(ProcessCallable<?>)objectInputStream.readObject();
 
-			Thread thread = new Thread(
-				new ProcessCallableDispatcher(objectInputStream),
-				"Process Callable Dispatcher");
+				Thread thread = new Thread(
+					new ProcessCallableDispatcher(objectInputStream),
+					"Process Callable Dispatcher");
 
-			thread.setDaemon(true);
+				thread.setDaemon(true);
 
-			thread.start();
+				thread.start();
 
-			Serializable result = processCallable.call();
+				Serializable result = processCallable.call();
 
-			System.out.flush();
+				System.out.flush();
 
-			outProcessOutputStream._writeProcessCallable(
-				new ResultProcessCallable<>(result, null));
+				outProcessOutputStream._writeProcessCallable(
+					new ResultProcessCallable<>(result, null));
 
-			outProcessOutputStream.flush();
+				outProcessOutputStream.flush();
+			}
 		}
 		catch (Throwable throwable) {
 			errPrintStream.flush();
@@ -148,9 +148,6 @@ public class LocalProcessLauncher {
 				new ResultProcessCallable<>(null, processException));
 
 			errProcessOutputStream.flush();
-		}
-		finally {
-			currentThread.setContextClassLoader(contextClassLoader);
 		}
 	}
 
