@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.util.BasePortalLifecycle;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.JavaDetector;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OSDetector;
@@ -214,6 +215,8 @@ public class InitUtil {
 			}
 
 			DBInitUtil.init();
+
+			InfrastructureUtil.setDataSource(DBInitUtil.getDataSource());
 
 			if (initModuleFramework) {
 				ModuleFrameworkUtil.startFramework();
