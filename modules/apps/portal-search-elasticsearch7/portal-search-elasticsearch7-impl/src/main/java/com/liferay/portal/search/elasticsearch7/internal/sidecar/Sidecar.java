@@ -369,6 +369,7 @@ public class Sidecar {
 		arguments.add("-Dio.netty.recycler.maxCapacityPerThread=0");
 		arguments.add("-Dfile.encoding=UTF-8");
 		arguments.add("-Djava.io.tmpdir=" + _sidecarTempDirPath);
+		arguments.add("-Djava.security.manager=allow");
 
 		arguments.add(
 			"-Djava.security.policy=" +
