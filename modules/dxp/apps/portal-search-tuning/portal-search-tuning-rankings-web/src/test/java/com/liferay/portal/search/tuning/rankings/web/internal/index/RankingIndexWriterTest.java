@@ -5,7 +5,6 @@
 
 package com.liferay.portal.search.tuning.rankings.web.internal.index;
 
-import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.search.engine.adapter.document.DeleteDocumentRequest;
 import com.liferay.portal.search.engine.adapter.document.DeleteDocumentResponse;
 import com.liferay.portal.search.engine.adapter.document.IndexDocumentRequest;
@@ -26,7 +25,7 @@ import org.mockito.Mockito;
 /**
  * @author Wade Cao
  */
-public class RankingIndexWriterImplTest extends BaseRankingsIndexTestCase {
+public class RankingIndexWriterTest extends BaseRankingsIndexTestCase {
 
 	@ClassRule
 	@Rule
@@ -35,14 +34,8 @@ public class RankingIndexWriterImplTest extends BaseRankingsIndexTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		_rankingIndexWriterImpl = new RankingIndexWriterImpl();
-
-		ReflectionTestUtil.setFieldValue(
-			_rankingIndexWriterImpl, "_documentBuilderFactory",
-			new DocumentBuilderFactoryImpl());
-		ReflectionTestUtil.setFieldValue(
-			_rankingIndexWriterImpl, "_searchEngineAdapter",
-			searchEngineAdapter);
+		_rankingIndexWriterImpl = new RankingIndexWriter(
+			new DocumentBuilderFactoryImpl(), searchEngineAdapter);
 	}
 
 	@Test
@@ -91,6 +84,6 @@ public class RankingIndexWriterImplTest extends BaseRankingsIndexTestCase {
 		);
 	}
 
-	private RankingIndexWriterImpl _rankingIndexWriterImpl;
+	private RankingIndexWriter _rankingIndexWriterImpl;
 
 }
