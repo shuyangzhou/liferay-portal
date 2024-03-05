@@ -24,7 +24,7 @@ import com.liferay.portal.search.index.IndexNameBuilder;
 import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.tuning.rankings.index.RankingIndexReader;
 import com.liferay.portal.search.tuning.rankings.index.name.RankingIndexName;
-import com.liferay.portal.search.tuning.rankings.web.internal.index.RankingIndexCreator;
+import com.liferay.portal.search.tuning.rankings.web.internal.index.RankingIndexCreatorUtil;
 
 import java.util.List;
 
@@ -74,7 +74,8 @@ public class SingleIndexToMultipleIndexImporterImpl
 				_log.info("Deleting index " + SINGLE_INDEX_NAME.getIndexName());
 			}
 
-			_rankingIndexCreator.deleteIfExists(SINGLE_INDEX_NAME);
+			RankingIndexCreatorUtil.deleteIfExists(
+				_searchEngineAdapter, SINGLE_INDEX_NAME);
 		}
 	}
 
@@ -152,9 +153,6 @@ public class SingleIndexToMultipleIndexImporterImpl
 
 	@Reference
 	private Queries _queries;
-
-	@Reference
-	private RankingIndexCreator _rankingIndexCreator;
 
 	@Reference
 	private RankingIndexReader _rankingIndexReader;

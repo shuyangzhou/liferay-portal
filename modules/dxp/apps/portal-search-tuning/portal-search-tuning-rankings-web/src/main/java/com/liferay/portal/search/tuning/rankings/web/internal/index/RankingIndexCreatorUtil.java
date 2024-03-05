@@ -6,7 +6,7 @@
 package com.liferay.portal.search.tuning.rankings.web.internal.index;
 
 import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -18,49 +18,51 @@ import com.liferay.portal.search.engine.adapter.index.IndicesExistsIndexRequest;
 import com.liferay.portal.search.engine.adapter.index.IndicesExistsIndexResponse;
 import com.liferay.portal.search.tuning.rankings.index.name.RankingIndexName;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Wade Cao
  * @author Adam Brandizzi
  * @author Joshua Cords
  * @author Tibor Lipusz
  */
-@Component(service = RankingIndexCreator.class)
-public class RankingIndexCreatorImpl implements RankingIndexCreator {
+public class RankingIndexCreatorUtil {
 
-	@Override
-	public void create(RankingIndexName rankingIndexName) {
+	public static void create(
+		SearchEngineAdapter searchEngineAdapter,
+		RankingIndexName rankingIndexName) {
+
 		CreateIndexRequest createIndexRequest = new CreateIndexRequest(
 			rankingIndexName.getIndexName());
 
 		createIndexRequest.setMappings(_readJSON(_INDEX_MAPPINGS_FILE_NAME));
 		createIndexRequest.setSettings(_readJSON(_INDEX_SETTINGS_FILE_NAME));
 
-		_searchEngineAdapter.execute(createIndexRequest);
+		searchEngineAdapter.execute(createIndexRequest);
 	}
 
-	@Override
-	public void deleteIfExists(RankingIndexName rankingIndexName) {
+	public static void deleteIfExists(
+		SearchEngineAdapter searchEngineAdapter,
+		RankingIndexName rankingIndexName) {
+
 		IndicesExistsIndexRequest indicesExistsIndexRequest =
 			new IndicesExistsIndexRequest(rankingIndexName.getIndexName());
 
 		IndicesExistsIndexResponse indicesExistsIndexResponse =
-			_searchEngineAdapter.execute(indicesExistsIndexRequest);
+			searchEngineAdapter.execute(indicesExistsIndexRequest);
 
 		if (indicesExistsIndexResponse.isExists()) {
 			DeleteIndexRequest deleteIndexRequest = new DeleteIndexRequest(
 				rankingIndexName.getIndexName());
 
-			_searchEngineAdapter.execute(deleteIndexRequest);
+			searchEngineAdapter.execute(deleteIndexRequest);
 		}
 	}
 
-	private String _readJSON(String fileName) {
+	private static String _readJSON(String fileName) {
 		try {
-			JSONObject jsonObject = _jsonFactory.createJSONObject(
-				StringUtil.read(getClass(), "/META-INF/search/" + fileName));
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+				StringUtil.read(
+					RankingIndexCreatorUtil.class,
+					"/META-INF/search/" + fileName));
 
 			return jsonObject.toString();
 		}
@@ -78,12 +80,6 @@ public class RankingIndexCreatorImpl implements RankingIndexCreator {
 		"liferay-search-tuning-rankings-settings.json";
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		RankingIndexCreatorImpl.class);
-
-	@Reference
-	private JSONFactory _jsonFactory;
-
-	@Reference
-	private SearchEngineAdapter _searchEngineAdapter;
+		RankingIndexCreatorUtil.class);
 
 }

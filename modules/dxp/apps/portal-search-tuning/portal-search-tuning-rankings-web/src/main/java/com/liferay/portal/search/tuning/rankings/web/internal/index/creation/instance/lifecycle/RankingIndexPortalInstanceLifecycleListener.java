@@ -9,11 +9,12 @@ import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.search.capabilities.SearchCapabilities;
+import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
 import com.liferay.portal.search.spi.index.creation.instance.lifecycle.BaseIndexPortalInstanceLifecycleListener;
 import com.liferay.portal.search.tuning.rankings.index.RankingIndexReader;
 import com.liferay.portal.search.tuning.rankings.index.name.RankingIndexName;
 import com.liferay.portal.search.tuning.rankings.index.name.RankingIndexNameBuilder;
-import com.liferay.portal.search.tuning.rankings.web.internal.index.RankingIndexCreator;
+import com.liferay.portal.search.tuning.rankings.web.internal.index.RankingIndexCreatorUtil;
 import com.liferay.portal.search.tuning.rankings.web.internal.index.importer.SingleIndexToMultipleIndexImporter;
 
 import org.osgi.service.component.annotations.Component;
@@ -45,7 +46,7 @@ public class RankingIndexPortalInstanceLifecycleListener
 			return;
 		}
 
-		_rankingIndexCreator.create(rankingIndexName);
+		RankingIndexCreatorUtil.create(_searchEngineAdapter, rankingIndexName);
 
 		if (_singleIndexToMultipleIndexImporter.needImport()) {
 			_singleIndexToMultipleIndexImporter.importRankings(
@@ -61,13 +62,11 @@ public class RankingIndexPortalInstanceLifecycleListener
 			return;
 		}
 
-		_rankingIndexCreator.deleteIfExists(
+		RankingIndexCreatorUtil.deleteIfExists(
+			_searchEngineAdapter,
 			_rankingIndexNameBuilder.getRankingIndexName(
 				company.getCompanyId()));
 	}
-
-	@Reference
-	private RankingIndexCreator _rankingIndexCreator;
 
 	@Reference
 	private RankingIndexNameBuilder _rankingIndexNameBuilder;
@@ -77,6 +76,9 @@ public class RankingIndexPortalInstanceLifecycleListener
 
 	@Reference
 	private SearchCapabilities _searchCapabilities;
+
+	@Reference
+	private SearchEngineAdapter _searchEngineAdapter;
 
 	@Reference
 	private SingleIndexToMultipleIndexImporter

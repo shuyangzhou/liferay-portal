@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.search.background.task.ReindexStatusMessageSend
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.capabilities.SearchCapabilities;
+import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
 import com.liferay.portal.search.index.SyncReindexManager;
 import com.liferay.portal.search.spi.reindexer.IndexReindexer;
 import com.liferay.portal.search.tuning.rankings.constants.ResultRankingsConstants;
@@ -72,9 +73,11 @@ public class RankingIndexReindexer implements IndexReindexer {
 			}
 
 			try {
-				rankingIndexCreator.deleteIfExists(rankingIndexName);
+				RankingIndexCreatorUtil.deleteIfExists(
+					_searchEngineAdapter, rankingIndexName);
 
-				rankingIndexCreator.create(rankingIndexName);
+				RankingIndexCreatorUtil.create(
+					_searchEngineAdapter, rankingIndexName);
 			}
 			catch (RuntimeException runtimeException) {
 				_log.error(
@@ -120,9 +123,6 @@ public class RankingIndexReindexer implements IndexReindexer {
 
 	@Reference
 	protected RankingBuilderFactory rankingBuilderFactory;
-
-	@Reference
-	protected RankingIndexCreator rankingIndexCreator;
 
 	@Reference
 	protected RankingIndexNameBuilder rankingIndexNameBuilder;
@@ -213,5 +213,8 @@ public class RankingIndexReindexer implements IndexReindexer {
 	private static final Snapshot<SyncReindexManager>
 		_syncReindexManagerSnapshot = new Snapshot<>(
 			RankingIndexReindexer.class, SyncReindexManager.class, null, true);
+
+	@Reference
+	private SearchEngineAdapter _searchEngineAdapter;
 
 }
