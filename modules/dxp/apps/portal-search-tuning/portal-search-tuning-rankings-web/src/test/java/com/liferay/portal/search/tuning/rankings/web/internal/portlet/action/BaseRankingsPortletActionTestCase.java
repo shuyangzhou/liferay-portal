@@ -12,6 +12,7 @@ import com.liferay.portal.search.tuning.rankings.index.RankingIndexReader;
 import com.liferay.portal.search.tuning.rankings.index.RankingPinBuilderFactory;
 import com.liferay.portal.search.tuning.rankings.storage.RankingStorageAdapter;
 import com.liferay.portal.search.tuning.rankings.web.internal.BaseRankingsWebTestCase;
+import com.liferay.portal.search.tuning.rankings.web.internal.index.Criteria;
 import com.liferay.portal.search.tuning.rankings.web.internal.index.DuplicateQueryStringsDetector;
 import com.liferay.portal.search.tuning.rankings.web.internal.index.RankingImpl;
 import com.liferay.portal.search.tuning.rankings.web.internal.index.RankingPinBuilderFactoryImpl;
@@ -34,8 +35,7 @@ public abstract class BaseRankingsPortletActionTestCase
 
 	@SuppressWarnings("unchecked")
 	protected void setUpDuplicateQueryStringsDetector() {
-		DuplicateQueryStringsDetector.Criteria.Builder builder = Mockito.mock(
-			DuplicateQueryStringsDetector.Criteria.Builder.class);
+		Criteria.Builder builder = Mockito.mock(Criteria.Builder.class);
 
 		Mockito.doReturn(
 			builder
@@ -86,16 +86,10 @@ public abstract class BaseRankingsPortletActionTestCase
 		);
 
 		Mockito.doReturn(
-			Mockito.mock(DuplicateQueryStringsDetector.Criteria.class)
+			Mockito.mock(Criteria.class)
 		).when(
 			builder
 		).build();
-
-		Mockito.doReturn(
-			builder
-		).when(
-			duplicateQueryStringsDetector
-		).builder();
 
 		Mockito.doReturn(
 			Collections.emptyList()

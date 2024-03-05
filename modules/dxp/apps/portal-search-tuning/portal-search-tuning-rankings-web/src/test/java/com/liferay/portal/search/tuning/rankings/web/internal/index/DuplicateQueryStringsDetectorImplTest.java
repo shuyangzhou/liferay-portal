@@ -47,13 +47,12 @@ public class DuplicateQueryStringsDetectorImplTest
 
 	@Test
 	public void testBuilder() {
-		Assert.assertNotNull(_duplicateQueryStringsDetectorImpl.builder());
+		Assert.assertNotNull(new Criteria.Builder());
 	}
 
 	@Test
 	public void testDetect() {
-		DuplicateQueryStringsDetector.Criteria criteria = Mockito.mock(
-			DuplicateQueryStringsDetector.Criteria.class);
+		Criteria criteria = Mockito.mock(Criteria.class);
 
 		List<String> queryStrings = new ArrayList<>(
 			Arrays.asList("queryStrings"));
@@ -82,7 +81,7 @@ public class DuplicateQueryStringsDetectorImplTest
 		Assert.assertEquals(
 			Collections.emptyList(),
 			_duplicateQueryStringsDetectorImpl.detect(
-				Mockito.mock(DuplicateQueryStringsDetector.Criteria.class)));
+				Mockito.mock(Criteria.class)));
 	}
 
 	private DuplicateQueryStringsDetectorImpl
