@@ -14,11 +14,11 @@ import com.liferay.portal.search.index.IndexNameBuilder;
 import com.liferay.portal.search.legacy.searcher.SearchRequestBuilderFactory;
 import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.sort.Sorts;
+import com.liferay.portal.search.tuning.rankings.index.RankingBuilderFactory;
 import com.liferay.portal.search.tuning.rankings.index.name.RankingIndexNameBuilder;
 import com.liferay.portal.search.tuning.rankings.web.internal.constants.ResultRankingsPortletKeys;
 import com.liferay.portal.search.tuning.rankings.web.internal.display.context.RankingPortletDisplayBuilder;
 import com.liferay.portal.search.tuning.rankings.web.internal.display.context.RankingPortletDisplayContext;
-import com.liferay.portal.search.tuning.rankings.web.internal.index.DocumentToRankingTranslator;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
@@ -46,7 +46,7 @@ public class ViewResultRankingsMVCRenderCommand implements MVCRenderCommand {
 
 		RankingPortletDisplayContext rankingPortletDisplayContext =
 			new RankingPortletDisplayBuilder(
-				documentToRankingTranslator,
+				_rankingBuilderFactory,
 				portal.getHttpServletRequest(renderRequest), language, portal,
 				queries, rankingIndexNameBuilder, sorts, renderRequest,
 				renderResponse, searchEngineAdapter, searchEngineInformation
@@ -58,9 +58,6 @@ public class ViewResultRankingsMVCRenderCommand implements MVCRenderCommand {
 
 		return "/view.jsp";
 	}
-
-	@Reference
-	protected DocumentToRankingTranslator documentToRankingTranslator;
 
 	@Reference
 	protected IndexNameBuilder indexNameBuilder;
@@ -88,5 +85,8 @@ public class ViewResultRankingsMVCRenderCommand implements MVCRenderCommand {
 
 	@Reference
 	protected Sorts sorts;
+
+	@Reference
+	private RankingBuilderFactory _rankingBuilderFactory;
 
 }

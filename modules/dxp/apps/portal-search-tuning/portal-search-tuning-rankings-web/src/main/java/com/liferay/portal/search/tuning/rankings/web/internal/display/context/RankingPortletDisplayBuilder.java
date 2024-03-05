@@ -36,10 +36,11 @@ import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.sort.Sorts;
 import com.liferay.portal.search.tuning.rankings.constants.ResultRankingsConstants;
 import com.liferay.portal.search.tuning.rankings.index.Ranking;
+import com.liferay.portal.search.tuning.rankings.index.RankingBuilderFactory;
 import com.liferay.portal.search.tuning.rankings.index.name.RankingIndexName;
 import com.liferay.portal.search.tuning.rankings.index.name.RankingIndexNameBuilder;
 import com.liferay.portal.search.tuning.rankings.web.internal.constants.ResultRankingsPortletKeys;
-import com.liferay.portal.search.tuning.rankings.web.internal.index.DocumentToRankingTranslator;
+import com.liferay.portal.search.tuning.rankings.web.internal.index.DocumentToRankingTranslatorUtil;
 import com.liferay.portal.search.tuning.rankings.web.internal.index.RankingFields;
 import com.liferay.portal.search.tuning.rankings.web.internal.request.SearchRankingRequest;
 import com.liferay.portal.search.tuning.rankings.web.internal.request.SearchRankingResponse;
@@ -59,14 +60,14 @@ import javax.servlet.http.HttpServletRequest;
 public class RankingPortletDisplayBuilder {
 
 	public RankingPortletDisplayBuilder(
-		DocumentToRankingTranslator documentToRankingTranslator,
+		RankingBuilderFactory rankingBuilderFactory,
 		HttpServletRequest httpServletRequest, Language language, Portal portal,
 		Queries queries, RankingIndexNameBuilder rankingIndexNameBuilder,
 		Sorts sorts, RenderRequest renderRequest, RenderResponse renderResponse,
 		SearchEngineAdapter searchEngineAdapter,
 		SearchEngineInformation searchEngineInformation) {
 
-		_documentToRankingTranslator = documentToRankingTranslator;
+		_rankingBuilderFactory = rankingBuilderFactory;
 		_httpServletRequest = httpServletRequest;
 		_language = language;
 		_portal = portal;
@@ -312,8 +313,8 @@ public class RankingPortletDisplayBuilder {
 	private RankingEntryDisplayContext _buildDisplayContext(
 		SearchHit searchHit) {
 
-		Ranking ranking = _documentToRankingTranslator.translate(
-			searchHit.getDocument(), searchHit.getId());
+		Ranking ranking = DocumentToRankingTranslatorUtil.translate(
+			_rankingBuilderFactory, searchHit.getDocument(), searchHit.getId());
 
 		SXPBlueprintTitleProvider sxpBlueprintTitleProvider =
 			_sxpBlueprintTitleProviderSnapshot.get();
@@ -569,13 +570,13 @@ public class RankingPortletDisplayBuilder {
 			null, true);
 
 	private String _displayStyle;
-	private final DocumentToRankingTranslator _documentToRankingTranslator;
 	private final HttpServletRequest _httpServletRequest;
 	private final Language _language;
 	private String _orderByCol;
 	private String _orderByType;
 	private final Portal _portal;
 	private final Queries _queries;
+	private final RankingBuilderFactory _rankingBuilderFactory;
 	private final RankingIndexNameBuilder _rankingIndexNameBuilder;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;

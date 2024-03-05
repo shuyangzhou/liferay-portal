@@ -24,6 +24,7 @@ import com.liferay.portal.search.query.BooleanQuery;
 import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.tuning.rankings.constants.ResultRankingsConstants;
 import com.liferay.portal.search.tuning.rankings.index.Ranking;
+import com.liferay.portal.search.tuning.rankings.index.RankingBuilderFactory;
 import com.liferay.portal.search.tuning.rankings.index.RankingIndexReader;
 import com.liferay.portal.search.tuning.rankings.index.name.RankingIndexName;
 
@@ -131,7 +132,8 @@ public class RankingIndexReaderImpl implements RankingIndexReader {
 	}
 
 	protected Ranking translate(Document document, String id) {
-		return _documentToRankingTranslator.translate(document, id);
+		return DocumentToRankingTranslatorUtil.translate(
+			_rankingBuilderFactory, document, id);
 	}
 
 	private BooleanQuery _getBooleanQuery(
@@ -249,10 +251,10 @@ public class RankingIndexReaderImpl implements RankingIndexReader {
 	}
 
 	@Reference
-	private DocumentToRankingTranslator _documentToRankingTranslator;
+	private Queries _queries;
 
 	@Reference
-	private Queries _queries;
+	private RankingBuilderFactory _rankingBuilderFactory;
 
 	@Reference
 	private SearchEngineAdapter _searchEngineAdapter;

@@ -13,25 +13,22 @@ import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.tuning.rankings.constants.ResultRankingsConstants;
 import com.liferay.portal.search.tuning.rankings.index.Ranking;
 import com.liferay.portal.search.tuning.rankings.index.RankingBuilderFactory;
-import com.liferay.portal.search.tuning.rankings.index.RankingPinBuilderFactory;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author André de Oliveira
  */
-@Component(service = DocumentToRankingTranslator.class)
-public class DocumentToRankingTranslatorImpl
-	implements DocumentToRankingTranslator {
+public class DocumentToRankingTranslatorUtil {
 
-	@Override
-	public Ranking translate(Document document, String rankingDocumentId) {
+	public static Ranking translate(
+		RankingBuilderFactory rankingBuilderFactory, Document document,
+		String rankingDocumentId) {
+
 		return builder(
+			rankingBuilderFactory
 		).aliases(
 			_getAliases(document)
 		).groupExternalReferenceCode(
@@ -56,11 +53,13 @@ public class DocumentToRankingTranslatorImpl
 		).build();
 	}
 
-	protected Ranking.Builder builder() {
-		return _rankingBuilderFactory.builder();
+	protected static Ranking.Builder builder(
+		RankingBuilderFactory rankingBuilderFactory) {
+
+		return rankingBuilderFactory.builder();
 	}
 
-	private List<String> _getAliases(Document document) {
+	private static List<String> _getAliases(Document document) {
 		List<String> aliases = document.getStrings(RankingFields.ALIASES);
 
 		if (ListUtil.isEmpty(aliases)) {
@@ -75,7 +74,7 @@ public class DocumentToRankingTranslatorImpl
 		return aliases;
 	}
 
-	private String _getName(Document document) {
+	private static String _getName(Document document) {
 		String string = document.getString(RankingFields.NAME);
 
 		if (Validator.isBlank(string)) {
@@ -85,7 +84,7 @@ public class DocumentToRankingTranslatorImpl
 		return string;
 	}
 
-	private List<Ranking.Pin> _getPins(Document document) {
+	private static List<Ranking.Pin> _getPins(Document document) {
 		List<?> values = document.getValues(RankingFields.PINS);
 
 		if (ListUtil.isEmpty(values)) {
@@ -93,10 +92,11 @@ public class DocumentToRankingTranslatorImpl
 		}
 
 		return TransformUtil.transform(
-			(List<Map<String, String>>)values, this::_toPin);
+			(List<Map<String, String>>)values,
+			DocumentToRankingTranslatorUtil::_toPin);
 	}
 
-	private String _getQueryString(Document document) {
+	private static String _getQueryString(Document document) {
 		String string = document.getString(RankingFields.QUERY_STRING);
 
 		if (Validator.isBlank(string)) {
@@ -110,7 +110,7 @@ public class DocumentToRankingTranslatorImpl
 		return string;
 	}
 
-	private String _getStatus(Document document) {
+	private static String _getStatus(Document document) {
 		String status = document.getString(RankingFields.STATUS);
 
 		if (!Validator.isBlank(status)) {
@@ -124,8 +124,8 @@ public class DocumentToRankingTranslatorImpl
 		return ResultRankingsConstants.STATUS_ACTIVE;
 	}
 
-	private Ranking.Pin _toPin(Map<String, String> map) {
-		Ranking.Pin.Builder builder = _rankingPinBuilderFactory.builder();
+	private static Ranking.Pin _toPin(Map<String, String> map) {
+		Ranking.Pin.Builder builder = new RankingImpl.PinImpl.BuilderImpl();
 
 		return builder.documentId(
 			map.get("uid")
@@ -133,11 +133,5 @@ public class DocumentToRankingTranslatorImpl
 			GetterUtil.getInteger(map.get("position"))
 		).build();
 	}
-
-	@Reference
-	private RankingBuilderFactory _rankingBuilderFactory;
-
-	@Reference
-	private RankingPinBuilderFactory _rankingPinBuilderFactory;
 
 }
