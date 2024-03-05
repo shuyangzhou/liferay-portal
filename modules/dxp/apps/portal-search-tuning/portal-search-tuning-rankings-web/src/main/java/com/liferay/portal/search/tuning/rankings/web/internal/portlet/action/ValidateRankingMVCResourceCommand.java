@@ -26,6 +26,7 @@ import com.liferay.portal.search.tuning.rankings.helper.RankingHelper;
 import com.liferay.portal.search.tuning.rankings.index.name.RankingIndexName;
 import com.liferay.portal.search.tuning.rankings.index.name.RankingIndexNameBuilder;
 import com.liferay.portal.search.tuning.rankings.web.internal.constants.ResultRankingsPortletKeys;
+import com.liferay.portal.search.tuning.rankings.web.internal.index.Criteria;
 import com.liferay.portal.search.tuning.rankings.web.internal.index.DuplicateQueryStringsDetector;
 
 import java.io.IOException;
@@ -146,7 +147,7 @@ public class ValidateRankingMVCResourceCommand implements MVCResourceCommand {
 		ValidateRankingMVCResourceRequest validateRankingMVCResourceRequest) {
 
 		return duplicateQueryStringsDetector.detect(
-			duplicateQueryStringsDetector.builder(
+			new Criteria.Builder(
 			).index(
 				_getIndexName(resourceRequest)
 			).groupExternalReferenceCode(

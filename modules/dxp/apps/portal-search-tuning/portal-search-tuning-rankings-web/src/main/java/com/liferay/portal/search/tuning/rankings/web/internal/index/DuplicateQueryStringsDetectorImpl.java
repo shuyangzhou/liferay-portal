@@ -24,7 +24,6 @@ import com.liferay.portal.search.tuning.rankings.index.name.RankingIndexNameBuil
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -37,11 +36,6 @@ import org.osgi.service.component.annotations.Reference;
 @Component(service = DuplicateQueryStringsDetector.class)
 public class DuplicateQueryStringsDetectorImpl
 	implements DuplicateQueryStringsDetector {
-
-	@Override
-	public Criteria.Builder builder() {
-		return new CriteriaImpl.BuilderImpl();
-	}
 
 	@Override
 	public List<String> detect(Criteria criteria) {
@@ -84,129 +78,6 @@ public class DuplicateQueryStringsDetectorImpl
 
 	@Reference
 	protected SearchEngineAdapter searchEngineAdapter;
-
-	protected static class CriteriaImpl implements Criteria {
-
-		@Override
-		public String getGroupExternalReferenceCode() {
-			return _groupExternalReferenceCode;
-		}
-
-		@Override
-		public String getIndex() {
-			return _index;
-		}
-
-		@Override
-		public Collection<String> getQueryStrings() {
-			return _queryStrings;
-		}
-
-		@Override
-		public RankingIndexName getRankingIndexName() {
-			return _rankingIndexName;
-		}
-
-		@Override
-		public String getSXPBlueprintExternalReferenceCode() {
-			return _sxpBlueprintExternalReferenceCode;
-		}
-
-		@Override
-		public String getUnlessRankingDocumentId() {
-			return _unlessRankingDocumentId;
-		}
-
-		protected CriteriaImpl(CriteriaImpl criteriaImpl) {
-			if (criteriaImpl == null) {
-				return;
-			}
-
-			_groupExternalReferenceCode =
-				criteriaImpl._groupExternalReferenceCode;
-			_index = criteriaImpl._index;
-			_queryStrings = new HashSet<>(criteriaImpl._queryStrings);
-			_rankingIndexName = criteriaImpl._rankingIndexName;
-			_sxpBlueprintExternalReferenceCode =
-				criteriaImpl._sxpBlueprintExternalReferenceCode;
-			_unlessRankingDocumentId = criteriaImpl._unlessRankingDocumentId;
-		}
-
-		protected static class BuilderImpl implements Criteria.Builder {
-
-			@Override
-			public Criteria build() {
-				return new CriteriaImpl(_criteriaImpl);
-			}
-
-			@Override
-			public BuilderImpl groupExternalReferenceCode(
-				String groupExternalReferenceCode) {
-
-				_criteriaImpl._groupExternalReferenceCode =
-					groupExternalReferenceCode;
-
-				return this;
-			}
-
-			@Override
-			public BuilderImpl index(String index) {
-				_criteriaImpl._index = index;
-
-				return this;
-			}
-
-			@Override
-			public BuilderImpl queryStrings(Collection<String> queryStrings) {
-				if (queryStrings == null) {
-					_criteriaImpl._queryStrings = Collections.emptySet();
-				}
-				else {
-					_criteriaImpl._queryStrings = new HashSet<>(queryStrings);
-				}
-
-				return this;
-			}
-
-			@Override
-			public Builder rankingIndexName(RankingIndexName rankingIndexName) {
-				_criteriaImpl._rankingIndexName = rankingIndexName;
-
-				return this;
-			}
-
-			@Override
-			public BuilderImpl sxpBlueprintExternalReferenceCode(
-				String sxpBlueprintExternalReferenceCode) {
-
-				_criteriaImpl._sxpBlueprintExternalReferenceCode =
-					sxpBlueprintExternalReferenceCode;
-
-				return this;
-			}
-
-			@Override
-			public BuilderImpl unlessRankingDocumentId(
-				String unlessRankingDocumentId) {
-
-				_criteriaImpl._unlessRankingDocumentId =
-					unlessRankingDocumentId;
-
-				return this;
-			}
-
-			private final CriteriaImpl _criteriaImpl = new CriteriaImpl(null);
-
-		}
-
-		private String _groupExternalReferenceCode;
-		private String _index;
-		private Collection<String> _queryStrings = new HashSet<>();
-		private RankingIndexName _rankingIndexName;
-		private String _sxpBlueprintExternalReferenceCode;
-		private String _unlessRankingDocumentId;
-
-	}
 
 	private void _addQueryClauses(Consumer<Query> consumer, Query... queries) {
 		for (Query query : queries) {

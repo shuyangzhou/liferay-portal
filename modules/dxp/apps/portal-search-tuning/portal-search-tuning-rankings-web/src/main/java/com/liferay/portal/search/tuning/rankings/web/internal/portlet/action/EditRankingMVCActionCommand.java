@@ -35,6 +35,7 @@ import com.liferay.portal.search.tuning.rankings.storage.RankingStorageAdapter;
 import com.liferay.portal.search.tuning.rankings.web.internal.constants.ResultRankingsPortletKeys;
 import com.liferay.portal.search.tuning.rankings.web.internal.exception.DuplicateQueryStringException;
 import com.liferay.portal.search.tuning.rankings.web.internal.exception.NotApplicableStatusException;
+import com.liferay.portal.search.tuning.rankings.web.internal.index.Criteria;
 import com.liferay.portal.search.tuning.rankings.web.internal.index.DuplicateQueryStringsDetector;
 
 import java.io.IOException;
@@ -264,7 +265,7 @@ public class EditRankingMVCActionCommand extends BaseMVCActionCommand {
 
 		List<String> duplicateQueryStrings =
 			duplicateQueryStringsDetector.detect(
-				duplicateQueryStringsDetector.builder(
+				new Criteria.Builder(
 				).groupExternalReferenceCode(
 					ranking.getGroupExternalReferenceCode()
 				).index(
