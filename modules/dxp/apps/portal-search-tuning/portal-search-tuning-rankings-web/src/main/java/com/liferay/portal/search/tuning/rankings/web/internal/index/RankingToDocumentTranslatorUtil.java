@@ -15,19 +15,15 @@ import com.liferay.portal.search.tuning.rankings.index.Ranking;
 import java.util.Collection;
 import java.util.List;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author André de Oliveira
  */
-@Component(service = RankingToDocumentTranslator.class)
-public class RankingToDocumentTranslatorImpl
-	implements RankingToDocumentTranslator {
+public class RankingToDocumentTranslatorUtil {
 
-	@Override
-	public Document translate(Ranking ranking) {
-		return _documentBuilderFactory.builder(
+	public static Document translate(
+		DocumentBuilderFactory documentBuilderFactory, Ranking ranking) {
+
+		return documentBuilderFactory.builder(
 		).setStrings(
 			RankingFields.ALIASES, ArrayUtil.toStringArray(ranking.getAliases())
 		).setStrings(
@@ -57,7 +53,7 @@ public class RankingToDocumentTranslatorImpl
 		).build();
 	}
 
-	private Collection<Object> _toMaps(List<Ranking.Pin> pins) {
+	private static Collection<Object> _toMaps(List<Ranking.Pin> pins) {
 		return TransformUtil.transform(
 			pins,
 			pin -> LinkedHashMapBuilder.put(
@@ -66,8 +62,5 @@ public class RankingToDocumentTranslatorImpl
 				RankingFields.UID, pin.getDocumentId()
 			).build());
 	}
-
-	@Reference
-	private DocumentBuilderFactory _documentBuilderFactory;
 
 }

@@ -5,6 +5,7 @@
 
 package com.liferay.portal.search.tuning.rankings.web.internal.index;
 
+import com.liferay.portal.search.document.DocumentBuilderFactory;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
 import com.liferay.portal.search.engine.adapter.document.DeleteDocumentRequest;
 import com.liferay.portal.search.engine.adapter.document.IndexDocumentRequest;
@@ -27,7 +28,8 @@ public class RankingIndexWriterImpl implements RankingIndexWriter {
 			_searchEngineAdapter.execute(
 				new IndexDocumentRequest(
 					rankingIndexName.getIndexName(),
-					_rankingToDocumentTranslator.translate(ranking)));
+					RankingToDocumentTranslatorUtil.translate(
+						_documentBuilderFactory, ranking)));
 
 		return indexDocumentResponse.getUid();
 	}
@@ -48,7 +50,8 @@ public class RankingIndexWriterImpl implements RankingIndexWriter {
 	public void update(RankingIndexName rankingIndexName, Ranking ranking) {
 		IndexDocumentRequest indexDocumentRequest = new IndexDocumentRequest(
 			rankingIndexName.getIndexName(), ranking.getRankingDocumentId(),
-			_rankingToDocumentTranslator.translate(ranking));
+			RankingToDocumentTranslatorUtil.translate(
+				_documentBuilderFactory, ranking));
 
 		indexDocumentRequest.setRefresh(true);
 
@@ -56,7 +59,7 @@ public class RankingIndexWriterImpl implements RankingIndexWriter {
 	}
 
 	@Reference
-	private RankingToDocumentTranslator _rankingToDocumentTranslator;
+	private DocumentBuilderFactory _documentBuilderFactory;
 
 	@Reference
 	private SearchEngineAdapter _searchEngineAdapter;
