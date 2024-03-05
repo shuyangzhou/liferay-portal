@@ -41,13 +41,6 @@ public class RankingToDocumentTranslatorUtilTest {
 	@Before
 	public void setUp() {
 		ReflectionTestUtil.setFieldValue(
-			_documentToRankingTranslator, "_rankingBuilderFactory",
-			_rankingBuilderFactory);
-		ReflectionTestUtil.setFieldValue(
-			_documentToRankingTranslator, "_rankingPinBuilderFactory",
-			_rankingPinBuilderFactory);
-
-		ReflectionTestUtil.setFieldValue(
 			_rankingBuilderFactory, "_rankingHelper", _rankingHelper);
 	}
 
@@ -65,8 +58,8 @@ public class RankingToDocumentTranslatorUtilTest {
 		Assert.assertEquals(
 			"{blocks=[142857, 285714, 428571]}", fieldsMap.toString());
 
-		Ranking ranking2 = _documentToRankingTranslator.translate(
-			document, null);
+		Ranking ranking2 = DocumentToRankingTranslatorUtil.translate(
+			_rankingBuilderFactory, document, null);
 
 		Assert.assertEquals(
 			"[142857, 285714, 428571]",
@@ -83,8 +76,8 @@ public class RankingToDocumentTranslatorUtilTest {
 
 		Assert.assertEquals("{}", fieldsMap.toString());
 
-		Ranking ranking2 = _documentToRankingTranslator.translate(
-			document, null);
+		Ranking ranking2 = DocumentToRankingTranslatorUtil.translate(
+			_rankingBuilderFactory, document, null);
 
 		Assert.assertEquals("[]", String.valueOf(ranking2.getAliases()));
 		Assert.assertEquals(null, ranking2.getGroupExternalReferenceCode());
@@ -116,8 +109,8 @@ public class RankingToDocumentTranslatorUtilTest {
 		Assert.assertEquals(
 			"{pins={position=142857, uid=uid}}", fieldsMap.toString());
 
-		Ranking ranking2 = _documentToRankingTranslator.translate(
-			document, null);
+		Ranking ranking2 = DocumentToRankingTranslatorUtil.translate(
+			_rankingBuilderFactory, document, null);
 
 		Assert.assertEquals("[142857=uid]", _toString(ranking2.getPins()));
 	}
@@ -137,8 +130,8 @@ public class RankingToDocumentTranslatorUtilTest {
 				"285714, 428571]}",
 			fieldsMap.toString());
 
-		Ranking ranking2 = _documentToRankingTranslator.translate(
-			document, null);
+		Ranking ranking2 = DocumentToRankingTranslatorUtil.translate(
+			_rankingBuilderFactory, document, null);
 
 		Assert.assertEquals(
 			"[142857, 285714, 428571]",
@@ -156,8 +149,6 @@ public class RankingToDocumentTranslatorUtilTest {
 				pins, pin -> pin.getPosition() + "=" + pin.getDocumentId()));
 	}
 
-	private final DocumentToRankingTranslator _documentToRankingTranslator =
-		new DocumentToRankingTranslatorImpl();
 	private final RankingBuilderFactory _rankingBuilderFactory =
 		new RankingBuilderFactoryImpl();
 	private final RankingHelper _rankingHelper = new RankingHelperImpl();

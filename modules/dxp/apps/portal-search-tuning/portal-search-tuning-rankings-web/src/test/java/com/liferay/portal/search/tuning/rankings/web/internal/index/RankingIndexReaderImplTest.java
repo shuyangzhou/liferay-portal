@@ -12,18 +12,21 @@ import com.liferay.portal.search.engine.adapter.search.SearchSearchRequest;
 import com.liferay.portal.search.engine.adapter.search.SearchSearchResponse;
 import com.liferay.portal.search.hits.SearchHits;
 import com.liferay.portal.search.tuning.rankings.index.Ranking;
+import com.liferay.portal.search.tuning.rankings.index.RankingBuilderFactory;
 import com.liferay.portal.search.tuning.rankings.index.name.RankingIndexName;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 /**
@@ -41,13 +44,18 @@ public class RankingIndexReaderImplTest extends BaseRankingsIndexTestCase {
 		_rankingIndexReaderImpl = new RankingIndexReaderImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			_rankingIndexReaderImpl, "_documentToRankingTranslator",
-			_documentToRankingTranslator);
+			_rankingIndexReaderImpl, "_rankingBuilderFactory",
+			Mockito.mock(RankingBuilderFactory.class));
 		ReflectionTestUtil.setFieldValue(
 			_rankingIndexReaderImpl, "_queries", queries);
 		ReflectionTestUtil.setFieldValue(
 			_rankingIndexReaderImpl, "_searchEngineAdapter",
 			searchEngineAdapter);
+	}
+
+	@After
+	public void tearDown() {
+		_documentToRankingTranslatorUtilMockedStatic.close();
 	}
 
 	@Test
@@ -154,19 +162,19 @@ public class RankingIndexReaderImplTest extends BaseRankingsIndexTestCase {
 	private Ranking _setUpDocumentToRankingTranslator() {
 		Ranking ranking = Mockito.mock(Ranking.class);
 
-		Mockito.doReturn(
+		Mockito.when(
+			DocumentToRankingTranslatorUtil.translate(
+				Mockito.any(), Mockito.any(), Mockito.nullable(String.class))
+		).thenReturn(
 			ranking
-		).when(
-			_documentToRankingTranslator
-		).translate(
-			Mockito.any(), Mockito.nullable(String.class)
 		);
 
 		return ranking;
 	}
 
-	private final DocumentToRankingTranslator _documentToRankingTranslator =
-		Mockito.mock(DocumentToRankingTranslator.class);
+	private final MockedStatic<DocumentToRankingTranslatorUtil>
+		_documentToRankingTranslatorUtilMockedStatic = Mockito.mockStatic(
+			DocumentToRankingTranslatorUtil.class);
 	private RankingIndexReaderImpl _rankingIndexReaderImpl;
 
 }

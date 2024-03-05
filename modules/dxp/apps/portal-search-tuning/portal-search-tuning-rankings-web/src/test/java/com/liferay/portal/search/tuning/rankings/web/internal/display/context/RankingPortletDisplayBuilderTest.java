@@ -11,8 +11,8 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.engine.SearchEngineInformation;
 import com.liferay.portal.search.hits.SearchHits;
 import com.liferay.portal.search.sort.Sorts;
+import com.liferay.portal.search.tuning.rankings.index.RankingBuilderFactory;
 import com.liferay.portal.search.tuning.rankings.web.internal.BaseRankingsWebTestCase;
-import com.liferay.portal.search.tuning.rankings.web.internal.index.DocumentToRankingTranslator;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.List;
@@ -46,7 +46,7 @@ public class RankingPortletDisplayBuilderTest extends BaseRankingsWebTestCase {
 		setUpPortletPreferencesFactoryUtil();
 
 		_rankingPortletDisplayBuilder = new RankingPortletDisplayBuilder(
-			_documentToRankingTranslator, _httpServletRequest, language, portal,
+			_rankingBuilderFactory, _httpServletRequest, language, portal,
 			queries, rankingIndexNameBuilder, _sorts, _renderRequest,
 			_renderResponse, searchEngineAdapter, _searchEngineInformation);
 	}
@@ -112,10 +112,10 @@ public class RankingPortletDisplayBuilderTest extends BaseRankingsWebTestCase {
 		return _httpServletRequest;
 	}
 
-	private final DocumentToRankingTranslator _documentToRankingTranslator =
-		Mockito.mock(DocumentToRankingTranslator.class);
 	private final HttpServletRequest _httpServletRequest = Mockito.mock(
 		HttpServletRequest.class);
+	private final RankingBuilderFactory _rankingBuilderFactory = Mockito.mock(
+		RankingBuilderFactory.class);
 	private RankingPortletDisplayBuilder _rankingPortletDisplayBuilder;
 	private final RenderRequest _renderRequest = Mockito.mock(
 		RenderRequest.class);

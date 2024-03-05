@@ -6,7 +6,6 @@
 package com.liferay.portal.search.tuning.rankings.web.internal.index;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.tuning.rankings.index.Ranking;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
@@ -15,7 +14,6 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,29 +23,19 @@ import org.mockito.Mockito;
 /**
  * @author Wade Cao
  */
-public class DocumentToRankingTranslatorImplTest {
+public class DocumentToRankingTranslatorUtilTest {
 
 	@ClassRule
 	@Rule
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
 
-	@Before
-	public void setUp() throws Exception {
-		_documentToRankingTranslatorImpl =
-			new DocumentToRankingTranslatorImpl();
-
-		ReflectionTestUtil.setFieldValue(
-			_documentToRankingTranslatorImpl, "_rankingBuilderFactory",
-			new RankingBuilderFactoryImpl());
-	}
-
 	@Test
 	public void testTranslate() {
 		Document document = _setUpDocumentWithGetStrings();
 
-		Ranking ranking = _documentToRankingTranslatorImpl.translate(
-			document, "rankingDocumentId");
+		Ranking ranking = DocumentToRankingTranslatorUtil.translate(
+			new RankingBuilderFactoryImpl(), document, "rankingDocumentId");
 
 		Assert.assertEquals(
 			document.getStrings(RankingFields.ALIASES), ranking.getAliases());
@@ -108,7 +96,5 @@ public class DocumentToRankingTranslatorImplTest {
 
 		return document;
 	}
-
-	private DocumentToRankingTranslatorImpl _documentToRankingTranslatorImpl;
 
 }
