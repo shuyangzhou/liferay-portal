@@ -7,9 +7,12 @@ package com.liferay.portal.service.impl;
 
 import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
+import com.liferay.petra.concurrent.DCLSingleton;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.events.StartupHelperUtil;
 import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -51,11 +54,17 @@ import com.liferay.portal.kernel.service.permission.ModelPermissions;
 import com.liferay.portal.kernel.service.permission.ModelPermissionsFactory;
 import com.liferay.portal.kernel.service.persistence.ResourceActionPersistence;
 import com.liferay.portal.kernel.service.persistence.RolePersistence;
+import com.liferay.portal.kernel.servlet.InitialRequestSyncUtil;
 import com.liferay.portal.kernel.spring.aop.Property;
 import com.liferay.portal.kernel.spring.aop.Retry;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
+import com.liferay.portal.kernel.transaction.TransactionConfig;
+import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.NamedThreadFactory;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.impl.ResourceImpl;
@@ -73,6 +82,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Provides the local service for accessing, adding, checking, deleting,
@@ -1180,67 +1195,45 @@ public class ResourcePermissionLocalServiceImpl
 	public void initPortletDefaultPermissions(Portlet portlet)
 		throws PortalException {
 
-		Role guestRole = _roleLocalService.getRole(
-			portlet.getCompanyId(), RoleConstants.GUEST);
-		Role ownerRole = _roleLocalService.getRole(
-			portlet.getCompanyId(), RoleConstants.OWNER);
-		Role siteMemberRole = _roleLocalService.getRole(
-			portlet.getCompanyId(), RoleConstants.SITE_MEMBER);
+		if (StartupHelperUtil.isDBWarmed()) {
+			_initPortletDefaultPermissions(portlet);
 
-		List<String> guestPortletActions =
-			ResourceActionsUtil.getPortletResourceGuestDefaultActions(
-				portlet.getRootPortletId());
-
-		List<String> ownerPortletActionIds =
-			ResourceActionsUtil.getPortletResourceActions(
-				portlet.getRootPortletId());
-
-		List<String> groupPortletActionIds =
-			ResourceActionsUtil.getPortletResourceGroupDefaultActions(
-				portlet.getRootPortletId());
-
-		_initPortletDefaultPermissions(
-			portlet.getCompanyId(), portlet.getRootPortletId(), guestRole,
-			ownerRole, siteMemberRole, guestPortletActions,
-			ownerPortletActionIds, groupPortletActionIds);
-
-		String rootModelResource =
-			ResourceActionsUtil.getPortletRootModelResource(
-				portlet.getRootPortletId());
-
-		List<String> modelResources =
-			ResourceActionsUtil.getPortletModelResources(
-				portlet.getRootPortletId());
-
-		for (String modelResource : modelResources) {
-			if (Validator.isBlank(modelResource)) {
-				continue;
-			}
-
-			validate(modelResource, false);
-
-			List<String> groupModelActionIds = null;
-
-			if (Objects.equals(rootModelResource, modelResource)) {
-				groupModelActionIds =
-					ResourceActionsUtil.getModelResourceGroupDefaultActions(
-						rootModelResource);
-			}
-
-			List<String> guestModelActionIds =
-				ResourceActionsUtil.getModelResourceGuestDefaultActions(
-					modelResource);
-
-			List<String> ownerModelActionIds =
-				ResourceActionsUtil.getModelResourceActions(modelResource);
-
-			filterOwnerActions(modelResource, ownerModelActionIds);
-
-			_initPortletDefaultPermissions(
-				portlet.getCompanyId(), modelResource, guestRole, ownerRole,
-				siteMemberRole, guestModelActionIds, ownerModelActionIds,
-				groupModelActionIds);
+			return;
 		}
+
+		ExecutorService executorService =
+			_initPortletExecutorServiceDCLSingleton.getSingleton(
+				this::_createInitPortletExecutorService);
+
+		Future<Void> future = executorService.submit(
+			() -> {
+				try {
+					return TransactionInvokerUtil.invoke(
+						_transactionConfig,
+						() -> {
+							_initPortletDefaultPermissions(portlet);
+
+							return null;
+						});
+				}
+				catch (Throwable throwable) {
+					return ReflectionUtil.throwException(throwable);
+				}
+			});
+
+		TransactionCommitCallbackUtil.registerCallback(
+			() -> {
+				try {
+					return future.get();
+				}
+				catch (InterruptedException interruptedException) {
+					return ReflectionUtil.throwException(interruptedException);
+				}
+				catch (ExecutionException executionException) {
+					return ReflectionUtil.throwException(
+						executionException.getCause());
+				}
+			});
 	}
 
 	/**
@@ -2012,6 +2005,25 @@ public class ResourcePermissionLocalServiceImpl
 		}
 	}
 
+	private ExecutorService _createInitPortletExecutorService() {
+		ExecutorService executorService = new ThreadPoolExecutor(
+			1, 1, 0L, TimeUnit.MILLISECONDS,
+			new LinkedBlockingQueue<Runnable>(),
+			new NamedThreadFactory(
+				"Init Portlet Default Permissions", Thread.NORM_PRIORITY,
+				ResourcePermissionLocalServiceImpl.class.getClassLoader()),
+			new ThreadPoolExecutor.CallerRunsPolicy());
+
+		InitialRequestSyncUtil.registerSyncCallable(
+			() -> {
+				executorService.shutdown();
+
+				return null;
+			});
+
+		return executorService;
+	}
+
 	private Map<Long, ResourcePermission> _getResourcePermissionsMap(
 		List<ResourcePermission> resourcePermissions) {
 
@@ -2105,6 +2117,72 @@ public class ResourcePermissionLocalServiceImpl
 
 				IndexWriterHelperUtil.updatePermissionFields(name, name);
 			}
+		}
+	}
+
+	private void _initPortletDefaultPermissions(Portlet portlet)
+		throws PortalException {
+
+		Role guestRole = _roleLocalService.getRole(
+			portlet.getCompanyId(), RoleConstants.GUEST);
+		Role ownerRole = _roleLocalService.getRole(
+			portlet.getCompanyId(), RoleConstants.OWNER);
+		Role siteMemberRole = _roleLocalService.getRole(
+			portlet.getCompanyId(), RoleConstants.SITE_MEMBER);
+
+		List<String> guestPortletActions =
+			ResourceActionsUtil.getPortletResourceGuestDefaultActions(
+				portlet.getRootPortletId());
+
+		List<String> ownerPortletActionIds =
+			ResourceActionsUtil.getPortletResourceActions(
+				portlet.getRootPortletId());
+
+		List<String> groupPortletActionIds =
+			ResourceActionsUtil.getPortletResourceGroupDefaultActions(
+				portlet.getRootPortletId());
+
+		_initPortletDefaultPermissions(
+			portlet.getCompanyId(), portlet.getRootPortletId(), guestRole,
+			ownerRole, siteMemberRole, guestPortletActions,
+			ownerPortletActionIds, groupPortletActionIds);
+
+		String rootModelResource =
+			ResourceActionsUtil.getPortletRootModelResource(
+				portlet.getRootPortletId());
+
+		List<String> modelResources =
+			ResourceActionsUtil.getPortletModelResources(
+				portlet.getRootPortletId());
+
+		for (String modelResource : modelResources) {
+			if (Validator.isBlank(modelResource)) {
+				continue;
+			}
+
+			validate(modelResource, false);
+
+			List<String> groupModelActionIds = null;
+
+			if (Objects.equals(rootModelResource, modelResource)) {
+				groupModelActionIds =
+					ResourceActionsUtil.getModelResourceGroupDefaultActions(
+						rootModelResource);
+			}
+
+			List<String> guestModelActionIds =
+				ResourceActionsUtil.getModelResourceGuestDefaultActions(
+					modelResource);
+
+			List<String> ownerModelActionIds =
+				ResourceActionsUtil.getModelResourceActions(modelResource);
+
+			filterOwnerActions(modelResource, ownerModelActionIds);
+
+			_initPortletDefaultPermissions(
+				portlet.getCompanyId(), modelResource, guestRole, ownerRole,
+				siteMemberRole, guestModelActionIds, ownerModelActionIds,
+				groupModelActionIds);
 		}
 	}
 
@@ -2308,6 +2386,12 @@ public class ResourcePermissionLocalServiceImpl
 		_individualPortletResourcePermissionProviderSnapshot = new Snapshot<>(
 			ResourcePermissionLocalServiceImpl.class,
 			IndividualPortletResourcePermissionProvider.class);
+	private static final TransactionConfig _transactionConfig =
+		TransactionConfig.Factory.create(
+			Propagation.SUPPORTS, new Class<?>[] {Exception.class});
+
+	private final DCLSingleton<ExecutorService>
+		_initPortletExecutorServiceDCLSingleton = new DCLSingleton<>();
 
 	@BeanReference(type = ResourceActionLocalService.class)
 	private ResourceActionLocalService _resourceActionLocalService;
