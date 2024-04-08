@@ -1,3 +1,13 @@
+plugins {
+	id "me.champeau.jmh" version "0.7.2"
+}
+
 dependencies {
 	compileOnly project(":core:petra:petra-lang")
+
+	jmh project(":core:petra:petra-lang")
+}
+
+jmh {
+	profilers = ["gc"]
 }
