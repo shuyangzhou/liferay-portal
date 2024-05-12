@@ -5,11 +5,14 @@
 
 package com.liferay.portal.cache.internal.dao.orm;
 
+import com.liferay.portal.kernel.util.OrderByComparator;
+
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -21,10 +24,12 @@ public class EmptyResult implements Externalizable {
 	}
 
 	public EmptyResult(Object[] args) {
-		_args = args;
+		_args = _stripPagination(args);
 	}
 
 	public boolean matches(Object[] args) {
+		args = _stripPagination(args);
+
 		if (args.length != _args.length) {
 			return false;
 		}
@@ -48,6 +53,18 @@ public class EmptyResult implements Externalizable {
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeObject(_args);
+	}
+
+	private Object[] _stripPagination(Object[] args) {
+		if ((args.length >= 3) &&
+			(args[args.length - 1] instanceof OrderByComparator) &&
+			(args[args.length - 2] instanceof Integer) &&
+			(args[args.length - 3] instanceof Integer)) {
+
+			return Arrays.copyOf(args, args.length - 3);
+		}
+
+		return args;
 	}
 
 	private Object[] _args;
