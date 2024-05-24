@@ -21,6 +21,7 @@ patch {
 		autoClean = false
 	}
 
+	fileNames "**/freemarker/core/Configurable.java"
 	fileNames "**/freemarker/core/FMParser.java"
 	fileNames "**/freemarker/core/IteratorBlock.java"
 	fileNames "**/freemarker/core/TemplateElementArrayBuilder.java"
