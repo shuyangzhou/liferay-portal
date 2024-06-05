@@ -10,8 +10,11 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactory;
+import com.liferay.portal.kernel.service.PortalPreferenceValueLocalService;
+import com.liferay.portal.kernel.service.PortalPreferencesLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.segments.constants.SegmentsPortletKeys;
 import com.liferay.segments.simulator.SegmentsEntrySimulator;
 
@@ -82,8 +85,18 @@ public class PortalPreferencesUserSegmentsEntrySimulator
 
 	@Override
 	public boolean isSimulationActive(long userId) {
+		com.liferay.portal.kernel.model.PortalPreferences
+			modelPortalPreferences =
+				_portalPreferencesLocalService.fetchPortalPreferences(
+					userId, PortletKeys.PREFS_OWNER_TYPE_USER);
+
+		if (modelPortalPreferences == null) {
+			return false;
+		}
+
 		PortalPreferences portalPreferences =
-			_portletPreferencesFactory.getPortalPreferences(userId, true);
+			_portalPreferenceValueLocalService.getPortalPreferences(
+				modelPortalPreferences, false);
 
 		return GetterUtil.getBoolean(
 			portalPreferences.getValue(
@@ -127,6 +140,13 @@ public class PortalPreferencesUserSegmentsEntrySimulator
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortalPreferencesUserSegmentsEntrySimulator.class);
+
+	@Reference
+	private PortalPreferencesLocalService _portalPreferencesLocalService;
+
+	@Reference
+	private PortalPreferenceValueLocalService
+		_portalPreferenceValueLocalService;
 
 	@Reference
 	private PortletPreferencesFactory _portletPreferencesFactory;
