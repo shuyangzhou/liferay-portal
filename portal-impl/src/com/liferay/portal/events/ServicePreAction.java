@@ -2104,7 +2104,7 @@ public class ServicePreAction extends Action {
 
 		if (addDefaultUserPrivateLayouts) {
 			hasPrivateLayouts = LayoutLocalServiceUtil.hasLayouts(
-				user, true, false);
+				user.getGroup(), true, false);
 
 			if (!hasPrivateLayouts) {
 				_addDefaultUserPrivateLayouts(user);
@@ -2132,7 +2132,7 @@ public class ServicePreAction extends Action {
 		if (deleteDefaultUserPrivateLayouts) {
 			if (hasPrivateLayouts == null) {
 				hasPrivateLayouts = LayoutLocalServiceUtil.hasLayouts(
-					user, true, false);
+					user.getGroup(), true, false);
 			}
 
 			if (hasPrivateLayouts) {
@@ -2168,7 +2168,7 @@ public class ServicePreAction extends Action {
 
 		if (addDefaultUserPublicLayouts) {
 			hasPublicLayouts = LayoutLocalServiceUtil.hasLayouts(
-				user, false, false);
+				user.getGroup(), false, false);
 
 			if (!hasPublicLayouts) {
 				_addDefaultUserPublicLayouts(user);
@@ -2196,7 +2196,7 @@ public class ServicePreAction extends Action {
 		if (deleteDefaultUserPublicLayouts) {
 			if (hasPublicLayouts == null) {
 				hasPublicLayouts = LayoutLocalServiceUtil.hasLayouts(
-					user, false, false);
+					user.getGroup(), false, false);
 			}
 
 			if (hasPublicLayouts) {
