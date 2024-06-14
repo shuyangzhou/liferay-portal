@@ -2292,6 +2292,14 @@ public interface UserLocalService
 	public User updateLastLogin(long userId, String loginIP)
 		throws PortalException;
 
+	@CTAware(onProduction = true)
+	@Indexable(
+		callbackKey = "com.liferay.portal.kernel.model.User#lastLoginDate",
+		type = IndexableType.REINDEX
+	)
+	public User updateLastLogin(User user, String loginIP)
+		throws PortalException;
+
 	/**
 	 * Updates whether the user is locked out from logging in.
 	 *

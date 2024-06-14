@@ -3136,6 +3136,13 @@ public class UserLocalServiceWrapper
 		return _userLocalService.updateLastLogin(userId, loginIP);
 	}
 
+	@Override
+	public User updateLastLogin(User user, String loginIP)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _userLocalService.updateLastLogin(user, loginIP);
+	}
+
 	/**
 	 * Updates whether the user is locked out from logging in.
 	 *

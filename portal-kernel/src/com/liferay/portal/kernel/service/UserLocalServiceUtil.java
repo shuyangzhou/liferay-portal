@@ -2856,6 +2856,12 @@ public class UserLocalServiceUtil {
 		return getService().updateLastLogin(userId, loginIP);
 	}
 
+	public static User updateLastLogin(User user, String loginIP)
+		throws PortalException {
+
+		return getService().updateLastLogin(user, loginIP);
+	}
+
 	/**
 	 * Updates whether the user is locked out from logging in.
 	 *
