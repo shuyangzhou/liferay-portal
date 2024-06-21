@@ -7,6 +7,7 @@ package com.liferay.portal.security.permission;
 
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
+import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -14,6 +15,9 @@ import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
 import com.liferay.portal.kernel.security.permission.contributor.RoleContributor;
 import com.liferay.portal.kernel.security.permission.wrapper.PermissionCheckerWrapperFactory;
 import com.liferay.portal.util.PropsValues;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.osgi.framework.BundleContext;
 
@@ -43,28 +47,44 @@ public class PermissionCheckerFactoryImpl implements PermissionCheckerFactory {
 
 	@Override
 	public PermissionChecker create(User user) {
-		PermissionChecker permissionChecker = _permissionChecker.clone();
+		Map<Long, PermissionChecker> permissionCheckers =
+			_permissionCheckersThreadLocal.get();
 
-		permissionChecker.init(
-			user, _roleContributors.toArray(new RoleContributor[0]));
+		return permissionCheckers.computeIfAbsent(
+			user.getUserId(),
+			userId -> {
+				PermissionChecker permissionChecker =
+					_permissionChecker.clone();
 
-		permissionChecker = new StagingPermissionChecker(permissionChecker);
+				permissionChecker.init(
+					user, _roleContributors.toArray(new RoleContributor[0]));
 
-		for (PermissionCheckerWrapperFactory permissionCheckerWrapperFactory :
-				_permissionCheckerWrapperFactories) {
-
-			permissionChecker =
-				permissionCheckerWrapperFactory.wrapPermissionChecker(
+				permissionChecker = new StagingPermissionChecker(
 					permissionChecker);
-		}
 
-		return permissionChecker;
+				for (PermissionCheckerWrapperFactory
+						permissionCheckerWrapperFactory :
+							_permissionCheckerWrapperFactories) {
+
+					permissionChecker =
+						permissionCheckerWrapperFactory.wrapPermissionChecker(
+							permissionChecker);
+				}
+
+				return permissionChecker;
+			});
 	}
 
 	public void destroy() {
 		_permissionCheckerWrapperFactories.close();
 		_roleContributors.close();
 	}
+
+	private static final ThreadLocal<Map<Long, PermissionChecker>>
+		_permissionCheckersThreadLocal = new CentralizedThreadLocal<>(
+			PermissionCheckerFactoryImpl.class.getName() +
+				"._permissionCheckersThreadLocal",
+			HashMap::new);
 
 	private final PermissionChecker _permissionChecker;
 	private ServiceTrackerList<PermissionCheckerWrapperFactory>
