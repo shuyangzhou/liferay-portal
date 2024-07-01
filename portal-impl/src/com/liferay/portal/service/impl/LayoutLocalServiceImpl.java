@@ -1206,27 +1206,15 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 
 	@Override
 	public Layout getBrowsableLayout(Layout layout) {
-		List<String> types = TransformUtil.transformToList(
-			LayoutTypeControllerTracker.getTypes(),
-			type -> {
-				LayoutTypeController layoutTypeController =
-					LayoutTypeControllerTracker.getLayoutTypeController(type);
+		LayoutTypeController layoutTypeController =
+			LayoutTypeControllerTracker.getLayoutTypeController(layout);
 
-				if ((layoutTypeController == null) ||
-					!layoutTypeController.isBrowsable()) {
-
-					return null;
-				}
-
-				return type;
-			});
-
-		if (types.contains(layout.getType())) {
+		if (layoutTypeController.isBrowsable()) {
 			return layout;
 		}
 
 		ChildLayout browsableChildLayout = _getBrowsableChildLayout(
-			types, layout.getGroupId(), layout.getLayoutId(),
+			layout.getGroupId(), layout.getLayoutId(),
 			layout.isPrivateLayout());
 
 		if (browsableChildLayout == null) {
@@ -3916,19 +3904,21 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 	}
 
 	private ChildLayout _getBrowsableChildLayout(
-		List<String> browsableTypes, long groupId, long parentLayoutId,
-		boolean privateLayout) {
+		long groupId, long parentLayoutId, boolean privateLayout) {
 
 		for (ChildLayout childLayout :
 				_getChildLayouts(groupId, parentLayoutId, privateLayout)) {
 
-			if (browsableTypes.contains(childLayout.getType())) {
+			LayoutTypeController layoutTypeController =
+				LayoutTypeControllerTracker.getLayoutTypeController(
+					childLayout.getType());
+
+			if (layoutTypeController.isBrowsable()) {
 				return childLayout;
 			}
 
 			ChildLayout browsableChildLayout = _getBrowsableChildLayout(
-				browsableTypes, groupId, childLayout.getLayoutId(),
-				privateLayout);
+				groupId, childLayout.getLayoutId(), privateLayout);
 
 			if (browsableChildLayout != null) {
 				return browsableChildLayout;
