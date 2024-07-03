@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.model.change.tracking.CTModel;
 import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.LRUMap;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.Props;
@@ -40,6 +39,7 @@ import com.liferay.portal.servlet.filters.threadlocal.ThreadLocalFilterThreadLoc
 
 import java.io.Serializable;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -276,17 +276,12 @@ public class EntityCacheImpl
 		_valueObjectMVCCEntityCacheEnabled = GetterUtil.getBoolean(
 			_props.get(PropsKeys.VALUE_OBJECT_MVCC_ENTITY_CACHE_ENABLED));
 
-		int localCacheMaxSize = GetterUtil.getInteger(
-			_props.get(
-				PropsKeys.VALUE_OBJECT_ENTITY_THREAD_LOCAL_CACHE_MAX_SIZE));
-
-		if (!DBPartition.isPartitionEnabled() && (localCacheMaxSize > 0)) {
-			_localCache = new CentralizedThreadLocal<>(
-				EntityCacheImpl.class + "._localCache",
-				() -> new LRUMap<>(localCacheMaxSize));
+		if (DBPartition.isPartitionEnabled()) {
+			_localCache = null;
 		}
 		else {
-			_localCache = null;
+			_localCache = new CentralizedThreadLocal<>(
+				EntityCacheImpl.class + "._localCache", HashMap::new);
 		}
 
 		PortalCacheManager<? extends Serializable, ? extends Serializable>
@@ -483,7 +478,7 @@ public class EntityCacheImpl
 	@Reference
 	private ClusterExecutor _clusterExecutor;
 
-	private ThreadLocal<LRUMap<Serializable, Serializable>> _localCache;
+	private ThreadLocal<Map<Serializable, Serializable>> _localCache;
 
 	@Reference
 	private MultiVMPool _multiVMPool;

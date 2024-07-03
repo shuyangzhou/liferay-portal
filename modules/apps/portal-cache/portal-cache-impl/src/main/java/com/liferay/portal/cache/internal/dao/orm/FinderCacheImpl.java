@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.change.tracking.CTModel;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.LRUMap;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.Props;
@@ -50,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -482,17 +482,12 @@ public class FinderCacheImpl
 			_valueObjectFinderCacheEnabled = false;
 		}
 
-		int localCacheMaxSize = GetterUtil.getInteger(
-			_props.get(
-				PropsKeys.VALUE_OBJECT_FINDER_THREAD_LOCAL_CACHE_MAX_SIZE));
-
-		if (!DBPartition.isPartitionEnabled() && (localCacheMaxSize > 0)) {
-			_localCache = new CentralizedThreadLocal<>(
-				FinderCacheImpl.class + "._localCache",
-				() -> new LRUMap<>(localCacheMaxSize));
+		if (DBPartition.isPartitionEnabled()) {
+			_localCache = null;
 		}
 		else {
-			_localCache = null;
+			_localCache = new CentralizedThreadLocal<>(
+				FinderCacheImpl.class + "._localCache", HashMap::new);
 		}
 
 		PortalCacheManager<? extends Serializable, ? extends Serializable>
@@ -811,7 +806,7 @@ public class FinderCacheImpl
 		new ConcurrentHashMap<>();
 	private final Map<String, Map<String, FinderPath>> _finderPathsMap =
 		new ConcurrentHashMap<>();
-	private ThreadLocal<LRUMap<LocalCacheKey, Serializable>> _localCache;
+	private ThreadLocal<Map<LocalCacheKey, Serializable>> _localCache;
 
 	@Reference
 	private MultiVMPool _multiVMPool;
