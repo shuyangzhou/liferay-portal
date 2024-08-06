@@ -118,14 +118,20 @@ public class RememberMeTokenModelImpl
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long USERID_COLUMN_BITMASK = 1L;
+	public static final long EXPIRATIONDATE_COLUMN_BITMASK = 1L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long USERID_COLUMN_BITMASK = 2L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
 	 *		#getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long REMEMBERMETOKENID_COLUMN_BITMASK = 2L;
+	public static final long REMEMBERMETOKENID_COLUMN_BITMASK = 4L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -396,6 +402,15 @@ public class RememberMeTokenModelImpl
 		}
 
 		_expirationDate = expirationDate;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public Date getOriginalExpirationDate() {
+		return getColumnOriginalValue("expirationDate");
 	}
 
 	@Override
