@@ -239,15 +239,12 @@ public class PrefsPropsImpl implements PrefsProps {
 
 	@Override
 	public PortletPreferences getPreferences() {
-		return _portalPreferencesLocalService.getPreferences(
-			PortletKeys.PREFS_OWNER_ID_DEFAULT,
-			PortletKeys.PREFS_OWNER_TYPE_COMPANY);
+		return _fetchPreferences();
 	}
 
 	@Override
 	public PortletPreferences getPreferences(long companyId) {
-		return _portalPreferencesLocalService.getPreferences(
-			companyId, PortletKeys.PREFS_OWNER_TYPE_COMPANY);
+		return _fetchPreferences(companyId);
 	}
 
 	@Override
