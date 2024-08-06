@@ -159,6 +159,13 @@ public class RememberMeTokenPersistenceTest {
 	}
 
 	@Test
+	public void testCountByLteExpirationDate() throws Exception {
+		_persistence.countByLteExpirationDate(RandomTestUtil.nextDate());
+
+		_persistence.countByLteExpirationDate(RandomTestUtil.nextDate());
+	}
+
+	@Test
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		RememberMeToken newRememberMeToken = addRememberMeToken();
 

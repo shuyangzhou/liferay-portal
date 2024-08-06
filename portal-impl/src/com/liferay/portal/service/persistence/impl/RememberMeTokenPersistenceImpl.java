@@ -38,6 +38,8 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
+import java.sql.Timestamp;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -567,6 +569,544 @@ public class RememberMeTokenPersistenceImpl
 
 	private static final String _FINDER_COLUMN_USERID_USERID_2 =
 		"rememberMeToken.userId = ?";
+
+	private FinderPath _finderPathWithPaginationFindByLteExpirationDate;
+	private FinderPath _finderPathWithPaginationCountByLteExpirationDate;
+
+	/**
+	 * Returns all the remember me tokens where expirationDate &le; &#63;.
+	 *
+	 * @param expirationDate the expiration date
+	 * @return the matching remember me tokens
+	 */
+	@Override
+	public List<RememberMeToken> findByLteExpirationDate(Date expirationDate) {
+		return findByLteExpirationDate(
+			expirationDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the remember me tokens where expirationDate &le; &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>RememberMeTokenModelImpl</code>.
+	 * </p>
+	 *
+	 * @param expirationDate the expiration date
+	 * @param start the lower bound of the range of remember me tokens
+	 * @param end the upper bound of the range of remember me tokens (not inclusive)
+	 * @return the range of matching remember me tokens
+	 */
+	@Override
+	public List<RememberMeToken> findByLteExpirationDate(
+		Date expirationDate, int start, int end) {
+
+		return findByLteExpirationDate(expirationDate, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the remember me tokens where expirationDate &le; &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>RememberMeTokenModelImpl</code>.
+	 * </p>
+	 *
+	 * @param expirationDate the expiration date
+	 * @param start the lower bound of the range of remember me tokens
+	 * @param end the upper bound of the range of remember me tokens (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching remember me tokens
+	 */
+	@Override
+	public List<RememberMeToken> findByLteExpirationDate(
+		Date expirationDate, int start, int end,
+		OrderByComparator<RememberMeToken> orderByComparator) {
+
+		return findByLteExpirationDate(
+			expirationDate, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the remember me tokens where expirationDate &le; &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>RememberMeTokenModelImpl</code>.
+	 * </p>
+	 *
+	 * @param expirationDate the expiration date
+	 * @param start the lower bound of the range of remember me tokens
+	 * @param end the upper bound of the range of remember me tokens (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching remember me tokens
+	 */
+	@Override
+	public List<RememberMeToken> findByLteExpirationDate(
+		Date expirationDate, int start, int end,
+		OrderByComparator<RememberMeToken> orderByComparator,
+		boolean useFinderCache) {
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		finderPath = _finderPathWithPaginationFindByLteExpirationDate;
+		finderArgs = new Object[] {
+			_getTime(expirationDate), start, end, orderByComparator
+		};
+
+		List<RememberMeToken> list = null;
+
+		if (useFinderCache) {
+			list = (List<RememberMeToken>)FinderCacheUtil.getResult(
+				finderPath, finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (RememberMeToken rememberMeToken : list) {
+					if (expirationDate.getTime() <
+							rememberMeToken.getExpirationDate(
+							).getTime()) {
+
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(3);
+			}
+
+			sb.append(_SQL_SELECT_REMEMBERMETOKEN_WHERE);
+
+			boolean bindExpirationDate = false;
+
+			if (expirationDate == null) {
+				sb.append(_FINDER_COLUMN_LTEEXPIRATIONDATE_EXPIRATIONDATE_1);
+			}
+			else {
+				bindExpirationDate = true;
+
+				sb.append(_FINDER_COLUMN_LTEEXPIRATIONDATE_EXPIRATIONDATE_2);
+			}
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(RememberMeTokenModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindExpirationDate) {
+					queryPos.add(new Timestamp(expirationDate.getTime()));
+				}
+
+				list = (List<RememberMeToken>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first remember me token in the ordered set where expirationDate &le; &#63;.
+	 *
+	 * @param expirationDate the expiration date
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching remember me token
+	 * @throws NoSuchRememberMeTokenException if a matching remember me token could not be found
+	 */
+	@Override
+	public RememberMeToken findByLteExpirationDate_First(
+			Date expirationDate,
+			OrderByComparator<RememberMeToken> orderByComparator)
+		throws NoSuchRememberMeTokenException {
+
+		RememberMeToken rememberMeToken = fetchByLteExpirationDate_First(
+			expirationDate, orderByComparator);
+
+		if (rememberMeToken != null) {
+			return rememberMeToken;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("expirationDate<=");
+		sb.append(expirationDate);
+
+		sb.append("}");
+
+		throw new NoSuchRememberMeTokenException(sb.toString());
+	}
+
+	/**
+	 * Returns the first remember me token in the ordered set where expirationDate &le; &#63;.
+	 *
+	 * @param expirationDate the expiration date
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching remember me token, or <code>null</code> if a matching remember me token could not be found
+	 */
+	@Override
+	public RememberMeToken fetchByLteExpirationDate_First(
+		Date expirationDate,
+		OrderByComparator<RememberMeToken> orderByComparator) {
+
+		List<RememberMeToken> list = findByLteExpirationDate(
+			expirationDate, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last remember me token in the ordered set where expirationDate &le; &#63;.
+	 *
+	 * @param expirationDate the expiration date
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching remember me token
+	 * @throws NoSuchRememberMeTokenException if a matching remember me token could not be found
+	 */
+	@Override
+	public RememberMeToken findByLteExpirationDate_Last(
+			Date expirationDate,
+			OrderByComparator<RememberMeToken> orderByComparator)
+		throws NoSuchRememberMeTokenException {
+
+		RememberMeToken rememberMeToken = fetchByLteExpirationDate_Last(
+			expirationDate, orderByComparator);
+
+		if (rememberMeToken != null) {
+			return rememberMeToken;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("expirationDate<=");
+		sb.append(expirationDate);
+
+		sb.append("}");
+
+		throw new NoSuchRememberMeTokenException(sb.toString());
+	}
+
+	/**
+	 * Returns the last remember me token in the ordered set where expirationDate &le; &#63;.
+	 *
+	 * @param expirationDate the expiration date
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching remember me token, or <code>null</code> if a matching remember me token could not be found
+	 */
+	@Override
+	public RememberMeToken fetchByLteExpirationDate_Last(
+		Date expirationDate,
+		OrderByComparator<RememberMeToken> orderByComparator) {
+
+		int count = countByLteExpirationDate(expirationDate);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<RememberMeToken> list = findByLteExpirationDate(
+			expirationDate, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the remember me tokens before and after the current remember me token in the ordered set where expirationDate &le; &#63;.
+	 *
+	 * @param rememberMeTokenId the primary key of the current remember me token
+	 * @param expirationDate the expiration date
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next remember me token
+	 * @throws NoSuchRememberMeTokenException if a remember me token with the primary key could not be found
+	 */
+	@Override
+	public RememberMeToken[] findByLteExpirationDate_PrevAndNext(
+			long rememberMeTokenId, Date expirationDate,
+			OrderByComparator<RememberMeToken> orderByComparator)
+		throws NoSuchRememberMeTokenException {
+
+		RememberMeToken rememberMeToken = findByPrimaryKey(rememberMeTokenId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			RememberMeToken[] array = new RememberMeTokenImpl[3];
+
+			array[0] = getByLteExpirationDate_PrevAndNext(
+				session, rememberMeToken, expirationDate, orderByComparator,
+				true);
+
+			array[1] = rememberMeToken;
+
+			array[2] = getByLteExpirationDate_PrevAndNext(
+				session, rememberMeToken, expirationDate, orderByComparator,
+				false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected RememberMeToken getByLteExpirationDate_PrevAndNext(
+		Session session, RememberMeToken rememberMeToken, Date expirationDate,
+		OrderByComparator<RememberMeToken> orderByComparator,
+		boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(3);
+		}
+
+		sb.append(_SQL_SELECT_REMEMBERMETOKEN_WHERE);
+
+		boolean bindExpirationDate = false;
+
+		if (expirationDate == null) {
+			sb.append(_FINDER_COLUMN_LTEEXPIRATIONDATE_EXPIRATIONDATE_1);
+		}
+		else {
+			bindExpirationDate = true;
+
+			sb.append(_FINDER_COLUMN_LTEEXPIRATIONDATE_EXPIRATIONDATE_2);
+		}
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(RememberMeTokenModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		if (bindExpirationDate) {
+			queryPos.add(new Timestamp(expirationDate.getTime()));
+		}
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(
+						rememberMeToken)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<RememberMeToken> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the remember me tokens where expirationDate &le; &#63; from the database.
+	 *
+	 * @param expirationDate the expiration date
+	 */
+	@Override
+	public void removeByLteExpirationDate(Date expirationDate) {
+		for (RememberMeToken rememberMeToken :
+				findByLteExpirationDate(
+					expirationDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+					null)) {
+
+			remove(rememberMeToken);
+		}
+	}
+
+	/**
+	 * Returns the number of remember me tokens where expirationDate &le; &#63;.
+	 *
+	 * @param expirationDate the expiration date
+	 * @return the number of matching remember me tokens
+	 */
+	@Override
+	public int countByLteExpirationDate(Date expirationDate) {
+		FinderPath finderPath =
+			_finderPathWithPaginationCountByLteExpirationDate;
+
+		Object[] finderArgs = new Object[] {_getTime(expirationDate)};
+
+		Long count = (Long)FinderCacheUtil.getResult(
+			finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_REMEMBERMETOKEN_WHERE);
+
+			boolean bindExpirationDate = false;
+
+			if (expirationDate == null) {
+				sb.append(_FINDER_COLUMN_LTEEXPIRATIONDATE_EXPIRATIONDATE_1);
+			}
+			else {
+				bindExpirationDate = true;
+
+				sb.append(_FINDER_COLUMN_LTEEXPIRATIONDATE_EXPIRATIONDATE_2);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindExpirationDate) {
+					queryPos.add(new Timestamp(expirationDate.getTime()));
+				}
+
+				count = (Long)query.uniqueResult();
+
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String
+		_FINDER_COLUMN_LTEEXPIRATIONDATE_EXPIRATIONDATE_1 =
+			"rememberMeToken.expirationDate IS NULL";
+
+	private static final String
+		_FINDER_COLUMN_LTEEXPIRATIONDATE_EXPIRATIONDATE_2 =
+			"rememberMeToken.expirationDate <= ?";
 
 	public RememberMeTokenPersistenceImpl() {
 		setModelClass(RememberMeToken.class);
@@ -1122,6 +1662,19 @@ public class RememberMeTokenPersistenceImpl
 			new String[] {Long.class.getName()}, new String[] {"userId"},
 			false);
 
+		_finderPathWithPaginationFindByLteExpirationDate = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByLteExpirationDate",
+			new String[] {
+				Date.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			},
+			new String[] {"expirationDate"}, true);
+
+		_finderPathWithPaginationCountByLteExpirationDate = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByLteExpirationDate",
+			new String[] {Date.class.getName()},
+			new String[] {"expirationDate"}, false);
+
 		RememberMeTokenUtil.setPersistence(this);
 	}
 
@@ -1129,6 +1682,14 @@ public class RememberMeTokenPersistenceImpl
 		RememberMeTokenUtil.setPersistence(null);
 
 		EntityCacheUtil.removeCache(RememberMeTokenImpl.class.getName());
+	}
+
+	private static Long _getTime(Date date) {
+		if (date == null) {
+			return null;
+		}
+
+		return date.getTime();
 	}
 
 	private static final String _SQL_SELECT_REMEMBERMETOKEN =

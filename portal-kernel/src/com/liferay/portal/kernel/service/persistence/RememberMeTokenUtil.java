@@ -12,6 +12,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -276,6 +277,185 @@ public class RememberMeTokenUtil {
 	 */
 	public static int countByUserId(long userId) {
 		return getPersistence().countByUserId(userId);
+	}
+
+	/**
+	 * Returns all the remember me tokens where expirationDate &le; &#63;.
+	 *
+	 * @param expirationDate the expiration date
+	 * @return the matching remember me tokens
+	 */
+	public static List<RememberMeToken> findByLteExpirationDate(
+		Date expirationDate) {
+
+		return getPersistence().findByLteExpirationDate(expirationDate);
+	}
+
+	/**
+	 * Returns a range of all the remember me tokens where expirationDate &le; &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>RememberMeTokenModelImpl</code>.
+	 * </p>
+	 *
+	 * @param expirationDate the expiration date
+	 * @param start the lower bound of the range of remember me tokens
+	 * @param end the upper bound of the range of remember me tokens (not inclusive)
+	 * @return the range of matching remember me tokens
+	 */
+	public static List<RememberMeToken> findByLteExpirationDate(
+		Date expirationDate, int start, int end) {
+
+		return getPersistence().findByLteExpirationDate(
+			expirationDate, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the remember me tokens where expirationDate &le; &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>RememberMeTokenModelImpl</code>.
+	 * </p>
+	 *
+	 * @param expirationDate the expiration date
+	 * @param start the lower bound of the range of remember me tokens
+	 * @param end the upper bound of the range of remember me tokens (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching remember me tokens
+	 */
+	public static List<RememberMeToken> findByLteExpirationDate(
+		Date expirationDate, int start, int end,
+		OrderByComparator<RememberMeToken> orderByComparator) {
+
+		return getPersistence().findByLteExpirationDate(
+			expirationDate, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the remember me tokens where expirationDate &le; &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>RememberMeTokenModelImpl</code>.
+	 * </p>
+	 *
+	 * @param expirationDate the expiration date
+	 * @param start the lower bound of the range of remember me tokens
+	 * @param end the upper bound of the range of remember me tokens (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching remember me tokens
+	 */
+	public static List<RememberMeToken> findByLteExpirationDate(
+		Date expirationDate, int start, int end,
+		OrderByComparator<RememberMeToken> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByLteExpirationDate(
+			expirationDate, start, end, orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first remember me token in the ordered set where expirationDate &le; &#63;.
+	 *
+	 * @param expirationDate the expiration date
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching remember me token
+	 * @throws NoSuchRememberMeTokenException if a matching remember me token could not be found
+	 */
+	public static RememberMeToken findByLteExpirationDate_First(
+			Date expirationDate,
+			OrderByComparator<RememberMeToken> orderByComparator)
+		throws com.liferay.portal.kernel.exception.
+			NoSuchRememberMeTokenException {
+
+		return getPersistence().findByLteExpirationDate_First(
+			expirationDate, orderByComparator);
+	}
+
+	/**
+	 * Returns the first remember me token in the ordered set where expirationDate &le; &#63;.
+	 *
+	 * @param expirationDate the expiration date
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching remember me token, or <code>null</code> if a matching remember me token could not be found
+	 */
+	public static RememberMeToken fetchByLteExpirationDate_First(
+		Date expirationDate,
+		OrderByComparator<RememberMeToken> orderByComparator) {
+
+		return getPersistence().fetchByLteExpirationDate_First(
+			expirationDate, orderByComparator);
+	}
+
+	/**
+	 * Returns the last remember me token in the ordered set where expirationDate &le; &#63;.
+	 *
+	 * @param expirationDate the expiration date
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching remember me token
+	 * @throws NoSuchRememberMeTokenException if a matching remember me token could not be found
+	 */
+	public static RememberMeToken findByLteExpirationDate_Last(
+			Date expirationDate,
+			OrderByComparator<RememberMeToken> orderByComparator)
+		throws com.liferay.portal.kernel.exception.
+			NoSuchRememberMeTokenException {
+
+		return getPersistence().findByLteExpirationDate_Last(
+			expirationDate, orderByComparator);
+	}
+
+	/**
+	 * Returns the last remember me token in the ordered set where expirationDate &le; &#63;.
+	 *
+	 * @param expirationDate the expiration date
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching remember me token, or <code>null</code> if a matching remember me token could not be found
+	 */
+	public static RememberMeToken fetchByLteExpirationDate_Last(
+		Date expirationDate,
+		OrderByComparator<RememberMeToken> orderByComparator) {
+
+		return getPersistence().fetchByLteExpirationDate_Last(
+			expirationDate, orderByComparator);
+	}
+
+	/**
+	 * Returns the remember me tokens before and after the current remember me token in the ordered set where expirationDate &le; &#63;.
+	 *
+	 * @param rememberMeTokenId the primary key of the current remember me token
+	 * @param expirationDate the expiration date
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next remember me token
+	 * @throws NoSuchRememberMeTokenException if a remember me token with the primary key could not be found
+	 */
+	public static RememberMeToken[] findByLteExpirationDate_PrevAndNext(
+			long rememberMeTokenId, Date expirationDate,
+			OrderByComparator<RememberMeToken> orderByComparator)
+		throws com.liferay.portal.kernel.exception.
+			NoSuchRememberMeTokenException {
+
+		return getPersistence().findByLteExpirationDate_PrevAndNext(
+			rememberMeTokenId, expirationDate, orderByComparator);
+	}
+
+	/**
+	 * Removes all the remember me tokens where expirationDate &le; &#63; from the database.
+	 *
+	 * @param expirationDate the expiration date
+	 */
+	public static void removeByLteExpirationDate(Date expirationDate) {
+		getPersistence().removeByLteExpirationDate(expirationDate);
+	}
+
+	/**
+	 * Returns the number of remember me tokens where expirationDate &le; &#63;.
+	 *
+	 * @param expirationDate the expiration date
+	 * @return the number of matching remember me tokens
+	 */
+	public static int countByLteExpirationDate(Date expirationDate) {
+		return getPersistence().countByLteExpirationDate(expirationDate);
 	}
 
 	/**
