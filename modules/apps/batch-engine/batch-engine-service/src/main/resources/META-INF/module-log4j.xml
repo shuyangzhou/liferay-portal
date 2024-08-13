@@ -3,5 +3,6 @@
 <Configuration strict="true">
 	<Loggers>
 		<Logger level="WARN" name="com.liferay.batch.engine" />
+		<Logger level="INFO" name="com.liferay.batch.engine.internal.BatchEngineImportTaskExecutorImpl" />
 	</Loggers>
 </Configuration>
