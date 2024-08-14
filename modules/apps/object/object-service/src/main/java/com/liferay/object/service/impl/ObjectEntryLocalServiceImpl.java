@@ -3895,8 +3895,7 @@ public class ObjectEntryLocalServiceImpl
 		Indexer<ObjectEntry> indexer = IndexerRegistryUtil.getIndexer(
 			objectDefinition.getClassName());
 
-		indexer.reindex(
-			objectDefinition.getClassName(), objectEntry.getObjectEntryId());
+		indexer.reindex(objectEntry);
 	}
 
 	private void _setColumn(
