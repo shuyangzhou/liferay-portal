@@ -332,8 +332,6 @@ public class ObjectEntryLocalServiceImpl
 
 		_startWorkflowInstance(userId, objectEntry, serviceContext);
 
-		_reindex(objectEntry);
-
 		boolean clearObjectEntryIdsMap =
 			ObjectActionThreadLocal.isClearObjectEntryIdsMap();
 
@@ -1581,8 +1579,6 @@ public class ObjectEntryLocalServiceImpl
 		_deleteFileEntries(
 			objectEntry.getValues(), objectEntry.getObjectDefinitionId(),
 			transientValues);
-
-		_reindex(objectEntry);
 
 		_executeObjectActions(
 			objectEntry.getCompanyId(),
