@@ -154,12 +154,13 @@ public class DefaultObjectEntryManagerImpl
 					objectEntry, scopeKey, serviceContext),
 				serviceContext);
 
+		_addOrUpdateNestedObjectEntries(
+			dtoConverterContext, objectDefinition, objectEntry,
+			_getObjectRelationships(objectDefinition, objectEntry),
+			serviceBuilderObjectEntry.getPrimaryKey(), scopeKey);
+
 		return _toObjectEntry(
-			dtoConverterContext, objectDefinition,
-			_addOrUpdateNestedObjectEntries(
-				dtoConverterContext, objectDefinition, objectEntry,
-				_getObjectRelationships(objectDefinition, objectEntry),
-				serviceBuilderObjectEntry.getPrimaryKey(), scopeKey));
+			dtoConverterContext, objectDefinition, serviceBuilderObjectEntry);
 	}
 
 	@Override
@@ -813,13 +814,14 @@ public class DefaultObjectEntryManagerImpl
 				serviceContext),
 			serviceContext);
 
+		_addOrUpdateNestedObjectEntries(
+			dtoConverterContext, objectDefinition, objectEntry,
+			_getObjectRelationships(objectDefinition, objectEntry),
+			serviceBuilderObjectEntry.getPrimaryKey(),
+			objectEntry.getScopeKey());
+
 		return _toObjectEntry(
-			dtoConverterContext, objectDefinition,
-			_addOrUpdateNestedObjectEntries(
-				dtoConverterContext, objectDefinition, objectEntry,
-				_getObjectRelationships(objectDefinition, objectEntry),
-				serviceBuilderObjectEntry.getPrimaryKey(),
-				objectEntry.getScopeKey()));
+			dtoConverterContext, objectDefinition, serviceBuilderObjectEntry);
 	}
 
 	@Override
@@ -847,12 +849,13 @@ public class DefaultObjectEntryManagerImpl
 					objectEntry, scopeKey, serviceContext),
 				serviceContext);
 
+		_addOrUpdateNestedObjectEntries(
+			dtoConverterContext, objectDefinition, objectEntry,
+			_getObjectRelationships(objectDefinition, objectEntry),
+			serviceBuilderObjectEntry.getPrimaryKey(), scopeKey);
+
 		return _toObjectEntry(
-			dtoConverterContext, objectDefinition,
-			_addOrUpdateNestedObjectEntries(
-				dtoConverterContext, objectDefinition, objectEntry,
-				_getObjectRelationships(objectDefinition, objectEntry),
-				serviceBuilderObjectEntry.getPrimaryKey(), scopeKey));
+			dtoConverterContext, objectDefinition, serviceBuilderObjectEntry);
 	}
 
 	private Map<String, String> _addAction(
@@ -879,12 +882,11 @@ public class DefaultObjectEntryManagerImpl
 			actionName, methodName, serviceBuilderObjectEntry, null, uriInfo);
 	}
 
-	private com.liferay.object.model.ObjectEntry
-			_addOrUpdateNestedObjectEntries(
-				DTOConverterContext dtoConverterContext,
-				ObjectDefinition objectDefinition, ObjectEntry objectEntry,
-				Map<String, ObjectRelationship> objectRelationships,
-				long primaryKey, String scopeKey)
+	private void _addOrUpdateNestedObjectEntries(
+			DTOConverterContext dtoConverterContext,
+			ObjectDefinition objectDefinition, ObjectEntry objectEntry,
+			Map<String, ObjectRelationship> objectRelationships,
+			long primaryKey, String scopeKey)
 		throws Exception {
 
 		Map<String, Object> properties = objectEntry.getProperties();
@@ -1013,8 +1015,6 @@ public class DefaultObjectEntryManagerImpl
 				NestedFieldsSupplier.addFieldName(entry.getKey());
 			}
 		}
-
-		return objectEntryLocalService.getObjectEntry(primaryKey);
 	}
 
 	private void _checkObjectEntryObjectDefinitionId(
