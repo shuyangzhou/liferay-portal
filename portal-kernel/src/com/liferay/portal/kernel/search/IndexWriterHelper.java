@@ -5,6 +5,7 @@
 
 package com.liferay.portal.kernel.search;
 
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 
 import java.io.Serializable;
@@ -80,6 +81,8 @@ public interface IndexWriterHelper {
 	 */
 	@Deprecated
 	public boolean isIndexReadOnly(String className);
+
+	public SafeCloseable openBatchMode();
 
 	public void partiallyUpdateDocument(
 			long companyId, Document document, boolean commitImmediately)

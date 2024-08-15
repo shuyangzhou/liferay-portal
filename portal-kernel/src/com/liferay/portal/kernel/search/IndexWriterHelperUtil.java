@@ -5,6 +5,7 @@
 
 package com.liferay.portal.kernel.search;
 
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.ProxyFactory;
@@ -159,6 +160,12 @@ public class IndexWriterHelperUtil {
 		IndexWriterHelper indexWriterHelper = _getIndexWriterHelper();
 
 		return indexWriterHelper.isIndexReadOnly(className);
+	}
+
+	public static SafeCloseable openBatchMode() {
+		IndexWriterHelper indexWriterHelper = _getIndexWriterHelper();
+
+		return indexWriterHelper.openBatchMode();
 	}
 
 	public static void partiallyUpdateDocument(

@@ -39,6 +39,7 @@ import com.liferay.portal.configuration.module.configuration.ConfigurationProvid
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.search.IndexWriterHelperUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -94,11 +95,13 @@ public class BatchEngineImportTaskExecutorImpl
 			startTime = System.currentTimeMillis();
 		}
 
-		SafeCloseable safeCloseable = CompanyThreadLocal.setWithSafeCloseable(
+		SafeCloseable safeCloseable1 = CompanyThreadLocal.setWithSafeCloseable(
 			batchEngineImportTask.getCompanyId(),
 			CTCollectionThreadLocal.getCTCollectionId());
 
-		try {
+		try (SafeCloseable safeCloseable2 =
+				IndexWriterHelperUtil.openBatchMode()) {
+
 			batchEngineImportTask.setExecuteStatus(
 				BatchEngineTaskExecuteStatus.STARTED.toString());
 			batchEngineImportTask.setStartTime(new Date());
@@ -141,7 +144,7 @@ public class BatchEngineImportTaskExecutorImpl
 			// LPS-167011 Because of call to _updateBatchEngineImportTask when
 			// catching a Throwable
 
-			safeCloseable.close();
+			safeCloseable1.close();
 		}
 
 		if (_log.isInfoEnabled()) {

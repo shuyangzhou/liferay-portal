@@ -5,6 +5,8 @@
 
 package com.liferay.portal.kernel.search;
 
+import com.liferay.petra.lang.CentralizedThreadLocal;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.search.facet.Facet;
@@ -29,6 +31,20 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Julio Camarero
  */
 public class SearchContext implements Serializable {
+
+	public static boolean isBatchMode() {
+		Boolean batchMode = _batchModeThreadLocal.get();
+
+		if (batchMode == Boolean.TRUE) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public static SafeCloseable openBatchMode() {
+		return _batchModeThreadLocal.setWithSafeCloseable(Boolean.TRUE);
+	}
 
 	public void addFacet(Facet facet) {
 		if (facet == null) {
@@ -211,6 +227,10 @@ public class SearchContext implements Serializable {
 	}
 
 	public boolean isCommitImmediately() {
+		if (isBatchMode()) {
+			return false;
+		}
+
 		return _commitImmediately;
 	}
 
@@ -413,6 +433,10 @@ public class SearchContext implements Serializable {
 			_attributes.remove("searchPermissionContext");
 		}
 	}
+
+	private static final CentralizedThreadLocal<Boolean> _batchModeThreadLocal =
+		new CentralizedThreadLocal<>(
+			SearchContext.class.getName() + "._batchModeThreadLocal");
 
 	private boolean _andSearch;
 	private long[] _assetCategoryIds;

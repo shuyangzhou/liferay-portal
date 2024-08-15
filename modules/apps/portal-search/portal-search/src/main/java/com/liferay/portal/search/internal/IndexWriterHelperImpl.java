@@ -5,6 +5,8 @@
 
 package com.liferay.portal.search.internal;
 
+import com.liferay.petra.lang.SafeCloseable;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
@@ -333,6 +335,22 @@ public class IndexWriterHelperImpl implements IndexWriterHelper {
 	@Override
 	public boolean isIndexReadOnly(String className) {
 		return _indexStatusManager.isIndexReadOnly(className);
+	}
+
+	@Override
+	public SafeCloseable openBatchMode() {
+		SafeCloseable safeCloseable = SearchContext.openBatchMode();
+
+		return () -> {
+			safeCloseable.close();
+
+			try {
+				commit();
+			}
+			catch (SearchException searchException) {
+				ReflectionUtil.throwException(searchException);
+			}
+		};
 	}
 
 	@Override
