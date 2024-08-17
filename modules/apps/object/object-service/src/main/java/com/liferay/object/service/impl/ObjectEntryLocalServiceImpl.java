@@ -323,15 +323,15 @@ public class ObjectEntryLocalServiceImpl
 			String.valueOf(objectEntry.getPrimaryKey()), false,
 			resourcePermissionServiceContext);
 
-		try {
-			if (workflowAction == WorkflowConstants.ACTION_SAVE_DRAFT) {
+		if (workflowAction == WorkflowConstants.ACTION_SAVE_DRAFT) {
+			try {
 				ObjectEntryThreadLocal.setSkipObjectValidationRules(true);
-			}
 
-			objectEntry = objectEntryPersistence.update(objectEntry);
-		}
-		finally {
-			ObjectEntryThreadLocal.setSkipObjectValidationRules(false);
+				objectEntry = objectEntryPersistence.update(objectEntry);
+			}
+			finally {
+				ObjectEntryThreadLocal.setSkipObjectValidationRules(false);
+			}
 		}
 
 		if (workflowAction != WorkflowConstants.ACTION_PUBLISH) {
