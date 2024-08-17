@@ -818,6 +818,8 @@ public class ObjectActionLocalServiceTest {
 				).build(),
 				serviceContext);
 
+			serviceContext.setStrictAdd(false);
+
 			_assertWebhookObjectAction(
 				null, "John", null,
 				ObjectActionTriggerConstants.KEY_ON_AFTER_ADD,
