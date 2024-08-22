@@ -52,9 +52,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import java.util.AbstractMap;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.naming.Context;
@@ -229,21 +233,24 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 		for (Map.Entry<Object, Object> entry : properties.entrySet()) {
 			String key = (String)entry.getKey();
 
-			if (StringUtil.equalsIgnoreCase(key, "url")) {
-				key = "jdbcUrl";
-			}
-
 			// Ignore Liferay property
 
 			if (isPropertyLiferay(key)) {
 				continue;
 			}
 
+			String value = (String)entry.getValue();
+
+			if (StringUtil.equalsIgnoreCase(key, "url")) {
+				key = "jdbcUrl";
+
+				value = _adjustMySQLJDBCURL(value);
+			}
+
 			// Set HikariCP property
 
 			try {
-				BeanUtil.pojo.setProperty(
-					hikariDataSource, key, (String)entry.getValue());
+				BeanUtil.pojo.setProperty(hikariDataSource, key, value);
 			}
 			catch (Exception exception) {
 				if (_log.isWarnEnabled()) {
@@ -328,6 +335,91 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 				throw classNotFoundException;
 			}
 		}
+	}
+
+	private String _adjustMySQLJDBCURL(String url) {
+		boolean ismySQL = false;
+
+		for (String mysqlJDBCURLPrefix : _MYSQL_JDBC_URL_PREFIXES) {
+			if (url.startsWith(mysqlJDBCURLPrefix)) {
+				ismySQL = true;
+
+				break;
+			}
+		}
+
+		if (!ismySQL) {
+			return url;
+		}
+
+		Map<String, String> existingParameters = new TreeMap<>();
+
+		int index = url.indexOf(CharPool.QUESTION);
+
+		if (index != -1) {
+			String parametersQueryString = url.substring(index + 1);
+
+			for (String parameterString :
+					StringUtil.split(
+						parametersQueryString, CharPool.AMPERSAND)) {
+
+				String[] keyValuePair = StringUtil.split(
+					parameterString, CharPool.EQUAL);
+
+				if (keyValuePair.length == 2) {
+					existingParameters.put(keyValuePair[0], keyValuePair[1]);
+				}
+			}
+		}
+
+		for (Map.Entry<String, String> defaultMySQLJDBCParameterEntry :
+				_defaultMySQLJDBCParameterEntries) {
+
+			if (existingParameters.containsKey(
+					defaultMySQLJDBCParameterEntry.getKey())) {
+
+				if (_log.isDebugEnabled()) {
+					_log.debug("Skipped " + defaultMySQLJDBCParameterEntry);
+				}
+			}
+			else {
+				existingParameters.put(
+					defaultMySQLJDBCParameterEntry.getKey(),
+					defaultMySQLJDBCParameterEntry.getValue());
+			}
+		}
+
+		StringBundler sb = new StringBundler(
+			(existingParameters.size() * 4) + 2);
+
+		if (index == -1) {
+			sb.append(url);
+			sb.append(CharPool.QUESTION);
+		}
+		else {
+			sb.append(url.substring(0, index + 1));
+		}
+
+		for (Map.Entry<String, String> entry : existingParameters.entrySet()) {
+			sb.append(entry.getKey());
+			sb.append(CharPool.EQUAL);
+			sb.append(entry.getValue());
+			sb.append(CharPool.AMPERSAND);
+		}
+
+		if (!existingParameters.isEmpty()) {
+			sb.setIndex(sb.index() - 1);
+		}
+
+		String newURL = sb.toString();
+
+		if (!Objects.equals(url, newURL) && _log.isInfoEnabled()) {
+			_log.info(
+				StringBundler.concat(
+					"Rewrite jdbc url from: ", url, " to ", newURL));
+		}
+
+		return newURL;
 	}
 
 	private void _populateIBMCipherSuites(Class<?> clazz) {
@@ -431,8 +523,35 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 		}
 	}
 
+	private static final String[] _MYSQL_JDBC_URL_PREFIXES = {
+		"jdbc:mariadb://", "jdbc:mysql://"
+	};
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		DataSourceFactoryImpl.class);
+
+	private static final List<Map.Entry<String, String>>
+		_defaultMySQLJDBCParameterEntries = Arrays.asList(
+			new AbstractMap.SimpleImmutableEntry<>("cachePrepStmts", "true"),
+			new AbstractMap.SimpleImmutableEntry<>(
+				"characterEncoding", "UTF-8"),
+			new AbstractMap.SimpleImmutableEntry<>(
+				"dontTrackOpenResources", "true"),
+			new AbstractMap.SimpleImmutableEntry<>(
+				"holdResultsOpenOverStatementClose", "true"),
+			new AbstractMap.SimpleImmutableEntry<>("prepStmtCacheSize", "1000"),
+			new AbstractMap.SimpleImmutableEntry<>(
+				"prepStmtCacheSqlLimit", "2048"),
+			new AbstractMap.SimpleImmutableEntry<>(
+				"rewriteBatchedStatements", "true"),
+			new AbstractMap.SimpleImmutableEntry<>("serverTimezone", "GMT"),
+			new AbstractMap.SimpleImmutableEntry<>(
+				"useFastDateParsing", "false"),
+			new AbstractMap.SimpleImmutableEntry<>(
+				"useLocalSessionState", "true"),
+			new AbstractMap.SimpleImmutableEntry<>(
+				"useLocalTransactionState", "true"),
+			new AbstractMap.SimpleImmutableEntry<>("useUnicode", "true"));
 
 	private final Map<DataSource, ServiceRegistration<?>>
 		_serviceRegistrations = new ConcurrentHashMap<>();
