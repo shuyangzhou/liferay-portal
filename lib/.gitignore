@@ -86,6 +86,9 @@
 /development/tlddoc.jar
 /development/tomcat-api.jar
 /development/tomcat-coyote.jar
+/development/tomcat-el-api.jar
+/development/tomcat-jasper-el.jar
+/development/tomcat-juli.jar
 /development/tomcat-tribes.jar
 /development/tomcat-util-scan.jar
 /development/tomcat-util.jar
