@@ -117,6 +117,9 @@
 	<classpathentry kind="lib" path="lib/development/tlddoc.jar"/>
 	<classpathentry kind="lib" path="lib/development/tomcat-api.jar"/>
 	<classpathentry kind="lib" path="lib/development/tomcat-coyote.jar"/>
+	<classpathentry kind="lib" path="lib/development/tomcat-el-api.jar"/>
+	<classpathentry kind="lib" path="lib/development/tomcat-jasper-el.jar"/>
+	<classpathentry kind="lib" path="lib/development/tomcat-juli.jar"/>
 	<classpathentry kind="lib" path="lib/development/tomcat-tribes.jar"/>
 	<classpathentry kind="lib" path="lib/development/tomcat-util-scan.jar"/>
 	<classpathentry kind="lib" path="lib/development/tomcat-util.jar"/>
