@@ -32,7 +32,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/development/activation.jar"/>
 	<classpathentry kind="lib" path="lib/development/alloy-taglib.jar"/>
-	<classpathentry kind="lib" path="lib/development/annotations.jar"/>
 	<classpathentry kind="lib" path="lib/development/ant-apache-bsf.jar"/>
 	<classpathentry kind="lib" path="lib/development/ant-compress.jar"/>
 	<classpathentry kind="lib" path="lib/development/ant-contrib.jar"/>
@@ -74,14 +73,12 @@
 	<classpathentry kind="lib" path="lib/development/jacocoreport.jar"/>
 	<classpathentry kind="lib" path="lib/development/jalopy.jar"/>
 	<classpathentry kind="lib" path="lib/development/jargs.jar"/>
-	<classpathentry kind="lib" path="lib/development/jasper.jar"/>
 	<classpathentry kind="lib" path="lib/development/jaxb-api.jar"/>
 	<classpathentry kind="lib" path="lib/development/jbi_rt.jar"/>
 	<classpathentry kind="lib" path="lib/development/jhighlight.jar"/>
 	<classpathentry kind="lib" path="lib/development/jndi.jar"/>
 	<classpathentry kind="lib" path="lib/development/jsch.jar"/>
 	<classpathentry kind="lib" path="lib/development/jsonassert.jar"/>
-	<classpathentry kind="lib" path="lib/development/jsp-api.jar"/>
 	<classpathentry kind="lib" path="lib/development/jstl-api.jar"/>
 	<classpathentry kind="lib" path="lib/development/jstl-impl.jar"/>
 	<classpathentry kind="lib" path="lib/development/junit.jar"/>
@@ -105,7 +102,6 @@
 	<classpathentry kind="lib" path="lib/development/reflections.jar"/>
 	<classpathentry kind="lib" path="lib/development/saxpath.jar"/>
 	<classpathentry kind="lib" path="lib/development/sdk-addon-api-0.2.jar"/>
-	<classpathentry kind="lib" path="lib/development/servlet-api.jar"/>
 	<classpathentry kind="lib" path="lib/development/slf4j-simple.jar"/>
 	<classpathentry kind="lib" path="lib/development/sling-commons-osgi.jar"/>
 	<classpathentry kind="lib" path="lib/development/sling-testing-osgi-mock-core.jar"/>
@@ -115,14 +111,21 @@
 	<classpathentry kind="lib" path="lib/development/spring-instrument-tomcat.jar"/>
 	<classpathentry kind="lib" path="lib/development/spring-test.jar"/>
 	<classpathentry kind="lib" path="lib/development/tlddoc.jar"/>
+	<classpathentry kind="lib" path="lib/development/tomcat-annotations-api.jar"/>
 	<classpathentry kind="lib" path="lib/development/tomcat-api.jar"/>
 	<classpathentry kind="lib" path="lib/development/tomcat-coyote.jar"/>
+	<classpathentry kind="lib" path="lib/development/tomcat-el-api.jar"/>
+	<classpathentry kind="lib" path="lib/development/tomcat-jasper-el.jar"/>
+	<classpathentry kind="lib" path="lib/development/tomcat-jasper.jar"/>
+	<classpathentry kind="lib" path="lib/development/tomcat-jsp-api.jar"/>
+	<classpathentry kind="lib" path="lib/development/tomcat-juli.jar"/>
+	<classpathentry kind="lib" path="lib/development/tomcat-servlet-api.jar"/>
 	<classpathentry kind="lib" path="lib/development/tomcat-tribes.jar"/>
 	<classpathentry kind="lib" path="lib/development/tomcat-util-scan.jar"/>
 	<classpathentry kind="lib" path="lib/development/tomcat-util.jar"/>
+	<classpathentry kind="lib" path="lib/development/tomcat-websocket-api.jar"/>
 	<classpathentry kind="lib" path="lib/development/velocity.jar"/>
 	<classpathentry kind="lib" path="lib/development/velocity-tools.jar"/>
-	<classpathentry kind="lib" path="lib/development/websocket-api.jar"/>
 	<classpathentry kind="lib" path="lib/development/xmlresolver.jar"/>
 	<classpathentry kind="lib" path="lib/development/xmltask.jar"/>
 	<classpathentry kind="lib" path="lib/portal/commons-configuration.jar"/>
