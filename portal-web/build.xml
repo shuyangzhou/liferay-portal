@@ -201,16 +201,15 @@ ${oversize.files.jsp}</fail>
 		<path id="jspc.classpath">
 			<pathelement location="${jspc.java.home}/jre/lib/rt.jar" />
 			<path refid="jspc.common.classpath" />
-			<pathelement location="${app.server.dir}/lib/el-api.jar" />
-			<pathelement location="${app.server.dir}/lib/jasper.jar" />
-			<pathelement location="${app.server.dir}/lib/jasper-el.jar" />
-			<pathelement location="${app.server.dir}/lib/jasper-jdt.jar" />
-			<pathelement location="${app.server.dir}/lib/jsp-api.jar" />
-			<pathelement location="${app.server.dir}/lib/servlet-api.jar" />
-			<pathelement location="${app.server.dir}/lib/tomcat-api.jar" />
-			<pathelement location="${app.server.dir}/lib/tomcat-util.jar" />
-			<pathelement location="${app.server.dir}/lib/tomcat-util-scan.jar" />
-			<pathelement location="${app.server.bin.dir}/tomcat-juli.jar" />
+			<pathelement location="${project.dir}/lib/development/tomcat-api.jar" />
+			<pathelement location="${project.dir}/lib/development/tomcat-el-api.jar" />
+			<pathelement location="${project.dir}/lib/development/tomcat-jasper-el.jar" />
+			<pathelement location="${project.dir}/lib/development/tomcat-jasper.jar" />
+			<pathelement location="${project.dir}/lib/development/tomcat-jsp-api.jar" />
+			<pathelement location="${project.dir}/lib/development/tomcat-juli.jar" />
+			<pathelement location="${project.dir}/lib/development/tomcat-servlet-api.jar" />
+			<pathelement location="${project.dir}/lib/development/tomcat-util-scan.jar" />
+			<pathelement location="${project.dir}/lib/development/tomcat-util.jar" />
 		</path>
 
 		<antcall inheritrefs="true" target="compile-common-jsp">
