@@ -5,6 +5,7 @@
 
 package com.liferay.users.admin.internal.search;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Document;
@@ -12,8 +13,12 @@ import com.liferay.portal.kernel.search.DocumentImpl;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.util.BatchProcessor;
-import com.liferay.portal.search.index.UpdateDocumentIndexWriter;
+import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
+import com.liferay.portal.search.engine.adapter.document.UpdateByQueryDocumentRequest;
+import com.liferay.portal.search.index.IndexNameBuilder;
 import com.liferay.portal.search.model.uid.UIDFactory;
+import com.liferay.portal.search.query.Queries;
+import com.liferay.portal.search.script.Scripts;
 import com.liferay.portal.util.PropsValues;
 
 import java.util.AbstractMap;
@@ -44,10 +49,6 @@ public class UserLastLoginDateCallback implements Indexable.Callback {
 
 		Document document = new DocumentImpl();
 
-		document.add(
-			new Field(Field.ENTRY_CLASS_NAME, user.getModelClassName()));
-		document.add(
-			new Field(Field.ENTRY_CLASS_PK, String.valueOf(user.getUserId())));
 		document.addDate(Field.MODIFIED_DATE, user.getModifiedDate());
 		document.addKeyword(Field.UID, _uidFactory.getUID(user));
 		document.addDate("lastLoginDate", user.getLastLoginDate());
@@ -71,7 +72,7 @@ public class UserLastLoginDateCallback implements Indexable.Callback {
 
 			Document document = entry.getValue();
 
-			Field field = document.getField(Field.ENTRY_CLASS_PK);
+			Field field = document.getField(Field.UID);
 
 			documents.put(field.getValue(), document);
 		}
@@ -81,8 +82,36 @@ public class UserLastLoginDateCallback implements Indexable.Callback {
 
 			Map<String, Document> documents = entry.getValue();
 
-			_updateDocumentIndexWriter.updateDocumentsPartially(
-				entry.getKey(), documents.values(), false);
+			String indexName = _indexNameBuilder.getIndexName(entry.getKey());
+
+			for (Map.Entry<String, Document> documentEntry :
+					documents.entrySet()) {
+
+				Document document = documentEntry.getValue();
+
+				Field lastLoginDateField = document.getField("lastLoginDate");
+				Field lastLoginDateSortableField = document.getField(
+					"lastLoginDate_sortable");
+				Field modifiedDateField = document.getField(
+					Field.MODIFIED_DATE);
+				Field modifiedDateSortableField = document.getField(
+					"modified_sortable");
+
+				_searchEngineAdapter.execute(
+					new UpdateByQueryDocumentRequest(
+						_queries.term(Field.UID, documentEntry.getKey()),
+						_scripts.script(
+							StringBundler.concat(
+								"ctx._source.lastLoginDate=\"",
+								lastLoginDateField.getValue(),
+								"\";ctx._source.lastLoginDate_sortable=",
+								lastLoginDateSortableField.getValue(), "L;",
+								"ctx._source.modified=\"",
+								modifiedDateField.getValue(),
+								"\";ctx._source.modified_sortable=",
+								modifiedDateSortableField.getValue(), "L")),
+						indexName));
+			}
 		}
 	}
 
@@ -93,9 +122,18 @@ public class UserLastLoginDateCallback implements Indexable.Callback {
 			PropsValues.USERS_UPDATE_LAST_LOGIN_BATCH_SIZE);
 
 	@Reference
-	private UIDFactory _uidFactory;
+	private IndexNameBuilder _indexNameBuilder;
 
 	@Reference
-	private UpdateDocumentIndexWriter _updateDocumentIndexWriter;
+	private Queries _queries;
+
+	@Reference
+	private Scripts _scripts;
+
+	@Reference
+	private SearchEngineAdapter _searchEngineAdapter;
+
+	@Reference
+	private UIDFactory _uidFactory;
 
 }
