@@ -1,0 +1,4 @@
+ctx._source.lastLoginDate=params['lastLoginDate'];
+ctx._source.lastLoginDate_sortable=params['lastLoginDate_sortable'];
+ctx._source.modified=params['modified'];
+ctx._source.modified_sortable=params['modified_sortable'];
