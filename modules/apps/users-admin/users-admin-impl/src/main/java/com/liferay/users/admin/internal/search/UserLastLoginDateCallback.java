@@ -5,7 +5,6 @@
 
 package com.liferay.users.admin.internal.search;
 
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Document;
@@ -13,11 +12,14 @@ import com.liferay.portal.kernel.search.DocumentImpl;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.util.BatchProcessor;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
 import com.liferay.portal.search.engine.adapter.document.BulkDocumentRequest;
 import com.liferay.portal.search.engine.adapter.document.UpdateDocumentRequest;
 import com.liferay.portal.search.index.IndexNameBuilder;
 import com.liferay.portal.search.model.uid.UIDFactory;
+import com.liferay.portal.search.script.ScriptBuilder;
 import com.liferay.portal.search.script.Scripts;
 import com.liferay.portal.util.PropsValues;
 
@@ -26,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
@@ -56,6 +59,13 @@ public class UserLastLoginDateCallback implements Indexable.Callback {
 		_batchProcessor.add(
 			new AbstractMap.SimpleImmutableEntry<>(
 				user.getCompanyId(), document));
+	}
+
+	@Activate
+	protected void activate() {
+		_painlessScript = StringUtil.read(
+			UserLastLoginDateCallback.class,
+			"UserLastLoginDateCallback.painless");
 	}
 
 	@Deactivate
@@ -99,20 +109,26 @@ public class UserLastLoginDateCallback implements Indexable.Callback {
 				Field modifiedDateSortableField = document.getField(
 					"modified_sortable");
 
+				ScriptBuilder scriptBuilder = _scripts.builder();
+
+				scriptBuilder.idOrCode(_painlessScript);
+				scriptBuilder.language("painless");
+
+				scriptBuilder.putParameter(
+					"lastLoginDate", lastLoginDateField.getValue());
+				scriptBuilder.putParameter(
+					"lastLoginDate_sortable",
+					GetterUtil.getLong(lastLoginDateSortableField.getValue()));
+				scriptBuilder.putParameter(
+					"modified", modifiedDateField.getValue());
+				scriptBuilder.putParameter(
+					"modified_sortable",
+					GetterUtil.getLong(modifiedDateSortableField.getValue()));
+
 				UpdateDocumentRequest updateDocumentRequest =
 					new UpdateDocumentRequest(
 						indexName, documentEntry.getKey(),
-						_scripts.script(
-							StringBundler.concat(
-								"if (ctx._source.uid == null) {ctx.op = ",
-								"\"noop\"} else {ctx._source.lastLoginDate=\"",
-								lastLoginDateField.getValue(),
-								"\";ctx._source.lastLoginDate_sortable=",
-								lastLoginDateSortableField.getValue(), "L;",
-								"ctx._source.modified=\"",
-								modifiedDateField.getValue(),
-								"\";ctx._source.modified_sortable=",
-								modifiedDateSortableField.getValue(), "L}")));
+						scriptBuilder.build());
 
 				updateDocumentRequest.setScriptedUpsert(true);
 
@@ -132,6 +148,8 @@ public class UserLastLoginDateCallback implements Indexable.Callback {
 
 	@Reference
 	private IndexNameBuilder _indexNameBuilder;
+
+	private String _painlessScript;
 
 	@Reference
 	private Scripts _scripts;
