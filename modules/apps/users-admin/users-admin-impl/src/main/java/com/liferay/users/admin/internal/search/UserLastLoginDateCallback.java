@@ -14,10 +14,10 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.util.BatchProcessor;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
-import com.liferay.portal.search.engine.adapter.document.UpdateByQueryDocumentRequest;
+import com.liferay.portal.search.engine.adapter.document.BulkDocumentRequest;
+import com.liferay.portal.search.engine.adapter.document.UpdateDocumentRequest;
 import com.liferay.portal.search.index.IndexNameBuilder;
 import com.liferay.portal.search.model.uid.UIDFactory;
-import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.script.Scripts;
 import com.liferay.portal.util.PropsValues;
 
@@ -84,6 +84,8 @@ public class UserLastLoginDateCallback implements Indexable.Callback {
 
 			String indexName = _indexNameBuilder.getIndexName(entry.getKey());
 
+			BulkDocumentRequest bulkDocumentRequest = new BulkDocumentRequest();
+
 			for (Map.Entry<String, Document> documentEntry :
 					documents.entrySet()) {
 
@@ -97,21 +99,28 @@ public class UserLastLoginDateCallback implements Indexable.Callback {
 				Field modifiedDateSortableField = document.getField(
 					"modified_sortable");
 
-				_searchEngineAdapter.execute(
-					new UpdateByQueryDocumentRequest(
-						_queries.term(Field.UID, documentEntry.getKey()),
+				UpdateDocumentRequest updateDocumentRequest =
+					new UpdateDocumentRequest(
+						indexName, documentEntry.getKey(),
 						_scripts.script(
 							StringBundler.concat(
-								"ctx._source.lastLoginDate=\"",
+								"if (ctx._source.uid == null) {ctx.op = ",
+								"\"noop\"} else {ctx._source.lastLoginDate=\"",
 								lastLoginDateField.getValue(),
 								"\";ctx._source.lastLoginDate_sortable=",
 								lastLoginDateSortableField.getValue(), "L;",
 								"ctx._source.modified=\"",
 								modifiedDateField.getValue(),
 								"\";ctx._source.modified_sortable=",
-								modifiedDateSortableField.getValue(), "L")),
-						indexName));
+								modifiedDateSortableField.getValue(), "L}")));
+
+				updateDocumentRequest.setScriptedUpsert(true);
+
+				bulkDocumentRequest.addBulkableDocumentRequest(
+					updateDocumentRequest);
 			}
+
+			_searchEngineAdapter.execute(bulkDocumentRequest);
 		}
 	}
 
@@ -123,9 +132,6 @@ public class UserLastLoginDateCallback implements Indexable.Callback {
 
 	@Reference
 	private IndexNameBuilder _indexNameBuilder;
-
-	@Reference
-	private Queries _queries;
 
 	@Reference
 	private Scripts _scripts;
