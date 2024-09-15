@@ -154,6 +154,14 @@ public class AssetListEntryAssetEntryRelLocalServiceWrapper
 	}
 
 	@Override
+	public void deleteAssetListEntryAssetEntryRelByAssetEntryId(
+		long assetEntryId) {
+
+		_assetListEntryAssetEntryRelLocalService.
+			deleteAssetListEntryAssetEntryRelByAssetEntryId(assetEntryId);
+	}
+
+	@Override
 	public void deleteAssetListEntryAssetEntryRelByAssetListEntryId(
 		long assetListEntryId) {
 

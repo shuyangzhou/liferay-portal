@@ -142,6 +142,9 @@ public interface AssetListEntryAssetEntryRelLocalService
 			long assetListEntryId, long segmentsEntryId, int position)
 		throws PortalException;
 
+	public void deleteAssetListEntryAssetEntryRelByAssetEntryId(
+		long assetEntryId);
+
 	public void deleteAssetListEntryAssetEntryRelByAssetListEntryId(
 		long assetListEntryId);
 
