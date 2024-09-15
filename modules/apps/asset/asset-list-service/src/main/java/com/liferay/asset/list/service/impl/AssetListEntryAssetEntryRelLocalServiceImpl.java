@@ -16,9 +16,12 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
+import com.liferay.portal.kernel.util.BulkDeleteCacheThreadLocal;
+import com.liferay.portal.kernel.util.MapUtil;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -134,6 +137,41 @@ public class AssetListEntryAssetEntryRelLocalServiceImpl
 		return deleteAssetListEntryAssetEntryRel(
 			assetListEntryAssetEntryRelPersistence.findByA_S_P(
 				assetListEntryId, segmentsEntryId, position));
+	}
+
+	@Override
+	public void deleteAssetListEntryAssetEntryRelByAssetEntryId(
+		long assetEntryId) {
+
+		String ownerName =
+			AssetListEntryAssetEntryRelLocalServiceImpl.class.getName() +
+				".deleteAssetListEntryAssetEntryRelByAssetEntryId";
+
+		Map<Long, List<AssetListEntryAssetEntryRel>>
+			partitionAssetListEntryAssetEntryRels =
+				BulkDeleteCacheThreadLocal.getBulkDeleteCache(
+					ownerName,
+					() -> MapUtil.toPartitionMap(
+						assetListEntryAssetEntryRelPersistence.findAll(),
+						AssetListEntryAssetEntryRel::getAssetEntryId));
+
+		if (partitionAssetListEntryAssetEntryRels == null) {
+			assetListEntryAssetEntryRelPersistence.removeByAssetEntryId(
+				assetEntryId);
+		}
+		else {
+			List<AssetListEntryAssetEntryRel> assetListEntryAssetEntryRels =
+				partitionAssetListEntryAssetEntryRels.remove(assetEntryId);
+
+			if (assetListEntryAssetEntryRels != null) {
+				for (AssetListEntryAssetEntryRel assetListEntryAssetEntryRel :
+						assetListEntryAssetEntryRels) {
+
+					assetListEntryAssetEntryRelPersistence.remove(
+						assetListEntryAssetEntryRel);
+				}
+			}
+		}
 	}
 
 	@Override

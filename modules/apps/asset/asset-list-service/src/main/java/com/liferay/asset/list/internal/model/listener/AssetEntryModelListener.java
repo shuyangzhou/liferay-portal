@@ -6,12 +6,8 @@
 package com.liferay.asset.list.internal.model.listener;
 
 import com.liferay.asset.kernel.model.AssetEntry;
-import com.liferay.asset.list.model.AssetListEntryAssetEntryRel;
 import com.liferay.asset.list.service.AssetListEntryAssetEntryRelLocalService;
 import com.liferay.portal.kernel.exception.ModelListenerException;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 
@@ -28,28 +24,10 @@ public class AssetEntryModelListener extends BaseModelListener<AssetEntry> {
 	public void onAfterRemove(AssetEntry assetEntry)
 		throws ModelListenerException {
 
-		for (AssetListEntryAssetEntryRel assetListEntryAssetEntryRel :
-				_assetListEntryAssetEntryRelLocalService.
-					getAssetListEntryAssetEntryRelByAssetEntryId(
-						assetEntry.getEntryId())) {
-
-			try {
-				_assetListEntryAssetEntryRelLocalService.
-					deleteAssetListEntryAssetEntryRel(
-						assetListEntryAssetEntryRel);
-			}
-			catch (PortalException portalException) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(portalException);
-				}
-
-				throw new ModelListenerException(portalException);
-			}
-		}
+		_assetListEntryAssetEntryRelLocalService.
+			deleteAssetListEntryAssetEntryRelByAssetEntryId(
+				assetEntry.getEntryId());
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		AssetEntryModelListener.class);
 
 	@Reference
 	private AssetListEntryAssetEntryRelLocalService
