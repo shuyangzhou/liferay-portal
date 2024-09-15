@@ -7,10 +7,10 @@ package com.liferay.portal.service.impl;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.dao.orm.common.SQLTransformer;
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
-import com.liferay.portal.kernel.dao.orm.Property;
-import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
+import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.db.partition.DBPartition;
 import com.liferay.portal.kernel.exception.NoSuchResourceActionException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ResourceAction;
 import com.liferay.portal.kernel.model.ResourceConstants;
-import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -31,6 +30,8 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.security.permission.PermissionCacheUtil;
 import com.liferay.portal.service.base.ResourceActionLocalServiceBaseImpl;
+
+import java.sql.PreparedStatement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -258,41 +259,37 @@ public class ResourceActionLocalServiceImpl
 		String name = resourceAction.getName();
 		long bitwiseValue = resourceAction.getBitwiseValue();
 
-		ActionableDynamicQuery.AddCriteriaMethod addCriteriaMethod =
-			dynamicQuery -> {
-				Property nameProperty = PropertyFactoryUtil.forName("name");
-
-				dynamicQuery.add(nameProperty.eq(name));
-			};
-
 		_companyLocalService.forEachCompanyId(
 			companyId -> {
-				ActionableDynamicQuery actionableDynamicQuery =
-					_resourcePermissionLocalService.getActionableDynamicQuery();
-
-				actionableDynamicQuery.setAddCriteriaMethod(addCriteriaMethod);
-				actionableDynamicQuery.setCompanyId(companyId);
-				actionableDynamicQuery.setPerformActionMethod(
-					(ResourcePermission resourcePermission) -> {
-						long actionIds = resourcePermission.getActionIds();
-
-						if ((actionIds & bitwiseValue) != 0) {
-							actionIds &= ~bitwiseValue;
-
-							resourcePermission.setActionIds(actionIds);
-							resourcePermission.setViewActionId(
-								(actionIds % 2) == 1);
-
-							_resourcePermissionPersistence.update(
-								resourcePermission);
-						}
-					});
+				Session session = _resourcePermissionPersistence.openSession();
 
 				try {
-					actionableDynamicQuery.performActions();
+					session.apply(
+						connection -> {
+							try (PreparedStatement preparedStatement =
+									connection.prepareStatement(
+										SQLTransformer.transform(
+											_UPDATE_RESOURCE_PERMISSION))) {
+
+								preparedStatement.setLong(1, ~bitwiseValue);
+								preparedStatement.setLong(2, ~bitwiseValue);
+								preparedStatement.setLong(3, companyId);
+								preparedStatement.setString(4, name);
+								preparedStatement.setLong(
+									5,
+									CTCollectionThreadLocal.
+										getCTCollectionId());
+
+								int result = preparedStatement.executeUpdate();
+
+								if (result > 0) {
+									_resourcePermissionPersistence.clearCache();
+								}
+							}
+						});
 				}
-				catch (PortalException portalException) {
-					throw new SystemException(portalException);
+				finally {
+					_resourcePermissionPersistence.closeSession(session);
 				}
 			});
 
@@ -348,6 +345,11 @@ public class ResourceActionLocalServiceImpl
 
 		return key;
 	}
+
+	private static final String _UPDATE_RESOURCE_PERMISSION =
+		"update ResourcePermission set actionIds = BITAND(actionIds, ?), " +
+			"viewActionId = MOD(BITAND(actionIds, ?), 2) = 1 where companyId " +
+				"= ? and name = ? and ctCollectionId = ?";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ResourceActionLocalServiceImpl.class);
