@@ -186,6 +186,7 @@
 		<Logger level="ERROR" name="com.liferay.portlet.RenderResponseFactory" />
 		<Logger level="WARN" name="com.liferay.portlet.SecurityPortletContainerWrapper" />
 		<Logger level="ERROR" name="com.liferay.portlet.admin" />
+		<Logger level="INFO" name="com.liferay.portlet.asset.service.impl.AssetEntryLocalServiceImpl" />
 		<Logger level="WARN" name="com.liferay.portlet.documentlibrary.lar" />
 		<Logger level="WARN" name="com.liferay.portlet.documentlibrary.messaging" />
 		<Logger level="WARN" name="com.liferay.portlet.documentlibrary.sharepoint" />
