@@ -5,10 +5,11 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.petra.concurrent.ConcurrentReferenceValueHashMap;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.lang.SafeCloseable;
+import com.liferay.petra.memory.FinalizeManager;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -33,7 +34,8 @@ public class BulkDeleteCacheThreadLocal {
 
 	public static SafeCloseable openBulkDeleteMode() {
 		return _bulkDeleteCacheThreadLocal.setWithSafeCloseable(
-			new HashMap<>());
+			new ConcurrentReferenceValueHashMap<>(
+				FinalizeManager.SOFT_REFERENCE_FACTORY));
 	}
 
 	private static final CentralizedThreadLocal<Map<String, Object>>
