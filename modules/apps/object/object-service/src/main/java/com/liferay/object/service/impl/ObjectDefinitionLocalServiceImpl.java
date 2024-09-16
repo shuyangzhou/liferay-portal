@@ -157,6 +157,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -514,6 +515,8 @@ public class ObjectDefinitionLocalServiceImpl
 		if (!objectDefinition.isUnmodifiableSystemObject()) {
 			_deleteObjectDefinitionPLOEntries(objectDefinition);
 
+			AtomicInteger count = new AtomicInteger();
+
 			ActionableDynamicQuery actionableDynamicQuery =
 				new DefaultActionableDynamicQuery() {
 
@@ -535,6 +538,12 @@ public class ObjectDefinitionLocalServiceImpl
 						portalSession.flush();
 
 						portalSession.clear();
+
+						int page = count.incrementAndGet();
+
+						if (((page % 10) == 0) && _log.isInfoEnabled()) {
+							_log.info("ObjectEntry page " + page);
+						}
 					}
 
 				};
@@ -572,14 +581,42 @@ public class ObjectDefinitionLocalServiceImpl
 				actionableDynamicQuery.performActions();
 
 				if (deletedMarker.get()) {
+					if (_log.isInfoEnabled()) {
+						_log.info("Started clean up resource permissions");
+					}
+
+					long startTime = System.currentTimeMillis();
+
 					_resourcePermissionLocalService.deleteResourcePermissions(
 						objectDefinition.getCompanyId(),
 						objectDefinition.getClassName(),
 						ResourceConstants.SCOPE_INDIVIDUAL);
 
+					if (_log.isInfoEnabled()) {
+						_log.info(
+							"Cleaned up resource permission in " +
+								(System.currentTimeMillis() - startTime) +
+									"ms");
+
+						_log.info("Started clean up asset entries");
+					}
+
+					startTime = System.currentTimeMillis();
+
 					_assetEntryLocalService.deleteEntries(
 						objectDefinition.getCompanyId(),
 						objectDefinition.getClassName());
+
+					if (_log.isInfoEnabled()) {
+						_log.info(
+							"Cleaned up asset entries in " +
+								(System.currentTimeMillis() - startTime) +
+									"ms");
+
+						_log.info("Started clean up db tables");
+					}
+
+					startTime = System.currentTimeMillis();
 
 					_deleteFromTable(objectDefinition.getDBTableName());
 
@@ -589,6 +626,13 @@ public class ObjectDefinitionLocalServiceImpl
 					if (objectDefinition.isEnableLocalization()) {
 						_deleteFromTable(
 							objectDefinition.getLocalizationDBTableName());
+					}
+
+					if (_log.isInfoEnabled()) {
+						_log.info(
+							"Cleaned up db tables in " +
+								(System.currentTimeMillis() - startTime) +
+									"ms");
 					}
 				}
 			}
