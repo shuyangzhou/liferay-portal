@@ -37,8 +37,16 @@ public class IndexerRequestBufferOverflowHandler {
 		try {
 			BufferOverflowThreadLocal.setOverflowMode(true);
 
+			long startTime = System.currentTimeMillis();
+
+			_log.error("Started a overflow for " + currentBufferSize);
+
 			IndexerRequestBufferExecutorUtil.execute(
 				indexerRequestBuffer, currentBufferSize);
+
+			_log.error(
+				"Overflow is flushed in " +
+					(System.currentTimeMillis() - startTime) + "ms");
 		}
 		finally {
 			BufferOverflowThreadLocal.setOverflowMode(false);

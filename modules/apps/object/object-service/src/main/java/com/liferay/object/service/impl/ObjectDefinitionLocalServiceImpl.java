@@ -156,6 +156,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -513,6 +514,8 @@ public class ObjectDefinitionLocalServiceImpl
 		if (!objectDefinition.isUnmodifiableSystemObject()) {
 			_deleteObjectDefinitionPLOEntries(objectDefinition);
 
+			AtomicInteger count = new AtomicInteger();
+
 			ActionableDynamicQuery actionableDynamicQuery =
 				new DefaultActionableDynamicQuery() {
 
@@ -534,6 +537,12 @@ public class ObjectDefinitionLocalServiceImpl
 						portalSession.flush();
 
 						portalSession.clear();
+
+						int page = count.incrementAndGet();
+
+						if ((page % 10) == 0) {
+							_log.error("ObjectEntry page " + page);
+						}
 					}
 
 				};
@@ -565,14 +574,34 @@ public class ObjectDefinitionLocalServiceImpl
 
 				actionableDynamicQuery.performActions();
 
+				_log.error("Started clean up resource permissions");
+
+				long startTime = System.currentTimeMillis();
+
 				_resourcePermissionLocalService.deleteResourcePermissions(
 					objectDefinition.getCompanyId(),
 					objectDefinition.getClassName(),
 					ResourceConstants.SCOPE_INDIVIDUAL);
 
+				_log.error(
+					"Cleaned up resource permission in " +
+						(System.currentTimeMillis() - startTime) + "ms");
+
+				_log.error("Started clean up asset entries");
+
+				startTime = System.currentTimeMillis();
+
 				_assetEntryLocalService.deleteEntries(
 					objectDefinition.getCompanyId(),
 					objectDefinition.getClassName());
+
+				_log.error(
+					"Cleaned up asset entries in " +
+						(System.currentTimeMillis() - startTime) + "ms");
+
+				_log.error("Started clean up db tables");
+
+				startTime = System.currentTimeMillis();
 
 				_deleteFromTable(objectDefinition.getDBTableName());
 
@@ -582,6 +611,10 @@ public class ObjectDefinitionLocalServiceImpl
 					_deleteFromTable(
 						objectDefinition.getLocalizationDBTableName());
 				}
+
+				_log.error(
+					"Cleaned up db tables in " +
+						(System.currentTimeMillis() - startTime) + "ms");
 			}
 		}
 

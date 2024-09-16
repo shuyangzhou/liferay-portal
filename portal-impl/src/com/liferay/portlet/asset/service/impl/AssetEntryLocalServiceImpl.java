@@ -33,6 +33,8 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
@@ -81,6 +83,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
 /**
@@ -99,6 +102,8 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 
 		long classNameId = _classNameLocalService.getClassNameId(className);
 
+		AtomicInteger count = new AtomicInteger();
+
 		ActionableDynamicQuery actionableDynamicQuery =
 			new DefaultActionableDynamicQuery() {
 
@@ -112,6 +117,12 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 					session.flush();
 
 					session.clear();
+
+					int page = count.incrementAndGet();
+
+					if ((page % 10) == 0) {
+						_log.error("AssetEntry page " + page);
+					}
 				}
 
 			};
@@ -153,7 +164,15 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 				_removeFunctionThreadLocal.setWithSafeCloseable(
 					Function.identity())) {
 
+			long startTime = System.currentTimeMillis();
+
+			_log.error("Started AssetEntry ActionableDynamicQuery execution");
+
 			actionableDynamicQuery.performActions();
+
+			_log.error(
+				"Finish AssetEntry ActionableDynamicQuery in " +
+					(System.currentTimeMillis() - startTime) + "ms");
 		}
 
 		Session session = assetEntryPersistence.openSession();
@@ -161,6 +180,10 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 		try {
 			session.apply(
 				connection -> {
+					long startTime = System.currentTimeMillis();
+
+					_log.error("Started AssetEntry SQL deletion");
+
 					try (PreparedStatement preparedStatement =
 							connection.prepareStatement(_DELETE_BY_C_CN)) {
 
@@ -173,6 +196,10 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 							assetEntryPersistence.clearCache();
 						}
 					}
+
+					_log.error(
+						"Finished AssetEntry SQL deletion in " +
+							(System.currentTimeMillis() - startTime) + "ms");
 				});
 		}
 		finally {
@@ -1463,6 +1490,9 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 	private static final String _DELETE_BY_C_CN =
 		"delete from " + AssetEntryModelImpl.TABLE_NAME +
 			" where companyId = ? and classNameId = ?";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AssetEntryLocalServiceImpl.class);
 
 	private static final CentralizedThreadLocal
 		<Function<AssetEntry, AssetEntry>> _removeFunctionThreadLocal =
