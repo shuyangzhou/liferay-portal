@@ -66,8 +66,7 @@ public class AssetEntryLocalServiceWrapper
 
 		if (entry != null) {
 			_assetEntryAssetCategoryRelLocalService.
-				deleteAssetEntryAssetCategoryRelByAssetEntryId(
-					entry.getEntryId());
+				deleteAssetEntryAssetCategoryRelByAssetEntry(entry);
 		}
 
 		return entry;
