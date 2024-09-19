@@ -347,9 +347,11 @@ public class ResourceActionLocalServiceImpl
 	}
 
 	private static final String _UPDATE_RESOURCE_PERMISSION =
-		"update ResourcePermission set actionIds = BITAND(actionIds, ?), " +
-			"viewActionId = (MOD(BITAND(actionIds, ?), 2) = 1) where " +
-				"companyId = ? and name = ? and ctCollectionId = ?";
+		StringBundler.concat(
+			"update ResourcePermission set actionIds = BITAND(CAST_LONG(",
+			"actionIds), CAST_LONG(?)), viewActionId = (MOD(BITAND(CAST_LONG(",
+			"actionIds), CAST_LONG(?)), 2) = 1) where companyId = ? and name ",
+			"= ? and ctCollectionId = ?");
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ResourceActionLocalServiceImpl.class);
