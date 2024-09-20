@@ -45,24 +45,24 @@ public class ObjectDefinitionResourcePermissionUtil {
 			return;
 		}
 
-		Document document = _readDocument(
-			objectActionLocalService, objectDefinition,
-			objectDefinitionPersistence, treeFactory);
-
-		resourceActions.populateModelResources(document);
-
-		Portlet portlet = portletLocalService.getPortletById(
-			objectDefinition.getCompanyId(), objectDefinition.getPortletId());
-
-		if (portlet != null) {
-			resourceActions.populatePortletResource(
-				portlet,
-				ObjectDefinitionResourcePermissionUtil.class.getClassLoader(),
-				document);
-		}
-
-		_objectDefinitionResourceActionDocumentsMap.put(
-			objectDefinition, document);
+//		Document document = _readDocument(
+//			objectActionLocalService, objectDefinition,
+//			objectDefinitionPersistence, treeFactory);
+//
+//		resourceActions.populateModelResources(document);
+//
+//		Portlet portlet = portletLocalService.getPortletById(
+//			objectDefinition.getCompanyId(), objectDefinition.getPortletId());
+//
+//		if (portlet != null) {
+//			resourceActions.populatePortletResource(
+//				portlet,
+//				ObjectDefinitionResourcePermissionUtil.class.getClassLoader(),
+//				document);
+//		}
+//
+//		_objectDefinitionResourceActionDocumentsMap.put(
+//			objectDefinition, document);
 	}
 
 	public static void removeResourceActions(
