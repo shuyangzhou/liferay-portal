@@ -34,6 +34,7 @@ import com.liferay.object.constants.ObjectFieldSettingConstants;
 import com.liferay.object.constants.ObjectFieldValidationConstants;
 import com.liferay.object.constants.ObjectFilterConstants;
 import com.liferay.object.constants.ObjectRelationshipConstants;
+import com.liferay.object.definition.util.ObjectDefinitionThreadLocal;
 import com.liferay.object.entry.ObjectEntryContext;
 import com.liferay.object.entry.contributor.ObjectEntryValuesContributor;
 import com.liferay.object.entry.util.ObjectEntryThreadLocal;
@@ -205,7 +206,6 @@ import com.liferay.portal.search.sort.Sorts;
 import com.liferay.portal.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
-import com.liferay.portlet.asset.util.DeletedAssetObjectThreadLocal;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -547,18 +547,33 @@ public class ObjectEntryLocalServiceImpl
 			_objectDefinitionPersistence.findByPrimaryKey(
 				objectEntry.getObjectDefinitionId());
 
-		_resourceLocalService.deleteResource(
-			objectEntry.getCompanyId(), objectDefinition.getClassName(),
-			ResourceConstants.SCOPE_INDIVIDUAL, objectEntry.getObjectEntryId());
+		if (!ObjectDefinitionThreadLocal.isDeleteObjectDefinitionId(
+				objectDefinition.getObjectDefinitionId())) {
 
-		try (SafeCloseable safeCloseable =
-				DeletedAssetObjectThreadLocal.setWithSafeCloseable(
-					objectDefinition.getClassName(),
-					objectEntry.getObjectEntryId())) {
+			_resourceLocalService.deleteResource(
+				objectEntry.getCompanyId(), objectDefinition.getClassName(),
+				ResourceConstants.SCOPE_INDIVIDUAL,
+				objectEntry.getObjectEntryId());
 
 			_assetEntryLocalService.deleteEntry(
 				objectDefinition.getClassName(),
 				objectEntry.getObjectEntryId());
+
+			_deleteFromTable(
+				objectDefinition.getDBTableName(),
+				objectDefinition.getPKObjectFieldDBColumnName(),
+				objectEntry.getObjectEntryId());
+			_deleteFromTable(
+				objectDefinition.getExtensionDBTableName(),
+				objectDefinition.getPKObjectFieldDBColumnName(),
+				objectEntry.getObjectEntryId());
+
+			if (objectDefinition.isEnableLocalization()) {
+				_deleteFromTable(
+					objectDefinition.getLocalizationDBTableName(),
+					objectDefinition.getPKObjectFieldDBColumnName(),
+					objectEntry.getObjectEntryId());
+			}
 		}
 
 		_workflowInstanceLinkLocalService.deleteWorkflowInstanceLinks(
@@ -568,22 +583,6 @@ public class ObjectEntryLocalServiceImpl
 		_deleteFileEntries(
 			Collections.emptyMap(), objectDefinition.getObjectDefinitionId(),
 			objectEntry::getValues);
-
-		_deleteFromTable(
-			objectDefinition.getDBTableName(),
-			objectDefinition.getPKObjectFieldDBColumnName(),
-			objectEntry.getObjectEntryId());
-		_deleteFromTable(
-			objectDefinition.getExtensionDBTableName(),
-			objectDefinition.getPKObjectFieldDBColumnName(),
-			objectEntry.getObjectEntryId());
-
-		if (objectDefinition.isEnableLocalization()) {
-			_deleteFromTable(
-				objectDefinition.getLocalizationDBTableName(),
-				objectDefinition.getPKObjectFieldDBColumnName(),
-				objectEntry.getObjectEntryId());
-		}
 
 		deleteRelatedObjectEntries(
 			objectEntry.getGroupId(), objectDefinition.getObjectDefinitionId(),
