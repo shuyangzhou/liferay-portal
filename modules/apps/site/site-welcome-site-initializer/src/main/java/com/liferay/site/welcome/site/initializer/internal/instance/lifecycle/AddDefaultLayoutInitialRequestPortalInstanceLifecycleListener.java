@@ -162,6 +162,11 @@ public class AddDefaultLayoutInitialRequestPortalInstanceLifecycleListener
 			SiteInitializer siteInitializer =
 				_siteInitializerRegistry.getSiteInitializer(siteInitializerKey);
 
+			if (siteInitializer == null) {
+				_log.error(
+					"Unable to get SiteInitializer : " + siteInitializerKey);
+			}
+
 			siteInitializer.initialize(group.getGroupId());
 		}
 		finally {

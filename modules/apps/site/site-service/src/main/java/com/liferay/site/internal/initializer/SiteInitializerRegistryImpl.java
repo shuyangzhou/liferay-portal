@@ -7,6 +7,8 @@ package com.liferay.site.internal.initializer;
 
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapListener;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -73,7 +75,43 @@ public class SiteInitializerRegistryImpl implements SiteInitializerRegistry {
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			bundleContext, SiteInitializer.class, "site.initializer.key");
+			bundleContext, SiteInitializer.class, "site.initializer.key",
+			new ServiceTrackerMapListener
+				<String, SiteInitializer, SiteInitializer>() {
+
+				@Override
+				public void keyEmitted(
+					ServiceTrackerMap<String, SiteInitializer>
+						serviceTrackerMap,
+					String key, SiteInitializer siteInitializer,
+					SiteInitializer content) {
+
+					if (_log.isInfoEnabled()) {
+						_log.info(
+							StringBundler.concat(
+								"Added SiteInitializer key : ", key,
+								", value : ", siteInitializer),
+							new Exception());
+					}
+				}
+
+				@Override
+				public void keyRemoved(
+					ServiceTrackerMap<String, SiteInitializer>
+						serviceTrackerMap,
+					String key, SiteInitializer siteInitializer,
+					SiteInitializer content) {
+
+					if (_log.isInfoEnabled()) {
+						_log.info(
+							StringBundler.concat(
+								"Removed SiteInitializer key : ", key,
+								", value : ", siteInitializer),
+							new Exception());
+					}
+				}
+
+			});
 	}
 
 	@Deactivate
