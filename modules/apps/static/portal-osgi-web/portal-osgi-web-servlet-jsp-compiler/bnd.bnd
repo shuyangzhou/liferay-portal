@@ -2,6 +2,10 @@ Bundle-Name: Liferay Portal OSGi Web Servlet JSP Compiler
 Bundle-SymbolicName: com.liferay.portal.osgi.web.servlet.jsp.compiler
 Bundle-Version: 6.0.22
 Import-Package:\
+	!com.sun.org.apache.xalan.internal.res,\
+	!com.sun.org.apache.xml.internal.utils,\
+	!com.sun.org.apache.xpath.*,\
+	\
 	com.sun.el;version='[3.0.0,4.0)',\
 	com.sun.el.lang;version='[3.0.0,4.0)',\
 	com.sun.el.parser;version='[3.0.0,4.0)',\
@@ -30,30 +34,6 @@ Import-Package:\
 	javax.xml.transform.stream,\
 	javax.xml.validation,\
 	\
-	org.apache.taglibs.standard;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.extra.spath;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.functions;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.lang.jstl;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.lang.jstl.parser;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.lang.jstl.test;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.lang.jstl.test.beans;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.lang.support;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.resources;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.tag.common.core;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.tag.common.fmt;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.tag.common.sql;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.tag.common.xml;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.tag.el.core;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.tag.el.fmt;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.tag.el.sql;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.tag.el.xml;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.tag.rt.core;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.tag.rt.fmt;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.tag.rt.sql;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.tag.rt.xml;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.tei;version='[1.2.3,2.0)',\
-	org.apache.taglibs.standard.tlv;version='[1.2.3,2.0)',\
-	\
 	org.w3c.dom,\
 	org.w3c.dom.ls,\
 	\
@@ -66,4 +46,3 @@ Provide-Capability:\
 	liferay.extender;\
 		liferay.extender="jsp.extender";\
 		version:Version="${Bundle-Version}"
--includeresource: @javax.servlet.jsp.jstl-[0-9.]*.jar!/META-INF/*.tld

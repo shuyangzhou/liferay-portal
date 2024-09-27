@@ -10,6 +10,7 @@ classes {
 
 dependencies {
 	compileInclude group: "com.liferay", name: "javax.servlet.jsp", version: "2.3.3-b02.LIFERAY-PATCHED-9"
+	compileInclude group: "com.liferay", name: "javax.servlet.jsp.jstl", version: "1.2.3.LIFERAY-PATCHED-2"
 
 	compileOnly group: "com.liferay", name: "com.sun.el.javax.el", version: "3.0.1.LIFERAY-PATCHED-3"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
@@ -18,7 +19,6 @@ dependencies {
 	compileOnly group: "javax.servlet.jsp", name: "javax.servlet.jsp-api", version: "2.3.2-b01"
 	compileOnly group: "javax.servlet.jsp.jstl", name: "javax.servlet.jsp.jstl-api", version: "1.2.2"
 	compileOnly group: "org.glassfish", name: "javax.servlet", version: "3.2-b06"
-	compileOnly group: "org.glassfish.web", name: "javax.servlet.jsp.jstl", version: "1.2.3"
 	compileOnly group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.4.0"
 	compileOnly group: "org.osgi", name: "osgi.core", version: "6.0.0"
 	compileOnly project(":apps:static:osgi:osgi-util")
