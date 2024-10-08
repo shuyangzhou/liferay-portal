@@ -10,6 +10,7 @@ import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.service.FragmentEntryLocalServiceUtil;
 import com.liferay.layout.util.constants.LayoutDataItemTypeConstants;
 import com.liferay.petra.lang.HashUtil;
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -179,7 +180,8 @@ public class FragmentStyledLayoutStructureItem
 	private String _normalizeCssClass(String cssClass) {
 		cssClass = StringUtil.toLowerCase(cssClass);
 
-		return cssClass.replaceAll("[^A-Za-z0-9-]", StringPool.DASH);
+		return StringUtil.replace(
+			cssClass, CharPool.UNDERLINE, CharPool.DASH);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
