@@ -95,6 +95,7 @@ import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.search.dummy.DummyIndexer;
 import com.liferay.portal.kernel.security.auth.Authenticator;
 import com.liferay.portal.kernel.security.auth.EmailAddressGenerator;
 import com.liferay.portal.kernel.security.auth.EmailAddressValidator;
@@ -6569,6 +6570,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	protected void reindex(User user) throws SearchException {
 		Indexer<User> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
 			User.class);
+
+		new Exception("^^^Using " + indexer + " to index " + user.getUserId() + " by thread " + Thread.currentThread()).printStackTrace(System.out);
 
 		indexer.reindex(user);
 	}

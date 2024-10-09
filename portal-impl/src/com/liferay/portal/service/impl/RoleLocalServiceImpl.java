@@ -64,6 +64,7 @@ import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.SearchException;
+import com.liferay.portal.kernel.search.dummy.DummyIndexer;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
@@ -2091,6 +2092,8 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 	protected void reindex(long userId) throws SearchException {
 		Indexer<User> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
 			User.class);
+
+		new Exception("***Using " + indexer + " to index " + userId + " by thread " + Thread.currentThread()).printStackTrace(System.out);
 
 		indexer.reindex(_userLocalService.fetchUser(userId));
 	}

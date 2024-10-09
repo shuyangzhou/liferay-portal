@@ -30,6 +30,7 @@ import java.io.IOException;
 
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -40,8 +41,14 @@ import org.osgi.service.component.annotations.Reference;
 public class CommerceServicePortalInstanceLifecycleListener
 	extends BasePortalInstanceLifecycleListener {
 
+	@Activate
+	protected void activate() {
+		System.out.println("^^^Activating " + CommerceServicePortalInstanceLifecycleListener.class.getName());
+	}
+
 	@Override
 	public void portalInstanceRegistered(Company company) throws Exception {
+		System.out.println("$$$portalInstanceRegistered for " + company.getCompanyId());
 		User user = _userLocalService.getGuestUser(company.getCompanyId());
 
 		_commerceSAPHelper.addCommerceDefaultSAPEntries(

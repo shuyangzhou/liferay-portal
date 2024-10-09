@@ -100,6 +100,10 @@ public class CommerceAccountRoleHelperImpl
 		Role role = _roleLocalService.fetchRole(
 			serviceContext.getCompanyId(), name);
 
+		if (role != null) {
+			System.out.println("@@@Already have role " + role);
+		}
+
 		if (role == null) {
 			AccountRole accountRole = _accountRoleLocalService.addAccountRole(
 				null, serviceContext.getUserId(),
@@ -126,6 +130,10 @@ public class CommerceAccountRoleHelperImpl
 
 		Role role = _roleLocalService.fetchRole(
 			serviceContext.getCompanyId(), name);
+
+		if (role != null) {
+			System.out.println("!!!Already have role " + role);
+		}
 
 		if (role == null) {
 			role = _roleLocalService.addRole(
