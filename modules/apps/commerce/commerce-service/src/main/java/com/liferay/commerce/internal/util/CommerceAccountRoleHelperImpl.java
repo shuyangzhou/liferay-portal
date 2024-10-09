@@ -100,6 +100,10 @@ public class CommerceAccountRoleHelperImpl
 		Role role = _roleLocalService.fetchRole(
 			serviceContext.getCompanyId(), name);
 
+		if (role != null) {
+			System.out.println("@@@Already have role " + role);
+		}
+
 		if (role == null) {
 			AccountRole accountRole = _accountRoleLocalService.addAccountRole(
 				null, serviceContext.getUserId(),
@@ -108,6 +112,8 @@ public class CommerceAccountRoleHelperImpl
 				Collections.emptyMap());
 
 			role = accountRole.getRole();
+
+			System.out.println("@@@Created new role " + role);
 
 			_setRolePermissions(role, serviceContext);
 		}
@@ -127,11 +133,17 @@ public class CommerceAccountRoleHelperImpl
 		Role role = _roleLocalService.fetchRole(
 			serviceContext.getCompanyId(), name);
 
+		if (role != null) {
+			System.out.println("!!!Already have role " + role);
+		}
+
 		if (role == null) {
 			role = _roleLocalService.addRole(
 				null, serviceContext.getUserId(), null, 0, name,
 				Collections.singletonMap(serviceContext.getLocale(), name),
 				Collections.emptyMap(), type, null, serviceContext);
+
+			System.out.println("!!!Created new role " + role);
 
 			_setRolePermissions(role, serviceContext);
 		}
