@@ -9,12 +9,12 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerPostProcessor;
 import com.liferay.portal.kernel.search.IndexerRegistry;
-import com.liferay.portal.kernel.search.dummy.DummyIndexer;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -24,11 +24,15 @@ import com.liferay.portal.search.internal.buffer.BufferedIndexerInvocationHandle
 import com.liferay.portal.search.internal.buffer.IndexerRequestBuffer;
 import com.liferay.portal.search.internal.buffer.IndexerRequestBufferOverflowHandler;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -126,7 +130,9 @@ public class IndexerRegistryImpl implements IndexerRegistry {
 			_log.info("No indexer found for " + className);
 		}
 
-		return (Indexer<T>)_dummyIndexer;
+		return (Indexer<T>)ProxyUtil.newProxyInstance(
+			Indexer.class.getClassLoader(), new Class<?>[] {Indexer.class},
+			new StartupSafeReindexInvocationHandler(className));
 	}
 
 	@Activate
@@ -254,7 +260,6 @@ public class IndexerRegistryImpl implements IndexerRegistry {
 	private final Map<String, BufferedIndexerInvocationHandler>
 		_bufferedInvocationHandlers = new ConcurrentHashMap<>();
 	private BundleContext _bundleContext;
-	private final Indexer<?> _dummyIndexer = new DummyIndexer();
 	private ServiceTrackerMap<String, List<IndexerPostProcessor>>
 		_indexerPostProcessorsServiceTrackerMap;
 	private volatile IndexerRegistryConfiguration _indexerRegistryConfiguration;
@@ -270,5 +275,41 @@ public class IndexerRegistryImpl implements IndexerRegistry {
 
 	private final Map<String, Indexer<? extends Object>> _proxiedIndexers =
 		new ConcurrentHashMap<>();
+
+	private class StartupSafeReindexInvocationHandler
+		implements InvocationHandler {
+
+		@Override
+		public Object invoke(Object proxy, Method method, Object[] args)
+			throws Throwable {
+
+			if (Objects.equals(method.getName(), "reindex")) {
+				DependencyManagerSyncUtil.registerSyncCallable(
+					() -> {
+						Indexer<?> indexer = getIndexer(_className);
+
+						if (indexer == null) {
+							if (_log.isInfoEnabled()) {
+								_log.info("No indexer found for " + _className);
+							}
+						}
+						else {
+							method.invoke(indexer, args);
+						}
+
+						return null;
+					});
+			}
+
+			return method.getDefaultValue();
+		}
+
+		private StartupSafeReindexInvocationHandler(String className) {
+			_className = className;
+		}
+
+		private final String _className;
+
+	}
 
 }
