@@ -5853,6 +5853,14 @@ ${custom.upgrade.properties}</echo>
 
 							<lstopwatch action="start" name="rebuild-database-${database.type}" />
 
+							<loadfile property="create-sh-content" srcfile="${create.sh.file.path}"/>
+							<echo message="^^^^^^^^^^ Content of ${create.sh.file.path}"></echo>
+							<echo message="${create-sh-content}" />
+
+							<loadfile property="create-sql-content" srcfile="${create.sql.file.path}"/>
+							<echo message="********** Content of ${create.sql.file.path}"></echo>
+							<echo message="${create-sql-content}" />
+
 							<execute>
 								<![CDATA[
 									chmod 755 ${create.sh.file.path} ${create.sql.file.path}

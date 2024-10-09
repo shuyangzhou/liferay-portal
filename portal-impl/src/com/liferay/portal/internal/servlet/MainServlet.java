@@ -41,6 +41,11 @@ import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.plugin.PluginPackage;
 import com.liferay.portal.kernel.portlet.PortletConfigFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletInstanceFactoryUtil;
+import com.liferay.portal.kernel.search.Hits;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
@@ -98,9 +103,11 @@ import com.liferay.social.kernel.util.SocialConfigurationUtil;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.io.Serializable;
 import java.sql.Connection;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -108,6 +115,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TimeZone;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletContext;
 
@@ -414,6 +423,28 @@ public class MainServlet extends HttpServlet {
 		ThreadLocalCacheManager.clearAll(Lifecycle.REQUEST);
 
 		DependencyManagerSyncUtil.sync();
+
+		Indexer<User> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+			User.class);
+
+		SearchContext searchContext = new SearchContext();
+
+		Map<String, Serializable> attributes = new HashMap<>();
+
+		attributes.put("emailAddress", "test@liferay.com");
+
+		searchContext.setAttributes(attributes);
+
+		searchContext.setCompanyId(PortalInstancePool.getDefaultCompanyId());
+
+		try {
+			Hits hits = indexer.search(searchContext);
+
+			System.out.println("#####" + hits);
+		}
+		catch (SearchException searchException) {
+			_log.error(searchException);
+		}
 	}
 
 	@Override

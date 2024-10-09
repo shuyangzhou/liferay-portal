@@ -10434,6 +10434,9 @@ public class RolePersistenceImpl
 	public Role updateImpl(Role role) {
 		boolean isNew = role.isNew();
 
+		if (isNew) {
+			new Exception("~~~Inserting Role " + role + " by thread " + Thread.currentThread()).printStackTrace(System.out);
+		}
 		if (!(role instanceof RoleModelImpl)) {
 			InvocationHandler invocationHandler = null;
 
