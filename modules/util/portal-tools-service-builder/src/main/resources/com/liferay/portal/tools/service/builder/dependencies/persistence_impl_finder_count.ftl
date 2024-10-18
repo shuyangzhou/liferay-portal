@@ -23,75 +23,96 @@ public int countBy${entityFinder.name}(
 </#list>
 
 ) {
-	<#if entity.isChangeTrackingEnabled()>
-		try (SafeCloseable safeCloseable = ${ctPersistenceHelper}.setCTCollectionIdWithSafeCloseable(${entity.name}.class)) {
-	</#if>
+	<#if !entityFinder.isCollection()>
+		${entity.name} ${entity.variableName} = fetchBy${entityFinder.name}(
 
-	<#list entityColumns as entityColumn>
-		<#if stringUtil.equals(entityColumn.type, "String") && entityColumn.isConvertNull()>
-			${entityColumn.name} = Objects.toString(${entityColumn.name}, "");
-		</#if>
-	</#list>
-
-	FinderPath finderPath =
-		<#if !entityFinder.hasCustomComparator()>
-			_finderPathCountBy${entityFinder.name};
-		<#else>
-			_finderPathWithPaginationCountBy${entityFinder.name};
-		</#if>
-
-	Object[] finderArgs = new Object[] {
 		<#list entityColumns as entityColumn>
-			<#if stringUtil.equals(entityColumn.type, "Date")>
-				_getTime(${entityColumn.name})
-			<#else>
-				${entityColumn.name}
-			</#if>
+			${entityColumn.name}
 
 			<#if entityColumn_has_next>
 				,
 			</#if>
 		</#list>
-	};
 
-	Long count = (Long)${finderCache}.getResult(finderPath, finderArgs, this);
+		);
 
-	if (count == null) {
-		<#include "persistence_impl_count_by_query.ftl">
-
-		String sql = sb.toString();
-
-		Session session = null;
-
-		try {
-			session = openSession();
-
-			Query query = session.createQuery(sql);
-
-			QueryPos queryPos = QueryPos.getInstance(query);
-
-			<@finderQPos />
-
-			count = (Long)query.uniqueResult();
-
-			${finderCache}.putResult(finderPath, finderArgs, count);
+		if (${entity.variableName} == null) {
+			return 0;
 		}
-		catch (Exception exception) {
-			<#if serviceBuilder.isVersionLTE_7_2_0()>
-				${finderCache}.removeResult(finderPath, finderArgs);
+		else {
+			return 1;
+		}
+	<#else>
+		<#if entity.isChangeTrackingEnabled()>
+			try (SafeCloseable safeCloseable = ${ctPersistenceHelper}.setCTCollectionIdWithSafeCloseable(${entity.name}.class)) {
+		</#if>
+
+		<#list entityColumns as entityColumn>
+			<#if stringUtil.equals(entityColumn.type, "String") && entityColumn.isConvertNull()>
+				${entityColumn.name} = Objects.toString(${entityColumn.name}, "");
+			</#if>
+		</#list>
+
+		FinderPath finderPath =
+			<#if !entityFinder.hasCustomComparator()>
+				_finderPathCountBy${entityFinder.name};
+			<#else>
+				_finderPathWithPaginationCountBy${entityFinder.name};
 			</#if>
 
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
+		Object[] finderArgs = new Object[] {
+			<#list entityColumns as entityColumn>
+				<#if stringUtil.equals(entityColumn.type, "Date")>
+					_getTime(${entityColumn.name})
+				<#else>
+					${entityColumn.name}
+				</#if>
 
-	return count.intValue();
+				<#if entityColumn_has_next>
+					,
+				</#if>
+			</#list>
+		};
 
-	<#if entity.isChangeTrackingEnabled()>
+		Long count = (Long)${finderCache}.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			<#include "persistence_impl_count_by_query.ftl">
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				<@finderQPos />
+
+				count = (Long)query.uniqueResult();
+
+				${finderCache}.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				<#if serviceBuilder.isVersionLTE_7_2_0()>
+					${finderCache}.removeResult(finderPath, finderArgs);
+				</#if>
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
 		}
+
+		return count.intValue();
+
+		<#if entity.isChangeTrackingEnabled()>
+			}
+		</#if>
 	</#if>
 }
 
