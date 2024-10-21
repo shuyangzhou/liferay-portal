@@ -25,6 +25,8 @@ import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
 import com.liferay.portlet.RouterImpl;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -173,6 +175,12 @@ public class FriendlyURLMapperTrackerImpl implements FriendlyURLMapperTracker {
 		public FriendlyURLMapper addingService(
 			ServiceReference<FriendlyURLMapper> serviceReference) {
 
+			long uptime = _runtimeMXBean.getUptime();
+
+			if (uptime > _uptimeThreshold) {
+				new Exception("####addingService at " + uptime + "ms, for " + serviceReference).printStackTrace(System.out);
+			}
+
 			FriendlyURLMapper friendlyURLMapper = _bundleContext.getService(
 				serviceReference);
 
@@ -213,12 +221,24 @@ public class FriendlyURLMapperTrackerImpl implements FriendlyURLMapperTracker {
 		public void modifiedService(
 			ServiceReference<FriendlyURLMapper> serviceReference,
 			FriendlyURLMapper friendlyURLMapper) {
+
+			long uptime = _runtimeMXBean.getUptime();
+
+			if (uptime > _uptimeThreshold) {
+				new Exception("####modifiedService at " + uptime + "ms, for " + serviceReference).printStackTrace(System.out);
+			}
 		}
 
 		@Override
 		public void removedService(
 			ServiceReference<FriendlyURLMapper> serviceReference,
 			FriendlyURLMapper friendlyURLMapper) {
+
+			long uptime = _runtimeMXBean.getUptime();
+
+			if (uptime > _uptimeThreshold) {
+				new Exception("####removedService at " + uptime + "ms, for " + serviceReference).printStackTrace(System.out);
+			}
 
 			_bundleContext.ungetService(serviceReference);
 		}
@@ -283,6 +303,13 @@ public class FriendlyURLMapperTrackerImpl implements FriendlyURLMapperTracker {
 
 			return router;
 		}
+
+		private FriendlyURLMapperServiceTrackerCustomizer() {
+			_runtimeMXBean = ManagementFactory.getRuntimeMXBean();
+		}
+
+		private static final long _uptimeThreshold = 600000;
+		private final RuntimeMXBean _runtimeMXBean;
 
 	}
 
