@@ -53,15 +53,12 @@ public abstract class LayoutStructureItem implements Cloneable {
 	}
 
 	public LayoutStructureItem(String parentItemId) {
-		this(PortalUUIDUtil.generate(), parentItemId);
+		this(null, parentItemId);
 	}
 
 	public LayoutStructureItem(String itemId, String parentItemId) {
 		if (Validator.isNotNull(itemId)) {
 			_itemId = itemId;
-		}
-		else {
-			_itemId = PortalUUIDUtil.generate();
 		}
 
 		_parentItemId = parentItemId;
@@ -110,7 +107,7 @@ public abstract class LayoutStructureItem implements Cloneable {
 
 		if (Objects.equals(
 				_childrenItemIds, layoutStructureItem._childrenItemIds) &&
-			Objects.equals(_itemId, layoutStructureItem._itemId) &&
+			Objects.equals(getItemId(), layoutStructureItem.getItemId()) &&
 			Objects.equals(_parentItemId, layoutStructureItem._parentItemId)) {
 
 			return true;
@@ -126,6 +123,10 @@ public abstract class LayoutStructureItem implements Cloneable {
 	public abstract JSONObject getItemConfigJSONObject();
 
 	public String getItemId() {
+		if (_itemId == null) {
+			_itemId = PortalUUIDUtil.generate();
+		}
+
 		return _itemId;
 	}
 
