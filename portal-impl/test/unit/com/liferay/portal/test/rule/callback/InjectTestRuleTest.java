@@ -5,7 +5,7 @@
 
 package com.liferay.portal.test.rule.callback;
 
-import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
+import com.liferay.petra.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.ConsoleTestUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
