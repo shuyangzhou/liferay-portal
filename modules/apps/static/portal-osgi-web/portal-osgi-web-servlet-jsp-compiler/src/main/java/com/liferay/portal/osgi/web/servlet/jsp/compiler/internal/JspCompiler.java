@@ -5,7 +5,6 @@
 
 package com.liferay.portal.osgi.web.servlet.jsp.compiler.internal;
 
-import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.petra.concurrent.ConcurrentReferenceKeyHashMap;
 import com.liferay.petra.concurrent.ConcurrentReferenceValueHashMap;
 import com.liferay.petra.memory.FinalizeManager;
@@ -65,13 +64,11 @@ import org.apache.jasper.compiler.Jsr199JavaCompiler;
 import org.apache.jasper.compiler.Node;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.wiring.BundleCapability;
 import org.osgi.framework.wiring.BundleRevision;
 import org.osgi.framework.wiring.BundleWire;
 import org.osgi.framework.wiring.BundleWiring;
-import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Raymond Augé
@@ -256,8 +253,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 
 			_javaFileObjectResolvers.add(
 				new JspJavaFileObjectResolver(
-					bundleWiring, _jspBundleWiring, _bundleWiringPackageNames,
-					_serviceTracker));
+					bundleWiring, _jspBundleWiring, _bundleWiringPackageNames));
 		}
 
 		if (_log.isInfoEnabled()) {
@@ -553,8 +549,6 @@ public class JspCompiler extends Jsr199JavaCompiler {
 	private static final BundleWiring _jspBundleWiring;
 	private static final Map<BundleWiring, Set<String>>
 		_jspBundleWiringPackageNames = new HashMap<>();
-	private static final ServiceTracker
-		<Map<String, List<URL>>, Map<String, List<URL>>> _serviceTracker;
 
 	static {
 		Bundle jspBundle = FrameworkUtil.getBundle(JspCompiler.class);
@@ -570,13 +564,6 @@ public class JspCompiler extends Jsr199JavaCompiler {
 			_jspBundleWiringPackageNames.put(
 				providedBundleWiring, packageNames);
 		}
-
-		BundleContext bundleContext = jspBundle.getBundleContext();
-
-		_serviceTracker = ServiceTrackerFactory.open(
-			bundleContext,
-			"(&(jsp.compiler.resource.map=*)(objectClass=" +
-				Map.class.getName() + "))");
 	}
 
 	private Bundle[] _allParticipatingBundles;
