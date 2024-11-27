@@ -1599,7 +1599,7 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 
 		Properties properties = GUtil.loadProperties(file);
 
-		String dependencies = properties.getProperty("dependencies");
+		final String dependencies = properties.getProperty("dependencies");
 
 		if (Validator.isNull(dependencies)) {
 			return;
