@@ -124,6 +124,8 @@ import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.commons.io.FileUtils;
 
+import org.eclipse.transformer.cli.JakartaTransformerCLI;
+
 import org.gradle.StartParameter;
 import org.gradle.api.Action;
 import org.gradle.api.GradleException;
@@ -594,6 +596,8 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 						updateVersionTask);
 
 					_configureProjectBndProperties(project, liferayExtension);
+
+					_runJakartaTransformer(project, jar);
 				}
 
 			});
@@ -4843,6 +4847,67 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 		}
 
 		return false;
+	}
+
+	private void _runJakartaTransformer(Project project, Jar jar) {
+		ConfigurationContainer configurationContainer =
+			project.getConfigurations();
+
+		Action<Configuration> action = new Action<Configuration>() {
+
+			@Override
+			public void execute(Configuration configuration) {
+				ResolvableDependencies resolvableDependencies =
+					configuration.getIncoming();
+
+				resolvableDependencies.afterResolve(
+					new Action<ResolvableDependencies>() {
+
+						@Override
+						public void execute(
+							ResolvableDependencies resolvableDependencies) {
+
+							FileCollection files =
+								resolvableDependencies.getFiles();
+
+							for (File file : files) {
+								JakartaTransformerCLI.runWith(
+									new JakartaTransformerCLI(
+										System.out, System.out,
+										new String[] {
+											file.getAbsolutePath(),
+											file.getAbsolutePath(),
+											"--overwrite"
+										}));
+							}
+						}
+
+					});
+			}
+
+		};
+
+		configurationContainer.all(action);
+
+		jar.doLast(
+			new Action<Task>() {
+
+				@Override
+				public void execute(Task task) {
+					Jar jar = (Jar)task;
+
+					File archivePath = jar.getArchivePath();
+
+					JakartaTransformerCLI.runWith(
+						new JakartaTransformerCLI(
+							System.out, System.out,
+							new String[] {
+								archivePath.getAbsolutePath(),
+								archivePath.getAbsolutePath(), "--overwrite"
+							}));
+				}
+
+			});
 	}
 
 	private void _saveVersions(
