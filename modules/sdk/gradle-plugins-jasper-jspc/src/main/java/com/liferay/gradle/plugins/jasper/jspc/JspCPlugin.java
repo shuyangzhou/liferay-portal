@@ -82,7 +82,7 @@ public class JspCPlugin implements Plugin<Project> {
 		ModuleDependency moduleDependency =
 			(ModuleDependency)GradleUtil.addDependency(
 				project, CONFIGURATION_NAME, "org.apache.tomcat",
-				"tomcat-jasper", "latest.release");
+				"tomcat-jasper", "9.0.97");
 
 		DependencyHandler dependencyHandler = project.getDependencies();
 
