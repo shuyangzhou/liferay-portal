@@ -81,11 +81,8 @@ public class JspCPlugin implements Plugin<Project> {
 	private void _addDependenciesJspC(Project project) {
 		ModuleDependency moduleDependency =
 			(ModuleDependency)GradleUtil.addDependency(
-				project, CONFIGURATION_NAME, "com.liferay",
-				"com.liferay.portal.servlet.jsp.compiler", "latest.release");
-
-		moduleDependency.exclude(
-			Collections.singletonMap("group", "com.liferay.portal"));
+				project, CONFIGURATION_NAME, "org.apache.tomcat",
+				"tomcat-jasper", "latest.release");
 
 		DependencyHandler dependencyHandler = project.getDependencies();
 
