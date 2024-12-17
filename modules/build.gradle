@@ -822,6 +822,12 @@ gradle.beforeProject {
 						classpath = files(configurations.compileClasspath.files - jarFiles) + files(fileTree(dir: file("$buildDir/jakarta-transformer/${it.name}")))
 					}
 				}
+
+				tasks.named("jar") {
+					doLast {
+						ant.jar(destfile: jar.archivePath, update: true)
+					}
+				}
 			}
 		}
 	}
