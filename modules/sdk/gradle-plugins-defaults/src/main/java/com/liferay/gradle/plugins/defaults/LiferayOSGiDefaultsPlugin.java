@@ -719,12 +719,13 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 
 		GradleUtil.addDependency(
 			project, JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME,
-			"com.liferay.portletmvc4spring",
-			"com.liferay.portletmvc4spring.test", "5.2.1");
+			"com.liferay", "com.liferay.portletmvc4spring.test",
+			"5.2.1.JAKARTA_LIFERAY-PATCHED-1");
 
 		GradleUtil.addDependency(
 			project, JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME,
-			"org.springframework", "spring-test", "5.2.2.RELEASE");
+			"com.liferay", "org.springframework.test",
+			"5.3.39.JAKARTA_LIFERAY-PATCHED-1");
 	}
 
 	private Task _addTaskAlias(
