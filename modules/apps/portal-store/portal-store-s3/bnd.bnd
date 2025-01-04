@@ -21,3 +21,4 @@ Import-Package:\
 	!software.amazon.ion.*,\
 	\
 	*
+-fixupmessages: "^Classes found in the wrong directory: \\\\{META-INF/versions/9/";is:=warning
