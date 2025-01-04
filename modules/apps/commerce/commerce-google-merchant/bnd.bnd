@@ -13,3 +13,4 @@ Import-Package:\
 	!javax.transaction.*,\
 	\
 	*
+-fixupmessages: "^Classes found in the wrong directory: \\\\{META-INF/versions/";is:=warning
