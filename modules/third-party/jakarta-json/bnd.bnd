@@ -1,0 +1,14 @@
+Bundle-SymbolicName: jakarta.json
+Bundle-Version: 1.1.6.LIFERAY-PATCHED-1
+Export-Package: javax.json.*
+Provide-Capability:\
+	osgi.contract;\
+		osgi.contract=JavaJSONP;\
+		uses:="javax.json,javax.json.stream,javax.json.spi";\
+		version:Version=1.1
+Require-Capability:\
+	osgi.extender;\
+		filter:="(osgi.extender=osgi.serviceloader.processor)",\
+	osgi.serviceloader;\
+		cardinality:=multiple;\
+		filter:="(osgi.serviceloader=javax.json.spi.JsonProvider)"
