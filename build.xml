@@ -3,6 +3,18 @@
 <project basedir="." default="compile" name="portal" xmlns:antelope="antlib:ise.antelope.tasks" xmlns:artifact="antlib:org.apache.maven.artifact.ant" xmlns:if="ant:if">
 	<import file="build-common.xml" />
 
+	<mkdir dir=".m2/jakarta/portlet/jakarta.portlet-api/4.0.0-SNAPSHOT/" />
+
+	<copy
+		file="jakarta.portlet-api-4.0.0-20250226.172143-1.jar"
+		tofile=".m2/jakarta/portlet/jakarta.portlet-api/4.0.0-SNAPSHOT/jakarta.portlet-api-4.0.0-20250226.172143-1.jar"
+	/>
+
+	<copy
+		file="jakarta.portlet-api-4.0.0-20250226.172143-1.pom"
+		tofile=".m2/jakarta/portlet/jakarta.portlet-api/4.0.0-SNAPSHOT/jakarta.portlet-api-4.0.0-20250226.172143-1.pom"
+	/>
+
 	<macrodef name="clean-liferay-home">
 		<sequential>
 			<parallel failonany="true" threadcount="${parallel.thread.count}">
