@@ -137,6 +137,15 @@ public class PortalWebShieldedContainerInitializer
 				"/health_check/data_source");
 		}
 
+		if (_JAKARTA_TRANSFORMER_AGENT_ENABLED) {
+			FilterRegistration.Dynamic dynamic = servletContext.addFilter(
+				JakartaTransformerJSFilter.class.getName(),
+				new JakartaTransformerJSFilter());
+
+			dynamic.addMappingForUrlPatterns(
+				EnumSet.of(DispatcherType.REQUEST), false, "*.js");
+		}
+
 		DocumentBuilderFactory documentBuilderFactory =
 			DocumentBuilderFactory.newInstance();
 
@@ -328,6 +337,32 @@ public class PortalWebShieldedContainerInitializer
 		Node childNode = childrenNodeList.item(0);
 
 		return childNode.getTextContent();
+	}
+
+	private static final boolean _JAKARTA_TRANSFORMER_AGENT_ENABLED;
+
+	static {
+		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+
+		boolean jakartaTransformerAgentEnabled = false;
+
+		try {
+			classLoader.loadClass(
+				"com.liferay.portal.tools.jakarta.ee.transformer." +
+					"TransformerAgent");
+
+			jakartaTransformerAgentEnabled = true;
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			if (!(reflectiveOperationException instanceof
+					ClassNotFoundException)) {
+
+				throw new ExceptionInInitializerError(
+					reflectiveOperationException);
+			}
+		}
+
+		_JAKARTA_TRANSFORMER_AGENT_ENABLED = jakartaTransformerAgentEnabled;
 	}
 
 }
