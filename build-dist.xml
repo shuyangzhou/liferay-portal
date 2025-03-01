@@ -653,6 +653,8 @@ java -jar ${app.server.weblogic.dir}/${app.server.weblogic.jar.name} -ignoreSysP
 	</target>
 
 	<target name="set-up-jakarta-ee-transformer-agent">
+		<echo>#######${app.server.type}</echo>
+		<echo>#######${app.server.version}</echo>
 		<if>
 			<and>
 				<equals arg1="${app.server.type}" arg2="tomcat" />
@@ -673,6 +675,7 @@ java -jar ${app.server.weblogic.dir}/${app.server.weblogic.jar.name} -ignoreSysP
 							<![CDATA[
 CATALINA_OPTS="${transformer.agent} -Djakarta.ee.transformer.bundle.header.replacer.logging.disabled=true -Djakarta.ee.transformer.class.remapper.logging.disabled=true -Djakarta.ee.transformer.reverse.text.replacer.disabled=true -Djakarta.ee.transformer.text.replacer.logging.disabled=true ${CATALINA_OPTS}"]]>
 						</echo>
+						<echo>#######Applied for tomcat</echo>
 					</then>
 				</if>
 			</then>
@@ -697,6 +700,7 @@ CATALINA_OPTS="${transformer.agent} -Djakarta.ee.transformer.bundle.header.repla
 							<![CDATA[
 JAVA_OPTS="${transformer.agent} -Djakarta.ee.transformer.bundle.header.replacer.logging.disabled=true -Djakarta.ee.transformer.class.remapper.logging.disabled=true -Djakarta.ee.transformer.reverse.text.replacer.disabled=true -Djakarta.ee.transformer.text.replacer.logging.disabled=true $JAVA_OPTS"]]>
 						</echo>
+						<echo>#######Applied for jboss</echo>
 					</then>
 				</if>
 			</then>
@@ -721,6 +725,7 @@ JAVA_OPTS="${transformer.agent} -Djakarta.ee.transformer.bundle.header.replacer.
 							<![CDATA[
 JAVA_OPTS="${transformer.agent} -Djakarta.ee.transformer.bundle.header.replacer.logging.disabled=true -Djakarta.ee.transformer.class.remapper.logging.disabled=true -Djakarta.ee.transformer.reverse.text.replacer.disabled=true -Djakarta.ee.transformer.text.replacer.logging.disabled=true $JAVA_OPTS"]]>
 						</echo>
+						<echo>#######Applied for wildfly</echo>
 					</then>
 				</if>
 			</then>
