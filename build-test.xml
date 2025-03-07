@@ -2918,24 +2918,43 @@ sendPasswordCaptchaEnabled=&quot;false&quot;</echo>
 								/>
 							</not>
 							<then>
-								<replace
-									file="${app.server.dir}/standalone/configuration/standalone.xml"
-								>
-									<replacetoken><![CDATA[<datasources>]]></replacetoken>
-									<replacevalue expandproperties="true">
-												<![CDATA[
-													<datasources>
-														<datasource jndi-name="java:/jdbc/LiferayPool" pool-name="LiferayPool" enabled="true" jta="true" use-java-context="true" use-ccm="true">
-															<connection-url>${database.url}</connection-url>
-															<driver>${database.type}</driver>
-															<security>
-																<user-name>${database.username}</user-name>
-																<password>${database.password}</password>
-															</security>
-														</datasource>
-												]]>
-									</replacevalue>
-								</replace>
+								<if>
+									<equals arg1="${database.password}" arg2="" />
+									<then>
+										<replace
+											file="${app.server.dir}/standalone/configuration/standalone.xml"
+										>
+											<replacetoken><![CDATA[<datasources>]]></replacetoken>
+											<replacevalue expandproperties="true">
+														<![CDATA[
+															<datasources>
+																<datasource jndi-name="java:/jdbc/LiferayPool" pool-name="LiferayPool" enabled="true" jta="true" use-java-context="true" use-ccm="true">
+																	<connection-url>${database.url}</connection-url>
+																	<driver>${database.type}</driver>
+																	<security user-name="${database.username}" />
+																</datasource>
+														]]>
+											</replacevalue>
+										</replace>
+									</then>
+									<else>
+										<replace
+											file="${app.server.dir}/standalone/configuration/standalone.xml"
+										>
+											<replacetoken><![CDATA[<datasources>]]></replacetoken>
+											<replacevalue expandproperties="true">
+														<![CDATA[
+															<datasources>
+																<datasource jndi-name="java:/jdbc/LiferayPool" pool-name="LiferayPool" enabled="true" jta="true" use-java-context="true" use-ccm="true">
+																	<connection-url>${database.url}</connection-url>
+																	<driver>${database.type}</driver>
+																	<security user-name="${database.username}" password="${database.password}" />
+																</datasource>
+														]]>
+											</replacevalue>
+										</replace>
+									</else>
+								</if>
 
 								<replace
 									file="${app.server.dir}/standalone/configuration/standalone.xml"
