@@ -880,6 +880,18 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		_portletApps.clear();
 		_portletsMap.clear();
 
+		if (_textReplacerBiFunction != null) {
+			for (int i = 0; i < xmls.length; i++) {
+				if (xmls[i] == null) {
+					continue;
+				}
+
+				xmls[i] = _textReplacerBiFunction.apply(
+					PortletLocalServiceImpl.class.getName() + "#initEAR#" + i,
+					xmls[i]);
+			}
+		}
+
 		try {
 			PortletApp portletApp = getPortletApp(StringPool.BLANK);
 
@@ -987,6 +999,18 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		Set<String> liferayPortletIds = null;
 
 		PortletApp portletApp = getPortletApp(servletContextName);
+
+		if (_textReplacerBiFunction != null) {
+			for (int i = 0; i < xmls.length; i++) {
+				if (xmls[i] == null) {
+					continue;
+				}
+
+				xmls[i] = _textReplacerBiFunction.apply(
+					PortletLocalServiceImpl.class.getName() + "#initWAR#" + i,
+					xmls[i]);
+			}
+		}
 
 		try {
 			Set<String> servletURLPatterns = readWebXML(xmls[3]);
@@ -2522,12 +2546,6 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 		if (xml == null) {
 			return portletsMap;
-		}
-
-		if (_textReplacerBiFunction != null) {
-			xml = _textReplacerBiFunction.apply(
-				PortletLocalServiceImpl.class.getName() + "#readPortletXML",
-				xml);
 		}
 
 		Document document = UnsecureSAXReaderUtil.read(
