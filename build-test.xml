@@ -2928,10 +2928,7 @@ sendPasswordCaptchaEnabled=&quot;false&quot;</echo>
 														<datasource jndi-name="java:/jdbc/LiferayPool" pool-name="LiferayPool" enabled="true" jta="true" use-java-context="true" use-ccm="true">
 															<connection-url>${database.url}</connection-url>
 															<driver>${database.type}</driver>
-															<security>
-																<user-name>${database.username}</user-name>
-																<password>${database.password}</password>
-															</security>
+															<security user-name="${database.username}" password="${database.password}" />
 														</datasource>
 												]]>
 									</replacevalue>
