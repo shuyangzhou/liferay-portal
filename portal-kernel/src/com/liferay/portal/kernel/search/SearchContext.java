@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.search.facet.Facet;
+import com.liferay.portal.kernel.servlet.InitialRequestSyncUtil;
 import com.liferay.portal.kernel.transaction.TransactionLifecycleListener;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -568,7 +569,7 @@ public class SearchContext implements Serializable {
 		_transactionLifecycleListenerSupplier = () -> null;
 
 	static {
-		DependencyManagerSyncUtil.registerSyncCallable(
+		InitialRequestSyncUtil.registerSyncCallable(
 			() -> {
 				Snapshot<TransactionLifecycleListener> snapshot =
 					new Snapshot<>(
