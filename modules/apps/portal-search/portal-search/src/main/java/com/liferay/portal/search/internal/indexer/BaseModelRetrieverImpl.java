@@ -58,6 +58,12 @@ public class BaseModelRetrieverImpl implements BaseModelRetriever {
 					portalException);
 			}
 
+			if (className.equals("com.liferay.object.model.ObjectDefinition") && classPK == Long.getLong("ObjectDefinition.APIApplication.id")) {
+				System.out.println("====== BaseModelRetrieverImpl._getPersistedModel() failed to fetch for : " + className + ", classPK: " + classPK);
+
+				portalException.printStackTrace(System.out);
+			}
+
 			return null;
 		}
 	}

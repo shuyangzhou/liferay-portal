@@ -98,7 +98,12 @@ public class IndexableAdvice extends ChainableMethodAdvice {
 
 			return;
 		}
-
+		else {
+			if (name.equals("com.liferay.object.model.ObjectDefinition")) {
+				BaseModel<?> baseModel = (BaseModel<?>)result;
+				System.out.println("!!!!!! No indexer for com.liferay.object.model.ObjectDefinition on first try for id: " + baseModel.getPrimaryKeyObj());
+			}
+		}
 		DependencyManagerSyncUtil.registerSyncCallable(
 			new CompanyInheritableThreadLocalCallable<>(
 				() -> {
@@ -106,7 +111,17 @@ public class IndexableAdvice extends ChainableMethodAdvice {
 						name);
 
 					if (curIndexer == null) {
+						if (name.equals("com.liferay.object.model.ObjectDefinition")) {
+							BaseModel<?> baseModel = (BaseModel<?>)result;
+							System.out.println("!!!!!! No indexer for com.liferay.object.model.ObjectDefinition on 2nd try for id:  " + baseModel.getPrimaryKeyObj());
+						}
+
 						return null;
+					}
+
+					if (name.equals("com.liferay.object.model.ObjectDefinition")) {
+						BaseModel<?> baseModel = (BaseModel<?>)result;
+						System.out.println("!!!!!! Found indexer for com.liferay.object.model.ObjectDefinition on 2nd try for id: " + baseModel.getPrimaryKeyObj());
 					}
 
 					_reindex(curIndexer, indexableContext, arguments, result);
