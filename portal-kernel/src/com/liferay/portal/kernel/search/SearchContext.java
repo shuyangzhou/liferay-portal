@@ -12,6 +12,7 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.search.facet.Facet;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.transaction.TransactionLifecycleListener;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -64,6 +65,7 @@ public class SearchContext implements Serializable {
 		TransactionLifecycleListener transactionLifecycleListener;
 
 		if (commit) {
+			System.out.println("^^^^^^ Committable Batch Mode started by Thread: " + Thread.currentThread().getName());
 			transactionLifecycleListener =
 				_transactionLifecycleListenerSnapshot.get();
 		}
@@ -118,6 +120,26 @@ public class SearchContext implements Serializable {
 				try {
 					if (commit) {
 						IndexWriterHelperUtil.commit();
+						System.out.println("$$$$$$$ Batch Mode Commited!!!!!! by Thread: " + Thread.currentThread().getName());
+
+						Indexer<?> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+							"com.liferay.object.model.ObjectDefinition");
+
+						SearchContext searchContext = new SearchContext();
+
+						long companyId = CompanyThreadLocal.getCompanyId();
+
+						searchContext.setCompanyId(companyId);
+
+						Map<String, Serializable> attributes = new HashMap<>();
+
+						attributes.put("name", "APIApplication");
+
+						searchContext.setAttributes(attributes);
+
+						Hits hits = indexer.search(searchContext);
+
+						System.out.println("###### APIApplication ObjectDefinitions for company : " + companyId + ", hits: " + hits + " by Thread: " + Thread.currentThread().getName());
 					}
 				}
 				catch (SearchException searchException) {
