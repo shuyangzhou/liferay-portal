@@ -64,8 +64,8 @@ public class SearchContext implements Serializable {
 		TransactionLifecycleListener transactionLifecycleListener;
 
 		if (commit) {
-			transactionLifecycleListener =
-				_transactionLifecycleListenerSnapshot.get();
+			transactionLifecycleListener = null;
+//				_transactionLifecycleListenerSnapshot.get();
 		}
 		else {
 			transactionLifecycleListener = null;
