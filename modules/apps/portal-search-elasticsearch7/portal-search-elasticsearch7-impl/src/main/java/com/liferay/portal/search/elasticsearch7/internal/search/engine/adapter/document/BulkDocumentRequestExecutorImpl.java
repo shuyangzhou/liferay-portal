@@ -9,6 +9,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
 import com.liferay.portal.search.elasticsearch7.internal.helper.SearchLogHelperUtil;
@@ -23,6 +24,7 @@ import com.liferay.portal.search.engine.adapter.document.UpdateDocumentRequest;
 
 import java.util.Map;
 
+import java.util.Objects;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -61,6 +63,9 @@ public class BulkDocumentRequestExecutorImpl
 
 		SearchLogHelperUtil.logActionResponse(_log, bulkResponse);
 
+		if (!bulkResponse.hasFailures() && SearchContext.isBatchMode()) {
+			System.out.println("======Bulk indexing returned successfully by " + Thread.currentThread().getName());
+		}
 		TimeValue timeValue = bulkResponse.getTook();
 
 		BulkDocumentResponse bulkDocumentResponse = new BulkDocumentResponse(
@@ -145,6 +150,13 @@ public class BulkDocumentRequestExecutorImpl
 
 						indexDocumentRequest.setRefresh(false);
 
+						if (indexDocumentRequest.getDocument71() != null) {
+							if ("com.liferay.object.model.ObjectDefinition".equals(indexDocumentRequest.getDocument71().get("entryClassName")) && Objects.equals(indexDocumentRequest.getDocument71().get("entryClassPK"), System.getProperty("ObjectDefinition.APIApplication.id"))) {
+								System.out.println("======IndexDocumentRequest for id: " + indexDocumentRequest.getDocument71().get("entryClassPK"));
+							}
+						}
+						
+						
 						IndexRequest indexRequest =
 							_elasticsearchBulkableDocumentRequestTranslator.
 								translate(indexDocumentRequest);
