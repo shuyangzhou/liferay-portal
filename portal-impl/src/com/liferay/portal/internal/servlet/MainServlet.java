@@ -41,6 +41,12 @@ import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.plugin.PluginPackage;
 import com.liferay.portal.kernel.portlet.PortletConfigFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletInstanceFactoryUtil;
+import com.liferay.portal.kernel.search.Hits;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.search.SearchException;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
@@ -98,9 +104,11 @@ import com.liferay.social.kernel.util.SocialConfigurationUtil;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.io.Serializable;
 import java.sql.Connection;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -108,6 +116,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TimeZone;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletContext;
 
@@ -414,11 +424,50 @@ public class MainServlet extends HttpServlet {
 		ThreadLocalCacheManager.clearAll(Lifecycle.REQUEST);
 
 		DependencyManagerSyncUtil.sync();
-	}
+		for (Company company : CompanyLocalServiceUtil.getCompanies()) {
+			while (true) {
+				Indexer<?> indexer = IndexerRegistryUtil.getIndexer(
+					"com.liferay.object.model.ObjectDefinition");
 
-	@Override
-	public void service(
-			HttpServletRequest httpServletRequest,
+					if (indexer == null) {
+						System.out.println("#####Waiting for ObjectDefinition indexer......");
+						try {
+							Thread.sleep(5000);
+						}
+						catch (InterruptedException ex) {
+							Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+						}
+
+						continue;
+					}
+				SearchContext searchContext = new SearchContext();
+
+				searchContext.setCompanyId(company.getCompanyId());
+
+				Map<String, Serializable> attributes = new HashMap<>();
+
+				attributes.put("name", "APIApplication");
+
+				searchContext.setAttributes(attributes);
+
+				Hits hits;
+				try {
+					hits = indexer.search(searchContext);
+					System.out.println("###### After startup APIApplication ObjectDefinitions for company : " + company.getCompanyId() + ", hits: " + hits + " by Thread: " + Thread.currentThread().getName());
+				}
+				catch (SearchException ex) {
+					Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+				}
+
+				break;
+			}
+		}
+
+}
+
+@Override
+public void service(
+HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse)
 		throws IOException, ServletException {
 

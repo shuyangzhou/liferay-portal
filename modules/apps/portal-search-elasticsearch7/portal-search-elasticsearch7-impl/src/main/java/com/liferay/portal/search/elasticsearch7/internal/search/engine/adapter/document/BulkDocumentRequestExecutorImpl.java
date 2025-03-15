@@ -9,6 +9,12 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.search.Hits;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.search.SearchException;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
 import com.liferay.portal.search.elasticsearch7.internal.helper.SearchLogHelperUtil;
@@ -21,8 +27,14 @@ import com.liferay.portal.search.engine.adapter.document.DeleteDocumentRequest;
 import com.liferay.portal.search.engine.adapter.document.IndexDocumentRequest;
 import com.liferay.portal.search.engine.adapter.document.UpdateDocumentRequest;
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -54,13 +66,49 @@ public class BulkDocumentRequestExecutorImpl
 	public BulkDocumentResponse execute(
 		BulkDocumentRequest bulkDocumentRequest) {
 
-		BulkRequest bulkRequest = createBulkRequest(bulkDocumentRequest);
+		AtomicBoolean hasTarget = new AtomicBoolean(false);
+		BulkRequest bulkRequest = createBulkRequest(bulkDocumentRequest, hasTarget);
 
 		BulkResponse bulkResponse = _getBulkResponse(
 			bulkRequest, bulkDocumentRequest);
 
 		SearchLogHelperUtil.logActionResponse(_log, bulkResponse);
 
+		if (hasTarget.get()) {
+			if (!bulkResponse.hasFailures()) {
+				Indexer<?> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+					"com.liferay.object.model.ObjectDefinition");
+
+				SearchContext searchContext = new SearchContext();
+
+				long companyId = CompanyThreadLocal.getCompanyId();
+
+				searchContext.setCompanyId(companyId);
+
+				Map<String, Serializable> attributes = new HashMap<>();
+
+				attributes.put("name", "APIApplication");
+
+				searchContext.setAttributes(attributes);
+
+				synchronized (System.out) {
+					System.out.println("======Bulk indexing returned successfully by " + Thread.currentThread().getName() + ", batchMode: " + SearchContext.isBatchMode());
+
+					try {
+						Hits hits = indexer.search(searchContext);
+
+						System.out.println("###### APIApplication ObjectDefinitions for company : " + companyId + ", hits: " + hits + " by Thread: " + Thread.currentThread().getName());
+					}
+					catch (SearchException searchException) {
+						throw new RuntimeException(searchException);
+					}
+				}
+			}
+			else {
+				System.out.println("======Bulk indexing returned FAILED by " + Thread.currentThread().getName() + ", batchMode: " + SearchContext.isBatchMode());
+			}
+		}
+		
 		TimeValue timeValue = bulkResponse.getTook();
 
 		BulkDocumentResponse bulkDocumentResponse = new BulkDocumentResponse(
@@ -114,7 +162,7 @@ public class BulkDocumentRequestExecutorImpl
 	}
 
 	protected BulkRequest createBulkRequest(
-		BulkDocumentRequest bulkDocumentRequest) {
+		BulkDocumentRequest bulkDocumentRequest, AtomicBoolean hasTarget) {
 
 		BulkRequest bulkRequest = new BulkRequest();
 
@@ -137,6 +185,9 @@ public class BulkDocumentRequestExecutorImpl
 							_elasticsearchBulkableDocumentRequestTranslator.
 								translate(deleteDocumentRequest);
 
+						if (Objects.equals("com.liferay.object.model.ObjectDefinition_PORTLET_" + System.getProperty("ObjectDefinition.APIApplication.id"), deleteRequest.id())) {
+							System.out.println(">>>>>>>>> Delete ObjectDefinition id:" + System.getProperty("ObjectDefinition.APIApplication.id") + " by Thread: " + Thread.currentThread().getName());
+						}
 						bulkRequest.add(deleteRequest);
 					}
 					else if (request instanceof IndexDocumentRequest) {
@@ -145,9 +196,21 @@ public class BulkDocumentRequestExecutorImpl
 
 						indexDocumentRequest.setRefresh(false);
 
+						if (indexDocumentRequest.getDocument71() != null) {
+							if ("com.liferay.object.model.ObjectDefinition".equals(indexDocumentRequest.getDocument71().get("entryClassName")) && Objects.equals(indexDocumentRequest.getDocument71().get("entryClassPK"), System.getProperty("ObjectDefinition.APIApplication.id"))) {
+								System.out.println("======IndexDocumentRequest for id: " + indexDocumentRequest.getDocument71().get("entryClassPK") + " by Thread : " + Thread.currentThread().getName() + ", batchMode:" + SearchContext.isBatchMode() + ", refresh policy: " + bulkRequest.getRefreshPolicy() + " into index: " + indexDocumentRequest.getIndexName());
+								hasTarget.set(true);
+							}
+						}
+						
+						
 						IndexRequest indexRequest =
 							_elasticsearchBulkableDocumentRequestTranslator.
 								translate(indexDocumentRequest);
+
+						if (Objects.equals("com.liferay.object.model.ObjectDefinition_PORTLET_" + System.getProperty("ObjectDefinition.APIApplication.id"), indexRequest.id())) {
+							System.out.println(">>>>>>>>> Index ObjectDefinition id:" + System.getProperty("ObjectDefinition.APIApplication.id") + " by Thread: " + Thread.currentThread().getName() + " with doc: " + indexDocumentRequest.getDocument71());
+						}
 
 						bulkRequest.add(indexRequest);
 					}
@@ -161,6 +224,9 @@ public class BulkDocumentRequestExecutorImpl
 							_elasticsearchBulkableDocumentRequestTranslator.
 								translate(updateDocumentRequest);
 
+						if (Objects.equals("com.liferay.object.model.ObjectDefinition_PORTLET_" + System.getProperty("ObjectDefinition.APIApplication.id"), updateRequest.id())) {
+							System.out.println(">>>>>>>>> Update ObjectDefinition id:" + System.getProperty("ObjectDefinition.APIApplication.id") + " by Thread: " + Thread.currentThread().getName() + " with doc: " + updateDocumentRequest.getDocument71());
+						}
 						bulkRequest.add(updateRequest);
 					}
 					else {

@@ -150,6 +150,10 @@ public class IndexerRegistryImpl implements IndexerRegistry {
 
 				emitter.emit(indexer.getClassName());
 
+				if ("com.liferay.object.model.ObjectDefinition".equals(indexer.getClassName())) {
+					System.out.println("########Registering ObjectDefinition Indexer : " + indexer + " by " + Thread.currentThread().getName());
+				}
+
 				Class<?> clazz = indexer.getClass();
 
 				emitter.emit(clazz.getName());

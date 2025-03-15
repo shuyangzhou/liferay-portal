@@ -9,9 +9,12 @@ import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.search.facet.Facet;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.transaction.TransactionLifecycleListener;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -32,6 +35,8 @@ import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Brian Wing Shun Chan
@@ -64,6 +69,7 @@ public class SearchContext implements Serializable {
 		TransactionLifecycleListener transactionLifecycleListener;
 
 		if (commit) {
+			System.out.println("^^^^^^ Committable Batch Mode started by Thread: " + Thread.currentThread().getName());
 			transactionLifecycleListener =
 				_transactionLifecycleListenerSnapshot.get();
 		}
@@ -79,10 +85,6 @@ public class SearchContext implements Serializable {
 			Exception exception1 = null;
 
 			try {
-				if (transactionLifecycleListener != null) {
-					transactionLifecycleListener.committed(null, null);
-				}
-
 				Map.Entry<Set<Future<?>>, List<Callable<Void>>> entry =
 					_batchModeSyncFuturesAndCallablesThreadLocal.get();
 
@@ -115,9 +117,57 @@ public class SearchContext implements Serializable {
 			finally {
 				safeCloseable.close();
 
+				if (transactionLifecycleListener != null) {
+					transactionLifecycleListener.committed(null, null);
+				}
+
 				try {
 					if (commit) {
+
 						IndexWriterHelperUtil.commit();
+						System.out.println("$$$$$$$ Batch Mode Commited!!!!!! by Thread: " + Thread.currentThread().getName());
+
+						CompanyLocalServiceUtil.forEachCompanyId(
+							companyId -> {
+								while (true) {
+									Indexer<?> indexer = IndexerRegistryUtil.getIndexer(
+										"com.liferay.object.model.ObjectDefinition");
+
+									if (indexer == null) {
+										System.out.println("#####Waiting for ObjectDefinition indexer......");
+										try {
+											Thread.sleep(5000);
+										}
+										catch (InterruptedException ex) {
+											Logger.getLogger(SearchContext.class.getName()).log(Level.SEVERE, null, ex);
+										}
+
+										continue;
+									}
+
+									SearchContext searchContext = new SearchContext();
+
+									searchContext.setCompanyId(companyId);
+
+									Map<String, Serializable> attributes = new HashMap<>();
+
+									attributes.put("name", "APIApplication");
+
+									searchContext.setAttributes(attributes);
+
+									Hits hits;
+									try {
+										hits = indexer.search(searchContext);
+										System.out.println("###### Post commit APIApplication ObjectDefinitions for company : " + companyId + ", hits: " + hits + " by Thread: " + Thread.currentThread().getName());
+									}
+									catch (SearchException ex) {
+										Logger.getLogger(SearchContext.class.getName()).log(Level.SEVERE, null, ex);
+									}
+
+									break;
+								}
+							}
+						);
 					}
 				}
 				catch (SearchException searchException) {
