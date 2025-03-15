@@ -564,19 +564,19 @@ public class SearchContext implements Serializable {
 				new CentralizedThreadLocal<>(
 					SearchContext.class.getName() +
 						"._batchModeSyncFuturesThreadLocal");
-	private static final Snapshot<TransactionLifecycleListener>
-		_transactionLifecycleListenerSnapshot = new Snapshot<>(
-			SearchContext.class, TransactionLifecycleListener.class,
-			"(component.name=com.liferay.portal.search.internal.buffer." +
-				"IndexerRequestBufferTransactionLifecycleListener)");
 	private static volatile Supplier<TransactionLifecycleListener>
 		_transactionLifecycleListenerSupplier = () -> null;
 
 	static {
 		DependencyManagerSyncUtil.registerSyncCallable(
 			() -> {
-				_transactionLifecycleListenerSupplier =
-					_transactionLifecycleListenerSnapshot::get;
+				Snapshot<TransactionLifecycleListener> snapshot =
+					new Snapshot<>(
+						SearchContext.class, TransactionLifecycleListener.class,
+						"(component.name=com.liferay.portal.search.internal." +
+							"buffer.IndexerRequestBufferTransactionLifecycleListener)");
+
+				_transactionLifecycleListenerSupplier =	snapshot::get;
 
 				return null;
 			});
