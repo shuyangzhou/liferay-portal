@@ -9,6 +9,7 @@ import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.search.facet.Facet;
@@ -32,6 +33,7 @@ import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
+import java.util.function.Supplier;
 
 /**
  * @author Brian Wing Shun Chan
@@ -65,7 +67,7 @@ public class SearchContext implements Serializable {
 
 		if (commit) {
 			transactionLifecycleListener =
-				_transactionLifecycleListenerSnapshot.get();
+				_transactionLifecycleListenerSupplier.get();
 		}
 		else {
 			transactionLifecycleListener = null;
@@ -567,6 +569,18 @@ public class SearchContext implements Serializable {
 			SearchContext.class, TransactionLifecycleListener.class,
 			"(component.name=com.liferay.portal.search.internal.buffer." +
 				"IndexerRequestBufferTransactionLifecycleListener)");
+	private static volatile Supplier<TransactionLifecycleListener>
+		_transactionLifecycleListenerSupplier = () -> null;
+
+	static {
+		DependencyManagerSyncUtil.registerSyncCallable(
+			() -> {
+				_transactionLifecycleListenerSupplier =
+					_transactionLifecycleListenerSnapshot::get;
+
+				return null;
+			});
+	}
 
 	private boolean _andSearch;
 	private long[] _assetCategoryIds;
