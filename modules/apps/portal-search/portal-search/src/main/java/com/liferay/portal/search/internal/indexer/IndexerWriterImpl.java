@@ -43,8 +43,10 @@ import com.liferay.portal.search.spi.model.index.contributor.ModelIndexerWriterC
 import com.liferay.portal.search.spi.model.index.contributor.helper.IndexerWriterMode;
 import com.liferay.portal.search.spi.model.registrar.ModelSearchSettings;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Michael C. Han
@@ -158,10 +160,17 @@ public class IndexerWriterImpl<T extends BaseModel<?>>
 			return;
 		}
 
+		if (_modelSearchSettings.getClassName().equals("com.liferay.object.model.ObjectDefinition") && classPK == Long.getLong("ObjectDefinition.APIApplication.id")) {
+			System.out.println("====== IndexerWriterImpl.reindex() before fetchBaseModel(): " + _modelSearchSettings.getClassName() + ", classPK: " + classPK);
+		}
+
 		BaseModel<?> baseModel = _baseModelRetriever.fetchBaseModel(
 			_modelSearchSettings.getClassName(), classPK);
 
 		if (baseModel == null) {
+			if (_modelSearchSettings.getClassName().equals("com.liferay.object.model.ObjectDefinition") && classPK == Long.getLong("ObjectDefinition.APIApplication.id")) {
+				System.out.println("====== IndexerWriterImpl.reindex() failed to fetch: " + _modelSearchSettings.getClassName() + ", classPK: " + classPK);
+			}
 			return;
 		}
 
@@ -240,6 +249,10 @@ public class IndexerWriterImpl<T extends BaseModel<?>>
 			(indexerWriterMode == IndexerWriterMode.PARTIAL_UPDATE)) {
 
 			Document document = _indexerDocumentBuilder.getDocument(baseModel);
+
+			if ("com.liferay.object.model.ObjectDefinition".equals(document.get("entryClassName")) && Objects.equals(document.get("entryClassPK"), System.getProperty("ObjectDefinition.APIApplication.id"))) {
+				System.out.println("======Prepared document for id: " + document.get("entryClassPK"));
+			}
 
 			_updateDocumentIndexWriter.updateDocument(
 				_modelIndexerWriterContributor.getCompanyId(baseModel),

@@ -202,6 +202,10 @@ public class BufferedIndexerInvocationHandler implements InvocationHandler {
 						className + " is read only");
 			}
 
+			if (className.equals("com.liferay.object.model.ObjectDefinition") && classPK.equals(Long.getLong("ObjectDefinition.APIApplication.id"))) {
+				System.out.println("====== skipped for read only setting: " + className + ", classPK: " + classPK);
+			}
+
 			return;
 		}
 

@@ -98,6 +98,7 @@ public class SearchContext implements Serializable {
 				try {
 					if (commit) {
 						IndexWriterHelperUtil.commit();
+						System.out.println("$$$$$$$ Batch Mode Refreshed!!!!!! by Thread: " + Thread.currentThread().getName());
 					}
 				}
 				catch (SearchException searchException) {
