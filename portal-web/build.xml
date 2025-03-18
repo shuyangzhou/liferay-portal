@@ -27,7 +27,6 @@
 		<pathelement location="${project.dir}/lib/portal/jabsorb.jar" />
 		<pathelement location="${project.dir}/lib/portal/log4j-api.jar" />
 		<pathelement location="${project.dir}/lib/portal/log4j-core.jar" />
-		<pathelement location="${project.dir}/lib/portal/openid4java.jar" />
 	</path>
 
 	<target depends="build-common-web.clean,clean-tlds" name="clean">
@@ -86,6 +85,7 @@
 		>
 			<jvmarg if:true="${jvm.debug}" line="${jpda.settings}" />
 			<sysproperty key="log4j2.disable.jmx" value="true" />
+			<sysproperty key="java.class.path" value="${toString:jspc.classpath}" />
 			<arg line="${arg.line}" />
 		</java>
 
@@ -199,7 +199,6 @@ ${oversize.files.jsp}</fail>
 		</if>
 
 		<path id="jspc.classpath">
-			<pathelement location="${jspc.java.home}/jre/lib/rt.jar" />
 			<path refid="jspc.common.classpath" />
 			<pathelement location="${project.dir}/lib/development/tomcat-api.jar" />
 			<pathelement location="${project.dir}/lib/development/tomcat-el-api.jar" />
