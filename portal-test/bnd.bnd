@@ -46,8 +46,7 @@ Include-Resource:\
 	@${project.dir}/../lib/development/portletmvc4spring-test.jar,\
 	@${project.dir}/../lib/development/reflections.jar,\
 	@${project.dir}/../lib/development/sling-commons-osgi.jar,\
-	@${project.dir}/../lib/development/sling-testing-osgi-mock-core.jar,\
-	@${project.dir}/../lib/development/spring-test.jar
+	@${project.dir}/../lib/development/sling-testing-osgi-mock-core.jar
 Require-Capability:\
 	osgi.ee;\
 		filter:="(&(osgi.ee=JavaSE)(version=${ant.build.javac.target}))",\
