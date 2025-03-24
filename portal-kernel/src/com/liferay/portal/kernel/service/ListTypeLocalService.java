@@ -300,11 +300,9 @@ public interface ListTypeLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public ListType updateListType(ListType listType);
 
-	@Transactional(readOnly = true)
 	public void validate(long listTypeId, long classNameId, String type)
 		throws PortalException;
 
-	@Transactional(readOnly = true)
 	public void validate(long listTypeId, String type) throws PortalException;
 
 }
