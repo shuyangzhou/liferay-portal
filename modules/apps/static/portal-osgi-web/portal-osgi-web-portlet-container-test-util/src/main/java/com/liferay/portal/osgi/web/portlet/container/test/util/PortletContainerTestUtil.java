@@ -25,6 +25,8 @@ import com.liferay.portal.kernel.util.ProgressTracker;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.test.log.LogCapture;
+import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.theme.ThemeDisplayFactory;
 import com.liferay.portal.upload.LiferayServletRequest;
 
@@ -57,6 +59,7 @@ import org.apache.http.HttpHost;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.RequestBuilder;
+import org.apache.http.client.protocol.ResponseProcessCookies;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.ByteArrayBody;
@@ -209,7 +212,9 @@ public class PortletContainerTestUtil {
 				httpClientBuilder.build();
 			StringWriter stringWriter = new StringWriter();
 			WriterOutputStream writerOutputStream = new WriterOutputStream(
-				stringWriter)) {
+				stringWriter);
+			LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				ResponseProcessCookies.class.getName(), LoggerTestUtil.ERROR)) {
 
 			RequestBuilder requestBuilder = RequestBuilder.post(url);
 
