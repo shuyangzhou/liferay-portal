@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.framework.Version;
 import org.osgi.service.component.annotations.Activate;
@@ -60,15 +61,39 @@ public class ReleasePublisher {
 			}
 		}
 
-		ServiceRegistration<Release> oldServiceRegistration =
-			_serviceConfiguratorRegistrations.put(
-				release.getServletContextName(),
-				_bundleContext.registerService(
-					Release.class, release, properties));
+		ServiceRegistration<Release> serviceRegistration =
+			_bundleContext.registerService(Release.class, release, properties);
 
-		if (oldServiceRegistration != null) {
-			oldServiceRegistration.unregister();
-		}
+		_serviceConfiguratorRegistrations.compute(
+			release.getServletContextName(),
+			(servletContextName, existingServiceRegistration) -> {
+				if (existingServiceRegistration == null) {
+					return serviceRegistration;
+				}
+
+				ServiceReference<Release> serviceReference =
+					existingServiceRegistration.getReference();
+
+				if (serviceReference == null) {
+					return serviceRegistration;
+				}
+
+				Version existingVersion = (Version)serviceReference.getProperty(
+					"release.schema.version");
+
+				Version currentVersion = (Version)properties.get(
+					"release.schema.version");
+
+				if (currentVersion.compareTo(existingVersion) >= 0) {
+					existingServiceRegistration.unregister();
+
+					return serviceRegistration;
+				}
+
+				serviceRegistration.unregister();
+
+				return existingServiceRegistration;
+			});
 	}
 
 	public void unpublish(Release release) {
