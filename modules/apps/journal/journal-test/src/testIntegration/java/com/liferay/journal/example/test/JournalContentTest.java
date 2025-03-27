@@ -40,12 +40,12 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
+import jakarta.portlet.RenderRequest;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.Collections;
 import java.util.List;
-
-import javax.portlet.RenderRequest;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.junit.After;
 import org.junit.Assert;
