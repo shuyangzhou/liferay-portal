@@ -116,6 +116,8 @@ import com.liferay.portal.util.PropsValues;
 import com.liferay.site.model.adapter.StagedGroup;
 import com.liferay.sites.kernel.util.Sites;
 
+import jakarta.portlet.Portlet;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -133,8 +135,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import javax.portlet.Portlet;
 
 import javax.sql.DataSource;
 
@@ -1084,8 +1084,7 @@ public class CompanyLocalServiceTest {
 				exception instanceof UnsupportedOperationException);
 
 			Assert.assertEquals(
-				"Feature flag LPD-11342 is disabled",
-				exception.getMessage());
+				"Feature flag LPD-11342 is disabled", exception.getMessage());
 		}
 	}
 
