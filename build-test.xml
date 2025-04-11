@@ -16876,6 +16876,8 @@ CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.management.jmxremote -Dcom.sun.managemen
 			</then>
 		</if>
 
+		<delete dir="${app.server.tomcat.dir}/work" includeemptydirs="true" />
+
 		<start-app-server
 			app.server.bundle.index="${app.server.bundle.index}"
 			delete.liferay.home="false"
