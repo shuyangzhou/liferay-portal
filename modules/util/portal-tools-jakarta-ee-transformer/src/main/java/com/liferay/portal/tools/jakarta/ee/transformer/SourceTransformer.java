@@ -510,8 +510,6 @@ public class SourceTransformer {
 					"portal-tools-rest-builder")) {
 
 			newContent = newContent.replace(
-				"javax.ws.rs-api-[0-9.]*", "jakarta.ws.rs-*");
-			newContent = newContent.replace(
 				"javax/ws/rs/core/", "jakarta/ws/rs/core/");
 		}
 		else if (Objects.equals(
