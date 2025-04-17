@@ -1,0 +1,63 @@
+import com.liferay.gradle.plugins.patcher.PatchTask
+
+apply plugin: "com.liferay.patcher"
+
+task jarManifest
+task jarPatched(type: Zip)
+task patch(type: PatchTask)
+
+copyPatchOriginalLibClasses {
+	doLast {
+		File file = file("classes/META-INF/MANIFEST.MF")
+
+		if (file.exists()) {
+			file.text = file.text.replace("jakarta.el;version=\"6.0\"", "jakarta.el;version=\"5.0\"")
+		}
+	}
+}
+
+dependencies {
+	compileOnly group: "jakarta.enterprise", name: "jakarta.enterprise.cdi-el-api", version: "4.1.0"
+}
+
+jar {
+	dependsOn jarPatched
+	finalizedBy jarManifest
+	setActions([])
+}
+
+jarManifest {
+	doLast {
+		ant.jar(destfile: jar.archivePath, update: true)
+	}
+}
+
+jarPatched {
+	archiveFileName = jar.archiveFileName
+	destinationDirectory = jar.destinationDirectory
+	duplicatesStrategy = "exclude"
+	from sourceSets.main.output
+
+	from {
+		zipTree(
+			configurations.compileOnly.find {
+				it.name.startsWith "jakarta.enterprise.cdi-el-api-"
+			})
+	}
+
+	mustRunAfter compileJava
+	mustRunAfter generatePomFileForMavenPublication
+	mustRunAfter processResources
+}
+
+jarSources {
+	mustRunAfter patch
+}
+
+patch {
+	ext {
+		autoClean = false
+	}
+
+	originalLibModuleName = "jakarta.enterprise.cdi-el-api"
+}
