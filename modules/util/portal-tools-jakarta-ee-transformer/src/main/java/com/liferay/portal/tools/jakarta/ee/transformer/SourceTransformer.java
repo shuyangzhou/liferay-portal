@@ -1236,7 +1236,7 @@ public class SourceTransformer {
 		_transformTopLevelLibs(Paths.get("lib/portal/dependencies.properties"));
 	}
 
-	private static void _transformTSFiles(Path srcPath) throws IOException {
+	private static void _transformTSFiles(Path srcPath) throws Exception {
 		System.err.println("\t\u21AATransforming ts");
 
 		Files.walkFileTree(
@@ -1306,6 +1306,30 @@ public class SourceTransformer {
 
 						newContent = _replaceTaglibURIs(newContent);
 
+						int startIndex = newContent.indexOf("<web-app");
+
+						if (startIndex != -1) {
+							int endIndex = newContent.indexOf('>', startIndex);
+
+							String webAppTag = newContent.substring(
+								startIndex, endIndex);
+
+							newContent = newContent.replace(
+								webAppTag, _updateXMLTag(webAppTag));
+						}
+
+						startIndex = newContent.indexOf("<web-fragment");
+
+						if (startIndex != -1) {
+							int endIndex = newContent.indexOf('>', startIndex);
+
+							String webFragmentTag = newContent.substring(
+								startIndex, endIndex);
+
+							newContent = newContent.replace(
+								webFragmentTag, _updateXMLTag(webFragmentTag));
+						}
+
 						if (!Objects.equals(content, newContent)) {
 							Files.write(
 								filePath, newContent.getBytes("UTF-8"),
@@ -1318,6 +1342,54 @@ public class SourceTransformer {
 				}
 
 			});
+	}
+
+	private static String _updateXMLTag(String xmlTag) {
+		int startIndex = xmlTag.indexOf("version=\"");
+
+		if (startIndex != -1) {
+			int endIndex = xmlTag.indexOf('"', startIndex + 9);
+
+			String version = xmlTag.substring(startIndex, endIndex);
+
+			xmlTag = xmlTag.replace(version, "version=\"6.0");
+		}
+
+		startIndex = xmlTag.indexOf("xmlns=\"");
+
+		if (startIndex != -1) {
+			int endIndex = xmlTag.indexOf('"', startIndex + 7);
+
+			String xmlns = xmlTag.substring(startIndex, endIndex);
+
+			xmlTag = xmlTag.replace(
+				xmlns, "xmlns=\"https://jakarta.ee/xml/ns/jakartaee");
+		}
+
+		startIndex = xmlTag.indexOf("xsi:schemaLocation=\"");
+
+		if (startIndex != -1) {
+			int endIndex = xmlTag.indexOf('"', startIndex + 20);
+
+			String schemaLocation = xmlTag.substring(startIndex, endIndex);
+
+			String newSchemaLocation =
+				"xsi:schemaLocation=\"https://jakarta.ee/xml/ns/jakartaee ";
+
+			if (xmlTag.contains("web-app")) {
+				newSchemaLocation +=
+					"https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd";
+			}
+
+			if (xmlTag.contains("web-fragment")) {
+				newSchemaLocation +=
+					"https://jakarta.ee/xml/ns/jakartaee/web-fragment_6_0.xsd";
+			}
+
+			xmlTag = xmlTag.replace(schemaLocation, newSchemaLocation);
+		}
+
+		return xmlTag;
 	}
 
 	private static final Pattern _jarDependencyPattern = Pattern.compile(
