@@ -61,7 +61,7 @@ public class DLFileEntryTypesDDMStructureUpgradeProcessTest {
 		Company company = _companyLocalService.getCompany(
 			TestPropsValues.getCompanyId());
 
-		_globalGroup = company.getGroup();
+		_companyGroup = company.getGroup();
 
 		_group = GroupTestUtil.addGroup();
 	}
@@ -81,14 +81,14 @@ public class DLFileEntryTypesDDMStructureUpgradeProcessTest {
 		_runUpgrade();
 
 		_assertDDMStructure(
-			DDMStructureConstants.TYPE_DEFAULT, _group.getGroupId(),
-			ddmStructure.getStructureKey());
-		_assertDDMStructure(
-			DDMStructureConstants.TYPE_AUTO, _globalGroup.getGroupId(),
+			DDMStructureConstants.TYPE_AUTO, _companyGroup.getGroupId(),
 			"DL_VIDEO_EXTERNAL_SHORTCUT");
 		_assertDDMStructure(
-			DDMStructureConstants.TYPE_AUTO, _globalGroup.getGroupId(),
+			DDMStructureConstants.TYPE_AUTO, _companyGroup.getGroupId(),
 			"GOOGLE_DOCS");
+		_assertDDMStructure(
+			DDMStructureConstants.TYPE_DEFAULT, _group.getGroupId(),
+			ddmStructure.getStructureKey());
 	}
 
 	private DLFileEntryType _addFileEntryType() throws Exception {
@@ -150,7 +150,7 @@ public class DLFileEntryTypesDDMStructureUpgradeProcessTest {
 	@Inject
 	private EntityCache _entityCache;
 
-	private Group _globalGroup;
+	private Group _companyGroup;
 
 	@DeleteAfterTestRun
 	private Group _group;
