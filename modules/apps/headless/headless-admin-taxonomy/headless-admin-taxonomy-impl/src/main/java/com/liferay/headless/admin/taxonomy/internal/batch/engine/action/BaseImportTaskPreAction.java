@@ -58,11 +58,11 @@ public abstract class BaseImportTaskPreAction<T>
 			return;
 		}
 
-		importTaskContext.setOriginalUser(userLocalService.getUser(userId));
-
 		PrincipalThreadLocal.setName(user.getUserId());
 
 		batchEngineTaskItemDelegate.setContextUser(user);
+
+		importTaskContext.setOriginalUser(userLocalService.getUser(userId));
 	}
 
 	protected abstract Creator getCreator(Object item);

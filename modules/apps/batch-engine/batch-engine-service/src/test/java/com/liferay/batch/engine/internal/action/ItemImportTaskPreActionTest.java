@@ -66,9 +66,9 @@ public class ItemImportTaskPreActionTest {
 			BatchEngineImportTaskConstants.IMPORT_CREATOR_STRATEGY_KEEP_CREATOR,
 			_importTaskContext);
 
+		Assert.assertEquals(_user, _importTaskContext.getOriginalUser());
 		Assert.assertEquals(
 			String.valueOf(_user.getUserId()), PrincipalThreadLocal.getName());
-		Assert.assertEquals(_user, _importTaskContext.getOriginalUser());
 
 		Mockito.verify(
 			_delegate

@@ -44,6 +44,7 @@ public abstract class BaseImportTaskPostAction<T>
 
 		if (originalUser != null) {
 			PrincipalThreadLocal.setName(originalUser.getUserId());
+
 			importTaskContext.setOriginalUser(null);
 		}
 	}
