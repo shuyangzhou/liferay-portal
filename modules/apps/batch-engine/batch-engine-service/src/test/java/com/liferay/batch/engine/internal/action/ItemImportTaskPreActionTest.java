@@ -173,15 +173,16 @@ public class ItemImportTaskPreActionTest {
 		);
 
 		_itemImportTaskPreAction.run(
-			_batchEngineImportTask, _batchEngineTaskItemDelegate, importTaskContext, _testEntity);
+			_batchEngineImportTask, _batchEngineTaskItemDelegate,
+			importTaskContext, _testEntity);
 	}
 
 	private static final long _CURRENT_USER_ID = RandomTestUtil.randomLong();
 
 	private final BatchEngineImportTask _batchEngineImportTask = Mockito.mock(
 		BatchEngineImportTask.class);
-	private final BatchEngineTaskItemDelegate<?> _batchEngineTaskItemDelegate = Mockito.mock(
-		BatchEngineTaskItemDelegate.class);
+	private final BatchEngineTaskItemDelegate<?> _batchEngineTaskItemDelegate =
+		Mockito.mock(BatchEngineTaskItemDelegate.class);
 	private final ImportTaskContext _importTaskContext =
 		new ImportTaskContext();
 	private final ItemImportTaskPreAction _itemImportTaskPreAction =
