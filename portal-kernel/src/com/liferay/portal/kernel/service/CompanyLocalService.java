@@ -99,6 +99,9 @@ public interface CompanyLocalService
 			long companyId, String name, String virtualHostname, String webId)
 		throws PortalException;
 
+	public Company checkCompany(Company company, boolean newCompany)
+		throws PortalException;
+
 	/**
 	 * Returns the company with the web domain.
 	 *

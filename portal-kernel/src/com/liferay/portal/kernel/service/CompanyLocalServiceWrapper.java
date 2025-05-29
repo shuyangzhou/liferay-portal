@@ -80,6 +80,14 @@ public class CompanyLocalServiceWrapper
 			companyId, name, virtualHostname, webId);
 	}
 
+	@Override
+	public com.liferay.portal.kernel.model.Company checkCompany(
+			com.liferay.portal.kernel.model.Company company, boolean newCompany)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _companyLocalService.checkCompany(company, newCompany);
+	}
+
 	/**
 	 * Returns the company with the web domain.
 	 *
