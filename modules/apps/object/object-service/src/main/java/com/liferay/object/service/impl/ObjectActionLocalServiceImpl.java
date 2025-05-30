@@ -176,6 +176,8 @@ public class ObjectActionLocalServiceImpl
 
 				ObjectDefinitionResourcePermissionUtil.populateResourceActions(
 					objectActionLocalService, objectDefinition,
+					_objectRelationshipLocalService.getObjectRelationships(
+						objectDefinitionId, true),
 					_objectDefinitionPersistence,
 					new ObjectDefinitionTreeFactory(
 						_objectDefinitionPersistence,

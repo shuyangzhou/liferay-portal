@@ -633,6 +633,8 @@ public class ObjectDefinitionLocalServiceImpl
 
 				ObjectDefinitionResourcePermissionUtil.removeResourceActions(
 					_objectActionLocalService, objectDefinition,
+					_objectRelationshipLocalService.getObjectRelationships(
+						objectDefinition.getObjectDefinitionId(), true),
 					objectDefinitionPersistence,
 					new ObjectDefinitionTreeFactory(
 						objectDefinitionLocalService,
