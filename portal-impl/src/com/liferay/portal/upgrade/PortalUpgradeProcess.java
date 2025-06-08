@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.util.UpgradeVersionTreeMap;
 import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.version.Version;
 import com.liferay.portal.upgrade.util.PortalUpgradeProcessRegistry;
 
@@ -76,16 +75,10 @@ public class PortalUpgradeProcess extends UpgradeProcess {
 
 			_currentPortalReleaseDTODCLSingleton.destroy(null);
 
-			boolean supportsStringCaseSensitiveQuery =
-				!_hasDefaultReleaseWithTestString(
-					connection,
-					StringUtil.toUpperCase(ReleaseConstants.TEST_STRING));
-
 			_currentPortalReleaseDTODCLSingleton.getSingleton(
 				() -> new PortalReleaseDTO(
 					schemaVersion, ReleaseInfo.getBuildNumber(), buildDate, 0,
-					ReleaseConstants.TEST_STRING,
-					supportsStringCaseSensitiveQuery));
+					ReleaseConstants.TEST_STRING));
 		}
 	}
 
@@ -236,20 +229,6 @@ public class PortalUpgradeProcess extends UpgradeProcess {
 		return false;
 	}
 
-	public static boolean isSupportsStringCaseSensitiveQuery(
-			Connection connection)
-		throws SQLException {
-
-		PortalReleaseDTO portalReleaseDTO = _getCurrentPortalReleaseDTO(
-			connection);
-
-		if (portalReleaseDTO == PortalReleaseDTO._NULL_INSTANCE) {
-			return true;
-		}
-
-		return portalReleaseDTO._supportsStringCaseSensitiveQuery;
-	}
-
 	public static boolean supportsRetry(Connection connection)
 		throws SQLException {
 
@@ -291,8 +270,7 @@ public class PortalUpgradeProcess extends UpgradeProcess {
 			portalReleaseDTO -> new PortalReleaseDTO(
 				portalReleaseDTO._schemaVersion,
 				ReleaseInfo.getParentBuildNumber(), buildDate,
-				portalReleaseDTO._state, portalReleaseDTO._testString,
-				portalReleaseDTO._supportsStringCaseSensitiveQuery));
+				portalReleaseDTO._state, portalReleaseDTO._testString));
 	}
 
 	public static void updateSchemaVersion(
@@ -306,8 +284,7 @@ public class PortalUpgradeProcess extends UpgradeProcess {
 			portalReleaseDTO -> new PortalReleaseDTO(
 				newSchemaVersion, portalReleaseDTO._buildNumber,
 				portalReleaseDTO._buildDate, portalReleaseDTO._state,
-				portalReleaseDTO._testString,
-				portalReleaseDTO._supportsStringCaseSensitiveQuery));
+				portalReleaseDTO._testString));
 	}
 
 	public static void updateState(Connection connection, int state)
@@ -323,8 +300,7 @@ public class PortalUpgradeProcess extends UpgradeProcess {
 			portalReleaseDTO -> new PortalReleaseDTO(
 				portalReleaseDTO._schemaVersion, portalReleaseDTO._buildNumber,
 				portalReleaseDTO._buildDate, state,
-				portalReleaseDTO._testString,
-				portalReleaseDTO._supportsStringCaseSensitiveQuery));
+				portalReleaseDTO._testString));
 	}
 
 	@Override
@@ -400,13 +376,9 @@ public class PortalUpgradeProcess extends UpgradeProcess {
 						connection.prepareStatement(
 							StringBundler.concat(
 								"select schemaVersion, buildNumber, ",
-								"buildDate, state_, testString, testString = ",
-								"? as caseSensitive from Release_ where ",
-								"releaseId = ", ReleaseConstants.DEFAULT_ID))) {
-
-					preparedStatement.setString(
-						1,
-						StringUtil.toUpperCase(ReleaseConstants.TEST_STRING));
+								"buildDate, state_, testString from Release_ ",
+								"where releaseId = ",
+								ReleaseConstants.DEFAULT_ID))) {
 
 					try (ResultSet resultSet =
 							preparedStatement.executeQuery()) {
@@ -422,8 +394,7 @@ public class PortalUpgradeProcess extends UpgradeProcess {
 									new java.util.Date(buildDate.getTime()) :
 										null,
 								resultSet.getInt("state_"),
-								resultSet.getString("testString"),
-								!resultSet.getBoolean("caseSensitive"));
+								resultSet.getString("testString"));
 						}
 					}
 				}
@@ -433,27 +404,6 @@ public class PortalUpgradeProcess extends UpgradeProcess {
 
 				return PortalReleaseDTO._NULL_INSTANCE;
 			});
-	}
-
-	private static boolean _hasDefaultReleaseWithTestString(
-			Connection connection, String testString)
-		throws Exception {
-
-		try (PreparedStatement preparedStatement = connection.prepareStatement(
-				"select count(*) from Release_ where releaseId = ? and " +
-					"testString = ?")) {
-
-			preparedStatement.setLong(1, ReleaseConstants.DEFAULT_ID);
-			preparedStatement.setString(2, testString);
-
-			try (ResultSet resultSet = preparedStatement.executeQuery()) {
-				if (resultSet.next() && (resultSet.getInt(1) > 0)) {
-					return true;
-				}
-			}
-		}
-
-		return false;
 	}
 
 	private static void _registerUpgradeProcesses(
@@ -513,8 +463,7 @@ public class PortalUpgradeProcess extends UpgradeProcess {
 					() -> new PortalReleaseDTO(
 						_initialSchemaVersion, portalReleaseDTO._buildNumber,
 						portalReleaseDTO._buildDate, portalReleaseDTO._state,
-						portalReleaseDTO._testString,
-						portalReleaseDTO._supportsStringCaseSensitiveQuery));
+						portalReleaseDTO._testString));
 			}
 		}
 	}
@@ -548,26 +497,22 @@ public class PortalUpgradeProcess extends UpgradeProcess {
 
 		private PortalReleaseDTO(
 			Version schemaVersion, int buildNumber, java.util.Date buildDate,
-			int state, String testString,
-			boolean supportsStringCaseSensitiveQuery) {
+			int state, String testString) {
 
 			_schemaVersion = schemaVersion;
 			_buildNumber = buildNumber;
 			_buildDate = buildDate;
 			_state = state;
 			_testString = testString;
-			_supportsStringCaseSensitiveQuery =
-				supportsStringCaseSensitiveQuery;
 		}
 
 		private static final PortalReleaseDTO _NULL_INSTANCE =
-			new PortalReleaseDTO(null, 0, null, -1, null, true);
+			new PortalReleaseDTO(null, 0, null, -1, null);
 
 		private final java.util.Date _buildDate;
 		private final int _buildNumber;
 		private final Version _schemaVersion;
 		private final int _state;
-		private final boolean _supportsStringCaseSensitiveQuery;
 		private final String _testString;
 
 	}
