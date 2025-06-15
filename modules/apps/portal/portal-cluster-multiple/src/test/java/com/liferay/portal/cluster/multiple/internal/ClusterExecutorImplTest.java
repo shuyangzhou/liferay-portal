@@ -24,9 +24,7 @@ import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
-import com.liferay.portal.util.PropsImpl;
 
 import java.io.Serializable;
 
@@ -37,7 +35,6 @@ import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -52,11 +49,6 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 	@Rule
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
-
-	@BeforeClass
-	public static void setUpClass() {
-		PropsUtil.setProps(new PropsImpl());
-	}
 
 	@Test
 	public void testDeactivate() {

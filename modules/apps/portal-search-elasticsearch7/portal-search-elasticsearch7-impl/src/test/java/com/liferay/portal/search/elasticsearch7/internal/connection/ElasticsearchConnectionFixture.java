@@ -11,7 +11,6 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.JavaDetector;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationWrapper;
 import com.liferay.portal.search.elasticsearch7.internal.connection.constants.ConnectionConstants;
@@ -20,7 +19,7 @@ import com.liferay.portal.search.elasticsearch7.internal.sidecar.HttpPortRange;
 import com.liferay.portal.search.elasticsearch7.internal.sidecar.PathUtil;
 import com.liferay.portal.search.elasticsearch7.internal.sidecar.Sidecar;
 import com.liferay.portal.search.elasticsearch7.internal.sidecar.SidecarManager;
-import com.liferay.portal.util.PropsImpl;
+import com.liferay.portal.util.PropsUtil;
 
 import java.io.IOException;
 
@@ -51,9 +50,7 @@ public class ElasticsearchConnectionFixture
 	}
 
 	public ElasticsearchConnection createElasticsearchConnection() {
-		PropsUtil.setProps(new PropsImpl());
-
-		com.liferay.portal.util.PropsUtil.set(
+		PropsUtil.set(
 			PropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR,
 			String.valueOf(_TMP_PATH.resolve("lib-process-executor")));
 
