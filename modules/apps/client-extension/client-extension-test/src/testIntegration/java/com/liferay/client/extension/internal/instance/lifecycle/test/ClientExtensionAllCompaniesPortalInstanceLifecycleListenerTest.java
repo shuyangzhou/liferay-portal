@@ -18,11 +18,9 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
-import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.util.PropsImpl;
 import com.liferay.portal.util.PropsUtil;
 
 import java.util.ArrayList;
@@ -30,7 +28,6 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -47,17 +44,8 @@ public class ClientExtensionAllCompaniesPortalInstanceLifecycleListenerTest {
 	public static final AggregateTestRule aggregateTestRule =
 		new LiferayIntegrationTestRule();
 
-	@Before
-	public void setUp() {
-		_originalProps = com.liferay.portal.kernel.util.PropsUtil.getProps();
-
-		com.liferay.portal.kernel.util.PropsUtil.setProps(new PropsImpl());
-	}
-
 	@After
 	public void tearDown() {
-		com.liferay.portal.kernel.util.PropsUtil.setProps(_originalProps);
-
 		for (AutoCloseable autoCloseable : _autoCloseables) {
 			try {
 				autoCloseable.close();
@@ -165,7 +153,5 @@ public class ClientExtensionAllCompaniesPortalInstanceLifecycleListenerTest {
 
 	@Inject
 	private CETManager _cetManager;
-
-	private Props _originalProps;
 
 }
