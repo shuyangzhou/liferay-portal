@@ -71,7 +71,7 @@ public class ConfigurationImpl
 			// Add to configList of AggregatedProperties itself
 
 			CompositeConfiguration compositeConfiguration =
-				_classLoaderAggregateProperties.getBaseConfiguration();
+				_classLoaderAggregateProperties.getBaseCompositeConfiguration();
 
 			configurations = new LinkedList<>(
 				(List<Configuration>)field1.get(compositeConfiguration));
@@ -265,7 +265,7 @@ public class ConfigurationImpl
 	public void removeProperties(Properties properties) {
 		try {
 			CompositeConfiguration compositeConfiguration =
-				_classLoaderAggregateProperties.getBaseConfiguration();
+				_classLoaderAggregateProperties.getBaseCompositeConfiguration();
 
 			Field field2 = CompositeConfiguration.class.getDeclaredField(
 				"configList");

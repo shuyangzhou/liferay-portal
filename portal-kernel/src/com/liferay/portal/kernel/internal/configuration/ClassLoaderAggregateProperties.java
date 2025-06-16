@@ -62,7 +62,7 @@ public class ClassLoaderAggregateProperties extends CompositeConfiguration {
 		_addBaseFileName(componentName.concat(".properties"));
 	}
 
-	public CompositeConfiguration getBaseConfiguration() {
+	public CompositeConfiguration getBaseCompositeConfiguration() {
 		return _baseCompositeConfiguration;
 	}
 
