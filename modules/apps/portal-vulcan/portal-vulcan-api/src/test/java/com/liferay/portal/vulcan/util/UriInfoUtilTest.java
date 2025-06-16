@@ -10,7 +10,6 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
@@ -28,6 +27,7 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 /**
@@ -46,8 +46,6 @@ public class UriInfoUtilTest {
 		PortalUtil portalUtil = new PortalUtil();
 
 		portalUtil.setPortal(_portal);
-
-		PropsUtil.setProps(_props);
 
 		Mockito.when(
 			_uriInfo.getBaseUriBuilder()
@@ -77,10 +75,11 @@ public class UriInfoUtilTest {
 	public void testGetBaseUriBuilderHttpsHostNoScheme() throws Exception {
 		_uriBuilder.host("localhost");
 
-		_setProtocol(Http.HTTPS);
-
-		_assertUriBuilder(
-			0, "", 0, 1, _uriBuilder, _uriInfo, "https://localhost/test-path");
+		try (AutoCloseable autoCloseable = _setProtocol(Http.HTTPS)) {
+			_assertUriBuilder(
+				0, "", 0, 1, _uriBuilder, _uriInfo,
+				"https://localhost/test-path");
+		}
 	}
 
 	@Test
@@ -88,17 +87,18 @@ public class UriInfoUtilTest {
 		_uriBuilder.host("localhost");
 		_uriBuilder.scheme("http");
 
-		_setProtocol(Http.HTTPS);
-
-		_assertUriBuilder(
-			0, "", 0, 1, _uriBuilder, _uriInfo, "https://localhost/test-path");
+		try (AutoCloseable autoCloseable = _setProtocol(Http.HTTPS)) {
+			_assertUriBuilder(
+				0, "", 0, 1, _uriBuilder, _uriInfo,
+				"https://localhost/test-path");
+		}
 	}
 
 	@Test
 	public void testGetBaseUriBuilderHttpsNoHostNoScheme() throws Exception {
-		_setProtocol(Http.HTTPS);
-
-		_assertUriBuilder(0, "", 0, 0, _uriBuilder, _uriInfo, "/test-path");
+		try (AutoCloseable autoCloseable = _setProtocol(Http.HTTPS)) {
+			_assertUriBuilder(0, "", 0, 0, _uriBuilder, _uriInfo, "/test-path");
+		}
 	}
 
 	@Test
@@ -169,16 +169,20 @@ public class UriInfoUtilTest {
 		);
 	}
 
-	private void _setProtocol(String protocol) {
-		Mockito.when(
-			_props.get(PropsKeys.WEB_SERVER_PROTOCOL)
+	private AutoCloseable _setProtocol(String protocol) {
+		MockedStatic<PropsUtil> propsUtilMockedStatic = Mockito.mockStatic(
+			PropsUtil.class);
+
+		propsUtilMockedStatic.when(
+			() -> PropsUtil.get(PropsKeys.WEB_SERVER_PROTOCOL)
 		).thenReturn(
 			protocol
 		);
+
+		return propsUtilMockedStatic;
 	}
 
 	private final Portal _portal = Mockito.mock(Portal.class);
-	private final Props _props = Mockito.mock(Props.class);
 	private final UriBuilder _uriBuilder = Mockito.spy(
 		new UriBuilderImpl(
 		).path(
