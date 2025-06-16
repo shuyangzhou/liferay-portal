@@ -10,7 +10,6 @@ import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
-import com.liferay.portal.util.PropsFiles;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -102,7 +101,7 @@ public class ConfigurationImplTest {
 			new String[0], configurationImpl.getArray("include-and-override"));
 
 		configurationImpl = new ConfigurationImpl(
-			testResourceClassLoader, PropsFiles.PORTAL);
+			testResourceClassLoader, ConfigurationFactory.PORTAL);
 
 		String[] includeAndOverrides = configurationImpl.getArray(
 			"include-and-override");

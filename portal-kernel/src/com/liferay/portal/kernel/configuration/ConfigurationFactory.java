@@ -10,6 +10,12 @@ package com.liferay.portal.kernel.configuration;
  */
 public interface ConfigurationFactory {
 
+	public static final String CAPTCHA = "captcha";
+
+	public static final String CONTENT_TYPES = "content-types";
+
+	public static final String PORTAL = "portal";
+
 	public Configuration getConfiguration(ClassLoader classLoader, String name);
 
 }

@@ -8,7 +8,6 @@ package com.liferay.portal.configuration;
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.configuration.ConfigurationFactory;
 import com.liferay.portal.kernel.util.AggregateClassLoader;
-import com.liferay.portal.util.PropsFiles;
 import com.liferay.portal.util.PropsUtil;
 
 /**
@@ -30,8 +29,7 @@ public class ConfigurationFactoryImpl implements ConfigurationFactory {
 				classLoader, classLoaderClassLoader);
 		}
 
-		CONFIGURATION_PORTAL = new ConfigurationImpl(
-			classLoader, PropsFiles.PORTAL);
+		CONFIGURATION_PORTAL = new ConfigurationImpl(classLoader, PORTAL);
 	}
 
 	@Override
