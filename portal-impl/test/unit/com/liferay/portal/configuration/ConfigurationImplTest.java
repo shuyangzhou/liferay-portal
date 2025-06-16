@@ -6,7 +6,9 @@
 package com.liferay.portal.configuration;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.configuration.ConfigurationFactory;
 import com.liferay.portal.kernel.configuration.Filter;
+import com.liferay.portal.kernel.internal.configuration.ConfigurationImpl;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;

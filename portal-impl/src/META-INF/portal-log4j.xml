@@ -46,7 +46,6 @@
 		<Logger level="INFO" name="com.liferay.portal.bootstrap.ModuleFrameworkImpl" />
 		<Logger level="INFO" name="com.liferay.portal.bootstrap.log" />
 		<Logger level="INFO" name="com.liferay.portal.cluster" />
-		<Logger level="WARN" name="com.liferay.portal.configuration.ConfigurationImpl" />
 		<Logger level="DEBUG" name="com.liferay.portal.convert" />
 		<Logger level="INFO" name="com.liferay.portal.dao.db" />
 		<Logger level="INFO" name="com.liferay.portal.dao.db.BaseDB" />
@@ -84,6 +83,7 @@
 		<Logger level="WARN" name="com.liferay.portal.kernel.dao.orm.QueryUtil" />
 		<Logger level="INFO" name="com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil" />
 		<Logger level="INFO" name="com.liferay.portal.kernel.deploy" />
+		<Logger level="WARN" name="com.liferay.portal.kernel.internal.configuration.ConfigurationImpl" />
 		<Logger level="ERROR" name="com.liferay.portal.kernel.lar" />
 		<Logger level="INFO" name="com.liferay.portal.kernel.messaging.config.DefaultMessagingConfigurator" />
 		<Logger level="ERROR" name="com.liferay.portal.kernel.model.Image" />
