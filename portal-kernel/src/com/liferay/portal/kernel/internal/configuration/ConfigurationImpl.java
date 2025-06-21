@@ -306,7 +306,7 @@ public class ConfigurationImpl
 	}
 
 	@Override
-	public void set(String key, String value) {
+	public void set(String key, Object value) {
 		_classLoaderAggregateProperties.setProperty(key, value);
 
 		clearCache();

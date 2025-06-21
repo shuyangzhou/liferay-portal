@@ -35,6 +35,6 @@ public interface Configuration {
 
 	public void removeProperties(Properties properties);
 
-	public void set(String key, String value);
+	public void set(String key, Object value);
 
 }

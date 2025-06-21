@@ -93,7 +93,7 @@ public class PropsUtil {
 		_configuration.removeProperties(properties);
 	}
 
-	public static void set(String key, String value) {
+	public static void set(String key, Object value) {
 		_configuration.set(key, value);
 	}
 
