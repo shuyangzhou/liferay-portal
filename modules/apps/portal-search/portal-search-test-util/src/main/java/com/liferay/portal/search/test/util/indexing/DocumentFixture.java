@@ -14,9 +14,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
 
 import java.text.SimpleDateFormat;
 
@@ -55,7 +53,6 @@ public class DocumentFixture {
 
 	public void tearDown() {
 		tearDownFastDateFormatFactoryUtil();
-		tearDownPropsUtil();
 	}
 
 	protected void setUpFastDateFormatFactoryUtil() {
@@ -79,7 +76,7 @@ public class DocumentFixture {
 	}
 
 	protected void setUpPropsUtil() {
-		props = PropsTestUtil.setProps(
+		PropsTestUtil.setProps(
 			HashMapBuilder.<String, Object>put(
 				PropsKeys.INDEX_DATE_FORMAT_PATTERN, "yyyyMMddHHmmss"
 			).put(
@@ -124,17 +121,6 @@ public class DocumentFixture {
 		_fastDateFormatFactory = null;
 	}
 
-	protected void tearDownPropsUtil() {
-		PropsUtil.setProps(_props);
-
-		_props = null;
-
-		props = null;
-	}
-
-	protected Props props;
-
 	private FastDateFormatFactory _fastDateFormatFactory;
-	private Props _props;
 
 }

@@ -5,11 +5,7 @@
 
 package com.liferay.portal.kernel.test.util;
 
-import com.liferay.portal.kernel.util.Props;
-import com.liferay.portal.kernel.util.PropsUtil;
-import com.liferay.portal.kernel.util.ProxyUtil;
-
-import java.lang.reflect.Method;
+import com.liferay.portal.util.PropsUtil;
 
 import java.util.Collections;
 import java.util.Map;
@@ -19,24 +15,14 @@ import java.util.Map;
  */
 public class PropsTestUtil {
 
-	public static Props setProps(Map<String, Object> properties) {
-		Props props = (Props)ProxyUtil.newProxyInstance(
-			Props.class.getClassLoader(), new Class<?>[] {Props.class},
-			(Object proxy, Method method, Object[] args) -> {
-				if (args.length > 0) {
-					return properties.get(args[0]);
-				}
-
-				return null;
-			});
-
-		PropsUtil.setProps(props);
-
-		return props;
+	public static void setProps(Map<String, Object> properties) {
+		for (Map.Entry<String, Object> entry : properties.entrySet()) {
+			PropsUtil.set(entry.getKey(), entry.getValue());
+		}
 	}
 
-	public static Props setProps(String key, Object value) {
-		return setProps(Collections.singletonMap(key, value));
+	public static void setProps(String key, Object value) {
+		setProps(Collections.singletonMap(key, value));
 	}
 
 }

@@ -16,8 +16,8 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyFactory;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
@@ -78,7 +78,7 @@ public class EntityCacheImplTest {
 		_nullModel = ReflectionTestUtil.getFieldValue(
 			BasePersistenceImpl.class, "nullModel");
 
-		_props = PropsTestUtil.setProps(
+		PropsTestUtil.setProps(
 			HashMapBuilder.<String, Object>put(
 				PropsKeys.VALUE_OBJECT_ENTITY_CACHE_ENABLED, "true"
 			).put(
@@ -104,7 +104,8 @@ public class EntityCacheImplTest {
 		ReflectionTestUtil.setFieldValue(
 			entityCacheImpl, "_multiVMPool", multiVMPool);
 
-		ReflectionTestUtil.setFieldValue(entityCacheImpl, "_props", _props);
+		ReflectionTestUtil.setFieldValue(
+			entityCacheImpl, "_props", PropsUtil.getProps());
 
 		ReflectionTestUtil.setFieldValue(
 			_finderCacheImpl, "_multiVMPool", multiVMPool);
@@ -146,7 +147,8 @@ public class EntityCacheImplTest {
 			ProxyUtil.newProxyInstance(
 				_classLoader, new Class<?>[] {MultiVMPool.class},
 				new MultiVMPoolInvocationHandler(_classLoader, serialized)));
-		ReflectionTestUtil.setFieldValue(entityCacheImpl, "_props", _props);
+		ReflectionTestUtil.setFieldValue(
+			entityCacheImpl, "_props", PropsUtil.getProps());
 
 		entityCacheImpl.activate(_bundleContext);
 
@@ -168,6 +170,5 @@ public class EntityCacheImplTest {
 		SystemBundleUtil.getBundleContext();
 	private ClassLoader _classLoader;
 	private Serializable _nullModel;
-	private Props _props;
 
 }
