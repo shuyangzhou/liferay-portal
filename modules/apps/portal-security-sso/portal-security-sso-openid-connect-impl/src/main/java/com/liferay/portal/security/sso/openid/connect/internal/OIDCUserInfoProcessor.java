@@ -44,7 +44,7 @@ import com.liferay.portal.kernel.service.UserGroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.Props;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
@@ -530,13 +530,13 @@ public class OIDCUserInfoProcessor {
 		if (Validator.isNull(issuer) ||
 			!Objects.equals(
 				issuer,
-				_props.get(
+				PropsUtil.get(
 					"open.id.connect.user.info.processor.impl.issuer"))) {
 
 			return null;
 		}
 
-		String roleName = _props.get(
+		String roleName = PropsUtil.get(
 			"open.id.connect.user.info.processor.impl.regular.role");
 
 		if (Validator.isNull(roleName)) {
@@ -728,9 +728,6 @@ public class OIDCUserInfoProcessor {
 
 	@Reference
 	private PhoneLocalService _phoneLocalService;
-
-	@Reference
-	private Props _props;
 
 	@Reference
 	private RegionLocalService _regionLocalService;

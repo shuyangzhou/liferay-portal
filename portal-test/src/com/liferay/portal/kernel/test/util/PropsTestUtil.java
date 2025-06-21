@@ -5,7 +5,7 @@
 
 package com.liferay.portal.kernel.test.util;
 
-import com.liferay.portal.util.PropsUtil;
+import com.liferay.portal.kernel.util.PropsUtil;
 
 import java.util.Collections;
 import java.util.Map;

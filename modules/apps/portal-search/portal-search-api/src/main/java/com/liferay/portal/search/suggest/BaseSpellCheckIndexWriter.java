@@ -23,8 +23,8 @@ import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
-import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.InputStream;
@@ -190,7 +190,8 @@ public abstract class BaseSpellCheckIndexWriter
 
 	protected String[] getSupportedLocales() {
 		return StringUtil.split(
-			props.get(PropsKeys.INDEX_SEARCH_SPELL_CHECKER_SUPPORTED_LOCALES));
+			PropsUtil.get(
+				PropsKeys.INDEX_SEARCH_SPELL_CHECKER_SUPPORTED_LOCALES));
 	}
 
 	protected String getUID(
@@ -302,7 +303,7 @@ public abstract class BaseSpellCheckIndexWriter
 			String keywordFieldName, String typeFieldValue, int maxNGramLength)
 		throws Exception {
 
-		String[] dictionaryFileNames = props.getArray(
+		String[] dictionaryFileNames = PropsUtil.getArray(
 			propsKey, new Filter(languageId));
 
 		indexKeywords(
@@ -312,7 +313,7 @@ public abstract class BaseSpellCheckIndexWriter
 		List<Group> groups = groupLocalService.getLiveGroups();
 
 		for (Group group : groups) {
-			String[] groupDictionaryFileNames = props.getArray(
+			String[] groupDictionaryFileNames = PropsUtil.getArray(
 				propsKey,
 				new Filter(languageId, String.valueOf(group.getGroupId())));
 
@@ -331,9 +332,6 @@ public abstract class BaseSpellCheckIndexWriter
 
 	@Reference
 	protected GroupLocalService groupLocalService;
-
-	@Reference
-	protected Props props;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseSpellCheckIndexWriter.class);

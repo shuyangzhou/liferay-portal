@@ -13,7 +13,6 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AbstractTestRule;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
-import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -47,14 +46,7 @@ public class InitializeKernelUtilTestRule
 		throws ReflectiveOperationException {
 
 		if ((properties != null) && !properties.isEmpty()) {
-			Thread thread = Thread.currentThread();
-
-			ClassLoader classLoader = thread.getContextClassLoader();
-
-			ReflectionTestUtil.invoke(
-				classLoader.loadClass("com.liferay.portal.util.PropsUtil"),
-				"removeProperties", new Class<?>[] {Properties.class},
-				properties);
+			PropsUtil.removeProperties(properties);
 		}
 	}
 
@@ -157,17 +149,6 @@ public class InitializeKernelUtilTestRule
 	private Properties _setUpPropsUtil(Map<String, String> map)
 		throws ReflectiveOperationException {
 
-		Thread thread = Thread.currentThread();
-
-		ClassLoader classLoader = thread.getContextClassLoader();
-
-		Class<?> clazz = classLoader.loadClass(
-			"com.liferay.portal.util.PropsImpl");
-
-		Constructor<?> constructor = clazz.getDeclaredConstructor();
-
-		PropsUtil.setProps((Props)constructor.newInstance());
-
 		if (map == null) {
 			return null;
 		}
@@ -177,9 +158,7 @@ public class InitializeKernelUtilTestRule
 		properties.putAll(map);
 
 		if (!properties.isEmpty()) {
-			ReflectionTestUtil.invoke(
-				classLoader.loadClass("com.liferay.portal.util.PropsUtil"),
-				"addProperties", new Class<?>[] {Properties.class}, properties);
+			PropsUtil.addProperties(properties);
 		}
 
 		return properties;

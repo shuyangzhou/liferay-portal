@@ -8,7 +8,7 @@ package com.liferay.saml.internal.upgrade;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.Props;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.saml.internal.constants.LegacySamlPropsKeys;
 import com.liferay.saml.internal.upgrade.v1_0_0.SamlIdpSsoSessionMaxAgePropertyUpgradeProcess;
@@ -67,18 +67,12 @@ public class SamlIdpSsoSessionMaxAgePropertyUpgradeProcessTest {
 			new Configuration[] {configuration}
 		);
 
-		Props props = Mockito.mock(Props.class);
-
-		Mockito.when(
-			props.get(LegacySamlPropsKeys.SAML_IDP_SSO_SESSION_MAX_AGE)
-		).thenReturn(
-			null
-		);
+		PropsUtil.set(LegacySamlPropsKeys.SAML_IDP_SSO_SESSION_MAX_AGE, null);
 
 		SamlIdpSsoSessionMaxAgePropertyUpgradeProcess
 			samlIdpSsoSessionMaxAgePropertyUpgradeProcess =
 				new SamlIdpSsoSessionMaxAgePropertyUpgradeProcess(
-					configurationAdmin, props);
+					configurationAdmin);
 
 		samlIdpSsoSessionMaxAgePropertyUpgradeProcess.doUpgrade();
 
@@ -116,18 +110,12 @@ public class SamlIdpSsoSessionMaxAgePropertyUpgradeProcessTest {
 			properties
 		);
 
-		Props props = Mockito.mock(Props.class);
-
-		Mockito.when(
-			props.get(LegacySamlPropsKeys.SAML_IDP_SSO_SESSION_MAX_AGE)
-		).thenReturn(
-			""
-		);
+		PropsUtil.set(LegacySamlPropsKeys.SAML_IDP_SSO_SESSION_MAX_AGE, "");
 
 		SamlIdpSsoSessionMaxAgePropertyUpgradeProcess
 			samlIdpSsoSessionMaxAgePropertyUpgradeProcess =
 				new SamlIdpSsoSessionMaxAgePropertyUpgradeProcess(
-					configurationAdmin, props);
+					configurationAdmin);
 
 		samlIdpSsoSessionMaxAgePropertyUpgradeProcess.doUpgrade();
 
@@ -155,21 +143,17 @@ public class SamlIdpSsoSessionMaxAgePropertyUpgradeProcessTest {
 			new Configuration[] {configuration}
 		);
 
-		Props props = Mockito.mock(Props.class);
-
 		String samlIdpSsoSessionMaxAge = String.valueOf(
 			RandomTestUtil.randomInt());
 
-		Mockito.when(
-			props.get(LegacySamlPropsKeys.SAML_IDP_SSO_SESSION_MAX_AGE)
-		).thenReturn(
-			samlIdpSsoSessionMaxAge
-		);
+		PropsUtil.set(
+			LegacySamlPropsKeys.SAML_IDP_SSO_SESSION_MAX_AGE,
+			samlIdpSsoSessionMaxAge);
 
 		SamlIdpSsoSessionMaxAgePropertyUpgradeProcess
 			samlIdpSsoSessionMaxAgePropertyUpgradeProcess =
 				new SamlIdpSsoSessionMaxAgePropertyUpgradeProcess(
-					configurationAdmin, props);
+					configurationAdmin);
 
 		samlIdpSsoSessionMaxAgePropertyUpgradeProcess.doUpgrade();
 
@@ -207,24 +191,14 @@ public class SamlIdpSsoSessionMaxAgePropertyUpgradeProcessTest {
 			LegacySamlPropsKeys.SAML_IDP_SESSION_MAXIMUM_AGE,
 			samlIdpSsoSessionMaxAge);
 
-		Mockito.when(
-			configuration.getProperties()
-		).thenReturn(
-			properties
-		);
-
-		Props props = Mockito.mock(Props.class);
-
-		Mockito.when(
-			props.get(LegacySamlPropsKeys.SAML_IDP_SSO_SESSION_MAX_AGE)
-		).thenReturn(
-			String.valueOf(RandomTestUtil.randomInt())
-		);
+		PropsUtil.set(
+			LegacySamlPropsKeys.SAML_IDP_SSO_SESSION_MAX_AGE,
+			String.valueOf(RandomTestUtil.randomInt()));
 
 		SamlIdpSsoSessionMaxAgePropertyUpgradeProcess
 			samlIdpSsoSessionMaxAgePropertyUpgradeProcess =
 				new SamlIdpSsoSessionMaxAgePropertyUpgradeProcess(
-					configurationAdmin, props);
+					configurationAdmin);
 
 		samlIdpSsoSessionMaxAgePropertyUpgradeProcess.doUpgrade();
 

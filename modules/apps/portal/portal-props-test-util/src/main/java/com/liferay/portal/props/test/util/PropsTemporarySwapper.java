@@ -32,14 +32,13 @@ public class PropsTemporarySwapper implements AutoCloseable {
 
 	@Override
 	public void close() {
-		com.liferay.portal.util.PropsUtil.addProperties(
-			new UnicodeProperties(_oldValues, false));
+		PropsUtil.addProperties(new UnicodeProperties(_oldValues, false));
 	}
 
 	private void _setTemporaryValue(String key, String value) {
 		_oldValues.put(key, GetterUtil.getString(PropsUtil.get(key)));
 
-		com.liferay.portal.util.PropsUtil.set(key, value);
+		PropsUtil.set(key, value);
 	}
 
 	private final Map<String, String> _oldValues = new HashMap<>();

@@ -15,8 +15,8 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.saml.constants.SamlWebKeys;
@@ -193,7 +193,7 @@ public class SpSsoSamlPortalFilter extends BaseSamlPortalFilter {
 			WebKeys.LAST_PATH);
 
 		if (GetterUtil.getBoolean(
-				_props.get(PropsKeys.AUTH_FORWARD_BY_LAST_PATH)) &&
+				PropsUtil.get(PropsKeys.AUTH_FORWARD_BY_LAST_PATH)) &&
 			(lastPath != null) && Validator.isNull(relayState)) {
 
 			relayState = StringBundler.concat(
@@ -214,9 +214,6 @@ public class SpSsoSamlPortalFilter extends BaseSamlPortalFilter {
 
 	@Reference
 	private Portal _portal;
-
-	@Reference
-	private Props _props;
 
 	@Reference
 	private SamlHttpRequestHelper _samlHttpRequestHelper;

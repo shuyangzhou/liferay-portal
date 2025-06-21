@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.Props;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.saml.constants.SamlWebKeys;
@@ -99,7 +99,7 @@ public class SamlLoginAction extends BaseSamlStrutsAction {
 		}
 
 		boolean samlIdpRedirectMessageEnabled = GetterUtil.getBoolean(
-			_props.get("saml.idp.redirect.message.enabled"), true);
+			PropsUtil.get("saml.idp.redirect.message.enabled"), true);
 
 		httpServletRequest.setAttribute(
 			SamlWebKeys.SAML_SSO_LOGIN_CONTEXT,
@@ -189,9 +189,6 @@ public class SamlLoginAction extends BaseSamlStrutsAction {
 
 	@Reference
 	private Portal _portal;
-
-	@Reference
-	private Props _props;
 
 	@Reference
 	private SamlProviderConfigurationHelper _samlProviderConfigurationHelper;

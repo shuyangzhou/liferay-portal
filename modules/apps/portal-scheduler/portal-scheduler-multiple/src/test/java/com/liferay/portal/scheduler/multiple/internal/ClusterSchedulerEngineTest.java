@@ -42,7 +42,6 @@ import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
@@ -1202,7 +1201,6 @@ public class ClusterSchedulerEngineTest {
 
 		_clusterSchedulerEngine.setClusterMasterExecutor(
 			_mockClusterMasterExecutor);
-		_clusterSchedulerEngine.setProps(PropsUtil.getProps());
 
 		_memoryClusteredJobs = ReflectionTestUtil.getFieldValue(
 			_clusterSchedulerEngine, "_memoryClusteredJobs");

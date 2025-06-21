@@ -21,8 +21,8 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.url.builder.AbsolutePortalURLBuilder;
 import com.liferay.portal.url.builder.AbsolutePortalURLBuilderFactory;
@@ -136,7 +136,8 @@ public class SPATopHeadJSPDynamicInclude extends BaseJSPDynamicInclude {
 	@Override
 	public void register(DynamicIncludeRegistry dynamicIncludeRegistry) {
 		boolean singlePageApplicationEnabled = GetterUtil.getBoolean(
-			_props.get(PropsKeys.JAVASCRIPT_SINGLE_PAGE_APPLICATION_ENABLED));
+			PropsUtil.get(
+				PropsKeys.JAVASCRIPT_SINGLE_PAGE_APPLICATION_ENABLED));
 
 		if (singlePageApplicationEnabled) {
 			dynamicIncludeRegistry.register(
@@ -171,8 +172,5 @@ public class SPATopHeadJSPDynamicInclude extends BaseJSPDynamicInclude {
 
 	@Reference
 	private Portal _portal;
-
-	@Reference
-	private Props _props;
 
 }
