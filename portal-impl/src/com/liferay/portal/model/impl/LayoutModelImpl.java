@@ -8,8 +8,10 @@ package com.liferay.portal.model.impl;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -32,6 +34,8 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.Serializable;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.InvocationHandler;
 
 import java.sql.Blob;
@@ -2070,6 +2074,13 @@ public class LayoutModelImpl
 		_statusDate = statusDate;
 	}
 
+	public Layout getDraftLayout() {
+		return null;
+	}
+
+	public void setDraftLayout(Layout draftLayout) {
+	}
+
 	@Override
 	public StagedModelType getStagedModelType() {
 		return new StagedModelType(
@@ -2819,6 +2830,14 @@ public class LayoutModelImpl
 			layoutCacheModel.statusDate = Long.MIN_VALUE;
 		}
 
+		try {
+			layoutCacheModel.draftLayout =
+				(Layout)_draftLayoutMethodHandle.invokeExact((LayoutImpl)this);
+		}
+		catch (Throwable throwable) {
+			ReflectionUtil.throwException(throwable);
+		}
+
 		return layoutCacheModel;
 	}
 
@@ -3125,6 +3144,35 @@ public class LayoutModelImpl
 	}
 
 	private long _columnBitmask;
+
+	protected static final BiConsumer<Layout, Layout>
+		draftLayoutUpdateEntityCacheBiConsumer = (layout, draftLayout) -> {
+			LayoutCacheModel layoutCacheModel = EntityCacheUtil.fetchCacheModel(
+				LayoutImpl.class, layout.getPrimaryKey(),
+				LayoutCacheModel.class);
+
+			if ((layoutCacheModel != null) &&
+				(layoutCacheModel.getMvccVersion() ==
+					layout.getMvccVersion())) {
+
+				layoutCacheModel.draftLayout = draftLayout;
+			}
+		};
+
+	private static final MethodHandle _draftLayoutMethodHandle;
+
+	static {
+		MethodHandles.Lookup lookup = ReflectionUtil.getImplLookup();
+
+		try {
+			_draftLayoutMethodHandle = lookup.findGetter(
+				LayoutImpl.class, "_draftLayout", Layout.class);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new ExceptionInInitializerError(reflectiveOperationException);
+		}
+	}
+
 	private Layout _escapedModel;
 
 }

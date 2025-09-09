@@ -6,6 +6,7 @@
 package com.liferay.portal.model.impl;
 
 import com.liferay.petra.lang.HashUtil;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.Layout;
@@ -15,6 +16,9 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
 
 import java.util.Date;
 
@@ -354,6 +358,13 @@ public class LayoutCacheModel
 
 		layoutImpl.resetOriginalValues();
 
+		try {
+			_draftLayoutMethodHandle.invokeExact(layoutImpl, draftLayout);
+		}
+		catch (Throwable throwable) {
+			ReflectionUtil.throwException(throwable);
+		}
+
 		return layoutImpl;
 	}
 
@@ -426,6 +437,8 @@ public class LayoutCacheModel
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
+
+		draftLayout = (Layout)objectInput.readObject();
 	}
 
 	@Override
@@ -600,6 +613,8 @@ public class LayoutCacheModel
 		}
 
 		objectOutput.writeLong(statusDate);
+
+		objectOutput.writeObject(draftLayout);
 	}
 
 	public long mvccVersion;
@@ -646,5 +661,20 @@ public class LayoutCacheModel
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
+	public volatile Layout draftLayout;
+
+	private static final MethodHandle _draftLayoutMethodHandle;
+
+	static {
+		MethodHandles.Lookup lookup = ReflectionUtil.getImplLookup();
+
+		try {
+			_draftLayoutMethodHandle = lookup.findSetter(
+				LayoutImpl.class, "_draftLayout", Layout.class);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new ExceptionInInitializerError(reflectiveOperationException);
+		}
+	}
 
 }

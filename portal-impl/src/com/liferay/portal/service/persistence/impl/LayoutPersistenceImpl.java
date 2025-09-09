@@ -21002,10 +21002,19 @@ public class LayoutPersistenceImpl
 					CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 						layout.getCtCollectionId())) {
 
-				if (EntityCacheUtil.getResult(
-						LayoutImpl.class, layout.getPrimaryKey()) == null) {
+				Layout cachedLayout = (Layout)EntityCacheUtil.getResult(
+					LayoutImpl.class, layout.getPrimaryKey());
 
+				if (cachedLayout == null) {
 					cacheResult(layout);
+				}
+				else {
+					LayoutModelImpl layoutModelImpl = (LayoutModelImpl)layout;
+					LayoutModelImpl cachedLayoutModelImpl =
+						(LayoutModelImpl)cachedLayout;
+
+					layoutModelImpl.setDraftLayout(
+						cachedLayoutModelImpl.getDraftLayout());
 				}
 			}
 		}
