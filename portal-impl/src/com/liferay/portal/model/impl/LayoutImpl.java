@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.model.PortletWrapper;
 import com.liferay.portal.kernel.model.Theme;
+import com.liferay.portal.kernel.model.cache.CacheField;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
@@ -195,7 +196,21 @@ public class LayoutImpl extends LayoutBaseImpl {
 
 	@Override
 	public Layout fetchDraftLayout() {
-		return LayoutLocalServiceUtil.fetchDraftLayout(getPlid());
+		if (_draftLayout == null) {
+			_draftLayout = LayoutLocalServiceUtil.fetchDraftLayout(getPlid());
+
+			if (_draftLayout == null) {
+				_draftLayout = _NULL_LAYOUT;
+			}
+
+			draftLayoutUpdateEntityCacheBiConsumer.accept(this, _draftLayout);
+		}
+
+		if (_draftLayout == _NULL_LAYOUT) {
+			return null;
+		}
+
+		return _draftLayout;
 	}
 
 	/**
@@ -471,6 +486,11 @@ public class LayoutImpl extends LayoutBaseImpl {
 		}
 
 		return StringPool.BLANK;
+	}
+
+	@Override
+	public Layout getDraftLayout() {
+		return fetchDraftLayout();
 	}
 
 	@Override
@@ -1558,6 +1578,11 @@ public class LayoutImpl extends LayoutBaseImpl {
 	}
 
 	@Override
+	public void setDraftLayout(Layout draftLayout) {
+		_draftLayout = draftLayout;
+	}
+
+	@Override
 	public void setGroupId(long groupId) {
 		super.setGroupId(groupId);
 
@@ -1894,6 +1919,8 @@ public class LayoutImpl extends LayoutBaseImpl {
 		return url;
 	}
 
+	private static final Layout _NULL_LAYOUT = new LayoutImpl();
+
 	private static final Log _log = LogFactoryUtil.getLog(LayoutImpl.class);
 
 	private static String[] _friendlyURLKeywords;
@@ -1903,6 +1930,10 @@ public class LayoutImpl extends LayoutBaseImpl {
 	}
 
 	private ColorScheme _colorScheme;
+
+	@CacheField(permanent = true)
+	private Layout _draftLayout;
+
 	private String _faviconURL;
 	private LayoutSet _layoutSet;
 	private transient LayoutType _layoutType;

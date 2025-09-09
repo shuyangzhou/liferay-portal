@@ -13,6 +13,7 @@ import com.liferay.layout.model.LayoutLocalization;
 import com.liferay.layout.service.LayoutClassedModelUsageLocalService;
 import com.liferay.layout.service.LayoutLocalizationLocalService;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
+import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -27,6 +28,7 @@ import com.liferay.portal.kernel.service.LayoutRevisionLocalService;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.model.impl.LayoutImpl;
 
 import java.util.Locale;
 
@@ -42,12 +44,19 @@ public class LayoutModelListener extends BaseModelListener<Layout> {
 
 	@Override
 	public void onAfterCreate(Layout layout) {
+		if (layout.getClassNameId() == _portal.getClassNameId(Layout.class)) {
+			EntityCacheUtil.removeResult(LayoutImpl.class, layout.getClassPK());
+		}
 	}
 
 	@Override
 	public void onAfterRemove(Layout layout) {
 		if (layout == null) {
 			return;
+		}
+
+		if (layout.getClassNameId() == _portal.getClassNameId(Layout.class)) {
+			EntityCacheUtil.removeResult(LayoutImpl.class, layout.getClassPK());
 		}
 
 		if (!CTCollectionThreadLocal.isProductionMode()) {
@@ -91,6 +100,18 @@ public class LayoutModelListener extends BaseModelListener<Layout> {
 
 	@Override
 	public void onAfterUpdate(Layout originalLayout, Layout layout) {
+		long classNameId = _portal.getClassNameId(Layout.class);
+
+		if (originalLayout.getClassNameId() == classNameId) {
+			EntityCacheUtil.removeResult(
+				LayoutImpl.class, originalLayout.getClassPK());
+		}
+
+		if ((layout.getClassNameId() == classNameId) &&
+			(originalLayout.getClassPK() != layout.getClassPK())) {
+
+			EntityCacheUtil.removeResult(LayoutImpl.class, layout.getClassPK());
+		}
 	}
 
 	@Override
