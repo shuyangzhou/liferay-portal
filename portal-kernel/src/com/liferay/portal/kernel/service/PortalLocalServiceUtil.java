@@ -34,6 +34,13 @@ public class PortalLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	public static <T, E extends java.lang.Exception> T invoke(
+			com.liferay.petra.function.UnsafeSupplier<T, E> unsafeSupplier)
+		throws E {
+
+		return getService().invoke(unsafeSupplier);
+	}
+
 	public static PortalLocalService getService() {
 		return _service;
 	}

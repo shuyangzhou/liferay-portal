@@ -34,6 +34,14 @@ public class PortalLocalServiceWrapper
 	}
 
 	@Override
+	public <T, E extends java.lang.Exception> T invoke(
+			com.liferay.petra.function.UnsafeSupplier<T, E> unsafeSupplier)
+		throws E {
+
+		return _portalLocalService.invoke(unsafeSupplier);
+	}
+
+	@Override
 	public PortalLocalService getWrappedService() {
 		return _portalLocalService;
 	}
