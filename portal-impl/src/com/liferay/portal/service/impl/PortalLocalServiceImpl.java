@@ -5,10 +5,20 @@
 
 package com.liferay.portal.service.impl;
 
+import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.portal.service.base.PortalLocalServiceBaseImpl;
 
 /**
  * @author Brian Wing Shun Chan
  */
 public class PortalLocalServiceImpl extends PortalLocalServiceBaseImpl {
+
+	@Override
+	public <T, E extends Exception> T invoke(
+			UnsafeSupplier<T, E> unsafeSupplier)
+		throws E {
+
+		return unsafeSupplier.get();
+	}
+
 }

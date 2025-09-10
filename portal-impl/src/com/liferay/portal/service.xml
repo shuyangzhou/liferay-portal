@@ -1509,7 +1509,7 @@
 			<finder-column name="pluginType" />
 		</finder>
 	</entity>
-	<entity local-service="true" name="Portal" remote-service="true">
+	<entity change-tracking-enabled="true" local-service="true" name="Portal" remote-service="true">
 	</entity>
 	<entity local-service="true" name="PortalPreferences" remote-service="false">
 
