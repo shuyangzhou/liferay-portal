@@ -14,9 +14,9 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.data.cleanup.DataCleanupPreupgradeProcess;
 import com.liferay.portal.kernel.upgrade.data.cleanup.util.OrphanReferencesDataCleanupUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.upgrade.internal.recorder.UpgradeRecorder;
 import com.liferay.portal.upgrade.internal.report.UpgradeReport;
-import com.liferay.portal.util.PropsValues;
 
 import java.io.Serializable;
 

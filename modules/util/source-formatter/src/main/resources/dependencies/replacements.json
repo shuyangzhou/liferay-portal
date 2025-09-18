@@ -3863,7 +3863,7 @@
 		"issueKey": "LPD-40678",
 		"newImports": [
 			"com.liferay.portal.kernel.util.SetUtil",
-			"com.liferay.portal.util.PropsValues"
+			"com.liferay.portal.kernel.util.PropsValues"
 		],
 		"to": "SetUtil.fromArray(PropsValues.MIME_TYPES_WEB_IMAGES).contains",
 		"validExtensions": [

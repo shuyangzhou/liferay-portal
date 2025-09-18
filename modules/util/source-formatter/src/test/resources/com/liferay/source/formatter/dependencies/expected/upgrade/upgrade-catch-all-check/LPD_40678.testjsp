@@ -6,7 +6,7 @@
 --%>
 
 <%@ page import="com.liferay.portal.kernel.util.SetUtil" %><%@
-page import="com.liferay.portal.util.PropsValues" %>
+page import="com.liferay.portal.kernel.util.PropsValues" %>
 
 <%
 if (!SetUtil.fromArray(PropsValues.MIME_TYPES_WEB_IMAGES).contains(dlFileEntry.getMimeType())) {

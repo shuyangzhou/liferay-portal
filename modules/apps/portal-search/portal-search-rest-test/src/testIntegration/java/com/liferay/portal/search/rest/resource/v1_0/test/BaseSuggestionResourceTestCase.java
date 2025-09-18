@@ -37,7 +37,7 @@ import com.liferay.portal.search.rest.client.resource.v1_0.SuggestionResource;
 import com.liferay.portal.search.rest.client.serdes.v1_0.SuggestionSerDes;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.vulcan.resource.EntityModelResource;
 
 import jakarta.annotation.Generated;

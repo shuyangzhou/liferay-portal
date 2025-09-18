@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MethodParameter;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -35,7 +36,6 @@ import com.liferay.portal.remote.json.web.service.JSONWebServiceActionMapping;
 import com.liferay.portal.remote.json.web.service.JSONWebServiceActionsManager;
 import com.liferay.portal.remote.json.web.service.exception.NoSuchJSONWebServiceException;
 import com.liferay.portal.spring.aop.AopInvocationHandler;
-import com.liferay.portal.util.PropsValues;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;

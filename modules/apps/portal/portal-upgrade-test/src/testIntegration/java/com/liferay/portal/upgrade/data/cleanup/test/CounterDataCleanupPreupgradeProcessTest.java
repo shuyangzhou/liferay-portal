@@ -17,11 +17,11 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.upgrade.data.cleanup.CounterDataCleanupPreupgradeProcess;
-import com.liferay.portal.util.PropsValues;
 
 import java.util.List;
 

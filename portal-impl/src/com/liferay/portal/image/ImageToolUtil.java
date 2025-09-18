@@ -21,11 +21,11 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.impl.ImageImpl;
 import com.liferay.portal.module.framework.ModuleFrameworkUtil;
 import com.liferay.portal.util.FileImpl;
-import com.liferay.portal.util.PropsValues;
 
 import java.awt.AlphaComposite;
 import java.awt.Graphics;

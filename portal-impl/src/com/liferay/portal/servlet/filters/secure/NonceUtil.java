@@ -19,8 +19,8 @@ import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.util.PropsValues;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.DelayQueue;

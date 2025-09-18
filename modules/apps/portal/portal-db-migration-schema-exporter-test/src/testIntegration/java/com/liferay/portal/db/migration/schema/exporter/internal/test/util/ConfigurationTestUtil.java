@@ -8,7 +8,7 @@ package com.liferay.portal.db.migration.schema.exporter.internal.test.util;
 import com.liferay.portal.configuration.persistence.listener.ConfigurationModelListener;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.kernel.util.PropsValues;
 
 import java.nio.charset.Charset;
 import java.nio.file.Files;

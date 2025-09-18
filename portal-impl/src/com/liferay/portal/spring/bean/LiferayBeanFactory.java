@@ -6,8 +6,8 @@
 package com.liferay.portal.spring.bean;
 
 import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.spring.aop.BaseServiceBeanAutoProxyCreator;
-import com.liferay.portal.util.PropsValues;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

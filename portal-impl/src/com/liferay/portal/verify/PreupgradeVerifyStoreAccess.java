@@ -10,9 +10,9 @@ import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.events.StartupHelperUtil;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.util.PropsValues;
 
 import java.util.Random;
 import java.util.Set;
