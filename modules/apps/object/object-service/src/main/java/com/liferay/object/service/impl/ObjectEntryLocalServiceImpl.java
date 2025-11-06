@@ -2652,6 +2652,10 @@ public class ObjectEntryLocalServiceImpl
 			long primaryKey = GetterUtil.getLong(
 				values.get(objectField.getName()));
 
+			if (primaryKey == 0) {
+				continue;
+			}
+
 			String objectRelationshipERCObjectFieldName =
 				ObjectFieldSettingUtil.getValue(
 					ObjectFieldSettingConstants.
