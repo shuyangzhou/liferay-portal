@@ -317,15 +317,16 @@ public class DLFileEntryModelDocumentContributor
 
 		for (DLFileEntryMetadata dlFileEntryMetadata : dlFileEntryMetadatas) {
 			try {
+				DDMStructure ddmStructure =
+					_ddmStructureLocalService.getStructure(
+						dlFileEntryMetadata.getDDMStructureId());
+
 				DDMFormValues ddmFormValues =
 					_ddmStorageEngineManager.getDDMFormValues(
-						dlFileEntryMetadata.getDDMStorageId());
+						dlFileEntryMetadata.getDDMStorageId(),
+						ddmStructure.getDDMForm());
 
 				if (ddmFormValues != null) {
-					DDMStructure ddmStructure =
-						_ddmStructureLocalService.getStructure(
-							dlFileEntryMetadata.getDDMStructureId());
-
 					_ddmIndexer.addAttributes(
 						document, ddmStructure, ddmFormValues);
 
