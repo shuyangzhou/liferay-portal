@@ -5,7 +5,10 @@
 
 package com.liferay.portal.internal.servlet;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.io.StreamUtil;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.db.index.IndexUpdaterUtil;
@@ -13,6 +16,7 @@ import com.liferay.portal.events.EventsProcessorUtil;
 import com.liferay.portal.events.ShutdownHelperUtil;
 import com.liferay.portal.events.StartupAction;
 import com.liferay.portal.events.StartupHelperUtil;
+import com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutor;
 import com.liferay.portal.kernel.cache.thread.local.Lifecycle;
 import com.liferay.portal.kernel.cache.thread.local.ThreadLocalCacheManager;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
@@ -58,6 +62,8 @@ import com.liferay.portal.kernel.upgrade.ReleaseManager;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -110,6 +116,8 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+import java.lang.reflect.Method;
 
 import java.sql.Connection;
 
@@ -415,6 +423,93 @@ public class MainServlet extends HttpServlet {
 		ThreadLocalCacheManager.clearAll(Lifecycle.REQUEST);
 
 		DependencyManagerSyncUtil.sync();
+
+		Thread reindexThread = new Thread(
+			() -> {
+				try {
+					Thread.sleep(3000);
+				}
+				catch (InterruptedException interruptedException) {
+					throw new RuntimeException(interruptedException);
+				}
+
+				try {
+					HttpUtil.URLtoByteArray(
+						"http://admin-j8k9-preprod.lxc.liferay.com.localhost:" +
+							"8080");
+				}
+				catch (IOException ioException) {
+					throw new RuntimeException(ioException);
+				}
+
+				ServiceTrackerMap<String, BackgroundTaskExecutor>
+					serviceTrackerMap =
+						ServiceTrackerMapFactory.openSingleValueMap(
+							SystemBundleUtil.getBundleContext(),
+							BackgroundTaskExecutor.class,
+							"background.task.executor.class.name");
+
+				BackgroundTaskExecutor backgroundTaskExecutor1 =
+					serviceTrackerMap.getService(
+						"com.liferay.portal.search.internal.background.task." +
+							"ReindexIndexReindexerBackgroundTaskExecutor");
+				BackgroundTaskExecutor backgroundTaskExecutor2 =
+					serviceTrackerMap.getService(
+						"com.liferay.portal.search.internal.background.task." +
+							"ReindexPortalBackgroundTaskExecutor");
+
+				long[] companyIds = ListUtil.toLongArray(
+					CompanyLocalServiceUtil.getCompanies(),
+					Company::getCompanyId);
+
+				Method reindexMethod1 = ReflectionUtil.fetchDeclaredMethod(
+					backgroundTaskExecutor1.getClass(), "reindex",
+					new Class<?>[] {String.class, long[].class, String.class});
+
+				Method reindexMethod2 = ReflectionUtil.fetchDeclaredMethod(
+					backgroundTaskExecutor2.getClass(), "reindex",
+					new Class<?>[] {String.class, long[].class, String.class});
+
+				for (int i = 20; i > 0; i--) {
+					System.out.print("\r\u001b[KCounting down " + i);
+
+					try {
+						Thread.sleep(1000);
+					}
+					catch (InterruptedException interruptedException) {
+						throw new RuntimeException(interruptedException);
+					}
+				}
+
+				System.out.println("\r\u001b[KDone!\nStarting...");
+
+				long startTime = System.nanoTime();
+
+				try {
+					reindexMethod1.invoke(
+						backgroundTaskExecutor1, null, companyIds, "full");
+
+					reindexMethod2.invoke(
+						backgroundTaskExecutor2, null, companyIds, "full");
+				}
+				catch (ReflectiveOperationException
+							reflectiveOperationException) {
+
+					throw new RuntimeException(reflectiveOperationException);
+				}
+
+				System.out.println(
+					"Total indexing time " +
+						((System.nanoTime() - startTime) / 1000000) + "ms");
+
+				serviceTrackerMap.close();
+
+				System.exit(0);
+			});
+
+		reindexThread.setName("Reindex thread");
+
+		reindexThread.start();
 	}
 
 	@Override
