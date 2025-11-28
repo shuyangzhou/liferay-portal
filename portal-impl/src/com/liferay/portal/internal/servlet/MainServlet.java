@@ -507,6 +507,19 @@ public class MainServlet extends HttpServlet {
 
 				serviceTrackerMap.close();
 
+				for (int i = 10; i > 0; i--) {
+					System.out.print("\r\u001b[KShutdown counting down " + i);
+
+					try {
+						Thread.sleep(1000);
+					}
+					catch (InterruptedException interruptedException) {
+						throw new RuntimeException(interruptedException);
+					}
+				}
+
+				System.out.println("\r\u001b[KShutting down...");
+
 				System.exit(0);
 			});
 
