@@ -46,7 +46,7 @@ public class ClassNameUpgradeProcess extends UpgradeProcess {
 				continue;
 			}
 
-			long oldCTCollectionId = oldDDMStructureValues[0];
+			long oldCtCollectionId = oldDDMStructureValues[0];
 			long oldStructureId = oldDDMStructureValues[1];
 
 			long[] newDDMStructureValues = _getDDMStructureValues(
@@ -54,7 +54,7 @@ public class ClassNameUpgradeProcess extends UpgradeProcess {
 
 			if (newDDMStructureValues == null) {
 				_updateDDMStructureClassNameId(
-					newClassNameId, oldCTCollectionId, oldStructureId);
+					newClassNameId, oldCtCollectionId, oldStructureId);
 
 				continue;
 			}
@@ -62,22 +62,22 @@ public class ClassNameUpgradeProcess extends UpgradeProcess {
 			int oldCount = _getDLFileEntryMetadataCount(oldStructureId);
 
 			if (oldCount == 0) {
-				_deleteDDMStructure(oldCTCollectionId, oldStructureId);
+				_deleteDDMStructure(oldCtCollectionId, oldStructureId);
 
 				continue;
 			}
 
-			long newCTCollectionId = newDDMStructureValues[0];
+			long newCtCollectionId = newDDMStructureValues[0];
 
 			long newStructureId = newDDMStructureValues[1];
 
 			int newCount = _getDLFileEntryMetadataCount(newStructureId);
 
 			if (newCount == 0) {
-				_deleteDDMStructure(newCTCollectionId, newStructureId);
+				_deleteDDMStructure(newCtCollectionId, newStructureId);
 
 				_updateDDMStructureClassNameId(
-					newClassNameId, oldCTCollectionId, oldStructureId);
+					newClassNameId, oldCtCollectionId, oldStructureId);
 
 				continue;
 			}
@@ -86,16 +86,16 @@ public class ClassNameUpgradeProcess extends UpgradeProcess {
 				_updateDDMStructureRelatedTables(
 					newStructureId, oldStructureId);
 
-				_deleteDDMStructure(oldCTCollectionId, oldStructureId);
+				_deleteDDMStructure(oldCtCollectionId, oldStructureId);
 			}
 			else {
 				_updateDDMStructureRelatedTables(
 					oldStructureId, newStructureId);
 
-				_deleteDDMStructure(newCTCollectionId, newStructureId);
+				_deleteDDMStructure(newCtCollectionId, newStructureId);
 
 				_updateDDMStructureClassNameId(
-					newClassNameId, oldCTCollectionId, oldStructureId);
+					newClassNameId, oldCtCollectionId, oldStructureId);
 			}
 		}
 	}
