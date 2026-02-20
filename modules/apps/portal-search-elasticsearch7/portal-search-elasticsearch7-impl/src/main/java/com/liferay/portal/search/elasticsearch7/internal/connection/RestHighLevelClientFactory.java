@@ -61,6 +61,8 @@ public class RestHighLevelClientFactory {
 	public RestHighLevelClient newRestHighLevelClient() {
 		RestClientBuilder restClientBuilder = RestClient.builder(
 			_getHttpHosts()
+		).setCompressionEnabled(
+			true
 		).setDefaultHeaders(
 			new Header[] {
 				new BasicHeader(
