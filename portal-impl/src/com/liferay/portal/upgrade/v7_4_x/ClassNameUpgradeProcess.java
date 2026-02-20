@@ -39,22 +39,16 @@ public class ClassNameUpgradeProcess extends UpgradeProcess {
 		_deleteClassName(oldClassNameId);
 
 		for (long companyId : PortalInstancePool.getCompanyIds()) {
-			long[] oldDDMStructureValues = _getDDMStructureValues(
-				oldClassNameId, companyId);
+			long oldStructureId = _getDDMStructureId(oldClassNameId, companyId);
 
-			if (oldDDMStructureValues == null) {
+			if (oldStructureId == 0) {
 				continue;
 			}
 
-			long oldCtCollectionId = oldDDMStructureValues[0];
-			long oldStructureId = oldDDMStructureValues[1];
+			long newStructureId = _getDDMStructureId(newClassNameId, companyId);
 
-			long[] newDDMStructureValues = _getDDMStructureValues(
-				newClassNameId, companyId);
-
-			if (newDDMStructureValues == null) {
-				_updateDDMStructureClassNameId(
-					newClassNameId, oldCtCollectionId, oldStructureId);
+			if (newStructureId == 0) {
+				_updateDDMStructureClassNameId(newClassNameId, oldStructureId);
 
 				continue;
 			}
@@ -62,21 +56,16 @@ public class ClassNameUpgradeProcess extends UpgradeProcess {
 			int oldCount = _getDLFileEntryMetadataCount(oldStructureId);
 
 			if (oldCount == 0) {
-				_deleteDDMStructure(oldCtCollectionId, oldStructureId);
+				_deleteDDMStructure(oldStructureId);
 
 				continue;
 			}
 
-			long newCtCollectionId = newDDMStructureValues[0];
-
-			long newStructureId = newDDMStructureValues[1];
-
 			int newCount = _getDLFileEntryMetadataCount(newStructureId);
 
 			if (newCount == 0) {
-				_deleteDDMStructure(newCtCollectionId, newStructureId);
-				_updateDDMStructureClassNameId(
-					newClassNameId, oldCtCollectionId, oldStructureId);
+				_deleteDDMStructure(newStructureId);
+				_updateDDMStructureClassNameId(newClassNameId, oldStructureId);
 
 				continue;
 			}
@@ -84,14 +73,13 @@ public class ClassNameUpgradeProcess extends UpgradeProcess {
 			if (newCount >= oldCount) {
 				_updateDDMStructureRelatedTables(
 					newStructureId, oldStructureId);
-				_deleteDDMStructure(oldCtCollectionId, oldStructureId);
+				_deleteDDMStructure(oldStructureId);
 			}
 			else {
 				_updateDDMStructureRelatedTables(
 					oldStructureId, newStructureId);
-				_deleteDDMStructure(newCtCollectionId, newStructureId);
-				_updateDDMStructureClassNameId(
-					newClassNameId, oldCtCollectionId, oldStructureId);
+				_deleteDDMStructure(newStructureId);
+				_updateDDMStructureClassNameId(newClassNameId, oldStructureId);
 			}
 		}
 	}
@@ -106,9 +94,7 @@ public class ClassNameUpgradeProcess extends UpgradeProcess {
 		}
 	}
 
-	private void _deleteDDMStructure(long ctCollectionId, long structureId)
-		throws Exception {
-
+	private void _deleteDDMStructure(long structureId) throws Exception {
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				"delete from DDMStructureVersion where structureId = ?")) {
 
@@ -118,11 +104,9 @@ public class ClassNameUpgradeProcess extends UpgradeProcess {
 		}
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
-				"delete from DDMStructure where ctCollectionId = ? and " +
-					"structureId = ?")) {
+				"delete from DDMStructure where structureId = ?")) {
 
-			preparedStatement.setLong(1, ctCollectionId);
-			preparedStatement.setLong(2, structureId);
+			preparedStatement.setLong(1, structureId);
 
 			preparedStatement.execute();
 		}
@@ -144,12 +128,12 @@ public class ClassNameUpgradeProcess extends UpgradeProcess {
 		return 0;
 	}
 
-	private long[] _getDDMStructureValues(long classNameId, long companyId)
+	private long _getDDMStructureId(long classNameId, long companyId)
 		throws Exception {
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
-				"select ctCollectionId, structureId from DDMStructure where " +
-					"classNameId = ? and companyId = ?")) {
+				"select structureId from DDMStructure where classNameId = ? " +
+					"and companyId = ?")) {
 
 			preparedStatement.setLong(1, classNameId);
 			preparedStatement.setLong(2, companyId);
@@ -157,14 +141,11 @@ public class ClassNameUpgradeProcess extends UpgradeProcess {
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
-				return new long[] {
-					resultSet.getLong("ctCollectionId"),
-					resultSet.getLong("structureId")
-				};
+				return resultSet.getLong("structureId");
 			}
 		}
 
-		return null;
+		return 0;
 	}
 
 	private long _getDDMStructureVersionId(long structureId) throws Exception {
@@ -220,16 +201,15 @@ public class ClassNameUpgradeProcess extends UpgradeProcess {
 	}
 
 	private void _updateDDMStructureClassNameId(
-			long classNameId, long ctCollectionId, long structureId)
+			long classNameId, long structureId)
 		throws Exception {
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
-				"update DDMStructure set classNameId = ? where " +
-					"ctCollectionId = ? and structureId = ?")) {
+				"update DDMStructure set classNameId = ? where structureId = " +
+					"?")) {
 
 			preparedStatement.setLong(1, classNameId);
-			preparedStatement.setLong(2, ctCollectionId);
-			preparedStatement.setLong(3, structureId);
+			preparedStatement.setLong(2, structureId);
 
 			preparedStatement.execute();
 		}
