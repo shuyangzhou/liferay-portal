@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.background.task.ReindexBackgroundTaskConstants;
 import com.liferay.portal.kernel.search.background.task.ReindexStatusMessageSender;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.spi.reindexer.IndexReindexer;
 import com.liferay.portal.search.spi.reindexer.IndexReindexerRegistry;
@@ -21,9 +22,11 @@ import com.liferay.portal.search.spi.reindexer.IndexReindexerRegistry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -40,6 +43,12 @@ public class ReindexIndexReindexerBackgroundTaskExecutor
 	@Override
 	public BackgroundTaskExecutor clone() {
 		return this;
+	}
+
+	@Activate
+	protected void activate(Map<String, Object> properties) {
+		_parallelIndexing = GetterUtil.getBoolean(
+			properties.get("parallelIndexing"), true);
 	}
 
 	@Override
@@ -75,61 +84,77 @@ public class ReindexIndexReindexerBackgroundTaskExecutor
 	}
 
 	private void _reindex(
+			String className, long companyId, long[] companyIds,
+			String executionMode, IndexReindexer indexReindexer,
+			String startPhase, String endPhase)
+		throws Exception {
+
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(companyId)) {
+
+			if (startPhase != null) {
+				_reindexStatusMessageSender.sendStatusMessage(
+					startPhase, companyId, companyIds);
+			}
+
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					StringBundler.concat(
+						"Start reindexing company ", companyId,
+						" for class name ", className, " with execution mode ",
+						executionMode));
+			}
+
+			indexReindexer.reindex(companyId, executionMode);
+
+			if (endPhase != null) {
+				_reindexStatusMessageSender.sendStatusMessage(
+					endPhase, companyId, companyIds);
+			}
+
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					StringBundler.concat(
+						"Finished reindexing company ", companyId,
+						" for class name ", className, " with execution mode ",
+						executionMode));
+			}
+		}
+	}
+
+	private void _reindex(
 			String className, long[] companyIds, String executionMode,
 			IndexReindexer indexReindexer, String startPhase, String endPhase)
 		throws Exception {
 
-		ExecutorService executorService =
-			_portalExecutorManager.getPortalExecutor(
-				ReindexPortalBackgroundTaskExecutor.class.getName());
+		if (_parallelIndexing) {
+			ExecutorService executorService =
+				_portalExecutorManager.getPortalExecutor(
+					ReindexPortalBackgroundTaskExecutor.class.getName());
 
-		List<Future<?>> futures = new ArrayList<>();
+			List<Future<?>> futures = new ArrayList<>();
 
-		for (long companyId : companyIds) {
-			futures.add(
-				executorService.submit(
-					() -> {
-						try (SafeCloseable safeCloseable =
-								CompanyThreadLocal.
-									setCompanyIdWithSafeCloseable(companyId)) {
+			for (long companyId : companyIds) {
+				futures.add(
+					executorService.submit(
+						() -> {
+							_reindex(
+								className, companyId, companyIds, executionMode,
+								indexReindexer, startPhase, endPhase);
 
-							if (startPhase != null) {
-								_reindexStatusMessageSender.sendStatusMessage(
-									startPhase, companyId, companyIds);
-							}
+							return null;
+						}));
+			}
 
-							if (_log.isInfoEnabled()) {
-								_log.info(
-									StringBundler.concat(
-										"Start reindexing company ", companyId,
-										" for class name ", className,
-										" with execution mode ",
-										executionMode));
-							}
-
-							indexReindexer.reindex(companyId, executionMode);
-
-							if (endPhase != null) {
-								_reindexStatusMessageSender.sendStatusMessage(
-									endPhase, companyId, companyIds);
-							}
-
-							if (_log.isInfoEnabled()) {
-								_log.info(
-									StringBundler.concat(
-										"Finished reindexing company ",
-										companyId, " for class name ",
-										className, " with execution mode ",
-										executionMode));
-							}
-						}
-
-						return null;
-					}));
+			for (Future<?> future : futures) {
+				future.get();
+			}
 		}
 
-		for (Future<?> future : futures) {
-			future.get();
+		for (long companyId : companyIds) {
+			_reindex(
+				className, companyId, companyIds, executionMode, indexReindexer,
+				startPhase, endPhase);
 		}
 	}
 
@@ -138,6 +163,8 @@ public class ReindexIndexReindexerBackgroundTaskExecutor
 
 	@Reference
 	private IndexReindexerRegistry _indexReindexerRegistry;
+
+	private boolean _parallelIndexing;
 
 	@Reference
 	private PortalExecutorManager _portalExecutorManager;
