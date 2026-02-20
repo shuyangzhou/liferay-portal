@@ -188,37 +188,36 @@ public class ClassNameUpgradeProcessTest {
 	@Test
 	public void testUpdateDDMStructureRelatedTables2() throws Exception {
 		long newClassNameId = _getClassNameId(_NEW_CLASS_NAME);
+		long oldClassNameId = _addClassName(_OLD_CLASS_NAME);
 
 		long newStructureId = _addDDMStructure(newClassNameId);
+		long oldStructureId = _addDDMStructure(oldClassNameId);
 
 		_addDLFileEntryMetadata(newStructureId);
+		_addDLFileEntryMetadata(oldStructureId);
+		_addDLFileEntryMetadata(oldStructureId);
 
 		long newStructureVersionId = _addDDMStructureRelatedTables(
 			newStructureId);
-
-		long oldClassNameId = _addClassName(_OLD_CLASS_NAME);
-
-		long oldStructureId = _addDDMStructure(oldClassNameId);
-
-		_addDLFileEntryMetadata(oldStructureId);
-		_addDLFileEntryMetadata(oldStructureId);
-
 		long oldStructureVersionId = _addDDMStructureRelatedTables(
 			oldStructureId);
 
 		runUpgrade();
 
-		Assert.assertEquals(0, _getDDMStructureClassNameId(newStructureId));
-		Assert.assertEquals(
-			newClassNameId, _getDDMStructureClassNameId(oldStructureId));
 		Assert.assertEquals(
 			0,
 			_getDDMStructureRelatedTablesCount(
 				newStructureId, newStructureVersionId));
+
 		Assert.assertEquals(
 			12,
 			_getDDMStructureRelatedTablesCount(
 				oldStructureId, oldStructureVersionId));
+
+		Assert.assertEquals(0, _getDDMStructureClassNameId(newStructureId));
+
+		Assert.assertEquals(
+			newClassNameId, _getDDMStructureClassNameId(oldStructureId));
 	}
 
 	protected void runUpgrade() throws Exception {
