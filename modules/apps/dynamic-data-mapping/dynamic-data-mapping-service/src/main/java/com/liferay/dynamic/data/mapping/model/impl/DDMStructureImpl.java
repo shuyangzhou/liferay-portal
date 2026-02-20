@@ -245,35 +245,35 @@ public class DDMStructureImpl extends DDMStructureBaseImpl {
 	public String getDefaultLanguageId() {
 		DDMForm ddmForm = _ddmForm;
 
-		if (ddmForm != null) {
-			return LocaleUtil.toLanguageId(ddmForm.getDefaultLocale());
+		if (ddmForm == null) {
+			String defintion = getDefinition();
+
+			int index = defintion.indexOf("\"defaultLanguageId\"");
+
+			if (index == -1) {
+				return LocaleUtil.toLanguageId(LocaleUtil.getDefault());
+			}
+
+			index += 19;
+
+			int start = defintion.indexOf(CharPool.QUOTE, index);
+
+			if (start == -1) {
+				return LocaleUtil.toLanguageId(LocaleUtil.getDefault());
+			}
+
+			start++;
+
+			int end = defintion.indexOf(CharPool.QUOTE, start);
+
+			if (end == -1) {
+				return LocaleUtil.toLanguageId(LocaleUtil.getDefault());
+			}
+
+			return defintion.substring(start, end);
 		}
 
-		String defintion = getDefinition();
-
-		int index = defintion.indexOf("\"defaultLanguageId\"");
-
-		if (index == -1) {
-			return LocaleUtil.toLanguageId(LocaleUtil.getDefault());
-		}
-
-		index += 19;
-
-		int start = defintion.indexOf(CharPool.QUOTE, index);
-
-		if (start == -1) {
-			return LocaleUtil.toLanguageId(LocaleUtil.getDefault());
-		}
-
-		start++;
-
-		int end = defintion.indexOf(CharPool.QUOTE, start);
-
-		if (end == -1) {
-			return LocaleUtil.toLanguageId(LocaleUtil.getDefault());
-		}
-
-		return defintion.substring(start, end);
+		return LocaleUtil.toLanguageId(ddmForm.getDefaultLocale());
 	}
 
 	@Override
