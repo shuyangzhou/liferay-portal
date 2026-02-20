@@ -218,7 +218,7 @@ public class DDMFieldUpgradeProcess extends UpgradeProcess {
 
 	private void _addDDMFieldAndDDMFieldAttribute(
 			long companyId, long contentId,
-			Map<String, DDMFieldInfo> ddmFieldInfosMap,
+			Map<String, DDMFieldInfo> ddmFieldInfoMap,
 			Map<String, DDMFormField> ddmFormFieldsMap,
 			List<DDMFormFieldValue> ddmFormValues,
 			PreparedStatement insertDDMFieldAttributePreparedStatement,
@@ -233,7 +233,7 @@ public class DDMFieldUpgradeProcess extends UpgradeProcess {
 
 			String instanceId = ddmFormFieldValue.getInstanceId();
 
-			if (ddmFieldInfosMap.containsKey(instanceId)) {
+			if (ddmFieldInfoMap.containsKey(instanceId)) {
 				instanceId =
 					com.liferay.portal.kernel.util.StringUtil.randomString(8);
 			}
@@ -241,7 +241,7 @@ public class DDMFieldUpgradeProcess extends UpgradeProcess {
 			DDMFieldInfo ddmFieldInfo = new DDMFieldInfo(
 				ddmFormFieldValue.getName(), instanceId, parentInstanceId);
 
-			ddmFieldInfosMap.put(ddmFieldInfo._instanceId, ddmFieldInfo);
+			ddmFieldInfoMap.put(ddmFieldInfo._instanceId, ddmFieldInfo);
 
 			Value value = ddmFormFieldValue.getValue();
 
@@ -298,7 +298,7 @@ public class DDMFieldUpgradeProcess extends UpgradeProcess {
 			instanceToFieldIdMap.put(ddmFieldInfo._instanceId, fieldId);
 
 			_addDDMFieldAndDDMFieldAttribute(
-				companyId, contentId, ddmFieldInfosMap, ddmFormFieldsMap,
+				companyId, contentId, ddmFieldInfoMap, ddmFormFieldsMap,
 				ddmFormFieldValue.getNestedDDMFormFieldValues(),
 				insertDDMFieldAttributePreparedStatement,
 				insertDDMFieldPreparedStatement, instanceToFieldIdMap,
@@ -578,7 +578,7 @@ public class DDMFieldUpgradeProcess extends UpgradeProcess {
 		DDMFieldInfo rootDDMFieldInfo = new DDMFieldInfo(
 			StringPool.BLANK, StringPool.BLANK, null);
 
-		Map<String, DDMFieldInfo> ddmFieldInfosMap = LinkedHashMapBuilder.put(
+		Map<String, DDMFieldInfo> ddmFieldInfoMap = LinkedHashMapBuilder.put(
 			StringPool.BLANK, rootDDMFieldInfo
 		).build();
 
@@ -603,7 +603,7 @@ public class DDMFieldUpgradeProcess extends UpgradeProcess {
 			rootDDMFieldInfo, structureVersionId);
 
 		_addDDMFieldAndDDMFieldAttribute(
-			companyId, contentId, ddmFieldInfosMap, ddmFormFieldsMap,
+			companyId, contentId, ddmFieldInfoMap, ddmFormFieldsMap,
 			ddmFormValues.getDDMFormFieldValues(),
 			insertDDMFieldAttributePreparedStatement,
 			insertDDMFieldPreparedStatement, instanceToFieldIdMap, null, 1,
