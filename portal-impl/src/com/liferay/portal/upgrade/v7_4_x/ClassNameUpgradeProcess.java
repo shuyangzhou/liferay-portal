@@ -59,9 +59,9 @@ public class ClassNameUpgradeProcess extends UpgradeProcess {
 				continue;
 			}
 
-			int oldDLFileEntryMetadatasCount = _getDLFileEntryMetadatasCount(oldStructureId);
+			int oldCount = _getDLFileEntryMetadatasCount(oldStructureId);
 
-			if (oldDLFileEntryMetadatasCount == 0) {
+			if (oldCount == 0) {
 				_deleteDDMStructure(oldCTCollectionId, oldStructureId);
 
 				continue;
@@ -71,9 +71,9 @@ public class ClassNameUpgradeProcess extends UpgradeProcess {
 
 			long newStructureId = newDDMStructureValues[1];
 
-			int newDLFileEntryMetadatasCount = _getDLFileEntryMetadatasCount(newStructureId);
+			int newCount = _getDLFileEntryMetadatasCount(newStructureId);
 
-			if (newDLFileEntryMetadatasCount == 0) {
+			if (newCount == 0) {
 				_deleteDDMStructure(newCTCollectionId, newStructureId);
 
 				_updateDDMStructureClassNameId(
@@ -82,7 +82,7 @@ public class ClassNameUpgradeProcess extends UpgradeProcess {
 				continue;
 			}
 
-			if (newDLFileEntryMetadatasCount >= oldDLFileEntryMetadatasCount) {
+			if (newCount >= oldCount) {
 				_updateDDMStructureRelatedTables(
 					newStructureId, oldStructureId);
 
