@@ -60,6 +60,8 @@ public class RestClientTransportFactory {
 	public RestClientTransport newRestClientTransport() {
 		RestClientBuilder restClientBuilder = RestClient.builder(
 			_getHttpHosts()
+		).setCompressionEnabled(
+			true
 		).setHttpClientConfigCallback(
 			this::_customizeHttpClient
 		).setRequestConfigCallback(
