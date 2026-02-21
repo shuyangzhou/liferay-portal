@@ -12825,7 +12825,6 @@ sendBlacklist=[]
 jndiName=""
 ]]></echo>
 
-		<echo file="${liferay.home}/osgi/configs/com.liferay.portal.search.internal.background.task.ReindexIndexReindexerBackgroundTaskExecutor.config">parallelIndexing=B"false"</echo>
 		<echo file="${liferay.home}/osgi/configs/com.liferay.portal.search.internal.background.task.ReindexPortalBackgroundTaskExecutor.config">parallelIndexing=B"false"</echo>
 
 		<if>
