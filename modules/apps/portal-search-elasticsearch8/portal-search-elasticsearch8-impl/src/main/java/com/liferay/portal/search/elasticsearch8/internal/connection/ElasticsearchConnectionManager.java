@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.FutureTask;
 import java.util.function.Supplier;
@@ -178,15 +179,7 @@ public class ElasticsearchConnectionManager
 
 			blacklistField.setAccessible(true);
 
-			ConcurrentHashMap<HttpHost, Object> map =
-				(ConcurrentHashMap<HttpHost, Object>)blacklistField.get(
-					restClient);
-
-			for (HttpHost httpHost : map.keySet()) {
-				_log.error(
-					"The REST client network host address " +
-						httpHost.toString() + " is blacklisted");
-			}
+			blacklistField.set(restClient, _blacklist);
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
@@ -517,6 +510,25 @@ public class ElasticsearchConnectionManager
 		_crossClusterReplicationConfigurationHelperSnapshot = new Snapshot<>(
 			ElasticsearchConnectionManager.class,
 			CrossClusterReplicationConfigurationHelper.class, null, true);
+
+	private final ConcurrentMap<HttpHost, ?> _blacklist =
+		new ConcurrentHashMap<>() {
+
+			@Override
+			public Object putIfAbsent(HttpHost httpHost, Object value) {
+				Object previousValue = super.putIfAbsent(httpHost, value);
+
+				if (previousValue != null) {
+					_log.error(
+						new Exception(
+							StringBundler.concat(
+								"Blacklisted ", httpHost, " due to ", value)));
+				}
+
+				return previousValue;
+			}
+
+		};
 
 	private final Map<String, Supplier<ElasticsearchConnection>>
 		_elasticsearchConnectionSuppliers = new ConcurrentHashMap<>();
