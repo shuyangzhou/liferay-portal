@@ -120,6 +120,12 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 
 	public static final String COUNT_COLUMN_NAME = "COUNT_VALUE";
 
+	public void cacheResult(List<T> models) {
+		for (T model : models) {
+			cacheResult(model);
+		}
+	}
+
 	public void cacheResult(T model) {
 		throw new UnsupportedOperationException();
 	}
@@ -840,14 +846,14 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 		return sql;
 	}
 
-	protected void appendOrderByComparator(
+	public void appendOrderByComparator(
 		StringBundler sb, String entityAlias,
 		OrderByComparator<T> orderByComparator) {
 
 		appendOrderByComparator(sb, entityAlias, orderByComparator, false);
 	}
 
-	protected void appendOrderByComparator(
+	public void appendOrderByComparator(
 		StringBundler sb, String entityAlias,
 		OrderByComparator<T> orderByComparator, boolean sqlQuery) {
 
