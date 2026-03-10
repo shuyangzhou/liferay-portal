@@ -533,90 +533,113 @@ that may or may not be enforced with a unique index at the database level. Case
 		</#list>
 
 		OrderByComparator<${entity.name}> orderByComparator) throws ${noSuchEntity}Exception {
-			<#list entityColumns as entityColumn>
-				<#if stringUtil.equals(entityColumn.type, "String") && entityColumn.isConvertNull()>
-					${entityColumn.name} = Objects.toString(${entityColumn.name}, "");
-				</#if>
-			</#list>
-
-			${entity.name} ${entity.variableName} = findByPrimaryKey(${entity.PKVariableName});
-
-			Session session = null;
-
-			try {
-				session = openSession();
+			<#if useBaseFinder>
+				${entity.name} ${entity.variableName} = findByPrimaryKey(${entity.PKVariableName});
 
 				${entity.name}[] array = new ${entity.name}Impl[3];
 
-				array[0] =
-					getBy${entityFinder.name}_PrevAndNext(
-						session, ${entity.variableName},
-
+				_baseFinder${entityFinder.name}.findPrevAndNext(
+					array, ${entity.variableName},
+					new Object[] {
 						<#list entityColumns as entityColumn>
-							${entityColumn.name},
+							${entityColumn.name}
+
+							<#if entityColumn_has_next>
+								,
+							</#if>
 						</#list>
-
-						orderByComparator, true);
-
-				array[1] = ${entity.variableName};
-
-				array[2] =
-					getBy${entityFinder.name}_PrevAndNext(
-						session, ${entity.variableName},
-
-						<#list entityColumns as entityColumn>
-							${entityColumn.name},
-						</#list>
-
-						orderByComparator, false);
+					},
+					orderByComparator);
 
 				return array;
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
+			<#else>
+				<#list entityColumns as entityColumn>
+					<#if stringUtil.equals(entityColumn.type, "String") && entityColumn.isConvertNull()>
+						${entityColumn.name} = Objects.toString(${entityColumn.name}, "");
+					</#if>
+				</#list>
+
+				${entity.name} ${entity.variableName} = findByPrimaryKey(${entity.PKVariableName});
+
+				Session session = null;
+
+				try {
+					session = openSession();
+
+					${entity.name}[] array = new ${entity.name}Impl[3];
+
+					array[0] =
+						getBy${entityFinder.name}_PrevAndNext(
+							session, ${entity.variableName},
+
+							<#list entityColumns as entityColumn>
+								${entityColumn.name},
+							</#list>
+
+							orderByComparator, true);
+
+					array[1] = ${entity.variableName};
+
+					array[2] =
+						getBy${entityFinder.name}_PrevAndNext(
+							session, ${entity.variableName},
+
+							<#list entityColumns as entityColumn>
+								${entityColumn.name},
+							</#list>
+
+							orderByComparator, false);
+
+					return array;
+				}
+				catch (Exception exception) {
+					throw processException(exception);
+				}
+				finally {
+					closeSession(session);
+				}
+			</#if>
 		}
 
-		protected ${entity.name} getBy${entityFinder.name}_PrevAndNext(
-			Session session, ${entity.name} ${entity.variableName},
+		<#if !useBaseFinder>
+			protected ${entity.name} getBy${entityFinder.name}_PrevAndNext(
+				Session session, ${entity.name} ${entity.variableName},
 
-			<#list entityColumns as entityColumn>
-				${entityColumn.type} ${entityColumn.name},
-			</#list>
+				<#list entityColumns as entityColumn>
+					${entityColumn.type} ${entityColumn.name},
+				</#list>
 
-			OrderByComparator<${entity.name}> orderByComparator, boolean previous) {
+				OrderByComparator<${entity.name}> orderByComparator, boolean previous) {
 
-			<#include "persistence_impl_get_by_prev_and_next_query.ftl">
+				<#include "persistence_impl_get_by_prev_and_next_query.ftl">
 
-			String sql = sb.toString();
+				String sql = sb.toString();
 
-			Query query = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-			query.setFirstResult(0);
-			query.setMaxResults(2);
+				query.setFirstResult(0);
+				query.setMaxResults(2);
 
-			QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-			<@finderQPos />
+				<@finderQPos />
 
-			if (orderByComparator != null) {
-				for (Object orderByConditionValue : orderByComparator.getOrderByConditionValues(${entity.variableName})) {
-					queryPos.add(orderByConditionValue);
+				if (orderByComparator != null) {
+					for (Object orderByConditionValue : orderByComparator.getOrderByConditionValues(${entity.variableName})) {
+						queryPos.add(orderByConditionValue);
+					}
+				}
+
+				List<${entity.name}> list = query.list();
+
+				if (list.size() == 2) {
+					return list.get(1);
+				}
+				else {
+					return null;
 				}
 			}
-
-			List<${entity.name}> list = query.list();
-
-			if (list.size() == 2) {
-				return list.get(1);
-			}
-			else {
-				return null;
-			}
-		}
+		</#if>
 	</#if>
 
 	<#if entity.isPermissionCheckEnabled(entityFinder)>
