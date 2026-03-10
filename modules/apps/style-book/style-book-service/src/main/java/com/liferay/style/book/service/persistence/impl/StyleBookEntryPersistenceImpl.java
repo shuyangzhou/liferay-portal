@@ -10,8 +10,10 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.change.tracking.CTColumnResolutionType;
 import com.liferay.portal.kernel.configuration.Configuration;
+import com.liferay.portal.kernel.dao.orm.BaseFinder;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
+import com.liferay.portal.kernel.dao.orm.FinderColumn;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -108,6 +110,7 @@ public class StyleBookEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByUuid;
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
 	private FinderPath _finderPathCountByUuid;
+	private BaseFinder<StyleBookEntry> _baseFinderUuid;
 
 	/**
 	 * Returns all the style book entries where uuid = &#63;.
@@ -182,106 +185,9 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			uuid = Objects.toString(uuid, "");
-
-			FinderPath finderPath = null;
-			Object[] finderArgs = null;
-
-			if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-
-				if (useFinderCache) {
-					finderPath = _finderPathWithoutPaginationFindByUuid;
-					finderArgs = new Object[] {uuid};
-				}
-			}
-			else if (useFinderCache) {
-				finderPath = _finderPathWithPaginationFindByUuid;
-				finderArgs = new Object[] {uuid, start, end, orderByComparator};
-			}
-
-			List<StyleBookEntry> list = null;
-
-			if (useFinderCache) {
-				list = (List<StyleBookEntry>)finderCache.getResult(
-					finderPath, finderArgs, this);
-
-				if ((list != null) && !list.isEmpty()) {
-					for (StyleBookEntry styleBookEntry : list) {
-						if (!uuid.equals(styleBookEntry.getUuid())) {
-							list = null;
-
-							break;
-						}
-					}
-				}
-			}
-
-			if (list == null) {
-				StringBundler sb = null;
-
-				if (orderByComparator != null) {
-					sb = new StringBundler(
-						3 + (orderByComparator.getOrderByFields().length * 2));
-				}
-				else {
-					sb = new StringBundler(3);
-				}
-
-				sb.append(_SQL_SELECT_STYLEBOOKENTRY_WHERE);
-
-				boolean bindUuid = false;
-
-				if (uuid.isEmpty()) {
-					sb.append(_FINDER_COLUMN_UUID_UUID_3);
-				}
-				else {
-					bindUuid = true;
-
-					sb.append(_FINDER_COLUMN_UUID_UUID_2);
-				}
-
-				if (orderByComparator != null) {
-					appendOrderByComparator(
-						sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-				}
-				else {
-					sb.append(StyleBookEntryModelImpl.ORDER_BY_JPQL);
-				}
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					if (bindUuid) {
-						queryPos.add(uuid);
-					}
-
-					list = (List<StyleBookEntry>)QueryUtil.list(
-						query, getDialect(), start, end);
-
-					cacheResult(list);
-
-					if (useFinderCache) {
-						finderCache.putResult(finderPath, finderArgs, list);
-					}
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return list;
+			return _baseFinderUuid.findList(
+				new Object[] {uuid}, start, end, orderByComparator,
+				useFinderCache);
 		}
 	}
 
@@ -586,59 +492,7 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			uuid = Objects.toString(uuid, "");
-
-			FinderPath finderPath = _finderPathCountByUuid;
-
-			Object[] finderArgs = new Object[] {uuid};
-
-			Long count = (Long)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if (count == null) {
-				StringBundler sb = new StringBundler(2);
-
-				sb.append(_SQL_COUNT_STYLEBOOKENTRY_WHERE);
-
-				boolean bindUuid = false;
-
-				if (uuid.isEmpty()) {
-					sb.append(_FINDER_COLUMN_UUID_UUID_3);
-				}
-				else {
-					bindUuid = true;
-
-					sb.append(_FINDER_COLUMN_UUID_UUID_2);
-				}
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					if (bindUuid) {
-						queryPos.add(uuid);
-					}
-
-					count = (Long)query.uniqueResult();
-
-					finderCache.putResult(finderPath, finderArgs, count);
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return count.intValue();
+			return _baseFinderUuid.count(new Object[] {uuid});
 		}
 	}
 
@@ -651,6 +505,7 @@ public class StyleBookEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByUuid_Head;
 	private FinderPath _finderPathWithoutPaginationFindByUuid_Head;
 	private FinderPath _finderPathCountByUuid_Head;
+	private BaseFinder<StyleBookEntry> _baseFinderUuid_Head;
 
 	/**
 	 * Returns all the style book entries where uuid = &#63; and head = &#63;.
@@ -732,114 +587,9 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			uuid = Objects.toString(uuid, "");
-
-			FinderPath finderPath = null;
-			Object[] finderArgs = null;
-
-			if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-
-				if (useFinderCache) {
-					finderPath = _finderPathWithoutPaginationFindByUuid_Head;
-					finderArgs = new Object[] {uuid, head};
-				}
-			}
-			else if (useFinderCache) {
-				finderPath = _finderPathWithPaginationFindByUuid_Head;
-				finderArgs = new Object[] {
-					uuid, head, start, end, orderByComparator
-				};
-			}
-
-			List<StyleBookEntry> list = null;
-
-			if (useFinderCache) {
-				list = (List<StyleBookEntry>)finderCache.getResult(
-					finderPath, finderArgs, this);
-
-				if ((list != null) && !list.isEmpty()) {
-					for (StyleBookEntry styleBookEntry : list) {
-						if (!uuid.equals(styleBookEntry.getUuid()) ||
-							(head != styleBookEntry.isHead())) {
-
-							list = null;
-
-							break;
-						}
-					}
-				}
-			}
-
-			if (list == null) {
-				StringBundler sb = null;
-
-				if (orderByComparator != null) {
-					sb = new StringBundler(
-						4 + (orderByComparator.getOrderByFields().length * 2));
-				}
-				else {
-					sb = new StringBundler(4);
-				}
-
-				sb.append(_SQL_SELECT_STYLEBOOKENTRY_WHERE);
-
-				boolean bindUuid = false;
-
-				if (uuid.isEmpty()) {
-					sb.append(_FINDER_COLUMN_UUID_HEAD_UUID_3);
-				}
-				else {
-					bindUuid = true;
-
-					sb.append(_FINDER_COLUMN_UUID_HEAD_UUID_2);
-				}
-
-				sb.append(_FINDER_COLUMN_UUID_HEAD_HEAD_2);
-
-				if (orderByComparator != null) {
-					appendOrderByComparator(
-						sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-				}
-				else {
-					sb.append(StyleBookEntryModelImpl.ORDER_BY_JPQL);
-				}
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					if (bindUuid) {
-						queryPos.add(uuid);
-					}
-
-					queryPos.add(head);
-
-					list = (List<StyleBookEntry>)QueryUtil.list(
-						query, getDialect(), start, end);
-
-					cacheResult(list);
-
-					if (useFinderCache) {
-						finderCache.putResult(finderPath, finderArgs, list);
-					}
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return list;
+			return _baseFinderUuid_Head.findList(
+				new Object[] {uuid, head}, start, end, orderByComparator,
+				useFinderCache);
 		}
 	}
 
@@ -1168,63 +918,7 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			uuid = Objects.toString(uuid, "");
-
-			FinderPath finderPath = _finderPathCountByUuid_Head;
-
-			Object[] finderArgs = new Object[] {uuid, head};
-
-			Long count = (Long)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if (count == null) {
-				StringBundler sb = new StringBundler(3);
-
-				sb.append(_SQL_COUNT_STYLEBOOKENTRY_WHERE);
-
-				boolean bindUuid = false;
-
-				if (uuid.isEmpty()) {
-					sb.append(_FINDER_COLUMN_UUID_HEAD_UUID_3);
-				}
-				else {
-					bindUuid = true;
-
-					sb.append(_FINDER_COLUMN_UUID_HEAD_UUID_2);
-				}
-
-				sb.append(_FINDER_COLUMN_UUID_HEAD_HEAD_2);
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					if (bindUuid) {
-						queryPos.add(uuid);
-					}
-
-					queryPos.add(head);
-
-					count = (Long)query.uniqueResult();
-
-					finderCache.putResult(finderPath, finderArgs, count);
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return count.intValue();
+			return _baseFinderUuid_Head.count(new Object[] {uuid, head});
 		}
 	}
 
@@ -1240,6 +934,7 @@ public class StyleBookEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByUUID_G;
 	private FinderPath _finderPathWithoutPaginationFindByUUID_G;
 	private FinderPath _finderPathCountByUUID_G;
+	private BaseFinder<StyleBookEntry> _baseFinderUUID_G;
 
 	/**
 	 * Returns all the style book entries where uuid = &#63; and groupId = &#63;.
@@ -1321,114 +1016,9 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			uuid = Objects.toString(uuid, "");
-
-			FinderPath finderPath = null;
-			Object[] finderArgs = null;
-
-			if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-
-				if (useFinderCache) {
-					finderPath = _finderPathWithoutPaginationFindByUUID_G;
-					finderArgs = new Object[] {uuid, groupId};
-				}
-			}
-			else if (useFinderCache) {
-				finderPath = _finderPathWithPaginationFindByUUID_G;
-				finderArgs = new Object[] {
-					uuid, groupId, start, end, orderByComparator
-				};
-			}
-
-			List<StyleBookEntry> list = null;
-
-			if (useFinderCache) {
-				list = (List<StyleBookEntry>)finderCache.getResult(
-					finderPath, finderArgs, this);
-
-				if ((list != null) && !list.isEmpty()) {
-					for (StyleBookEntry styleBookEntry : list) {
-						if (!uuid.equals(styleBookEntry.getUuid()) ||
-							(groupId != styleBookEntry.getGroupId())) {
-
-							list = null;
-
-							break;
-						}
-					}
-				}
-			}
-
-			if (list == null) {
-				StringBundler sb = null;
-
-				if (orderByComparator != null) {
-					sb = new StringBundler(
-						4 + (orderByComparator.getOrderByFields().length * 2));
-				}
-				else {
-					sb = new StringBundler(4);
-				}
-
-				sb.append(_SQL_SELECT_STYLEBOOKENTRY_WHERE);
-
-				boolean bindUuid = false;
-
-				if (uuid.isEmpty()) {
-					sb.append(_FINDER_COLUMN_UUID_G_UUID_3);
-				}
-				else {
-					bindUuid = true;
-
-					sb.append(_FINDER_COLUMN_UUID_G_UUID_2);
-				}
-
-				sb.append(_FINDER_COLUMN_UUID_G_GROUPID_2);
-
-				if (orderByComparator != null) {
-					appendOrderByComparator(
-						sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-				}
-				else {
-					sb.append(StyleBookEntryModelImpl.ORDER_BY_JPQL);
-				}
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					if (bindUuid) {
-						queryPos.add(uuid);
-					}
-
-					queryPos.add(groupId);
-
-					list = (List<StyleBookEntry>)QueryUtil.list(
-						query, getDialect(), start, end);
-
-					cacheResult(list);
-
-					if (useFinderCache) {
-						finderCache.putResult(finderPath, finderArgs, list);
-					}
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return list;
+			return _baseFinderUUID_G.findList(
+				new Object[] {uuid, groupId}, start, end, orderByComparator,
+				useFinderCache);
 		}
 	}
 
@@ -1760,63 +1350,7 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			uuid = Objects.toString(uuid, "");
-
-			FinderPath finderPath = _finderPathCountByUUID_G;
-
-			Object[] finderArgs = new Object[] {uuid, groupId};
-
-			Long count = (Long)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if (count == null) {
-				StringBundler sb = new StringBundler(3);
-
-				sb.append(_SQL_COUNT_STYLEBOOKENTRY_WHERE);
-
-				boolean bindUuid = false;
-
-				if (uuid.isEmpty()) {
-					sb.append(_FINDER_COLUMN_UUID_G_UUID_3);
-				}
-				else {
-					bindUuid = true;
-
-					sb.append(_FINDER_COLUMN_UUID_G_UUID_2);
-				}
-
-				sb.append(_FINDER_COLUMN_UUID_G_GROUPID_2);
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					if (bindUuid) {
-						queryPos.add(uuid);
-					}
-
-					queryPos.add(groupId);
-
-					count = (Long)query.uniqueResult();
-
-					finderCache.putResult(finderPath, finderArgs, count);
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return count.intValue();
+			return _baseFinderUUID_G.count(new Object[] {uuid, groupId});
 		}
 	}
 
@@ -1830,6 +1364,7 @@ public class StyleBookEntryPersistenceImpl
 		"styleBookEntry.groupId = ?";
 
 	private FinderPath _finderPathFetchByUUID_G_Head;
+	private BaseFinder<StyleBookEntry> _baseFinderUUID_G_Head;
 
 	/**
 	 * Returns the style book entry where uuid = &#63; and groupId = &#63; and head = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
@@ -1905,102 +1440,8 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			uuid = Objects.toString(uuid, "");
-
-			Object[] finderArgs = null;
-
-			if (useFinderCache) {
-				finderArgs = new Object[] {uuid, groupId, head};
-			}
-
-			Object result = null;
-
-			if (useFinderCache) {
-				result = finderCache.getResult(
-					_finderPathFetchByUUID_G_Head, finderArgs, this);
-			}
-
-			if (result instanceof StyleBookEntry) {
-				StyleBookEntry styleBookEntry = (StyleBookEntry)result;
-
-				if (!Objects.equals(uuid, styleBookEntry.getUuid()) ||
-					(groupId != styleBookEntry.getGroupId()) ||
-					(head != styleBookEntry.isHead())) {
-
-					result = null;
-				}
-			}
-
-			if (result == null) {
-				StringBundler sb = new StringBundler(5);
-
-				sb.append(_SQL_SELECT_STYLEBOOKENTRY_WHERE);
-
-				boolean bindUuid = false;
-
-				if (uuid.isEmpty()) {
-					sb.append(_FINDER_COLUMN_UUID_G_HEAD_UUID_3);
-				}
-				else {
-					bindUuid = true;
-
-					sb.append(_FINDER_COLUMN_UUID_G_HEAD_UUID_2);
-				}
-
-				sb.append(_FINDER_COLUMN_UUID_G_HEAD_GROUPID_2);
-
-				sb.append(_FINDER_COLUMN_UUID_G_HEAD_HEAD_2);
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					if (bindUuid) {
-						queryPos.add(uuid);
-					}
-
-					queryPos.add(groupId);
-
-					queryPos.add(head);
-
-					List<StyleBookEntry> list = query.list();
-
-					if (list.isEmpty()) {
-						if (useFinderCache) {
-							finderCache.putResult(
-								_finderPathFetchByUUID_G_Head, finderArgs,
-								list);
-						}
-					}
-					else {
-						StyleBookEntry styleBookEntry = list.get(0);
-
-						result = styleBookEntry;
-
-						cacheResult(styleBookEntry);
-					}
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			if (result instanceof List<?>) {
-				return null;
-			}
-			else {
-				return (StyleBookEntry)result;
-			}
+			return _baseFinderUUID_G_Head.fetchOne(
+				new Object[] {uuid, groupId, head}, useFinderCache);
 		}
 	}
 
@@ -2056,6 +1497,7 @@ public class StyleBookEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
 	private FinderPath _finderPathCountByUuid_C;
+	private BaseFinder<StyleBookEntry> _baseFinderUuid_C;
 
 	/**
 	 * Returns all the style book entries where uuid = &#63; and companyId = &#63;.
@@ -2138,114 +1580,9 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			uuid = Objects.toString(uuid, "");
-
-			FinderPath finderPath = null;
-			Object[] finderArgs = null;
-
-			if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-
-				if (useFinderCache) {
-					finderPath = _finderPathWithoutPaginationFindByUuid_C;
-					finderArgs = new Object[] {uuid, companyId};
-				}
-			}
-			else if (useFinderCache) {
-				finderPath = _finderPathWithPaginationFindByUuid_C;
-				finderArgs = new Object[] {
-					uuid, companyId, start, end, orderByComparator
-				};
-			}
-
-			List<StyleBookEntry> list = null;
-
-			if (useFinderCache) {
-				list = (List<StyleBookEntry>)finderCache.getResult(
-					finderPath, finderArgs, this);
-
-				if ((list != null) && !list.isEmpty()) {
-					for (StyleBookEntry styleBookEntry : list) {
-						if (!uuid.equals(styleBookEntry.getUuid()) ||
-							(companyId != styleBookEntry.getCompanyId())) {
-
-							list = null;
-
-							break;
-						}
-					}
-				}
-			}
-
-			if (list == null) {
-				StringBundler sb = null;
-
-				if (orderByComparator != null) {
-					sb = new StringBundler(
-						4 + (orderByComparator.getOrderByFields().length * 2));
-				}
-				else {
-					sb = new StringBundler(4);
-				}
-
-				sb.append(_SQL_SELECT_STYLEBOOKENTRY_WHERE);
-
-				boolean bindUuid = false;
-
-				if (uuid.isEmpty()) {
-					sb.append(_FINDER_COLUMN_UUID_C_UUID_3);
-				}
-				else {
-					bindUuid = true;
-
-					sb.append(_FINDER_COLUMN_UUID_C_UUID_2);
-				}
-
-				sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
-
-				if (orderByComparator != null) {
-					appendOrderByComparator(
-						sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-				}
-				else {
-					sb.append(StyleBookEntryModelImpl.ORDER_BY_JPQL);
-				}
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					if (bindUuid) {
-						queryPos.add(uuid);
-					}
-
-					queryPos.add(companyId);
-
-					list = (List<StyleBookEntry>)QueryUtil.list(
-						query, getDialect(), start, end);
-
-					cacheResult(list);
-
-					if (useFinderCache) {
-						finderCache.putResult(finderPath, finderArgs, list);
-					}
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return list;
+			return _baseFinderUuid_C.findList(
+				new Object[] {uuid, companyId}, start, end, orderByComparator,
+				useFinderCache);
 		}
 	}
 
@@ -2577,63 +1914,7 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			uuid = Objects.toString(uuid, "");
-
-			FinderPath finderPath = _finderPathCountByUuid_C;
-
-			Object[] finderArgs = new Object[] {uuid, companyId};
-
-			Long count = (Long)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if (count == null) {
-				StringBundler sb = new StringBundler(3);
-
-				sb.append(_SQL_COUNT_STYLEBOOKENTRY_WHERE);
-
-				boolean bindUuid = false;
-
-				if (uuid.isEmpty()) {
-					sb.append(_FINDER_COLUMN_UUID_C_UUID_3);
-				}
-				else {
-					bindUuid = true;
-
-					sb.append(_FINDER_COLUMN_UUID_C_UUID_2);
-				}
-
-				sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					if (bindUuid) {
-						queryPos.add(uuid);
-					}
-
-					queryPos.add(companyId);
-
-					count = (Long)query.uniqueResult();
-
-					finderCache.putResult(finderPath, finderArgs, count);
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return count.intValue();
+			return _baseFinderUuid_C.count(new Object[] {uuid, companyId});
 		}
 	}
 
@@ -2649,6 +1930,7 @@ public class StyleBookEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByUuid_C_Head;
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C_Head;
 	private FinderPath _finderPathCountByUuid_C_Head;
+	private BaseFinder<StyleBookEntry> _baseFinderUuid_C_Head;
 
 	/**
 	 * Returns all the style book entries where uuid = &#63; and companyId = &#63; and head = &#63;.
@@ -2737,119 +2019,9 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			uuid = Objects.toString(uuid, "");
-
-			FinderPath finderPath = null;
-			Object[] finderArgs = null;
-
-			if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-
-				if (useFinderCache) {
-					finderPath = _finderPathWithoutPaginationFindByUuid_C_Head;
-					finderArgs = new Object[] {uuid, companyId, head};
-				}
-			}
-			else if (useFinderCache) {
-				finderPath = _finderPathWithPaginationFindByUuid_C_Head;
-				finderArgs = new Object[] {
-					uuid, companyId, head, start, end, orderByComparator
-				};
-			}
-
-			List<StyleBookEntry> list = null;
-
-			if (useFinderCache) {
-				list = (List<StyleBookEntry>)finderCache.getResult(
-					finderPath, finderArgs, this);
-
-				if ((list != null) && !list.isEmpty()) {
-					for (StyleBookEntry styleBookEntry : list) {
-						if (!uuid.equals(styleBookEntry.getUuid()) ||
-							(companyId != styleBookEntry.getCompanyId()) ||
-							(head != styleBookEntry.isHead())) {
-
-							list = null;
-
-							break;
-						}
-					}
-				}
-			}
-
-			if (list == null) {
-				StringBundler sb = null;
-
-				if (orderByComparator != null) {
-					sb = new StringBundler(
-						5 + (orderByComparator.getOrderByFields().length * 2));
-				}
-				else {
-					sb = new StringBundler(5);
-				}
-
-				sb.append(_SQL_SELECT_STYLEBOOKENTRY_WHERE);
-
-				boolean bindUuid = false;
-
-				if (uuid.isEmpty()) {
-					sb.append(_FINDER_COLUMN_UUID_C_HEAD_UUID_3);
-				}
-				else {
-					bindUuid = true;
-
-					sb.append(_FINDER_COLUMN_UUID_C_HEAD_UUID_2);
-				}
-
-				sb.append(_FINDER_COLUMN_UUID_C_HEAD_COMPANYID_2);
-
-				sb.append(_FINDER_COLUMN_UUID_C_HEAD_HEAD_2);
-
-				if (orderByComparator != null) {
-					appendOrderByComparator(
-						sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-				}
-				else {
-					sb.append(StyleBookEntryModelImpl.ORDER_BY_JPQL);
-				}
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					if (bindUuid) {
-						queryPos.add(uuid);
-					}
-
-					queryPos.add(companyId);
-
-					queryPos.add(head);
-
-					list = (List<StyleBookEntry>)QueryUtil.list(
-						query, getDialect(), start, end);
-
-					cacheResult(list);
-
-					if (useFinderCache) {
-						finderCache.putResult(finderPath, finderArgs, list);
-					}
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return list;
+			return _baseFinderUuid_C_Head.findList(
+				new Object[] {uuid, companyId, head}, start, end,
+				orderByComparator, useFinderCache);
 		}
 	}
 
@@ -3198,67 +2370,8 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			uuid = Objects.toString(uuid, "");
-
-			FinderPath finderPath = _finderPathCountByUuid_C_Head;
-
-			Object[] finderArgs = new Object[] {uuid, companyId, head};
-
-			Long count = (Long)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if (count == null) {
-				StringBundler sb = new StringBundler(4);
-
-				sb.append(_SQL_COUNT_STYLEBOOKENTRY_WHERE);
-
-				boolean bindUuid = false;
-
-				if (uuid.isEmpty()) {
-					sb.append(_FINDER_COLUMN_UUID_C_HEAD_UUID_3);
-				}
-				else {
-					bindUuid = true;
-
-					sb.append(_FINDER_COLUMN_UUID_C_HEAD_UUID_2);
-				}
-
-				sb.append(_FINDER_COLUMN_UUID_C_HEAD_COMPANYID_2);
-
-				sb.append(_FINDER_COLUMN_UUID_C_HEAD_HEAD_2);
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					if (bindUuid) {
-						queryPos.add(uuid);
-					}
-
-					queryPos.add(companyId);
-
-					queryPos.add(head);
-
-					count = (Long)query.uniqueResult();
-
-					finderCache.putResult(finderPath, finderArgs, count);
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return count.intValue();
+			return _baseFinderUuid_C_Head.count(
+				new Object[] {uuid, companyId, head});
 		}
 	}
 
@@ -3277,6 +2390,7 @@ public class StyleBookEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByGroupId;
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
 	private FinderPath _finderPathCountByGroupId;
+	private BaseFinder<StyleBookEntry> _baseFinderGroupId;
 
 	/**
 	 * Returns all the style book entries where groupId = &#63;.
@@ -3354,95 +2468,9 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			FinderPath finderPath = null;
-			Object[] finderArgs = null;
-
-			if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-
-				if (useFinderCache) {
-					finderPath = _finderPathWithoutPaginationFindByGroupId;
-					finderArgs = new Object[] {groupId};
-				}
-			}
-			else if (useFinderCache) {
-				finderPath = _finderPathWithPaginationFindByGroupId;
-				finderArgs = new Object[] {
-					groupId, start, end, orderByComparator
-				};
-			}
-
-			List<StyleBookEntry> list = null;
-
-			if (useFinderCache) {
-				list = (List<StyleBookEntry>)finderCache.getResult(
-					finderPath, finderArgs, this);
-
-				if ((list != null) && !list.isEmpty()) {
-					for (StyleBookEntry styleBookEntry : list) {
-						if (groupId != styleBookEntry.getGroupId()) {
-							list = null;
-
-							break;
-						}
-					}
-				}
-			}
-
-			if (list == null) {
-				StringBundler sb = null;
-
-				if (orderByComparator != null) {
-					sb = new StringBundler(
-						3 + (orderByComparator.getOrderByFields().length * 2));
-				}
-				else {
-					sb = new StringBundler(3);
-				}
-
-				sb.append(_SQL_SELECT_STYLEBOOKENTRY_WHERE);
-
-				sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
-
-				if (orderByComparator != null) {
-					appendOrderByComparator(
-						sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-				}
-				else {
-					sb.append(StyleBookEntryModelImpl.ORDER_BY_JPQL);
-				}
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					queryPos.add(groupId);
-
-					list = (List<StyleBookEntry>)QueryUtil.list(
-						query, getDialect(), start, end);
-
-					cacheResult(list);
-
-					if (useFinderCache) {
-						finderCache.putResult(finderPath, finderArgs, list);
-					}
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return list;
+			return _baseFinderGroupId.findList(
+				new Object[] {groupId}, start, end, orderByComparator,
+				useFinderCache);
 		}
 	}
 
@@ -3736,46 +2764,7 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			FinderPath finderPath = _finderPathCountByGroupId;
-
-			Object[] finderArgs = new Object[] {groupId};
-
-			Long count = (Long)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if (count == null) {
-				StringBundler sb = new StringBundler(2);
-
-				sb.append(_SQL_COUNT_STYLEBOOKENTRY_WHERE);
-
-				sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					queryPos.add(groupId);
-
-					count = (Long)query.uniqueResult();
-
-					finderCache.putResult(finderPath, finderArgs, count);
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return count.intValue();
+			return _baseFinderGroupId.count(new Object[] {groupId});
 		}
 	}
 
@@ -3785,6 +2774,7 @@ public class StyleBookEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByGroupId_Head;
 	private FinderPath _finderPathWithoutPaginationFindByGroupId_Head;
 	private FinderPath _finderPathCountByGroupId_Head;
+	private BaseFinder<StyleBookEntry> _baseFinderGroupId_Head;
 
 	/**
 	 * Returns all the style book entries where groupId = &#63; and head = &#63;.
@@ -3867,101 +2857,9 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			FinderPath finderPath = null;
-			Object[] finderArgs = null;
-
-			if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-
-				if (useFinderCache) {
-					finderPath = _finderPathWithoutPaginationFindByGroupId_Head;
-					finderArgs = new Object[] {groupId, head};
-				}
-			}
-			else if (useFinderCache) {
-				finderPath = _finderPathWithPaginationFindByGroupId_Head;
-				finderArgs = new Object[] {
-					groupId, head, start, end, orderByComparator
-				};
-			}
-
-			List<StyleBookEntry> list = null;
-
-			if (useFinderCache) {
-				list = (List<StyleBookEntry>)finderCache.getResult(
-					finderPath, finderArgs, this);
-
-				if ((list != null) && !list.isEmpty()) {
-					for (StyleBookEntry styleBookEntry : list) {
-						if ((groupId != styleBookEntry.getGroupId()) ||
-							(head != styleBookEntry.isHead())) {
-
-							list = null;
-
-							break;
-						}
-					}
-				}
-			}
-
-			if (list == null) {
-				StringBundler sb = null;
-
-				if (orderByComparator != null) {
-					sb = new StringBundler(
-						4 + (orderByComparator.getOrderByFields().length * 2));
-				}
-				else {
-					sb = new StringBundler(4);
-				}
-
-				sb.append(_SQL_SELECT_STYLEBOOKENTRY_WHERE);
-
-				sb.append(_FINDER_COLUMN_GROUPID_HEAD_GROUPID_2);
-
-				sb.append(_FINDER_COLUMN_GROUPID_HEAD_HEAD_2);
-
-				if (orderByComparator != null) {
-					appendOrderByComparator(
-						sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-				}
-				else {
-					sb.append(StyleBookEntryModelImpl.ORDER_BY_JPQL);
-				}
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					queryPos.add(groupId);
-
-					queryPos.add(head);
-
-					list = (List<StyleBookEntry>)QueryUtil.list(
-						query, getDialect(), start, end);
-
-					cacheResult(list);
-
-					if (useFinderCache) {
-						finderCache.putResult(finderPath, finderArgs, list);
-					}
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return list;
+			return _baseFinderGroupId_Head.findList(
+				new Object[] {groupId, head}, start, end, orderByComparator,
+				useFinderCache);
 		}
 	}
 
@@ -4280,50 +3178,7 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			FinderPath finderPath = _finderPathCountByGroupId_Head;
-
-			Object[] finderArgs = new Object[] {groupId, head};
-
-			Long count = (Long)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if (count == null) {
-				StringBundler sb = new StringBundler(3);
-
-				sb.append(_SQL_COUNT_STYLEBOOKENTRY_WHERE);
-
-				sb.append(_FINDER_COLUMN_GROUPID_HEAD_GROUPID_2);
-
-				sb.append(_FINDER_COLUMN_GROUPID_HEAD_HEAD_2);
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					queryPos.add(groupId);
-
-					queryPos.add(head);
-
-					count = (Long)query.uniqueResult();
-
-					finderCache.putResult(finderPath, finderArgs, count);
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return count.intValue();
+			return _baseFinderGroupId_Head.count(new Object[] {groupId, head});
 		}
 	}
 
@@ -4336,6 +3191,7 @@ public class StyleBookEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByG_D;
 	private FinderPath _finderPathWithoutPaginationFindByG_D;
 	private FinderPath _finderPathCountByG_D;
+	private BaseFinder<StyleBookEntry> _baseFinderG_D;
 
 	/**
 	 * Returns all the style book entries where groupId = &#63; and defaultStyleBookEntry = &#63;.
@@ -4422,103 +3278,9 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			FinderPath finderPath = null;
-			Object[] finderArgs = null;
-
-			if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-
-				if (useFinderCache) {
-					finderPath = _finderPathWithoutPaginationFindByG_D;
-					finderArgs = new Object[] {groupId, defaultStyleBookEntry};
-				}
-			}
-			else if (useFinderCache) {
-				finderPath = _finderPathWithPaginationFindByG_D;
-				finderArgs = new Object[] {
-					groupId, defaultStyleBookEntry, start, end,
-					orderByComparator
-				};
-			}
-
-			List<StyleBookEntry> list = null;
-
-			if (useFinderCache) {
-				list = (List<StyleBookEntry>)finderCache.getResult(
-					finderPath, finderArgs, this);
-
-				if ((list != null) && !list.isEmpty()) {
-					for (StyleBookEntry styleBookEntry : list) {
-						if ((groupId != styleBookEntry.getGroupId()) ||
-							(defaultStyleBookEntry !=
-								styleBookEntry.isDefaultStyleBookEntry())) {
-
-							list = null;
-
-							break;
-						}
-					}
-				}
-			}
-
-			if (list == null) {
-				StringBundler sb = null;
-
-				if (orderByComparator != null) {
-					sb = new StringBundler(
-						4 + (orderByComparator.getOrderByFields().length * 2));
-				}
-				else {
-					sb = new StringBundler(4);
-				}
-
-				sb.append(_SQL_SELECT_STYLEBOOKENTRY_WHERE);
-
-				sb.append(_FINDER_COLUMN_G_D_GROUPID_2);
-
-				sb.append(_FINDER_COLUMN_G_D_DEFAULTSTYLEBOOKENTRY_2);
-
-				if (orderByComparator != null) {
-					appendOrderByComparator(
-						sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-				}
-				else {
-					sb.append(StyleBookEntryModelImpl.ORDER_BY_JPQL);
-				}
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					queryPos.add(groupId);
-
-					queryPos.add(defaultStyleBookEntry);
-
-					list = (List<StyleBookEntry>)QueryUtil.list(
-						query, getDialect(), start, end);
-
-					cacheResult(list);
-
-					if (useFinderCache) {
-						finderCache.putResult(finderPath, finderArgs, list);
-					}
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return list;
+			return _baseFinderG_D.findList(
+				new Object[] {groupId, defaultStyleBookEntry}, start, end,
+				orderByComparator, useFinderCache);
 		}
 	}
 
@@ -4838,50 +3600,8 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			FinderPath finderPath = _finderPathCountByG_D;
-
-			Object[] finderArgs = new Object[] {groupId, defaultStyleBookEntry};
-
-			Long count = (Long)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if (count == null) {
-				StringBundler sb = new StringBundler(3);
-
-				sb.append(_SQL_COUNT_STYLEBOOKENTRY_WHERE);
-
-				sb.append(_FINDER_COLUMN_G_D_GROUPID_2);
-
-				sb.append(_FINDER_COLUMN_G_D_DEFAULTSTYLEBOOKENTRY_2);
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					queryPos.add(groupId);
-
-					queryPos.add(defaultStyleBookEntry);
-
-					count = (Long)query.uniqueResult();
-
-					finderCache.putResult(finderPath, finderArgs, count);
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return count.intValue();
+			return _baseFinderG_D.count(
+				new Object[] {groupId, defaultStyleBookEntry});
 		}
 	}
 
@@ -4894,6 +3614,7 @@ public class StyleBookEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByG_D_Head;
 	private FinderPath _finderPathWithoutPaginationFindByG_D_Head;
 	private FinderPath _finderPathCountByG_D_Head;
+	private BaseFinder<StyleBookEntry> _baseFinderG_D_Head;
 
 	/**
 	 * Returns all the style book entries where groupId = &#63; and defaultStyleBookEntry = &#63; and head = &#63;.
@@ -4986,110 +3707,9 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			FinderPath finderPath = null;
-			Object[] finderArgs = null;
-
-			if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-
-				if (useFinderCache) {
-					finderPath = _finderPathWithoutPaginationFindByG_D_Head;
-					finderArgs = new Object[] {
-						groupId, defaultStyleBookEntry, head
-					};
-				}
-			}
-			else if (useFinderCache) {
-				finderPath = _finderPathWithPaginationFindByG_D_Head;
-				finderArgs = new Object[] {
-					groupId, defaultStyleBookEntry, head, start, end,
-					orderByComparator
-				};
-			}
-
-			List<StyleBookEntry> list = null;
-
-			if (useFinderCache) {
-				list = (List<StyleBookEntry>)finderCache.getResult(
-					finderPath, finderArgs, this);
-
-				if ((list != null) && !list.isEmpty()) {
-					for (StyleBookEntry styleBookEntry : list) {
-						if ((groupId != styleBookEntry.getGroupId()) ||
-							(defaultStyleBookEntry !=
-								styleBookEntry.isDefaultStyleBookEntry()) ||
-							(head != styleBookEntry.isHead())) {
-
-							list = null;
-
-							break;
-						}
-					}
-				}
-			}
-
-			if (list == null) {
-				StringBundler sb = null;
-
-				if (orderByComparator != null) {
-					sb = new StringBundler(
-						5 + (orderByComparator.getOrderByFields().length * 2));
-				}
-				else {
-					sb = new StringBundler(5);
-				}
-
-				sb.append(_SQL_SELECT_STYLEBOOKENTRY_WHERE);
-
-				sb.append(_FINDER_COLUMN_G_D_HEAD_GROUPID_2);
-
-				sb.append(_FINDER_COLUMN_G_D_HEAD_DEFAULTSTYLEBOOKENTRY_2);
-
-				sb.append(_FINDER_COLUMN_G_D_HEAD_HEAD_2);
-
-				if (orderByComparator != null) {
-					appendOrderByComparator(
-						sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-				}
-				else {
-					sb.append(StyleBookEntryModelImpl.ORDER_BY_JPQL);
-				}
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					queryPos.add(groupId);
-
-					queryPos.add(defaultStyleBookEntry);
-
-					queryPos.add(head);
-
-					list = (List<StyleBookEntry>)QueryUtil.list(
-						query, getDialect(), start, end);
-
-					cacheResult(list);
-
-					if (useFinderCache) {
-						finderCache.putResult(finderPath, finderArgs, list);
-					}
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return list;
+			return _baseFinderG_D_Head.findList(
+				new Object[] {groupId, defaultStyleBookEntry, head}, start, end,
+				orderByComparator, useFinderCache);
 		}
 	}
 
@@ -5430,56 +4050,8 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			FinderPath finderPath = _finderPathCountByG_D_Head;
-
-			Object[] finderArgs = new Object[] {
-				groupId, defaultStyleBookEntry, head
-			};
-
-			Long count = (Long)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if (count == null) {
-				StringBundler sb = new StringBundler(4);
-
-				sb.append(_SQL_COUNT_STYLEBOOKENTRY_WHERE);
-
-				sb.append(_FINDER_COLUMN_G_D_HEAD_GROUPID_2);
-
-				sb.append(_FINDER_COLUMN_G_D_HEAD_DEFAULTSTYLEBOOKENTRY_2);
-
-				sb.append(_FINDER_COLUMN_G_D_HEAD_HEAD_2);
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					queryPos.add(groupId);
-
-					queryPos.add(defaultStyleBookEntry);
-
-					queryPos.add(head);
-
-					count = (Long)query.uniqueResult();
-
-					finderCache.putResult(finderPath, finderArgs, count);
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return count.intValue();
+			return _baseFinderG_D_Head.count(
+				new Object[] {groupId, defaultStyleBookEntry, head});
 		}
 	}
 
@@ -6700,6 +5272,7 @@ public class StyleBookEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByG_SBEK;
 	private FinderPath _finderPathWithoutPaginationFindByG_SBEK;
 	private FinderPath _finderPathCountByG_SBEK;
+	private BaseFinder<StyleBookEntry> _baseFinderG_SBEK;
 
 	/**
 	 * Returns all the style book entries where groupId = &#63; and styleBookEntryKey = &#63;.
@@ -6785,115 +5358,9 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			styleBookEntryKey = Objects.toString(styleBookEntryKey, "");
-
-			FinderPath finderPath = null;
-			Object[] finderArgs = null;
-
-			if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-
-				if (useFinderCache) {
-					finderPath = _finderPathWithoutPaginationFindByG_SBEK;
-					finderArgs = new Object[] {groupId, styleBookEntryKey};
-				}
-			}
-			else if (useFinderCache) {
-				finderPath = _finderPathWithPaginationFindByG_SBEK;
-				finderArgs = new Object[] {
-					groupId, styleBookEntryKey, start, end, orderByComparator
-				};
-			}
-
-			List<StyleBookEntry> list = null;
-
-			if (useFinderCache) {
-				list = (List<StyleBookEntry>)finderCache.getResult(
-					finderPath, finderArgs, this);
-
-				if ((list != null) && !list.isEmpty()) {
-					for (StyleBookEntry styleBookEntry : list) {
-						if ((groupId != styleBookEntry.getGroupId()) ||
-							!styleBookEntryKey.equals(
-								styleBookEntry.getStyleBookEntryKey())) {
-
-							list = null;
-
-							break;
-						}
-					}
-				}
-			}
-
-			if (list == null) {
-				StringBundler sb = null;
-
-				if (orderByComparator != null) {
-					sb = new StringBundler(
-						4 + (orderByComparator.getOrderByFields().length * 2));
-				}
-				else {
-					sb = new StringBundler(4);
-				}
-
-				sb.append(_SQL_SELECT_STYLEBOOKENTRY_WHERE);
-
-				sb.append(_FINDER_COLUMN_G_SBEK_GROUPID_2);
-
-				boolean bindStyleBookEntryKey = false;
-
-				if (styleBookEntryKey.isEmpty()) {
-					sb.append(_FINDER_COLUMN_G_SBEK_STYLEBOOKENTRYKEY_3);
-				}
-				else {
-					bindStyleBookEntryKey = true;
-
-					sb.append(_FINDER_COLUMN_G_SBEK_STYLEBOOKENTRYKEY_2);
-				}
-
-				if (orderByComparator != null) {
-					appendOrderByComparator(
-						sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-				}
-				else {
-					sb.append(StyleBookEntryModelImpl.ORDER_BY_JPQL);
-				}
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					queryPos.add(groupId);
-
-					if (bindStyleBookEntryKey) {
-						queryPos.add(styleBookEntryKey);
-					}
-
-					list = (List<StyleBookEntry>)QueryUtil.list(
-						query, getDialect(), start, end);
-
-					cacheResult(list);
-
-					if (useFinderCache) {
-						finderCache.putResult(finderPath, finderArgs, list);
-					}
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return list;
+			return _baseFinderG_SBEK.findList(
+				new Object[] {groupId, styleBookEntryKey}, start, end,
+				orderByComparator, useFinderCache);
 		}
 	}
 
@@ -7225,63 +5692,8 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			styleBookEntryKey = Objects.toString(styleBookEntryKey, "");
-
-			FinderPath finderPath = _finderPathCountByG_SBEK;
-
-			Object[] finderArgs = new Object[] {groupId, styleBookEntryKey};
-
-			Long count = (Long)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if (count == null) {
-				StringBundler sb = new StringBundler(3);
-
-				sb.append(_SQL_COUNT_STYLEBOOKENTRY_WHERE);
-
-				sb.append(_FINDER_COLUMN_G_SBEK_GROUPID_2);
-
-				boolean bindStyleBookEntryKey = false;
-
-				if (styleBookEntryKey.isEmpty()) {
-					sb.append(_FINDER_COLUMN_G_SBEK_STYLEBOOKENTRYKEY_3);
-				}
-				else {
-					bindStyleBookEntryKey = true;
-
-					sb.append(_FINDER_COLUMN_G_SBEK_STYLEBOOKENTRYKEY_2);
-				}
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					queryPos.add(groupId);
-
-					if (bindStyleBookEntryKey) {
-						queryPos.add(styleBookEntryKey);
-					}
-
-					count = (Long)query.uniqueResult();
-
-					finderCache.putResult(finderPath, finderArgs, count);
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return count.intValue();
+			return _baseFinderG_SBEK.count(
+				new Object[] {groupId, styleBookEntryKey});
 		}
 	}
 
@@ -7295,6 +5707,7 @@ public class StyleBookEntryPersistenceImpl
 		"(styleBookEntry.styleBookEntryKey IS NULL OR styleBookEntry.styleBookEntryKey = '')";
 
 	private FinderPath _finderPathFetchByG_SBEK_Head;
+	private BaseFinder<StyleBookEntry> _baseFinderG_SBEK_Head;
 
 	/**
 	 * Returns the style book entry where groupId = &#63; and styleBookEntryKey = &#63; and head = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
@@ -7372,104 +5785,9 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			styleBookEntryKey = Objects.toString(styleBookEntryKey, "");
-
-			Object[] finderArgs = null;
-
-			if (useFinderCache) {
-				finderArgs = new Object[] {groupId, styleBookEntryKey, head};
-			}
-
-			Object result = null;
-
-			if (useFinderCache) {
-				result = finderCache.getResult(
-					_finderPathFetchByG_SBEK_Head, finderArgs, this);
-			}
-
-			if (result instanceof StyleBookEntry) {
-				StyleBookEntry styleBookEntry = (StyleBookEntry)result;
-
-				if ((groupId != styleBookEntry.getGroupId()) ||
-					!Objects.equals(
-						styleBookEntryKey,
-						styleBookEntry.getStyleBookEntryKey()) ||
-					(head != styleBookEntry.isHead())) {
-
-					result = null;
-				}
-			}
-
-			if (result == null) {
-				StringBundler sb = new StringBundler(5);
-
-				sb.append(_SQL_SELECT_STYLEBOOKENTRY_WHERE);
-
-				sb.append(_FINDER_COLUMN_G_SBEK_HEAD_GROUPID_2);
-
-				boolean bindStyleBookEntryKey = false;
-
-				if (styleBookEntryKey.isEmpty()) {
-					sb.append(_FINDER_COLUMN_G_SBEK_HEAD_STYLEBOOKENTRYKEY_3);
-				}
-				else {
-					bindStyleBookEntryKey = true;
-
-					sb.append(_FINDER_COLUMN_G_SBEK_HEAD_STYLEBOOKENTRYKEY_2);
-				}
-
-				sb.append(_FINDER_COLUMN_G_SBEK_HEAD_HEAD_2);
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					queryPos.add(groupId);
-
-					if (bindStyleBookEntryKey) {
-						queryPos.add(styleBookEntryKey);
-					}
-
-					queryPos.add(head);
-
-					List<StyleBookEntry> list = query.list();
-
-					if (list.isEmpty()) {
-						if (useFinderCache) {
-							finderCache.putResult(
-								_finderPathFetchByG_SBEK_Head, finderArgs,
-								list);
-						}
-					}
-					else {
-						StyleBookEntry styleBookEntry = list.get(0);
-
-						result = styleBookEntry;
-
-						cacheResult(styleBookEntry);
-					}
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			if (result instanceof List<?>) {
-				return null;
-			}
-			else {
-				return (StyleBookEntry)result;
-			}
+			return _baseFinderG_SBEK_Head.fetchOne(
+				new Object[] {groupId, styleBookEntryKey, head},
+				useFinderCache);
 		}
 	}
 
@@ -7529,6 +5847,7 @@ public class StyleBookEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByG_T;
 	private FinderPath _finderPathWithoutPaginationFindByG_T;
 	private FinderPath _finderPathCountByG_T;
+	private BaseFinder<StyleBookEntry> _baseFinderG_T;
 
 	/**
 	 * Returns all the style book entries where groupId = &#63; and themeId = &#63;.
@@ -7610,114 +5929,9 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			themeId = Objects.toString(themeId, "");
-
-			FinderPath finderPath = null;
-			Object[] finderArgs = null;
-
-			if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-
-				if (useFinderCache) {
-					finderPath = _finderPathWithoutPaginationFindByG_T;
-					finderArgs = new Object[] {groupId, themeId};
-				}
-			}
-			else if (useFinderCache) {
-				finderPath = _finderPathWithPaginationFindByG_T;
-				finderArgs = new Object[] {
-					groupId, themeId, start, end, orderByComparator
-				};
-			}
-
-			List<StyleBookEntry> list = null;
-
-			if (useFinderCache) {
-				list = (List<StyleBookEntry>)finderCache.getResult(
-					finderPath, finderArgs, this);
-
-				if ((list != null) && !list.isEmpty()) {
-					for (StyleBookEntry styleBookEntry : list) {
-						if ((groupId != styleBookEntry.getGroupId()) ||
-							!themeId.equals(styleBookEntry.getThemeId())) {
-
-							list = null;
-
-							break;
-						}
-					}
-				}
-			}
-
-			if (list == null) {
-				StringBundler sb = null;
-
-				if (orderByComparator != null) {
-					sb = new StringBundler(
-						4 + (orderByComparator.getOrderByFields().length * 2));
-				}
-				else {
-					sb = new StringBundler(4);
-				}
-
-				sb.append(_SQL_SELECT_STYLEBOOKENTRY_WHERE);
-
-				sb.append(_FINDER_COLUMN_G_T_GROUPID_2);
-
-				boolean bindThemeId = false;
-
-				if (themeId.isEmpty()) {
-					sb.append(_FINDER_COLUMN_G_T_THEMEID_3);
-				}
-				else {
-					bindThemeId = true;
-
-					sb.append(_FINDER_COLUMN_G_T_THEMEID_2);
-				}
-
-				if (orderByComparator != null) {
-					appendOrderByComparator(
-						sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-				}
-				else {
-					sb.append(StyleBookEntryModelImpl.ORDER_BY_JPQL);
-				}
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					queryPos.add(groupId);
-
-					if (bindThemeId) {
-						queryPos.add(themeId);
-					}
-
-					list = (List<StyleBookEntry>)QueryUtil.list(
-						query, getDialect(), start, end);
-
-					cacheResult(list);
-
-					if (useFinderCache) {
-						finderCache.putResult(finderPath, finderArgs, list);
-					}
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return list;
+			return _baseFinderG_T.findList(
+				new Object[] {groupId, themeId}, start, end, orderByComparator,
+				useFinderCache);
 		}
 	}
 
@@ -8049,63 +6263,7 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			themeId = Objects.toString(themeId, "");
-
-			FinderPath finderPath = _finderPathCountByG_T;
-
-			Object[] finderArgs = new Object[] {groupId, themeId};
-
-			Long count = (Long)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if (count == null) {
-				StringBundler sb = new StringBundler(3);
-
-				sb.append(_SQL_COUNT_STYLEBOOKENTRY_WHERE);
-
-				sb.append(_FINDER_COLUMN_G_T_GROUPID_2);
-
-				boolean bindThemeId = false;
-
-				if (themeId.isEmpty()) {
-					sb.append(_FINDER_COLUMN_G_T_THEMEID_3);
-				}
-				else {
-					bindThemeId = true;
-
-					sb.append(_FINDER_COLUMN_G_T_THEMEID_2);
-				}
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					queryPos.add(groupId);
-
-					if (bindThemeId) {
-						queryPos.add(themeId);
-					}
-
-					count = (Long)query.uniqueResult();
-
-					finderCache.putResult(finderPath, finderArgs, count);
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return count.intValue();
+			return _baseFinderG_T.count(new Object[] {groupId, themeId});
 		}
 	}
 
@@ -8121,6 +6279,7 @@ public class StyleBookEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByG_T_Head;
 	private FinderPath _finderPathWithoutPaginationFindByG_T_Head;
 	private FinderPath _finderPathCountByG_T_Head;
+	private BaseFinder<StyleBookEntry> _baseFinderG_T_Head;
 
 	/**
 	 * Returns all the style book entries where groupId = &#63; and themeId = &#63; and head = &#63;.
@@ -8209,119 +6368,9 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			themeId = Objects.toString(themeId, "");
-
-			FinderPath finderPath = null;
-			Object[] finderArgs = null;
-
-			if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-
-				if (useFinderCache) {
-					finderPath = _finderPathWithoutPaginationFindByG_T_Head;
-					finderArgs = new Object[] {groupId, themeId, head};
-				}
-			}
-			else if (useFinderCache) {
-				finderPath = _finderPathWithPaginationFindByG_T_Head;
-				finderArgs = new Object[] {
-					groupId, themeId, head, start, end, orderByComparator
-				};
-			}
-
-			List<StyleBookEntry> list = null;
-
-			if (useFinderCache) {
-				list = (List<StyleBookEntry>)finderCache.getResult(
-					finderPath, finderArgs, this);
-
-				if ((list != null) && !list.isEmpty()) {
-					for (StyleBookEntry styleBookEntry : list) {
-						if ((groupId != styleBookEntry.getGroupId()) ||
-							!themeId.equals(styleBookEntry.getThemeId()) ||
-							(head != styleBookEntry.isHead())) {
-
-							list = null;
-
-							break;
-						}
-					}
-				}
-			}
-
-			if (list == null) {
-				StringBundler sb = null;
-
-				if (orderByComparator != null) {
-					sb = new StringBundler(
-						5 + (orderByComparator.getOrderByFields().length * 2));
-				}
-				else {
-					sb = new StringBundler(5);
-				}
-
-				sb.append(_SQL_SELECT_STYLEBOOKENTRY_WHERE);
-
-				sb.append(_FINDER_COLUMN_G_T_HEAD_GROUPID_2);
-
-				boolean bindThemeId = false;
-
-				if (themeId.isEmpty()) {
-					sb.append(_FINDER_COLUMN_G_T_HEAD_THEMEID_3);
-				}
-				else {
-					bindThemeId = true;
-
-					sb.append(_FINDER_COLUMN_G_T_HEAD_THEMEID_2);
-				}
-
-				sb.append(_FINDER_COLUMN_G_T_HEAD_HEAD_2);
-
-				if (orderByComparator != null) {
-					appendOrderByComparator(
-						sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-				}
-				else {
-					sb.append(StyleBookEntryModelImpl.ORDER_BY_JPQL);
-				}
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					queryPos.add(groupId);
-
-					if (bindThemeId) {
-						queryPos.add(themeId);
-					}
-
-					queryPos.add(head);
-
-					list = (List<StyleBookEntry>)QueryUtil.list(
-						query, getDialect(), start, end);
-
-					cacheResult(list);
-
-					if (useFinderCache) {
-						finderCache.putResult(finderPath, finderArgs, list);
-					}
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return list;
+			return _baseFinderG_T_Head.findList(
+				new Object[] {groupId, themeId, head}, start, end,
+				orderByComparator, useFinderCache);
 		}
 	}
 
@@ -8670,67 +6719,8 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			themeId = Objects.toString(themeId, "");
-
-			FinderPath finderPath = _finderPathCountByG_T_Head;
-
-			Object[] finderArgs = new Object[] {groupId, themeId, head};
-
-			Long count = (Long)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if (count == null) {
-				StringBundler sb = new StringBundler(4);
-
-				sb.append(_SQL_COUNT_STYLEBOOKENTRY_WHERE);
-
-				sb.append(_FINDER_COLUMN_G_T_HEAD_GROUPID_2);
-
-				boolean bindThemeId = false;
-
-				if (themeId.isEmpty()) {
-					sb.append(_FINDER_COLUMN_G_T_HEAD_THEMEID_3);
-				}
-				else {
-					bindThemeId = true;
-
-					sb.append(_FINDER_COLUMN_G_T_HEAD_THEMEID_2);
-				}
-
-				sb.append(_FINDER_COLUMN_G_T_HEAD_HEAD_2);
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					queryPos.add(groupId);
-
-					if (bindThemeId) {
-						queryPos.add(themeId);
-					}
-
-					queryPos.add(head);
-
-					count = (Long)query.uniqueResult();
-
-					finderCache.putResult(finderPath, finderArgs, count);
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return count.intValue();
+			return _baseFinderG_T_Head.count(
+				new Object[] {groupId, themeId, head});
 		}
 	}
 
@@ -8749,6 +6739,7 @@ public class StyleBookEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByG_D_T;
 	private FinderPath _finderPathWithoutPaginationFindByG_D_T;
 	private FinderPath _finderPathCountByG_D_T;
+	private BaseFinder<StyleBookEntry> _baseFinderG_D_T;
 
 	/**
 	 * Returns all the style book entries where groupId = &#63; and defaultStyleBookEntry = &#63; and themeId = &#63;.
@@ -8841,123 +6832,9 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			themeId = Objects.toString(themeId, "");
-
-			FinderPath finderPath = null;
-			Object[] finderArgs = null;
-
-			if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-
-				if (useFinderCache) {
-					finderPath = _finderPathWithoutPaginationFindByG_D_T;
-					finderArgs = new Object[] {
-						groupId, defaultStyleBookEntry, themeId
-					};
-				}
-			}
-			else if (useFinderCache) {
-				finderPath = _finderPathWithPaginationFindByG_D_T;
-				finderArgs = new Object[] {
-					groupId, defaultStyleBookEntry, themeId, start, end,
-					orderByComparator
-				};
-			}
-
-			List<StyleBookEntry> list = null;
-
-			if (useFinderCache) {
-				list = (List<StyleBookEntry>)finderCache.getResult(
-					finderPath, finderArgs, this);
-
-				if ((list != null) && !list.isEmpty()) {
-					for (StyleBookEntry styleBookEntry : list) {
-						if ((groupId != styleBookEntry.getGroupId()) ||
-							(defaultStyleBookEntry !=
-								styleBookEntry.isDefaultStyleBookEntry()) ||
-							!themeId.equals(styleBookEntry.getThemeId())) {
-
-							list = null;
-
-							break;
-						}
-					}
-				}
-			}
-
-			if (list == null) {
-				StringBundler sb = null;
-
-				if (orderByComparator != null) {
-					sb = new StringBundler(
-						5 + (orderByComparator.getOrderByFields().length * 2));
-				}
-				else {
-					sb = new StringBundler(5);
-				}
-
-				sb.append(_SQL_SELECT_STYLEBOOKENTRY_WHERE);
-
-				sb.append(_FINDER_COLUMN_G_D_T_GROUPID_2);
-
-				sb.append(_FINDER_COLUMN_G_D_T_DEFAULTSTYLEBOOKENTRY_2);
-
-				boolean bindThemeId = false;
-
-				if (themeId.isEmpty()) {
-					sb.append(_FINDER_COLUMN_G_D_T_THEMEID_3);
-				}
-				else {
-					bindThemeId = true;
-
-					sb.append(_FINDER_COLUMN_G_D_T_THEMEID_2);
-				}
-
-				if (orderByComparator != null) {
-					appendOrderByComparator(
-						sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-				}
-				else {
-					sb.append(StyleBookEntryModelImpl.ORDER_BY_JPQL);
-				}
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					queryPos.add(groupId);
-
-					queryPos.add(defaultStyleBookEntry);
-
-					if (bindThemeId) {
-						queryPos.add(themeId);
-					}
-
-					list = (List<StyleBookEntry>)QueryUtil.list(
-						query, getDialect(), start, end);
-
-					cacheResult(list);
-
-					if (useFinderCache) {
-						finderCache.putResult(finderPath, finderArgs, list);
-					}
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return list;
+			return _baseFinderG_D_T.findList(
+				new Object[] {groupId, defaultStyleBookEntry, themeId}, start,
+				end, orderByComparator, useFinderCache);
 		}
 	}
 
@@ -9311,69 +7188,8 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			themeId = Objects.toString(themeId, "");
-
-			FinderPath finderPath = _finderPathCountByG_D_T;
-
-			Object[] finderArgs = new Object[] {
-				groupId, defaultStyleBookEntry, themeId
-			};
-
-			Long count = (Long)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if (count == null) {
-				StringBundler sb = new StringBundler(4);
-
-				sb.append(_SQL_COUNT_STYLEBOOKENTRY_WHERE);
-
-				sb.append(_FINDER_COLUMN_G_D_T_GROUPID_2);
-
-				sb.append(_FINDER_COLUMN_G_D_T_DEFAULTSTYLEBOOKENTRY_2);
-
-				boolean bindThemeId = false;
-
-				if (themeId.isEmpty()) {
-					sb.append(_FINDER_COLUMN_G_D_T_THEMEID_3);
-				}
-				else {
-					bindThemeId = true;
-
-					sb.append(_FINDER_COLUMN_G_D_T_THEMEID_2);
-				}
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					queryPos.add(groupId);
-
-					queryPos.add(defaultStyleBookEntry);
-
-					if (bindThemeId) {
-						queryPos.add(themeId);
-					}
-
-					count = (Long)query.uniqueResult();
-
-					finderCache.putResult(finderPath, finderArgs, count);
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return count.intValue();
+			return _baseFinderG_D_T.count(
+				new Object[] {groupId, defaultStyleBookEntry, themeId});
 		}
 	}
 
@@ -9392,6 +7208,7 @@ public class StyleBookEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByG_D_T_Head;
 	private FinderPath _finderPathWithoutPaginationFindByG_D_T_Head;
 	private FinderPath _finderPathCountByG_D_T_Head;
+	private BaseFinder<StyleBookEntry> _baseFinderG_D_T_Head;
 
 	/**
 	 * Returns all the style book entries where groupId = &#63; and defaultStyleBookEntry = &#63; and themeId = &#63; and head = &#63;.
@@ -9491,128 +7308,9 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			themeId = Objects.toString(themeId, "");
-
-			FinderPath finderPath = null;
-			Object[] finderArgs = null;
-
-			if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-
-				if (useFinderCache) {
-					finderPath = _finderPathWithoutPaginationFindByG_D_T_Head;
-					finderArgs = new Object[] {
-						groupId, defaultStyleBookEntry, themeId, head
-					};
-				}
-			}
-			else if (useFinderCache) {
-				finderPath = _finderPathWithPaginationFindByG_D_T_Head;
-				finderArgs = new Object[] {
-					groupId, defaultStyleBookEntry, themeId, head, start, end,
-					orderByComparator
-				};
-			}
-
-			List<StyleBookEntry> list = null;
-
-			if (useFinderCache) {
-				list = (List<StyleBookEntry>)finderCache.getResult(
-					finderPath, finderArgs, this);
-
-				if ((list != null) && !list.isEmpty()) {
-					for (StyleBookEntry styleBookEntry : list) {
-						if ((groupId != styleBookEntry.getGroupId()) ||
-							(defaultStyleBookEntry !=
-								styleBookEntry.isDefaultStyleBookEntry()) ||
-							!themeId.equals(styleBookEntry.getThemeId()) ||
-							(head != styleBookEntry.isHead())) {
-
-							list = null;
-
-							break;
-						}
-					}
-				}
-			}
-
-			if (list == null) {
-				StringBundler sb = null;
-
-				if (orderByComparator != null) {
-					sb = new StringBundler(
-						6 + (orderByComparator.getOrderByFields().length * 2));
-				}
-				else {
-					sb = new StringBundler(6);
-				}
-
-				sb.append(_SQL_SELECT_STYLEBOOKENTRY_WHERE);
-
-				sb.append(_FINDER_COLUMN_G_D_T_HEAD_GROUPID_2);
-
-				sb.append(_FINDER_COLUMN_G_D_T_HEAD_DEFAULTSTYLEBOOKENTRY_2);
-
-				boolean bindThemeId = false;
-
-				if (themeId.isEmpty()) {
-					sb.append(_FINDER_COLUMN_G_D_T_HEAD_THEMEID_3);
-				}
-				else {
-					bindThemeId = true;
-
-					sb.append(_FINDER_COLUMN_G_D_T_HEAD_THEMEID_2);
-				}
-
-				sb.append(_FINDER_COLUMN_G_D_T_HEAD_HEAD_2);
-
-				if (orderByComparator != null) {
-					appendOrderByComparator(
-						sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-				}
-				else {
-					sb.append(StyleBookEntryModelImpl.ORDER_BY_JPQL);
-				}
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					queryPos.add(groupId);
-
-					queryPos.add(defaultStyleBookEntry);
-
-					if (bindThemeId) {
-						queryPos.add(themeId);
-					}
-
-					queryPos.add(head);
-
-					list = (List<StyleBookEntry>)QueryUtil.list(
-						query, getDialect(), start, end);
-
-					cacheResult(list);
-
-					if (useFinderCache) {
-						finderCache.putResult(finderPath, finderArgs, list);
-					}
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return list;
+			return _baseFinderG_D_T_Head.findList(
+				new Object[] {groupId, defaultStyleBookEntry, themeId, head},
+				start, end, orderByComparator, useFinderCache);
 		}
 	}
 
@@ -9988,73 +7686,8 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			themeId = Objects.toString(themeId, "");
-
-			FinderPath finderPath = _finderPathCountByG_D_T_Head;
-
-			Object[] finderArgs = new Object[] {
-				groupId, defaultStyleBookEntry, themeId, head
-			};
-
-			Long count = (Long)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if (count == null) {
-				StringBundler sb = new StringBundler(5);
-
-				sb.append(_SQL_COUNT_STYLEBOOKENTRY_WHERE);
-
-				sb.append(_FINDER_COLUMN_G_D_T_HEAD_GROUPID_2);
-
-				sb.append(_FINDER_COLUMN_G_D_T_HEAD_DEFAULTSTYLEBOOKENTRY_2);
-
-				boolean bindThemeId = false;
-
-				if (themeId.isEmpty()) {
-					sb.append(_FINDER_COLUMN_G_D_T_HEAD_THEMEID_3);
-				}
-				else {
-					bindThemeId = true;
-
-					sb.append(_FINDER_COLUMN_G_D_T_HEAD_THEMEID_2);
-				}
-
-				sb.append(_FINDER_COLUMN_G_D_T_HEAD_HEAD_2);
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					queryPos.add(groupId);
-
-					queryPos.add(defaultStyleBookEntry);
-
-					if (bindThemeId) {
-						queryPos.add(themeId);
-					}
-
-					queryPos.add(head);
-
-					count = (Long)query.uniqueResult();
-
-					finderCache.putResult(finderPath, finderArgs, count);
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return count.intValue();
+			return _baseFinderG_D_T_Head.count(
+				new Object[] {groupId, defaultStyleBookEntry, themeId, head});
 		}
 	}
 
@@ -10077,6 +7710,7 @@ public class StyleBookEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByERC_G;
 	private FinderPath _finderPathWithoutPaginationFindByERC_G;
 	private FinderPath _finderPathCountByERC_G;
+	private BaseFinder<StyleBookEntry> _baseFinderERC_G;
 
 	/**
 	 * Returns all the style book entries where externalReferenceCode = &#63; and groupId = &#63;.
@@ -10163,116 +7797,9 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			externalReferenceCode = Objects.toString(externalReferenceCode, "");
-
-			FinderPath finderPath = null;
-			Object[] finderArgs = null;
-
-			if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-
-				if (useFinderCache) {
-					finderPath = _finderPathWithoutPaginationFindByERC_G;
-					finderArgs = new Object[] {externalReferenceCode, groupId};
-				}
-			}
-			else if (useFinderCache) {
-				finderPath = _finderPathWithPaginationFindByERC_G;
-				finderArgs = new Object[] {
-					externalReferenceCode, groupId, start, end,
-					orderByComparator
-				};
-			}
-
-			List<StyleBookEntry> list = null;
-
-			if (useFinderCache) {
-				list = (List<StyleBookEntry>)finderCache.getResult(
-					finderPath, finderArgs, this);
-
-				if ((list != null) && !list.isEmpty()) {
-					for (StyleBookEntry styleBookEntry : list) {
-						if (!externalReferenceCode.equals(
-								styleBookEntry.getExternalReferenceCode()) ||
-							(groupId != styleBookEntry.getGroupId())) {
-
-							list = null;
-
-							break;
-						}
-					}
-				}
-			}
-
-			if (list == null) {
-				StringBundler sb = null;
-
-				if (orderByComparator != null) {
-					sb = new StringBundler(
-						4 + (orderByComparator.getOrderByFields().length * 2));
-				}
-				else {
-					sb = new StringBundler(4);
-				}
-
-				sb.append(_SQL_SELECT_STYLEBOOKENTRY_WHERE);
-
-				boolean bindExternalReferenceCode = false;
-
-				if (externalReferenceCode.isEmpty()) {
-					sb.append(_FINDER_COLUMN_ERC_G_EXTERNALREFERENCECODE_3);
-				}
-				else {
-					bindExternalReferenceCode = true;
-
-					sb.append(_FINDER_COLUMN_ERC_G_EXTERNALREFERENCECODE_2);
-				}
-
-				sb.append(_FINDER_COLUMN_ERC_G_GROUPID_2);
-
-				if (orderByComparator != null) {
-					appendOrderByComparator(
-						sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-				}
-				else {
-					sb.append(StyleBookEntryModelImpl.ORDER_BY_JPQL);
-				}
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					if (bindExternalReferenceCode) {
-						queryPos.add(externalReferenceCode);
-					}
-
-					queryPos.add(groupId);
-
-					list = (List<StyleBookEntry>)QueryUtil.list(
-						query, getDialect(), start, end);
-
-					cacheResult(list);
-
-					if (useFinderCache) {
-						finderCache.putResult(finderPath, finderArgs, list);
-					}
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return list;
+			return _baseFinderERC_G.findList(
+				new Object[] {externalReferenceCode, groupId}, start, end,
+				orderByComparator, useFinderCache);
 		}
 	}
 
@@ -10605,63 +8132,8 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			externalReferenceCode = Objects.toString(externalReferenceCode, "");
-
-			FinderPath finderPath = _finderPathCountByERC_G;
-
-			Object[] finderArgs = new Object[] {externalReferenceCode, groupId};
-
-			Long count = (Long)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if (count == null) {
-				StringBundler sb = new StringBundler(3);
-
-				sb.append(_SQL_COUNT_STYLEBOOKENTRY_WHERE);
-
-				boolean bindExternalReferenceCode = false;
-
-				if (externalReferenceCode.isEmpty()) {
-					sb.append(_FINDER_COLUMN_ERC_G_EXTERNALREFERENCECODE_3);
-				}
-				else {
-					bindExternalReferenceCode = true;
-
-					sb.append(_FINDER_COLUMN_ERC_G_EXTERNALREFERENCECODE_2);
-				}
-
-				sb.append(_FINDER_COLUMN_ERC_G_GROUPID_2);
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					if (bindExternalReferenceCode) {
-						queryPos.add(externalReferenceCode);
-					}
-
-					queryPos.add(groupId);
-
-					count = (Long)query.uniqueResult();
-
-					finderCache.putResult(finderPath, finderArgs, count);
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			return count.intValue();
+			return _baseFinderERC_G.count(
+				new Object[] {externalReferenceCode, groupId});
 		}
 	}
 
@@ -10675,6 +8147,7 @@ public class StyleBookEntryPersistenceImpl
 		"styleBookEntry.groupId = ?";
 
 	private FinderPath _finderPathFetchByERC_G_Head;
+	private BaseFinder<StyleBookEntry> _baseFinderERC_G_Head;
 
 	/**
 	 * Returns the style book entry where externalReferenceCode = &#63; and groupId = &#63; and head = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
@@ -10752,107 +8225,9 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			externalReferenceCode = Objects.toString(externalReferenceCode, "");
-
-			Object[] finderArgs = null;
-
-			if (useFinderCache) {
-				finderArgs = new Object[] {
-					externalReferenceCode, groupId, head
-				};
-			}
-
-			Object result = null;
-
-			if (useFinderCache) {
-				result = finderCache.getResult(
-					_finderPathFetchByERC_G_Head, finderArgs, this);
-			}
-
-			if (result instanceof StyleBookEntry) {
-				StyleBookEntry styleBookEntry = (StyleBookEntry)result;
-
-				if (!Objects.equals(
-						externalReferenceCode,
-						styleBookEntry.getExternalReferenceCode()) ||
-					(groupId != styleBookEntry.getGroupId()) ||
-					(head != styleBookEntry.isHead())) {
-
-					result = null;
-				}
-			}
-
-			if (result == null) {
-				StringBundler sb = new StringBundler(5);
-
-				sb.append(_SQL_SELECT_STYLEBOOKENTRY_WHERE);
-
-				boolean bindExternalReferenceCode = false;
-
-				if (externalReferenceCode.isEmpty()) {
-					sb.append(
-						_FINDER_COLUMN_ERC_G_HEAD_EXTERNALREFERENCECODE_3);
-				}
-				else {
-					bindExternalReferenceCode = true;
-
-					sb.append(
-						_FINDER_COLUMN_ERC_G_HEAD_EXTERNALREFERENCECODE_2);
-				}
-
-				sb.append(_FINDER_COLUMN_ERC_G_HEAD_GROUPID_2);
-
-				sb.append(_FINDER_COLUMN_ERC_G_HEAD_HEAD_2);
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					if (bindExternalReferenceCode) {
-						queryPos.add(externalReferenceCode);
-					}
-
-					queryPos.add(groupId);
-
-					queryPos.add(head);
-
-					List<StyleBookEntry> list = query.list();
-
-					if (list.isEmpty()) {
-						if (useFinderCache) {
-							finderCache.putResult(
-								_finderPathFetchByERC_G_Head, finderArgs, list);
-						}
-					}
-					else {
-						StyleBookEntry styleBookEntry = list.get(0);
-
-						result = styleBookEntry;
-
-						cacheResult(styleBookEntry);
-					}
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			if (result instanceof List<?>) {
-				return null;
-			}
-			else {
-				return (StyleBookEntry)result;
-			}
+			return _baseFinderERC_G_Head.fetchOne(
+				new Object[] {externalReferenceCode, groupId, head},
+				useFinderCache);
 		}
 	}
 
@@ -10912,6 +8287,7 @@ public class StyleBookEntryPersistenceImpl
 		"styleBookEntry.head = ?";
 
 	private FinderPath _finderPathFetchByHeadId;
+	private BaseFinder<StyleBookEntry> _baseFinderHeadId;
 
 	/**
 	 * Returns the style book entry where headId = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
@@ -10970,77 +8346,8 @@ public class StyleBookEntryPersistenceImpl
 				ctPersistenceHelper.setCTCollectionIdWithSafeCloseable(
 					StyleBookEntry.class)) {
 
-			Object[] finderArgs = null;
-
-			if (useFinderCache) {
-				finderArgs = new Object[] {headId};
-			}
-
-			Object result = null;
-
-			if (useFinderCache) {
-				result = finderCache.getResult(
-					_finderPathFetchByHeadId, finderArgs, this);
-			}
-
-			if (result instanceof StyleBookEntry) {
-				StyleBookEntry styleBookEntry = (StyleBookEntry)result;
-
-				if (headId != styleBookEntry.getHeadId()) {
-					result = null;
-				}
-			}
-
-			if (result == null) {
-				StringBundler sb = new StringBundler(3);
-
-				sb.append(_SQL_SELECT_STYLEBOOKENTRY_WHERE);
-
-				sb.append(_FINDER_COLUMN_HEADID_HEADID_2);
-
-				String sql = sb.toString();
-
-				Session session = null;
-
-				try {
-					session = openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					queryPos.add(headId);
-
-					List<StyleBookEntry> list = query.list();
-
-					if (list.isEmpty()) {
-						if (useFinderCache) {
-							finderCache.putResult(
-								_finderPathFetchByHeadId, finderArgs, list);
-						}
-					}
-					else {
-						StyleBookEntry styleBookEntry = list.get(0);
-
-						result = styleBookEntry;
-
-						cacheResult(styleBookEntry);
-					}
-				}
-				catch (Exception exception) {
-					throw processException(exception);
-				}
-				finally {
-					closeSession(session);
-				}
-			}
-
-			if (result instanceof List<?>) {
-				return null;
-			}
-			else {
-				return (StyleBookEntry)result;
-			}
+			return _baseFinderHeadId.fetchOne(
+				new Object[] {headId}, useFinderCache);
 		}
 	}
 
@@ -12441,6 +9748,686 @@ public class StyleBookEntryPersistenceImpl
 		_finderPathFetchByHeadId = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByHeadId",
 			new String[] {Long.class.getName()}, new String[] {"headId"}, true);
+
+		_baseFinderUuid = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(
+				_FINDER_COLUMN_UUID_UUID_2, _FINDER_COLUMN_UUID_UUID_3)
+		).sqlSelectWhere(
+			_SQL_SELECT_STYLEBOOKENTRY_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_STYLEBOOKENTRY_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByUuid
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByUuid
+		).finderPathCount(
+			_finderPathCountByUuid
+		).defaultOrderByJpql(
+			StyleBookEntryModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getUuid())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderUuid_Head = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(
+				_FINDER_COLUMN_UUID_HEAD_UUID_2,
+				_FINDER_COLUMN_UUID_HEAD_UUID_3),
+			new FinderColumn(_FINDER_COLUMN_UUID_HEAD_HEAD_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_STYLEBOOKENTRY_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_STYLEBOOKENTRY_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByUuid_Head
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByUuid_Head
+		).finderPathCount(
+			_finderPathCountByUuid_Head
+		).defaultOrderByJpql(
+			StyleBookEntryModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getUuid())) {
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[1], model.isHead())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderUUID_G = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(
+				_FINDER_COLUMN_UUID_G_UUID_2, _FINDER_COLUMN_UUID_G_UUID_3),
+			new FinderColumn(_FINDER_COLUMN_UUID_G_GROUPID_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_STYLEBOOKENTRY_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_STYLEBOOKENTRY_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByUUID_G
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByUUID_G
+		).finderPathCount(
+			_finderPathCountByUUID_G
+		).defaultOrderByJpql(
+			StyleBookEntryModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getUuid())) {
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[1], model.getGroupId())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderUUID_G_Head = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(
+				_FINDER_COLUMN_UUID_G_HEAD_UUID_2,
+				_FINDER_COLUMN_UUID_G_HEAD_UUID_3),
+			new FinderColumn(_FINDER_COLUMN_UUID_G_HEAD_GROUPID_2),
+			new FinderColumn(_FINDER_COLUMN_UUID_G_HEAD_HEAD_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_STYLEBOOKENTRY_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_STYLEBOOKENTRY_WHERE
+		).finderPathFetch(
+			_finderPathFetchByUUID_G_Head
+		).defaultOrderByJpql(
+			StyleBookEntryModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getUuid())) {
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[1], model.getGroupId())) {
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[2], model.isHead())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderUuid_C = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(
+				_FINDER_COLUMN_UUID_C_UUID_2, _FINDER_COLUMN_UUID_C_UUID_3),
+			new FinderColumn(_FINDER_COLUMN_UUID_C_COMPANYID_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_STYLEBOOKENTRY_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_STYLEBOOKENTRY_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByUuid_C
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByUuid_C
+		).finderPathCount(
+			_finderPathCountByUuid_C
+		).defaultOrderByJpql(
+			StyleBookEntryModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getUuid())) {
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[1], model.getCompanyId())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderUuid_C_Head = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(
+				_FINDER_COLUMN_UUID_C_HEAD_UUID_2,
+				_FINDER_COLUMN_UUID_C_HEAD_UUID_3),
+			new FinderColumn(_FINDER_COLUMN_UUID_C_HEAD_COMPANYID_2),
+			new FinderColumn(_FINDER_COLUMN_UUID_C_HEAD_HEAD_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_STYLEBOOKENTRY_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_STYLEBOOKENTRY_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByUuid_C_Head
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByUuid_C_Head
+		).finderPathCount(
+			_finderPathCountByUuid_C_Head
+		).defaultOrderByJpql(
+			StyleBookEntryModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getUuid())) {
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[1], model.getCompanyId())) {
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[2], model.isHead())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderGroupId = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_GROUPID_GROUPID_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_STYLEBOOKENTRY_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_STYLEBOOKENTRY_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByGroupId
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByGroupId
+		).finderPathCount(
+			_finderPathCountByGroupId
+		).defaultOrderByJpql(
+			StyleBookEntryModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getGroupId())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderGroupId_Head = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_GROUPID_HEAD_GROUPID_2),
+			new FinderColumn(_FINDER_COLUMN_GROUPID_HEAD_HEAD_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_STYLEBOOKENTRY_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_STYLEBOOKENTRY_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByGroupId_Head
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByGroupId_Head
+		).finderPathCount(
+			_finderPathCountByGroupId_Head
+		).defaultOrderByJpql(
+			StyleBookEntryModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getGroupId())) {
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[1], model.isHead())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderG_D = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_G_D_GROUPID_2),
+			new FinderColumn(_FINDER_COLUMN_G_D_DEFAULTSTYLEBOOKENTRY_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_STYLEBOOKENTRY_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_STYLEBOOKENTRY_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByG_D
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByG_D
+		).finderPathCount(
+			_finderPathCountByG_D
+		).defaultOrderByJpql(
+			StyleBookEntryModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getGroupId())) {
+					return false;
+				}
+
+				if (!Objects.equals(
+						columnValues[1], model.isDefaultStyleBookEntry())) {
+
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderG_D_Head = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_G_D_HEAD_GROUPID_2),
+			new FinderColumn(_FINDER_COLUMN_G_D_HEAD_DEFAULTSTYLEBOOKENTRY_2),
+			new FinderColumn(_FINDER_COLUMN_G_D_HEAD_HEAD_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_STYLEBOOKENTRY_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_STYLEBOOKENTRY_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByG_D_Head
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByG_D_Head
+		).finderPathCount(
+			_finderPathCountByG_D_Head
+		).defaultOrderByJpql(
+			StyleBookEntryModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getGroupId())) {
+					return false;
+				}
+
+				if (!Objects.equals(
+						columnValues[1], model.isDefaultStyleBookEntry())) {
+
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[2], model.isHead())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderG_SBEK = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_G_SBEK_GROUPID_2),
+			new FinderColumn(
+				_FINDER_COLUMN_G_SBEK_STYLEBOOKENTRYKEY_2,
+				_FINDER_COLUMN_G_SBEK_STYLEBOOKENTRYKEY_3)
+		).sqlSelectWhere(
+			_SQL_SELECT_STYLEBOOKENTRY_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_STYLEBOOKENTRY_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByG_SBEK
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByG_SBEK
+		).finderPathCount(
+			_finderPathCountByG_SBEK
+		).defaultOrderByJpql(
+			StyleBookEntryModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getGroupId())) {
+					return false;
+				}
+
+				if (!Objects.equals(
+						columnValues[1], model.getStyleBookEntryKey())) {
+
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderG_SBEK_Head = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_G_SBEK_HEAD_GROUPID_2),
+			new FinderColumn(
+				_FINDER_COLUMN_G_SBEK_HEAD_STYLEBOOKENTRYKEY_2,
+				_FINDER_COLUMN_G_SBEK_HEAD_STYLEBOOKENTRYKEY_3),
+			new FinderColumn(_FINDER_COLUMN_G_SBEK_HEAD_HEAD_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_STYLEBOOKENTRY_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_STYLEBOOKENTRY_WHERE
+		).finderPathFetch(
+			_finderPathFetchByG_SBEK_Head
+		).defaultOrderByJpql(
+			StyleBookEntryModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getGroupId())) {
+					return false;
+				}
+
+				if (!Objects.equals(
+						columnValues[1], model.getStyleBookEntryKey())) {
+
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[2], model.isHead())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderG_T = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_G_T_GROUPID_2),
+			new FinderColumn(
+				_FINDER_COLUMN_G_T_THEMEID_2, _FINDER_COLUMN_G_T_THEMEID_3)
+		).sqlSelectWhere(
+			_SQL_SELECT_STYLEBOOKENTRY_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_STYLEBOOKENTRY_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByG_T
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByG_T
+		).finderPathCount(
+			_finderPathCountByG_T
+		).defaultOrderByJpql(
+			StyleBookEntryModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getGroupId())) {
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[1], model.getThemeId())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderG_T_Head = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_G_T_HEAD_GROUPID_2),
+			new FinderColumn(
+				_FINDER_COLUMN_G_T_HEAD_THEMEID_2,
+				_FINDER_COLUMN_G_T_HEAD_THEMEID_3),
+			new FinderColumn(_FINDER_COLUMN_G_T_HEAD_HEAD_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_STYLEBOOKENTRY_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_STYLEBOOKENTRY_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByG_T_Head
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByG_T_Head
+		).finderPathCount(
+			_finderPathCountByG_T_Head
+		).defaultOrderByJpql(
+			StyleBookEntryModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getGroupId())) {
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[1], model.getThemeId())) {
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[2], model.isHead())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderG_D_T = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_G_D_T_GROUPID_2),
+			new FinderColumn(_FINDER_COLUMN_G_D_T_DEFAULTSTYLEBOOKENTRY_2),
+			new FinderColumn(
+				_FINDER_COLUMN_G_D_T_THEMEID_2, _FINDER_COLUMN_G_D_T_THEMEID_3)
+		).sqlSelectWhere(
+			_SQL_SELECT_STYLEBOOKENTRY_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_STYLEBOOKENTRY_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByG_D_T
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByG_D_T
+		).finderPathCount(
+			_finderPathCountByG_D_T
+		).defaultOrderByJpql(
+			StyleBookEntryModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getGroupId())) {
+					return false;
+				}
+
+				if (!Objects.equals(
+						columnValues[1], model.isDefaultStyleBookEntry())) {
+
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[2], model.getThemeId())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderG_D_T_Head = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_G_D_T_HEAD_GROUPID_2),
+			new FinderColumn(_FINDER_COLUMN_G_D_T_HEAD_DEFAULTSTYLEBOOKENTRY_2),
+			new FinderColumn(
+				_FINDER_COLUMN_G_D_T_HEAD_THEMEID_2,
+				_FINDER_COLUMN_G_D_T_HEAD_THEMEID_3),
+			new FinderColumn(_FINDER_COLUMN_G_D_T_HEAD_HEAD_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_STYLEBOOKENTRY_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_STYLEBOOKENTRY_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByG_D_T_Head
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByG_D_T_Head
+		).finderPathCount(
+			_finderPathCountByG_D_T_Head
+		).defaultOrderByJpql(
+			StyleBookEntryModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getGroupId())) {
+					return false;
+				}
+
+				if (!Objects.equals(
+						columnValues[1], model.isDefaultStyleBookEntry())) {
+
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[2], model.getThemeId())) {
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[3], model.isHead())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderERC_G = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(
+				_FINDER_COLUMN_ERC_G_EXTERNALREFERENCECODE_2,
+				_FINDER_COLUMN_ERC_G_EXTERNALREFERENCECODE_3),
+			new FinderColumn(_FINDER_COLUMN_ERC_G_GROUPID_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_STYLEBOOKENTRY_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_STYLEBOOKENTRY_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByERC_G
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByERC_G
+		).finderPathCount(
+			_finderPathCountByERC_G
+		).defaultOrderByJpql(
+			StyleBookEntryModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(
+						columnValues[0], model.getExternalReferenceCode())) {
+
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[1], model.getGroupId())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderERC_G_Head = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(
+				_FINDER_COLUMN_ERC_G_HEAD_EXTERNALREFERENCECODE_2,
+				_FINDER_COLUMN_ERC_G_HEAD_EXTERNALREFERENCECODE_3),
+			new FinderColumn(_FINDER_COLUMN_ERC_G_HEAD_GROUPID_2),
+			new FinderColumn(_FINDER_COLUMN_ERC_G_HEAD_HEAD_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_STYLEBOOKENTRY_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_STYLEBOOKENTRY_WHERE
+		).finderPathFetch(
+			_finderPathFetchByERC_G_Head
+		).defaultOrderByJpql(
+			StyleBookEntryModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(
+						columnValues[0], model.getExternalReferenceCode())) {
+
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[1], model.getGroupId())) {
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[2], model.isHead())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderHeadId = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_HEADID_HEADID_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_STYLEBOOKENTRY_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_STYLEBOOKENTRY_WHERE
+		).finderPathFetch(
+			_finderPathFetchByHeadId
+		).defaultOrderByJpql(
+			StyleBookEntryModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getHeadId())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
 
 		StyleBookEntryUtil.setPersistence(this);
 	}

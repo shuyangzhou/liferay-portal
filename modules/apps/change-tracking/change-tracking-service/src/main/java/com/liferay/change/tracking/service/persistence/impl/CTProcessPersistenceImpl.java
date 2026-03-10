@@ -15,8 +15,10 @@ import com.liferay.change.tracking.service.persistence.CTProcessUtil;
 import com.liferay.change.tracking.service.persistence.impl.constants.CTPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
+import com.liferay.portal.kernel.dao.orm.BaseFinder;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
+import com.liferay.portal.kernel.dao.orm.FinderColumn;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -46,6 +48,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -89,6 +92,7 @@ public class CTProcessPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
 	private FinderPath _finderPathCountByCompanyId;
+	private BaseFinder<CTProcess> _baseFinderCompanyId;
 
 	/**
 	 * Returns all the ct processes where companyId = &#63;.
@@ -160,95 +164,9 @@ public class CTProcessPersistenceImpl
 		OrderByComparator<CTProcess> orderByComparator,
 		boolean useFinderCache) {
 
-		FinderPath finderPath = null;
-		Object[] finderArgs = null;
-
-		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByCompanyId;
-				finderArgs = new Object[] {companyId};
-			}
-		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByCompanyId;
-			finderArgs = new Object[] {
-				companyId, start, end, orderByComparator
-			};
-		}
-
-		List<CTProcess> list = null;
-
-		if (useFinderCache) {
-			list = (List<CTProcess>)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if ((list != null) && !list.isEmpty()) {
-				for (CTProcess ctProcess : list) {
-					if (companyId != ctProcess.getCompanyId()) {
-						list = null;
-
-						break;
-					}
-				}
-			}
-		}
-
-		if (list == null) {
-			StringBundler sb = null;
-
-			if (orderByComparator != null) {
-				sb = new StringBundler(
-					3 + (orderByComparator.getOrderByFields().length * 2));
-			}
-			else {
-				sb = new StringBundler(3);
-			}
-
-			sb.append(_SQL_SELECT_CTPROCESS_WHERE);
-
-			sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
-
-			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-			}
-			else {
-				sb.append(CTProcessModelImpl.ORDER_BY_JPQL);
-			}
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(companyId);
-
-				list = (List<CTProcess>)QueryUtil.list(
-					query, getDialect(), start, end);
-
-				cacheResult(list);
-
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return list;
+		return _baseFinderCompanyId.findList(
+			new Object[] {companyId}, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
@@ -869,45 +787,7 @@ public class CTProcessPersistenceImpl
 	 */
 	@Override
 	public int countByCompanyId(long companyId) {
-		FinderPath finderPath = _finderPathCountByCompanyId;
-
-		Object[] finderArgs = new Object[] {companyId};
-
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
-
-		if (count == null) {
-			StringBundler sb = new StringBundler(2);
-
-			sb.append(_SQL_COUNT_CTPROCESS_WHERE);
-
-			sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(companyId);
-
-				count = (Long)query.uniqueResult();
-
-				finderCache.putResult(finderPath, finderArgs, count);
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
+		return _baseFinderCompanyId.count(new Object[] {companyId});
 	}
 
 	/**
@@ -972,6 +852,7 @@ public class CTProcessPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByCtCollectionId;
 	private FinderPath _finderPathWithoutPaginationFindByCtCollectionId;
 	private FinderPath _finderPathCountByCtCollectionId;
+	private BaseFinder<CTProcess> _baseFinderCtCollectionId;
 
 	/**
 	 * Returns all the ct processes where ctCollectionId = &#63;.
@@ -1046,95 +927,9 @@ public class CTProcessPersistenceImpl
 		OrderByComparator<CTProcess> orderByComparator,
 		boolean useFinderCache) {
 
-		FinderPath finderPath = null;
-		Object[] finderArgs = null;
-
-		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByCtCollectionId;
-				finderArgs = new Object[] {ctCollectionId};
-			}
-		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByCtCollectionId;
-			finderArgs = new Object[] {
-				ctCollectionId, start, end, orderByComparator
-			};
-		}
-
-		List<CTProcess> list = null;
-
-		if (useFinderCache) {
-			list = (List<CTProcess>)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if ((list != null) && !list.isEmpty()) {
-				for (CTProcess ctProcess : list) {
-					if (ctCollectionId != ctProcess.getCtCollectionId()) {
-						list = null;
-
-						break;
-					}
-				}
-			}
-		}
-
-		if (list == null) {
-			StringBundler sb = null;
-
-			if (orderByComparator != null) {
-				sb = new StringBundler(
-					3 + (orderByComparator.getOrderByFields().length * 2));
-			}
-			else {
-				sb = new StringBundler(3);
-			}
-
-			sb.append(_SQL_SELECT_CTPROCESS_WHERE);
-
-			sb.append(_FINDER_COLUMN_CTCOLLECTIONID_CTCOLLECTIONID_2);
-
-			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-			}
-			else {
-				sb.append(CTProcessModelImpl.ORDER_BY_JPQL);
-			}
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(ctCollectionId);
-
-				list = (List<CTProcess>)QueryUtil.list(
-					query, getDialect(), start, end);
-
-				cacheResult(list);
-
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return list;
+		return _baseFinderCtCollectionId.findList(
+			new Object[] {ctCollectionId}, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
@@ -1757,45 +1552,7 @@ public class CTProcessPersistenceImpl
 	 */
 	@Override
 	public int countByCtCollectionId(long ctCollectionId) {
-		FinderPath finderPath = _finderPathCountByCtCollectionId;
-
-		Object[] finderArgs = new Object[] {ctCollectionId};
-
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
-
-		if (count == null) {
-			StringBundler sb = new StringBundler(2);
-
-			sb.append(_SQL_COUNT_CTPROCESS_WHERE);
-
-			sb.append(_FINDER_COLUMN_CTCOLLECTIONID_CTCOLLECTIONID_2);
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(ctCollectionId);
-
-				count = (Long)query.uniqueResult();
-
-				finderCache.putResult(finderPath, finderArgs, count);
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
+		return _baseFinderCtCollectionId.count(new Object[] {ctCollectionId});
 	}
 
 	/**
@@ -1860,6 +1617,7 @@ public class CTProcessPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByC_T;
 	private FinderPath _finderPathWithoutPaginationFindByC_T;
 	private FinderPath _finderPathCountByC_T;
+	private BaseFinder<CTProcess> _baseFinderC_T;
 
 	/**
 	 * Returns all the ct processes where ctCollectionId = &#63; and type = &#63;.
@@ -1938,101 +1696,9 @@ public class CTProcessPersistenceImpl
 		OrderByComparator<CTProcess> orderByComparator,
 		boolean useFinderCache) {
 
-		FinderPath finderPath = null;
-		Object[] finderArgs = null;
-
-		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByC_T;
-				finderArgs = new Object[] {ctCollectionId, type};
-			}
-		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByC_T;
-			finderArgs = new Object[] {
-				ctCollectionId, type, start, end, orderByComparator
-			};
-		}
-
-		List<CTProcess> list = null;
-
-		if (useFinderCache) {
-			list = (List<CTProcess>)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if ((list != null) && !list.isEmpty()) {
-				for (CTProcess ctProcess : list) {
-					if ((ctCollectionId != ctProcess.getCtCollectionId()) ||
-						(type != ctProcess.getType())) {
-
-						list = null;
-
-						break;
-					}
-				}
-			}
-		}
-
-		if (list == null) {
-			StringBundler sb = null;
-
-			if (orderByComparator != null) {
-				sb = new StringBundler(
-					4 + (orderByComparator.getOrderByFields().length * 2));
-			}
-			else {
-				sb = new StringBundler(4);
-			}
-
-			sb.append(_SQL_SELECT_CTPROCESS_WHERE);
-
-			sb.append(_FINDER_COLUMN_C_T_CTCOLLECTIONID_2);
-
-			sb.append(_FINDER_COLUMN_C_T_TYPE_2);
-
-			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-			}
-			else {
-				sb.append(CTProcessModelImpl.ORDER_BY_JPQL);
-			}
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(ctCollectionId);
-
-				queryPos.add(type);
-
-				list = (List<CTProcess>)QueryUtil.list(
-					query, getDialect(), start, end);
-
-				cacheResult(list);
-
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return list;
+		return _baseFinderC_T.findList(
+			new Object[] {ctCollectionId, type}, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
@@ -2692,49 +2358,7 @@ public class CTProcessPersistenceImpl
 	 */
 	@Override
 	public int countByC_T(long ctCollectionId, int type) {
-		FinderPath finderPath = _finderPathCountByC_T;
-
-		Object[] finderArgs = new Object[] {ctCollectionId, type};
-
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
-
-		if (count == null) {
-			StringBundler sb = new StringBundler(3);
-
-			sb.append(_SQL_COUNT_CTPROCESS_WHERE);
-
-			sb.append(_FINDER_COLUMN_C_T_CTCOLLECTIONID_2);
-
-			sb.append(_FINDER_COLUMN_C_T_TYPE_2);
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(ctCollectionId);
-
-				queryPos.add(type);
-
-				count = (Long)query.uniqueResult();
-
-				finderCache.putResult(finderPath, finderArgs, count);
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
+		return _baseFinderC_T.count(new Object[] {ctCollectionId, type});
 	}
 
 	/**
@@ -3396,6 +3020,99 @@ public class CTProcessPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_T",
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			new String[] {"ctCollectionId", "type_"}, false);
+
+		_baseFinderCompanyId = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_COMPANYID_COMPANYID_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_CTPROCESS_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_CTPROCESS_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByCompanyId
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByCompanyId
+		).finderPathCount(
+			_finderPathCountByCompanyId
+		).defaultOrderByJpql(
+			CTProcessModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getCompanyId())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderCtCollectionId = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_CTCOLLECTIONID_CTCOLLECTIONID_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_CTPROCESS_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_CTPROCESS_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByCtCollectionId
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByCtCollectionId
+		).finderPathCount(
+			_finderPathCountByCtCollectionId
+		).defaultOrderByJpql(
+			CTProcessModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(
+						columnValues[0], model.getCtCollectionId())) {
+
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderC_T = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_C_T_CTCOLLECTIONID_2),
+			new FinderColumn(_FINDER_COLUMN_C_T_TYPE_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_CTPROCESS_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_CTPROCESS_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByC_T
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByC_T
+		).finderPathCount(
+			_finderPathCountByC_T
+		).defaultOrderByJpql(
+			CTProcessModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(
+						columnValues[0], model.getCtCollectionId())) {
+
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[1], model.getType())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
 
 		CTProcessUtil.setPersistence(this);
 	}

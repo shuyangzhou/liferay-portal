@@ -15,8 +15,10 @@ import com.liferay.notification.service.persistence.NotificationQueueEntryAttach
 import com.liferay.notification.service.persistence.impl.constants.NotificationPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
+import com.liferay.portal.kernel.dao.orm.BaseFinder;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
+import com.liferay.portal.kernel.dao.orm.FinderColumn;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -41,6 +43,7 @@ import java.lang.reflect.InvocationHandler;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -86,6 +89,8 @@ public class NotificationQueueEntryAttachmentPersistenceImpl
 	private FinderPath
 		_finderPathWithoutPaginationFindByNotificationQueueEntryId;
 	private FinderPath _finderPathCountByNotificationQueueEntryId;
+	private BaseFinder<NotificationQueueEntryAttachment>
+		_baseFinderNotificationQueueEntryId;
 
 	/**
 	 * Returns all the notification queue entry attachments where notificationQueueEntryId = &#63;.
@@ -169,105 +174,9 @@ public class NotificationQueueEntryAttachmentPersistenceImpl
 				orderByComparator,
 			boolean useFinderCache) {
 
-		FinderPath finderPath = null;
-		Object[] finderArgs = null;
-
-		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath =
-					_finderPathWithoutPaginationFindByNotificationQueueEntryId;
-				finderArgs = new Object[] {notificationQueueEntryId};
-			}
-		}
-		else if (useFinderCache) {
-			finderPath =
-				_finderPathWithPaginationFindByNotificationQueueEntryId;
-			finderArgs = new Object[] {
-				notificationQueueEntryId, start, end, orderByComparator
-			};
-		}
-
-		List<NotificationQueueEntryAttachment> list = null;
-
-		if (useFinderCache) {
-			list =
-				(List<NotificationQueueEntryAttachment>)finderCache.getResult(
-					finderPath, finderArgs, this);
-
-			if ((list != null) && !list.isEmpty()) {
-				for (NotificationQueueEntryAttachment
-						notificationQueueEntryAttachment : list) {
-
-					if (notificationQueueEntryId !=
-							notificationQueueEntryAttachment.
-								getNotificationQueueEntryId()) {
-
-						list = null;
-
-						break;
-					}
-				}
-			}
-		}
-
-		if (list == null) {
-			StringBundler sb = null;
-
-			if (orderByComparator != null) {
-				sb = new StringBundler(
-					3 + (orderByComparator.getOrderByFields().length * 2));
-			}
-			else {
-				sb = new StringBundler(3);
-			}
-
-			sb.append(_SQL_SELECT_NOTIFICATIONQUEUEENTRYATTACHMENT_WHERE);
-
-			sb.append(
-				_FINDER_COLUMN_NOTIFICATIONQUEUEENTRYID_NOTIFICATIONQUEUEENTRYID_2);
-
-			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-			}
-			else {
-				sb.append(
-					NotificationQueueEntryAttachmentModelImpl.ORDER_BY_JPQL);
-			}
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(notificationQueueEntryId);
-
-				list = (List<NotificationQueueEntryAttachment>)QueryUtil.list(
-					query, getDialect(), start, end);
-
-				cacheResult(list);
-
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return list;
+		return _baseFinderNotificationQueueEntryId.findList(
+			new Object[] {notificationQueueEntryId}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -589,46 +498,8 @@ public class NotificationQueueEntryAttachmentPersistenceImpl
 	 */
 	@Override
 	public int countByNotificationQueueEntryId(long notificationQueueEntryId) {
-		FinderPath finderPath = _finderPathCountByNotificationQueueEntryId;
-
-		Object[] finderArgs = new Object[] {notificationQueueEntryId};
-
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
-
-		if (count == null) {
-			StringBundler sb = new StringBundler(2);
-
-			sb.append(_SQL_COUNT_NOTIFICATIONQUEUEENTRYATTACHMENT_WHERE);
-
-			sb.append(
-				_FINDER_COLUMN_NOTIFICATIONQUEUEENTRYID_NOTIFICATIONQUEUEENTRYID_2);
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(notificationQueueEntryId);
-
-				count = (Long)query.uniqueResult();
-
-				finderCache.putResult(finderPath, finderArgs, count);
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
+		return _baseFinderNotificationQueueEntryId.count(
+			new Object[] {notificationQueueEntryId});
 	}
 
 	private static final String
@@ -1244,6 +1115,37 @@ public class NotificationQueueEntryAttachmentPersistenceImpl
 			"countByNotificationQueueEntryId",
 			new String[] {Long.class.getName()},
 			new String[] {"notificationQueueEntryId"}, false);
+
+		_baseFinderNotificationQueueEntryId = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(
+				_FINDER_COLUMN_NOTIFICATIONQUEUEENTRYID_NOTIFICATIONQUEUEENTRYID_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_NOTIFICATIONQUEUEENTRYATTACHMENT_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_NOTIFICATIONQUEUEENTRYATTACHMENT_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByNotificationQueueEntryId
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByNotificationQueueEntryId
+		).finderPathCount(
+			_finderPathCountByNotificationQueueEntryId
+		).defaultOrderByJpql(
+			NotificationQueueEntryAttachmentModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(
+						columnValues[0], model.getNotificationQueueEntryId())) {
+
+					return false;
+				}
+
+				return true;
+			}
+		).build();
 
 		NotificationQueueEntryAttachmentUtil.setPersistence(this);
 	}

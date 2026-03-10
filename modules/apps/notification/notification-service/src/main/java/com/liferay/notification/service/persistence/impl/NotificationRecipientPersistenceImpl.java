@@ -15,8 +15,10 @@ import com.liferay.notification.service.persistence.NotificationRecipientUtil;
 import com.liferay.notification.service.persistence.impl.constants.NotificationPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
+import com.liferay.portal.kernel.dao.orm.BaseFinder;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
+import com.liferay.portal.kernel.dao.orm.FinderColumn;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -35,7 +37,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
@@ -43,7 +44,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -93,6 +93,7 @@ public class NotificationRecipientPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByUuid;
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
 	private FinderPath _finderPathCountByUuid;
+	private BaseFinder<NotificationRecipient> _baseFinderUuid;
 
 	/**
 	 * Returns all the notification recipients where uuid = &#63;.
@@ -165,106 +166,8 @@ public class NotificationRecipientPersistenceImpl
 		OrderByComparator<NotificationRecipient> orderByComparator,
 		boolean useFinderCache) {
 
-		uuid = Objects.toString(uuid, "");
-
-		FinderPath finderPath = null;
-		Object[] finderArgs = null;
-
-		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByUuid;
-				finderArgs = new Object[] {uuid};
-			}
-		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByUuid;
-			finderArgs = new Object[] {uuid, start, end, orderByComparator};
-		}
-
-		List<NotificationRecipient> list = null;
-
-		if (useFinderCache) {
-			list = (List<NotificationRecipient>)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if ((list != null) && !list.isEmpty()) {
-				for (NotificationRecipient notificationRecipient : list) {
-					if (!uuid.equals(notificationRecipient.getUuid())) {
-						list = null;
-
-						break;
-					}
-				}
-			}
-		}
-
-		if (list == null) {
-			StringBundler sb = null;
-
-			if (orderByComparator != null) {
-				sb = new StringBundler(
-					3 + (orderByComparator.getOrderByFields().length * 2));
-			}
-			else {
-				sb = new StringBundler(3);
-			}
-
-			sb.append(_SQL_SELECT_NOTIFICATIONRECIPIENT_WHERE);
-
-			boolean bindUuid = false;
-
-			if (uuid.isEmpty()) {
-				sb.append(_FINDER_COLUMN_UUID_UUID_3);
-			}
-			else {
-				bindUuid = true;
-
-				sb.append(_FINDER_COLUMN_UUID_UUID_2);
-			}
-
-			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-			}
-			else {
-				sb.append(NotificationRecipientModelImpl.ORDER_BY_JPQL);
-			}
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				if (bindUuid) {
-					queryPos.add(uuid);
-				}
-
-				list = (List<NotificationRecipient>)QueryUtil.list(
-					query, getDialect(), start, end);
-
-				cacheResult(list);
-
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return list;
+		return _baseFinderUuid.findList(
+			new Object[] {uuid}, start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -571,58 +474,7 @@ public class NotificationRecipientPersistenceImpl
 	 */
 	@Override
 	public int countByUuid(String uuid) {
-		uuid = Objects.toString(uuid, "");
-
-		FinderPath finderPath = _finderPathCountByUuid;
-
-		Object[] finderArgs = new Object[] {uuid};
-
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
-
-		if (count == null) {
-			StringBundler sb = new StringBundler(2);
-
-			sb.append(_SQL_COUNT_NOTIFICATIONRECIPIENT_WHERE);
-
-			boolean bindUuid = false;
-
-			if (uuid.isEmpty()) {
-				sb.append(_FINDER_COLUMN_UUID_UUID_3);
-			}
-			else {
-				bindUuid = true;
-
-				sb.append(_FINDER_COLUMN_UUID_UUID_2);
-			}
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				if (bindUuid) {
-					queryPos.add(uuid);
-				}
-
-				count = (Long)query.uniqueResult();
-
-				finderCache.putResult(finderPath, finderArgs, count);
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
+		return _baseFinderUuid.count(new Object[] {uuid});
 	}
 
 	private static final String _FINDER_COLUMN_UUID_UUID_2 =
@@ -634,6 +486,7 @@ public class NotificationRecipientPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
 	private FinderPath _finderPathCountByUuid_C;
+	private BaseFinder<NotificationRecipient> _baseFinderUuid_C;
 
 	/**
 	 * Returns all the notification recipients where uuid = &#63; and companyId = &#63;.
@@ -714,114 +567,9 @@ public class NotificationRecipientPersistenceImpl
 		OrderByComparator<NotificationRecipient> orderByComparator,
 		boolean useFinderCache) {
 
-		uuid = Objects.toString(uuid, "");
-
-		FinderPath finderPath = null;
-		Object[] finderArgs = null;
-
-		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByUuid_C;
-				finderArgs = new Object[] {uuid, companyId};
-			}
-		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByUuid_C;
-			finderArgs = new Object[] {
-				uuid, companyId, start, end, orderByComparator
-			};
-		}
-
-		List<NotificationRecipient> list = null;
-
-		if (useFinderCache) {
-			list = (List<NotificationRecipient>)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if ((list != null) && !list.isEmpty()) {
-				for (NotificationRecipient notificationRecipient : list) {
-					if (!uuid.equals(notificationRecipient.getUuid()) ||
-						(companyId != notificationRecipient.getCompanyId())) {
-
-						list = null;
-
-						break;
-					}
-				}
-			}
-		}
-
-		if (list == null) {
-			StringBundler sb = null;
-
-			if (orderByComparator != null) {
-				sb = new StringBundler(
-					4 + (orderByComparator.getOrderByFields().length * 2));
-			}
-			else {
-				sb = new StringBundler(4);
-			}
-
-			sb.append(_SQL_SELECT_NOTIFICATIONRECIPIENT_WHERE);
-
-			boolean bindUuid = false;
-
-			if (uuid.isEmpty()) {
-				sb.append(_FINDER_COLUMN_UUID_C_UUID_3);
-			}
-			else {
-				bindUuid = true;
-
-				sb.append(_FINDER_COLUMN_UUID_C_UUID_2);
-			}
-
-			sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
-
-			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-			}
-			else {
-				sb.append(NotificationRecipientModelImpl.ORDER_BY_JPQL);
-			}
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				if (bindUuid) {
-					queryPos.add(uuid);
-				}
-
-				queryPos.add(companyId);
-
-				list = (List<NotificationRecipient>)QueryUtil.list(
-					query, getDialect(), start, end);
-
-				cacheResult(list);
-
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return list;
+		return _baseFinderUuid_C.findList(
+			new Object[] {uuid, companyId}, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
@@ -1150,62 +898,7 @@ public class NotificationRecipientPersistenceImpl
 	 */
 	@Override
 	public int countByUuid_C(String uuid, long companyId) {
-		uuid = Objects.toString(uuid, "");
-
-		FinderPath finderPath = _finderPathCountByUuid_C;
-
-		Object[] finderArgs = new Object[] {uuid, companyId};
-
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
-
-		if (count == null) {
-			StringBundler sb = new StringBundler(3);
-
-			sb.append(_SQL_COUNT_NOTIFICATIONRECIPIENT_WHERE);
-
-			boolean bindUuid = false;
-
-			if (uuid.isEmpty()) {
-				sb.append(_FINDER_COLUMN_UUID_C_UUID_3);
-			}
-			else {
-				bindUuid = true;
-
-				sb.append(_FINDER_COLUMN_UUID_C_UUID_2);
-			}
-
-			sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				if (bindUuid) {
-					queryPos.add(uuid);
-				}
-
-				queryPos.add(companyId);
-
-				count = (Long)query.uniqueResult();
-
-				finderCache.putResult(finderPath, finderArgs, count);
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
+		return _baseFinderUuid_C.count(new Object[] {uuid, companyId});
 	}
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_2 =
@@ -1218,6 +911,7 @@ public class NotificationRecipientPersistenceImpl
 		"notificationRecipient.companyId = ?";
 
 	private FinderPath _finderPathFetchByClassPK;
+	private BaseFinder<NotificationRecipient> _baseFinderClassPK;
 
 	/**
 	 * Returns the notification recipient where classPK = &#63; or throws a <code>NoSuchNotificationRecipientException</code> if it could not be found.
@@ -1274,93 +968,8 @@ public class NotificationRecipientPersistenceImpl
 	public NotificationRecipient fetchByClassPK(
 		long classPK, boolean useFinderCache) {
 
-		Object[] finderArgs = null;
-
-		if (useFinderCache) {
-			finderArgs = new Object[] {classPK};
-		}
-
-		Object result = null;
-
-		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByClassPK, finderArgs, this);
-		}
-
-		if (result instanceof NotificationRecipient) {
-			NotificationRecipient notificationRecipient =
-				(NotificationRecipient)result;
-
-			if (classPK != notificationRecipient.getClassPK()) {
-				result = null;
-			}
-		}
-
-		if (result == null) {
-			StringBundler sb = new StringBundler(3);
-
-			sb.append(_SQL_SELECT_NOTIFICATIONRECIPIENT_WHERE);
-
-			sb.append(_FINDER_COLUMN_CLASSPK_CLASSPK_2);
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(classPK);
-
-				List<NotificationRecipient> list = query.list();
-
-				if (list.isEmpty()) {
-					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByClassPK, finderArgs, list);
-					}
-				}
-				else {
-					if (list.size() > 1) {
-						Collections.sort(list, Collections.reverseOrder());
-
-						if (_log.isWarnEnabled()) {
-							if (!useFinderCache) {
-								finderArgs = new Object[] {classPK};
-							}
-
-							_log.warn(
-								"NotificationRecipientPersistenceImpl.fetchByClassPK(long, boolean) with parameters (" +
-									StringUtil.merge(finderArgs) +
-										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-						}
-					}
-
-					NotificationRecipient notificationRecipient = list.get(0);
-
-					result = notificationRecipient;
-
-					cacheResult(notificationRecipient);
-				}
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		if (result instanceof List<?>) {
-			return null;
-		}
-		else {
-			return (NotificationRecipient)result;
-		}
+		return _baseFinderClassPK.fetchOne(
+			new Object[] {classPK}, useFinderCache);
 	}
 
 	/**
@@ -2046,6 +1655,93 @@ public class NotificationRecipientPersistenceImpl
 			FINDER_CLASS_NAME_ENTITY, "fetchByClassPK",
 			new String[] {Long.class.getName()}, new String[] {"classPK"},
 			true);
+
+		_baseFinderUuid = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(
+				_FINDER_COLUMN_UUID_UUID_2, _FINDER_COLUMN_UUID_UUID_3)
+		).sqlSelectWhere(
+			_SQL_SELECT_NOTIFICATIONRECIPIENT_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_NOTIFICATIONRECIPIENT_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByUuid
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByUuid
+		).finderPathCount(
+			_finderPathCountByUuid
+		).defaultOrderByJpql(
+			NotificationRecipientModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getUuid())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderUuid_C = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(
+				_FINDER_COLUMN_UUID_C_UUID_2, _FINDER_COLUMN_UUID_C_UUID_3),
+			new FinderColumn(_FINDER_COLUMN_UUID_C_COMPANYID_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_NOTIFICATIONRECIPIENT_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_NOTIFICATIONRECIPIENT_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByUuid_C
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByUuid_C
+		).finderPathCount(
+			_finderPathCountByUuid_C
+		).defaultOrderByJpql(
+			NotificationRecipientModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getUuid())) {
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[1], model.getCompanyId())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderClassPK = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_CLASSPK_CLASSPK_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_NOTIFICATIONRECIPIENT_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_NOTIFICATIONRECIPIENT_WHERE
+		).finderPathFetch(
+			_finderPathFetchByClassPK
+		).defaultOrderByJpql(
+			NotificationRecipientModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getClassPK())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
 
 		NotificationRecipientUtil.setPersistence(this);
 	}

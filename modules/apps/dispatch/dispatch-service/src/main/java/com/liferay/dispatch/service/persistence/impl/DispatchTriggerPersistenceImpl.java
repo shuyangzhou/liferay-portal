@@ -16,8 +16,10 @@ import com.liferay.dispatch.service.persistence.DispatchTriggerUtil;
 import com.liferay.dispatch.service.persistence.impl.constants.DispatchPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
+import com.liferay.portal.kernel.dao.orm.BaseFinder;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
+import com.liferay.portal.kernel.dao.orm.FinderColumn;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -102,6 +104,7 @@ public class DispatchTriggerPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByUuid;
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
 	private FinderPath _finderPathCountByUuid;
+	private BaseFinder<DispatchTrigger> _baseFinderUuid;
 
 	/**
 	 * Returns all the dispatch triggers where uuid = &#63;.
@@ -172,106 +175,8 @@ public class DispatchTriggerPersistenceImpl
 		OrderByComparator<DispatchTrigger> orderByComparator,
 		boolean useFinderCache) {
 
-		uuid = Objects.toString(uuid, "");
-
-		FinderPath finderPath = null;
-		Object[] finderArgs = null;
-
-		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByUuid;
-				finderArgs = new Object[] {uuid};
-			}
-		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByUuid;
-			finderArgs = new Object[] {uuid, start, end, orderByComparator};
-		}
-
-		List<DispatchTrigger> list = null;
-
-		if (useFinderCache) {
-			list = (List<DispatchTrigger>)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if ((list != null) && !list.isEmpty()) {
-				for (DispatchTrigger dispatchTrigger : list) {
-					if (!uuid.equals(dispatchTrigger.getUuid())) {
-						list = null;
-
-						break;
-					}
-				}
-			}
-		}
-
-		if (list == null) {
-			StringBundler sb = null;
-
-			if (orderByComparator != null) {
-				sb = new StringBundler(
-					3 + (orderByComparator.getOrderByFields().length * 2));
-			}
-			else {
-				sb = new StringBundler(3);
-			}
-
-			sb.append(_SQL_SELECT_DISPATCHTRIGGER_WHERE);
-
-			boolean bindUuid = false;
-
-			if (uuid.isEmpty()) {
-				sb.append(_FINDER_COLUMN_UUID_UUID_3);
-			}
-			else {
-				bindUuid = true;
-
-				sb.append(_FINDER_COLUMN_UUID_UUID_2);
-			}
-
-			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-			}
-			else {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_JPQL);
-			}
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				if (bindUuid) {
-					queryPos.add(uuid);
-				}
-
-				list = (List<DispatchTrigger>)QueryUtil.list(
-					query, getDialect(), start, end);
-
-				cacheResult(list);
-
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return list;
+		return _baseFinderUuid.findList(
+			new Object[] {uuid}, start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -941,58 +846,7 @@ public class DispatchTriggerPersistenceImpl
 	 */
 	@Override
 	public int countByUuid(String uuid) {
-		uuid = Objects.toString(uuid, "");
-
-		FinderPath finderPath = _finderPathCountByUuid;
-
-		Object[] finderArgs = new Object[] {uuid};
-
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
-
-		if (count == null) {
-			StringBundler sb = new StringBundler(2);
-
-			sb.append(_SQL_COUNT_DISPATCHTRIGGER_WHERE);
-
-			boolean bindUuid = false;
-
-			if (uuid.isEmpty()) {
-				sb.append(_FINDER_COLUMN_UUID_UUID_3);
-			}
-			else {
-				bindUuid = true;
-
-				sb.append(_FINDER_COLUMN_UUID_UUID_2);
-			}
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				if (bindUuid) {
-					queryPos.add(uuid);
-				}
-
-				count = (Long)query.uniqueResult();
-
-				finderCache.putResult(finderPath, finderArgs, count);
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
+		return _baseFinderUuid.count(new Object[] {uuid});
 	}
 
 	/**
@@ -1079,6 +933,7 @@ public class DispatchTriggerPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
 	private FinderPath _finderPathCountByUuid_C;
+	private BaseFinder<DispatchTrigger> _baseFinderUuid_C;
 
 	/**
 	 * Returns all the dispatch triggers where uuid = &#63; and companyId = &#63;.
@@ -1157,114 +1012,9 @@ public class DispatchTriggerPersistenceImpl
 		OrderByComparator<DispatchTrigger> orderByComparator,
 		boolean useFinderCache) {
 
-		uuid = Objects.toString(uuid, "");
-
-		FinderPath finderPath = null;
-		Object[] finderArgs = null;
-
-		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByUuid_C;
-				finderArgs = new Object[] {uuid, companyId};
-			}
-		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByUuid_C;
-			finderArgs = new Object[] {
-				uuid, companyId, start, end, orderByComparator
-			};
-		}
-
-		List<DispatchTrigger> list = null;
-
-		if (useFinderCache) {
-			list = (List<DispatchTrigger>)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if ((list != null) && !list.isEmpty()) {
-				for (DispatchTrigger dispatchTrigger : list) {
-					if (!uuid.equals(dispatchTrigger.getUuid()) ||
-						(companyId != dispatchTrigger.getCompanyId())) {
-
-						list = null;
-
-						break;
-					}
-				}
-			}
-		}
-
-		if (list == null) {
-			StringBundler sb = null;
-
-			if (orderByComparator != null) {
-				sb = new StringBundler(
-					4 + (orderByComparator.getOrderByFields().length * 2));
-			}
-			else {
-				sb = new StringBundler(4);
-			}
-
-			sb.append(_SQL_SELECT_DISPATCHTRIGGER_WHERE);
-
-			boolean bindUuid = false;
-
-			if (uuid.isEmpty()) {
-				sb.append(_FINDER_COLUMN_UUID_C_UUID_3);
-			}
-			else {
-				bindUuid = true;
-
-				sb.append(_FINDER_COLUMN_UUID_C_UUID_2);
-			}
-
-			sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
-
-			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-			}
-			else {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_JPQL);
-			}
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				if (bindUuid) {
-					queryPos.add(uuid);
-				}
-
-				queryPos.add(companyId);
-
-				list = (List<DispatchTrigger>)QueryUtil.list(
-					query, getDialect(), start, end);
-
-				cacheResult(list);
-
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return list;
+		return _baseFinderUuid_C.findList(
+			new Object[] {uuid, companyId}, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
@@ -1976,62 +1726,7 @@ public class DispatchTriggerPersistenceImpl
 	 */
 	@Override
 	public int countByUuid_C(String uuid, long companyId) {
-		uuid = Objects.toString(uuid, "");
-
-		FinderPath finderPath = _finderPathCountByUuid_C;
-
-		Object[] finderArgs = new Object[] {uuid, companyId};
-
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
-
-		if (count == null) {
-			StringBundler sb = new StringBundler(3);
-
-			sb.append(_SQL_COUNT_DISPATCHTRIGGER_WHERE);
-
-			boolean bindUuid = false;
-
-			if (uuid.isEmpty()) {
-				sb.append(_FINDER_COLUMN_UUID_C_UUID_3);
-			}
-			else {
-				bindUuid = true;
-
-				sb.append(_FINDER_COLUMN_UUID_C_UUID_2);
-			}
-
-			sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				if (bindUuid) {
-					queryPos.add(uuid);
-				}
-
-				queryPos.add(companyId);
-
-				count = (Long)query.uniqueResult();
-
-				finderCache.putResult(finderPath, finderArgs, count);
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
+		return _baseFinderUuid_C.count(new Object[] {uuid, companyId});
 	}
 
 	/**
@@ -2127,6 +1822,7 @@ public class DispatchTriggerPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
 	private FinderPath _finderPathCountByCompanyId;
+	private BaseFinder<DispatchTrigger> _baseFinderCompanyId;
 
 	/**
 	 * Returns all the dispatch triggers where companyId = &#63;.
@@ -2200,95 +1896,9 @@ public class DispatchTriggerPersistenceImpl
 		OrderByComparator<DispatchTrigger> orderByComparator,
 		boolean useFinderCache) {
 
-		FinderPath finderPath = null;
-		Object[] finderArgs = null;
-
-		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByCompanyId;
-				finderArgs = new Object[] {companyId};
-			}
-		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByCompanyId;
-			finderArgs = new Object[] {
-				companyId, start, end, orderByComparator
-			};
-		}
-
-		List<DispatchTrigger> list = null;
-
-		if (useFinderCache) {
-			list = (List<DispatchTrigger>)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if ((list != null) && !list.isEmpty()) {
-				for (DispatchTrigger dispatchTrigger : list) {
-					if (companyId != dispatchTrigger.getCompanyId()) {
-						list = null;
-
-						break;
-					}
-				}
-			}
-		}
-
-		if (list == null) {
-			StringBundler sb = null;
-
-			if (orderByComparator != null) {
-				sb = new StringBundler(
-					3 + (orderByComparator.getOrderByFields().length * 2));
-			}
-			else {
-				sb = new StringBundler(3);
-			}
-
-			sb.append(_SQL_SELECT_DISPATCHTRIGGER_WHERE);
-
-			sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
-
-			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-			}
-			else {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_JPQL);
-			}
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(companyId);
-
-				list = (List<DispatchTrigger>)QueryUtil.list(
-					query, getDialect(), start, end);
-
-				cacheResult(list);
-
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return list;
+		return _baseFinderCompanyId.findList(
+			new Object[] {companyId}, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
@@ -2923,45 +2533,7 @@ public class DispatchTriggerPersistenceImpl
 	 */
 	@Override
 	public int countByCompanyId(long companyId) {
-		FinderPath finderPath = _finderPathCountByCompanyId;
-
-		Object[] finderArgs = new Object[] {companyId};
-
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
-
-		if (count == null) {
-			StringBundler sb = new StringBundler(2);
-
-			sb.append(_SQL_COUNT_DISPATCHTRIGGER_WHERE);
-
-			sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(companyId);
-
-				count = (Long)query.uniqueResult();
-
-				finderCache.putResult(finderPath, finderArgs, count);
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
+		return _baseFinderCompanyId.count(new Object[] {companyId});
 	}
 
 	/**
@@ -3026,6 +2598,7 @@ public class DispatchTriggerPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByActive;
 	private FinderPath _finderPathWithoutPaginationFindByActive;
 	private FinderPath _finderPathCountByActive;
+	private BaseFinder<DispatchTrigger> _baseFinderActive;
 
 	/**
 	 * Returns all the dispatch triggers where active = &#63;.
@@ -3098,93 +2671,9 @@ public class DispatchTriggerPersistenceImpl
 		OrderByComparator<DispatchTrigger> orderByComparator,
 		boolean useFinderCache) {
 
-		FinderPath finderPath = null;
-		Object[] finderArgs = null;
-
-		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByActive;
-				finderArgs = new Object[] {active};
-			}
-		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByActive;
-			finderArgs = new Object[] {active, start, end, orderByComparator};
-		}
-
-		List<DispatchTrigger> list = null;
-
-		if (useFinderCache) {
-			list = (List<DispatchTrigger>)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if ((list != null) && !list.isEmpty()) {
-				for (DispatchTrigger dispatchTrigger : list) {
-					if (active != dispatchTrigger.isActive()) {
-						list = null;
-
-						break;
-					}
-				}
-			}
-		}
-
-		if (list == null) {
-			StringBundler sb = null;
-
-			if (orderByComparator != null) {
-				sb = new StringBundler(
-					3 + (orderByComparator.getOrderByFields().length * 2));
-			}
-			else {
-				sb = new StringBundler(3);
-			}
-
-			sb.append(_SQL_SELECT_DISPATCHTRIGGER_WHERE);
-
-			sb.append(_FINDER_COLUMN_ACTIVE_ACTIVE_2);
-
-			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-			}
-			else {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_JPQL);
-			}
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(active);
-
-				list = (List<DispatchTrigger>)QueryUtil.list(
-					query, getDialect(), start, end);
-
-				cacheResult(list);
-
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return list;
+		return _baseFinderActive.findList(
+			new Object[] {active}, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
@@ -3819,45 +3308,7 @@ public class DispatchTriggerPersistenceImpl
 	 */
 	@Override
 	public int countByActive(boolean active) {
-		FinderPath finderPath = _finderPathCountByActive;
-
-		Object[] finderArgs = new Object[] {active};
-
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
-
-		if (count == null) {
-			StringBundler sb = new StringBundler(2);
-
-			sb.append(_SQL_COUNT_DISPATCHTRIGGER_WHERE);
-
-			sb.append(_FINDER_COLUMN_ACTIVE_ACTIVE_2);
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(active);
-
-				count = (Long)query.uniqueResult();
-
-				finderCache.putResult(finderPath, finderArgs, count);
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
+		return _baseFinderActive.count(new Object[] {active});
 	}
 
 	/**
@@ -3925,6 +3376,7 @@ public class DispatchTriggerPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByC_U;
 	private FinderPath _finderPathWithoutPaginationFindByC_U;
 	private FinderPath _finderPathCountByC_U;
+	private BaseFinder<DispatchTrigger> _baseFinderC_U;
 
 	/**
 	 * Returns all the dispatch triggers where companyId = &#63; and userId = &#63;.
@@ -4003,101 +3455,9 @@ public class DispatchTriggerPersistenceImpl
 		OrderByComparator<DispatchTrigger> orderByComparator,
 		boolean useFinderCache) {
 
-		FinderPath finderPath = null;
-		Object[] finderArgs = null;
-
-		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByC_U;
-				finderArgs = new Object[] {companyId, userId};
-			}
-		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByC_U;
-			finderArgs = new Object[] {
-				companyId, userId, start, end, orderByComparator
-			};
-		}
-
-		List<DispatchTrigger> list = null;
-
-		if (useFinderCache) {
-			list = (List<DispatchTrigger>)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if ((list != null) && !list.isEmpty()) {
-				for (DispatchTrigger dispatchTrigger : list) {
-					if ((companyId != dispatchTrigger.getCompanyId()) ||
-						(userId != dispatchTrigger.getUserId())) {
-
-						list = null;
-
-						break;
-					}
-				}
-			}
-		}
-
-		if (list == null) {
-			StringBundler sb = null;
-
-			if (orderByComparator != null) {
-				sb = new StringBundler(
-					4 + (orderByComparator.getOrderByFields().length * 2));
-			}
-			else {
-				sb = new StringBundler(4);
-			}
-
-			sb.append(_SQL_SELECT_DISPATCHTRIGGER_WHERE);
-
-			sb.append(_FINDER_COLUMN_C_U_COMPANYID_2);
-
-			sb.append(_FINDER_COLUMN_C_U_USERID_2);
-
-			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-			}
-			else {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_JPQL);
-			}
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(companyId);
-
-				queryPos.add(userId);
-
-				list = (List<DispatchTrigger>)QueryUtil.list(
-					query, getDialect(), start, end);
-
-				cacheResult(list);
-
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return list;
+		return _baseFinderC_U.findList(
+			new Object[] {companyId, userId}, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
@@ -4768,49 +4128,7 @@ public class DispatchTriggerPersistenceImpl
 	 */
 	@Override
 	public int countByC_U(long companyId, long userId) {
-		FinderPath finderPath = _finderPathCountByC_U;
-
-		Object[] finderArgs = new Object[] {companyId, userId};
-
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
-
-		if (count == null) {
-			StringBundler sb = new StringBundler(3);
-
-			sb.append(_SQL_COUNT_DISPATCHTRIGGER_WHERE);
-
-			sb.append(_FINDER_COLUMN_C_U_COMPANYID_2);
-
-			sb.append(_FINDER_COLUMN_C_U_USERID_2);
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(companyId);
-
-				queryPos.add(userId);
-
-				count = (Long)query.uniqueResult();
-
-				finderCache.putResult(finderPath, finderArgs, count);
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
+		return _baseFinderC_U.count(new Object[] {companyId, userId});
 	}
 
 	/**
@@ -4884,6 +4202,7 @@ public class DispatchTriggerPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByC_DTET;
 	private FinderPath _finderPathWithoutPaginationFindByC_DTET;
 	private FinderPath _finderPathCountByC_DTET;
+	private BaseFinder<DispatchTrigger> _baseFinderC_DTET;
 
 	/**
 	 * Returns all the dispatch triggers where companyId = &#63; and dispatchTaskExecutorType = &#63;.
@@ -4967,117 +4286,9 @@ public class DispatchTriggerPersistenceImpl
 		OrderByComparator<DispatchTrigger> orderByComparator,
 		boolean useFinderCache) {
 
-		dispatchTaskExecutorType = Objects.toString(
-			dispatchTaskExecutorType, "");
-
-		FinderPath finderPath = null;
-		Object[] finderArgs = null;
-
-		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByC_DTET;
-				finderArgs = new Object[] {companyId, dispatchTaskExecutorType};
-			}
-		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByC_DTET;
-			finderArgs = new Object[] {
-				companyId, dispatchTaskExecutorType, start, end,
-				orderByComparator
-			};
-		}
-
-		List<DispatchTrigger> list = null;
-
-		if (useFinderCache) {
-			list = (List<DispatchTrigger>)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if ((list != null) && !list.isEmpty()) {
-				for (DispatchTrigger dispatchTrigger : list) {
-					if ((companyId != dispatchTrigger.getCompanyId()) ||
-						!dispatchTaskExecutorType.equals(
-							dispatchTrigger.getDispatchTaskExecutorType())) {
-
-						list = null;
-
-						break;
-					}
-				}
-			}
-		}
-
-		if (list == null) {
-			StringBundler sb = null;
-
-			if (orderByComparator != null) {
-				sb = new StringBundler(
-					4 + (orderByComparator.getOrderByFields().length * 2));
-			}
-			else {
-				sb = new StringBundler(4);
-			}
-
-			sb.append(_SQL_SELECT_DISPATCHTRIGGER_WHERE);
-
-			sb.append(_FINDER_COLUMN_C_DTET_COMPANYID_2);
-
-			boolean bindDispatchTaskExecutorType = false;
-
-			if (dispatchTaskExecutorType.isEmpty()) {
-				sb.append(_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_3);
-			}
-			else {
-				bindDispatchTaskExecutorType = true;
-
-				sb.append(_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_2);
-			}
-
-			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-			}
-			else {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_JPQL);
-			}
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(companyId);
-
-				if (bindDispatchTaskExecutorType) {
-					queryPos.add(dispatchTaskExecutorType);
-				}
-
-				list = (List<DispatchTrigger>)QueryUtil.list(
-					query, getDialect(), start, end);
-
-				cacheResult(list);
-
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return list;
+		return _baseFinderC_DTET.findList(
+			new Object[] {companyId, dispatchTaskExecutorType}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -5804,65 +5015,8 @@ public class DispatchTriggerPersistenceImpl
 	 */
 	@Override
 	public int countByC_DTET(long companyId, String dispatchTaskExecutorType) {
-		dispatchTaskExecutorType = Objects.toString(
-			dispatchTaskExecutorType, "");
-
-		FinderPath finderPath = _finderPathCountByC_DTET;
-
-		Object[] finderArgs = new Object[] {
-			companyId, dispatchTaskExecutorType
-		};
-
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
-
-		if (count == null) {
-			StringBundler sb = new StringBundler(3);
-
-			sb.append(_SQL_COUNT_DISPATCHTRIGGER_WHERE);
-
-			sb.append(_FINDER_COLUMN_C_DTET_COMPANYID_2);
-
-			boolean bindDispatchTaskExecutorType = false;
-
-			if (dispatchTaskExecutorType.isEmpty()) {
-				sb.append(_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_3);
-			}
-			else {
-				bindDispatchTaskExecutorType = true;
-
-				sb.append(_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_2);
-			}
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(companyId);
-
-				if (bindDispatchTaskExecutorType) {
-					queryPos.add(dispatchTaskExecutorType);
-				}
-
-				count = (Long)query.uniqueResult();
-
-				finderCache.putResult(finderPath, finderArgs, count);
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
+		return _baseFinderC_DTET.count(
+			new Object[] {companyId, dispatchTaskExecutorType});
 	}
 
 	/**
@@ -5955,6 +5109,7 @@ public class DispatchTriggerPersistenceImpl
 			"(dispatchTrigger.dispatchTaskExecutorType IS NULL OR dispatchTrigger.dispatchTaskExecutorType = '')";
 
 	private FinderPath _finderPathFetchByC_N;
+	private BaseFinder<DispatchTrigger> _baseFinderC_N;
 
 	/**
 	 * Returns the dispatch trigger where companyId = &#63; and name = &#63; or throws a <code>NoSuchTriggerException</code> if it could not be found.
@@ -6017,96 +5172,8 @@ public class DispatchTriggerPersistenceImpl
 	public DispatchTrigger fetchByC_N(
 		long companyId, String name, boolean useFinderCache) {
 
-		name = Objects.toString(name, "");
-
-		Object[] finderArgs = null;
-
-		if (useFinderCache) {
-			finderArgs = new Object[] {companyId, name};
-		}
-
-		Object result = null;
-
-		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByC_N, finderArgs, this);
-		}
-
-		if (result instanceof DispatchTrigger) {
-			DispatchTrigger dispatchTrigger = (DispatchTrigger)result;
-
-			if ((companyId != dispatchTrigger.getCompanyId()) ||
-				!Objects.equals(name, dispatchTrigger.getName())) {
-
-				result = null;
-			}
-		}
-
-		if (result == null) {
-			StringBundler sb = new StringBundler(4);
-
-			sb.append(_SQL_SELECT_DISPATCHTRIGGER_WHERE);
-
-			sb.append(_FINDER_COLUMN_C_N_COMPANYID_2);
-
-			boolean bindName = false;
-
-			if (name.isEmpty()) {
-				sb.append(_FINDER_COLUMN_C_N_NAME_3);
-			}
-			else {
-				bindName = true;
-
-				sb.append(_FINDER_COLUMN_C_N_NAME_2);
-			}
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(companyId);
-
-				if (bindName) {
-					queryPos.add(name);
-				}
-
-				List<DispatchTrigger> list = query.list();
-
-				if (list.isEmpty()) {
-					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByC_N, finderArgs, list);
-					}
-				}
-				else {
-					DispatchTrigger dispatchTrigger = list.get(0);
-
-					result = dispatchTrigger;
-
-					cacheResult(dispatchTrigger);
-				}
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		if (result instanceof List<?>) {
-			return null;
-		}
-		else {
-			return (DispatchTrigger)result;
-		}
+		return _baseFinderC_N.fetchOne(
+			new Object[] {companyId, name}, useFinderCache);
 	}
 
 	/**
@@ -7662,6 +6729,7 @@ public class DispatchTriggerPersistenceImpl
 			"dispatchTrigger.dispatchTaskClusterMode IN (";
 
 	private FinderPath _finderPathFetchByERC_C;
+	private BaseFinder<DispatchTrigger> _baseFinderERC_C;
 
 	/**
 	 * Returns the dispatch trigger where externalReferenceCode = &#63; and companyId = &#63; or throws a <code>NoSuchTriggerException</code> if it could not be found.
@@ -7728,98 +6796,8 @@ public class DispatchTriggerPersistenceImpl
 	public DispatchTrigger fetchByERC_C(
 		String externalReferenceCode, long companyId, boolean useFinderCache) {
 
-		externalReferenceCode = Objects.toString(externalReferenceCode, "");
-
-		Object[] finderArgs = null;
-
-		if (useFinderCache) {
-			finderArgs = new Object[] {externalReferenceCode, companyId};
-		}
-
-		Object result = null;
-
-		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByERC_C, finderArgs, this);
-		}
-
-		if (result instanceof DispatchTrigger) {
-			DispatchTrigger dispatchTrigger = (DispatchTrigger)result;
-
-			if (!Objects.equals(
-					externalReferenceCode,
-					dispatchTrigger.getExternalReferenceCode()) ||
-				(companyId != dispatchTrigger.getCompanyId())) {
-
-				result = null;
-			}
-		}
-
-		if (result == null) {
-			StringBundler sb = new StringBundler(4);
-
-			sb.append(_SQL_SELECT_DISPATCHTRIGGER_WHERE);
-
-			boolean bindExternalReferenceCode = false;
-
-			if (externalReferenceCode.isEmpty()) {
-				sb.append(_FINDER_COLUMN_ERC_C_EXTERNALREFERENCECODE_3);
-			}
-			else {
-				bindExternalReferenceCode = true;
-
-				sb.append(_FINDER_COLUMN_ERC_C_EXTERNALREFERENCECODE_2);
-			}
-
-			sb.append(_FINDER_COLUMN_ERC_C_COMPANYID_2);
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				if (bindExternalReferenceCode) {
-					queryPos.add(externalReferenceCode);
-				}
-
-				queryPos.add(companyId);
-
-				List<DispatchTrigger> list = query.list();
-
-				if (list.isEmpty()) {
-					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByERC_C, finderArgs, list);
-					}
-				}
-				else {
-					DispatchTrigger dispatchTrigger = list.get(0);
-
-					result = dispatchTrigger;
-
-					cacheResult(dispatchTrigger);
-				}
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		if (result instanceof List<?>) {
-			return null;
-		}
-		else {
-			return (DispatchTrigger)result;
-		}
+		return _baseFinderERC_C.fetchOne(
+			new Object[] {externalReferenceCode, companyId}, useFinderCache);
 	}
 
 	/**
@@ -8684,6 +7662,258 @@ public class DispatchTriggerPersistenceImpl
 			FINDER_CLASS_NAME_ENTITY, "fetchByERC_C",
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"externalReferenceCode", "companyId"}, true);
+
+		_baseFinderUuid = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(
+				_FINDER_COLUMN_UUID_UUID_2, _FINDER_COLUMN_UUID_UUID_3)
+		).sqlSelectWhere(
+			_SQL_SELECT_DISPATCHTRIGGER_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_DISPATCHTRIGGER_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByUuid
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByUuid
+		).finderPathCount(
+			_finderPathCountByUuid
+		).defaultOrderByJpql(
+			DispatchTriggerModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getUuid())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderUuid_C = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(
+				_FINDER_COLUMN_UUID_C_UUID_2, _FINDER_COLUMN_UUID_C_UUID_3),
+			new FinderColumn(_FINDER_COLUMN_UUID_C_COMPANYID_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_DISPATCHTRIGGER_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_DISPATCHTRIGGER_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByUuid_C
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByUuid_C
+		).finderPathCount(
+			_finderPathCountByUuid_C
+		).defaultOrderByJpql(
+			DispatchTriggerModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getUuid())) {
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[1], model.getCompanyId())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderCompanyId = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_COMPANYID_COMPANYID_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_DISPATCHTRIGGER_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_DISPATCHTRIGGER_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByCompanyId
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByCompanyId
+		).finderPathCount(
+			_finderPathCountByCompanyId
+		).defaultOrderByJpql(
+			DispatchTriggerModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getCompanyId())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderActive = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_ACTIVE_ACTIVE_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_DISPATCHTRIGGER_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_DISPATCHTRIGGER_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByActive
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByActive
+		).finderPathCount(
+			_finderPathCountByActive
+		).defaultOrderByJpql(
+			DispatchTriggerModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.isActive())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderC_U = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_C_U_COMPANYID_2),
+			new FinderColumn(_FINDER_COLUMN_C_U_USERID_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_DISPATCHTRIGGER_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_DISPATCHTRIGGER_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByC_U
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByC_U
+		).finderPathCount(
+			_finderPathCountByC_U
+		).defaultOrderByJpql(
+			DispatchTriggerModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getCompanyId())) {
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[1], model.getUserId())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderC_DTET = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_C_DTET_COMPANYID_2),
+			new FinderColumn(
+				_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_2,
+				_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_3)
+		).sqlSelectWhere(
+			_SQL_SELECT_DISPATCHTRIGGER_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_DISPATCHTRIGGER_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByC_DTET
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByC_DTET
+		).finderPathCount(
+			_finderPathCountByC_DTET
+		).defaultOrderByJpql(
+			DispatchTriggerModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getCompanyId())) {
+					return false;
+				}
+
+				if (!Objects.equals(
+						columnValues[1], model.getDispatchTaskExecutorType())) {
+
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderC_N = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_C_N_COMPANYID_2),
+			new FinderColumn(
+				_FINDER_COLUMN_C_N_NAME_2, _FINDER_COLUMN_C_N_NAME_3)
+		).sqlSelectWhere(
+			_SQL_SELECT_DISPATCHTRIGGER_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_DISPATCHTRIGGER_WHERE
+		).finderPathFetch(
+			_finderPathFetchByC_N
+		).defaultOrderByJpql(
+			DispatchTriggerModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(columnValues[0], model.getCompanyId())) {
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[1], model.getName())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderERC_C = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(
+				_FINDER_COLUMN_ERC_C_EXTERNALREFERENCECODE_2,
+				_FINDER_COLUMN_ERC_C_EXTERNALREFERENCECODE_3),
+			new FinderColumn(_FINDER_COLUMN_ERC_C_COMPANYID_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_DISPATCHTRIGGER_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_DISPATCHTRIGGER_WHERE
+		).finderPathFetch(
+			_finderPathFetchByERC_C
+		).defaultOrderByJpql(
+			DispatchTriggerModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(
+						columnValues[0], model.getExternalReferenceCode())) {
+
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[1], model.getCompanyId())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
 
 		DispatchTriggerUtil.setPersistence(this);
 	}

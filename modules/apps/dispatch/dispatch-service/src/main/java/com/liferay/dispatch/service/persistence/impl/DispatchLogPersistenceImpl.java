@@ -15,8 +15,10 @@ import com.liferay.dispatch.service.persistence.DispatchLogUtil;
 import com.liferay.dispatch.service.persistence.impl.constants.DispatchPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
+import com.liferay.portal.kernel.dao.orm.BaseFinder;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
+import com.liferay.portal.kernel.dao.orm.FinderColumn;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -44,6 +46,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -87,6 +90,7 @@ public class DispatchLogPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByDispatchTriggerId;
 	private FinderPath _finderPathWithoutPaginationFindByDispatchTriggerId;
 	private FinderPath _finderPathCountByDispatchTriggerId;
+	private BaseFinder<DispatchLog> _baseFinderDispatchTriggerId;
 
 	/**
 	 * Returns all the dispatch logs where dispatchTriggerId = &#63;.
@@ -161,98 +165,9 @@ public class DispatchLogPersistenceImpl
 		OrderByComparator<DispatchLog> orderByComparator,
 		boolean useFinderCache) {
 
-		FinderPath finderPath = null;
-		Object[] finderArgs = null;
-
-		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath =
-					_finderPathWithoutPaginationFindByDispatchTriggerId;
-				finderArgs = new Object[] {dispatchTriggerId};
-			}
-		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByDispatchTriggerId;
-			finderArgs = new Object[] {
-				dispatchTriggerId, start, end, orderByComparator
-			};
-		}
-
-		List<DispatchLog> list = null;
-
-		if (useFinderCache) {
-			list = (List<DispatchLog>)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if ((list != null) && !list.isEmpty()) {
-				for (DispatchLog dispatchLog : list) {
-					if (dispatchTriggerId !=
-							dispatchLog.getDispatchTriggerId()) {
-
-						list = null;
-
-						break;
-					}
-				}
-			}
-		}
-
-		if (list == null) {
-			StringBundler sb = null;
-
-			if (orderByComparator != null) {
-				sb = new StringBundler(
-					3 + (orderByComparator.getOrderByFields().length * 2));
-			}
-			else {
-				sb = new StringBundler(3);
-			}
-
-			sb.append(_SQL_SELECT_DISPATCHLOG_WHERE);
-
-			sb.append(_FINDER_COLUMN_DISPATCHTRIGGERID_DISPATCHTRIGGERID_2);
-
-			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-			}
-			else {
-				sb.append(DispatchLogModelImpl.ORDER_BY_JPQL);
-			}
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(dispatchTriggerId);
-
-				list = (List<DispatchLog>)QueryUtil.list(
-					query, getDialect(), start, end);
-
-				cacheResult(list);
-
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return list;
+		return _baseFinderDispatchTriggerId.findList(
+			new Object[] {dispatchTriggerId}, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
@@ -547,45 +462,8 @@ public class DispatchLogPersistenceImpl
 	 */
 	@Override
 	public int countByDispatchTriggerId(long dispatchTriggerId) {
-		FinderPath finderPath = _finderPathCountByDispatchTriggerId;
-
-		Object[] finderArgs = new Object[] {dispatchTriggerId};
-
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
-
-		if (count == null) {
-			StringBundler sb = new StringBundler(2);
-
-			sb.append(_SQL_COUNT_DISPATCHLOG_WHERE);
-
-			sb.append(_FINDER_COLUMN_DISPATCHTRIGGERID_DISPATCHTRIGGERID_2);
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(dispatchTriggerId);
-
-				count = (Long)query.uniqueResult();
-
-				finderCache.putResult(finderPath, finderArgs, count);
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
+		return _baseFinderDispatchTriggerId.count(
+			new Object[] {dispatchTriggerId});
 	}
 
 	private static final String
@@ -595,6 +473,7 @@ public class DispatchLogPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindByDTI_S;
 	private FinderPath _finderPathWithoutPaginationFindByDTI_S;
 	private FinderPath _finderPathCountByDTI_S;
+	private BaseFinder<DispatchLog> _baseFinderDTI_S;
 
 	/**
 	 * Returns all the dispatch logs where dispatchTriggerId = &#63; and status = &#63;.
@@ -674,102 +553,9 @@ public class DispatchLogPersistenceImpl
 		OrderByComparator<DispatchLog> orderByComparator,
 		boolean useFinderCache) {
 
-		FinderPath finderPath = null;
-		Object[] finderArgs = null;
-
-		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByDTI_S;
-				finderArgs = new Object[] {dispatchTriggerId, status};
-			}
-		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByDTI_S;
-			finderArgs = new Object[] {
-				dispatchTriggerId, status, start, end, orderByComparator
-			};
-		}
-
-		List<DispatchLog> list = null;
-
-		if (useFinderCache) {
-			list = (List<DispatchLog>)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if ((list != null) && !list.isEmpty()) {
-				for (DispatchLog dispatchLog : list) {
-					if ((dispatchTriggerId !=
-							dispatchLog.getDispatchTriggerId()) ||
-						(status != dispatchLog.getStatus())) {
-
-						list = null;
-
-						break;
-					}
-				}
-			}
-		}
-
-		if (list == null) {
-			StringBundler sb = null;
-
-			if (orderByComparator != null) {
-				sb = new StringBundler(
-					4 + (orderByComparator.getOrderByFields().length * 2));
-			}
-			else {
-				sb = new StringBundler(4);
-			}
-
-			sb.append(_SQL_SELECT_DISPATCHLOG_WHERE);
-
-			sb.append(_FINDER_COLUMN_DTI_S_DISPATCHTRIGGERID_2);
-
-			sb.append(_FINDER_COLUMN_DTI_S_STATUS_2);
-
-			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-			}
-			else {
-				sb.append(DispatchLogModelImpl.ORDER_BY_JPQL);
-			}
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(dispatchTriggerId);
-
-				queryPos.add(status);
-
-				list = (List<DispatchLog>)QueryUtil.list(
-					query, getDialect(), start, end);
-
-				cacheResult(list);
-
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return list;
+		return _baseFinderDTI_S.findList(
+			new Object[] {dispatchTriggerId, status}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1082,49 +868,7 @@ public class DispatchLogPersistenceImpl
 	 */
 	@Override
 	public int countByDTI_S(long dispatchTriggerId, int status) {
-		FinderPath finderPath = _finderPathCountByDTI_S;
-
-		Object[] finderArgs = new Object[] {dispatchTriggerId, status};
-
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
-
-		if (count == null) {
-			StringBundler sb = new StringBundler(3);
-
-			sb.append(_SQL_COUNT_DISPATCHLOG_WHERE);
-
-			sb.append(_FINDER_COLUMN_DTI_S_DISPATCHTRIGGERID_2);
-
-			sb.append(_FINDER_COLUMN_DTI_S_STATUS_2);
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(dispatchTriggerId);
-
-				queryPos.add(status);
-
-				count = (Long)query.uniqueResult();
-
-				finderCache.putResult(finderPath, finderArgs, count);
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
+		return _baseFinderDTI_S.count(new Object[] {dispatchTriggerId, status});
 	}
 
 	private static final String _FINDER_COLUMN_DTI_S_DISPATCHTRIGGERID_2 =
@@ -1716,6 +1460,72 @@ public class DispatchLogPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByDTI_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			new String[] {"dispatchTriggerId", "status"}, false);
+
+		_baseFinderDispatchTriggerId = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(
+				_FINDER_COLUMN_DISPATCHTRIGGERID_DISPATCHTRIGGERID_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_DISPATCHLOG_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_DISPATCHLOG_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByDispatchTriggerId
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByDispatchTriggerId
+		).finderPathCount(
+			_finderPathCountByDispatchTriggerId
+		).defaultOrderByJpql(
+			DispatchLogModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(
+						columnValues[0], model.getDispatchTriggerId())) {
+
+					return false;
+				}
+
+				return true;
+			}
+		).build();
+
+		_baseFinderDTI_S = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_DTI_S_DISPATCHTRIGGERID_2),
+			new FinderColumn(_FINDER_COLUMN_DTI_S_STATUS_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_DISPATCHLOG_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_DISPATCHLOG_WHERE
+		).finderPathWithPagination(
+			_finderPathWithPaginationFindByDTI_S
+		).finderPathWithoutPagination(
+			_finderPathWithoutPaginationFindByDTI_S
+		).finderPathCount(
+			_finderPathCountByDTI_S
+		).defaultOrderByJpql(
+			DispatchLogModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(
+						columnValues[0], model.getDispatchTriggerId())) {
+
+					return false;
+				}
+
+				if (!Objects.equals(columnValues[1], model.getStatus())) {
+					return false;
+				}
+
+				return true;
+			}
+		).build();
 
 		DispatchLogUtil.setPersistence(this);
 	}

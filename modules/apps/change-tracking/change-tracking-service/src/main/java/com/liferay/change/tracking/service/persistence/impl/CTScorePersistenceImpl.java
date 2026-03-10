@@ -15,11 +15,12 @@ import com.liferay.change.tracking.service.persistence.CTScoreUtil;
 import com.liferay.change.tracking.service.persistence.impl.constants.CTPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
+import com.liferay.portal.kernel.dao.orm.BaseFinder;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
+import com.liferay.portal.kernel.dao.orm.FinderColumn;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
-import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
@@ -39,6 +40,7 @@ import java.lang.reflect.InvocationHandler;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -80,6 +82,7 @@ public class CTScorePersistenceImpl
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
 	private FinderPath _finderPathFetchByCtCollectionId;
+	private BaseFinder<CTScore> _baseFinderCtCollectionId;
 
 	/**
 	 * Returns the ct score where ctCollectionId = &#63; or throws a <code>NoSuchScoreException</code> if it could not be found.
@@ -136,77 +139,8 @@ public class CTScorePersistenceImpl
 	public CTScore fetchByCtCollectionId(
 		long ctCollectionId, boolean useFinderCache) {
 
-		Object[] finderArgs = null;
-
-		if (useFinderCache) {
-			finderArgs = new Object[] {ctCollectionId};
-		}
-
-		Object result = null;
-
-		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByCtCollectionId, finderArgs, this);
-		}
-
-		if (result instanceof CTScore) {
-			CTScore ctScore = (CTScore)result;
-
-			if (ctCollectionId != ctScore.getCtCollectionId()) {
-				result = null;
-			}
-		}
-
-		if (result == null) {
-			StringBundler sb = new StringBundler(3);
-
-			sb.append(_SQL_SELECT_CTSCORE_WHERE);
-
-			sb.append(_FINDER_COLUMN_CTCOLLECTIONID_CTCOLLECTIONID_2);
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(ctCollectionId);
-
-				List<CTScore> list = query.list();
-
-				if (list.isEmpty()) {
-					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByCtCollectionId, finderArgs, list);
-					}
-				}
-				else {
-					CTScore ctScore = list.get(0);
-
-					result = ctScore;
-
-					cacheResult(ctScore);
-				}
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		if (result instanceof List<?>) {
-			return null;
-		}
-		else {
-			return (CTScore)result;
-		}
+		return _baseFinderCtCollectionId.fetchOne(
+			new Object[] {ctCollectionId}, useFinderCache);
 	}
 
 	/**
@@ -768,6 +702,32 @@ public class CTScorePersistenceImpl
 			FINDER_CLASS_NAME_ENTITY, "fetchByCtCollectionId",
 			new String[] {Long.class.getName()},
 			new String[] {"ctCollectionId"}, true);
+
+		_baseFinderCtCollectionId = new BaseFinder.Builder<>(
+			this, finderCache
+		).columns(
+			new FinderColumn(_FINDER_COLUMN_CTCOLLECTIONID_CTCOLLECTIONID_2)
+		).sqlSelectWhere(
+			_SQL_SELECT_CTSCORE_WHERE
+		).sqlCountWhere(
+			_SQL_COUNT_CTSCORE_WHERE
+		).finderPathFetch(
+			_finderPathFetchByCtCollectionId
+		).defaultOrderByJpql(
+			CTScoreModelImpl.ORDER_BY_JPQL
+		).orderByEntityAlias(
+			_ORDER_BY_ENTITY_ALIAS
+		).cacheValidator(
+			(columnValues, model) -> {
+				if (!Objects.equals(
+						columnValues[0], model.getCtCollectionId())) {
+
+					return false;
+				}
+
+				return true;
+			}
+		).build();
 
 		CTScoreUtil.setPersistence(this);
 	}
