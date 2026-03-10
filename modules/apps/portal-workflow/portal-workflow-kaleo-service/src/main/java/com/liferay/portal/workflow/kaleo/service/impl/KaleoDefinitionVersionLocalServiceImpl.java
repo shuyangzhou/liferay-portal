@@ -331,9 +331,35 @@ public class KaleoDefinitionVersionLocalServiceImpl
 			kaleoDefinitionVersionPersistence.findByC_N_V(
 				companyId, name, version);
 
-		return kaleoDefinitionVersionPersistence.findByC_N_PrevAndNext(
-			kaleoDefinitionVersion.getKaleoDefinitionVersionId(), companyId,
-			name, KaleoDefinitionVersionIdComparator.getInstance(true));
+		List<KaleoDefinitionVersion> list =
+			kaleoDefinitionVersionPersistence.findByC_N(
+				companyId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+				KaleoDefinitionVersionIdComparator.getInstance(true));
+
+		KaleoDefinitionVersion[] array = new KaleoDefinitionVersion[3];
+
+		long kaleoDefinitionVersionId =
+			kaleoDefinitionVersion.getKaleoDefinitionVersionId();
+
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).getKaleoDefinitionVersionId() ==
+					kaleoDefinitionVersionId) {
+
+				if (i > 0) {
+					array[0] = list.get(i - 1);
+				}
+
+				array[1] = list.get(i);
+
+				if (i < (list.size() - 1)) {
+					array[2] = list.get(i + 1);
+				}
+
+				break;
+			}
+		}
+
+		return array;
 	}
 
 	@Override
