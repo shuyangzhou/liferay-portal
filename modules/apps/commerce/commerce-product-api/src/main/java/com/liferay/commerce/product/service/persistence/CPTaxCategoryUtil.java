@@ -240,25 +240,6 @@ public class CPTaxCategoryUtil {
 	}
 
 	/**
-	 * Returns the cp tax categories before and after the current cp tax category in the ordered set where uuid = &#63;.
-	 *
-	 * @param CPTaxCategoryId the primary key of the current cp tax category
-	 * @param uuid the uuid
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next cp tax category
-	 * @throws NoSuchCPTaxCategoryException if a cp tax category with the primary key could not be found
-	 */
-	public static CPTaxCategory[] findByUuid_PrevAndNext(
-			long CPTaxCategoryId, String uuid,
-			OrderByComparator<CPTaxCategory> orderByComparator)
-		throws com.liferay.commerce.product.exception.
-			NoSuchCPTaxCategoryException {
-
-		return getPersistence().findByUuid_PrevAndNext(
-			CPTaxCategoryId, uuid, orderByComparator);
-	}
-
-	/**
 	 * Removes all the cp tax categories where uuid = &#63; from the database.
 	 *
 	 * @param uuid the uuid
@@ -426,26 +407,6 @@ public class CPTaxCategoryUtil {
 	}
 
 	/**
-	 * Returns the cp tax categories before and after the current cp tax category in the ordered set where uuid = &#63; and companyId = &#63;.
-	 *
-	 * @param CPTaxCategoryId the primary key of the current cp tax category
-	 * @param uuid the uuid
-	 * @param companyId the company ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next cp tax category
-	 * @throws NoSuchCPTaxCategoryException if a cp tax category with the primary key could not be found
-	 */
-	public static CPTaxCategory[] findByUuid_C_PrevAndNext(
-			long CPTaxCategoryId, String uuid, long companyId,
-			OrderByComparator<CPTaxCategory> orderByComparator)
-		throws com.liferay.commerce.product.exception.
-			NoSuchCPTaxCategoryException {
-
-		return getPersistence().findByUuid_C_PrevAndNext(
-			CPTaxCategoryId, uuid, companyId, orderByComparator);
-	}
-
-	/**
 	 * Removes all the cp tax categories where uuid = &#63; and companyId = &#63; from the database.
 	 *
 	 * @param uuid the uuid
@@ -598,25 +559,6 @@ public class CPTaxCategoryUtil {
 
 		return getPersistence().fetchByCompanyId_Last(
 			companyId, orderByComparator);
-	}
-
-	/**
-	 * Returns the cp tax categories before and after the current cp tax category in the ordered set where companyId = &#63;.
-	 *
-	 * @param CPTaxCategoryId the primary key of the current cp tax category
-	 * @param companyId the company ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next cp tax category
-	 * @throws NoSuchCPTaxCategoryException if a cp tax category with the primary key could not be found
-	 */
-	public static CPTaxCategory[] findByCompanyId_PrevAndNext(
-			long CPTaxCategoryId, long companyId,
-			OrderByComparator<CPTaxCategory> orderByComparator)
-		throws com.liferay.commerce.product.exception.
-			NoSuchCPTaxCategoryException {
-
-		return getPersistence().findByCompanyId_PrevAndNext(
-			CPTaxCategoryId, companyId, orderByComparator);
 	}
 
 	/**

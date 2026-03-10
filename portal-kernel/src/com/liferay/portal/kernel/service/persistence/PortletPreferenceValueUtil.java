@@ -259,26 +259,6 @@ public class PortletPreferenceValueUtil {
 	}
 
 	/**
-	 * Returns the portlet preference values before and after the current portlet preference value in the ordered set where portletPreferencesId = &#63;.
-	 *
-	 * @param portletPreferenceValueId the primary key of the current portlet preference value
-	 * @param portletPreferencesId the portlet preferences ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next portlet preference value
-	 * @throws NoSuchPortletPreferenceValueException if a portlet preference value with the primary key could not be found
-	 */
-	public static PortletPreferenceValue[]
-			findByPortletPreferencesId_PrevAndNext(
-				long portletPreferenceValueId, long portletPreferencesId,
-				OrderByComparator<PortletPreferenceValue> orderByComparator)
-		throws com.liferay.portal.kernel.exception.
-			NoSuchPortletPreferenceValueException {
-
-		return getPersistence().findByPortletPreferencesId_PrevAndNext(
-			portletPreferenceValueId, portletPreferencesId, orderByComparator);
-	}
-
-	/**
 	 * Removes all the portlet preference values where portletPreferencesId = &#63; from the database.
 	 *
 	 * @param portletPreferencesId the portlet preferences ID
@@ -446,28 +426,6 @@ public class PortletPreferenceValueUtil {
 
 		return getPersistence().fetchByP_N_Last(
 			portletPreferencesId, name, orderByComparator);
-	}
-
-	/**
-	 * Returns the portlet preference values before and after the current portlet preference value in the ordered set where portletPreferencesId = &#63; and name = &#63;.
-	 *
-	 * @param portletPreferenceValueId the primary key of the current portlet preference value
-	 * @param portletPreferencesId the portlet preferences ID
-	 * @param name the name
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next portlet preference value
-	 * @throws NoSuchPortletPreferenceValueException if a portlet preference value with the primary key could not be found
-	 */
-	public static PortletPreferenceValue[] findByP_N_PrevAndNext(
-			long portletPreferenceValueId, long portletPreferencesId,
-			String name,
-			OrderByComparator<PortletPreferenceValue> orderByComparator)
-		throws com.liferay.portal.kernel.exception.
-			NoSuchPortletPreferenceValueException {
-
-		return getPersistence().findByP_N_PrevAndNext(
-			portletPreferenceValueId, portletPreferencesId, name,
-			orderByComparator);
 	}
 
 	/**
@@ -647,29 +605,6 @@ public class PortletPreferenceValueUtil {
 
 		return getPersistence().fetchByC_N_SV_Last(
 			companyId, name, smallValue, orderByComparator);
-	}
-
-	/**
-	 * Returns the portlet preference values before and after the current portlet preference value in the ordered set where companyId = &#63; and name = &#63; and smallValue = &#63;.
-	 *
-	 * @param portletPreferenceValueId the primary key of the current portlet preference value
-	 * @param companyId the company ID
-	 * @param name the name
-	 * @param smallValue the small value
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next portlet preference value
-	 * @throws NoSuchPortletPreferenceValueException if a portlet preference value with the primary key could not be found
-	 */
-	public static PortletPreferenceValue[] findByC_N_SV_PrevAndNext(
-			long portletPreferenceValueId, long companyId, String name,
-			String smallValue,
-			OrderByComparator<PortletPreferenceValue> orderByComparator)
-		throws com.liferay.portal.kernel.exception.
-			NoSuchPortletPreferenceValueException {
-
-		return getPersistence().findByC_N_SV_PrevAndNext(
-			portletPreferenceValueId, companyId, name, smallValue,
-			orderByComparator);
 	}
 
 	/**
@@ -937,29 +872,6 @@ public class PortletPreferenceValueUtil {
 
 		return getPersistence().fetchByP_N_SV_Last(
 			portletPreferencesId, name, smallValue, orderByComparator);
-	}
-
-	/**
-	 * Returns the portlet preference values before and after the current portlet preference value in the ordered set where portletPreferencesId = &#63; and name = &#63; and smallValue = &#63;.
-	 *
-	 * @param portletPreferenceValueId the primary key of the current portlet preference value
-	 * @param portletPreferencesId the portlet preferences ID
-	 * @param name the name
-	 * @param smallValue the small value
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next portlet preference value
-	 * @throws NoSuchPortletPreferenceValueException if a portlet preference value with the primary key could not be found
-	 */
-	public static PortletPreferenceValue[] findByP_N_SV_PrevAndNext(
-			long portletPreferenceValueId, long portletPreferencesId,
-			String name, String smallValue,
-			OrderByComparator<PortletPreferenceValue> orderByComparator)
-		throws com.liferay.portal.kernel.exception.
-			NoSuchPortletPreferenceValueException {
-
-		return getPersistence().findByP_N_SV_PrevAndNext(
-			portletPreferenceValueId, portletPreferencesId, name, smallValue,
-			orderByComparator);
 	}
 
 	/**

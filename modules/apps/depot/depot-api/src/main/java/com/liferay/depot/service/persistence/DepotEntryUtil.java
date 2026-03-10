@@ -236,24 +236,6 @@ public class DepotEntryUtil {
 	}
 
 	/**
-	 * Returns the depot entries before and after the current depot entry in the ordered set where uuid = &#63;.
-	 *
-	 * @param depotEntryId the primary key of the current depot entry
-	 * @param uuid the uuid
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next depot entry
-	 * @throws NoSuchEntryException if a depot entry with the primary key could not be found
-	 */
-	public static DepotEntry[] findByUuid_PrevAndNext(
-			long depotEntryId, String uuid,
-			OrderByComparator<DepotEntry> orderByComparator)
-		throws com.liferay.depot.exception.NoSuchEntryException {
-
-		return getPersistence().findByUuid_PrevAndNext(
-			depotEntryId, uuid, orderByComparator);
-	}
-
-	/**
 	 * Removes all the depot entries where uuid = &#63; from the database.
 	 *
 	 * @param uuid the uuid
@@ -480,25 +462,6 @@ public class DepotEntryUtil {
 	}
 
 	/**
-	 * Returns the depot entries before and after the current depot entry in the ordered set where uuid = &#63; and companyId = &#63;.
-	 *
-	 * @param depotEntryId the primary key of the current depot entry
-	 * @param uuid the uuid
-	 * @param companyId the company ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next depot entry
-	 * @throws NoSuchEntryException if a depot entry with the primary key could not be found
-	 */
-	public static DepotEntry[] findByUuid_C_PrevAndNext(
-			long depotEntryId, String uuid, long companyId,
-			OrderByComparator<DepotEntry> orderByComparator)
-		throws com.liferay.depot.exception.NoSuchEntryException {
-
-		return getPersistence().findByUuid_C_PrevAndNext(
-			depotEntryId, uuid, companyId, orderByComparator);
-	}
-
-	/**
 	 * Removes all the depot entries where uuid = &#63; and companyId = &#63; from the database.
 	 *
 	 * @param uuid the uuid
@@ -719,25 +682,6 @@ public class DepotEntryUtil {
 
 		return getPersistence().fetchByC_T_Last(
 			companyId, type, orderByComparator);
-	}
-
-	/**
-	 * Returns the depot entries before and after the current depot entry in the ordered set where companyId = &#63; and type = &#63;.
-	 *
-	 * @param depotEntryId the primary key of the current depot entry
-	 * @param companyId the company ID
-	 * @param type the type
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next depot entry
-	 * @throws NoSuchEntryException if a depot entry with the primary key could not be found
-	 */
-	public static DepotEntry[] findByC_T_PrevAndNext(
-			long depotEntryId, long companyId, int type,
-			OrderByComparator<DepotEntry> orderByComparator)
-		throws com.liferay.depot.exception.NoSuchEntryException {
-
-		return getPersistence().findByC_T_PrevAndNext(
-			depotEntryId, companyId, type, orderByComparator);
 	}
 
 	/**

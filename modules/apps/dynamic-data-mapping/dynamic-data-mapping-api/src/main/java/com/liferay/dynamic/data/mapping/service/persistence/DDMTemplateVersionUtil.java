@@ -251,25 +251,6 @@ public class DDMTemplateVersionUtil {
 	}
 
 	/**
-	 * Returns the ddm template versions before and after the current ddm template version in the ordered set where templateId = &#63;.
-	 *
-	 * @param templateVersionId the primary key of the current ddm template version
-	 * @param templateId the template ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next ddm template version
-	 * @throws NoSuchTemplateVersionException if a ddm template version with the primary key could not be found
-	 */
-	public static DDMTemplateVersion[] findByTemplateId_PrevAndNext(
-			long templateVersionId, long templateId,
-			OrderByComparator<DDMTemplateVersion> orderByComparator)
-		throws com.liferay.dynamic.data.mapping.exception.
-			NoSuchTemplateVersionException {
-
-		return getPersistence().findByTemplateId_PrevAndNext(
-			templateVersionId, templateId, orderByComparator);
-	}
-
-	/**
 	 * Removes all the ddm template versions where templateId = &#63; from the database.
 	 *
 	 * @param templateId the template ID
@@ -502,26 +483,6 @@ public class DDMTemplateVersionUtil {
 
 		return getPersistence().fetchByT_S_Last(
 			templateId, status, orderByComparator);
-	}
-
-	/**
-	 * Returns the ddm template versions before and after the current ddm template version in the ordered set where templateId = &#63; and status = &#63;.
-	 *
-	 * @param templateVersionId the primary key of the current ddm template version
-	 * @param templateId the template ID
-	 * @param status the status
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next ddm template version
-	 * @throws NoSuchTemplateVersionException if a ddm template version with the primary key could not be found
-	 */
-	public static DDMTemplateVersion[] findByT_S_PrevAndNext(
-			long templateVersionId, long templateId, int status,
-			OrderByComparator<DDMTemplateVersion> orderByComparator)
-		throws com.liferay.dynamic.data.mapping.exception.
-			NoSuchTemplateVersionException {
-
-		return getPersistence().findByT_S_PrevAndNext(
-			templateVersionId, templateId, status, orderByComparator);
 	}
 
 	/**

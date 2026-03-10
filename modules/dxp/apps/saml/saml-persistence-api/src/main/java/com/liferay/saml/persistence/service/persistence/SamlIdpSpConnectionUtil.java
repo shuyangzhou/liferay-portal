@@ -252,25 +252,6 @@ public class SamlIdpSpConnectionUtil {
 	}
 
 	/**
-	 * Returns the saml idp sp connections before and after the current saml idp sp connection in the ordered set where companyId = &#63;.
-	 *
-	 * @param samlIdpSpConnectionId the primary key of the current saml idp sp connection
-	 * @param companyId the company ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next saml idp sp connection
-	 * @throws NoSuchIdpSpConnectionException if a saml idp sp connection with the primary key could not be found
-	 */
-	public static SamlIdpSpConnection[] findByCompanyId_PrevAndNext(
-			long samlIdpSpConnectionId, long companyId,
-			OrderByComparator<SamlIdpSpConnection> orderByComparator)
-		throws com.liferay.saml.persistence.exception.
-			NoSuchIdpSpConnectionException {
-
-		return getPersistence().findByCompanyId_PrevAndNext(
-			samlIdpSpConnectionId, companyId, orderByComparator);
-	}
-
-	/**
 	 * Removes all the saml idp sp connections where companyId = &#63; from the database.
 	 *
 	 * @param companyId the company ID

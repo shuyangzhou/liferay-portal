@@ -268,28 +268,6 @@ public class ExportImportReportEntryUtil {
 	}
 
 	/**
-	 * Returns the export import report entries before and after the current export import report entry in the ordered set where companyId = &#63; and exportImportConfigurationId = &#63;.
-	 *
-	 * @param exportImportReportEntryId the primary key of the current export import report entry
-	 * @param companyId the company ID
-	 * @param exportImportConfigurationId the export import configuration ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next export import report entry
-	 * @throws NoSuchExportImportReportEntryException if a export import report entry with the primary key could not be found
-	 */
-	public static ExportImportReportEntry[] findByC_E_PrevAndNext(
-			long exportImportReportEntryId, long companyId,
-			long exportImportConfigurationId,
-			OrderByComparator<ExportImportReportEntry> orderByComparator)
-		throws com.liferay.exportimport.report.exception.
-			NoSuchExportImportReportEntryException {
-
-		return getPersistence().findByC_E_PrevAndNext(
-			exportImportReportEntryId, companyId, exportImportConfigurationId,
-			orderByComparator);
-	}
-
-	/**
 	 * Removes all the export import report entries where companyId = &#63; and exportImportConfigurationId = &#63; from the database.
 	 *
 	 * @param companyId the company ID

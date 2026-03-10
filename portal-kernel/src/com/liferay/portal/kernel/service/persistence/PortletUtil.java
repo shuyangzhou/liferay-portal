@@ -242,24 +242,6 @@ public class PortletUtil {
 	}
 
 	/**
-	 * Returns the portlets before and after the current portlet in the ordered set where companyId = &#63;.
-	 *
-	 * @param id the primary key of the current portlet
-	 * @param companyId the company ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next portlet
-	 * @throws NoSuchPortletException if a portlet with the primary key could not be found
-	 */
-	public static Portlet[] findByCompanyId_PrevAndNext(
-			long id, long companyId,
-			OrderByComparator<Portlet> orderByComparator)
-		throws com.liferay.portal.kernel.exception.NoSuchPortletException {
-
-		return getPersistence().findByCompanyId_PrevAndNext(
-			id, companyId, orderByComparator);
-	}
-
-	/**
 	 * Removes all the portlets where companyId = &#63; from the database.
 	 *
 	 * @param companyId the company ID

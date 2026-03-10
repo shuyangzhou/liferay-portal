@@ -146,21 +146,6 @@ public interface CommerceAvailabilityEstimatePersistence
 			<CommerceAvailabilityEstimate> orderByComparator);
 
 	/**
-	 * Returns the commerce availability estimates before and after the current commerce availability estimate in the ordered set where uuid = &#63;.
-	 *
-	 * @param commerceAvailabilityEstimateId the primary key of the current commerce availability estimate
-	 * @param uuid the uuid
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next commerce availability estimate
-	 * @throws NoSuchAvailabilityEstimateException if a commerce availability estimate with the primary key could not be found
-	 */
-	public CommerceAvailabilityEstimate[] findByUuid_PrevAndNext(
-			long commerceAvailabilityEstimateId, String uuid,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<CommerceAvailabilityEstimate> orderByComparator)
-		throws NoSuchAvailabilityEstimateException;
-
-	/**
 	 * Removes all the commerce availability estimates where uuid = &#63; from the database.
 	 *
 	 * @param uuid the uuid
@@ -298,22 +283,6 @@ public interface CommerceAvailabilityEstimatePersistence
 			<CommerceAvailabilityEstimate> orderByComparator);
 
 	/**
-	 * Returns the commerce availability estimates before and after the current commerce availability estimate in the ordered set where uuid = &#63; and companyId = &#63;.
-	 *
-	 * @param commerceAvailabilityEstimateId the primary key of the current commerce availability estimate
-	 * @param uuid the uuid
-	 * @param companyId the company ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next commerce availability estimate
-	 * @throws NoSuchAvailabilityEstimateException if a commerce availability estimate with the primary key could not be found
-	 */
-	public CommerceAvailabilityEstimate[] findByUuid_C_PrevAndNext(
-			long commerceAvailabilityEstimateId, String uuid, long companyId,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<CommerceAvailabilityEstimate> orderByComparator)
-		throws NoSuchAvailabilityEstimateException;
-
-	/**
 	 * Removes all the commerce availability estimates where uuid = &#63; and companyId = &#63; from the database.
 	 *
 	 * @param uuid the uuid
@@ -443,21 +412,6 @@ public interface CommerceAvailabilityEstimatePersistence
 		long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator
 			<CommerceAvailabilityEstimate> orderByComparator);
-
-	/**
-	 * Returns the commerce availability estimates before and after the current commerce availability estimate in the ordered set where companyId = &#63;.
-	 *
-	 * @param commerceAvailabilityEstimateId the primary key of the current commerce availability estimate
-	 * @param companyId the company ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next commerce availability estimate
-	 * @throws NoSuchAvailabilityEstimateException if a commerce availability estimate with the primary key could not be found
-	 */
-	public CommerceAvailabilityEstimate[] findByCompanyId_PrevAndNext(
-			long commerceAvailabilityEstimateId, long companyId,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<CommerceAvailabilityEstimate> orderByComparator)
-		throws NoSuchAvailabilityEstimateException;
 
 	/**
 	 * Removes all the commerce availability estimates where companyId = &#63; from the database.

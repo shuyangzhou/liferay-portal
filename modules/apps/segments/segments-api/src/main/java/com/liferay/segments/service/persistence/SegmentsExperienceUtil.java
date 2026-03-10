@@ -242,24 +242,6 @@ public class SegmentsExperienceUtil {
 	}
 
 	/**
-	 * Returns the segments experiences before and after the current segments experience in the ordered set where uuid = &#63;.
-	 *
-	 * @param segmentsExperienceId the primary key of the current segments experience
-	 * @param uuid the uuid
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next segments experience
-	 * @throws NoSuchExperienceException if a segments experience with the primary key could not be found
-	 */
-	public static SegmentsExperience[] findByUuid_PrevAndNext(
-			long segmentsExperienceId, String uuid,
-			OrderByComparator<SegmentsExperience> orderByComparator)
-		throws com.liferay.segments.exception.NoSuchExperienceException {
-
-		return getPersistence().findByUuid_PrevAndNext(
-			segmentsExperienceId, uuid, orderByComparator);
-	}
-
-	/**
 	 * Removes all the segments experiences where uuid = &#63; from the database.
 	 *
 	 * @param uuid the uuid
@@ -488,25 +470,6 @@ public class SegmentsExperienceUtil {
 	}
 
 	/**
-	 * Returns the segments experiences before and after the current segments experience in the ordered set where uuid = &#63; and companyId = &#63;.
-	 *
-	 * @param segmentsExperienceId the primary key of the current segments experience
-	 * @param uuid the uuid
-	 * @param companyId the company ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next segments experience
-	 * @throws NoSuchExperienceException if a segments experience with the primary key could not be found
-	 */
-	public static SegmentsExperience[] findByUuid_C_PrevAndNext(
-			long segmentsExperienceId, String uuid, long companyId,
-			OrderByComparator<SegmentsExperience> orderByComparator)
-		throws com.liferay.segments.exception.NoSuchExperienceException {
-
-		return getPersistence().findByUuid_C_PrevAndNext(
-			segmentsExperienceId, uuid, companyId, orderByComparator);
-	}
-
-	/**
 	 * Removes all the segments experiences where uuid = &#63; and companyId = &#63; from the database.
 	 *
 	 * @param uuid the uuid
@@ -659,24 +622,6 @@ public class SegmentsExperienceUtil {
 	}
 
 	/**
-	 * Returns the segments experiences before and after the current segments experience in the ordered set where groupId = &#63;.
-	 *
-	 * @param segmentsExperienceId the primary key of the current segments experience
-	 * @param groupId the group ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next segments experience
-	 * @throws NoSuchExperienceException if a segments experience with the primary key could not be found
-	 */
-	public static SegmentsExperience[] findByGroupId_PrevAndNext(
-			long segmentsExperienceId, long groupId,
-			OrderByComparator<SegmentsExperience> orderByComparator)
-		throws com.liferay.segments.exception.NoSuchExperienceException {
-
-		return getPersistence().findByGroupId_PrevAndNext(
-			segmentsExperienceId, groupId, orderByComparator);
-	}
-
-	/**
 	 * Returns all the segments experiences that the user has permission to view where groupId = &#63;.
 	 *
 	 * @param groupId the group ID
@@ -723,24 +668,6 @@ public class SegmentsExperienceUtil {
 
 		return getPersistence().filterFindByGroupId(
 			groupId, start, end, orderByComparator);
-	}
-
-	/**
-	 * Returns the segments experiences before and after the current segments experience in the ordered set of segments experiences that the user has permission to view where groupId = &#63;.
-	 *
-	 * @param segmentsExperienceId the primary key of the current segments experience
-	 * @param groupId the group ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next segments experience
-	 * @throws NoSuchExperienceException if a segments experience with the primary key could not be found
-	 */
-	public static SegmentsExperience[] filterFindByGroupId_PrevAndNext(
-			long segmentsExperienceId, long groupId,
-			OrderByComparator<SegmentsExperience> orderByComparator)
-		throws com.liferay.segments.exception.NoSuchExperienceException {
-
-		return getPersistence().filterFindByGroupId_PrevAndNext(
-			segmentsExperienceId, groupId, orderByComparator);
 	}
 
 	/**
@@ -917,25 +844,6 @@ public class SegmentsExperienceUtil {
 	}
 
 	/**
-	 * Returns the segments experiences before and after the current segments experience in the ordered set where groupId = &#63; and plid = &#63;.
-	 *
-	 * @param segmentsExperienceId the primary key of the current segments experience
-	 * @param groupId the group ID
-	 * @param plid the plid
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next segments experience
-	 * @throws NoSuchExperienceException if a segments experience with the primary key could not be found
-	 */
-	public static SegmentsExperience[] findByG_P_PrevAndNext(
-			long segmentsExperienceId, long groupId, long plid,
-			OrderByComparator<SegmentsExperience> orderByComparator)
-		throws com.liferay.segments.exception.NoSuchExperienceException {
-
-		return getPersistence().findByG_P_PrevAndNext(
-			segmentsExperienceId, groupId, plid, orderByComparator);
-	}
-
-	/**
 	 * Returns all the segments experiences that the user has permission to view where groupId = &#63; and plid = &#63;.
 	 *
 	 * @param groupId the group ID
@@ -987,25 +895,6 @@ public class SegmentsExperienceUtil {
 
 		return getPersistence().filterFindByG_P(
 			groupId, plid, start, end, orderByComparator);
-	}
-
-	/**
-	 * Returns the segments experiences before and after the current segments experience in the ordered set of segments experiences that the user has permission to view where groupId = &#63; and plid = &#63;.
-	 *
-	 * @param segmentsExperienceId the primary key of the current segments experience
-	 * @param groupId the group ID
-	 * @param plid the plid
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next segments experience
-	 * @throws NoSuchExperienceException if a segments experience with the primary key could not be found
-	 */
-	public static SegmentsExperience[] filterFindByG_P_PrevAndNext(
-			long segmentsExperienceId, long groupId, long plid,
-			OrderByComparator<SegmentsExperience> orderByComparator)
-		throws com.liferay.segments.exception.NoSuchExperienceException {
-
-		return getPersistence().filterFindByG_P_PrevAndNext(
-			segmentsExperienceId, groupId, plid, orderByComparator);
 	}
 
 	/**
@@ -1189,27 +1078,6 @@ public class SegmentsExperienceUtil {
 
 		return getPersistence().fetchBySEERC_SESERC_Last(
 			segmentsEntryERC, segmentsEntryScopeERC, orderByComparator);
-	}
-
-	/**
-	 * Returns the segments experiences before and after the current segments experience in the ordered set where segmentsEntryERC = &#63; and segmentsEntryScopeERC = &#63;.
-	 *
-	 * @param segmentsExperienceId the primary key of the current segments experience
-	 * @param segmentsEntryERC the segments entry erc
-	 * @param segmentsEntryScopeERC the segments entry scope erc
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next segments experience
-	 * @throws NoSuchExperienceException if a segments experience with the primary key could not be found
-	 */
-	public static SegmentsExperience[] findBySEERC_SESERC_PrevAndNext(
-			long segmentsExperienceId, String segmentsEntryERC,
-			String segmentsEntryScopeERC,
-			OrderByComparator<SegmentsExperience> orderByComparator)
-		throws com.liferay.segments.exception.NoSuchExperienceException {
-
-		return getPersistence().findBySEERC_SESERC_PrevAndNext(
-			segmentsExperienceId, segmentsEntryERC, segmentsEntryScopeERC,
-			orderByComparator);
 	}
 
 	/**
@@ -1405,28 +1273,6 @@ public class SegmentsExperienceUtil {
 	}
 
 	/**
-	 * Returns the segments experiences before and after the current segments experience in the ordered set where groupId = &#63; and segmentsEntryERC = &#63; and segmentsEntryScopeERC = &#63;.
-	 *
-	 * @param segmentsExperienceId the primary key of the current segments experience
-	 * @param groupId the group ID
-	 * @param segmentsEntryERC the segments entry erc
-	 * @param segmentsEntryScopeERC the segments entry scope erc
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next segments experience
-	 * @throws NoSuchExperienceException if a segments experience with the primary key could not be found
-	 */
-	public static SegmentsExperience[] findByG_SEERC_SESERC_PrevAndNext(
-			long segmentsExperienceId, long groupId, String segmentsEntryERC,
-			String segmentsEntryScopeERC,
-			OrderByComparator<SegmentsExperience> orderByComparator)
-		throws com.liferay.segments.exception.NoSuchExperienceException {
-
-		return getPersistence().findByG_SEERC_SESERC_PrevAndNext(
-			segmentsExperienceId, groupId, segmentsEntryERC,
-			segmentsEntryScopeERC, orderByComparator);
-	}
-
-	/**
 	 * Returns all the segments experiences that the user has permission to view where groupId = &#63; and segmentsEntryERC = &#63; and segmentsEntryScopeERC = &#63;.
 	 *
 	 * @param groupId the group ID
@@ -1486,28 +1332,6 @@ public class SegmentsExperienceUtil {
 		return getPersistence().filterFindByG_SEERC_SESERC(
 			groupId, segmentsEntryERC, segmentsEntryScopeERC, start, end,
 			orderByComparator);
-	}
-
-	/**
-	 * Returns the segments experiences before and after the current segments experience in the ordered set of segments experiences that the user has permission to view where groupId = &#63; and segmentsEntryERC = &#63; and segmentsEntryScopeERC = &#63;.
-	 *
-	 * @param segmentsExperienceId the primary key of the current segments experience
-	 * @param groupId the group ID
-	 * @param segmentsEntryERC the segments entry erc
-	 * @param segmentsEntryScopeERC the segments entry scope erc
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next segments experience
-	 * @throws NoSuchExperienceException if a segments experience with the primary key could not be found
-	 */
-	public static SegmentsExperience[] filterFindByG_SEERC_SESERC_PrevAndNext(
-			long segmentsExperienceId, long groupId, String segmentsEntryERC,
-			String segmentsEntryScopeERC,
-			OrderByComparator<SegmentsExperience> orderByComparator)
-		throws com.liferay.segments.exception.NoSuchExperienceException {
-
-		return getPersistence().filterFindByG_SEERC_SESERC_PrevAndNext(
-			segmentsExperienceId, groupId, segmentsEntryERC,
-			segmentsEntryScopeERC, orderByComparator);
 	}
 
 	/**
@@ -1864,26 +1688,6 @@ public class SegmentsExperienceUtil {
 	}
 
 	/**
-	 * Returns the segments experiences before and after the current segments experience in the ordered set where groupId = &#63; and plid = &#63; and priority &gt; &#63;.
-	 *
-	 * @param segmentsExperienceId the primary key of the current segments experience
-	 * @param groupId the group ID
-	 * @param plid the plid
-	 * @param priority the priority
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next segments experience
-	 * @throws NoSuchExperienceException if a segments experience with the primary key could not be found
-	 */
-	public static SegmentsExperience[] findByG_P_GtP_PrevAndNext(
-			long segmentsExperienceId, long groupId, long plid, int priority,
-			OrderByComparator<SegmentsExperience> orderByComparator)
-		throws com.liferay.segments.exception.NoSuchExperienceException {
-
-		return getPersistence().findByG_P_GtP_PrevAndNext(
-			segmentsExperienceId, groupId, plid, priority, orderByComparator);
-	}
-
-	/**
 	 * Returns all the segments experiences that the user has permission to view where groupId = &#63; and plid = &#63; and priority &gt; &#63;.
 	 *
 	 * @param groupId the group ID
@@ -1939,26 +1743,6 @@ public class SegmentsExperienceUtil {
 
 		return getPersistence().filterFindByG_P_GtP(
 			groupId, plid, priority, start, end, orderByComparator);
-	}
-
-	/**
-	 * Returns the segments experiences before and after the current segments experience in the ordered set of segments experiences that the user has permission to view where groupId = &#63; and plid = &#63; and priority &gt; &#63;.
-	 *
-	 * @param segmentsExperienceId the primary key of the current segments experience
-	 * @param groupId the group ID
-	 * @param plid the plid
-	 * @param priority the priority
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next segments experience
-	 * @throws NoSuchExperienceException if a segments experience with the primary key could not be found
-	 */
-	public static SegmentsExperience[] filterFindByG_P_GtP_PrevAndNext(
-			long segmentsExperienceId, long groupId, long plid, int priority,
-			OrderByComparator<SegmentsExperience> orderByComparator)
-		throws com.liferay.segments.exception.NoSuchExperienceException {
-
-		return getPersistence().filterFindByG_P_GtP_PrevAndNext(
-			segmentsExperienceId, groupId, plid, priority, orderByComparator);
 	}
 
 	/**
@@ -2155,26 +1939,6 @@ public class SegmentsExperienceUtil {
 	}
 
 	/**
-	 * Returns the segments experiences before and after the current segments experience in the ordered set where groupId = &#63; and plid = &#63; and priority &lt; &#63;.
-	 *
-	 * @param segmentsExperienceId the primary key of the current segments experience
-	 * @param groupId the group ID
-	 * @param plid the plid
-	 * @param priority the priority
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next segments experience
-	 * @throws NoSuchExperienceException if a segments experience with the primary key could not be found
-	 */
-	public static SegmentsExperience[] findByG_P_LtP_PrevAndNext(
-			long segmentsExperienceId, long groupId, long plid, int priority,
-			OrderByComparator<SegmentsExperience> orderByComparator)
-		throws com.liferay.segments.exception.NoSuchExperienceException {
-
-		return getPersistence().findByG_P_LtP_PrevAndNext(
-			segmentsExperienceId, groupId, plid, priority, orderByComparator);
-	}
-
-	/**
 	 * Returns all the segments experiences that the user has permission to view where groupId = &#63; and plid = &#63; and priority &lt; &#63;.
 	 *
 	 * @param groupId the group ID
@@ -2230,26 +1994,6 @@ public class SegmentsExperienceUtil {
 
 		return getPersistence().filterFindByG_P_LtP(
 			groupId, plid, priority, start, end, orderByComparator);
-	}
-
-	/**
-	 * Returns the segments experiences before and after the current segments experience in the ordered set of segments experiences that the user has permission to view where groupId = &#63; and plid = &#63; and priority &lt; &#63;.
-	 *
-	 * @param segmentsExperienceId the primary key of the current segments experience
-	 * @param groupId the group ID
-	 * @param plid the plid
-	 * @param priority the priority
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next segments experience
-	 * @throws NoSuchExperienceException if a segments experience with the primary key could not be found
-	 */
-	public static SegmentsExperience[] filterFindByG_P_LtP_PrevAndNext(
-			long segmentsExperienceId, long groupId, long plid, int priority,
-			OrderByComparator<SegmentsExperience> orderByComparator)
-		throws com.liferay.segments.exception.NoSuchExperienceException {
-
-		return getPersistence().filterFindByG_P_LtP_PrevAndNext(
-			segmentsExperienceId, groupId, plid, priority, orderByComparator);
 	}
 
 	/**
@@ -2445,26 +2189,6 @@ public class SegmentsExperienceUtil {
 	}
 
 	/**
-	 * Returns the segments experiences before and after the current segments experience in the ordered set where groupId = &#63; and plid = &#63; and active = &#63;.
-	 *
-	 * @param segmentsExperienceId the primary key of the current segments experience
-	 * @param groupId the group ID
-	 * @param plid the plid
-	 * @param active the active
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next segments experience
-	 * @throws NoSuchExperienceException if a segments experience with the primary key could not be found
-	 */
-	public static SegmentsExperience[] findByG_P_A_PrevAndNext(
-			long segmentsExperienceId, long groupId, long plid, boolean active,
-			OrderByComparator<SegmentsExperience> orderByComparator)
-		throws com.liferay.segments.exception.NoSuchExperienceException {
-
-		return getPersistence().findByG_P_A_PrevAndNext(
-			segmentsExperienceId, groupId, plid, active, orderByComparator);
-	}
-
-	/**
 	 * Returns all the segments experiences that the user has permission to view where groupId = &#63; and plid = &#63; and active = &#63;.
 	 *
 	 * @param groupId the group ID
@@ -2520,26 +2244,6 @@ public class SegmentsExperienceUtil {
 
 		return getPersistence().filterFindByG_P_A(
 			groupId, plid, active, start, end, orderByComparator);
-	}
-
-	/**
-	 * Returns the segments experiences before and after the current segments experience in the ordered set of segments experiences that the user has permission to view where groupId = &#63; and plid = &#63; and active = &#63;.
-	 *
-	 * @param segmentsExperienceId the primary key of the current segments experience
-	 * @param groupId the group ID
-	 * @param plid the plid
-	 * @param active the active
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next segments experience
-	 * @throws NoSuchExperienceException if a segments experience with the primary key could not be found
-	 */
-	public static SegmentsExperience[] filterFindByG_P_A_PrevAndNext(
-			long segmentsExperienceId, long groupId, long plid, boolean active,
-			OrderByComparator<SegmentsExperience> orderByComparator)
-		throws com.liferay.segments.exception.NoSuchExperienceException {
-
-		return getPersistence().filterFindByG_P_A_PrevAndNext(
-			segmentsExperienceId, groupId, plid, active, orderByComparator);
 	}
 
 	/**
@@ -2754,29 +2458,6 @@ public class SegmentsExperienceUtil {
 	}
 
 	/**
-	 * Returns the segments experiences before and after the current segments experience in the ordered set where groupId = &#63; and segmentsEntryERC = &#63; and segmentsEntryScopeERC = &#63; and plid = &#63;.
-	 *
-	 * @param segmentsExperienceId the primary key of the current segments experience
-	 * @param groupId the group ID
-	 * @param segmentsEntryERC the segments entry erc
-	 * @param segmentsEntryScopeERC the segments entry scope erc
-	 * @param plid the plid
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next segments experience
-	 * @throws NoSuchExperienceException if a segments experience with the primary key could not be found
-	 */
-	public static SegmentsExperience[] findByG_SEERC_SESERC_P_PrevAndNext(
-			long segmentsExperienceId, long groupId, String segmentsEntryERC,
-			String segmentsEntryScopeERC, long plid,
-			OrderByComparator<SegmentsExperience> orderByComparator)
-		throws com.liferay.segments.exception.NoSuchExperienceException {
-
-		return getPersistence().findByG_SEERC_SESERC_P_PrevAndNext(
-			segmentsExperienceId, groupId, segmentsEntryERC,
-			segmentsEntryScopeERC, plid, orderByComparator);
-	}
-
-	/**
 	 * Returns all the segments experiences that the user has permission to view where groupId = &#63; and segmentsEntryERC = &#63; and segmentsEntryScopeERC = &#63; and plid = &#63;.
 	 *
 	 * @param groupId the group ID
@@ -2840,29 +2521,6 @@ public class SegmentsExperienceUtil {
 		return getPersistence().filterFindByG_SEERC_SESERC_P(
 			groupId, segmentsEntryERC, segmentsEntryScopeERC, plid, start, end,
 			orderByComparator);
-	}
-
-	/**
-	 * Returns the segments experiences before and after the current segments experience in the ordered set of segments experiences that the user has permission to view where groupId = &#63; and segmentsEntryERC = &#63; and segmentsEntryScopeERC = &#63; and plid = &#63;.
-	 *
-	 * @param segmentsExperienceId the primary key of the current segments experience
-	 * @param groupId the group ID
-	 * @param segmentsEntryERC the segments entry erc
-	 * @param segmentsEntryScopeERC the segments entry scope erc
-	 * @param plid the plid
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next segments experience
-	 * @throws NoSuchExperienceException if a segments experience with the primary key could not be found
-	 */
-	public static SegmentsExperience[] filterFindByG_SEERC_SESERC_P_PrevAndNext(
-			long segmentsExperienceId, long groupId, String segmentsEntryERC,
-			String segmentsEntryScopeERC, long plid,
-			OrderByComparator<SegmentsExperience> orderByComparator)
-		throws com.liferay.segments.exception.NoSuchExperienceException {
-
-		return getPersistence().filterFindByG_SEERC_SESERC_P_PrevAndNext(
-			segmentsExperienceId, groupId, segmentsEntryERC,
-			segmentsEntryScopeERC, plid, orderByComparator);
 	}
 
 	/**
@@ -3103,30 +2761,6 @@ public class SegmentsExperienceUtil {
 	}
 
 	/**
-	 * Returns the segments experiences before and after the current segments experience in the ordered set where groupId = &#63; and segmentsEntryERC = &#63; and segmentsEntryScopeERC = &#63; and plid = &#63; and active = &#63;.
-	 *
-	 * @param segmentsExperienceId the primary key of the current segments experience
-	 * @param groupId the group ID
-	 * @param segmentsEntryERC the segments entry erc
-	 * @param segmentsEntryScopeERC the segments entry scope erc
-	 * @param plid the plid
-	 * @param active the active
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next segments experience
-	 * @throws NoSuchExperienceException if a segments experience with the primary key could not be found
-	 */
-	public static SegmentsExperience[] findByG_SEERC_SESERC_P_A_PrevAndNext(
-			long segmentsExperienceId, long groupId, String segmentsEntryERC,
-			String segmentsEntryScopeERC, long plid, boolean active,
-			OrderByComparator<SegmentsExperience> orderByComparator)
-		throws com.liferay.segments.exception.NoSuchExperienceException {
-
-		return getPersistence().findByG_SEERC_SESERC_P_A_PrevAndNext(
-			segmentsExperienceId, groupId, segmentsEntryERC,
-			segmentsEntryScopeERC, plid, active, orderByComparator);
-	}
-
-	/**
 	 * Returns all the segments experiences that the user has permission to view where groupId = &#63; and segmentsEntryERC = &#63; and segmentsEntryScopeERC = &#63; and plid = &#63; and active = &#63;.
 	 *
 	 * @param groupId the group ID
@@ -3194,32 +2828,6 @@ public class SegmentsExperienceUtil {
 		return getPersistence().filterFindByG_SEERC_SESERC_P_A(
 			groupId, segmentsEntryERC, segmentsEntryScopeERC, plid, active,
 			start, end, orderByComparator);
-	}
-
-	/**
-	 * Returns the segments experiences before and after the current segments experience in the ordered set of segments experiences that the user has permission to view where groupId = &#63; and segmentsEntryERC = &#63; and segmentsEntryScopeERC = &#63; and plid = &#63; and active = &#63;.
-	 *
-	 * @param segmentsExperienceId the primary key of the current segments experience
-	 * @param groupId the group ID
-	 * @param segmentsEntryERC the segments entry erc
-	 * @param segmentsEntryScopeERC the segments entry scope erc
-	 * @param plid the plid
-	 * @param active the active
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next segments experience
-	 * @throws NoSuchExperienceException if a segments experience with the primary key could not be found
-	 */
-	public static SegmentsExperience[]
-			filterFindByG_SEERC_SESERC_P_A_PrevAndNext(
-				long segmentsExperienceId, long groupId,
-				String segmentsEntryERC, String segmentsEntryScopeERC,
-				long plid, boolean active,
-				OrderByComparator<SegmentsExperience> orderByComparator)
-		throws com.liferay.segments.exception.NoSuchExperienceException {
-
-		return getPersistence().filterFindByG_SEERC_SESERC_P_A_PrevAndNext(
-			segmentsExperienceId, groupId, segmentsEntryERC,
-			segmentsEntryScopeERC, plid, active, orderByComparator);
 	}
 
 	/**

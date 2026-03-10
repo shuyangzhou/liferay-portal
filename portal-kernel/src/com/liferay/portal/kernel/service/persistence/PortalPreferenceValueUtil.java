@@ -255,25 +255,6 @@ public class PortalPreferenceValueUtil {
 	}
 
 	/**
-	 * Returns the portal preference values before and after the current portal preference value in the ordered set where portalPreferencesId = &#63;.
-	 *
-	 * @param portalPreferenceValueId the primary key of the current portal preference value
-	 * @param portalPreferencesId the portal preferences ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next portal preference value
-	 * @throws NoSuchPreferenceValueException if a portal preference value with the primary key could not be found
-	 */
-	public static PortalPreferenceValue[] findByPortalPreferencesId_PrevAndNext(
-			long portalPreferenceValueId, long portalPreferencesId,
-			OrderByComparator<PortalPreferenceValue> orderByComparator)
-		throws com.liferay.portal.kernel.exception.
-			NoSuchPreferenceValueException {
-
-		return getPersistence().findByPortalPreferencesId_PrevAndNext(
-			portalPreferenceValueId, portalPreferencesId, orderByComparator);
-	}
-
-	/**
 	 * Removes all the portal preference values where portalPreferencesId = &#63; from the database.
 	 *
 	 * @param portalPreferencesId the portal preferences ID
@@ -440,28 +421,6 @@ public class PortalPreferenceValueUtil {
 
 		return getPersistence().fetchByP_N_Last(
 			portalPreferencesId, namespace, orderByComparator);
-	}
-
-	/**
-	 * Returns the portal preference values before and after the current portal preference value in the ordered set where portalPreferencesId = &#63; and namespace = &#63;.
-	 *
-	 * @param portalPreferenceValueId the primary key of the current portal preference value
-	 * @param portalPreferencesId the portal preferences ID
-	 * @param namespace the namespace
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next portal preference value
-	 * @throws NoSuchPreferenceValueException if a portal preference value with the primary key could not be found
-	 */
-	public static PortalPreferenceValue[] findByP_N_PrevAndNext(
-			long portalPreferenceValueId, long portalPreferencesId,
-			String namespace,
-			OrderByComparator<PortalPreferenceValue> orderByComparator)
-		throws com.liferay.portal.kernel.exception.
-			NoSuchPreferenceValueException {
-
-		return getPersistence().findByP_N_PrevAndNext(
-			portalPreferenceValueId, portalPreferencesId, namespace,
-			orderByComparator);
 	}
 
 	/**
@@ -643,29 +602,6 @@ public class PortalPreferenceValueUtil {
 
 		return getPersistence().fetchByP_K_N_Last(
 			portalPreferencesId, key, namespace, orderByComparator);
-	}
-
-	/**
-	 * Returns the portal preference values before and after the current portal preference value in the ordered set where portalPreferencesId = &#63; and key = &#63; and namespace = &#63;.
-	 *
-	 * @param portalPreferenceValueId the primary key of the current portal preference value
-	 * @param portalPreferencesId the portal preferences ID
-	 * @param key the key
-	 * @param namespace the namespace
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next portal preference value
-	 * @throws NoSuchPreferenceValueException if a portal preference value with the primary key could not be found
-	 */
-	public static PortalPreferenceValue[] findByP_K_N_PrevAndNext(
-			long portalPreferenceValueId, long portalPreferencesId, String key,
-			String namespace,
-			OrderByComparator<PortalPreferenceValue> orderByComparator)
-		throws com.liferay.portal.kernel.exception.
-			NoSuchPreferenceValueException {
-
-		return getPersistence().findByP_K_N_PrevAndNext(
-			portalPreferenceValueId, portalPreferencesId, key, namespace,
-			orderByComparator);
 	}
 
 	/**
@@ -957,30 +893,6 @@ public class PortalPreferenceValueUtil {
 
 		return getPersistence().fetchByP_K_N_SV_Last(
 			portalPreferencesId, key, namespace, smallValue, orderByComparator);
-	}
-
-	/**
-	 * Returns the portal preference values before and after the current portal preference value in the ordered set where portalPreferencesId = &#63; and key = &#63; and namespace = &#63; and smallValue = &#63;.
-	 *
-	 * @param portalPreferenceValueId the primary key of the current portal preference value
-	 * @param portalPreferencesId the portal preferences ID
-	 * @param key the key
-	 * @param namespace the namespace
-	 * @param smallValue the small value
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next portal preference value
-	 * @throws NoSuchPreferenceValueException if a portal preference value with the primary key could not be found
-	 */
-	public static PortalPreferenceValue[] findByP_K_N_SV_PrevAndNext(
-			long portalPreferenceValueId, long portalPreferencesId, String key,
-			String namespace, String smallValue,
-			OrderByComparator<PortalPreferenceValue> orderByComparator)
-		throws com.liferay.portal.kernel.exception.
-			NoSuchPreferenceValueException {
-
-		return getPersistence().findByP_K_N_SV_PrevAndNext(
-			portalPreferenceValueId, portalPreferencesId, key, namespace,
-			smallValue, orderByComparator);
 	}
 
 	/**
