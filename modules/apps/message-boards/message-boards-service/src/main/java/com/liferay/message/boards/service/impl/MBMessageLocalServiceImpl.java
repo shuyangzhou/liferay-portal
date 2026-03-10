@@ -866,18 +866,29 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 				else if (message.getStatus() ==
 							WorkflowConstants.STATUS_APPROVED) {
 
-					MessageCreateDateComparator comparator =
-						MessageCreateDateComparator.getInstance(true);
+					int approvedCount = mbMessagePersistence.countByT_S(
+						thread.getThreadId(),
+						WorkflowConstants.STATUS_APPROVED);
 
-					MBMessage[] prevAndNextMessages =
-						mbMessagePersistence.findByT_S_PrevAndNext(
-							message.getMessageId(), thread.getThreadId(),
-							WorkflowConstants.STATUS_APPROVED, comparator);
+					if (approvedCount > 1) {
+						List<MBMessage> lastTwoMessages =
+							mbMessagePersistence.findByT_S(
+								thread.getThreadId(),
+								WorkflowConstants.STATUS_APPROVED,
+								approvedCount - 2, approvedCount,
+								MessageCreateDateComparator.getInstance(true));
 
-					if (prevAndNextMessages[2] == null) {
-						_mbThreadLocalService.updateLastPostDate(
-							thread.getThreadId(),
-							prevAndNextMessages[0].getModifiedDate());
+						if ((lastTwoMessages.size() == 2) &&
+							(lastTwoMessages.get(
+								1
+							).getMessageId() == message.getMessageId())) {
+
+							_mbThreadLocalService.updateLastPostDate(
+								thread.getThreadId(),
+								lastTwoMessages.get(
+									0
+								).getModifiedDate());
+						}
 					}
 				}
 			}
