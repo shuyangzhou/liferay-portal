@@ -241,6 +241,47 @@ public class BaseFinder<T extends BaseModel<T>> {
 		return list;
 	}
 
+	/**
+	 * Populates the given array with the previous, current, and next entities
+	 * in the ordered set matching the given column values. Used for
+	 * PrevAndNext finders.
+	 *
+	 * @param array              a 3-element array to populate with [previous,
+	 *        current, next]
+	 * @param primaryKeyEntity   the current entity (looked up by primary key)
+	 * @param columnValues       the finder column values
+	 * @param orderByComparator  the comparator to order the set by (optionally
+	 *        {@code null})
+	 */
+	public void findPrevAndNext(
+		T[] array, T primaryKeyEntity, Object[] columnValues,
+		OrderByComparator<T> orderByComparator) {
+
+		_normalizeStringValues(columnValues);
+
+		Session session = null;
+
+		try {
+			session = _basePersistenceImpl.openSession();
+
+			array[0] = _findPrevOrNext(
+				session, primaryKeyEntity, columnValues, orderByComparator,
+				true);
+
+			array[1] = primaryKeyEntity;
+
+			array[2] = _findPrevOrNext(
+				session, primaryKeyEntity, columnValues, orderByComparator,
+				false);
+		}
+		catch (Exception exception) {
+			throw _basePersistenceImpl.processException(exception);
+		}
+		finally {
+			_basePersistenceImpl.closeSession(session);
+		}
+	}
+
 	public static class Builder<T extends BaseModel<T>> {
 
 		public Builder(
@@ -388,6 +429,39 @@ public class BaseFinder<T extends BaseModel<T>> {
 		return sb.toString();
 	}
 
+	private String _buildPrevAndNextSql(
+		Object[] columnValues, OrderByComparator<T> orderByComparator,
+		boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				_columns.length + 3 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
+						(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(_columns.length + 2);
+		}
+
+		sb.append(_sqlSelectWhere);
+
+		boolean[] bindFlags = new boolean[_columns.length];
+
+		_appendWhereClause(sb, columnValues, bindFlags);
+
+		if (orderByComparator != null) {
+			_basePersistenceImpl.appendPrevAndNextOrderByCondition(
+				sb, _orderByEntityAlias, orderByComparator, previous);
+		}
+		else if (_defaultOrderByJpql != null) {
+			sb.append(_defaultOrderByJpql);
+		}
+
+		return sb.toString();
+	}
+
 	private String _buildSelectSql(
 		Object[] columnValues, OrderByComparator<T> orderByComparator) {
 
@@ -417,6 +491,52 @@ public class BaseFinder<T extends BaseModel<T>> {
 		}
 
 		return sb.toString();
+	}
+
+	@SuppressWarnings("unchecked")
+	private T _findPrevOrNext(
+		Session session, T primaryKeyEntity, Object[] columnValues,
+		OrderByComparator<T> orderByComparator, boolean previous) {
+
+		String sql = _buildPrevAndNextSql(
+			columnValues, orderByComparator, previous);
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		boolean[] bindFlags = new boolean[_columns.length];
+
+		for (int i = 0; i < _columns.length; i++) {
+			bindFlags[i] = _columns[i].appendWhereClause(
+				new StringBundler(), columnValues[i]);
+		}
+
+		for (int i = 0; i < _columns.length; i++) {
+			if (bindFlags[i]) {
+				_columns[i].bindValue(queryPos, columnValues[i]);
+			}
+		}
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(
+						primaryKeyEntity)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<T> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+
+		return null;
 	}
 
 	private void _normalizeStringValues(Object[] columnValues) {

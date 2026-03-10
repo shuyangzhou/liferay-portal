@@ -120,6 +120,111 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 
 	public static final String COUNT_COLUMN_NAME = "COUNT_VALUE";
 
+	public void appendOrderByComparator(
+		StringBundler sb, String entityAlias,
+		OrderByComparator<T> orderByComparator) {
+
+		appendOrderByComparator(sb, entityAlias, orderByComparator, false);
+	}
+
+	public void appendOrderByComparator(
+		StringBundler sb, String entityAlias,
+		OrderByComparator<T> orderByComparator, boolean sqlQuery) {
+
+		sb.append(ORDER_BY_CLAUSE);
+
+		String[] orderByFields = orderByComparator.getOrderByFields();
+
+		int length = orderByFields.length;
+
+		if ((_databaseOrderByMaxColumns > 0) &&
+			(_databaseOrderByMaxColumns < length)) {
+
+			length = _databaseOrderByMaxColumns;
+		}
+
+		for (int i = 0; i < length; i++) {
+			sb.append(getColumnName(entityAlias, orderByFields[i], sqlQuery));
+
+			if ((i + 1) < length) {
+				if (orderByComparator.isAscending(orderByFields[i])) {
+					sb.append(ORDER_BY_ASC_HAS_NEXT);
+				}
+				else {
+					sb.append(ORDER_BY_DESC_HAS_NEXT);
+				}
+			}
+			else {
+				if (orderByComparator.isAscending(orderByFields[i])) {
+					sb.append(ORDER_BY_ASC);
+				}
+				else {
+					sb.append(ORDER_BY_DESC);
+				}
+			}
+		}
+	}
+
+	public void appendPrevAndNextOrderByCondition(
+		StringBundler sb, String entityAlias,
+		OrderByComparator<T> orderByComparator, boolean previous) {
+
+		String[] orderByConditionFields =
+			orderByComparator.getOrderByConditionFields();
+
+		if (orderByConditionFields.length > 0) {
+			sb.append(WHERE_AND);
+		}
+
+		for (int i = 0; i < orderByConditionFields.length; i++) {
+			sb.append(entityAlias);
+			sb.append(orderByConditionFields[i]);
+
+			if ((i + 1) < orderByConditionFields.length) {
+				if (orderByComparator.isAscending() ^ previous) {
+					sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+				}
+				else {
+					sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+				}
+			}
+			else {
+				if (orderByComparator.isAscending() ^ previous) {
+					sb.append(WHERE_GREATER_THAN);
+				}
+				else {
+					sb.append(WHERE_LESSER_THAN);
+				}
+			}
+		}
+
+		sb.append(ORDER_BY_CLAUSE);
+
+		String[] orderByFields = orderByComparator.getOrderByFields();
+
+		for (int i = 0; i < orderByFields.length; i++) {
+			sb.append(entityAlias);
+			sb.append(orderByFields[i]);
+
+			if ((i + 1) < orderByFields.length) {
+				if (orderByComparator.isAscending() ^ previous) {
+					sb.append(ORDER_BY_ASC_HAS_NEXT);
+				}
+				else {
+					sb.append(ORDER_BY_DESC_HAS_NEXT);
+				}
+			}
+			else {
+				if (orderByComparator.isAscending() ^ previous) {
+					sb.append(ORDER_BY_ASC);
+				}
+				else {
+					sb.append(ORDER_BY_DESC);
+				}
+			}
+		}
+	}
+
 	public void cacheResult(List<T> models) {
 		for (T model : models) {
 			cacheResult(model);
@@ -844,51 +949,6 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 		}
 
 		return sql;
-	}
-
-	public void appendOrderByComparator(
-		StringBundler sb, String entityAlias,
-		OrderByComparator<T> orderByComparator) {
-
-		appendOrderByComparator(sb, entityAlias, orderByComparator, false);
-	}
-
-	public void appendOrderByComparator(
-		StringBundler sb, String entityAlias,
-		OrderByComparator<T> orderByComparator, boolean sqlQuery) {
-
-		sb.append(ORDER_BY_CLAUSE);
-
-		String[] orderByFields = orderByComparator.getOrderByFields();
-
-		int length = orderByFields.length;
-
-		if ((_databaseOrderByMaxColumns > 0) &&
-			(_databaseOrderByMaxColumns < length)) {
-
-			length = _databaseOrderByMaxColumns;
-		}
-
-		for (int i = 0; i < length; i++) {
-			sb.append(getColumnName(entityAlias, orderByFields[i], sqlQuery));
-
-			if ((i + 1) < length) {
-				if (orderByComparator.isAscending(orderByFields[i])) {
-					sb.append(ORDER_BY_ASC_HAS_NEXT);
-				}
-				else {
-					sb.append(ORDER_BY_DESC_HAS_NEXT);
-				}
-			}
-			else {
-				if (orderByComparator.isAscending(orderByFields[i])) {
-					sb.append(ORDER_BY_ASC);
-				}
-				else {
-					sb.append(ORDER_BY_DESC);
-				}
-			}
-		}
 	}
 
 	protected ClassLoader getClassLoader() {
