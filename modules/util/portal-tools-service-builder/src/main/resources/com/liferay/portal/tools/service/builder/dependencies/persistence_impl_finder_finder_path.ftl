@@ -19,3 +19,7 @@
 <#if entityFinder.hasArrayableOperator() || entityFinder.hasCustomComparator()>
 	private FinderPath _finderPathWithPaginationCountBy${entityFinder.name};
 </#if>
+
+<#if useBaseFinder>
+	private BaseFinder<${entity.name}> _baseFinder${entityFinder.name};
+</#if>

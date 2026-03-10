@@ -78,10 +78,20 @@ import com.liferay.portal.kernel.configuration.Configuration;
 </#if>
 
 import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
+
+<#if serviceBuilder.isVersionGTE_7_4_0()>
+	import com.liferay.portal.kernel.dao.orm.BaseFinder;
+</#if>
+
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
+
+<#if serviceBuilder.isVersionGTE_7_4_0()>
+	import com.liferay.portal.kernel.dao.orm.FinderColumn;
+</#if>
+
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -270,6 +280,17 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 	</#if>
 
 	<#list entity.entityFinders as entityFinder>
+		<#assign useBaseFinder = serviceBuilder.isVersionGTE_7_4_0() && !entityFinder.hasArrayableOperator() && !entityFinder.hasCustomComparator() />
+
+		<#if useBaseFinder>
+			<#list entityFinder.entityColumns as entityColumn>
+				<#if entityColumn.comparator != "=">
+					<#assign useBaseFinder = false />
+					<#break>
+				</#if>
+			</#list>
+		</#if>
+
 		<#include "persistence_impl_finder_finder_path.ftl">
 
 		<#include "persistence_impl_finder_find.ftl">
@@ -2949,6 +2970,84 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 					);
 			</#if>
 		</#list>
+
+		<#if serviceBuilder.isVersionGTE_7_4_0()>
+			<#list entity.entityFinders as entityFinder>
+				<#assign
+					entityColumns = entityFinder.entityColumns
+
+					_useBaseFinder = !entityFinder.hasArrayableOperator() && !entityFinder.hasCustomComparator()
+				/>
+
+				<#if _useBaseFinder>
+					<#list entityColumns as entityColumn>
+						<#if entityColumn.comparator != "=">
+							<#assign _useBaseFinder = false />
+							<#break>
+						</#if>
+					</#list>
+				</#if>
+
+				<#if _useBaseFinder>
+					_baseFinder${entityFinder.name} = new BaseFinder.Builder<>(this, ${finderCache})
+						.columns(
+							<#list entityColumns as entityColumn>
+								<#if entityColumn.isPrimitiveType()>
+									new FinderColumn(_FINDER_COLUMN_${entityFinder.name?upper_case}_${entityColumn.name?upper_case}_2)
+								<#elseif stringUtil.equals(entityColumn.type, "String") && entityColumn.isConvertNull()>
+									new FinderColumn(_FINDER_COLUMN_${entityFinder.name?upper_case}_${entityColumn.name?upper_case}_2, _FINDER_COLUMN_${entityFinder.name?upper_case}_${entityColumn.name?upper_case}_3)
+								<#elseif stringUtil.equals(entityColumn.type, "String") && !entityColumn.isConvertNull()>
+									new FinderColumn(_FINDER_COLUMN_${entityFinder.name?upper_case}_${entityColumn.name?upper_case}_2, _FINDER_COLUMN_${entityFinder.name?upper_case}_${entityColumn.name?upper_case}_1, _FINDER_COLUMN_${entityFinder.name?upper_case}_${entityColumn.name?upper_case}_3, ${(!entityColumn.isCaseSensitive())?string("true", "false")})
+								<#else>
+									new FinderColumn(_FINDER_COLUMN_${entityFinder.name?upper_case}_${entityColumn.name?upper_case}_2, _FINDER_COLUMN_${entityFinder.name?upper_case}_${entityColumn.name?upper_case}_1, null, false)
+								</#if>
+
+								<#if entityColumn_has_next>
+									,
+								</#if>
+							</#list>
+						)
+						.sqlSelectWhere(_SQL_SELECT_${entity.alias?upper_case}_WHERE)
+						.sqlCountWhere(_SQL_COUNT_${entity.alias?upper_case}_WHERE)
+						<#if entityFinder.isCollection()>
+							.finderPathWithPagination(_finderPathWithPaginationFindBy${entityFinder.name})
+							.finderPathWithoutPagination(_finderPathWithoutPaginationFindBy${entityFinder.name})
+						</#if>
+						<#if !entityFinder.isCollection() || entityFinder.isUnique()>
+							.finderPathFetch(_finderPathFetchBy${entityFinder.name})
+						</#if>
+						<#if entityFinder.isCollection()>
+							.finderPathCount(_finderPathCountBy${entityFinder.name})
+						</#if>
+						.defaultOrderByJpql(${entity.name}ModelImpl.ORDER_BY_JPQL)
+						.orderByEntityAlias(_ORDER_BY_ENTITY_ALIAS)
+						.cacheValidator(
+							(columnValues, model) -> {
+								<#list entityColumns as entityColumn>
+									if (!Objects.equals(
+											columnValues[${entityColumn_index}],
+											<#if entityColumn.isPrimitiveType(false)>
+												<#if stringUtil.equals(entityColumn.type, "boolean")>
+													model.is${entityColumn.methodName}()
+												<#else>
+													model.get${entityColumn.methodName}()
+												</#if>
+											<#else>
+												model.get${entityColumn.methodName}()
+											</#if>
+										)) {
+
+										return false;
+									}
+								</#list>
+
+								return true;
+							}
+						)
+						.build();
+				</#if>
+			</#list>
+		</#if>
 
 		${entity.name}Util.setPersistence(this);
 	}

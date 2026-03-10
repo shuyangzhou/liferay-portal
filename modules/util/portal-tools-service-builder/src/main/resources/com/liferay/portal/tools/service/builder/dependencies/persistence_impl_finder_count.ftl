@@ -24,75 +24,96 @@ public int countBy${entityFinder.name}(
 
 ) {
 	<#if entityFinder.isCollection() || serviceBuilder.isVersionLTE_7_3_0()>
-		<#if entity.isChangeTrackingEnabled()>
-			try (SafeCloseable safeCloseable = ${ctPersistenceHelper}.setCTCollectionIdWithSafeCloseable(${entity.name}.class)) {
-		</#if>
-
-		<#list entityColumns as entityColumn>
-			<#if stringUtil.equals(entityColumn.type, "String") && entityColumn.isConvertNull()>
-				${entityColumn.name} = Objects.toString(${entityColumn.name}, "");
-			</#if>
-		</#list>
-
-		FinderPath finderPath =
-			<#if !entityFinder.hasCustomComparator()>
-				_finderPathCountBy${entityFinder.name};
-			<#else>
-				_finderPathWithPaginationCountBy${entityFinder.name};
+		<#if useBaseFinder>
+			<#if entity.isChangeTrackingEnabled()>
+				try (SafeCloseable safeCloseable = ${ctPersistenceHelper}.setCTCollectionIdWithSafeCloseable(${entity.name}.class)) {
 			</#if>
 
-		Object[] finderArgs = new Object[] {
+			return _baseFinder${entityFinder.name}.count(
+				new Object[] {
+					<#list entityColumns as entityColumn>
+						${entityColumn.name}
+
+						<#if entityColumn_has_next>
+							,
+						</#if>
+					</#list>
+				});
+
+			<#if entity.isChangeTrackingEnabled()>
+				}
+			</#if>
+		<#else>
+			<#if entity.isChangeTrackingEnabled()>
+				try (SafeCloseable safeCloseable = ${ctPersistenceHelper}.setCTCollectionIdWithSafeCloseable(${entity.name}.class)) {
+			</#if>
+
 			<#list entityColumns as entityColumn>
-				<#if stringUtil.equals(entityColumn.type, "Date")>
-					_getTime(${entityColumn.name})
-				<#else>
-					${entityColumn.name}
-				</#if>
-
-				<#if entityColumn_has_next>
-					,
+				<#if stringUtil.equals(entityColumn.type, "String") && entityColumn.isConvertNull()>
+					${entityColumn.name} = Objects.toString(${entityColumn.name}, "");
 				</#if>
 			</#list>
-		};
 
-		Long count = (Long)${finderCache}.getResult(finderPath, finderArgs, this);
-
-		if (count == null) {
-			<#include "persistence_impl_count_by_query.ftl">
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				<@finderQPos />
-
-				count = (Long)query.uniqueResult();
-
-				${finderCache}.putResult(finderPath, finderArgs, count);
-			}
-			catch (Exception exception) {
-				<#if serviceBuilder.isVersionLTE_7_2_0()>
-					${finderCache}.removeResult(finderPath, finderArgs);
+			FinderPath finderPath =
+				<#if !entityFinder.hasCustomComparator()>
+					_finderPathCountBy${entityFinder.name};
+				<#else>
+					_finderPathWithPaginationCountBy${entityFinder.name};
 				</#if>
 
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
+			Object[] finderArgs = new Object[] {
+				<#list entityColumns as entityColumn>
+					<#if stringUtil.equals(entityColumn.type, "Date")>
+						_getTime(${entityColumn.name})
+					<#else>
+						${entityColumn.name}
+					</#if>
 
-		return count.intValue();
+					<#if entityColumn_has_next>
+						,
+					</#if>
+				</#list>
+			};
 
-		<#if entity.isChangeTrackingEnabled()>
+			Long count = (Long)${finderCache}.getResult(finderPath, finderArgs, this);
+
+			if (count == null) {
+				<#include "persistence_impl_count_by_query.ftl">
+
+				String sql = sb.toString();
+
+				Session session = null;
+
+				try {
+					session = openSession();
+
+					Query query = session.createQuery(sql);
+
+					QueryPos queryPos = QueryPos.getInstance(query);
+
+					<@finderQPos />
+
+					count = (Long)query.uniqueResult();
+
+					${finderCache}.putResult(finderPath, finderArgs, count);
+				}
+				catch (Exception exception) {
+					<#if serviceBuilder.isVersionLTE_7_2_0()>
+						${finderCache}.removeResult(finderPath, finderArgs);
+					</#if>
+
+					throw processException(exception);
+				}
+				finally {
+					closeSession(session);
+				}
 			}
+
+			return count.intValue();
+
+			<#if entity.isChangeTrackingEnabled()>
+				}
+			</#if>
 		</#if>
 	<#else>
 		${entity.name} ${entity.variableName} = fetchBy${entityFinder.name}(

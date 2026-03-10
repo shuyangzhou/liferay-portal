@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiPredicate;
@@ -40,10 +41,10 @@ public class BaseFinder<T extends BaseModel<T>> {
 	public int count(Object[] columnValues) {
 		_normalizeStringValues(columnValues);
 
-		Object[] finderArgs = columnValues.clone();
+		Object[] finderArgs = _toFinderArgs(columnValues);
 
 		Long count = (Long)_finderCache.getResult(
-			_finderPathCount, finderArgs, _persistence);
+			_finderPathCount, finderArgs, _basePersistenceImpl);
 
 		if (count == null) {
 			String sql = _buildCountSql(columnValues);
@@ -51,7 +52,7 @@ public class BaseFinder<T extends BaseModel<T>> {
 			Session session = null;
 
 			try {
-				session = _persistence.openSession();
+				session = _basePersistenceImpl.openSession();
 
 				Query query = session.createQuery(sql);
 
@@ -59,14 +60,13 @@ public class BaseFinder<T extends BaseModel<T>> {
 
 				count = (Long)query.uniqueResult();
 
-				_finderCache.putResult(
-					_finderPathCount, finderArgs, count);
+				_finderCache.putResult(_finderPathCount, finderArgs, count);
 			}
 			catch (Exception exception) {
-				throw _persistence.processException(exception);
+				throw _basePersistenceImpl.processException(exception);
 			}
 			finally {
-				_persistence.closeSession(session);
+				_basePersistenceImpl.closeSession(session);
 			}
 		}
 
@@ -88,14 +88,14 @@ public class BaseFinder<T extends BaseModel<T>> {
 		Object[] finderArgs = null;
 
 		if (useFinderCache) {
-			finderArgs = columnValues.clone();
+			finderArgs = _toFinderArgs(columnValues);
 		}
 
 		Object result = null;
 
 		if (useFinderCache) {
 			result = _finderCache.getResult(
-				_finderPathFetch, finderArgs, _persistence);
+				_finderPathFetch, finderArgs, _basePersistenceImpl);
 		}
 
 		if (result instanceof BaseModel) {
@@ -112,7 +112,7 @@ public class BaseFinder<T extends BaseModel<T>> {
 			Session session = null;
 
 			try {
-				session = _persistence.openSession();
+				session = _basePersistenceImpl.openSession();
 
 				Query query = session.createQuery(sql);
 
@@ -131,14 +131,14 @@ public class BaseFinder<T extends BaseModel<T>> {
 
 					result = model;
 
-					_persistence.cacheResult(model);
+					_basePersistenceImpl.cacheResult(model);
 				}
 			}
 			catch (Exception exception) {
-				throw _persistence.processException(exception);
+				throw _basePersistenceImpl.processException(exception);
 			}
 			finally {
-				_persistence.closeSession(session);
+				_basePersistenceImpl.closeSession(session);
 			}
 		}
 
@@ -177,18 +177,18 @@ public class BaseFinder<T extends BaseModel<T>> {
 			if (useFinderCache) {
 				if (_finderPathWithoutPagination != null) {
 					finderPath = _finderPathWithoutPagination;
-					finderArgs = columnValues.clone();
+					finderArgs = _toFinderArgs(columnValues);
 				}
 				else {
 					finderPath = _finderPathWithPagination;
-					finderArgs = _buildPaginatedFinderArgs(
+					finderArgs = _toFinderArgs(
 						columnValues, start, end, orderByComparator);
 				}
 			}
 		}
 		else if (useFinderCache) {
 			finderPath = _finderPathWithPagination;
-			finderArgs = _buildPaginatedFinderArgs(
+			finderArgs = _toFinderArgs(
 				columnValues, start, end, orderByComparator);
 		}
 
@@ -196,7 +196,7 @@ public class BaseFinder<T extends BaseModel<T>> {
 
 		if (useFinderCache) {
 			list = (List<T>)_finderCache.getResult(
-				finderPath, finderArgs, _persistence);
+				finderPath, finderArgs, _basePersistenceImpl);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (T model : list) {
@@ -215,26 +215,26 @@ public class BaseFinder<T extends BaseModel<T>> {
 			Session session = null;
 
 			try {
-				session = _persistence.openSession();
+				session = _basePersistenceImpl.openSession();
 
 				Query query = session.createQuery(sql);
 
 				_bindParameters(query, columnValues);
 
 				list = (List<T>)QueryUtil.list(
-					query, _persistence.getDialect(), start, end);
+					query, _basePersistenceImpl.getDialect(), start, end);
 
-				_persistence.cacheResult(list);
+				_basePersistenceImpl.cacheResult(list);
 
 				if (useFinderCache) {
 					_finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
 			catch (Exception exception) {
-				throw _persistence.processException(exception);
+				throw _basePersistenceImpl.processException(exception);
 			}
 			finally {
-				_persistence.closeSession(session);
+				_basePersistenceImpl.closeSession(session);
 			}
 		}
 
@@ -244,9 +244,10 @@ public class BaseFinder<T extends BaseModel<T>> {
 	public static class Builder<T extends BaseModel<T>> {
 
 		public Builder(
-			BasePersistenceImpl<T> persistence, FinderCache finderCache) {
+			BasePersistenceImpl<T> basePersistenceImpl,
+			FinderCache finderCache) {
 
-			_persistence = persistence;
+			_basePersistenceImpl = basePersistenceImpl;
 			_finderCache = finderCache;
 		}
 
@@ -320,6 +321,7 @@ public class BaseFinder<T extends BaseModel<T>> {
 			return this;
 		}
 
+		private BasePersistenceImpl<T> _basePersistenceImpl;
 		private BiPredicate<Object[], T> _cacheValidator;
 		private FinderColumn[] _columns;
 		private String _defaultOrderByJpql;
@@ -329,14 +331,13 @@ public class BaseFinder<T extends BaseModel<T>> {
 		private FinderPath _finderPathWithoutPagination;
 		private FinderPath _finderPathWithPagination;
 		private String _orderByEntityAlias;
-		private BasePersistenceImpl<T> _persistence;
 		private String _sqlCountWhere;
 		private String _sqlSelectWhere;
 
 	}
 
 	private BaseFinder(Builder<T> builder) {
-		_persistence = builder._persistence;
+		_basePersistenceImpl = builder._basePersistenceImpl;
 		_finderCache = builder._finderCache;
 		_columns = builder._columns;
 		_sqlSelectWhere = builder._sqlSelectWhere;
@@ -354,8 +355,7 @@ public class BaseFinder<T extends BaseModel<T>> {
 		StringBundler sb, Object[] columnValues, boolean[] bindFlags) {
 
 		for (int i = 0; i < _columns.length; i++) {
-			bindFlags[i] = _columns[i].appendWhereClause(
-				sb, columnValues[i]);
+			bindFlags[i] = _columns[i].appendWhereClause(sb, columnValues[i]);
 		}
 	}
 
@@ -388,25 +388,8 @@ public class BaseFinder<T extends BaseModel<T>> {
 		return sb.toString();
 	}
 
-	private Object[] _buildPaginatedFinderArgs(
-		Object[] columnValues, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		Object[] finderArgs = new Object[columnValues.length + 3];
-
-		System.arraycopy(
-			columnValues, 0, finderArgs, 0, columnValues.length);
-
-		finderArgs[columnValues.length] = start;
-		finderArgs[columnValues.length + 1] = end;
-		finderArgs[columnValues.length + 2] = orderByComparator;
-
-		return finderArgs;
-	}
-
 	private String _buildSelectSql(
-		Object[] columnValues,
-		OrderByComparator<T> orderByComparator) {
+		Object[] columnValues, OrderByComparator<T> orderByComparator) {
 
 		StringBundler sb = null;
 
@@ -426,7 +409,7 @@ public class BaseFinder<T extends BaseModel<T>> {
 		_appendWhereClause(sb, columnValues, bindFlags);
 
 		if (orderByComparator != null) {
-			_persistence.appendOrderByComparator(
+			_basePersistenceImpl.appendOrderByComparator(
 				sb, _orderByEntityAlias, orderByComparator);
 		}
 		else if (_defaultOrderByJpql != null) {
@@ -444,6 +427,48 @@ public class BaseFinder<T extends BaseModel<T>> {
 		}
 	}
 
+	private Object[] _toFinderArgs(Object[] columnValues) {
+		Object[] finderArgs = new Object[columnValues.length];
+
+		for (int i = 0; i < columnValues.length; i++) {
+			if (columnValues[i] instanceof Date) {
+				Date date = (Date)columnValues[i];
+
+				finderArgs[i] = date.getTime();
+			}
+			else {
+				finderArgs[i] = columnValues[i];
+			}
+		}
+
+		return finderArgs;
+	}
+
+	private Object[] _toFinderArgs(
+		Object[] columnValues, int start, int end,
+		OrderByComparator<T> orderByComparator) {
+
+		Object[] finderArgs = new Object[columnValues.length + 3];
+
+		for (int i = 0; i < columnValues.length; i++) {
+			if (columnValues[i] instanceof Date) {
+				Date date = (Date)columnValues[i];
+
+				finderArgs[i] = date.getTime();
+			}
+			else {
+				finderArgs[i] = columnValues[i];
+			}
+		}
+
+		finderArgs[columnValues.length] = start;
+		finderArgs[columnValues.length + 1] = end;
+		finderArgs[columnValues.length + 2] = orderByComparator;
+
+		return finderArgs;
+	}
+
+	private final BasePersistenceImpl<T> _basePersistenceImpl;
 	private final BiPredicate<Object[], T> _cacheValidator;
 	private final FinderColumn[] _columns;
 	private final String _defaultOrderByJpql;
@@ -453,7 +478,6 @@ public class BaseFinder<T extends BaseModel<T>> {
 	private final FinderPath _finderPathWithoutPagination;
 	private final FinderPath _finderPathWithPagination;
 	private final String _orderByEntityAlias;
-	private final BasePersistenceImpl<T> _persistence;
 	private final String _sqlCountWhere;
 	private final String _sqlSelectWhere;
 
