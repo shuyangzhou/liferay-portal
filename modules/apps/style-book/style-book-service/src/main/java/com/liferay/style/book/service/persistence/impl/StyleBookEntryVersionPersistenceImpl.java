@@ -16,7 +16,6 @@ import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderColumn;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
-import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
@@ -328,142 +327,13 @@ public class StyleBookEntryVersionPersistenceImpl
 		StyleBookEntryVersion styleBookEntryVersion = findByPrimaryKey(
 			styleBookEntryVersionId);
 
-		Session session = null;
+		StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
 
-		try {
-			session = openSession();
+		_baseFinderStyleBookEntryId.findPrevAndNext(
+			array, styleBookEntryVersion, new Object[] {styleBookEntryId},
+			orderByComparator);
 
-			StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
-
-			array[0] = getByStyleBookEntryId_PrevAndNext(
-				session, styleBookEntryVersion, styleBookEntryId,
-				orderByComparator, true);
-
-			array[1] = styleBookEntryVersion;
-
-			array[2] = getByStyleBookEntryId_PrevAndNext(
-				session, styleBookEntryVersion, styleBookEntryId,
-				orderByComparator, false);
-
-			return array;
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected StyleBookEntryVersion getByStyleBookEntryId_PrevAndNext(
-		Session session, StyleBookEntryVersion styleBookEntryVersion,
-		long styleBookEntryId,
-		OrderByComparator<StyleBookEntryVersion> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
-
-		if (orderByComparator != null) {
-			sb = new StringBundler(
-				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
-					(orderByComparator.getOrderByFields().length * 3));
-		}
-		else {
-			sb = new StringBundler(3);
-		}
-
-		sb.append(_SQL_SELECT_STYLEBOOKENTRYVERSION_WHERE);
-
-		sb.append(_FINDER_COLUMN_STYLEBOOKENTRYID_STYLEBOOKENTRYID_2);
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			sb.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
-					}
-					else {
-						sb.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			sb.append(StyleBookEntryVersionModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = sb.toString();
-
-		Query query = session.createQuery(sql);
-
-		query.setFirstResult(0);
-		query.setMaxResults(2);
-
-		QueryPos queryPos = QueryPos.getInstance(query);
-
-		queryPos.add(styleBookEntryId);
-
-		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						styleBookEntryVersion)) {
-
-				queryPos.add(orderByConditionValue);
-			}
-		}
-
-		List<StyleBookEntryVersion> list = query.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
+		return array;
 	}
 
 	/**
@@ -845,155 +715,16 @@ public class StyleBookEntryVersionPersistenceImpl
 			OrderByComparator<StyleBookEntryVersion> orderByComparator)
 		throws NoSuchEntryVersionException {
 
-		uuid = Objects.toString(uuid, "");
-
 		StyleBookEntryVersion styleBookEntryVersion = findByPrimaryKey(
 			styleBookEntryVersionId);
 
-		Session session = null;
+		StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
 
-		try {
-			session = openSession();
+		_baseFinderUuid.findPrevAndNext(
+			array, styleBookEntryVersion, new Object[] {uuid},
+			orderByComparator);
 
-			StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
-
-			array[0] = getByUuid_PrevAndNext(
-				session, styleBookEntryVersion, uuid, orderByComparator, true);
-
-			array[1] = styleBookEntryVersion;
-
-			array[2] = getByUuid_PrevAndNext(
-				session, styleBookEntryVersion, uuid, orderByComparator, false);
-
-			return array;
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected StyleBookEntryVersion getByUuid_PrevAndNext(
-		Session session, StyleBookEntryVersion styleBookEntryVersion,
-		String uuid, OrderByComparator<StyleBookEntryVersion> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
-
-		if (orderByComparator != null) {
-			sb = new StringBundler(
-				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
-					(orderByComparator.getOrderByFields().length * 3));
-		}
-		else {
-			sb = new StringBundler(3);
-		}
-
-		sb.append(_SQL_SELECT_STYLEBOOKENTRYVERSION_WHERE);
-
-		boolean bindUuid = false;
-
-		if (uuid.isEmpty()) {
-			sb.append(_FINDER_COLUMN_UUID_UUID_3);
-		}
-		else {
-			bindUuid = true;
-
-			sb.append(_FINDER_COLUMN_UUID_UUID_2);
-		}
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			sb.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
-					}
-					else {
-						sb.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			sb.append(StyleBookEntryVersionModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = sb.toString();
-
-		Query query = session.createQuery(sql);
-
-		query.setFirstResult(0);
-		query.setMaxResults(2);
-
-		QueryPos queryPos = QueryPos.getInstance(query);
-
-		if (bindUuid) {
-			queryPos.add(uuid);
-		}
-
-		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						styleBookEntryVersion)) {
-
-				queryPos.add(orderByConditionValue);
-			}
-		}
-
-		List<StyleBookEntryVersion> list = query.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
+		return array;
 	}
 
 	/**
@@ -1268,162 +999,16 @@ public class StyleBookEntryVersionPersistenceImpl
 			OrderByComparator<StyleBookEntryVersion> orderByComparator)
 		throws NoSuchEntryVersionException {
 
-		uuid = Objects.toString(uuid, "");
-
 		StyleBookEntryVersion styleBookEntryVersion = findByPrimaryKey(
 			styleBookEntryVersionId);
 
-		Session session = null;
+		StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
 
-		try {
-			session = openSession();
+		_baseFinderUuid_Version.findPrevAndNext(
+			array, styleBookEntryVersion, new Object[] {uuid, version},
+			orderByComparator);
 
-			StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
-
-			array[0] = getByUuid_Version_PrevAndNext(
-				session, styleBookEntryVersion, uuid, version,
-				orderByComparator, true);
-
-			array[1] = styleBookEntryVersion;
-
-			array[2] = getByUuid_Version_PrevAndNext(
-				session, styleBookEntryVersion, uuid, version,
-				orderByComparator, false);
-
-			return array;
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected StyleBookEntryVersion getByUuid_Version_PrevAndNext(
-		Session session, StyleBookEntryVersion styleBookEntryVersion,
-		String uuid, int version,
-		OrderByComparator<StyleBookEntryVersion> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
-
-		if (orderByComparator != null) {
-			sb = new StringBundler(
-				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
-					(orderByComparator.getOrderByFields().length * 3));
-		}
-		else {
-			sb = new StringBundler(4);
-		}
-
-		sb.append(_SQL_SELECT_STYLEBOOKENTRYVERSION_WHERE);
-
-		boolean bindUuid = false;
-
-		if (uuid.isEmpty()) {
-			sb.append(_FINDER_COLUMN_UUID_VERSION_UUID_3);
-		}
-		else {
-			bindUuid = true;
-
-			sb.append(_FINDER_COLUMN_UUID_VERSION_UUID_2);
-		}
-
-		sb.append(_FINDER_COLUMN_UUID_VERSION_VERSION_2);
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			sb.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
-					}
-					else {
-						sb.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			sb.append(StyleBookEntryVersionModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = sb.toString();
-
-		Query query = session.createQuery(sql);
-
-		query.setFirstResult(0);
-		query.setMaxResults(2);
-
-		QueryPos queryPos = QueryPos.getInstance(query);
-
-		if (bindUuid) {
-			queryPos.add(uuid);
-		}
-
-		queryPos.add(version);
-
-		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						styleBookEntryVersion)) {
-
-				queryPos.add(orderByConditionValue);
-			}
-		}
-
-		List<StyleBookEntryVersion> list = query.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
+		return array;
 	}
 
 	/**
@@ -1702,162 +1287,16 @@ public class StyleBookEntryVersionPersistenceImpl
 			OrderByComparator<StyleBookEntryVersion> orderByComparator)
 		throws NoSuchEntryVersionException {
 
-		uuid = Objects.toString(uuid, "");
-
 		StyleBookEntryVersion styleBookEntryVersion = findByPrimaryKey(
 			styleBookEntryVersionId);
 
-		Session session = null;
+		StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
 
-		try {
-			session = openSession();
+		_baseFinderUUID_G.findPrevAndNext(
+			array, styleBookEntryVersion, new Object[] {uuid, groupId},
+			orderByComparator);
 
-			StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
-
-			array[0] = getByUUID_G_PrevAndNext(
-				session, styleBookEntryVersion, uuid, groupId,
-				orderByComparator, true);
-
-			array[1] = styleBookEntryVersion;
-
-			array[2] = getByUUID_G_PrevAndNext(
-				session, styleBookEntryVersion, uuid, groupId,
-				orderByComparator, false);
-
-			return array;
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected StyleBookEntryVersion getByUUID_G_PrevAndNext(
-		Session session, StyleBookEntryVersion styleBookEntryVersion,
-		String uuid, long groupId,
-		OrderByComparator<StyleBookEntryVersion> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
-
-		if (orderByComparator != null) {
-			sb = new StringBundler(
-				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
-					(orderByComparator.getOrderByFields().length * 3));
-		}
-		else {
-			sb = new StringBundler(4);
-		}
-
-		sb.append(_SQL_SELECT_STYLEBOOKENTRYVERSION_WHERE);
-
-		boolean bindUuid = false;
-
-		if (uuid.isEmpty()) {
-			sb.append(_FINDER_COLUMN_UUID_G_UUID_3);
-		}
-		else {
-			bindUuid = true;
-
-			sb.append(_FINDER_COLUMN_UUID_G_UUID_2);
-		}
-
-		sb.append(_FINDER_COLUMN_UUID_G_GROUPID_2);
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			sb.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
-					}
-					else {
-						sb.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			sb.append(StyleBookEntryVersionModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = sb.toString();
-
-		Query query = session.createQuery(sql);
-
-		query.setFirstResult(0);
-		query.setMaxResults(2);
-
-		QueryPos queryPos = QueryPos.getInstance(query);
-
-		if (bindUuid) {
-			queryPos.add(uuid);
-		}
-
-		queryPos.add(groupId);
-
-		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						styleBookEntryVersion)) {
-
-				queryPos.add(orderByConditionValue);
-			}
-		}
-
-		List<StyleBookEntryVersion> list = query.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
+		return array;
 	}
 
 	/**
@@ -2273,162 +1712,16 @@ public class StyleBookEntryVersionPersistenceImpl
 			OrderByComparator<StyleBookEntryVersion> orderByComparator)
 		throws NoSuchEntryVersionException {
 
-		uuid = Objects.toString(uuid, "");
-
 		StyleBookEntryVersion styleBookEntryVersion = findByPrimaryKey(
 			styleBookEntryVersionId);
 
-		Session session = null;
+		StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
 
-		try {
-			session = openSession();
+		_baseFinderUuid_C.findPrevAndNext(
+			array, styleBookEntryVersion, new Object[] {uuid, companyId},
+			orderByComparator);
 
-			StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
-
-			array[0] = getByUuid_C_PrevAndNext(
-				session, styleBookEntryVersion, uuid, companyId,
-				orderByComparator, true);
-
-			array[1] = styleBookEntryVersion;
-
-			array[2] = getByUuid_C_PrevAndNext(
-				session, styleBookEntryVersion, uuid, companyId,
-				orderByComparator, false);
-
-			return array;
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected StyleBookEntryVersion getByUuid_C_PrevAndNext(
-		Session session, StyleBookEntryVersion styleBookEntryVersion,
-		String uuid, long companyId,
-		OrderByComparator<StyleBookEntryVersion> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
-
-		if (orderByComparator != null) {
-			sb = new StringBundler(
-				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
-					(orderByComparator.getOrderByFields().length * 3));
-		}
-		else {
-			sb = new StringBundler(4);
-		}
-
-		sb.append(_SQL_SELECT_STYLEBOOKENTRYVERSION_WHERE);
-
-		boolean bindUuid = false;
-
-		if (uuid.isEmpty()) {
-			sb.append(_FINDER_COLUMN_UUID_C_UUID_3);
-		}
-		else {
-			bindUuid = true;
-
-			sb.append(_FINDER_COLUMN_UUID_C_UUID_2);
-		}
-
-		sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			sb.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
-					}
-					else {
-						sb.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			sb.append(StyleBookEntryVersionModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = sb.toString();
-
-		Query query = session.createQuery(sql);
-
-		query.setFirstResult(0);
-		query.setMaxResults(2);
-
-		QueryPos queryPos = QueryPos.getInstance(query);
-
-		if (bindUuid) {
-			queryPos.add(uuid);
-		}
-
-		queryPos.add(companyId);
-
-		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						styleBookEntryVersion)) {
-
-				queryPos.add(orderByConditionValue);
-			}
-		}
-
-		List<StyleBookEntryVersion> list = query.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
+		return array;
 	}
 
 	/**
@@ -2729,166 +2022,16 @@ public class StyleBookEntryVersionPersistenceImpl
 			OrderByComparator<StyleBookEntryVersion> orderByComparator)
 		throws NoSuchEntryVersionException {
 
-		uuid = Objects.toString(uuid, "");
-
 		StyleBookEntryVersion styleBookEntryVersion = findByPrimaryKey(
 			styleBookEntryVersionId);
 
-		Session session = null;
+		StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
 
-		try {
-			session = openSession();
+		_baseFinderUuid_C_Version.findPrevAndNext(
+			array, styleBookEntryVersion,
+			new Object[] {uuid, companyId, version}, orderByComparator);
 
-			StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
-
-			array[0] = getByUuid_C_Version_PrevAndNext(
-				session, styleBookEntryVersion, uuid, companyId, version,
-				orderByComparator, true);
-
-			array[1] = styleBookEntryVersion;
-
-			array[2] = getByUuid_C_Version_PrevAndNext(
-				session, styleBookEntryVersion, uuid, companyId, version,
-				orderByComparator, false);
-
-			return array;
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected StyleBookEntryVersion getByUuid_C_Version_PrevAndNext(
-		Session session, StyleBookEntryVersion styleBookEntryVersion,
-		String uuid, long companyId, int version,
-		OrderByComparator<StyleBookEntryVersion> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
-
-		if (orderByComparator != null) {
-			sb = new StringBundler(
-				6 + (orderByComparator.getOrderByConditionFields().length * 3) +
-					(orderByComparator.getOrderByFields().length * 3));
-		}
-		else {
-			sb = new StringBundler(5);
-		}
-
-		sb.append(_SQL_SELECT_STYLEBOOKENTRYVERSION_WHERE);
-
-		boolean bindUuid = false;
-
-		if (uuid.isEmpty()) {
-			sb.append(_FINDER_COLUMN_UUID_C_VERSION_UUID_3);
-		}
-		else {
-			bindUuid = true;
-
-			sb.append(_FINDER_COLUMN_UUID_C_VERSION_UUID_2);
-		}
-
-		sb.append(_FINDER_COLUMN_UUID_C_VERSION_COMPANYID_2);
-
-		sb.append(_FINDER_COLUMN_UUID_C_VERSION_VERSION_2);
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			sb.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
-					}
-					else {
-						sb.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			sb.append(StyleBookEntryVersionModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = sb.toString();
-
-		Query query = session.createQuery(sql);
-
-		query.setFirstResult(0);
-		query.setMaxResults(2);
-
-		QueryPos queryPos = QueryPos.getInstance(query);
-
-		if (bindUuid) {
-			queryPos.add(uuid);
-		}
-
-		queryPos.add(companyId);
-
-		queryPos.add(version);
-
-		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						styleBookEntryVersion)) {
-
-				queryPos.add(orderByConditionValue);
-			}
-		}
-
-		List<StyleBookEntryVersion> list = query.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
+		return array;
 	}
 
 	/**
@@ -3163,142 +2306,13 @@ public class StyleBookEntryVersionPersistenceImpl
 		StyleBookEntryVersion styleBookEntryVersion = findByPrimaryKey(
 			styleBookEntryVersionId);
 
-		Session session = null;
+		StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
 
-		try {
-			session = openSession();
+		_baseFinderGroupId.findPrevAndNext(
+			array, styleBookEntryVersion, new Object[] {groupId},
+			orderByComparator);
 
-			StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
-
-			array[0] = getByGroupId_PrevAndNext(
-				session, styleBookEntryVersion, groupId, orderByComparator,
-				true);
-
-			array[1] = styleBookEntryVersion;
-
-			array[2] = getByGroupId_PrevAndNext(
-				session, styleBookEntryVersion, groupId, orderByComparator,
-				false);
-
-			return array;
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected StyleBookEntryVersion getByGroupId_PrevAndNext(
-		Session session, StyleBookEntryVersion styleBookEntryVersion,
-		long groupId,
-		OrderByComparator<StyleBookEntryVersion> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
-
-		if (orderByComparator != null) {
-			sb = new StringBundler(
-				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
-					(orderByComparator.getOrderByFields().length * 3));
-		}
-		else {
-			sb = new StringBundler(3);
-		}
-
-		sb.append(_SQL_SELECT_STYLEBOOKENTRYVERSION_WHERE);
-
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			sb.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
-					}
-					else {
-						sb.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			sb.append(StyleBookEntryVersionModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = sb.toString();
-
-		Query query = session.createQuery(sql);
-
-		query.setFirstResult(0);
-		query.setMaxResults(2);
-
-		QueryPos queryPos = QueryPos.getInstance(query);
-
-		queryPos.add(groupId);
-
-		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						styleBookEntryVersion)) {
-
-				queryPos.add(orderByConditionValue);
-			}
-		}
-
-		List<StyleBookEntryVersion> list = query.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
+		return array;
 	}
 
 	/**
@@ -3574,146 +2588,13 @@ public class StyleBookEntryVersionPersistenceImpl
 		StyleBookEntryVersion styleBookEntryVersion = findByPrimaryKey(
 			styleBookEntryVersionId);
 
-		Session session = null;
+		StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
 
-		try {
-			session = openSession();
+		_baseFinderGroupId_Version.findPrevAndNext(
+			array, styleBookEntryVersion, new Object[] {groupId, version},
+			orderByComparator);
 
-			StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
-
-			array[0] = getByGroupId_Version_PrevAndNext(
-				session, styleBookEntryVersion, groupId, version,
-				orderByComparator, true);
-
-			array[1] = styleBookEntryVersion;
-
-			array[2] = getByGroupId_Version_PrevAndNext(
-				session, styleBookEntryVersion, groupId, version,
-				orderByComparator, false);
-
-			return array;
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected StyleBookEntryVersion getByGroupId_Version_PrevAndNext(
-		Session session, StyleBookEntryVersion styleBookEntryVersion,
-		long groupId, int version,
-		OrderByComparator<StyleBookEntryVersion> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
-
-		if (orderByComparator != null) {
-			sb = new StringBundler(
-				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
-					(orderByComparator.getOrderByFields().length * 3));
-		}
-		else {
-			sb = new StringBundler(4);
-		}
-
-		sb.append(_SQL_SELECT_STYLEBOOKENTRYVERSION_WHERE);
-
-		sb.append(_FINDER_COLUMN_GROUPID_VERSION_GROUPID_2);
-
-		sb.append(_FINDER_COLUMN_GROUPID_VERSION_VERSION_2);
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			sb.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
-					}
-					else {
-						sb.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			sb.append(StyleBookEntryVersionModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = sb.toString();
-
-		Query query = session.createQuery(sql);
-
-		query.setFirstResult(0);
-		query.setMaxResults(2);
-
-		QueryPos queryPos = QueryPos.getInstance(query);
-
-		queryPos.add(groupId);
-
-		queryPos.add(version);
-
-		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						styleBookEntryVersion)) {
-
-				queryPos.add(orderByConditionValue);
-			}
-		}
-
-		List<StyleBookEntryVersion> list = query.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
+		return array;
 	}
 
 	/**
@@ -4000,146 +2881,13 @@ public class StyleBookEntryVersionPersistenceImpl
 		StyleBookEntryVersion styleBookEntryVersion = findByPrimaryKey(
 			styleBookEntryVersionId);
 
-		Session session = null;
+		StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
 
-		try {
-			session = openSession();
+		_baseFinderG_D.findPrevAndNext(
+			array, styleBookEntryVersion,
+			new Object[] {groupId, defaultStyleBookEntry}, orderByComparator);
 
-			StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
-
-			array[0] = getByG_D_PrevAndNext(
-				session, styleBookEntryVersion, groupId, defaultStyleBookEntry,
-				orderByComparator, true);
-
-			array[1] = styleBookEntryVersion;
-
-			array[2] = getByG_D_PrevAndNext(
-				session, styleBookEntryVersion, groupId, defaultStyleBookEntry,
-				orderByComparator, false);
-
-			return array;
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected StyleBookEntryVersion getByG_D_PrevAndNext(
-		Session session, StyleBookEntryVersion styleBookEntryVersion,
-		long groupId, boolean defaultStyleBookEntry,
-		OrderByComparator<StyleBookEntryVersion> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
-
-		if (orderByComparator != null) {
-			sb = new StringBundler(
-				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
-					(orderByComparator.getOrderByFields().length * 3));
-		}
-		else {
-			sb = new StringBundler(4);
-		}
-
-		sb.append(_SQL_SELECT_STYLEBOOKENTRYVERSION_WHERE);
-
-		sb.append(_FINDER_COLUMN_G_D_GROUPID_2);
-
-		sb.append(_FINDER_COLUMN_G_D_DEFAULTSTYLEBOOKENTRY_2);
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			sb.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
-					}
-					else {
-						sb.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			sb.append(StyleBookEntryVersionModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = sb.toString();
-
-		Query query = session.createQuery(sql);
-
-		query.setFirstResult(0);
-		query.setMaxResults(2);
-
-		QueryPos queryPos = QueryPos.getInstance(query);
-
-		queryPos.add(groupId);
-
-		queryPos.add(defaultStyleBookEntry);
-
-		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						styleBookEntryVersion)) {
-
-				queryPos.add(orderByConditionValue);
-			}
-		}
-
-		List<StyleBookEntryVersion> list = query.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
+		return array;
 	}
 
 	/**
@@ -4443,150 +3191,14 @@ public class StyleBookEntryVersionPersistenceImpl
 		StyleBookEntryVersion styleBookEntryVersion = findByPrimaryKey(
 			styleBookEntryVersionId);
 
-		Session session = null;
+		StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
 
-		try {
-			session = openSession();
+		_baseFinderG_D_Version.findPrevAndNext(
+			array, styleBookEntryVersion,
+			new Object[] {groupId, defaultStyleBookEntry, version},
+			orderByComparator);
 
-			StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
-
-			array[0] = getByG_D_Version_PrevAndNext(
-				session, styleBookEntryVersion, groupId, defaultStyleBookEntry,
-				version, orderByComparator, true);
-
-			array[1] = styleBookEntryVersion;
-
-			array[2] = getByG_D_Version_PrevAndNext(
-				session, styleBookEntryVersion, groupId, defaultStyleBookEntry,
-				version, orderByComparator, false);
-
-			return array;
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected StyleBookEntryVersion getByG_D_Version_PrevAndNext(
-		Session session, StyleBookEntryVersion styleBookEntryVersion,
-		long groupId, boolean defaultStyleBookEntry, int version,
-		OrderByComparator<StyleBookEntryVersion> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
-
-		if (orderByComparator != null) {
-			sb = new StringBundler(
-				6 + (orderByComparator.getOrderByConditionFields().length * 3) +
-					(orderByComparator.getOrderByFields().length * 3));
-		}
-		else {
-			sb = new StringBundler(5);
-		}
-
-		sb.append(_SQL_SELECT_STYLEBOOKENTRYVERSION_WHERE);
-
-		sb.append(_FINDER_COLUMN_G_D_VERSION_GROUPID_2);
-
-		sb.append(_FINDER_COLUMN_G_D_VERSION_DEFAULTSTYLEBOOKENTRY_2);
-
-		sb.append(_FINDER_COLUMN_G_D_VERSION_VERSION_2);
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			sb.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
-					}
-					else {
-						sb.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			sb.append(StyleBookEntryVersionModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = sb.toString();
-
-		Query query = session.createQuery(sql);
-
-		query.setFirstResult(0);
-		query.setMaxResults(2);
-
-		QueryPos queryPos = QueryPos.getInstance(query);
-
-		queryPos.add(groupId);
-
-		queryPos.add(defaultStyleBookEntry);
-
-		queryPos.add(version);
-
-		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						styleBookEntryVersion)) {
-
-				queryPos.add(orderByConditionValue);
-			}
-		}
-
-		List<StyleBookEntryVersion> list = query.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
+		return array;
 	}
 
 	/**
@@ -4876,162 +3488,16 @@ public class StyleBookEntryVersionPersistenceImpl
 			OrderByComparator<StyleBookEntryVersion> orderByComparator)
 		throws NoSuchEntryVersionException {
 
-		name = Objects.toString(name, "");
-
 		StyleBookEntryVersion styleBookEntryVersion = findByPrimaryKey(
 			styleBookEntryVersionId);
 
-		Session session = null;
+		StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
 
-		try {
-			session = openSession();
+		_baseFinderG_LikeN.findPrevAndNext(
+			array, styleBookEntryVersion, new Object[] {groupId, name},
+			orderByComparator);
 
-			StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
-
-			array[0] = getByG_LikeN_PrevAndNext(
-				session, styleBookEntryVersion, groupId, name,
-				orderByComparator, true);
-
-			array[1] = styleBookEntryVersion;
-
-			array[2] = getByG_LikeN_PrevAndNext(
-				session, styleBookEntryVersion, groupId, name,
-				orderByComparator, false);
-
-			return array;
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected StyleBookEntryVersion getByG_LikeN_PrevAndNext(
-		Session session, StyleBookEntryVersion styleBookEntryVersion,
-		long groupId, String name,
-		OrderByComparator<StyleBookEntryVersion> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
-
-		if (orderByComparator != null) {
-			sb = new StringBundler(
-				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
-					(orderByComparator.getOrderByFields().length * 3));
-		}
-		else {
-			sb = new StringBundler(4);
-		}
-
-		sb.append(_SQL_SELECT_STYLEBOOKENTRYVERSION_WHERE);
-
-		sb.append(_FINDER_COLUMN_G_LIKEN_GROUPID_2);
-
-		boolean bindName = false;
-
-		if (name.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_LIKEN_NAME_3);
-		}
-		else {
-			bindName = true;
-
-			sb.append(_FINDER_COLUMN_G_LIKEN_NAME_2);
-		}
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			sb.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
-					}
-					else {
-						sb.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			sb.append(StyleBookEntryVersionModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = sb.toString();
-
-		Query query = session.createQuery(sql);
-
-		query.setFirstResult(0);
-		query.setMaxResults(2);
-
-		QueryPos queryPos = QueryPos.getInstance(query);
-
-		queryPos.add(groupId);
-
-		if (bindName) {
-			queryPos.add(name);
-		}
-
-		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						styleBookEntryVersion)) {
-
-				queryPos.add(orderByConditionValue);
-			}
-		}
-
-		List<StyleBookEntryVersion> list = query.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
+		return array;
 	}
 
 	/**
@@ -5331,166 +3797,16 @@ public class StyleBookEntryVersionPersistenceImpl
 			OrderByComparator<StyleBookEntryVersion> orderByComparator)
 		throws NoSuchEntryVersionException {
 
-		name = Objects.toString(name, "");
-
 		StyleBookEntryVersion styleBookEntryVersion = findByPrimaryKey(
 			styleBookEntryVersionId);
 
-		Session session = null;
+		StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
 
-		try {
-			session = openSession();
+		_baseFinderG_LikeN_Version.findPrevAndNext(
+			array, styleBookEntryVersion, new Object[] {groupId, name, version},
+			orderByComparator);
 
-			StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
-
-			array[0] = getByG_LikeN_Version_PrevAndNext(
-				session, styleBookEntryVersion, groupId, name, version,
-				orderByComparator, true);
-
-			array[1] = styleBookEntryVersion;
-
-			array[2] = getByG_LikeN_Version_PrevAndNext(
-				session, styleBookEntryVersion, groupId, name, version,
-				orderByComparator, false);
-
-			return array;
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected StyleBookEntryVersion getByG_LikeN_Version_PrevAndNext(
-		Session session, StyleBookEntryVersion styleBookEntryVersion,
-		long groupId, String name, int version,
-		OrderByComparator<StyleBookEntryVersion> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
-
-		if (orderByComparator != null) {
-			sb = new StringBundler(
-				6 + (orderByComparator.getOrderByConditionFields().length * 3) +
-					(orderByComparator.getOrderByFields().length * 3));
-		}
-		else {
-			sb = new StringBundler(5);
-		}
-
-		sb.append(_SQL_SELECT_STYLEBOOKENTRYVERSION_WHERE);
-
-		sb.append(_FINDER_COLUMN_G_LIKEN_VERSION_GROUPID_2);
-
-		boolean bindName = false;
-
-		if (name.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_LIKEN_VERSION_NAME_3);
-		}
-		else {
-			bindName = true;
-
-			sb.append(_FINDER_COLUMN_G_LIKEN_VERSION_NAME_2);
-		}
-
-		sb.append(_FINDER_COLUMN_G_LIKEN_VERSION_VERSION_2);
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			sb.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
-					}
-					else {
-						sb.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			sb.append(StyleBookEntryVersionModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = sb.toString();
-
-		Query query = session.createQuery(sql);
-
-		query.setFirstResult(0);
-		query.setMaxResults(2);
-
-		QueryPos queryPos = QueryPos.getInstance(query);
-
-		queryPos.add(groupId);
-
-		if (bindName) {
-			queryPos.add(name);
-		}
-
-		queryPos.add(version);
-
-		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						styleBookEntryVersion)) {
-
-				queryPos.add(orderByConditionValue);
-			}
-		}
-
-		List<StyleBookEntryVersion> list = query.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
+		return array;
 	}
 
 	/**
@@ -5782,162 +4098,16 @@ public class StyleBookEntryVersionPersistenceImpl
 			OrderByComparator<StyleBookEntryVersion> orderByComparator)
 		throws NoSuchEntryVersionException {
 
-		styleBookEntryKey = Objects.toString(styleBookEntryKey, "");
-
 		StyleBookEntryVersion styleBookEntryVersion = findByPrimaryKey(
 			styleBookEntryVersionId);
 
-		Session session = null;
+		StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
 
-		try {
-			session = openSession();
+		_baseFinderG_SBEK.findPrevAndNext(
+			array, styleBookEntryVersion,
+			new Object[] {groupId, styleBookEntryKey}, orderByComparator);
 
-			StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
-
-			array[0] = getByG_SBEK_PrevAndNext(
-				session, styleBookEntryVersion, groupId, styleBookEntryKey,
-				orderByComparator, true);
-
-			array[1] = styleBookEntryVersion;
-
-			array[2] = getByG_SBEK_PrevAndNext(
-				session, styleBookEntryVersion, groupId, styleBookEntryKey,
-				orderByComparator, false);
-
-			return array;
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected StyleBookEntryVersion getByG_SBEK_PrevAndNext(
-		Session session, StyleBookEntryVersion styleBookEntryVersion,
-		long groupId, String styleBookEntryKey,
-		OrderByComparator<StyleBookEntryVersion> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
-
-		if (orderByComparator != null) {
-			sb = new StringBundler(
-				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
-					(orderByComparator.getOrderByFields().length * 3));
-		}
-		else {
-			sb = new StringBundler(4);
-		}
-
-		sb.append(_SQL_SELECT_STYLEBOOKENTRYVERSION_WHERE);
-
-		sb.append(_FINDER_COLUMN_G_SBEK_GROUPID_2);
-
-		boolean bindStyleBookEntryKey = false;
-
-		if (styleBookEntryKey.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_SBEK_STYLEBOOKENTRYKEY_3);
-		}
-		else {
-			bindStyleBookEntryKey = true;
-
-			sb.append(_FINDER_COLUMN_G_SBEK_STYLEBOOKENTRYKEY_2);
-		}
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			sb.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
-					}
-					else {
-						sb.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			sb.append(StyleBookEntryVersionModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = sb.toString();
-
-		Query query = session.createQuery(sql);
-
-		query.setFirstResult(0);
-		query.setMaxResults(2);
-
-		QueryPos queryPos = QueryPos.getInstance(query);
-
-		queryPos.add(groupId);
-
-		if (bindStyleBookEntryKey) {
-			queryPos.add(styleBookEntryKey);
-		}
-
-		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						styleBookEntryVersion)) {
-
-				queryPos.add(orderByConditionValue);
-			}
-		}
-
-		List<StyleBookEntryVersion> list = query.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
+		return array;
 	}
 
 	/**
@@ -6357,162 +4527,16 @@ public class StyleBookEntryVersionPersistenceImpl
 			OrderByComparator<StyleBookEntryVersion> orderByComparator)
 		throws NoSuchEntryVersionException {
 
-		themeId = Objects.toString(themeId, "");
-
 		StyleBookEntryVersion styleBookEntryVersion = findByPrimaryKey(
 			styleBookEntryVersionId);
 
-		Session session = null;
+		StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
 
-		try {
-			session = openSession();
+		_baseFinderG_T.findPrevAndNext(
+			array, styleBookEntryVersion, new Object[] {groupId, themeId},
+			orderByComparator);
 
-			StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
-
-			array[0] = getByG_T_PrevAndNext(
-				session, styleBookEntryVersion, groupId, themeId,
-				orderByComparator, true);
-
-			array[1] = styleBookEntryVersion;
-
-			array[2] = getByG_T_PrevAndNext(
-				session, styleBookEntryVersion, groupId, themeId,
-				orderByComparator, false);
-
-			return array;
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected StyleBookEntryVersion getByG_T_PrevAndNext(
-		Session session, StyleBookEntryVersion styleBookEntryVersion,
-		long groupId, String themeId,
-		OrderByComparator<StyleBookEntryVersion> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
-
-		if (orderByComparator != null) {
-			sb = new StringBundler(
-				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
-					(orderByComparator.getOrderByFields().length * 3));
-		}
-		else {
-			sb = new StringBundler(4);
-		}
-
-		sb.append(_SQL_SELECT_STYLEBOOKENTRYVERSION_WHERE);
-
-		sb.append(_FINDER_COLUMN_G_T_GROUPID_2);
-
-		boolean bindThemeId = false;
-
-		if (themeId.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_T_THEMEID_3);
-		}
-		else {
-			bindThemeId = true;
-
-			sb.append(_FINDER_COLUMN_G_T_THEMEID_2);
-		}
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			sb.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
-					}
-					else {
-						sb.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			sb.append(StyleBookEntryVersionModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = sb.toString();
-
-		Query query = session.createQuery(sql);
-
-		query.setFirstResult(0);
-		query.setMaxResults(2);
-
-		QueryPos queryPos = QueryPos.getInstance(query);
-
-		queryPos.add(groupId);
-
-		if (bindThemeId) {
-			queryPos.add(themeId);
-		}
-
-		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						styleBookEntryVersion)) {
-
-				queryPos.add(orderByConditionValue);
-			}
-		}
-
-		List<StyleBookEntryVersion> list = query.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
+		return array;
 	}
 
 	/**
@@ -6811,166 +4835,16 @@ public class StyleBookEntryVersionPersistenceImpl
 			OrderByComparator<StyleBookEntryVersion> orderByComparator)
 		throws NoSuchEntryVersionException {
 
-		themeId = Objects.toString(themeId, "");
-
 		StyleBookEntryVersion styleBookEntryVersion = findByPrimaryKey(
 			styleBookEntryVersionId);
 
-		Session session = null;
+		StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
 
-		try {
-			session = openSession();
+		_baseFinderG_T_Version.findPrevAndNext(
+			array, styleBookEntryVersion,
+			new Object[] {groupId, themeId, version}, orderByComparator);
 
-			StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
-
-			array[0] = getByG_T_Version_PrevAndNext(
-				session, styleBookEntryVersion, groupId, themeId, version,
-				orderByComparator, true);
-
-			array[1] = styleBookEntryVersion;
-
-			array[2] = getByG_T_Version_PrevAndNext(
-				session, styleBookEntryVersion, groupId, themeId, version,
-				orderByComparator, false);
-
-			return array;
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected StyleBookEntryVersion getByG_T_Version_PrevAndNext(
-		Session session, StyleBookEntryVersion styleBookEntryVersion,
-		long groupId, String themeId, int version,
-		OrderByComparator<StyleBookEntryVersion> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
-
-		if (orderByComparator != null) {
-			sb = new StringBundler(
-				6 + (orderByComparator.getOrderByConditionFields().length * 3) +
-					(orderByComparator.getOrderByFields().length * 3));
-		}
-		else {
-			sb = new StringBundler(5);
-		}
-
-		sb.append(_SQL_SELECT_STYLEBOOKENTRYVERSION_WHERE);
-
-		sb.append(_FINDER_COLUMN_G_T_VERSION_GROUPID_2);
-
-		boolean bindThemeId = false;
-
-		if (themeId.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_T_VERSION_THEMEID_3);
-		}
-		else {
-			bindThemeId = true;
-
-			sb.append(_FINDER_COLUMN_G_T_VERSION_THEMEID_2);
-		}
-
-		sb.append(_FINDER_COLUMN_G_T_VERSION_VERSION_2);
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			sb.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
-					}
-					else {
-						sb.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			sb.append(StyleBookEntryVersionModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = sb.toString();
-
-		Query query = session.createQuery(sql);
-
-		query.setFirstResult(0);
-		query.setMaxResults(2);
-
-		QueryPos queryPos = QueryPos.getInstance(query);
-
-		queryPos.add(groupId);
-
-		if (bindThemeId) {
-			queryPos.add(themeId);
-		}
-
-		queryPos.add(version);
-
-		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						styleBookEntryVersion)) {
-
-				queryPos.add(orderByConditionValue);
-			}
-		}
-
-		List<StyleBookEntryVersion> list = query.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
+		return array;
 	}
 
 	/**
@@ -7279,166 +5153,17 @@ public class StyleBookEntryVersionPersistenceImpl
 			OrderByComparator<StyleBookEntryVersion> orderByComparator)
 		throws NoSuchEntryVersionException {
 
-		themeId = Objects.toString(themeId, "");
-
 		StyleBookEntryVersion styleBookEntryVersion = findByPrimaryKey(
 			styleBookEntryVersionId);
 
-		Session session = null;
+		StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
 
-		try {
-			session = openSession();
+		_baseFinderG_D_T.findPrevAndNext(
+			array, styleBookEntryVersion,
+			new Object[] {groupId, defaultStyleBookEntry, themeId},
+			orderByComparator);
 
-			StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
-
-			array[0] = getByG_D_T_PrevAndNext(
-				session, styleBookEntryVersion, groupId, defaultStyleBookEntry,
-				themeId, orderByComparator, true);
-
-			array[1] = styleBookEntryVersion;
-
-			array[2] = getByG_D_T_PrevAndNext(
-				session, styleBookEntryVersion, groupId, defaultStyleBookEntry,
-				themeId, orderByComparator, false);
-
-			return array;
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected StyleBookEntryVersion getByG_D_T_PrevAndNext(
-		Session session, StyleBookEntryVersion styleBookEntryVersion,
-		long groupId, boolean defaultStyleBookEntry, String themeId,
-		OrderByComparator<StyleBookEntryVersion> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
-
-		if (orderByComparator != null) {
-			sb = new StringBundler(
-				6 + (orderByComparator.getOrderByConditionFields().length * 3) +
-					(orderByComparator.getOrderByFields().length * 3));
-		}
-		else {
-			sb = new StringBundler(5);
-		}
-
-		sb.append(_SQL_SELECT_STYLEBOOKENTRYVERSION_WHERE);
-
-		sb.append(_FINDER_COLUMN_G_D_T_GROUPID_2);
-
-		sb.append(_FINDER_COLUMN_G_D_T_DEFAULTSTYLEBOOKENTRY_2);
-
-		boolean bindThemeId = false;
-
-		if (themeId.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_D_T_THEMEID_3);
-		}
-		else {
-			bindThemeId = true;
-
-			sb.append(_FINDER_COLUMN_G_D_T_THEMEID_2);
-		}
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			sb.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
-					}
-					else {
-						sb.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			sb.append(StyleBookEntryVersionModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = sb.toString();
-
-		Query query = session.createQuery(sql);
-
-		query.setFirstResult(0);
-		query.setMaxResults(2);
-
-		QueryPos queryPos = QueryPos.getInstance(query);
-
-		queryPos.add(groupId);
-
-		queryPos.add(defaultStyleBookEntry);
-
-		if (bindThemeId) {
-			queryPos.add(themeId);
-		}
-
-		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						styleBookEntryVersion)) {
-
-				queryPos.add(orderByConditionValue);
-			}
-		}
-
-		List<StyleBookEntryVersion> list = query.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
+		return array;
 	}
 
 	/**
@@ -7778,170 +5503,17 @@ public class StyleBookEntryVersionPersistenceImpl
 			OrderByComparator<StyleBookEntryVersion> orderByComparator)
 		throws NoSuchEntryVersionException {
 
-		themeId = Objects.toString(themeId, "");
-
 		StyleBookEntryVersion styleBookEntryVersion = findByPrimaryKey(
 			styleBookEntryVersionId);
 
-		Session session = null;
+		StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
 
-		try {
-			session = openSession();
+		_baseFinderG_D_T_Version.findPrevAndNext(
+			array, styleBookEntryVersion,
+			new Object[] {groupId, defaultStyleBookEntry, themeId, version},
+			orderByComparator);
 
-			StyleBookEntryVersion[] array = new StyleBookEntryVersionImpl[3];
-
-			array[0] = getByG_D_T_Version_PrevAndNext(
-				session, styleBookEntryVersion, groupId, defaultStyleBookEntry,
-				themeId, version, orderByComparator, true);
-
-			array[1] = styleBookEntryVersion;
-
-			array[2] = getByG_D_T_Version_PrevAndNext(
-				session, styleBookEntryVersion, groupId, defaultStyleBookEntry,
-				themeId, version, orderByComparator, false);
-
-			return array;
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected StyleBookEntryVersion getByG_D_T_Version_PrevAndNext(
-		Session session, StyleBookEntryVersion styleBookEntryVersion,
-		long groupId, boolean defaultStyleBookEntry, String themeId,
-		int version, OrderByComparator<StyleBookEntryVersion> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
-
-		if (orderByComparator != null) {
-			sb = new StringBundler(
-				7 + (orderByComparator.getOrderByConditionFields().length * 3) +
-					(orderByComparator.getOrderByFields().length * 3));
-		}
-		else {
-			sb = new StringBundler(6);
-		}
-
-		sb.append(_SQL_SELECT_STYLEBOOKENTRYVERSION_WHERE);
-
-		sb.append(_FINDER_COLUMN_G_D_T_VERSION_GROUPID_2);
-
-		sb.append(_FINDER_COLUMN_G_D_T_VERSION_DEFAULTSTYLEBOOKENTRY_2);
-
-		boolean bindThemeId = false;
-
-		if (themeId.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_D_T_VERSION_THEMEID_3);
-		}
-		else {
-			bindThemeId = true;
-
-			sb.append(_FINDER_COLUMN_G_D_T_VERSION_THEMEID_2);
-		}
-
-		sb.append(_FINDER_COLUMN_G_D_T_VERSION_VERSION_2);
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			sb.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
-					}
-					else {
-						sb.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			sb.append(StyleBookEntryVersionModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = sb.toString();
-
-		Query query = session.createQuery(sql);
-
-		query.setFirstResult(0);
-		query.setMaxResults(2);
-
-		QueryPos queryPos = QueryPos.getInstance(query);
-
-		queryPos.add(groupId);
-
-		queryPos.add(defaultStyleBookEntry);
-
-		if (bindThemeId) {
-			queryPos.add(themeId);
-		}
-
-		queryPos.add(version);
-
-		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						styleBookEntryVersion)) {
-
-				queryPos.add(orderByConditionValue);
-			}
-		}
-
-		List<StyleBookEntryVersion> list = query.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
+		return array;
 	}
 
 	/**
