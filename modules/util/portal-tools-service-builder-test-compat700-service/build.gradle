@@ -1,6 +1,22 @@
 buildService {
 	apiDir = "../portal-tools-service-builder-test-compat700-api/src/main/java"
 	incubationFeatures = []
+
+	doFirst {
+		if (!System.getenv("JENKINS_HOME") &&
+			!gradle.startParameter.taskNames.any {
+				it.endsWith("buildServiceCompat")
+			}) {
+
+			println "${project.path}:buildService is a compatibility test module. Use 'buildServiceCompat' task to regenerate files locally."
+
+			throw new StopExecutionException()
+		}
+	}
+}
+
+task buildServiceCompat {
+	dependsOn buildService
 }
 
 dependencies {
