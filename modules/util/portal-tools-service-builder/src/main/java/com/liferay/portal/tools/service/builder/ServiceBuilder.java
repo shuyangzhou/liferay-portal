@@ -72,6 +72,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -789,6 +790,8 @@ public class ServiceBuilder {
 			}
 
 			if (build) {
+				_loadContentHashCache();
+
 				Collections.sort(_entities);
 
 				for (Entity entity : _entities) {
@@ -988,6 +991,8 @@ public class ServiceBuilder {
 
 				_deleteOrmXml();
 				_deleteSpringLegacyXml();
+
+				_saveContentHashCache();
 			}
 		}
 		catch (FileNotFoundException fileNotFoundException) {
@@ -6036,6 +6041,38 @@ public class ServiceBuilder {
 		return value.equals(type.getFullyQualifiedName());
 	}
 
+	private void _loadContentHashCache() {
+		_contentHashCacheFile = new File(
+			_implDirName + "/../.service_builder_content_hashes");
+
+		if (!_contentHashCacheFile.exists()) {
+			return;
+		}
+
+		try {
+			Properties properties = new Properties();
+
+			properties.load(new FileReader(_contentHashCacheFile));
+
+			for (String key : properties.stringPropertyNames()) {
+				String value = properties.getProperty(key);
+
+				String[] parts = value.split(",");
+
+				if (parts.length == 2) {
+					_contentHashCache.put(
+						key,
+						new long[] {
+							Long.parseLong(parts[0]), Long.parseLong(parts[1])
+						});
+				}
+			}
+		}
+		catch (Exception exception) {
+			_contentHashCache.clear();
+		}
+	}
+
 	private List<JavaAnnotation> _mergeAnnotations(
 		List<JavaAnnotation> javaAnnotations1,
 		List<JavaAnnotation> javaAnnotations2) {
@@ -8102,6 +8139,36 @@ public class ServiceBuilder {
 		entity.setResolved();
 	}
 
+	private void _saveContentHashCache() {
+		if (_contentHashCacheFile == null) {
+			return;
+		}
+
+		try {
+			Properties properties = new Properties();
+
+			for (Map.Entry<String, long[]> entry :
+					_contentHashCache.entrySet()) {
+
+				long[] hashes = entry.getValue();
+
+				properties.setProperty(
+					entry.getKey(), hashes[0] + "," + hashes[1]);
+			}
+
+			FileWriter fileWriter = new FileWriter(_contentHashCacheFile);
+
+			properties.store(fileWriter, "ServiceBuilder content hash cache");
+
+			fileWriter.close();
+		}
+		catch (Exception exception) {
+			System.err.println(
+				"Warning: could not save content hash cache: " +
+					exception.getMessage());
+		}
+	}
+
 	private void _touch(File file) throws IOException {
 		_mkdir(file.getParentFile());
 
@@ -8124,8 +8191,10 @@ public class ServiceBuilder {
 
 		String year = simpleDateFormat.format(new Date());
 
+		String oldContent = null;
+
 		if (file.exists()) {
-			String oldContent = _read(file);
+			oldContent = _read(file);
 
 			int x = oldContent.indexOf("/**\n * SPDX-FileCopyrightText: (c) ");
 
@@ -8139,6 +8208,21 @@ public class ServiceBuilder {
 		header = header.replaceFirst(Pattern.quote("{$year}"), year);
 
 		content = header + "\n\n" + content;
+
+		if (oldContent != null) {
+			long contentHash = content.hashCode();
+			long fileHash = oldContent.hashCode();
+
+			String filePath = _normalize(file.getAbsolutePath());
+
+			long[] cachedHashes = _contentHashCache.get(filePath);
+
+			if ((cachedHashes != null) && (cachedHashes[0] == contentHash) &&
+				(cachedHashes[1] == fileHash)) {
+
+				return;
+			}
+		}
 
 		String fileName = _normalize(file.toString());
 
@@ -8171,16 +8255,21 @@ public class ServiceBuilder {
 			}
 		}
 
-		ToolsUtil.writeFileRaw(
+		String parsedContent = JavaParser.parse(
 			file,
-			JavaParser.parse(
-				file,
-				StringUtil.replace(
-					fileName.substring(
-						startIndex, fileName.lastIndexOf(StringPool.SLASH)),
-					CharPool.SLASH, CharPool.PERIOD),
-				content, _MAX_LINE_LENGTH, false),
-			modifiedFileNames);
+			StringUtil.replace(
+				fileName.substring(
+					startIndex, fileName.lastIndexOf(StringPool.SLASH)),
+				CharPool.SLASH, CharPool.PERIOD),
+			content, _MAX_LINE_LENGTH, false);
+
+		String filePath = _normalize(file.getAbsolutePath());
+
+		_contentHashCache.put(
+			filePath,
+			new long[] {content.hashCode(), parsedContent.hashCode()});
+
+		ToolsUtil.writeFileRaw(file, parsedContent, modifiedFileNames);
 	}
 
 	private static final int _DEFAULT_COLUMN_MAX_LENGTH = 75;
@@ -8279,6 +8368,8 @@ public class ServiceBuilder {
 	private boolean _buildNumberIncrement;
 	private boolean _changeTrackingEnabled;
 	private Properties _compatProperties;
+	private final Map<String, long[]> _contentHashCache = new HashMap<>();
+	private File _contentHashCacheFile;
 	private String _currentTplName;
 	private int _databaseNameMaxLength = 30;
 	private boolean _dependencyInjectorDS;
