@@ -1,6 +1,5 @@
 !/sql/update-*.sql
 **/.gradle
-**/.service_builder_content_hashes
 **/.settings
 **/.sonar
 **/TEST-frontend-js.xml

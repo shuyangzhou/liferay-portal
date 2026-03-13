@@ -72,7 +72,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -794,9 +793,9 @@ public class ServiceBuilder {
 			}
 
 			if (build) {
-				_loadContentHashCache();
+				_computeServiceBuilderHash(inputFileName);
 
-				if (_isUpToDate(inputFileName)) {
+				if (_isUpToDate()) {
 					System.out.println("Service Builder files are up to date");
 
 					return;
@@ -1003,8 +1002,6 @@ public class ServiceBuilder {
 				_deleteSpringLegacyXml();
 
 				_processPendingWrites();
-
-				_saveContentHashCache();
 			}
 		}
 		catch (FileNotFoundException fileNotFoundException) {
@@ -2314,6 +2311,34 @@ public class ServiceBuilder {
 		}
 		else {
 			_addIndexMetadata(indexMetadatas, indexMetadata);
+		}
+	}
+
+	private String _appendHashComment(String content, int contentHash) {
+		return StringBundler.concat(
+			content, _SB_HASH_PREFIX, contentHash, ":",
+			_serviceBuilderInputHash, ":", _serviceBuilderJarTimestamp);
+	}
+
+	private void _computeServiceBuilderHash(String inputFileName) {
+		try {
+			File inputFile = new File(_normalize(inputFileName));
+
+			if (inputFile.exists()) {
+				_serviceBuilderInputHash = _read(
+					inputFile
+				).hashCode();
+			}
+
+			URL codeSourceURL = ServiceBuilder.class.getProtectionDomain(
+			).getCodeSource(
+			).getLocation();
+
+			_serviceBuilderJarTimestamp = new File(
+				codeSourceURL.toURI()
+			).lastModified();
+		}
+		catch (Exception exception) {
 		}
 	}
 
@@ -6053,78 +6078,56 @@ public class ServiceBuilder {
 		return value.equals(type.getFullyQualifiedName());
 	}
 
-	private boolean _isUpToDate(String inputFileName) {
-		try {
-			File inputFile = new File(_normalize(inputFileName));
+	private boolean _isUpToDate() {
+		for (Entity entity : _entities) {
+			if (!_isTargetEntity(entity) || !entity.hasEntityColumns()) {
+				continue;
+			}
 
-			if (!inputFile.exists()) {
+			File file = new File(
+				StringBundler.concat(
+					_outputPath, "/model/impl/", entity.getName(),
+					"ModelImpl.java"));
+
+			if (!file.exists()) {
 				return false;
 			}
 
-			long inputFileHash = _read(
-				inputFile
-			).hashCode();
+			try {
+				String content = _read(file);
 
-			URL codeSourceURL = ServiceBuilder.class.getProtectionDomain(
-			).getCodeSource(
-			).getLocation();
+				int index = content.lastIndexOf(_SB_HASH_PREFIX);
 
-			long jarLastModified = new File(
-				codeSourceURL.toURI()
-			).lastModified();
+				if (index == -1) {
+					return false;
+				}
 
-			String cacheKey =
-				_INPUT_FILE_HASH_CACHE_KEY +
-					_normalize(inputFile.getAbsolutePath());
+				String hashLine = content.substring(
+					index + _SB_HASH_PREFIX.length());
 
-			long[] cachedValues = _contentHashCache.get(cacheKey);
+				String[] parts = hashLine.split(":");
 
-			if ((cachedValues != null) && (cachedValues[0] == inputFileHash) &&
-				(cachedValues[1] == jarLastModified)) {
+				if (parts.length < 3) {
+					return false;
+				}
 
-				return true;
+				long cachedInputHash = GetterUtil.getLong(parts[1]);
+				long cachedJarTimestamp = GetterUtil.getLong(parts[2]);
+
+				if ((cachedInputHash == _serviceBuilderInputHash) &&
+					(cachedJarTimestamp == _serviceBuilderJarTimestamp)) {
+
+					return true;
+				}
+
+				return false;
 			}
-
-			_contentHashCache.put(
-				cacheKey, new long[] {inputFileHash, jarLastModified});
-		}
-		catch (Exception exception) {
-			return false;
+			catch (Exception exception) {
+				return false;
+			}
 		}
 
 		return false;
-	}
-
-	private void _loadContentHashCache() {
-		_contentHashCacheFile = new File(
-			_implDirName + "/../.service_builder_content_hashes");
-
-		if (!_contentHashCacheFile.exists()) {
-			return;
-		}
-
-		try {
-			Properties properties = new Properties();
-
-			properties.load(new FileReader(_contentHashCacheFile));
-
-			for (String key : properties.stringPropertyNames()) {
-				String value = properties.getProperty(key);
-
-				String[] parts = value.split(",");
-
-				if (parts.length == 2) {
-					_contentHashCache.put(
-						key,
-						new long[] {
-							Long.parseLong(parts[0]), Long.parseLong(parts[1])
-						});
-				}
-			}
-		}
-		catch (Exception exception) {
-			_contentHashCache.clear();
-		}
 	}
 
 	private List<JavaAnnotation> _mergeAnnotations(
@@ -7789,17 +7792,8 @@ public class ServiceBuilder {
 								file, packagePath, content, _MAX_LINE_LENGTH,
 								false);
 
-							String filePath = _normalize(
-								file.getAbsolutePath());
-
-							synchronized (_contentHashCache) {
-								_contentHashCache.put(
-									filePath,
-									new long[] {
-										content.hashCode(),
-										parsedContent.hashCode()
-									});
-							}
+							parsedContent = _appendHashComment(
+								parsedContent, content.hashCode());
 
 							synchronized (modifiedFileNames) {
 								ToolsUtil.writeFileRaw(
@@ -8265,36 +8259,6 @@ public class ServiceBuilder {
 		entity.setResolved();
 	}
 
-	private void _saveContentHashCache() {
-		if (_contentHashCacheFile == null) {
-			return;
-		}
-
-		try {
-			Properties properties = new Properties();
-
-			for (Map.Entry<String, long[]> entry :
-					_contentHashCache.entrySet()) {
-
-				long[] hashes = entry.getValue();
-
-				properties.setProperty(
-					entry.getKey(), hashes[0] + "," + hashes[1]);
-			}
-
-			FileWriter fileWriter = new FileWriter(_contentHashCacheFile);
-
-			properties.store(fileWriter, "ServiceBuilder content hash cache");
-
-			fileWriter.close();
-		}
-		catch (Exception exception) {
-			System.err.println(
-				"Warning: could not save content hash cache: " +
-					exception.getMessage());
-		}
-	}
-
 	private void _touch(File file) throws IOException {
 		_mkdir(file.getParentFile());
 
@@ -8339,17 +8303,32 @@ public class ServiceBuilder {
 		content = header + "\n\n" + content;
 
 		if (oldContent != null) {
-			long contentHash = content.hashCode();
-			long fileHash = oldContent.hashCode();
+			int index = oldContent.lastIndexOf(_SB_HASH_PREFIX);
 
-			String filePath = _normalize(file.getAbsolutePath());
+			if (index != -1) {
+				int contentHash = content.hashCode();
 
-			long[] cachedHashes = _contentHashCache.get(filePath);
+				String hashLine = oldContent.substring(
+					index + _SB_HASH_PREFIX.length());
 
-			if ((cachedHashes != null) && (cachedHashes[0] == contentHash) &&
-				(cachedHashes[1] == fileHash)) {
+				String[] parts = hashLine.split(":");
 
-				return;
+				if ((parts.length >= 1) &&
+					(GetterUtil.getLong(parts[0]) == contentHash)) {
+
+					String expectedSuffix = _appendHashComment("", contentHash);
+
+					if (!oldContent.endsWith(expectedSuffix)) {
+						String updatedContent =
+							oldContent.substring(0, index) +
+								_appendHashComment("", contentHash);
+
+						ToolsUtil.writeFileRaw(
+							file, updatedContent, modifiedFileNames);
+					}
+
+					return;
+				}
 			}
 		}
 
@@ -8405,10 +8384,9 @@ public class ServiceBuilder {
 	private static final String _HIBERNATE_5_HBM_NAMESPACE =
 		"\"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd\"";
 
-	private static final String _INPUT_FILE_HASH_CACHE_KEY =
-		"__service_builder_input_file__";
-
 	private static final int _MAX_LINE_LENGTH = 80;
+
+	private static final String _SB_HASH_PREFIX = "\n// SB-Hash:";
 
 	private static final int _SESSION_TYPE_LOCAL = 1;
 
@@ -8492,8 +8470,6 @@ public class ServiceBuilder {
 	private boolean _buildNumberIncrement;
 	private boolean _changeTrackingEnabled;
 	private Properties _compatProperties;
-	private final Map<String, long[]> _contentHashCache = new HashMap<>();
-	private File _contentHashCacheFile;
 	private String _copyrightHeader;
 	private String _currentTplName;
 	private int _databaseNameMaxLength = 30;
@@ -8521,6 +8497,8 @@ public class ServiceBuilder {
 	private String[] _readOnlyPrefixes;
 	private Set<String> _resourceActionModels = new HashSet<>();
 	private String _resourcesDirName;
+	private long _serviceBuilderInputHash;
+	private long _serviceBuilderJarTimestamp;
 	private String _serviceOutputPath;
 	private boolean _shortNoSuchExceptionEnabled;
 	private String _springFileName;
