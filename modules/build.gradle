@@ -795,6 +795,18 @@ gradle.beforeProject {
 					mustRunAfter ":util:portal-tools-service-builder:deployDependencies"
 				}
 			}
+
+			buildService {
+				File stampFile = new File(buildDir, "service-builder/.buildService")
+
+				outputs.file(stampFile)
+
+				doLast {
+					stampFile.parentFile.mkdirs()
+
+					stampFile.text = "${System.currentTimeMillis()}"
+				}
+			}
 		}
 
 		pluginManager.withPlugin("com.liferay.portal.tools.wsdd.builder") {

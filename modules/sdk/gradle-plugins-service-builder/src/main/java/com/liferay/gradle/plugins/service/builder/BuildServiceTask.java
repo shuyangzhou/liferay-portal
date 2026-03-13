@@ -12,8 +12,10 @@ import com.liferay.gradle.util.Validator;
 import com.liferay.portal.tools.service.builder.ServiceBuilderArgs;
 
 import java.io.File;
+import java.io.IOException;
 
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,6 +33,7 @@ import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.JavaExec;
 import org.gradle.api.tasks.Optional;
+import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.util.CollectionUtils;
@@ -60,6 +63,21 @@ public class BuildServiceTask extends JavaExec {
 		setArgs(getCompleteArgs());
 
 		super.exec();
+
+		try {
+			File stampFile = getOutputStampFile();
+
+			stampFile.getParentFile().mkdirs();
+
+			Files.write(
+				stampFile.toPath(),
+				Long.toString(
+					System.currentTimeMillis()
+				).getBytes(StandardCharsets.UTF_8));
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(ioException);
+		}
 	}
 
 	@InputDirectory
@@ -129,6 +147,14 @@ public class BuildServiceTask extends JavaExec {
 	@Input
 	public List<String> getModelHintsConfigs() {
 		return GradleUtil.toStringList(_modelHintsConfigs);
+	}
+
+	@OutputFile
+	public File getOutputStampFile() {
+		Project project = getProject();
+
+		return new File(
+			project.getBuildDir(), "service-builder/.buildService");
 	}
 
 	@InputFile
