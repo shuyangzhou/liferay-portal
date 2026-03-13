@@ -112,6 +112,10 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -991,6 +995,8 @@ public class ServiceBuilder {
 
 				_deleteOrmXml();
 				_deleteSpringLegacyXml();
+
+				_processPendingWrites();
 
 				_saveContentHashCache();
 			}
@@ -7703,6 +7709,78 @@ public class ServiceBuilder {
 		versionEntity.setVersionedEntity(entity);
 	}
 
+	private void _processPendingWrites() throws Exception {
+		if (_pendingWrites.isEmpty()) {
+			return;
+		}
+
+		int threadCount = Math.min(
+			Runtime.getRuntime(
+			).availableProcessors(),
+			_pendingWrites.size());
+
+		ExecutorService executorService = Executors.newFixedThreadPool(
+			threadCount);
+
+		List<Future<Exception>> futures = new ArrayList<>();
+
+		for (Object[] pendingWrite : _pendingWrites) {
+			futures.add(
+				executorService.submit(
+					() -> {
+						try {
+							File file = (File)pendingWrite[0];
+							String packagePath = (String)pendingWrite[1];
+							String content = (String)pendingWrite[2];
+
+							@SuppressWarnings("unchecked")
+							Set<String> modifiedFileNames =
+								(Set<String>)pendingWrite[3];
+
+							String parsedContent = JavaParser.parse(
+								file, packagePath, content, _MAX_LINE_LENGTH,
+								false);
+
+							String filePath = _normalize(
+								file.getAbsolutePath());
+
+							synchronized (_contentHashCache) {
+								_contentHashCache.put(
+									filePath,
+									new long[] {
+										content.hashCode(),
+										parsedContent.hashCode()
+									});
+							}
+
+							synchronized (modifiedFileNames) {
+								ToolsUtil.writeFileRaw(
+									file, parsedContent, modifiedFileNames);
+							}
+
+							return null;
+						}
+						catch (Exception exception) {
+							return exception;
+						}
+					}));
+		}
+
+		executorService.shutdown();
+
+		executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
+
+		for (Future<Exception> future : futures) {
+			Exception exception = future.get();
+
+			if (exception != null) {
+				throw exception;
+			}
+		}
+
+		_pendingWrites.clear();
+	}
+
 	private String _processTemplate(String name, Map<String, Object> context)
 		throws Exception {
 
@@ -8255,21 +8333,13 @@ public class ServiceBuilder {
 			}
 		}
 
-		String parsedContent = JavaParser.parse(
-			file,
-			StringUtil.replace(
-				fileName.substring(
-					startIndex, fileName.lastIndexOf(StringPool.SLASH)),
-				CharPool.SLASH, CharPool.PERIOD),
-			content, _MAX_LINE_LENGTH, false);
+		String packagePath = StringUtil.replace(
+			fileName.substring(
+				startIndex, fileName.lastIndexOf(StringPool.SLASH)),
+			CharPool.SLASH, CharPool.PERIOD);
 
-		String filePath = _normalize(file.getAbsolutePath());
-
-		_contentHashCache.put(
-			filePath,
-			new long[] {content.hashCode(), parsedContent.hashCode()});
-
-		ToolsUtil.writeFileRaw(file, parsedContent, modifiedFileNames);
+		_pendingWrites.add(
+			new Object[] {file, packagePath, content, modifiedFileNames});
 	}
 
 	private static final int _DEFAULT_COLUMN_MAX_LENGTH = 75;
@@ -8389,6 +8459,7 @@ public class ServiceBuilder {
 	private boolean _osgiModule;
 	private String _outputPath;
 	private String _packagePath;
+	private final List<Object[]> _pendingWrites = new ArrayList<>();
 	private String _pluginName;
 	private String _portletShortName = StringPool.BLANK;
 	private String _propsUtil;
