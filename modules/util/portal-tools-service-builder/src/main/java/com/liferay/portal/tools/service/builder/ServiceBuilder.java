@@ -174,6 +174,14 @@ public class ServiceBuilder {
 	public static void main(String[] args) throws Exception {
 		Map<String, String> arguments = ArgumentsUtil.parseArguments(args);
 
+		String inputFilesDirName = arguments.get("service.input.files.dir");
+
+		if (Validator.isNotNull(inputFilesDirName)) {
+			_mainBatch(inputFilesDirName, arguments);
+
+			return;
+		}
+
 		String apiDirName = arguments.get("service.api.dir");
 		boolean autoImportDefaultReferences = GetterUtil.getBoolean(
 			arguments.get("service.auto.import.default.references"), true);
@@ -368,6 +376,144 @@ public class ServiceBuilder {
 		}
 
 		Introspector.flushCaches();
+	}
+
+	public static void processModuleServiceFiles(
+			Path baseDirPath, Map<String, String> arguments)
+		throws Exception {
+
+		List<Path> serviceXmlPaths = new ArrayList<>();
+
+		Files.walkFileTree(
+			baseDirPath,
+			new SimpleFileVisitor<Path>() {
+
+				@Override
+				public FileVisitResult preVisitDirectory(
+						Path dir, BasicFileAttributes basicFileAttributes)
+					throws IOException {
+
+					String dirName = dir.getFileName(
+					).toString();
+
+					if (dirName.equals("build") || dirName.equals("classes") ||
+						dirName.equals("node_modules") ||
+						dirName.equals("test-classes") ||
+						dirName.startsWith(".")) {
+
+						return FileVisitResult.SKIP_SUBTREE;
+					}
+
+					return FileVisitResult.CONTINUE;
+				}
+
+				@Override
+				public FileVisitResult visitFile(
+					Path file, BasicFileAttributes basicFileAttributes) {
+
+					if (Objects.equals(
+							file.getFileName(
+							).toString(),
+							"service.xml")) {
+
+						serviceXmlPaths.add(file);
+					}
+
+					return FileVisitResult.CONTINUE;
+				}
+
+			});
+
+		String[] modelHintsConfigs = StringUtil.split(
+			GetterUtil.getString(
+				arguments.get("service.model.hints.configs"),
+				StringUtil.merge(ServiceBuilderArgs.MODEL_HINTS_CONFIGS)));
+		String[] readOnlyPrefixes = StringUtil.split(
+			GetterUtil.getString(
+				arguments.get("service.read.only.prefixes"),
+				StringUtil.merge(ServiceBuilderArgs.READ_ONLY_PREFIXES)));
+		String[] resourceActionsConfigs = StringUtil.split(
+			GetterUtil.getString(
+				arguments.get("service.resource.actions.configs"),
+				StringUtil.merge(ServiceBuilderArgs.RESOURCE_ACTION_CONFIGS)));
+
+		ModelHintsUtil modelHintsUtil = new ModelHintsUtil();
+
+		ModelHintsImpl modelHintsImpl = new ModelHintsImpl();
+
+		modelHintsImpl.setModelHintsConfigs(modelHintsConfigs);
+
+		modelHintsImpl.afterPropertiesSet();
+
+		modelHintsUtil.setModelHints(modelHintsImpl);
+
+		for (Path serviceXmlPath : serviceXmlPaths) {
+			Path moduleDir = serviceXmlPath.getParent();
+
+			String moduleName = moduleDir.getFileName(
+			).toString();
+
+			if (!moduleName.endsWith("-service")) {
+				continue;
+			}
+
+			String apiModuleName =
+				moduleName.substring(0, moduleName.length() - 8) + "-api";
+
+			Path apiDir = moduleDir.resolveSibling(
+				apiModuleName
+			).resolve(
+				"src/main/java"
+			);
+
+			if (!Files.exists(apiDir)) {
+				continue;
+			}
+
+			Path implDir = moduleDir.resolve("src/main/java");
+			Path resourcesDir = moduleDir.resolve("src/main/resources");
+
+			if (!Files.exists(implDir) || !Files.exists(resourcesDir)) {
+				continue;
+			}
+
+			Path hbmFile = resourcesDir.resolve("META-INF/module-hbm.xml");
+			Path springFile = resourcesDir.resolve(
+				"META-INF/spring/module-spring.xml");
+			Path modelHintsFile = resourcesDir.resolve(
+				"META-INF/portlet-model-hints.xml");
+			Path sqlDir = resourcesDir.resolve("META-INF/sql");
+
+			String bundleSymbolicName = StringUtil.replace(
+				moduleName, '-', '.');
+
+			String propsUtil = StringBundler.concat(
+				"com.liferay.", bundleSymbolicName, ".util.ServiceProps");
+
+			Set<String> resourceActionModels = readResourceActionModels(
+				implDir.toString(), resourcesDir.toString(),
+				resourceActionsConfigs);
+
+			try {
+				System.out.println("Processing " + moduleDir.getFileName());
+
+				new ServiceBuilder(
+					apiDir.toString(), true, true,
+					"com.liferay.util.bean.PortletBeanLocatorUtil", 1, true, 30,
+					hbmFile.toString(), implDir.toString(), new String[0],
+					serviceXmlPath.toString(), modelHintsFile.toString(), true,
+					"", propsUtil, readOnlyPrefixes, resourceActionModels,
+					resourcesDir.toString(), springFile.toString(),
+					new String[] {"beans"}, sqlDir.toString(), "tables.sql",
+					"indexes.sql", "sequences.sql", null, null, null, true);
+			}
+			catch (Exception exception) {
+				System.err.println(
+					StringBundler.concat(
+						"Error processing ", moduleDir, ": ",
+						exception.getMessage()));
+			}
+		}
 	}
 
 	public static Set<String> readResourceActionModels(
@@ -2191,6 +2337,15 @@ public class ServiceBuilder {
 
 	private static SAXReader _getSAXReader() {
 		return SAXReaderFactory.getSAXReader(null, false, false);
+	}
+
+	private static void _mainBatch(
+			String inputFilesDirName, Map<String, String> arguments)
+		throws Exception {
+
+		processModuleServiceFiles(Paths.get(inputFilesDirName), arguments);
+
+		Introspector.flushCaches();
 	}
 
 	private static void _readResourceActionModels(

@@ -296,12 +296,30 @@
 		<antcall target="build-service-portal" />
 		<antcall target="build-service-portlets" />
 
-		<gradle-execute dir="../modules" forcedcacheenabled="false" task="buildService">
-			<arg value="--continue" />
-			<arg unless:true="${build.services.baseline.enabled}" value="--exclude-task" />
-			<arg unless:true="${build.services.baseline.enabled}" value="baseline" />
-			<arg value="-Dskip.read.only=${build.services.skip.read.only}" />
-		</gradle-execute>
+		<path id="service.builder.batch.classpath">
+			<fileset
+				dir="${sdk.dir}/dependencies/com.liferay.portal.tools.service.builder/lib"
+				includes="*.jar"
+			/>
+		</path>
+
+		<java
+			classname="com.liferay.portal.tools.service.builder.ServiceBuilder"
+			classpathref="service.builder.batch.classpath"
+			failonerror="true"
+			fork="true"
+			logError="true"
+			newenvironment="true"
+		>
+			<jvmarg value="-Dfile.encoding=UTF-8" />
+			<jvmarg value="-XX:MaxMetaspaceSize=768m" />
+			<jvmarg value="-Xms512m" />
+			<jvmarg value="-Xmx2048m" />
+			<jvmarg value="-Xss2048k" />
+			<arg value="-Dexternal-properties=com/liferay/portal/tools/dependencies/portal-tools.properties" />
+			<arg value="-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.Log4JLogger" />
+			<arg value="service.input.files.dir=${basedir}/../modules" />
+		</java>
 	</target>
 
 	<target name="build-upgrade-table">
