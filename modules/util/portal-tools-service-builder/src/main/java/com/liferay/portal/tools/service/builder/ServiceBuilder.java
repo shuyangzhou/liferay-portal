@@ -8329,9 +8329,12 @@ public class ServiceBuilder {
 			}
 		}
 
-		String header = _read("copyright.txt");
+		if (_copyrightHeader == null) {
+			_copyrightHeader = _read("copyright.txt");
+		}
 
-		header = header.replaceFirst(Pattern.quote("{$year}"), year);
+		String header = _copyrightHeader.replaceFirst(
+			Pattern.quote("{$year}"), year);
 
 		content = header + "\n\n" + content;
 
@@ -8491,6 +8494,7 @@ public class ServiceBuilder {
 	private Properties _compatProperties;
 	private final Map<String, long[]> _contentHashCache = new HashMap<>();
 	private File _contentHashCacheFile;
+	private String _copyrightHeader;
 	private String _currentTplName;
 	private int _databaseNameMaxLength = 30;
 	private boolean _dependencyInjectorDS;
