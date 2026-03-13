@@ -2532,6 +2532,9 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		public void afterPropertiesSet() {
 	</#if>
 		<#if serviceBuilder.isVersionGTE_7_3_0() && serviceBuilder.isVersionLTE_7_3_0()>
+
+			// This is faking a 7.3.0 only change, let's see if CI can catch it.
+
 			<#if osgiModule>
 				<#if !dependencyInjectorDS>
 					Bundle bundle = FrameworkUtil.getBundle(${entity.name}PersistenceImpl.class);
