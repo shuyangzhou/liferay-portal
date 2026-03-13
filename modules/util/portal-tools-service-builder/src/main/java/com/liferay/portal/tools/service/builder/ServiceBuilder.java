@@ -796,6 +796,12 @@ public class ServiceBuilder {
 			if (build) {
 				_loadContentHashCache();
 
+				if (_isUpToDate(inputFileName)) {
+					System.out.println("Service Builder files are up to date");
+
+					return;
+				}
+
 				Collections.sort(_entities);
 
 				for (Entity entity : _entities) {
@@ -6047,6 +6053,48 @@ public class ServiceBuilder {
 		return value.equals(type.getFullyQualifiedName());
 	}
 
+	private boolean _isUpToDate(String inputFileName) {
+		try {
+			File inputFile = new File(_normalize(inputFileName));
+
+			if (!inputFile.exists()) {
+				return false;
+			}
+
+			long inputFileHash = _read(
+				inputFile
+			).hashCode();
+
+			URL codeSourceURL = ServiceBuilder.class.getProtectionDomain(
+			).getCodeSource(
+			).getLocation();
+
+			long jarLastModified = new File(
+				codeSourceURL.toURI()
+			).lastModified();
+
+			String cacheKey =
+				_INPUT_FILE_HASH_CACHE_KEY +
+					_normalize(inputFile.getAbsolutePath());
+
+			long[] cachedValues = _contentHashCache.get(cacheKey);
+
+			if ((cachedValues != null) && (cachedValues[0] == inputFileHash) &&
+				(cachedValues[1] == jarLastModified)) {
+
+				return true;
+			}
+
+			_contentHashCache.put(
+				cacheKey, new long[] {inputFileHash, jarLastModified});
+		}
+		catch (Exception exception) {
+			return false;
+		}
+
+		return false;
+	}
+
 	private void _loadContentHashCache() {
 		_contentHashCacheFile = new File(
 			_implDirName + "/../.service_builder_content_hashes");
@@ -8353,6 +8401,9 @@ public class ServiceBuilder {
 
 	private static final String _HIBERNATE_5_HBM_NAMESPACE =
 		"\"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd\"";
+
+	private static final String _INPUT_FILE_HASH_CACHE_KEY =
+		"__service_builder_input_file__";
 
 	private static final int _MAX_LINE_LENGTH = 80;
 
