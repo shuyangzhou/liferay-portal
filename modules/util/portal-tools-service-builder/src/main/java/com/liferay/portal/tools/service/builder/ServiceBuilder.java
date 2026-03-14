@@ -466,6 +466,17 @@ public class ServiceBuilder {
 			String buildGradleContent = new String(
 				Files.readAllBytes(buildGradlePath), StandardCharsets.UTF_8);
 
+			if (buildGradleContent.contains("StopExecutionException") &&
+				(System.getenv("JENKINS_HOME") == null)) {
+
+				System.out.println(
+					StringBundler.concat(
+						"Skipping ", moduleName,
+						" (compatibility test module)"));
+
+				continue;
+			}
+
 			String apiDirValue = _parseBuildServiceProperty(
 				buildGradleContent, "apiDir");
 
