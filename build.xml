@@ -345,17 +345,38 @@ message.
 			</then>
 		</if>
 
-		<ant dir="portal-kernel" inheritAll="false" target="deploy" />
+		<ant dir="portal-kernel" inheritAll="false" target="deploy">
+			<property name="setup.binaries.cache.executed" value="true" />
+		</ant>
 
-		<ant dir="util-bridges" inheritAll="false" target="deploy" />
-		<ant dir="util-java" inheritAll="false" target="deploy" />
-		<ant dir="util-slf4j" inheritAll="false" target="deploy" />
-		<ant dir="util-taglib" inheritAll="false" target="deploy" />
+		<parallel failonany="true" threadcount="${parallel.thread.count}">
+			<ant dir="util-bridges" inheritAll="false" target="deploy">
+				<property name="setup.binaries.cache.executed" value="true" />
+			</ant>
 
-		<ant dir="portal-impl" inheritAll="false" target="deploy" />
+			<sequential>
+				<ant dir="util-java" inheritAll="false" target="deploy">
+					<property name="setup.binaries.cache.executed" value="true" />
+				</ant>
+				<ant dir="util-taglib" inheritAll="false" target="deploy">
+					<property name="setup.binaries.cache.executed" value="true" />
+				</ant>
+			</sequential>
 
-		<ant dir="portal-test" inheritAll="false" target="deploy" />
-		<ant dir="portal-web" inheritAll="false" target="deploy" />
+			<ant dir="util-slf4j" inheritAll="false" target="deploy">
+				<property name="setup.binaries.cache.executed" value="true" />
+			</ant>
+		</parallel>
+
+		<parallel failonany="true" threadcount="${parallel.thread.count}">
+			<ant dir="portal-impl" inheritAll="false" target="deploy">
+				<property name="setup.binaries.cache.executed" value="true" />
+			</ant>
+			<ant dir="portal-test" inheritAll="false" target="deploy">
+				<property name="setup.binaries.cache.executed" value="true" />
+			</ant>
+			<ant dir="portal-web" inheritAll="false" target="deploy" />
+		</parallel>
 
 		<antcall target="install-portal-snapshots" />
 
