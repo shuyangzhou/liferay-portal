@@ -442,13 +442,6 @@ message.
 				</if>
 			</then>
 			<else>
-				<gradle-execute dir="${project.dir}/modules/core" task="deploy">
-					<arg value="--parallel" />
-					<arg value="-Dbuild.exclude.dirs=${build.exclude.dirs}" />
-					<arg value="-Dbuild.include.dirs=${build.include.dirs}" />
-					<arg value="-Dbuild.profile=${build.profile}" />
-				</gradle-execute>
-
 				<pathconvert property="build.app.server.lib.marker.files" setonempty="false">
 					<fileset
 						dir="${project.dir}/modules"
@@ -459,7 +452,7 @@ message.
 				<if>
 					<isset property="build.app.server.lib.marker.files" />
 					<then>
-						<gradle-execute dir="${project.dir}/modules" task="deployTool">
+						<gradle-execute dir="${project.dir}/modules" task=":core:deploy deployTool">
 							<arg value="--parallel" />
 							<arg value="-Dbuild.exclude.dirs=${build.exclude.dirs}" />
 							<arg value="-Dbuild.include.dirs=${build.include.dirs}" />
@@ -470,7 +463,7 @@ message.
 						</gradle-execute>
 					</then>
 					<else>
-						<gradle-execute dir="${project.dir}/modules" task="deployTool">
+						<gradle-execute dir="${project.dir}/modules" task=":core:deploy deployTool">
 							<arg value="--parallel" />
 							<arg value="-Dbuild.exclude.dirs=${build.exclude.dirs}" />
 							<arg value="-Dbuild.include.dirs=${build.include.dirs}" />
