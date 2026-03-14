@@ -378,13 +378,9 @@ message.
 			<ant dir="portal-web" inheritAll="false" target="deploy" />
 		</parallel>
 
-		<antcall target="install-portal-snapshots" />
-
 		<touch file="${liferay.home}/.liferay-home" />
 
 		<mkdir dir="${liferay.home}/deploy" />
-
-		<ant dir="sql" inheritAll="false" target="build-db" />
 
 		<deploy-properties />
 
@@ -396,7 +392,11 @@ message.
 		<mkdir dir="${app.server.temp.dir}" />
 		<mkdir dir="${app.server.work.dir}" />
 
-		<ant dir="portal-web" inheritAll="false" target="war" />
+		<parallel failonany="true" threadcount="${parallel.thread.count}">
+			<antcall target="install-portal-snapshots" />
+			<ant dir="sql" inheritAll="false" target="build-db" />
+			<ant dir="portal-web" inheritAll="false" target="war" />
+		</parallel>
 
 		<stopwatch name="modules.stopwatch" />
 
