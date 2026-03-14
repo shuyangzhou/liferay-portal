@@ -575,15 +575,17 @@ message.
 	<target name="install-portal-snapshots">
 		<lstopwatch action="start" name="install.portal.snapshots" />
 
-		<ant dir="portal-impl" inheritAll="false" target="install-portal-snapshot" />
-		<ant dir="portal-kernel" inheritAll="false" target="install-portal-snapshot" />
-		<ant dir="portal-test" inheritAll="false" target="install-portal-snapshot" />
-		<ant dir="portal-web" inheritAll="false" target="install-portal-snapshot" />
-		<ant dir="support-tomcat" inheritAll="false" target="install-portal-snapshot" />
-		<ant dir="util-bridges" inheritAll="false" target="install-portal-snapshot" />
-		<ant dir="util-java" inheritAll="false" target="install-portal-snapshot" />
-		<ant dir="util-slf4j" inheritAll="false" target="install-portal-snapshot" />
-		<ant dir="util-taglib" inheritAll="false" target="install-portal-snapshot" />
+		<parallel failonany="true" threadcount="${parallel.thread.count}">
+			<ant dir="portal-impl" inheritAll="false" target="install-portal-snapshot" />
+			<ant dir="portal-kernel" inheritAll="false" target="install-portal-snapshot" />
+			<ant dir="portal-test" inheritAll="false" target="install-portal-snapshot" />
+			<ant dir="portal-web" inheritAll="false" target="install-portal-snapshot" />
+			<ant dir="support-tomcat" inheritAll="false" target="install-portal-snapshot" />
+			<ant dir="util-bridges" inheritAll="false" target="install-portal-snapshot" />
+			<ant dir="util-java" inheritAll="false" target="install-portal-snapshot" />
+			<ant dir="util-slf4j" inheritAll="false" target="install-portal-snapshot" />
+			<ant dir="util-taglib" inheritAll="false" target="install-portal-snapshot" />
+		</parallel>
 
 		<lstopwatch action="total" name="install.portal.snapshots" />
 	</target>
