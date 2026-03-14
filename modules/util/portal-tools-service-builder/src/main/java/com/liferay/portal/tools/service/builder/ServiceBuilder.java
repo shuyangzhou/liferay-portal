@@ -424,10 +424,7 @@ public class ServiceBuilder {
 
 			});
 
-		String[] modelHintsConfigs = StringUtil.split(
-			GetterUtil.getString(
-				arguments.get("service.model.hints.configs"),
-				StringUtil.merge(ServiceBuilderArgs.MODEL_HINTS_CONFIGS)));
+		String[] incubationFeatures = _readIncubationFeatures(baseDirPath);
 		String[] readOnlyPrefixes = StringUtil.split(
 			GetterUtil.getString(
 				arguments.get("service.read.only.prefixes"),
@@ -438,14 +435,6 @@ public class ServiceBuilder {
 				StringUtil.merge(ServiceBuilderArgs.RESOURCE_ACTION_CONFIGS)));
 
 		ModelHintsUtil modelHintsUtil = new ModelHintsUtil();
-
-		ModelHintsImpl modelHintsImpl = new ModelHintsImpl();
-
-		modelHintsImpl.setModelHintsConfigs(modelHintsConfigs);
-
-		modelHintsImpl.afterPropertiesSet();
-
-		modelHintsUtil.setModelHints(modelHintsImpl);
 
 		for (Path serviceXmlPath : serviceXmlPaths) {
 			Path moduleDir = serviceXmlPath.getParent();
@@ -540,15 +529,30 @@ public class ServiceBuilder {
 				implDir.toString(), resourcesDir.toString(),
 				resourceActionsConfigs);
 
+			ModelHintsImpl moduleModelHintsImpl = new ModelHintsImpl();
+
+			moduleModelHintsImpl.setModelHintsConfigs(
+				new String[] {
+					"classpath*:META-INF/portal-model-hints.xml",
+					"META-INF/portal-model-hints.xml",
+					"classpath*:META-INF/ext-model-hints.xml",
+					"classpath*:META-INF/portlet-model-hints.xml",
+					String.valueOf(modelHintsFile)
+				});
+
+			moduleModelHintsImpl.afterPropertiesSet();
+
+			modelHintsUtil.setModelHints(moduleModelHintsImpl);
+
 			try {
 				System.out.println("Processing " + moduleDir.getFileName());
 
 				new ServiceBuilder(
 					apiDir.toString(), true, autoNamespaceTables,
 					"com.liferay.util.bean.PortletBeanLocatorUtil", 1, true, 30,
-					hbmFile.toString(), implDir.toString(), new String[0],
-					serviceXmlPath.toString(), modelHintsFile.toString(), true,
-					"", propsUtil, readOnlyPrefixes, resourceActionModels,
+					hbmFile.toString(), implDir.toString(), incubationFeatures,
+					serviceXmlPath.toString(), String.valueOf(modelHintsFile),
+					true, "", propsUtil, readOnlyPrefixes, resourceActionModels,
 					resourcesDir.toString(), springFile.toString(),
 					new String[] {"beans"}, sqlDir.toString(), "tables.sql",
 					"indexes.sql", "sequences.sql", null, testDirName, null,
@@ -2430,6 +2434,32 @@ public class ServiceBuilder {
 		}
 
 		return null;
+	}
+
+	private static String[] _readIncubationFeatures(Path baseDirPath) {
+		Path gradlePropertiesPath = baseDirPath.resolve(
+			"../.gradle/gradle.properties");
+
+		if (!Files.exists(gradlePropertiesPath)) {
+			return new String[0];
+		}
+
+		try {
+			Properties properties = new Properties();
+
+			properties.load(new FileReader(gradlePropertiesPath.toFile()));
+
+			String value = properties.getProperty(
+				"service.builder.incubation.features");
+
+			if (Validator.isNotNull(value)) {
+				return StringUtil.split(value);
+			}
+		}
+		catch (Exception exception) {
+		}
+
+		return new String[0];
 	}
 
 	private static void _readResourceActionModels(

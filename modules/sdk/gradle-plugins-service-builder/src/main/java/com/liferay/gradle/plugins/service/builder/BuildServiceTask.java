@@ -67,13 +67,16 @@ public class BuildServiceTask extends JavaExec {
 		try {
 			File stampFile = getOutputStampFile();
 
-			stampFile.getParentFile().mkdirs();
+			stampFile.getParentFile(
+			).mkdirs();
 
 			Files.write(
 				stampFile.toPath(),
-				Long.toString(
+				String.valueOf(
 					System.currentTimeMillis()
-				).getBytes(StandardCharsets.UTF_8));
+				).getBytes(
+					StandardCharsets.UTF_8
+				));
 		}
 		catch (IOException ioException) {
 			throw new RuntimeException(ioException);
@@ -149,14 +152,6 @@ public class BuildServiceTask extends JavaExec {
 		return GradleUtil.toStringList(_modelHintsConfigs);
 	}
 
-	@OutputFile
-	public File getOutputStampFile() {
-		Project project = getProject();
-
-		return new File(
-			project.getBuildDir(), "service-builder/.buildService");
-	}
-
 	@InputFile
 	@Optional
 	@PathSensitive(PathSensitivity.RELATIVE)
@@ -168,6 +163,13 @@ public class BuildServiceTask extends JavaExec {
 		}
 
 		return file;
+	}
+
+	@OutputFile
+	public File getOutputStampFile() {
+		Project project = getProject();
+
+		return new File(project.getBuildDir(), "service-builder/.buildService");
 	}
 
 	@Input
