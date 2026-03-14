@@ -50,3 +50,4 @@ public interface ExpandoRow extends ExpandoRowModel, PersistedModel {
 		};
 
 }
+// SB-Hash:965625189:-1134458972:1773456076913

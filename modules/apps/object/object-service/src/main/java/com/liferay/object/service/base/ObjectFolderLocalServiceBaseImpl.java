@@ -576,3 +576,4 @@ public abstract class ObjectFolderLocalServiceBaseImpl
 		ObjectFolderLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-2033126211:-712801821:1773456076913

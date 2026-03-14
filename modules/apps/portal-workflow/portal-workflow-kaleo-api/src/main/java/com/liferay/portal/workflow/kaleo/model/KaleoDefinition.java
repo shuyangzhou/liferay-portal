@@ -59,3 +59,4 @@ public interface KaleoDefinition extends KaleoDefinitionModel, PersistedModel {
 	public void setContentAsXML(String contentAsXML);
 
 }
+// SB-Hash:933157800:1967856607:1773456076913

@@ -662,3 +662,4 @@ public interface CommercePriceListChannelRelPersistence
 	public int countAll();
 
 }
+// SB-Hash:127887013:1964328942:1773456076913

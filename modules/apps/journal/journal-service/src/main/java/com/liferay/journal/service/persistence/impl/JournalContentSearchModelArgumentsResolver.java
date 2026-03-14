@@ -118,3 +118,4 @@ public class JournalContentSearchModelArgumentsResolver
 		new ConcurrentHashMap<>();
 
 }
+// SB-Hash:779255062:-875965416:1773456076913

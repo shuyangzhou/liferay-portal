@@ -50,3 +50,4 @@ public class SequenceEntryServiceWrapper
 	private SequenceEntryService _sequenceEntryService;
 
 }
+// SB-Hash:223269635:608525136:1773456076913

@@ -59,3 +59,4 @@ public class DepotEntryPinServiceUtil {
 			DepotEntryPinServiceUtil.class, DepotEntryPinService.class);
 
 }
+// SB-Hash:-1010640685:-1172556749:1773456076913

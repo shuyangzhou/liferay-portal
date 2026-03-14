@@ -132,3 +132,4 @@ public class ListTypeEntryServiceWrapper
 	private ListTypeEntryService _listTypeEntryService;
 
 }
+// SB-Hash:1708671482:999634104:1773456076913

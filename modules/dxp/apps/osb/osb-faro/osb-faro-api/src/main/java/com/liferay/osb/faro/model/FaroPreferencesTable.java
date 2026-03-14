@@ -50,3 +50,4 @@ public class FaroPreferencesTable extends BaseTable<FaroPreferencesTable> {
 	}
 
 }
+// SB-Hash:-1606319006:1117559585:1773456076913

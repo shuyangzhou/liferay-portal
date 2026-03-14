@@ -98,3 +98,4 @@ public abstract class BaseBlogsEntryUADExporter
 	protected BlogsEntryLocalService blogsEntryLocalService;
 
 }
+// SB-Hash:-762592963:-1236408536:1773456076913

@@ -57,3 +57,4 @@ public class DDMFieldAttributeTable extends BaseTable<DDMFieldAttributeTable> {
 	}
 
 }
+// SB-Hash:-1248286512:-1843255745:1773456076913

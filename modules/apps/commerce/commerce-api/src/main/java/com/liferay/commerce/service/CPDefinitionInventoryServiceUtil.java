@@ -95,3 +95,4 @@ public class CPDefinitionInventoryServiceUtil {
 			CPDefinitionInventoryService.class);
 
 }
+// SB-Hash:-1085590426:-329900582:1773456076913

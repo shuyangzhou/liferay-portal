@@ -78,3 +78,4 @@ public abstract class CommercePriceModifierFinderBaseImpl
 		CommercePriceModifierFinderBaseImpl.class);
 
 }
+// SB-Hash:1983942981:60415849:1773456076913

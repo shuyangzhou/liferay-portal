@@ -199,3 +199,4 @@ public class CommerceShipmentItemServiceUtil {
 			CommerceShipmentItemService.class);
 
 }
+// SB-Hash:-142098154:-329900582:1773456076913

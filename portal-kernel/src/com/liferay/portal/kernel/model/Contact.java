@@ -51,3 +51,4 @@ public interface Contact extends ContactModel, PersistedModel {
 	public boolean isUser();
 
 }
+// SB-Hash:-857934433:1870610730:1773456076913

@@ -962,3 +962,4 @@ public class SharingEntryLocalServiceWrapper
 	private SharingEntryLocalService _sharingEntryLocalService;
 
 }
+// SB-Hash:1751671215:286933966:1773456076913

@@ -910,3 +910,4 @@ public class CProductUtil {
 	private static volatile CProductPersistence _persistence;
 
 }
+// SB-Hash:1485762904:2013809339:1773456076913

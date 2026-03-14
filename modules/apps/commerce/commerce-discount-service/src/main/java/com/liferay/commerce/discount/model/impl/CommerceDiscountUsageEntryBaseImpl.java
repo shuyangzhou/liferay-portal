@@ -42,3 +42,4 @@ public abstract class CommerceDiscountUsageEntryBaseImpl
 	}
 
 }
+// SB-Hash:1681452059:1570856832:1773456076913

@@ -36,3 +36,4 @@ public class ViewCountEntryTable extends BaseTable<ViewCountEntryTable> {
 	}
 
 }
+// SB-Hash:-1772003667:175929112:1773456076913

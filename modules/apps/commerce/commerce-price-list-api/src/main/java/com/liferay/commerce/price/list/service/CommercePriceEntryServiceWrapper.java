@@ -294,3 +294,4 @@ public class CommercePriceEntryServiceWrapper
 	private CommercePriceEntryService _commercePriceEntryService;
 
 }
+// SB-Hash:478221557:1964328942:1773456076913

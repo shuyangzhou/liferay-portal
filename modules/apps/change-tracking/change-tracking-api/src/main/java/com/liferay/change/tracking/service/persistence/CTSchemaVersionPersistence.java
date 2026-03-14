@@ -296,3 +296,4 @@ public interface CTSchemaVersionPersistence
 	public int countAll();
 
 }
+// SB-Hash:-1297013758:195619156:1773456076913

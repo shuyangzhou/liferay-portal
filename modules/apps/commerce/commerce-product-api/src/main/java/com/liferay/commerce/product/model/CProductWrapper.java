@@ -476,3 +476,4 @@ public class CProductWrapper
 	}
 
 }
+// SB-Hash:-99126579:2013809339:1773456076913

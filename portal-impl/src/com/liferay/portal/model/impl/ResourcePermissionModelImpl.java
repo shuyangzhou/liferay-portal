@@ -992,3 +992,4 @@ public class ResourcePermissionModelImpl
 	private ResourcePermission _escapedModel;
 
 }
+// SB-Hash:-1654876414:1870610730:1773456076913

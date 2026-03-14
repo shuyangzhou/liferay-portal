@@ -2906,3 +2906,4 @@ public interface PatcherFixPersistence extends BasePersistence<PatcherFix> {
 			patcherFixPacks);
 
 }
+// SB-Hash:1546818291:-2116605064:1773456076913

@@ -1295,3 +1295,4 @@ public class DDMDataProviderInstanceUtil {
 	private static volatile DDMDataProviderInstancePersistence _persistence;
 
 }
+// SB-Hash:-1397941130:-1843255745:1773456076913

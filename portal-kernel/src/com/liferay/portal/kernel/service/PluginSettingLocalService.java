@@ -282,3 +282,4 @@ public interface PluginSettingLocalService
 	public PluginSetting updatePluginSetting(PluginSetting pluginSetting);
 
 }
+// SB-Hash:420608764:1870610730:1773456076913

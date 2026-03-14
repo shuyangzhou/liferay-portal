@@ -567,3 +567,4 @@ public class BookmarksEntryLocalServiceUtil {
 			BookmarksEntryLocalService.class);
 
 }
+// SB-Hash:-1049131598:-1243805074:1773456076913

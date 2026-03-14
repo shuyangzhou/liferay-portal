@@ -271,3 +271,4 @@ public class CommerceShipmentItemCacheModel
 	public String unitOfMeasureKey;
 
 }
+// SB-Hash:-1099532615:-329900582:1773456076913

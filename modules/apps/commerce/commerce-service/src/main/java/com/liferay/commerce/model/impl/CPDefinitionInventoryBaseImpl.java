@@ -41,3 +41,4 @@ public abstract class CPDefinitionInventoryBaseImpl
 	}
 
 }
+// SB-Hash:770943112:-329900582:1773456076913

@@ -239,3 +239,4 @@ public abstract class UserGroupServiceBaseImpl
 		UserGroupServiceBaseImpl.class);
 
 }
+// SB-Hash:575415793:1870610730:1773456076913

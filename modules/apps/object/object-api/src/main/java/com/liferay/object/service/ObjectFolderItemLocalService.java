@@ -334,3 +334,4 @@ public interface ObjectFolderItemLocalService
 		throws PortalException;
 
 }
+// SB-Hash:125559066:-712801821:1773456076913

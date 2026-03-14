@@ -330,3 +330,4 @@ public class CommerceChannelCacheModel
 	public boolean discountsTargetNetPrice;
 
 }
+// SB-Hash:-785757745:2013809339:1773456076913

@@ -1660,3 +1660,4 @@ public interface AssetVocabularyPersistence
 	public int countAll();
 
 }
+// SB-Hash:-148687225:-1753039864:1773456076913

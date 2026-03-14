@@ -598,3 +598,4 @@ public abstract class CPTaxCategoryLocalServiceBaseImpl
 		CPTaxCategoryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1836154158:2013809339:1773456076913

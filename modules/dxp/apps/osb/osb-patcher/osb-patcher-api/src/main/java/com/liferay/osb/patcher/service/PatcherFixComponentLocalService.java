@@ -281,3 +281,4 @@ public interface PatcherFixComponentLocalService
 		PatcherFixComponent patcherFixComponent);
 
 }
+// SB-Hash:880745805:-2116605064:1773456076913

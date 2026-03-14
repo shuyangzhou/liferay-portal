@@ -392,3 +392,4 @@ public class PatcherFixComponentLocalServiceWrapper
 	private PatcherFixComponentLocalService _patcherFixComponentLocalService;
 
 }
+// SB-Hash:-240200458:-2116605064:1773456076913

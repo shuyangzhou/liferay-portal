@@ -57,3 +57,4 @@ public abstract class DDMStructureLinkFinderBaseImpl
 	protected DDMStructureLinkPersistence ddmStructureLinkPersistence;
 
 }
+// SB-Hash:1648297118:-1843255745:1773456076913

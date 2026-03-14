@@ -552,3 +552,4 @@ public class CommerceOrderNoteLocalServiceWrapper
 	private CommerceOrderNoteLocalService _commerceOrderNoteLocalService;
 
 }
+// SB-Hash:276218290:-329900582:1773456076913

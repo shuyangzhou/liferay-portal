@@ -838,3 +838,4 @@ public interface AssetTagGroupRelPersistence
 	public int countAll();
 
 }
+// SB-Hash:-1410508336:-1753039864:1773456076913

@@ -33,3 +33,4 @@ public interface ResourcePermissionFinder {
 		findByR_S(long roleId, int[] scopes, int start, int end);
 
 }
+// SB-Hash:-240754925:1870610730:1773456076913

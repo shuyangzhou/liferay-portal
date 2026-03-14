@@ -223,3 +223,4 @@ public interface JournalFolderService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:-960716365:-875965416:1773456076913

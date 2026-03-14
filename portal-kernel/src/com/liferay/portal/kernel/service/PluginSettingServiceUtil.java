@@ -57,3 +57,4 @@ public class PluginSettingServiceUtil {
 	private static volatile PluginSettingService _service;
 
 }
+// SB-Hash:-1024018292:1870610730:1773456076913

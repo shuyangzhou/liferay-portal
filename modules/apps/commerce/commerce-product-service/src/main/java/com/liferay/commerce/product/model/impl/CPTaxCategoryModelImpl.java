@@ -1293,3 +1293,4 @@ public class CPTaxCategoryModelImpl
 	private CPTaxCategory _escapedModel;
 
 }
+// SB-Hash:-968992141:2013809339:1773456076913

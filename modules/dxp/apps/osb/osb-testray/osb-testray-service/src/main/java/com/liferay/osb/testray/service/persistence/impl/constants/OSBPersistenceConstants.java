@@ -21,3 +21,4 @@ public class OSBPersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:501110952:1742339126:1773456076913

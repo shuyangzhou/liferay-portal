@@ -24,3 +24,4 @@ public interface CommerceSubscriptionEntryFinder {
 		findByA_S(long commerceAccountId, long subscriptionStatus);
 
 }
+// SB-Hash:-232620011:-329900582:1773456076913

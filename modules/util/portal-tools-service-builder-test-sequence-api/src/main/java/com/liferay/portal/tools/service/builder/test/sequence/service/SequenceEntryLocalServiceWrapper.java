@@ -392,3 +392,4 @@ public class SequenceEntryLocalServiceWrapper
 	private SequenceEntryLocalService _sequenceEntryLocalService;
 
 }
+// SB-Hash:163775510:608525136:1773456076913

@@ -39,3 +39,4 @@ public abstract class KaleoDefinitionBaseImpl
 	}
 
 }
+// SB-Hash:225151924:1967856607:1773456076913

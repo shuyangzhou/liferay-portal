@@ -280,3 +280,4 @@ public interface BatchPlannerPlanLocalService
 		throws PortalException;
 
 }
+// SB-Hash:2142502286:96869502:1773456076913

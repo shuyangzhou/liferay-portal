@@ -48,3 +48,4 @@ public class JournalArticleResourceTable
 	}
 
 }
+// SB-Hash:-816359559:-875965416:1773456076913

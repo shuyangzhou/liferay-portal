@@ -861,3 +861,4 @@ public class FaroChannelUtil {
 	private static volatile FaroChannelPersistence _persistence;
 
 }
+// SB-Hash:-1783098217:1117559585:1773456076913

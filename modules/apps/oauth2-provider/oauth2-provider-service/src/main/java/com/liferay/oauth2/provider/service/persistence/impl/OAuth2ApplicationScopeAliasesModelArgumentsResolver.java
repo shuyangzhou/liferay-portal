@@ -123,3 +123,4 @@ public class OAuth2ApplicationScopeAliasesModelArgumentsResolver
 		new ConcurrentHashMap<>();
 
 }
+// SB-Hash:-1534897545:-1760109681:1773456076913

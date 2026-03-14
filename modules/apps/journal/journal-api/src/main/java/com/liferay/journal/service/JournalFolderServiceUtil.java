@@ -354,3 +354,4 @@ public class JournalFolderServiceUtil {
 			JournalFolderServiceUtil.class, JournalFolderService.class);
 
 }
+// SB-Hash:812771123:-875965416:1773456076913

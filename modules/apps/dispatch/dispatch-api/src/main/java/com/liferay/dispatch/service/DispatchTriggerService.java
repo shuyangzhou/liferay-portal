@@ -88,3 +88,4 @@ public interface DispatchTriggerService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:84121242:893974761:1773456076913

@@ -313,3 +313,4 @@ public interface CommerceDiscountRuleLocalService
 		throws PortalException;
 
 }
+// SB-Hash:779614156:1570856832:1773456076913

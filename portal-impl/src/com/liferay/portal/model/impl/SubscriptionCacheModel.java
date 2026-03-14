@@ -213,3 +213,4 @@ public class SubscriptionCacheModel
 	public String frequency;
 
 }
+// SB-Hash:1866165747:1870610730:1773456076913

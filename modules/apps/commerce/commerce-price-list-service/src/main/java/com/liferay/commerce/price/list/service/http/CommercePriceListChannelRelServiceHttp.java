@@ -505,3 +505,4 @@ public class CommercePriceListChannelRelServiceHttp {
 		};
 
 }
+// SB-Hash:1897179319:1964328942:1773456076913

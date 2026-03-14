@@ -39,3 +39,4 @@ public abstract class KBFolderBaseImpl
 	}
 
 }
+// SB-Hash:-826480324:-560307709:1773456076913

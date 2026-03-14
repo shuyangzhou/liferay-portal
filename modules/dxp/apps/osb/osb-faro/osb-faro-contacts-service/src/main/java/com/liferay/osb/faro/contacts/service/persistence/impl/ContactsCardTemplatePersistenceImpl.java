@@ -1227,3 +1227,4 @@ public class ContactsCardTemplatePersistenceImpl
 	}
 
 }
+// SB-Hash:947085937:-1324228814:1773456076913

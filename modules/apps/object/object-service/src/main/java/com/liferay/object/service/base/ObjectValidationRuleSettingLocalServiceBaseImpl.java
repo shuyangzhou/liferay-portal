@@ -596,3 +596,4 @@ public abstract class ObjectValidationRuleSettingLocalServiceBaseImpl
 		ObjectValidationRuleSettingLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1616347949:-712801821:1773456076913

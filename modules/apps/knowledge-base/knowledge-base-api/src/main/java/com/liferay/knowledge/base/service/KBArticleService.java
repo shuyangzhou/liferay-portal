@@ -287,3 +287,4 @@ public interface KBArticleService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:462164358:-560307709:1773456076913

@@ -1178,3 +1178,4 @@ public class CommerceChannelAccountEntryRelModelImpl
 	private CommerceChannelAccountEntryRel _escapedModel;
 
 }
+// SB-Hash:1124437964:2013809339:1773456076913

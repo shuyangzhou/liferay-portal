@@ -381,3 +381,4 @@ public interface KaleoDefinitionVersionLocalService
 		throws E;
 
 }
+// SB-Hash:374295783:1967856607:1773456076913

@@ -37,3 +37,4 @@ public class UADPartialEntryTable extends BaseTable<UADPartialEntryTable> {
 	}
 
 }
+// SB-Hash:545493300:-644981214:1773456076913

@@ -49,3 +49,4 @@ public interface CPConfigurationEntrySettingService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:772714445:2013809339:1773456076913

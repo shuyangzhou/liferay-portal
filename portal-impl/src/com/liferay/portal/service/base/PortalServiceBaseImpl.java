@@ -172,3 +172,4 @@ public abstract class PortalServiceBaseImpl
 		PortalServiceBaseImpl.class);
 
 }
+// SB-Hash:1345269683:1870610730:1773456076913

@@ -162,3 +162,4 @@ public interface AssetTagService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:917150480:-1753039864:1773456076913

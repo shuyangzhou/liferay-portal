@@ -976,3 +976,4 @@ public interface MBBanPersistence
 	public int countAll();
 
 }
+// SB-Hash:-898427775:-1389537973:1773456076913

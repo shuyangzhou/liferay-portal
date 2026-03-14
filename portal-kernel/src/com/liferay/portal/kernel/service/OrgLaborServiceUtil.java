@@ -89,3 +89,4 @@ public class OrgLaborServiceUtil {
 	private static volatile OrgLaborService _service;
 
 }
+// SB-Hash:1283617091:1870610730:1773456076913

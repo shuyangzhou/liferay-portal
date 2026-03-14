@@ -226,3 +226,4 @@ public class FaroUserCacheModel
 	public int status;
 
 }
+// SB-Hash:973895475:1117559585:1773456076913

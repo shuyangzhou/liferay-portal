@@ -53,3 +53,4 @@ public interface ClassNameService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:318083200:1870610730:1773456076913

@@ -457,3 +457,4 @@ public abstract class FaroChannelLocalServiceBaseImpl
 		FaroChannelLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-376694335:1117559585:1773456076913

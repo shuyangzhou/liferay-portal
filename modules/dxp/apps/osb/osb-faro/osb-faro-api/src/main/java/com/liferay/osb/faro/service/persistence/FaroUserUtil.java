@@ -1517,3 +1517,4 @@ public class FaroUserUtil {
 	private static volatile FaroUserPersistence _persistence;
 
 }
+// SB-Hash:-192988803:1117559585:1773456076913

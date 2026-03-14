@@ -3421,3 +3421,4 @@ public class UserLocalServiceWrapper
 	private UserLocalService _userLocalService;
 
 }
+// SB-Hash:-188816055:1870610730:1773456076913

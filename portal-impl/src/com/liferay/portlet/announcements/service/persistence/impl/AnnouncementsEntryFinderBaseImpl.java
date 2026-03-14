@@ -66,3 +66,4 @@ public class AnnouncementsEntryFinderBaseImpl
 		AnnouncementsEntryFinderBaseImpl.class);
 
 }
+// SB-Hash:-1122899507:-191752414:1773456076913

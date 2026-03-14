@@ -61,3 +61,4 @@ public interface CPConfigurationList
 	public long getTemplateCPConfigurationEntryId();
 
 }
+// SB-Hash:-2141309340:2013809339:1773456076913

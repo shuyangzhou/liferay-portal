@@ -486,3 +486,4 @@ public abstract class CommercePaymentEntryAuditLocalServiceBaseImpl
 		CommercePaymentEntryAuditLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-778526621:666590857:1773456076913

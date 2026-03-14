@@ -67,3 +67,4 @@ public interface TranslationEntryService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:1697471265:327547453:1773456076913

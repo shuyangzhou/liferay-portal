@@ -354,3 +354,4 @@ public interface PluginSettingPersistence
 	public int countAll();
 
 }
+// SB-Hash:-1542110463:1870610730:1773456076913

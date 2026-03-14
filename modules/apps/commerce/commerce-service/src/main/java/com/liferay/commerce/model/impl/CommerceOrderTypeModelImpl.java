@@ -1770,3 +1770,4 @@ public class CommerceOrderTypeModelImpl
 	private CommerceOrderType _escapedModel;
 
 }
+// SB-Hash:-98035226:-329900582:1773456076913

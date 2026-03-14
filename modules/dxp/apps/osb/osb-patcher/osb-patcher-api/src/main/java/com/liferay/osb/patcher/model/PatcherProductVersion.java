@@ -52,3 +52,4 @@ public interface PatcherProductVersion
 			};
 
 }
+// SB-Hash:-1544881636:-2116605064:1773456076913

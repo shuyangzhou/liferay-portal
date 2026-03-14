@@ -493,3 +493,4 @@ public interface SegmentsEntryRolePersistence
 	public int countAll();
 
 }
+// SB-Hash:-1492954151:-1988984954:1773456076913

@@ -56,3 +56,4 @@ public abstract class EntryFinderBaseImpl extends BasePersistenceImpl<Entry> {
 	protected EntryPersistence entryPersistence;
 
 }
+// SB-Hash:-793395566:993662475:1773456076913

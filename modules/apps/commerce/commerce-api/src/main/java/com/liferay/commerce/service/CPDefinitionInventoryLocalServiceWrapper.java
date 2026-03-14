@@ -521,3 +521,4 @@ public class CPDefinitionInventoryLocalServiceWrapper
 		_cpDefinitionInventoryLocalService;
 
 }
+// SB-Hash:298303028:-329900582:1773456076913

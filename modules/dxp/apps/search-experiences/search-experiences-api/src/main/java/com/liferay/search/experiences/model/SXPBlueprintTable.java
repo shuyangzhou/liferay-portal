@@ -75,3 +75,4 @@ public class SXPBlueprintTable extends BaseTable<SXPBlueprintTable> {
 	}
 
 }
+// SB-Hash:155146428:-627313431:1773456076913

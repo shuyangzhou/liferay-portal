@@ -52,3 +52,4 @@ public interface ObjectStateFlow extends ObjectStateFlowModel, PersistedModel {
 	public void setObjectStates(java.util.List<ObjectState> objectStates);
 
 }
+// SB-Hash:1690070670:-712801821:1773456076913

@@ -237,3 +237,4 @@ public class CProductCacheModel
 	public int latestVersion;
 
 }
+// SB-Hash:-228023815:2013809339:1773456076913

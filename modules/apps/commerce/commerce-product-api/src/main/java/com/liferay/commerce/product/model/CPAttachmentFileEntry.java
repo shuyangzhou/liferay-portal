@@ -55,3 +55,4 @@ public interface CPAttachmentFileEntry
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 }
+// SB-Hash:-358317655:2013809339:1773456076913

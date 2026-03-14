@@ -150,3 +150,4 @@ public class BackgroundTaskServiceHttp {
 		_getBackgroundTaskStatusJSONParameterTypes2 = new Class[] {long.class};
 
 }
+// SB-Hash:-147920561:-1856322355:1773456076913

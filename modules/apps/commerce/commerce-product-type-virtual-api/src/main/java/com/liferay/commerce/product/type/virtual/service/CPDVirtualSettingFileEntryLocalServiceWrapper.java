@@ -562,3 +562,4 @@ public class CPDVirtualSettingFileEntryLocalServiceWrapper
 		_cpdVirtualSettingFileEntryLocalService;
 
 }
+// SB-Hash:-109999902:446411075:1773456076913

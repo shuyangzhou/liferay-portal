@@ -454,3 +454,4 @@ public abstract class FaroProjectLocalServiceBaseImpl
 		FaroProjectLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1145859357:1117559585:1773456076913

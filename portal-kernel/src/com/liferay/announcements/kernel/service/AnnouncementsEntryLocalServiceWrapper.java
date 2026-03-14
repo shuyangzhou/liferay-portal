@@ -609,3 +609,4 @@ public class AnnouncementsEntryLocalServiceWrapper
 	private AnnouncementsEntryLocalService _announcementsEntryLocalService;
 
 }
+// SB-Hash:674929502:-191752414:1773456076913

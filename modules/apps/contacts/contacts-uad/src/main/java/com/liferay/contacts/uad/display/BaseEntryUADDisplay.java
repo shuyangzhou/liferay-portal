@@ -73,3 +73,4 @@ public abstract class BaseEntryUADDisplay extends BaseModelUADDisplay<Entry> {
 	protected EntryLocalService entryLocalService;
 
 }
+// SB-Hash:-1473616003:993662475:1773456076913

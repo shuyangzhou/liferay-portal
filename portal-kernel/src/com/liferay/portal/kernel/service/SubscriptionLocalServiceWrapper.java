@@ -602,3 +602,4 @@ public class SubscriptionLocalServiceWrapper
 	private SubscriptionLocalService _subscriptionLocalService;
 
 }
+// SB-Hash:584857132:1870610730:1773456076913

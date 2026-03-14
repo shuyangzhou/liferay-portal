@@ -380,3 +380,4 @@ public class RenameFinderColumnEntryLocalServiceWrapper
 		_renameFinderColumnEntryLocalService;
 
 }
+// SB-Hash:974259209:-644981214:1773456076913

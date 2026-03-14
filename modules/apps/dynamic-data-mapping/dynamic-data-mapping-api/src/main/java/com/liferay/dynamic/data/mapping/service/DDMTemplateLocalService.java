@@ -1259,3 +1259,4 @@ public interface DDMTemplateLocalService
 		throws E;
 
 }
+// SB-Hash:354600040:-1843255745:1773456076913

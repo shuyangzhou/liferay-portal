@@ -42,3 +42,4 @@ public abstract class ObjectDefinitionSettingBaseImpl
 	}
 
 }
+// SB-Hash:1768119950:-712801821:1773456076913

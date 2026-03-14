@@ -497,3 +497,4 @@ public abstract class DDMFormInstanceReportLocalServiceBaseImpl
 		DDMFormInstanceReportLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:898399636:-1843255745:1773456076913

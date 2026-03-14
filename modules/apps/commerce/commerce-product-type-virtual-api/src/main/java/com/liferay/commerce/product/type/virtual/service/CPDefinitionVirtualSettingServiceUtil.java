@@ -123,3 +123,4 @@ public class CPDefinitionVirtualSettingServiceUtil {
 			CPDefinitionVirtualSettingService.class);
 
 }
+// SB-Hash:-1442498:446411075:1773456076913

@@ -39,3 +39,4 @@ public abstract class SocialRelationBaseImpl
 	}
 
 }
+// SB-Hash:204577921:865570565:1773456076913

@@ -60,3 +60,4 @@ public interface KaleoNode extends KaleoNodeModel, PersistedModel {
 	public boolean hasKaleoTransition();
 
 }
+// SB-Hash:-2031531395:1967856607:1773456076913

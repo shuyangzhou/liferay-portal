@@ -529,3 +529,4 @@ public class JournalArticleCacheModel
 	public long statusDate;
 
 }
+// SB-Hash:-1158676019:-875965416:1773456076913

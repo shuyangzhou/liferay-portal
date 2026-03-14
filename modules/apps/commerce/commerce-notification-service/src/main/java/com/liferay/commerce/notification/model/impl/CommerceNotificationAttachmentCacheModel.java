@@ -232,3 +232,4 @@ public class CommerceNotificationAttachmentCacheModel
 	public boolean deleteOnSend;
 
 }
+// SB-Hash:910678709:-1700122728:1773456076913

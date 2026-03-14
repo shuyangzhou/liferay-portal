@@ -76,3 +76,4 @@ public interface DLFolder extends DLFolderModel, PersistedModel, TreeModel {
 	public boolean isRoot();
 
 }
+// SB-Hash:-1563391946:1516786860:1773456076913

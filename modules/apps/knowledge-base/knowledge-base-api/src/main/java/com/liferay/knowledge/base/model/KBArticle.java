@@ -90,3 +90,4 @@ public interface KBArticle extends KBArticleModel, PersistedModel {
 	public boolean isRoot();
 
 }
+// SB-Hash:-1428023115:-560307709:1773456076913

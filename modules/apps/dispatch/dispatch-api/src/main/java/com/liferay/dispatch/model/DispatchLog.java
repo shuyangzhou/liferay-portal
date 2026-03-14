@@ -48,3 +48,4 @@ public interface DispatchLog extends DispatchLogModel, PersistedModel {
 		};
 
 }
+// SB-Hash:-1491928493:893974761:1773456076913

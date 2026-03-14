@@ -392,3 +392,4 @@ public class SamlSpSessionLocalServiceUtil {
 			SamlSpSessionLocalService.class);
 
 }
+// SB-Hash:730234186:-1058076342:1773456076913

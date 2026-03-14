@@ -329,3 +329,4 @@ public class PortletItemLocalServiceUtil {
 	private static volatile PortletItemLocalService _service;
 
 }
+// SB-Hash:-132876982:1870610730:1773456076913

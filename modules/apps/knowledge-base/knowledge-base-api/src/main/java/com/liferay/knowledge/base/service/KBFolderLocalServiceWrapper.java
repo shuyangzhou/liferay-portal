@@ -630,3 +630,4 @@ public class KBFolderLocalServiceWrapper
 	private KBFolderLocalService _kbFolderLocalService;
 
 }
+// SB-Hash:-529300596:-560307709:1773456076913

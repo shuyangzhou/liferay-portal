@@ -479,3 +479,4 @@ public class DepotEntryPinLocalServiceWrapper
 	private DepotEntryPinLocalService _depotEntryPinLocalService;
 
 }
+// SB-Hash:-1992325993:-1172556749:1773456076913

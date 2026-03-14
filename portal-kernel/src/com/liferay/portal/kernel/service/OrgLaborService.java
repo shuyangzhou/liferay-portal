@@ -72,3 +72,4 @@ public interface OrgLaborService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:-1421405435:1870610730:1773456076913

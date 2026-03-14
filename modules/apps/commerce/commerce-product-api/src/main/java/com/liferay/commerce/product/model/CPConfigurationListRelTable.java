@@ -64,3 +64,4 @@ public class CPConfigurationListRelTable
 	}
 
 }
+// SB-Hash:1575454008:2013809339:1773456076913

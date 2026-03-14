@@ -984,3 +984,4 @@ public class CalendarBookingLocalServiceWrapper
 	private CalendarBookingLocalService _calendarBookingLocalService;
 
 }
+// SB-Hash:-1261786053:-1072954947:1773456076913

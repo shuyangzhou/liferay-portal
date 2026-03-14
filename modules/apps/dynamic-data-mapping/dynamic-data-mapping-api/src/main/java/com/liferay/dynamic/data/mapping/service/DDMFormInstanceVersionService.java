@@ -78,3 +78,4 @@ public interface DDMFormInstanceVersionService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:1400166511:-1843255745:1773456076913

@@ -547,3 +547,4 @@ public interface UserNotificationEventLocalService
 		Collection<String> uuids, long companyId, boolean archive);
 
 }
+// SB-Hash:961502471:1870610730:1773456076913

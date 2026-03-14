@@ -109,3 +109,4 @@ public class OAuth2ApplicationTable extends BaseTable<OAuth2ApplicationTable> {
 	}
 
 }
+// SB-Hash:-1631243351:-1760109681:1773456076913

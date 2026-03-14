@@ -93,3 +93,4 @@ public interface AuditEventService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:-756028514:545657342:1773456076913

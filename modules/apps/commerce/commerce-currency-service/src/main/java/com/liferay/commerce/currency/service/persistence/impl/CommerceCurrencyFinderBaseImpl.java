@@ -80,3 +80,4 @@ public abstract class CommerceCurrencyFinderBaseImpl
 		CommerceCurrencyFinderBaseImpl.class);
 
 }
+// SB-Hash:-506197322:-1200058624:1773456076913

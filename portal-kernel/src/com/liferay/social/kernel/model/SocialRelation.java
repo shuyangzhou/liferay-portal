@@ -50,3 +50,4 @@ public interface SocialRelation extends PersistedModel, SocialRelationModel {
 		};
 
 }
+// SB-Hash:-1736405543:865570565:1773456076913

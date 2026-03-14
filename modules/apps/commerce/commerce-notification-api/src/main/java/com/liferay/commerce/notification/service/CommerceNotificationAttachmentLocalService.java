@@ -346,3 +346,4 @@ public interface CommerceNotificationAttachmentLocalService
 		CommerceNotificationAttachment commerceNotificationAttachment);
 
 }
+// SB-Hash:1584219356:-1700122728:1773456076913

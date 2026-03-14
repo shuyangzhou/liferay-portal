@@ -852,3 +852,4 @@ public class CommercePriceListLocalServiceUtil {
 			CommercePriceListLocalService.class);
 
 }
+// SB-Hash:-909372146:1964328942:1773456076913

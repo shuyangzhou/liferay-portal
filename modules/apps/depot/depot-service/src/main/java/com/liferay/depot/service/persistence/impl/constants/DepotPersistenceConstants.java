@@ -21,3 +21,4 @@ public class DepotPersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:-1298794380:-1172556749:1773456076913

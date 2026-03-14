@@ -62,3 +62,4 @@ public interface ERUserLocalService extends BaseLocalService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:947535404:-700112462:1773456076913

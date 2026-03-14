@@ -48,3 +48,4 @@ public interface PatcherFixRel extends PatcherFixRelModel, PersistedModel {
 		};
 
 }
+// SB-Hash:-2086226109:-2116605064:1773456076913

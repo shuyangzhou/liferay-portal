@@ -42,3 +42,4 @@ public abstract class NotificationTemplateAttachmentBaseImpl
 	}
 
 }
+// SB-Hash:441429232:-465969577:1773456076913

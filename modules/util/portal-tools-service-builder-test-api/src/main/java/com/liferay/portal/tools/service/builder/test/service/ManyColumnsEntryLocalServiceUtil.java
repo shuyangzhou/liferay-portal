@@ -306,3 +306,4 @@ public class ManyColumnsEntryLocalServiceUtil {
 	private static volatile ManyColumnsEntryLocalService _service;
 
 }
+// SB-Hash:744616189:-644981214:1773456076913

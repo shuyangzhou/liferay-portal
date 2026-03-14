@@ -64,3 +64,4 @@ public interface CounterLocalService extends BaseLocalService {
 	public void reset(String name, long size);
 
 }
+// SB-Hash:-736313629:702030946:1773456076913

@@ -155,3 +155,4 @@ public interface DSLQueryStatusEntryPersistence
 	public int countAll();
 
 }
+// SB-Hash:337183174:-644981214:1773456076913

@@ -52,3 +52,4 @@ public interface SegmentsEntry extends PersistedModel, SegmentsEntryModel {
 	public long[] getRoleIds();
 
 }
+// SB-Hash:997995891:-1988984954:1773456076913

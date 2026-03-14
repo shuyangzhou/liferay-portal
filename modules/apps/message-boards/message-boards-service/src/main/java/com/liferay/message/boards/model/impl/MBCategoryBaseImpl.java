@@ -39,3 +39,4 @@ public abstract class MBCategoryBaseImpl
 	}
 
 }
+// SB-Hash:-434320485:-1389537973:1773456076913

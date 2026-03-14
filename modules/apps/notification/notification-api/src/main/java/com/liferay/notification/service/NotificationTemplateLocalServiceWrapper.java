@@ -479,3 +479,4 @@ public class NotificationTemplateLocalServiceWrapper
 	private NotificationTemplateLocalService _notificationTemplateLocalService;
 
 }
+// SB-Hash:-1018852765:-465969577:1773456076913

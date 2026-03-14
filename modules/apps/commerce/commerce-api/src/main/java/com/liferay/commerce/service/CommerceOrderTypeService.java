@@ -105,3 +105,4 @@ public interface CommerceOrderTypeService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:-1738363558:-329900582:1773456076913

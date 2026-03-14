@@ -743,3 +743,4 @@ public class CPDefinitionInventoryWrapper
 	}
 
 }
+// SB-Hash:1428686238:-329900582:1773456076913

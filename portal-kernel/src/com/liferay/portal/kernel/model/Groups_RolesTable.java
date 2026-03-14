@@ -38,3 +38,4 @@ public class Groups_RolesTable extends BaseTable<Groups_RolesTable> {
 	}
 
 }
+// SB-Hash:229191087:1870610730:1773456076913

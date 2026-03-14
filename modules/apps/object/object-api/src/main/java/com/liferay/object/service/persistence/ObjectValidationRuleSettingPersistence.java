@@ -874,3 +874,4 @@ public interface ObjectValidationRuleSettingPersistence
 	public int countAll();
 
 }
+// SB-Hash:1700398585:-712801821:1773456076913

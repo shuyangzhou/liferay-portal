@@ -42,3 +42,4 @@ public abstract class UndefinedDefaultOrderEntryBaseImpl
 	}
 
 }
+// SB-Hash:-254988171:-644981214:1773456076913

@@ -627,3 +627,4 @@ public class SequenceEntryUtil {
 	private static volatile SequenceEntryPersistence _persistence;
 
 }
+// SB-Hash:-264956795:608525136:1773456076913

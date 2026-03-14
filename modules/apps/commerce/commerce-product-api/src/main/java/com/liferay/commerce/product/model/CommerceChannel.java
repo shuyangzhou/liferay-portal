@@ -61,3 +61,4 @@ public interface CommerceChannel extends CommerceChannelModel, PersistedModel {
 			typeSettingsUnicodeProperties);
 
 }
+// SB-Hash:-654916879:2013809339:1773456076913

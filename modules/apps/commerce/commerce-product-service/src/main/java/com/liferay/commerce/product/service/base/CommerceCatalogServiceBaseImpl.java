@@ -125,3 +125,4 @@ public abstract class CommerceCatalogServiceBaseImpl
 		CommerceCatalogServiceBaseImpl.class);
 
 }
+// SB-Hash:573814256:2013809339:1773456076913

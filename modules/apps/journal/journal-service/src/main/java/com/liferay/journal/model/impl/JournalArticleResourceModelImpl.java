@@ -795,3 +795,4 @@ public class JournalArticleResourceModelImpl
 	private JournalArticleResource _escapedModel;
 
 }
+// SB-Hash:-1968537:-875965416:1773456076913

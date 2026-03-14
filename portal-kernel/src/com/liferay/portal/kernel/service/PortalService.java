@@ -72,3 +72,4 @@ public interface PortalService extends BaseService {
 	public boolean testHasClassName();
 
 }
+// SB-Hash:918915716:1870610730:1773456076913

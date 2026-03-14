@@ -55,3 +55,4 @@ public class SAPEntryTable extends BaseTable<SAPEntryTable> {
 	}
 
 }
+// SB-Hash:1745213270:-24610301:1773456076913

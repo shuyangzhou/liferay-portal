@@ -152,3 +152,4 @@ public class ResourceActionCacheModel
 	public long bitwiseValue;
 
 }
+// SB-Hash:-1987977692:1870610730:1773456076913

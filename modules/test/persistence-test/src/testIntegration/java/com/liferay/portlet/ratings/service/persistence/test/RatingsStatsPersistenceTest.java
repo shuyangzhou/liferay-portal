@@ -526,3 +526,4 @@ public class RatingsStatsPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
+// SB-Hash:-75720746:-1803523562:1773456076913

@@ -545,3 +545,4 @@ public interface MBCategoryLocalService
 		throws E;
 
 }
+// SB-Hash:-418715984:-1389537973:1773456076913

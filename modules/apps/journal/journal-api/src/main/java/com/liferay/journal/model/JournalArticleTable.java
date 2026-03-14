@@ -119,3 +119,4 @@ public class JournalArticleTable extends BaseTable<JournalArticleTable> {
 	}
 
 }
+// SB-Hash:1833103716:-875965416:1773456076913

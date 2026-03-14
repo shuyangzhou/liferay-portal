@@ -150,3 +150,4 @@ public abstract class GenericMethodsEntryLocalServiceBaseImpl
 		GenericMethodsEntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1572629865:-644981214:1773456076913

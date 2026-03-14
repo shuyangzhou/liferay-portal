@@ -53,3 +53,4 @@ public interface ObjectState extends ObjectStateModel, PersistedModel {
 		java.util.List<ObjectStateTransition> objectStateTransitions);
 
 }
+// SB-Hash:999998366:-712801821:1773456076913

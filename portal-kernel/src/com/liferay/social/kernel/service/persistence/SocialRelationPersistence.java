@@ -1696,3 +1696,4 @@ public interface SocialRelationPersistence
 	public int countAll();
 
 }
+// SB-Hash:672130105:865570565:1773456076913

@@ -77,3 +77,4 @@ public abstract class CalendarBookingFinderBaseImpl
 		CalendarBookingFinderBaseImpl.class);
 
 }
+// SB-Hash:1600080638:-1072954947:1773456076913

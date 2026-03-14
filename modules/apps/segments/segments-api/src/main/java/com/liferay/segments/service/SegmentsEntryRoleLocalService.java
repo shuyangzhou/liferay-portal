@@ -322,3 +322,4 @@ public interface SegmentsEntryRoleLocalService
 		throws E;
 
 }
+// SB-Hash:491532916:-1988984954:1773456076913

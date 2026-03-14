@@ -39,3 +39,4 @@ public abstract class PortletItemBaseImpl
 	}
 
 }
+// SB-Hash:-877249891:1870610730:1773456076913

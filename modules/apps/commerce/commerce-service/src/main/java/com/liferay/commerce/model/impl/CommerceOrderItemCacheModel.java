@@ -800,3 +800,4 @@ public class CommerceOrderItemCacheModel
 	public double width;
 
 }
+// SB-Hash:-766857863:-329900582:1773456076913

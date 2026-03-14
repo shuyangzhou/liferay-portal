@@ -472,3 +472,4 @@ public abstract class SubscriptionLocalServiceBaseImpl
 		SubscriptionLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-716092196:683710234:1773456076913

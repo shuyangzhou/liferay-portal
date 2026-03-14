@@ -349,3 +349,4 @@ public interface ServiceComponentPersistence
 	public int countAll();
 
 }
+// SB-Hash:587217439:1870610730:1773456076913

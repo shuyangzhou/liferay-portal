@@ -273,3 +273,4 @@ public interface FinderWhereClauseEntryLocalService
 		FinderWhereClauseEntry finderWhereClauseEntry);
 
 }
+// SB-Hash:202873548:-644981214:1773456076913

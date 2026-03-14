@@ -651,3 +651,4 @@ public class CPDefinitionLinkLocalServiceWrapper
 	private CPDefinitionLinkLocalService _cpDefinitionLinkLocalService;
 
 }
+// SB-Hash:915354226:2013809339:1773456076913

@@ -1291,3 +1291,4 @@ public interface AccountEntryPersistence extends BasePersistence<AccountEntry> {
 	public int countAll();
 
 }
+// SB-Hash:1216049889:1707331560:1773456076913

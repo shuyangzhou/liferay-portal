@@ -110,3 +110,4 @@ public abstract class CounterLocalServiceBaseImpl
 		CounterLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:841039782:702030946:1773456076913

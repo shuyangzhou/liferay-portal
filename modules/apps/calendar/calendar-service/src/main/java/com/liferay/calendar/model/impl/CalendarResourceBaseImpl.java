@@ -39,3 +39,4 @@ public abstract class CalendarResourceBaseImpl
 	}
 
 }
+// SB-Hash:-1958949092:-1072954947:1773456076913

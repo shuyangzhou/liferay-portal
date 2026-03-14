@@ -389,3 +389,4 @@ public class NotificationRecipientSettingLocalServiceUtil {
 			NotificationRecipientSettingLocalService.class);
 
 }
+// SB-Hash:-631969434:-465969577:1773456076913

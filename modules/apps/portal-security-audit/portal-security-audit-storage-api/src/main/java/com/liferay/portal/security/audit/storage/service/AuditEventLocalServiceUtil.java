@@ -362,3 +362,4 @@ public class AuditEventLocalServiceUtil {
 			AuditEventLocalServiceUtil.class, AuditEventLocalService.class);
 
 }
+// SB-Hash:-842539148:545657342:1773456076913

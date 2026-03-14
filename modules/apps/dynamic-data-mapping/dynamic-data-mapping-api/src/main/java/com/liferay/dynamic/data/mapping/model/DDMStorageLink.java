@@ -56,3 +56,4 @@ public interface DDMStorageLink extends DDMStorageLinkModel, PersistedModel {
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 }
+// SB-Hash:1830123485:-1843255745:1773456076913

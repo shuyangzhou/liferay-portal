@@ -633,3 +633,4 @@ public class CTCollectionLocalServiceWrapper
 	private CTCollectionLocalService _ctCollectionLocalService;
 
 }
+// SB-Hash:1350542652:195619156:1773456076913

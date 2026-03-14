@@ -55,3 +55,4 @@ public interface EagerBlobEntryService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:-93295269:-644981214:1773456076913

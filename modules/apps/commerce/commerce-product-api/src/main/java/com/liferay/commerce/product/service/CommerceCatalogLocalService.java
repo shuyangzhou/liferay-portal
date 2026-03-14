@@ -394,3 +394,4 @@ public interface CommerceCatalogLocalService
 		throws E;
 
 }
+// SB-Hash:1148567084:2013809339:1773456076913

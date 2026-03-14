@@ -57,3 +57,4 @@ public class ERUserGroupLocalServiceUtil {
 			ERUserGroupLocalServiceUtil.class, ERUserGroupLocalService.class);
 
 }
+// SB-Hash:-415319211:-700112462:1773456076913

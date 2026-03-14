@@ -338,3 +338,4 @@ public class CPDefinitionVirtualSettingCacheModel
 	public long lastPublishDate;
 
 }
+// SB-Hash:899876733:446411075:1773456076913

@@ -1563,3 +1563,4 @@ public interface JournalArticleService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:1198631116:-875965416:1773456076913

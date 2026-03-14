@@ -1361,3 +1361,4 @@ public class CommercePricingClassModelImpl
 	private CommercePricingClass _escapedModel;
 
 }
+// SB-Hash:613436940:60415849:1773456076913

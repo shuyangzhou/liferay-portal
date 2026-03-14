@@ -53,3 +53,4 @@ public class SubscriptionTable extends BaseTable<SubscriptionTable> {
 	}
 
 }
+// SB-Hash:-464061301:683710234:1773456076913

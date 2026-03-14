@@ -132,3 +132,4 @@ public abstract class CalendarNotificationTemplateServiceBaseImpl
 		CalendarNotificationTemplateServiceBaseImpl.class);
 
 }
+// SB-Hash:1502760144:-1072954947:1773456076913

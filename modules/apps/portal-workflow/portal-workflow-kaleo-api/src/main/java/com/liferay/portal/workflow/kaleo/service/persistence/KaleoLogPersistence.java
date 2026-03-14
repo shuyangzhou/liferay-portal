@@ -1071,3 +1071,4 @@ public interface KaleoLogPersistence
 	public int countAll();
 
 }
+// SB-Hash:875528729:1967856607:1773456076913

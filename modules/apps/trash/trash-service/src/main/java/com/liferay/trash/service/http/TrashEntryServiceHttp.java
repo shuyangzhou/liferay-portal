@@ -592,3 +592,4 @@ public class TrashEntryServiceHttp {
 		new Class[] {String.class, long.class, long.class, String.class};
 
 }
+// SB-Hash:764019963:267088611:1773456076913

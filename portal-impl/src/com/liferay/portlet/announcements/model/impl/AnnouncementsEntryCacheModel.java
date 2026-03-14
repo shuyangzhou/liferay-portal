@@ -329,3 +329,4 @@ public class AnnouncementsEntryCacheModel
 	public boolean alert;
 
 }
+// SB-Hash:-2029930975:-191752414:1773456076913

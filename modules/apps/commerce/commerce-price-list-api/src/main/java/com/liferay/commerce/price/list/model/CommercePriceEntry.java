@@ -63,3 +63,4 @@ public interface CommercePriceEntry
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 }
+// SB-Hash:-1073014813:1964328942:1773456076913

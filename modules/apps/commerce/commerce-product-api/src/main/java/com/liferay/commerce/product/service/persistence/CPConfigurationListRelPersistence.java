@@ -519,3 +519,4 @@ public interface CPConfigurationListRelPersistence
 	public int countAll();
 
 }
+// SB-Hash:1497313906:2013809339:1773456076913

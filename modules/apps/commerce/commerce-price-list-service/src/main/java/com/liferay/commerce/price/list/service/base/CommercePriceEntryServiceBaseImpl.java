@@ -126,3 +126,4 @@ public abstract class CommercePriceEntryServiceBaseImpl
 		CommercePriceEntryServiceBaseImpl.class);
 
 }
+// SB-Hash:-1540999345:1964328942:1773456076913

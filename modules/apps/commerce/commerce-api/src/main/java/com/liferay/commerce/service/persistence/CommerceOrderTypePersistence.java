@@ -1524,3 +1524,4 @@ public interface CommerceOrderTypePersistence
 	public int countAll();
 
 }
+// SB-Hash:1620899294:-329900582:1773456076913

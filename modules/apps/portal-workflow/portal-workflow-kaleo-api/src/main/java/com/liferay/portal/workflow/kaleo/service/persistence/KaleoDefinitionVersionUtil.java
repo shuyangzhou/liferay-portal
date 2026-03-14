@@ -730,3 +730,4 @@ public class KaleoDefinitionVersionUtil {
 	private static volatile KaleoDefinitionVersionPersistence _persistence;
 
 }
+// SB-Hash:1542174731:1967856607:1773456076913

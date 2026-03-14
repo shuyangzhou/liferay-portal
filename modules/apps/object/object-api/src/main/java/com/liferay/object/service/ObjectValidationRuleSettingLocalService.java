@@ -305,3 +305,4 @@ public interface ObjectValidationRuleSettingLocalService
 		ObjectValidationRuleSetting objectValidationRuleSetting);
 
 }
+// SB-Hash:1024248375:-712801821:1773456076913

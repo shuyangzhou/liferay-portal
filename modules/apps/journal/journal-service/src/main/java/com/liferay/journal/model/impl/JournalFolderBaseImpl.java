@@ -81,3 +81,4 @@ public abstract class JournalFolderBaseImpl
 	}
 
 }
+// SB-Hash:1179631544:-875965416:1773456076913

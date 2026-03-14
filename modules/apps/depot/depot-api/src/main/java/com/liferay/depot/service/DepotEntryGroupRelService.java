@@ -92,3 +92,4 @@ public interface DepotEntryGroupRelService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:431897757:-1172556749:1773456076913

@@ -848,3 +848,4 @@ public interface NotificationTemplatePersistence
 	public int countAll();
 
 }
+// SB-Hash:1748718921:-465969577:1773456076913

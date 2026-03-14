@@ -129,3 +129,4 @@ public abstract class MBThreadServiceBaseImpl
 		MBThreadServiceBaseImpl.class);
 
 }
+// SB-Hash:2042290638:-1389537973:1773456076913

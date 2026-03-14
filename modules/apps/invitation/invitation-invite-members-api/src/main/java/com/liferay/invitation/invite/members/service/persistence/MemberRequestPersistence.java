@@ -554,3 +554,4 @@ public interface MemberRequestPersistence
 	public int countAll();
 
 }
+// SB-Hash:74031323:400171304:1773456076913

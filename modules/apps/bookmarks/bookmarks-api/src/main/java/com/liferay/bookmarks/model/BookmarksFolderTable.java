@@ -76,3 +76,4 @@ public class BookmarksFolderTable extends BaseTable<BookmarksFolderTable> {
 	}
 
 }
+// SB-Hash:443917674:-1243805074:1773456076913

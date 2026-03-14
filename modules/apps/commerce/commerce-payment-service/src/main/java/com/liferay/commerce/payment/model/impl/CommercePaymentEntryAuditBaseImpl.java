@@ -42,3 +42,4 @@ public abstract class CommercePaymentEntryAuditBaseImpl
 	}
 
 }
+// SB-Hash:848376217:666590857:1773456076913

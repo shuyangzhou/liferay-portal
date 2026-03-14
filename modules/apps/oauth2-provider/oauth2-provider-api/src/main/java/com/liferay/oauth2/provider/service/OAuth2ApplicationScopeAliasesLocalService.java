@@ -293,3 +293,4 @@ public interface OAuth2ApplicationScopeAliasesLocalService
 		OAuth2ApplicationScopeAliases oAuth2ApplicationScopeAliases);
 
 }
+// SB-Hash:1998685497:-1760109681:1773456076913

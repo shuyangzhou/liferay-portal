@@ -476,3 +476,4 @@ public abstract class ContactsCardTemplateLocalServiceBaseImpl
 		ContactsCardTemplateLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1720014388:-1324228814:1773456076913

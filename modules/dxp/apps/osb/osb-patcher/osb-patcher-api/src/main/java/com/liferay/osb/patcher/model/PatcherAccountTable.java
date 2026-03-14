@@ -52,3 +52,4 @@ public class PatcherAccountTable extends BaseTable<PatcherAccountTable> {
 	}
 
 }
+// SB-Hash:1614863318:-2116605064:1773456076913

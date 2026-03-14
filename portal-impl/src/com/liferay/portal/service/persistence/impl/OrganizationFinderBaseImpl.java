@@ -67,3 +67,4 @@ public class OrganizationFinderBaseImpl
 		OrganizationFinderBaseImpl.class);
 
 }
+// SB-Hash:-1798811433:1870610730:1773456076913

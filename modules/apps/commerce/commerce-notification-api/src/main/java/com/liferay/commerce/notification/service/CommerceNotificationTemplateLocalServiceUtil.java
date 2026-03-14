@@ -489,3 +489,4 @@ public class CommerceNotificationTemplateLocalServiceUtil {
 			CommerceNotificationTemplateLocalService.class);
 
 }
+// SB-Hash:26293445:-1700122728:1773456076913

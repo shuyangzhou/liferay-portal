@@ -536,3 +536,4 @@ public abstract class SpringEntryLocalServiceBaseImpl
 		SpringEntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1350009310:1707161692:1773456076913

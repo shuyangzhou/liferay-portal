@@ -496,3 +496,4 @@ public abstract class ReleaseLocalServiceBaseImpl
 		ReleaseLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-144459548:1870610730:1773456076913

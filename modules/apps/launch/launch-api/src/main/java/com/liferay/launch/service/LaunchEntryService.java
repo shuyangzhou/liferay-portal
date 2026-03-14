@@ -47,3 +47,4 @@ public interface LaunchEntryService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:-373845260:-1586552034:1773456076913

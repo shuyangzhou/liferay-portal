@@ -49,3 +49,4 @@ public class ERCVersionedEntryTable extends BaseTable<ERCVersionedEntryTable> {
 	}
 
 }
+// SB-Hash:489743092:-644981214:1773456076913

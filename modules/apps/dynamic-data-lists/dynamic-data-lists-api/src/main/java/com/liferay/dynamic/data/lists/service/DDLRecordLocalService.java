@@ -695,3 +695,4 @@ public interface DDLRecordLocalService
 		throws E;
 
 }
+// SB-Hash:1504801281:1504452851:1773456076913

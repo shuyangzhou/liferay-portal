@@ -639,3 +639,4 @@ public abstract class CommerceShipmentItemLocalServiceBaseImpl
 		CommerceShipmentItemLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1420549949:-329900582:1773456076913

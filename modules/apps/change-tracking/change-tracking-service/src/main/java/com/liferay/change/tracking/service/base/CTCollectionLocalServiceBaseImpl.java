@@ -576,3 +576,4 @@ public abstract class CTCollectionLocalServiceBaseImpl
 		CTCollectionLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:696597237:195619156:1773456076913

@@ -718,3 +718,4 @@ public interface SharingEntryLocalService
 	public SharingEntry updateSharingEntry(SharingEntry sharingEntry);
 
 }
+// SB-Hash:802184285:286933966:1773456076913

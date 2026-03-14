@@ -56,3 +56,4 @@ public class CPConfigurationEntrySettingServiceWrapper
 		_cpConfigurationEntrySettingService;
 
 }
+// SB-Hash:181837507:2013809339:1773456076913

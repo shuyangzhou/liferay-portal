@@ -404,3 +404,4 @@ public interface COREntryLocalService
 		throws PortalException;
 
 }
+// SB-Hash:-1182901306:147693042:1773456076913

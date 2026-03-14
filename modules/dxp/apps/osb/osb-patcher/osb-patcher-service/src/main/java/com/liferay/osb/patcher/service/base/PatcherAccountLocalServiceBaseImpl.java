@@ -619,3 +619,4 @@ public abstract class PatcherAccountLocalServiceBaseImpl
 		PatcherAccountLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-527512678:-2116605064:1773456076913

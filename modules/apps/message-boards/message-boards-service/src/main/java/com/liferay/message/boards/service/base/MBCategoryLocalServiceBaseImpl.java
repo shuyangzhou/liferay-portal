@@ -689,3 +689,4 @@ public abstract class MBCategoryLocalServiceBaseImpl
 		MBCategoryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:969964375:-1389537973:1773456076913

@@ -60,3 +60,4 @@ public class RatingsEntryServiceUtil {
 	private static volatile RatingsEntryService _service;
 
 }
+// SB-Hash:-1463964687:-1803523562:1773456076913

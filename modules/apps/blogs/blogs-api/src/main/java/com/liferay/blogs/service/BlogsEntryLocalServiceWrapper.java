@@ -1044,3 +1044,4 @@ public class BlogsEntryLocalServiceWrapper
 	private BlogsEntryLocalService _blogsEntryLocalService;
 
 }
+// SB-Hash:1939155087:-1236408536:1773456076913

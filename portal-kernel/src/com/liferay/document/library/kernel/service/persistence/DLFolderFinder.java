@@ -79,3 +79,4 @@ public interface DLFolderFinder {
 		com.liferay.portal.kernel.dao.orm.QueryDefinition<?> queryDefinition);
 
 }
+// SB-Hash:-1448566093:1516786860:1773456076913

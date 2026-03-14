@@ -3160,3 +3160,4 @@ public class ObjectFolderItemPersistenceImpl
 	}
 
 }
+// SB-Hash:-1062008033:-712801821:1773456076913

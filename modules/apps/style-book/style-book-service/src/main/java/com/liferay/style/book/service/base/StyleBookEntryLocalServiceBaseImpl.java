@@ -1024,3 +1024,4 @@ public abstract class StyleBookEntryLocalServiceBaseImpl
 		StyleBookEntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-249882438:1348678574:1773456076913

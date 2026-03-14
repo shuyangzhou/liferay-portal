@@ -2053,3 +2053,4 @@ public class KBArticleModelImpl
 	private KBArticle _escapedModel;
 
 }
+// SB-Hash:489329894:-560307709:1773456076913

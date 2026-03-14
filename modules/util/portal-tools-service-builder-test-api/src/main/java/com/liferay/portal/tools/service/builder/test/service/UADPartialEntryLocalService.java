@@ -267,3 +267,4 @@ public interface UADPartialEntryLocalService
 		UADPartialEntry uadPartialEntry);
 
 }
+// SB-Hash:-1534040317:-644981214:1773456076913

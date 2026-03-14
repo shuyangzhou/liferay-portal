@@ -495,3 +495,4 @@ public abstract class AssetAutoTaggerEntryLocalServiceBaseImpl
 		AssetAutoTaggerEntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-2032529406:-1895483204:1773456076913

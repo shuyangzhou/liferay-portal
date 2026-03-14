@@ -2607,3 +2607,4 @@ public class WikiPageResourcePersistenceImpl
 	}
 
 }
+// SB-Hash:-383568577:-385412670:1773456076913

@@ -419,3 +419,4 @@ public class CommerceOrderTypeRelLocalServiceUtil {
 			CommerceOrderTypeRelLocalService.class);
 
 }
+// SB-Hash:-1500069000:-329900582:1773456076913

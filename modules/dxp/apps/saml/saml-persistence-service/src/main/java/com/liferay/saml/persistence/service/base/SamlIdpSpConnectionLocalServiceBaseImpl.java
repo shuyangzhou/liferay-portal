@@ -476,3 +476,4 @@ public abstract class SamlIdpSpConnectionLocalServiceBaseImpl
 		SamlIdpSpConnectionLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1481707935:-1058076342:1773456076913

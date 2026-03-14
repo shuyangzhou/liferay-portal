@@ -339,3 +339,4 @@ public class DDMTemplateVersionCacheModel
 	public long statusDate;
 
 }
+// SB-Hash:-148566686:-1843255745:1773456076913

@@ -60,3 +60,4 @@ public class ClassNameServiceWrapper
 	private ClassNameService _classNameService;
 
 }
+// SB-Hash:-96713285:1870610730:1773456076913

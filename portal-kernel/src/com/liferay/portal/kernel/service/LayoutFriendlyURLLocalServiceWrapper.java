@@ -598,3 +598,4 @@ public class LayoutFriendlyURLLocalServiceWrapper
 	private LayoutFriendlyURLLocalService _layoutFriendlyURLLocalService;
 
 }
+// SB-Hash:1967639787:1870610730:1773456076913

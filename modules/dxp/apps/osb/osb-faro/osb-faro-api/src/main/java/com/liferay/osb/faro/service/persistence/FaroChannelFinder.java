@@ -25,3 +25,4 @@ public interface FaroChannelFinder {
 				<com.liferay.osb.faro.model.FaroChannel> orderByComparator);
 
 }
+// SB-Hash:925190322:1117559585:1773456076913

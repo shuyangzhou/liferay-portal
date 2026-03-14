@@ -3793,3 +3793,4 @@ public class StyleBookEntryVersionUtil {
 	private static volatile StyleBookEntryVersionPersistence _persistence;
 
 }
+// SB-Hash:1294295892:1348678574:1773456076913

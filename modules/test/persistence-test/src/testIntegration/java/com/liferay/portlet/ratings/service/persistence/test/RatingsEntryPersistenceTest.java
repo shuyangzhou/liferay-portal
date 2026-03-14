@@ -570,3 +570,4 @@ public class RatingsEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
+// SB-Hash:-467028085:-1803523562:1773456076913

@@ -33,3 +33,4 @@ public class ClassNameTable extends BaseTable<ClassNameTable> {
 	}
 
 }
+// SB-Hash:1954044207:1870610730:1773456076913

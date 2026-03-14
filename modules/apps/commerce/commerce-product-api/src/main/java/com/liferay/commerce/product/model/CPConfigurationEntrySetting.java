@@ -55,3 +55,4 @@ public interface CPConfigurationEntrySetting
 			};
 
 }
+// SB-Hash:1028692345:2013809339:1773456076913

@@ -67,3 +67,4 @@ public interface TrashEntry extends PersistedModel, TrashEntryModel {
 			typeSettingsUnicodeProperties);
 
 }
+// SB-Hash:610786521:267088611:1773456076913

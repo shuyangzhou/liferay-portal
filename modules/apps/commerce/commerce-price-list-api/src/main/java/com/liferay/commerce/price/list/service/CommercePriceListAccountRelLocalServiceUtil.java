@@ -427,3 +427,4 @@ public class CommercePriceListAccountRelLocalServiceUtil {
 			CommercePriceListAccountRelLocalService.class);
 
 }
+// SB-Hash:2026003782:1964328942:1773456076913

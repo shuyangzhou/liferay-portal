@@ -347,3 +347,4 @@ public class CompanyInfoLocalServiceWrapper
 	private CompanyInfoLocalService _companyInfoLocalService;
 
 }
+// SB-Hash:-479860253:1870610730:1773456076913

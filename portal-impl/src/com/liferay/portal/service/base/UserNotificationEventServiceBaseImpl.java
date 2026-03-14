@@ -214,3 +214,4 @@ public abstract class UserNotificationEventServiceBaseImpl
 		UserNotificationEventServiceBaseImpl.class);
 
 }
+// SB-Hash:-1408996220:1870610730:1773456076913

@@ -505,3 +505,4 @@ public abstract class BrowserTrackerLocalServiceBaseImpl
 		BrowserTrackerLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1204562425:1870610730:1773456076913

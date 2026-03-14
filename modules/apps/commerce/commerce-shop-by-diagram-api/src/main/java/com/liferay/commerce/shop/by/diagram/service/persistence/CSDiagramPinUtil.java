@@ -447,3 +447,4 @@ public class CSDiagramPinUtil {
 	private static volatile CSDiagramPinPersistence _persistence;
 
 }
+// SB-Hash:1122701824:243107995:1773456076913

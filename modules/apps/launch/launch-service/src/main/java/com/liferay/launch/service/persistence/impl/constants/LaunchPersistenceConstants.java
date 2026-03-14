@@ -21,3 +21,4 @@ public class LaunchPersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:-1027373190:-1586552034:1773456076913

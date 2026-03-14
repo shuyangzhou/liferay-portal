@@ -74,3 +74,4 @@ public interface AssetCategoryPropertyService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:-610522963:1327068244:1773456076913

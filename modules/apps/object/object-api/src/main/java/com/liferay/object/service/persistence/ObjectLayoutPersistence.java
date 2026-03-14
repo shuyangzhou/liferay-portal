@@ -910,3 +910,4 @@ public interface ObjectLayoutPersistence extends BasePersistence<ObjectLayout> {
 	public int countAll();
 
 }
+// SB-Hash:-540156627:-712801821:1773456076913

@@ -273,3 +273,4 @@ public interface RedundantIndexEntryLocalService
 		RedundantIndexEntry redundantIndexEntry);
 
 }
+// SB-Hash:1064262971:-644981214:1773456076913

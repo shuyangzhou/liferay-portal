@@ -463,3 +463,4 @@ public abstract class TrashEntryLocalServiceBaseImpl
 		TrashEntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1318747719:267088611:1773456076913

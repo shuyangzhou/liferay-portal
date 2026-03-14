@@ -363,3 +363,4 @@ public interface KaleoProcessLinkLocalService
 		long kaleoProcessId, String workflowTaskName, long ddmTemplateId);
 
 }
+// SB-Hash:-650115020:-1498814602:1773456076913

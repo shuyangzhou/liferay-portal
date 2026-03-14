@@ -4464,3 +4464,4 @@ public class UserNotificationEventUtil {
 	private static volatile UserNotificationEventPersistence _persistence;
 
 }
+// SB-Hash:984182661:1870610730:1773456076913

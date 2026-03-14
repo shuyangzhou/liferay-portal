@@ -651,3 +651,4 @@ public abstract class CommerceTaxCategoryMappingLocalServiceBaseImpl
 		CommerceTaxCategoryMappingLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-515149527:676098184:1773456076913

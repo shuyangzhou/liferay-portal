@@ -135,3 +135,4 @@ public class CPSpecificationOptionListTypeDefinitionRelServiceHttp {
 			new Class[] {long.class, long.class};
 
 }
+// SB-Hash:-1969019191:2013809339:1773456076913

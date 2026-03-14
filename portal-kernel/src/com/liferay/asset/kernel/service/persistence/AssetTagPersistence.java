@@ -1540,3 +1540,4 @@ public interface AssetTagPersistence
 		java.util.List<com.liferay.asset.kernel.model.AssetEntry> assetEntries);
 
 }
+// SB-Hash:1385664921:-1753039864:1773456076913

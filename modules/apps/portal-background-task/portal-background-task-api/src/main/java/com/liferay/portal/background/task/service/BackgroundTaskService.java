@@ -58,3 +58,4 @@ public interface BackgroundTaskService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:1279547978:-1856322355:1773456076913

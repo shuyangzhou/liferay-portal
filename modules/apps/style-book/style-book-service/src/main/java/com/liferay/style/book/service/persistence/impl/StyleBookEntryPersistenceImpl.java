@@ -12519,3 +12519,4 @@ public class StyleBookEntryPersistenceImpl
 	}
 
 }
+// SB-Hash:171858866:1348678574:1773456076913

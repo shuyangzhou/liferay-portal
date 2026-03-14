@@ -42,3 +42,4 @@ public abstract class CommercePricingClassCPDefinitionRelBaseImpl
 	}
 
 }
+// SB-Hash:1235818971:60415849:1773456076913

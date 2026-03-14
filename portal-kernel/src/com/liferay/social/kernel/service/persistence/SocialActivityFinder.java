@@ -60,3 +60,4 @@ public interface SocialActivityFinder {
 		findByUserOrganizations(long userId, int start, int end);
 
 }
+// SB-Hash:1857404086:865570565:1773456076913

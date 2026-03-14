@@ -151,3 +151,4 @@ public interface RSVEntryPersistence extends BasePersistence<RSVEntry> {
 	public int countAll();
 
 }
+// SB-Hash:-1045656148:446333568:1773456076913

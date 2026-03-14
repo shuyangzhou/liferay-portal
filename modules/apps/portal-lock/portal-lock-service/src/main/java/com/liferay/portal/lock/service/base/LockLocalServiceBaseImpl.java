@@ -468,3 +468,4 @@ public abstract class LockLocalServiceBaseImpl
 		LockLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1043255196:63939710:1773456076913

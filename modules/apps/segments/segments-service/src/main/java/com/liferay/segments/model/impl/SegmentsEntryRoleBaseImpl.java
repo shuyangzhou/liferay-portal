@@ -39,3 +39,4 @@ public abstract class SegmentsEntryRoleBaseImpl
 	}
 
 }
+// SB-Hash:1529163992:-1988984954:1773456076913

@@ -752,3 +752,4 @@ public interface KaleoProcessPersistence extends BasePersistence<KaleoProcess> {
 	public int countAll();
 
 }
+// SB-Hash:-643725132:-1498814602:1773456076913

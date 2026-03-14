@@ -123,3 +123,4 @@ public class CommerceInventoryWarehouseItemModelArgumentsResolver
 		new ConcurrentHashMap<>();
 
 }
+// SB-Hash:-300071636:-1537497261:1773456076913

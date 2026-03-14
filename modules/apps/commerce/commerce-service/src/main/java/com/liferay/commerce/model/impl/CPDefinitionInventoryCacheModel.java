@@ -327,3 +327,4 @@ public class CPDefinitionInventoryCacheModel
 	public BigDecimal multipleOrderQuantity;
 
 }
+// SB-Hash:78813917:-329900582:1773456076913

@@ -744,3 +744,4 @@ public class AssetVocabularyLocalServiceWrapper
 	private AssetVocabularyLocalService _assetVocabularyLocalService;
 
 }
+// SB-Hash:-1961859064:-1753039864:1773456076913

@@ -440,3 +440,4 @@ public class ListTypeEntryLocalServiceUtil {
 			ListTypeEntryLocalService.class);
 
 }
+// SB-Hash:278398604:999634104:1773456076913

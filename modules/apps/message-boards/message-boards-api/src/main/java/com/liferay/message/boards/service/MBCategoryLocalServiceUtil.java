@@ -724,3 +724,4 @@ public class MBCategoryLocalServiceUtil {
 			MBCategoryLocalServiceUtil.class, MBCategoryLocalService.class);
 
 }
+// SB-Hash:-1122513937:-1389537973:1773456076913

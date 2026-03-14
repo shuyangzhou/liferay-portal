@@ -119,3 +119,4 @@ public class CommerceTaxFixedRateServiceUtil {
 			CommerceTaxFixedRateService.class);
 
 }
+// SB-Hash:427406493:1597945076:1773456076913

@@ -2670,3 +2670,4 @@ public class CPDefinitionInventoryPersistenceImpl
 	}
 
 }
+// SB-Hash:1500579966:-329900582:1773456076913

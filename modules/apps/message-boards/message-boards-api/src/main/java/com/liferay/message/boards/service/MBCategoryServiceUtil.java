@@ -375,3 +375,4 @@ public class MBCategoryServiceUtil {
 		new Snapshot<>(MBCategoryServiceUtil.class, MBCategoryService.class);
 
 }
+// SB-Hash:-298457976:-1389537973:1773456076913

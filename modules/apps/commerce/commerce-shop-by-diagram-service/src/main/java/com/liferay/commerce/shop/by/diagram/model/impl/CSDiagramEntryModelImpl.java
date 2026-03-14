@@ -1158,3 +1158,4 @@ public class CSDiagramEntryModelImpl
 	private CSDiagramEntry _escapedModel;
 
 }
+// SB-Hash:1271186320:243107995:1773456076913

@@ -271,3 +271,4 @@ public interface PatcherFixRelLocalService
 	public PatcherFixRel updatePatcherFixRel(PatcherFixRel patcherFixRel);
 
 }
+// SB-Hash:1334826454:-2116605064:1773456076913

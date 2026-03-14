@@ -399,3 +399,4 @@ public class AssetCategoryPropertyLocalServiceUtil {
 			AssetCategoryPropertyLocalService.class);
 
 }
+// SB-Hash:-175459678:1327068244:1773456076913

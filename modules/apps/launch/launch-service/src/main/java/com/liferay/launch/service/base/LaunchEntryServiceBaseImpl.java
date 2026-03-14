@@ -125,3 +125,4 @@ public abstract class LaunchEntryServiceBaseImpl
 		LaunchEntryServiceBaseImpl.class);
 
 }
+// SB-Hash:-216460155:-1586552034:1773456076913

@@ -2264,3 +2264,4 @@ public class CalendarBookingModelImpl
 	private CalendarBooking _escapedModel;
 
 }
+// SB-Hash:911664148:-1072954947:1773456076913

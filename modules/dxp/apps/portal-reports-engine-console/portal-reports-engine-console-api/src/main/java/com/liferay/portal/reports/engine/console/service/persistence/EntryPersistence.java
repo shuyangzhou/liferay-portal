@@ -150,3 +150,4 @@ public interface EntryPersistence extends BasePersistence<Entry> {
 	public int countAll();
 
 }
+// SB-Hash:-1936803907:-529934655:1773456076913

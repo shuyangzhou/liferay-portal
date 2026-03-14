@@ -3318,3 +3318,4 @@ public class DDMStructureUtil {
 	private static volatile DDMStructurePersistence _persistence;
 
 }
+// SB-Hash:-580863206:-1843255745:1773456076913

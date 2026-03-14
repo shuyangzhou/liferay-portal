@@ -215,3 +215,4 @@ public class DDMFieldAttributeCacheModel
 	public String smallAttributeValue;
 
 }
+// SB-Hash:1293016298:-1843255745:1773456076913

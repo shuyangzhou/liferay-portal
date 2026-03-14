@@ -1056,3 +1056,4 @@ public class MicroblogsEntryModelImpl
 	private MicroblogsEntry _escapedModel;
 
 }
+// SB-Hash:934794938:-819918952:1773456076913

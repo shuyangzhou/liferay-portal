@@ -3208,3 +3208,4 @@ public interface MBCategoryPersistence
 	public int countAll();
 
 }
+// SB-Hash:-959932852:-1389537973:1773456076913

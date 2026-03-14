@@ -38,3 +38,4 @@ public class Users_TeamsTable extends BaseTable<Users_TeamsTable> {
 	}
 
 }
+// SB-Hash:801665123:1870610730:1773456076913

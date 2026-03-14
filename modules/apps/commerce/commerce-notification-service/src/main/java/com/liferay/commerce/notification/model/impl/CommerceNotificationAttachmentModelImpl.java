@@ -1047,3 +1047,4 @@ public class CommerceNotificationAttachmentModelImpl
 	private CommerceNotificationAttachment _escapedModel;
 
 }
+// SB-Hash:-1529693040:-1700122728:1773456076913

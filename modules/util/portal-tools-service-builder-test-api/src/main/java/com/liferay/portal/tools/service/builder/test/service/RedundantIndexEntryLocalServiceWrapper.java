@@ -368,3 +368,4 @@ public class RedundantIndexEntryLocalServiceWrapper
 	private RedundantIndexEntryLocalService _redundantIndexEntryLocalService;
 
 }
+// SB-Hash:366558297:-644981214:1773456076913

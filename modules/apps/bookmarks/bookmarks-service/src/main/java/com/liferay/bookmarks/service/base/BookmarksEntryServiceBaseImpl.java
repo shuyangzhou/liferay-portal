@@ -125,3 +125,4 @@ public abstract class BookmarksEntryServiceBaseImpl
 		BookmarksEntryServiceBaseImpl.class);
 
 }
+// SB-Hash:405088941:-1243805074:1773456076913

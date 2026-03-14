@@ -511,3 +511,4 @@ public class DDMDataProviderInstanceLocalServiceUtil {
 			DDMDataProviderInstanceLocalService.class);
 
 }
+// SB-Hash:-1330733970:-1843255745:1773456076913

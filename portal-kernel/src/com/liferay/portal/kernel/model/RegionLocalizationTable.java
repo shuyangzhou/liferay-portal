@@ -48,3 +48,4 @@ public class RegionLocalizationTable
 	}
 
 }
+// SB-Hash:-1839931040:1870610730:1773456076913

@@ -322,3 +322,4 @@ public interface CommerceWishListItemLocalService
 		throws PortalException;
 
 }
+// SB-Hash:1869468793:529950479:1773456076913

@@ -2392,3 +2392,4 @@ public class CPDefinitionVirtualSettingPersistenceImpl
 	}
 
 }
+// SB-Hash:-1700420097:446411075:1773456076913

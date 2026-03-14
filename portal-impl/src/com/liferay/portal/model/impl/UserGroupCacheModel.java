@@ -266,3 +266,4 @@ public class UserGroupCacheModel
 	public boolean addedByLDAPImport;
 
 }
+// SB-Hash:-1569303194:1870610730:1773456076913

@@ -310,3 +310,4 @@ public interface UserGroupService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:573263040:1870610730:1773456076913

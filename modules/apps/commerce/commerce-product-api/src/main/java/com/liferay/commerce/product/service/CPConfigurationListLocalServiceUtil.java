@@ -504,3 +504,4 @@ public class CPConfigurationListLocalServiceUtil {
 			CPConfigurationListLocalService.class);
 
 }
+// SB-Hash:1242057607:2013809339:1773456076913

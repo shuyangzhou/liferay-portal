@@ -280,3 +280,4 @@ public class TemplateEntryCacheModel
 	public long lastPublishDate;
 
 }
+// SB-Hash:-1395444422:-1502166916:1773456076913

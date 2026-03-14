@@ -579,3 +579,4 @@ public class ClientExtensionEntryRelLocalServiceWrapper
 		_clientExtensionEntryRelLocalService;
 
 }
+// SB-Hash:1120372855:1958305926:1773456076913

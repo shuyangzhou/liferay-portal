@@ -174,3 +174,4 @@ public class SocialRelationCacheModel
 	public int type;
 
 }
+// SB-Hash:1498082640:865570565:1773456076913

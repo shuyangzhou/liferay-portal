@@ -355,3 +355,4 @@ public class SocialActivitySettingServiceHttp {
 		new Class[] {long.class, String.class, int.class, java.util.List.class};
 
 }
+// SB-Hash:-1690987233:865570565:1773456076913

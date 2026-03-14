@@ -42,3 +42,4 @@ public abstract class LayoutPageTemplateCollectionBaseImpl
 	}
 
 }
+// SB-Hash:-1447776742:231121481:1773456076913

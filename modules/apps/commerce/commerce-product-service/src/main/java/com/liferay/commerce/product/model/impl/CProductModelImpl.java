@@ -1007,3 +1007,4 @@ public class CProductModelImpl
 	private CProduct _escapedModel;
 
 }
+// SB-Hash:619431341:2013809339:1773456076913

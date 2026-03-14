@@ -290,3 +290,4 @@ public interface LocalizedEntryLocalService
 		throws PortalException;
 
 }
+// SB-Hash:1014603304:-644981214:1773456076913

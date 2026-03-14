@@ -57,3 +57,4 @@ public class AppTable extends BaseTable<AppTable> {
 	}
 
 }
+// SB-Hash:-1680321967:1542546812:1773456076913

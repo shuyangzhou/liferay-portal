@@ -51,3 +51,4 @@ public class AssetLinkTable extends BaseTable<AssetLinkTable> {
 	}
 
 }
+// SB-Hash:892103222:-685495848:1773456076913

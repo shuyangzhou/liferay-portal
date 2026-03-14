@@ -39,3 +39,4 @@ public abstract class MicroblogsEntryBaseImpl
 	}
 
 }
+// SB-Hash:-204829860:-819918952:1773456076913

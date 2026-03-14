@@ -76,3 +76,4 @@ public class CommerceInventoryWarehouseItemTable
 	}
 
 }
+// SB-Hash:-1004337891:-1537497261:1773456076913

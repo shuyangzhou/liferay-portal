@@ -612,3 +612,4 @@ public interface CalendarBookingLocalService
 		throws E;
 
 }
+// SB-Hash:321692566:-1072954947:1773456076913

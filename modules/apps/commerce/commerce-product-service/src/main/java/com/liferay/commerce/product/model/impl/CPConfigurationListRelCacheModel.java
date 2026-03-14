@@ -205,3 +205,4 @@ public class CPConfigurationListRelCacheModel
 	public long CPConfigurationListId;
 
 }
+// SB-Hash:-17497803:2013809339:1773456076913

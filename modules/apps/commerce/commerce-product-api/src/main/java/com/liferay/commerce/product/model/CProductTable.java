@@ -59,3 +59,4 @@ public class CProductTable extends BaseTable<CProductTable> {
 	}
 
 }
+// SB-Hash:-374660380:2013809339:1773456076913

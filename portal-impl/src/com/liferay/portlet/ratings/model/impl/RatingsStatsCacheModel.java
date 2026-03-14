@@ -190,3 +190,4 @@ public class RatingsStatsCacheModel
 	public double averageScore;
 
 }
+// SB-Hash:-2012465576:-1803523562:1773456076913

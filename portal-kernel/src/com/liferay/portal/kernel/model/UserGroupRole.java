@@ -122,3 +122,4 @@ public interface UserGroupRole extends PersistedModel, UserGroupRoleModel {
 	public boolean hasSiteRole();
 
 }
+// SB-Hash:-1975264668:1870610730:1773456076913

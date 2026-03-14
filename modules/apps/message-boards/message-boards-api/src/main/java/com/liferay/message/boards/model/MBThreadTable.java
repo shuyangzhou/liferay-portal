@@ -75,3 +75,4 @@ public class MBThreadTable extends BaseTable<MBThreadTable> {
 	}
 
 }
+// SB-Hash:-1763207977:-1389537973:1773456076913

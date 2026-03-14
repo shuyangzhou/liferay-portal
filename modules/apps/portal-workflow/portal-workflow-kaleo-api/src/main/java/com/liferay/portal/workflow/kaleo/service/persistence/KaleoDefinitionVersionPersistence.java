@@ -516,3 +516,4 @@ public interface KaleoDefinitionVersionPersistence
 	public int countAll();
 
 }
+// SB-Hash:67712774:1967856607:1773456076913

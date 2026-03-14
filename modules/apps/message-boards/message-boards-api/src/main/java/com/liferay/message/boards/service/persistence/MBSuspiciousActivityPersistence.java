@@ -891,3 +891,4 @@ public interface MBSuspiciousActivityPersistence
 	public int countAll();
 
 }
+// SB-Hash:4408305:-1389537973:1773456076913

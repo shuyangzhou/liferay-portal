@@ -931,3 +931,4 @@ public class ReleaseModelImpl
 	private Release _escapedModel;
 
 }
+// SB-Hash:78904618:1870610730:1773456076913

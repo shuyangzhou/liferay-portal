@@ -486,3 +486,4 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 		SharepointOAuth2TokenEntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:586215062:682537493:1773456076913

@@ -522,3 +522,4 @@ public class CalendarNotificationTemplateLocalServiceWrapper
 		_calendarNotificationTemplateLocalService;
 
 }
+// SB-Hash:244828956:-1072954947:1773456076913

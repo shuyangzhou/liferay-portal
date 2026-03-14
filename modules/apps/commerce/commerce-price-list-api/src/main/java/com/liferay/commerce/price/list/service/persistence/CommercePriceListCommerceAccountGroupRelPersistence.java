@@ -678,3 +678,4 @@ public interface CommercePriceListCommerceAccountGroupRelPersistence
 	public int countAll();
 
 }
+// SB-Hash:-261436832:1964328942:1773456076913

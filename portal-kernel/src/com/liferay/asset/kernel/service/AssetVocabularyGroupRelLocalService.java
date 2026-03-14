@@ -365,3 +365,4 @@ public interface AssetVocabularyGroupRelLocalService
 		throws E;
 
 }
+// SB-Hash:1330274385:-1753039864:1773456076913

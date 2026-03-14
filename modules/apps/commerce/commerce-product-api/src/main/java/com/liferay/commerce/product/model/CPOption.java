@@ -50,3 +50,4 @@ public interface CPOption extends CPOptionModel, PersistedModel {
 	public java.util.List<CPOptionValue> getCPOptionValues();
 
 }
+// SB-Hash:686904075:2013809339:1773456076913

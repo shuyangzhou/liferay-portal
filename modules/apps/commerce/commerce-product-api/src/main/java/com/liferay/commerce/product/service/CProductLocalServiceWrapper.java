@@ -482,3 +482,4 @@ public class CProductLocalServiceWrapper
 	private CProductLocalService _cProductLocalService;
 
 }
+// SB-Hash:1660603949:2013809339:1773456076913

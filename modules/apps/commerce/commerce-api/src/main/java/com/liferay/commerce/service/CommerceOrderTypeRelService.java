@@ -90,3 +90,4 @@ public interface CommerceOrderTypeRelService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:341250469:-329900582:1773456076913

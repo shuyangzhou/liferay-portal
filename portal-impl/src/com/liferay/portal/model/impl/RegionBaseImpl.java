@@ -38,3 +38,4 @@ public abstract class RegionBaseImpl extends RegionModelImpl implements Region {
 	}
 
 }
+// SB-Hash:914315641:1870610730:1773456076913

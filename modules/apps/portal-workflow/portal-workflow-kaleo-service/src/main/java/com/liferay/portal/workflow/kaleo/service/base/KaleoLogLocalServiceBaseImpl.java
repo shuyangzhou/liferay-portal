@@ -461,3 +461,4 @@ public abstract class KaleoLogLocalServiceBaseImpl
 		KaleoLogLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1833020996:1967856607:1773456076913

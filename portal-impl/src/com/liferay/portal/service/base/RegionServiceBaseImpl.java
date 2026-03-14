@@ -226,3 +226,4 @@ public abstract class RegionServiceBaseImpl
 		RegionServiceBaseImpl.class);
 
 }
+// SB-Hash:-226444007:1870610730:1773456076913

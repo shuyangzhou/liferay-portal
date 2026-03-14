@@ -79,3 +79,4 @@ public class ListTypeServiceUtil {
 	private static volatile ListTypeService _service;
 
 }
+// SB-Hash:1001508198:1870610730:1773456076913

@@ -1152,3 +1152,4 @@ public class CommerceAvailabilityEstimateModelImpl
 	private CommerceAvailabilityEstimate _escapedModel;
 
 }
+// SB-Hash:77110535:-329900582:1773456076913

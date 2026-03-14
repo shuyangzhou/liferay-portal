@@ -524,3 +524,4 @@ public class KaleoInstanceTokenLocalServiceWrapper
 	private KaleoInstanceTokenLocalService _kaleoInstanceTokenLocalService;
 
 }
+// SB-Hash:-123253968:1967856607:1773456076913

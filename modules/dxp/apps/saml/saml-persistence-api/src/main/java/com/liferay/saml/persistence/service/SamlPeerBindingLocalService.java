@@ -284,3 +284,4 @@ public interface SamlPeerBindingLocalService
 		SamlPeerBinding samlPeerBinding);
 
 }
+// SB-Hash:2047801924:-1058076342:1773456076913

@@ -42,3 +42,4 @@ public class PluginSettingTable extends BaseTable<PluginSettingTable> {
 	}
 
 }
+// SB-Hash:-1102185547:1870610730:1773456076913

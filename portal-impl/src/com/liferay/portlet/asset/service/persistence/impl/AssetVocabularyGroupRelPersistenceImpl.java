@@ -3708,3 +3708,4 @@ public class AssetVocabularyGroupRelPersistenceImpl
 	}
 
 }
+// SB-Hash:-299442197:-1753039864:1773456076913

@@ -437,3 +437,4 @@ public class FaroChannelLocalServiceWrapper
 	private FaroChannelLocalService _faroChannelLocalService;
 
 }
+// SB-Hash:1326222689:1117559585:1773456076913

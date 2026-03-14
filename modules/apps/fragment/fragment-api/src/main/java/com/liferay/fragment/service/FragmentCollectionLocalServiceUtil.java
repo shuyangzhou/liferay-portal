@@ -484,3 +484,4 @@ public class FragmentCollectionLocalServiceUtil {
 			FragmentCollectionLocalService.class);
 
 }
+// SB-Hash:-188320846:-140381953:1773456076913

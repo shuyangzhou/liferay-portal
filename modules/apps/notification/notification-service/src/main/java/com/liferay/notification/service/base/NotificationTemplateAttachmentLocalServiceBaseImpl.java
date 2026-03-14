@@ -490,3 +490,4 @@ public abstract class NotificationTemplateAttachmentLocalServiceBaseImpl
 		NotificationTemplateAttachmentLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:275841101:-465969577:1773456076913

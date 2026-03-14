@@ -126,3 +126,4 @@ public abstract class CommerceOrderTypeRelServiceBaseImpl
 		CommerceOrderTypeRelServiceBaseImpl.class);
 
 }
+// SB-Hash:-557169002:-329900582:1773456076913

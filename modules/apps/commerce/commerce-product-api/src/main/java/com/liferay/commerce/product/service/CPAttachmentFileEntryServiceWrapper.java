@@ -213,3 +213,4 @@ public class CPAttachmentFileEntryServiceWrapper
 	private CPAttachmentFileEntryService _cpAttachmentFileEntryService;
 
 }
+// SB-Hash:1478058498:2013809339:1773456076913

@@ -364,3 +364,4 @@ public interface MicroblogsEntryLocalService
 		MicroblogsEntry microblogsEntry);
 
 }
+// SB-Hash:327172348:-819918952:1773456076913

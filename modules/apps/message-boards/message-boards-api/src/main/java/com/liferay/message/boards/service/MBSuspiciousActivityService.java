@@ -79,3 +79,4 @@ public interface MBSuspiciousActivityService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:-316005341:-1389537973:1773456076913

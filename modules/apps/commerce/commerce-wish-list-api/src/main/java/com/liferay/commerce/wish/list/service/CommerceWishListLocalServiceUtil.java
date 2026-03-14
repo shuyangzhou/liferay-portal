@@ -453,3 +453,4 @@ public class CommerceWishListLocalServiceUtil {
 			CommerceWishListLocalService.class);
 
 }
+// SB-Hash:1197351635:529950479:1773456076913

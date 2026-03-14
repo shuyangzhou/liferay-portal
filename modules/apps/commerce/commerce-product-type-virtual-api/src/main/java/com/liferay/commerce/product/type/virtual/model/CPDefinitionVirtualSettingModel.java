@@ -547,3 +547,4 @@ public interface CPDefinitionVirtualSettingModel
 	}
 
 }
+// SB-Hash:1272276317:446411075:1773456076913

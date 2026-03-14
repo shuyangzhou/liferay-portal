@@ -103,3 +103,4 @@ public class AnnouncementsEntryFinderUtil {
 	private static AnnouncementsEntryFinder _finder;
 
 }
+// SB-Hash:-1300554457:-191752414:1773456076913

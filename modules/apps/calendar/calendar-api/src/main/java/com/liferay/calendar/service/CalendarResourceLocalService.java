@@ -403,3 +403,4 @@ public interface CalendarResourceLocalService
 		throws E;
 
 }
+// SB-Hash:-254224438:-1072954947:1773456076913

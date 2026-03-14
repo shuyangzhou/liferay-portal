@@ -466,3 +466,4 @@ public abstract class TrashVersionLocalServiceBaseImpl
 		TrashVersionLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1139556865:267088611:1773456076913

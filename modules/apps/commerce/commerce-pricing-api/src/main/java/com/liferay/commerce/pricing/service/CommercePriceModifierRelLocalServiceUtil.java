@@ -427,3 +427,4 @@ public class CommercePriceModifierRelLocalServiceUtil {
 			CommercePriceModifierRelLocalService.class);
 
 }
+// SB-Hash:784528991:60415849:1773456076913

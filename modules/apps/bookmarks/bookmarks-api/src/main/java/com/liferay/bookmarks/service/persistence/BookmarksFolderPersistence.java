@@ -1879,3 +1879,4 @@ public interface BookmarksFolderPersistence
 	public int countAll();
 
 }
+// SB-Hash:-989947048:-1243805074:1773456076913

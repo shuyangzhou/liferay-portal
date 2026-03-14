@@ -256,3 +256,4 @@ public class CPDVirtualSettingFileEntryCacheModel
 	public String version;
 
 }
+// SB-Hash:-1528846550:446411075:1773456076913

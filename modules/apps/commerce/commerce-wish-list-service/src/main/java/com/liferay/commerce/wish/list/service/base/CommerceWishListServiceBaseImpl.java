@@ -126,3 +126,4 @@ public abstract class CommerceWishListServiceBaseImpl
 		CommerceWishListServiceBaseImpl.class);
 
 }
+// SB-Hash:-1050643687:529950479:1773456076913

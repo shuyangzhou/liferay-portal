@@ -482,3 +482,4 @@ public class CPMeasurementUnitLocalServiceUtil {
 			CPMeasurementUnitLocalService.class);
 
 }
+// SB-Hash:843255453:2013809339:1773456076913

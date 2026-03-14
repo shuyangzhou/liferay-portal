@@ -58,3 +58,4 @@ public class JSONStorageEntryTable extends BaseTable<JSONStorageEntryTable> {
 	}
 
 }
+// SB-Hash:-284821332:-1998174726:1773456076913

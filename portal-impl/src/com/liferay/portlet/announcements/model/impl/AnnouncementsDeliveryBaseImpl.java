@@ -41,3 +41,4 @@ public abstract class AnnouncementsDeliveryBaseImpl
 	}
 
 }
+// SB-Hash:1913112503:-191752414:1773456076913

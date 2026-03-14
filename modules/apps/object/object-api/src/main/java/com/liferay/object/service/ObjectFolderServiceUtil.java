@@ -86,3 +86,4 @@ public class ObjectFolderServiceUtil {
 			ObjectFolderServiceUtil.class, ObjectFolderService.class);
 
 }
+// SB-Hash:1600401000:-712801821:1773456076913

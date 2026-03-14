@@ -39,3 +39,4 @@ public class BigDecimalEntryTable extends BaseTable<BigDecimalEntryTable> {
 	}
 
 }
+// SB-Hash:-1578244933:-644981214:1773456076913

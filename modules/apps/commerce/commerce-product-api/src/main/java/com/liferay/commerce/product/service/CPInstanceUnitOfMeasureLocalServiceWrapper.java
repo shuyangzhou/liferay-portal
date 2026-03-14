@@ -550,3 +550,4 @@ public class CPInstanceUnitOfMeasureLocalServiceWrapper
 		_cpInstanceUnitOfMeasureLocalService;
 
 }
+// SB-Hash:-2049590170:2013809339:1773456076913

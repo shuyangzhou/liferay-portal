@@ -398,3 +398,4 @@ public interface PortletLocalService
 	public void visitPortlets(long companyId, Consumer<Portlet> consumer);
 
 }
+// SB-Hash:531950595:1870610730:1773456076913

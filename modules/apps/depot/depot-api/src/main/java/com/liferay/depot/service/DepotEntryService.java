@@ -104,3 +104,4 @@ public interface DepotEntryService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:150106580:-1172556749:1773456076913

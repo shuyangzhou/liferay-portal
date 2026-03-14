@@ -406,3 +406,4 @@ public class PermissionCheckFinderEntryLocalServiceWrapper
 		_permissionCheckFinderEntryLocalService;
 
 }
+// SB-Hash:1377971383:-644981214:1773456076913

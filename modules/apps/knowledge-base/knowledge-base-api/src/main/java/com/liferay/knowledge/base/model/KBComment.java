@@ -48,3 +48,4 @@ public interface KBComment extends KBCommentModel, PersistedModel {
 		};
 
 }
+// SB-Hash:1770462455:-560307709:1773456076913

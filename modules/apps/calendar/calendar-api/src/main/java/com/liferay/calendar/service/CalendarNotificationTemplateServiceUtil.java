@@ -74,3 +74,4 @@ public class CalendarNotificationTemplateServiceUtil {
 			CalendarNotificationTemplateService.class);
 
 }
+// SB-Hash:-958404840:-1072954947:1773456076913

@@ -456,3 +456,4 @@ public class TemplateEntryLocalServiceUtil {
 			TemplateEntryLocalService.class);
 
 }
+// SB-Hash:1936612832:-1502166916:1773456076913

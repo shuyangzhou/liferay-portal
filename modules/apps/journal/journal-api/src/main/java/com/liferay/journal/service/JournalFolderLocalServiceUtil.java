@@ -710,3 +710,4 @@ public class JournalFolderLocalServiceUtil {
 			JournalFolderLocalService.class);
 
 }
+// SB-Hash:-1590034457:-875965416:1773456076913

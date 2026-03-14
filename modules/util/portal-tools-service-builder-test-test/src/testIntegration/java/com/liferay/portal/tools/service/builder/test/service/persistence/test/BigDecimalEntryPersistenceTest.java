@@ -395,3 +395,4 @@ public class BigDecimalEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
+// SB-Hash:-1426400870:-644981214:1773456076913

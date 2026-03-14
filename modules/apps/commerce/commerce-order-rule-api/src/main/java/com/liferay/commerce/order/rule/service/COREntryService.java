@@ -107,3 +107,4 @@ public interface COREntryService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:-1987185555:147693042:1773456076913

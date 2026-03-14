@@ -57,3 +57,4 @@ public interface ObjectDefinitionSetting
 	public boolean isReadOnly();
 
 }
+// SB-Hash:-1829373237:-712801821:1773456076913

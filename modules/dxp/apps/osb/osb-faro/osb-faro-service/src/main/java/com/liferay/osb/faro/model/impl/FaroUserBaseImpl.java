@@ -39,3 +39,4 @@ public abstract class FaroUserBaseImpl
 	}
 
 }
+// SB-Hash:-1914149845:1117559585:1773456076913

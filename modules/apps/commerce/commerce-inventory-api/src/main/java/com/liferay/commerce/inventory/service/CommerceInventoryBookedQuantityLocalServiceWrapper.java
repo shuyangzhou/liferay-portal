@@ -557,3 +557,4 @@ public class CommerceInventoryBookedQuantityLocalServiceWrapper
 		_commerceInventoryBookedQuantityLocalService;
 
 }
+// SB-Hash:-58347870:-1537497261:1773456076913

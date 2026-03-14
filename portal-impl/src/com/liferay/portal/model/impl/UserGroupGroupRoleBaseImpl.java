@@ -39,3 +39,4 @@ public abstract class UserGroupGroupRoleBaseImpl
 	}
 
 }
+// SB-Hash:606988221:1870610730:1773456076913

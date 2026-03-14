@@ -73,3 +73,4 @@ public interface ExpandoColumnService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:982490682:-1134458972:1773456076913

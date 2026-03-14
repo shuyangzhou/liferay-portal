@@ -476,3 +476,4 @@ public abstract class OpenIdConnectSessionLocalServiceBaseImpl
 		OpenIdConnectSessionLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-867248100:-964377512:1773456076913

@@ -75,3 +75,4 @@ public class CompanyTable extends BaseTable<CompanyTable> {
 	}
 
 }
+// SB-Hash:-727820500:1870610730:1773456076913

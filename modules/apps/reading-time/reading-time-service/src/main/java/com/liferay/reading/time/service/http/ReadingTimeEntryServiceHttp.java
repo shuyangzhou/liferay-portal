@@ -33,3 +33,4 @@ package com.liferay.reading.time.service.http;
  */
 public class ReadingTimeEntryServiceHttp {
 }
+// SB-Hash:-957063752:151660805:1773456076913

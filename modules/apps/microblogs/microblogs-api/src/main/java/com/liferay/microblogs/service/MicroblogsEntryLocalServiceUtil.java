@@ -477,3 +477,4 @@ public class MicroblogsEntryLocalServiceUtil {
 			MicroblogsEntryLocalService.class);
 
 }
+// SB-Hash:1329087582:-819918952:1773456076913

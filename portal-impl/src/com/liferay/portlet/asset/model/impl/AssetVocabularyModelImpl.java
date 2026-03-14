@@ -1561,3 +1561,4 @@ public class AssetVocabularyModelImpl
 	private AssetVocabulary _escapedModel;
 
 }
+// SB-Hash:-867021273:-1753039864:1773456076913

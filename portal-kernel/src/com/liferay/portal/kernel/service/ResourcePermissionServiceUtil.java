@@ -211,3 +211,4 @@ public class ResourcePermissionServiceUtil {
 	private static volatile ResourcePermissionService _service;
 
 }
+// SB-Hash:-1738667227:1870610730:1773456076913

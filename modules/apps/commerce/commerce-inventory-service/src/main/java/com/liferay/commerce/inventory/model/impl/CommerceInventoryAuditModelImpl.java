@@ -1039,3 +1039,4 @@ public class CommerceInventoryAuditModelImpl
 	private CommerceInventoryAudit _escapedModel;
 
 }
+// SB-Hash:614852667:-1537497261:1773456076913

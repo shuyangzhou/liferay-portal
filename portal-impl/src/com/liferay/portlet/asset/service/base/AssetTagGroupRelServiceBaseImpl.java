@@ -207,3 +207,4 @@ public abstract class AssetTagGroupRelServiceBaseImpl
 		AssetTagGroupRelServiceBaseImpl.class);
 
 }
+// SB-Hash:176736009:-1753039864:1773456076913

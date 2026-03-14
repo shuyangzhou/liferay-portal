@@ -195,3 +195,4 @@ public class SegmentsEntryRoleCacheModel
 	public long roleId;
 
 }
+// SB-Hash:2030886461:-1988984954:1773456076913

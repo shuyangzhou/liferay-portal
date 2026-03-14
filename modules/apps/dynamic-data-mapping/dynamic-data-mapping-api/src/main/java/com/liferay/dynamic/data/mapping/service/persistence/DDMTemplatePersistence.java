@@ -3118,3 +3118,4 @@ public interface DDMTemplatePersistence
 	public int countAll();
 
 }
+// SB-Hash:-1459046898:-1843255745:1773456076913

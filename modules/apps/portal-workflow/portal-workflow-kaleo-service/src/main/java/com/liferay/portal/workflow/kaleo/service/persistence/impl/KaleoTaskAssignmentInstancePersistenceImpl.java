@@ -5739,3 +5739,4 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 	}
 
 }
+// SB-Hash:587518672:1967856607:1773456076913

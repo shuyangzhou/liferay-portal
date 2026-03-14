@@ -722,3 +722,4 @@ public class CommercePricingClassServiceHttp {
 			new Class[] {String.class, long.class};
 
 }
+// SB-Hash:-755706218:60415849:1773456076913

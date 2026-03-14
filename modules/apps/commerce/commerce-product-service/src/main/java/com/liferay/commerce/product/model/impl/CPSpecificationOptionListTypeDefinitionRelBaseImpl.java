@@ -42,3 +42,4 @@ public abstract class CPSpecificationOptionListTypeDefinitionRelBaseImpl
 	}
 
 }
+// SB-Hash:-849856527:2013809339:1773456076913

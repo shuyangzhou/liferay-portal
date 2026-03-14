@@ -410,3 +410,4 @@ public class CProductLocalServiceUtil {
 			CProductLocalServiceUtil.class, CProductLocalService.class);
 
 }
+// SB-Hash:1725540722:2013809339:1773456076913

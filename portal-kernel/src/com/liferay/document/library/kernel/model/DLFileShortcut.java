@@ -70,3 +70,4 @@ public interface DLFileShortcut
 	public boolean isInHiddenFolder();
 
 }
+// SB-Hash:577831719:1516786860:1773456076913

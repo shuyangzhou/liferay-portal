@@ -241,3 +241,4 @@ public class ObjectValidationRuleSettingCacheModel
 	public String value;
 
 }
+// SB-Hash:654412221:-712801821:1773456076913

@@ -83,3 +83,4 @@ public interface OrganizationFinder {
 		com.liferay.portal.kernel.dao.orm.QueryDefinition<?> queryDefinition);
 
 }
+// SB-Hash:468917725:1870610730:1773456076913

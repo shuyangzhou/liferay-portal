@@ -89,3 +89,4 @@ public interface EmailAddressService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:2048819437:1870610730:1773456076913

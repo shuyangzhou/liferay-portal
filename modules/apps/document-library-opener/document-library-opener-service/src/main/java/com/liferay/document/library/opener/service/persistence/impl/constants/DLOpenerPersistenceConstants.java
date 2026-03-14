@@ -21,3 +21,4 @@ public class DLOpenerPersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:-1635503179:970711951:1773456076913

@@ -1309,3 +1309,4 @@ public class CalendarNotificationTemplateModelImpl
 	private CalendarNotificationTemplate _escapedModel;
 
 }
+// SB-Hash:-122405344:-1072954947:1773456076913

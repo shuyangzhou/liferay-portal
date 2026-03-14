@@ -66,3 +66,4 @@ public abstract class BaseMBSuspiciousActivityUADExporter
 	protected MBSuspiciousActivityLocalService mbSuspiciousActivityLocalService;
 
 }
+// SB-Hash:229797823:-1389537973:1773456076913

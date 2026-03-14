@@ -132,3 +132,4 @@ public abstract class CPDefinitionVirtualSettingServiceBaseImpl
 		CPDefinitionVirtualSettingServiceBaseImpl.class);
 
 }
+// SB-Hash:1833880436:446411075:1773456076913

@@ -45,3 +45,4 @@ public class AssetTagGroupRelTable extends BaseTable<AssetTagGroupRelTable> {
 	}
 
 }
+// SB-Hash:-23084204:-1753039864:1773456076913

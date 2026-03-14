@@ -70,3 +70,4 @@ public abstract class BaseDDLRecordVersionUADExporter
 	protected DDLRecordVersionLocalService ddlRecordVersionLocalService;
 
 }
+// SB-Hash:-586052982:1504452851:1773456076913

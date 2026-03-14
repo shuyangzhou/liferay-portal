@@ -580,3 +580,4 @@ public abstract class DispatchTriggerLocalServiceBaseImpl
 		DispatchTriggerLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1647956949:893974761:1773456076913

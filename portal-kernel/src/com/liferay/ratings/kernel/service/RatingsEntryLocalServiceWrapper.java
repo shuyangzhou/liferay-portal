@@ -460,3 +460,4 @@ public class RatingsEntryLocalServiceWrapper
 	private RatingsEntryLocalService _ratingsEntryLocalService;
 
 }
+// SB-Hash:-2123119885:-1803523562:1773456076913

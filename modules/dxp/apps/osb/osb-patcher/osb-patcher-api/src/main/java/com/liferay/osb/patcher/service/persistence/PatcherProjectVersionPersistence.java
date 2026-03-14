@@ -1145,3 +1145,4 @@ public interface PatcherProjectVersionPersistence
 	public int countAll();
 
 }
+// SB-Hash:1464795150:-2116605064:1773456076913

@@ -636,3 +636,4 @@ public class AssetTagPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
+// SB-Hash:-1427730816:-1753039864:1773456076913

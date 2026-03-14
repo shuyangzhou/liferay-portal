@@ -2421,3 +2421,4 @@ public class CPConfigurationListUtil {
 	private static volatile CPConfigurationListPersistence _persistence;
 
 }
+// SB-Hash:-304210981:2013809339:1773456076913

@@ -375,3 +375,4 @@ public interface JournalArticleLocalizationPersistence
 	public int countAll();
 
 }
+// SB-Hash:-468899195:-875965416:1773456076913

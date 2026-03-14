@@ -384,3 +384,4 @@ public class CSDiagramSettingLocalServiceUtil {
 			CSDiagramSettingLocalService.class);
 
 }
+// SB-Hash:1037417405:243107995:1773456076913

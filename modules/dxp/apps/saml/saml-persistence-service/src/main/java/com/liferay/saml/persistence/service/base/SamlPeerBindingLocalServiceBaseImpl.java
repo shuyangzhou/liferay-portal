@@ -456,3 +456,4 @@ public abstract class SamlPeerBindingLocalServiceBaseImpl
 		SamlPeerBindingLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1285796022:-1058076342:1773456076913

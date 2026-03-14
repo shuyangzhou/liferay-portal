@@ -52,3 +52,4 @@ public interface SocialActivitySetting
 			};
 
 }
+// SB-Hash:187270304:865570565:1773456076913

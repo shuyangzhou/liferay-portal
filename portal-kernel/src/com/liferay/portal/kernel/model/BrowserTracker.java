@@ -47,3 +47,4 @@ public interface BrowserTracker extends BrowserTrackerModel, PersistedModel {
 		};
 
 }
+// SB-Hash:1718716449:1870610730:1773456076913

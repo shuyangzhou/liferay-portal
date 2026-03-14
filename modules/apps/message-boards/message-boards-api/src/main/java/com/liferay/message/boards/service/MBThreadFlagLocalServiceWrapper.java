@@ -475,3 +475,4 @@ public class MBThreadFlagLocalServiceWrapper
 	private MBThreadFlagLocalService _mbThreadFlagLocalService;
 
 }
+// SB-Hash:1137522955:-1389537973:1773456076913

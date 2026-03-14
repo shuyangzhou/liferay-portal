@@ -972,3 +972,4 @@ public class CPConfigurationEntrySettingUtil {
 	private static volatile CPConfigurationEntrySettingPersistence _persistence;
 
 }
+// SB-Hash:514159630:2013809339:1773456076913

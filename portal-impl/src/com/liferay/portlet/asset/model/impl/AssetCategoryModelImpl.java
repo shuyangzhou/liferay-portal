@@ -1611,3 +1611,4 @@ public class AssetCategoryModelImpl
 	private AssetCategory _escapedModel;
 
 }
+// SB-Hash:-252323915:-1753039864:1773456076913

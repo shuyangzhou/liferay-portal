@@ -1481,3 +1481,4 @@ public class KBFolderModelImpl
 	private KBFolder _escapedModel;
 
 }
+// SB-Hash:-1059063148:-560307709:1773456076913

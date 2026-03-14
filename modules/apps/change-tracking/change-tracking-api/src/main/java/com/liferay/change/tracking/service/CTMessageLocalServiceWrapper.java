@@ -353,3 +353,4 @@ public class CTMessageLocalServiceWrapper
 	private CTMessageLocalService _ctMessageLocalService;
 
 }
+// SB-Hash:905627980:195619156:1773456076913

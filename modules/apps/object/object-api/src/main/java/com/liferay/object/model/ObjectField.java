@@ -79,3 +79,4 @@ public interface ObjectField extends ObjectFieldModel, PersistedModel {
 		java.util.List<ObjectFieldSetting> objectFieldSettings);
 
 }
+// SB-Hash:-1845831083:-712801821:1773456076913

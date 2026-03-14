@@ -502,3 +502,4 @@ public interface CommerceTaxMethodPersistence
 	public int countAll();
 
 }
+// SB-Hash:-1613268859:676098184:1773456076913

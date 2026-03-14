@@ -42,3 +42,4 @@ public abstract class KaleoNotificationRecipientBaseImpl
 	}
 
 }
+// SB-Hash:1953673564:1967856607:1773456076913

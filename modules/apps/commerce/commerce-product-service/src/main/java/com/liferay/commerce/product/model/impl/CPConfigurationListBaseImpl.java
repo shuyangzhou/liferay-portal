@@ -39,3 +39,4 @@ public abstract class CPConfigurationListBaseImpl
 	}
 
 }
+// SB-Hash:440979877:2013809339:1773456076913

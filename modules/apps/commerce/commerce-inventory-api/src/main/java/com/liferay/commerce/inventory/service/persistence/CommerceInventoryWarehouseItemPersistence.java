@@ -1045,3 +1045,4 @@ public interface CommerceInventoryWarehouseItemPersistence
 	public int countAll();
 
 }
+// SB-Hash:-602086747:-1537497261:1773456076913

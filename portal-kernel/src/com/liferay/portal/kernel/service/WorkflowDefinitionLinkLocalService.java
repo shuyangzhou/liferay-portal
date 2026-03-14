@@ -462,3 +462,4 @@ public interface WorkflowDefinitionLinkLocalService
 		throws E;
 
 }
+// SB-Hash:56173882:1870610730:1773456076913

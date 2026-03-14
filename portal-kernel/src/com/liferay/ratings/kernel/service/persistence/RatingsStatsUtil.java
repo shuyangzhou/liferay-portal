@@ -426,3 +426,4 @@ public class RatingsStatsUtil {
 	private static volatile RatingsStatsPersistence _persistence;
 
 }
+// SB-Hash:-1185748800:-1803523562:1773456076913

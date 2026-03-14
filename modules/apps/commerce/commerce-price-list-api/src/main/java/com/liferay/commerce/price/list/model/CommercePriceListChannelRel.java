@@ -62,3 +62,4 @@ public interface CommercePriceListChannelRel
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 }
+// SB-Hash:238533611:1964328942:1773456076913

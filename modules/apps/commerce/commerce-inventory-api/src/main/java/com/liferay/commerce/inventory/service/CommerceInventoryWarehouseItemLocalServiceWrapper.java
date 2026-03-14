@@ -706,3 +706,4 @@ public class CommerceInventoryWarehouseItemLocalServiceWrapper
 		_commerceInventoryWarehouseItemLocalService;
 
 }
+// SB-Hash:1479256261:-1537497261:1773456076913

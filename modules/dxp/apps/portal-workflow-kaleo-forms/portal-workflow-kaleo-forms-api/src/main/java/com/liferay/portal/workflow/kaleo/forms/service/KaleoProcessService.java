@@ -187,3 +187,4 @@ public interface KaleoProcessService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:2072144879:-1498814602:1773456076913

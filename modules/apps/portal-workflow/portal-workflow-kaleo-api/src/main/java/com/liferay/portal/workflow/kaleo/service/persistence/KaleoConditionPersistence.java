@@ -486,3 +486,4 @@ public interface KaleoConditionPersistence
 	public int countAll();
 
 }
+// SB-Hash:295611088:1967856607:1773456076913

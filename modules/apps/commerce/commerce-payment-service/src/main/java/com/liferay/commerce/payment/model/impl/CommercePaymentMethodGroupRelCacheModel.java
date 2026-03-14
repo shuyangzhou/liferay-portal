@@ -286,3 +286,4 @@ public class CommercePaymentMethodGroupRelCacheModel
 	public String typeSettings;
 
 }
+// SB-Hash:1887421507:666590857:1773456076913

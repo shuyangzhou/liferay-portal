@@ -195,3 +195,4 @@ public interface ReleasePersistence extends BasePersistence<Release> {
 	public int countAll();
 
 }
+// SB-Hash:1654444404:1870610730:1773456076913

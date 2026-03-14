@@ -476,3 +476,4 @@ public interface CPAttachmentFileEntryLocalService
 		throws E;
 
 }
+// SB-Hash:-1725815833:2013809339:1773456076913

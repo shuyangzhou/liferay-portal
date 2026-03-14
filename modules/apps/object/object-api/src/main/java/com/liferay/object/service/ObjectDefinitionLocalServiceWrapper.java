@@ -858,3 +858,4 @@ public class ObjectDefinitionLocalServiceWrapper
 	private ObjectDefinitionLocalService _objectDefinitionLocalService;
 
 }
+// SB-Hash:-697420297:-712801821:1773456076913

@@ -39,3 +39,4 @@ public abstract class CommerceOrderNoteBaseImpl
 	}
 
 }
+// SB-Hash:133190894:-329900582:1773456076913

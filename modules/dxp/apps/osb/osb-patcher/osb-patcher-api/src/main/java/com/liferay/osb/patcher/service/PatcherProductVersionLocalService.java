@@ -288,3 +288,4 @@ public interface PatcherProductVersionLocalService
 		PatcherProductVersion patcherProductVersion);
 
 }
+// SB-Hash:731912010:-2116605064:1773456076913

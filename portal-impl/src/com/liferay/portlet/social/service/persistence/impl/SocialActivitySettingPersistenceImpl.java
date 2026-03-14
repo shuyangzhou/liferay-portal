@@ -3530,3 +3530,4 @@ public class SocialActivitySettingPersistenceImpl
 	}
 
 }
+// SB-Hash:-1235198381:865570565:1773456076913

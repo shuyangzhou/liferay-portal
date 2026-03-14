@@ -781,3 +781,4 @@ public class FriendlyURLEntryLocalServiceWrapper
 	private FriendlyURLEntryLocalService _friendlyURLEntryLocalService;
 
 }
+// SB-Hash:-362891831:854025060:1773456076913

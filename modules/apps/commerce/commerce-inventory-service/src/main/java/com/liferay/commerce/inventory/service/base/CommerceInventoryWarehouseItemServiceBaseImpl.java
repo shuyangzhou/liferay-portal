@@ -132,3 +132,4 @@ public abstract class CommerceInventoryWarehouseItemServiceBaseImpl
 		CommerceInventoryWarehouseItemServiceBaseImpl.class);
 
 }
+// SB-Hash:-684965894:-1537497261:1773456076913

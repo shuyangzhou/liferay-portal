@@ -369,3 +369,4 @@ public class SegmentsEntryRoleLocalServiceUtil {
 			SegmentsEntryRoleLocalService.class);
 
 }
+// SB-Hash:987115331:-1988984954:1773456076913

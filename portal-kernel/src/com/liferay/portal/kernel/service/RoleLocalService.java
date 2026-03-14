@@ -1068,3 +1068,4 @@ public interface RoleLocalService
 		throws E;
 
 }
+// SB-Hash:1273822141:1870610730:1773456076913

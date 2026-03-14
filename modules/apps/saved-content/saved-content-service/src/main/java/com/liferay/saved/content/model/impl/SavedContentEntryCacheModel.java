@@ -222,3 +222,4 @@ public class SavedContentEntryCacheModel
 	public long classPK;
 
 }
+// SB-Hash:-1261291949:1927668324:1773456076913

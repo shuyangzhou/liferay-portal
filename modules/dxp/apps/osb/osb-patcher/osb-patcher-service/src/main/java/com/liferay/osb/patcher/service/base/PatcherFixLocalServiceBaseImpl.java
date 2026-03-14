@@ -778,3 +778,4 @@ public abstract class PatcherFixLocalServiceBaseImpl
 		PatcherFixLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1992264488:-2116605064:1773456076913

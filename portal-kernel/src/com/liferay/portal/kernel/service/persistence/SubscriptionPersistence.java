@@ -929,3 +929,4 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 	public int countAll();
 
 }
+// SB-Hash:97378543:1870610730:1773456076913

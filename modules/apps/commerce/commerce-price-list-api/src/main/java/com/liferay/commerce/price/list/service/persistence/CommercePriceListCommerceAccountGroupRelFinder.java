@@ -32,3 +32,4 @@ public interface CommercePriceListCommerceAccountGroupRelFinder {
 				boolean inlineSQLHelper);
 
 }
+// SB-Hash:1406941290:1964328942:1773456076913

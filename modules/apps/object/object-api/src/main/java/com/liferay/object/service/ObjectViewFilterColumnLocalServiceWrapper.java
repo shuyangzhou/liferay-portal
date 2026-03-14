@@ -434,3 +434,4 @@ public class ObjectViewFilterColumnLocalServiceWrapper
 		_objectViewFilterColumnLocalService;
 
 }
+// SB-Hash:-1499082761:-712801821:1773456076913

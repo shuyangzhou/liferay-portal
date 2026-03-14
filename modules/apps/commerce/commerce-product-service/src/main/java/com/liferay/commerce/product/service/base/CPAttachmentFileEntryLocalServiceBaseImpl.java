@@ -758,3 +758,4 @@ public abstract class CPAttachmentFileEntryLocalServiceBaseImpl
 		CPAttachmentFileEntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1763934832:2013809339:1773456076913

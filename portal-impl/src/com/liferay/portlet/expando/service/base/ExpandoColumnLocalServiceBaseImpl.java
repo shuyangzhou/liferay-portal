@@ -521,3 +521,4 @@ public abstract class ExpandoColumnLocalServiceBaseImpl
 		ExpandoColumnLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-446059353:-1134458972:1773456076913

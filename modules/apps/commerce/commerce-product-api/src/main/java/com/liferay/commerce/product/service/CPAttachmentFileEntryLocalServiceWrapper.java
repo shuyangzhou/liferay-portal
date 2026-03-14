@@ -694,3 +694,4 @@ public class CPAttachmentFileEntryLocalServiceWrapper
 		_cpAttachmentFileEntryLocalService;
 
 }
+// SB-Hash:-1061107393:2013809339:1773456076913

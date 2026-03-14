@@ -505,3 +505,4 @@ public interface CommerceShippingMethodPersistence
 	public int countAll();
 
 }
+// SB-Hash:-1622774502:-329900582:1773456076913

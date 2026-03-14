@@ -70,3 +70,4 @@ public abstract class BaseCalendarBookingUADExporter
 	protected CalendarBookingLocalService calendarBookingLocalService;
 
 }
+// SB-Hash:1296457561:-1072954947:1773456076913

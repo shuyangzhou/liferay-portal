@@ -67,3 +67,4 @@ public interface AssetLink extends AssetLinkModel, PersistedModel {
 		};
 
 }
+// SB-Hash:-1471241120:-685495848:1773456076913

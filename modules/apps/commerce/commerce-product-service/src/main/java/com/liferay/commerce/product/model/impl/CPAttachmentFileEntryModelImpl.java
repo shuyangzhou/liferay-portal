@@ -2039,3 +2039,4 @@ public class CPAttachmentFileEntryModelImpl
 	private CPAttachmentFileEntry _escapedModel;
 
 }
+// SB-Hash:590585357:2013809339:1773456076913

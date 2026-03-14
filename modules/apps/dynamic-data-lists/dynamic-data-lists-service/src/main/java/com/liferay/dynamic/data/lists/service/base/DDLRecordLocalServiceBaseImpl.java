@@ -601,3 +601,4 @@ public abstract class DDLRecordLocalServiceBaseImpl
 		DDLRecordLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1775937980:1504452851:1773456076913

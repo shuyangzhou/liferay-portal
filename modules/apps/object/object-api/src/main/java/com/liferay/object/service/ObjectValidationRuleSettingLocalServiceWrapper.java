@@ -433,3 +433,4 @@ public class ObjectValidationRuleSettingLocalServiceWrapper
 		_objectValidationRuleSettingLocalService;
 
 }
+// SB-Hash:1862157960:-712801821:1773456076913

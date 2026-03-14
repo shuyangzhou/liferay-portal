@@ -126,3 +126,4 @@ public class CommerceDiscountTable extends BaseTable<CommerceDiscountTable> {
 	}
 
 }
+// SB-Hash:873959903:1570856832:1773456076913

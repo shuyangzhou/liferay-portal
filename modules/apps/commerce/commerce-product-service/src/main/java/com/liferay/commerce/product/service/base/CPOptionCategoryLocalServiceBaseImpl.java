@@ -603,3 +603,4 @@ public abstract class CPOptionCategoryLocalServiceBaseImpl
 		CPOptionCategoryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1540799515:2013809339:1773456076913

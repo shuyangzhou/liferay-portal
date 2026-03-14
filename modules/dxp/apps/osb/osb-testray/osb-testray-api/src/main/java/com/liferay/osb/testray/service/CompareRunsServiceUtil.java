@@ -44,3 +44,4 @@ public class CompareRunsServiceUtil {
 		new Snapshot<>(CompareRunsServiceUtil.class, CompareRunsService.class);
 
 }
+// SB-Hash:2124739856:1742339126:1773456076913

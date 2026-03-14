@@ -782,3 +782,4 @@ public interface CommerceDiscountRelPersistence
 	public int countAll();
 
 }
+// SB-Hash:-185985569:1570856832:1773456076913

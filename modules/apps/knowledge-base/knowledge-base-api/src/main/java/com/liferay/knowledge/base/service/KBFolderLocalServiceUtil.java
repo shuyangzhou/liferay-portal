@@ -537,3 +537,4 @@ public class KBFolderLocalServiceUtil {
 			KBFolderLocalServiceUtil.class, KBFolderLocalService.class);
 
 }
+// SB-Hash:-2070313128:-560307709:1773456076913

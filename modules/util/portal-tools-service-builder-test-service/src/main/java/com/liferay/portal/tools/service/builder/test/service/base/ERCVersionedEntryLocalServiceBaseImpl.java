@@ -1027,3 +1027,4 @@ public abstract class ERCVersionedEntryLocalServiceBaseImpl
 		ERCVersionedEntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:712558739:-644981214:1773456076913

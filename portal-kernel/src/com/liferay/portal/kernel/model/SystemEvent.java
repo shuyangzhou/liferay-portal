@@ -51,3 +51,4 @@ public interface SystemEvent extends PersistedModel, SystemEventModel {
 	public void setReferrerClassName(String referrerClassName);
 
 }
+// SB-Hash:1094104757:1870610730:1773456076913

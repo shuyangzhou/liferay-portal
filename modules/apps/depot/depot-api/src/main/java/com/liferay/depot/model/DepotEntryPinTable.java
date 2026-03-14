@@ -44,3 +44,4 @@ public class DepotEntryPinTable extends BaseTable<DepotEntryPinTable> {
 	}
 
 }
+// SB-Hash:-2145004676:-1172556749:1773456076913

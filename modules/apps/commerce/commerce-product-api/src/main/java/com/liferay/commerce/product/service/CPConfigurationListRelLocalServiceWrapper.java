@@ -526,3 +526,4 @@ public class CPConfigurationListRelLocalServiceWrapper
 		_cpConfigurationListRelLocalService;
 
 }
+// SB-Hash:1435033086:2013809339:1773456076913

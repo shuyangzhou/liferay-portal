@@ -41,3 +41,4 @@ public class ModuleTable extends BaseTable<ModuleTable> {
 	}
 
 }
+// SB-Hash:-131092579:1542546812:1773456076913

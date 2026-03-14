@@ -132,3 +132,4 @@ public abstract class CommerceInventoryBookedQuantityServiceBaseImpl
 		CommerceInventoryBookedQuantityServiceBaseImpl.class);
 
 }
+// SB-Hash:-216726857:-1537497261:1773456076913

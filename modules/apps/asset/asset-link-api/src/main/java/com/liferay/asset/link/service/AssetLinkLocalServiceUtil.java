@@ -494,3 +494,4 @@ public class AssetLinkLocalServiceUtil {
 			AssetLinkLocalServiceUtil.class, AssetLinkLocalService.class);
 
 }
+// SB-Hash:279943030:-685495848:1773456076913

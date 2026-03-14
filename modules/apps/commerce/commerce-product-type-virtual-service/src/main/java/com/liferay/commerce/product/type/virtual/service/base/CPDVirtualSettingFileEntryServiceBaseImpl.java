@@ -132,3 +132,4 @@ public abstract class CPDVirtualSettingFileEntryServiceBaseImpl
 		CPDVirtualSettingFileEntryServiceBaseImpl.class);
 
 }
+// SB-Hash:-1057530934:446411075:1773456076913

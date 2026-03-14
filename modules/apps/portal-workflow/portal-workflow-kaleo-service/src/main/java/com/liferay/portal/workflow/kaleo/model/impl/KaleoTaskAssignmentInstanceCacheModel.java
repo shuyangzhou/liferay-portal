@@ -311,3 +311,4 @@ public class KaleoTaskAssignmentInstanceCacheModel
 	public long completionDate;
 
 }
+// SB-Hash:-138361338:1967856607:1773456076913

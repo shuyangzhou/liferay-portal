@@ -59,3 +59,4 @@ public class ContactsCardTemplateTable
 	}
 
 }
+// SB-Hash:-479838441:-1324228814:1773456076913

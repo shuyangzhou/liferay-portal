@@ -524,3 +524,4 @@ public abstract class RecentLayoutBranchLocalServiceBaseImpl
 		RecentLayoutBranchLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:793243476:1870610730:1773456076913

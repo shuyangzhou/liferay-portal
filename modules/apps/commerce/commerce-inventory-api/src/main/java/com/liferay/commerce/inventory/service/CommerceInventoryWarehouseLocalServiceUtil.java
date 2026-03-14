@@ -523,3 +523,4 @@ public class CommerceInventoryWarehouseLocalServiceUtil {
 			CommerceInventoryWarehouseLocalService.class);
 
 }
+// SB-Hash:-1397266835:-1537497261:1773456076913

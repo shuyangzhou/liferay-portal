@@ -822,3 +822,4 @@ public class JournalArticleLocalizationModelImpl
 	private JournalArticleLocalization _escapedModel;
 
 }
+// SB-Hash:-1815103918:-875965416:1773456076913

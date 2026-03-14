@@ -67,3 +67,4 @@ public interface LayoutPrototype extends LayoutPrototypeModel, PersistedModel {
 	public boolean hasSetModifiedDate();
 
 }
+// SB-Hash:527614693:1870610730:1773456076913

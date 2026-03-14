@@ -690,3 +690,4 @@ public abstract class AnnouncementsEntryLocalServiceBaseImpl
 		AnnouncementsEntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-982640191:-191752414:1773456076913

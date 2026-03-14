@@ -1255,3 +1255,4 @@ public class UserGroupGroupRoleUtil {
 	private static volatile UserGroupGroupRolePersistence _persistence;
 
 }
+// SB-Hash:648051019:1870610730:1773456076913

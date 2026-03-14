@@ -282,3 +282,4 @@ public interface FaroNotificationLocalService
 		FaroNotification faroNotification);
 
 }
+// SB-Hash:1149387148:1117559585:1773456076913

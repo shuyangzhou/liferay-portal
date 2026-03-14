@@ -769,3 +769,4 @@ public interface AppPersistence extends BasePersistence<App> {
 	public int countAll();
 
 }
+// SB-Hash:-701543343:1542546812:1773456076913

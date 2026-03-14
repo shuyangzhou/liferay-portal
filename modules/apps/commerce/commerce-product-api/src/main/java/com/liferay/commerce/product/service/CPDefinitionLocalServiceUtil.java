@@ -953,3 +953,4 @@ public class CPDefinitionLocalServiceUtil {
 			CPDefinitionLocalServiceUtil.class, CPDefinitionLocalService.class);
 
 }
+// SB-Hash:702469616:2013809339:1773456076913

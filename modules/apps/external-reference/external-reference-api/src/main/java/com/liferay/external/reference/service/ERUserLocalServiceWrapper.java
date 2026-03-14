@@ -73,3 +73,4 @@ public class ERUserLocalServiceWrapper
 	private ERUserLocalService _erUserLocalService;
 
 }
+// SB-Hash:-77394725:-700112462:1773456076913

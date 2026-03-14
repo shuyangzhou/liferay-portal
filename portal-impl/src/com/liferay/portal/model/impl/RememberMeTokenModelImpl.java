@@ -767,3 +767,4 @@ public class RememberMeTokenModelImpl
 	private RememberMeToken _escapedModel;
 
 }
+// SB-Hash:1367970988:1870610730:1773456076913

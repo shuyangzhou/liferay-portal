@@ -52,3 +52,4 @@ public interface ObjectLayoutRow extends ObjectLayoutRowModel {
 		java.util.List<ObjectLayoutColumn> objectLayoutColumns);
 
 }
+// SB-Hash:-1457461934:-712801821:1773456076913

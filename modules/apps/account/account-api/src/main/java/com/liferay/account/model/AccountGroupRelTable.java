@@ -52,3 +52,4 @@ public class AccountGroupRelTable extends BaseTable<AccountGroupRelTable> {
 	}
 
 }
+// SB-Hash:138914274:1707331560:1773456076913

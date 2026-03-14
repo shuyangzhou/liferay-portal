@@ -385,3 +385,4 @@ public class CPDefinitionVirtualSettingServiceHttp {
 		};
 
 }
+// SB-Hash:-1893644448:446411075:1773456076913

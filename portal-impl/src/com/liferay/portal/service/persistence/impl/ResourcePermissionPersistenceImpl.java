@@ -8693,3 +8693,4 @@ public class ResourcePermissionPersistenceImpl
 	}
 
 }
+// SB-Hash:144782921:1870610730:1773456076913

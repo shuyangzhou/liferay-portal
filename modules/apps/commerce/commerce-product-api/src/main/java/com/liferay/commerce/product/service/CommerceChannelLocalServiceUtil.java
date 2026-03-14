@@ -515,3 +515,4 @@ public class CommerceChannelLocalServiceUtil {
 			CommerceChannelLocalService.class);
 
 }
+// SB-Hash:928885403:2013809339:1773456076913

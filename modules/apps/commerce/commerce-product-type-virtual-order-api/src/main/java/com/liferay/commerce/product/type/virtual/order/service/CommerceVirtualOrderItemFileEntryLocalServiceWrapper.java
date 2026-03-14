@@ -566,3 +566,4 @@ public class CommerceVirtualOrderItemFileEntryLocalServiceWrapper
 		_commerceVirtualOrderItemFileEntryLocalService;
 
 }
+// SB-Hash:-617808338:-993623852:1773456076913

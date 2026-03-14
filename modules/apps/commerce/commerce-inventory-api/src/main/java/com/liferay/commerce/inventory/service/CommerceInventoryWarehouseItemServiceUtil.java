@@ -260,3 +260,4 @@ public class CommerceInventoryWarehouseItemServiceUtil {
 			CommerceInventoryWarehouseItemService.class);
 
 }
+// SB-Hash:-423357351:-1537497261:1773456076913

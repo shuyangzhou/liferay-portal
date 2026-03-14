@@ -593,3 +593,4 @@ public class WorkflowMetricsSLADefinitionLocalServiceWrapper
 		_workflowMetricsSLADefinitionLocalService;
 
 }
+// SB-Hash:-2048565957:-322606409:1773456076913

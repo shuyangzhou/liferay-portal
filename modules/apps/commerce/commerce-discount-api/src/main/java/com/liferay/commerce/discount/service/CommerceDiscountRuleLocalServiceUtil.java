@@ -379,3 +379,4 @@ public class CommerceDiscountRuleLocalServiceUtil {
 			CommerceDiscountRuleLocalService.class);
 
 }
+// SB-Hash:1819709776:1570856832:1773456076913

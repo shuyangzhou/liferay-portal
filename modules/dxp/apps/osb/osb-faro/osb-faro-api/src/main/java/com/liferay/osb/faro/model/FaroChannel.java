@@ -48,3 +48,4 @@ public interface FaroChannel extends FaroChannelModel, PersistedModel {
 		};
 
 }
+// SB-Hash:-1188644699:1117559585:1773456076913

@@ -21,3 +21,4 @@ public class JSONStorePersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:-259825716:-1998174726:1773456076913

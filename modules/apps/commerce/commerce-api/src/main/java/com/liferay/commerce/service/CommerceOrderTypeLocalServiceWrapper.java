@@ -516,3 +516,4 @@ public class CommerceOrderTypeLocalServiceWrapper
 	private CommerceOrderTypeLocalService _commerceOrderTypeLocalService;
 
 }
+// SB-Hash:1602209560:-329900582:1773456076913

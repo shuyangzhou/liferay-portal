@@ -282,3 +282,4 @@ public interface RatingsStatsPersistence
 	public int countAll();
 
 }
+// SB-Hash:428259807:-1803523562:1773456076913

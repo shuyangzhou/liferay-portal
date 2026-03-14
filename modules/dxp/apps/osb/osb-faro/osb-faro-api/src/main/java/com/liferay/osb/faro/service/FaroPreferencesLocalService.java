@@ -278,3 +278,4 @@ public interface FaroPreferencesLocalService
 		FaroPreferences faroPreferences);
 
 }
+// SB-Hash:2007947267:1117559585:1773456076913

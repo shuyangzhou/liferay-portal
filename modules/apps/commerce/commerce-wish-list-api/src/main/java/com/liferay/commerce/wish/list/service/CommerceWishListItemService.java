@@ -102,3 +102,4 @@ public interface CommerceWishListItemService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:2145855127:529950479:1773456076913

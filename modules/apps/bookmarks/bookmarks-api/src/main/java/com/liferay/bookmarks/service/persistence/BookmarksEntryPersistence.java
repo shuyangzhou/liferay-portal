@@ -3278,3 +3278,4 @@ public interface BookmarksEntryPersistence
 	public int countAll();
 
 }
+// SB-Hash:-1759443368:-1243805074:1773456076913

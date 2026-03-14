@@ -1043,3 +1043,4 @@ public class CommerceOrderItemLocalServiceWrapper
 	private CommerceOrderItemLocalService _commerceOrderItemLocalService;
 
 }
+// SB-Hash:1825659185:-329900582:1773456076913

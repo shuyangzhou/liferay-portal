@@ -677,3 +677,4 @@ public interface SocialActivityLimitPersistence
 	public int countAll();
 
 }
+// SB-Hash:130058123:865570565:1773456076913

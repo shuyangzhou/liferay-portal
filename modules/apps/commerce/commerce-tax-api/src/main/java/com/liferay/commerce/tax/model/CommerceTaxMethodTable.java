@@ -67,3 +67,4 @@ public class CommerceTaxMethodTable extends BaseTable<CommerceTaxMethodTable> {
 	}
 
 }
+// SB-Hash:-1687094994:676098184:1773456076913

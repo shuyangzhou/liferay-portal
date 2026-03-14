@@ -119,3 +119,4 @@ public interface SegmentsEntryService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:609346815:-1988984954:1773456076913

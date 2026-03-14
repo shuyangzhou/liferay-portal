@@ -50,3 +50,4 @@ public interface MemberRequest extends MemberRequestModel, PersistedModel {
 		};
 
 }
+// SB-Hash:-1954488210:400171304:1773456076913

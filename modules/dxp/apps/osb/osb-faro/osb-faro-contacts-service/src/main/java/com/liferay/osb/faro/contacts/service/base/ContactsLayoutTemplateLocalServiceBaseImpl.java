@@ -482,3 +482,4 @@ public abstract class ContactsLayoutTemplateLocalServiceBaseImpl
 		ContactsLayoutTemplateLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-929914470:-1324228814:1773456076913

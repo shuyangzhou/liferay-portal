@@ -456,3 +456,4 @@ public class ResourcePermissionWrapper
 	}
 
 }
+// SB-Hash:-1514097257:1870610730:1773456076913

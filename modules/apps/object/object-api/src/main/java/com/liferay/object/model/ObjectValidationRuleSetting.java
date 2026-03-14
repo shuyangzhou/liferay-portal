@@ -57,3 +57,4 @@ public interface ObjectValidationRuleSetting
 	public boolean compareName(String name);
 
 }
+// SB-Hash:-1344105231:-712801821:1773456076913

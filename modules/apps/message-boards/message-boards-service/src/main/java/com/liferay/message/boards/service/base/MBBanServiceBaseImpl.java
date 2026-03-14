@@ -125,3 +125,4 @@ public abstract class MBBanServiceBaseImpl
 		MBBanServiceBaseImpl.class);
 
 }
+// SB-Hash:1124209068:-1389537973:1773456076913

@@ -189,3 +189,4 @@ public class KBFolderServiceWrapper
 	private KBFolderService _kbFolderService;
 
 }
+// SB-Hash:431832831:-560307709:1773456076913

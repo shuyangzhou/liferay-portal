@@ -63,3 +63,4 @@ public class ResourcePermissionFinderUtil {
 	private static ResourcePermissionFinder _finder;
 
 }
+// SB-Hash:-48231887:1870610730:1773456076913

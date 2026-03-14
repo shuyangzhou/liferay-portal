@@ -870,3 +870,4 @@ public class SegmentsEntryRoleModelImpl
 	private SegmentsEntryRole _escapedModel;
 
 }
+// SB-Hash:-760701046:-1988984954:1773456076913

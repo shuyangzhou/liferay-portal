@@ -686,3 +686,4 @@ public class SegmentsEntryRoleUtil {
 	private static volatile SegmentsEntryRolePersistence _persistence;
 
 }
+// SB-Hash:-1753413409:-1988984954:1773456076913

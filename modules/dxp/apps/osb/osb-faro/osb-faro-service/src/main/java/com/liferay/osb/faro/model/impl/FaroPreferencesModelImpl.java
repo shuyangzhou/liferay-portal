@@ -848,3 +848,4 @@ public class FaroPreferencesModelImpl
 	private FaroPreferences _escapedModel;
 
 }
+// SB-Hash:972585168:1117559585:1773456076913

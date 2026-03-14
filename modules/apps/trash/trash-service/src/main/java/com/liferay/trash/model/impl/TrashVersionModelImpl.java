@@ -818,3 +818,4 @@ public class TrashVersionModelImpl
 	private TrashVersion _escapedModel;
 
 }
+// SB-Hash:-1258753815:267088611:1773456076913

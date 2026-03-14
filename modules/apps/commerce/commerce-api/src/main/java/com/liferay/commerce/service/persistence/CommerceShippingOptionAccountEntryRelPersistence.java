@@ -668,3 +668,4 @@ public interface CommerceShippingOptionAccountEntryRelPersistence
 	public int countAll();
 
 }
+// SB-Hash:2141495417:-329900582:1773456076913

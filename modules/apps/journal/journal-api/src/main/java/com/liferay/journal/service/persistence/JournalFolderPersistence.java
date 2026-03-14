@@ -2039,3 +2039,4 @@ public interface JournalFolderPersistence
 	public int countAll();
 
 }
+// SB-Hash:112623075:-875965416:1773456076913

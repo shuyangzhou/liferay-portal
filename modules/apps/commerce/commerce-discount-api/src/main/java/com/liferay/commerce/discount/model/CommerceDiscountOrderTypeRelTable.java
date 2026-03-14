@@ -71,3 +71,4 @@ public class CommerceDiscountOrderTypeRelTable
 	}
 
 }
+// SB-Hash:-1301367629:1570856832:1773456076913

@@ -231,3 +231,4 @@ public abstract class RoleServiceBaseImpl
 		RoleServiceBaseImpl.class);
 
 }
+// SB-Hash:-532442867:1870610730:1773456076913

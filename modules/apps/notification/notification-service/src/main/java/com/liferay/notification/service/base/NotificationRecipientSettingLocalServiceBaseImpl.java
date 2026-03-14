@@ -599,3 +599,4 @@ public abstract class NotificationRecipientSettingLocalServiceBaseImpl
 		NotificationRecipientSettingLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1669268327:-465969577:1773456076913

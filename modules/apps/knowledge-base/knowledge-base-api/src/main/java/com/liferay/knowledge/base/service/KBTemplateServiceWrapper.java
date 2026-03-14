@@ -120,3 +120,4 @@ public class KBTemplateServiceWrapper
 	private KBTemplateService _kbTemplateService;
 
 }
+// SB-Hash:-193776494:-560307709:1773456076913

@@ -60,3 +60,4 @@ public interface CPSpecificationOptionListTypeDefinitionRel
 				};
 
 }
+// SB-Hash:2102354006:2013809339:1773456076913

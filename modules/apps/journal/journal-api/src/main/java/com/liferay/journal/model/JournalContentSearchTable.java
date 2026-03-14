@@ -54,3 +54,4 @@ public class JournalContentSearchTable
 	}
 
 }
+// SB-Hash:-942059201:-875965416:1773456076913

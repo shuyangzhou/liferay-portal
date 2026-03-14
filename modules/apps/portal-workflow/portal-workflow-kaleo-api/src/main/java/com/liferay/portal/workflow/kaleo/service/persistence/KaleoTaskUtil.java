@@ -679,3 +679,4 @@ public class KaleoTaskUtil {
 	private static volatile KaleoTaskPersistence _persistence;
 
 }
+// SB-Hash:623789245:1967856607:1773456076913

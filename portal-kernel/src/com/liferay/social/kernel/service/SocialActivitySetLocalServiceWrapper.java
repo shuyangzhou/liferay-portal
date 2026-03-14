@@ -528,3 +528,4 @@ public class SocialActivitySetLocalServiceWrapper
 	private SocialActivitySetLocalService _socialActivitySetLocalService;
 
 }
+// SB-Hash:-65778887:865570565:1773456076913

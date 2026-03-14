@@ -99,3 +99,4 @@ public class CPDefinitionVirtualSettingTable
 	}
 
 }
+// SB-Hash:1250906650:446411075:1773456076913

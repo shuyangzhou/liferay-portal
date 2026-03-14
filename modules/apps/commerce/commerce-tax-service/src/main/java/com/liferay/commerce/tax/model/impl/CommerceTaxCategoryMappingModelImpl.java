@@ -1083,3 +1083,4 @@ public class CommerceTaxCategoryMappingModelImpl
 	private CommerceTaxCategoryMapping _escapedModel;
 
 }
+// SB-Hash:1290140532:676098184:1773456076913

@@ -587,3 +587,4 @@ public abstract class CommerceCurrencyLocalServiceBaseImpl
 		CommerceCurrencyLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1398959801:-1200058624:1773456076913

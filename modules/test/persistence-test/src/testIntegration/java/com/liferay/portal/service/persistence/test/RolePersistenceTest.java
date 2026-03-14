@@ -716,3 +716,4 @@ public class RolePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
+// SB-Hash:-1511729577:1870610730:1773456076913

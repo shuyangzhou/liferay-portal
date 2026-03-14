@@ -70,3 +70,4 @@ public class MBSuspiciousActivityTable
 	}
 
 }
+// SB-Hash:-1148407390:-1389537973:1773456076913

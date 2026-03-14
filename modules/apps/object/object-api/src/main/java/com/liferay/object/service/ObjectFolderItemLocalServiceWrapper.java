@@ -482,3 +482,4 @@ public class ObjectFolderItemLocalServiceWrapper
 	private ObjectFolderItemLocalService _objectFolderItemLocalService;
 
 }
+// SB-Hash:1265670684:-712801821:1773456076913

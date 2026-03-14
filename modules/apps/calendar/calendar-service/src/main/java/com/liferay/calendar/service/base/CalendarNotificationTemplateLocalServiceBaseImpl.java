@@ -660,3 +660,4 @@ public abstract class CalendarNotificationTemplateLocalServiceBaseImpl
 		CalendarNotificationTemplateLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1682526535:-1072954947:1773456076913

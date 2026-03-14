@@ -552,3 +552,4 @@ public interface WikiPageResourcePersistence
 	public int countAll();
 
 }
+// SB-Hash:1159090928:-385412670:1773456076913

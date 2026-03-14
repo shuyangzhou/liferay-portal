@@ -372,3 +372,4 @@ public class ObjectViewFilterColumnLocalServiceUtil {
 			ObjectViewFilterColumnLocalService.class);
 
 }
+// SB-Hash:-1869740608:-712801821:1773456076913

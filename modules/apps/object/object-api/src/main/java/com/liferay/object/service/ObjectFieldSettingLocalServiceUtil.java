@@ -385,3 +385,4 @@ public class ObjectFieldSettingLocalServiceUtil {
 			ObjectFieldSettingLocalService.class);
 
 }
+// SB-Hash:-773108997:-712801821:1773456076913

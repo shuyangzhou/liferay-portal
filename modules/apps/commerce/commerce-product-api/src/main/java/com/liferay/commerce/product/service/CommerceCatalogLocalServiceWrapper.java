@@ -559,3 +559,4 @@ public class CommerceCatalogLocalServiceWrapper
 	private CommerceCatalogLocalService _commerceCatalogLocalService;
 
 }
+// SB-Hash:-927196325:2013809339:1773456076913

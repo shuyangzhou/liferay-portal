@@ -596,3 +596,4 @@ public class OAuth2ScopeGrantLocalServiceWrapper
 	private OAuth2ScopeGrantLocalService _oAuth2ScopeGrantLocalService;
 
 }
+// SB-Hash:1631311313:-1760109681:1773456076913

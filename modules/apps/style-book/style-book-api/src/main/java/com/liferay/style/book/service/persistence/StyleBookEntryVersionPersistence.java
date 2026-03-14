@@ -3038,3 +3038,4 @@ public interface StyleBookEntryVersionPersistence
 	public int countAll();
 
 }
+// SB-Hash:-1881126506:1348678574:1773456076913

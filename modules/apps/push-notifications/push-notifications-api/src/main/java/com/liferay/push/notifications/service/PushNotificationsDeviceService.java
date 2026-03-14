@@ -69,3 +69,4 @@ public interface PushNotificationsDeviceService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:400695708:-1701380166:1773456076913

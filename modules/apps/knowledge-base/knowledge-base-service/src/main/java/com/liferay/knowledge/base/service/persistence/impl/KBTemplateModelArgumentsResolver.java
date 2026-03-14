@@ -132,3 +132,4 @@ public class KBTemplateModelArgumentsResolver implements ArgumentsResolver {
 	}
 
 }
+// SB-Hash:1817173837:-560307709:1773456076913

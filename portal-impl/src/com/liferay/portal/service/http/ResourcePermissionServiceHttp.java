@@ -266,3 +266,4 @@ public class ResourcePermissionServiceHttp {
 		};
 
 }
+// SB-Hash:29309143:1870610730:1773456076913

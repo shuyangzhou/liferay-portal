@@ -81,3 +81,4 @@ public class DLFileShortcutTable extends BaseTable<DLFileShortcutTable> {
 	}
 
 }
+// SB-Hash:-546292692:1516786860:1773456076913

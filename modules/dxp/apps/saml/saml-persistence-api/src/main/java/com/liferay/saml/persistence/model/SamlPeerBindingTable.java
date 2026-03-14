@@ -67,3 +67,4 @@ public class SamlPeerBindingTable extends BaseTable<SamlPeerBindingTable> {
 	}
 
 }
+// SB-Hash:299668931:-1058076342:1773456076913

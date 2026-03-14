@@ -100,3 +100,4 @@ public abstract class BaseMBSuspiciousActivityUADAnonymizer
 	protected MBSuspiciousActivityLocalService mbSuspiciousActivityLocalService;
 
 }
+// SB-Hash:-651233830:-1389537973:1773456076913

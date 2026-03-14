@@ -302,3 +302,4 @@ public interface RatingsStatsLocalService
 		throws E;
 
 }
+// SB-Hash:635033290:-1803523562:1773456076913

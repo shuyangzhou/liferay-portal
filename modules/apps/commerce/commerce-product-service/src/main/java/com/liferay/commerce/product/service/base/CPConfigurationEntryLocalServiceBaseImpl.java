@@ -682,3 +682,4 @@ public abstract class CPConfigurationEntryLocalServiceBaseImpl
 		CPConfigurationEntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:952008203:2013809339:1773456076913

@@ -458,3 +458,4 @@ public class ObjectStateTransitionLocalServiceWrapper
 		_objectStateTransitionLocalService;
 
 }
+// SB-Hash:-1566074291:-712801821:1773456076913

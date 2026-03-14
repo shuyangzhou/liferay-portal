@@ -83,3 +83,4 @@ public interface CSDiagramPinService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:466098141:243107995:1773456076913

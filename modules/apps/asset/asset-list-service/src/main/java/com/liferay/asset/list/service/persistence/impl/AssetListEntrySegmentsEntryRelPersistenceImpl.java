@@ -4754,3 +4754,4 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 	}
 
 }
+// SB-Hash:1483799861:-1575459458:1773456076913

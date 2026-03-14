@@ -38,3 +38,4 @@ public abstract class ImageBaseImpl extends ImageModelImpl implements Image {
 	}
 
 }
+// SB-Hash:-1394325679:1870610730:1773456076913

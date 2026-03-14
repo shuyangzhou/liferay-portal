@@ -57,3 +57,4 @@ public abstract class FaroChannelFinderBaseImpl
 	protected FaroChannelPersistence faroChannelPersistence;
 
 }
+// SB-Hash:1103880814:1117559585:1773456076913

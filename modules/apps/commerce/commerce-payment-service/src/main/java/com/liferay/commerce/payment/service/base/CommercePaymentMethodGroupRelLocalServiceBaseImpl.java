@@ -490,3 +490,4 @@ public abstract class CommercePaymentMethodGroupRelLocalServiceBaseImpl
 		CommercePaymentMethodGroupRelLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1984645107:666590857:1773456076913

@@ -275,3 +275,4 @@ public interface OrgLaborLocalService
 	public OrgLabor updateOrgLabor(OrgLabor orgLabor);
 
 }
+// SB-Hash:439899623:1870610730:1773456076913

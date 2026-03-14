@@ -56,3 +56,4 @@ public interface MicroblogsEntryFinder {
 			String assetTagName, boolean andOperator, int start, int end);
 
 }
+// SB-Hash:2127992034:-819918952:1773456076913

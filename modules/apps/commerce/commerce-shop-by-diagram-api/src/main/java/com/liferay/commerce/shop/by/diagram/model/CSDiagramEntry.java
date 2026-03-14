@@ -53,3 +53,4 @@ public interface CSDiagramEntry extends CSDiagramEntryModel, PersistedModel {
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 }
+// SB-Hash:-464285043:243107995:1773456076913

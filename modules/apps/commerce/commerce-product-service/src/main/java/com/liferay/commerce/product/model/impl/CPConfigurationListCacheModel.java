@@ -354,3 +354,4 @@ public class CPConfigurationListCacheModel
 	public long statusDate;
 
 }
+// SB-Hash:1507888294:2013809339:1773456076913

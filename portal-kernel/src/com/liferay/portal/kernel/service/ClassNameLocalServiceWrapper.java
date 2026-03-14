@@ -404,3 +404,4 @@ public class ClassNameLocalServiceWrapper
 	private ClassNameLocalService _classNameLocalService;
 
 }
+// SB-Hash:1022052558:1870610730:1773456076913

@@ -49,3 +49,4 @@ public class FriendlyURLEntryMappingCTServiceImpl
 		_friendlyURLEntryMappingPersistence;
 
 }
+// SB-Hash:-1205382920:854025060:1773456076913

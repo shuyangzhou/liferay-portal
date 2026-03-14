@@ -700,3 +700,4 @@ public class ERCCompanyEntryUtil {
 	private static volatile ERCCompanyEntryPersistence _persistence;
 
 }
+// SB-Hash:18793678:-644981214:1773456076913

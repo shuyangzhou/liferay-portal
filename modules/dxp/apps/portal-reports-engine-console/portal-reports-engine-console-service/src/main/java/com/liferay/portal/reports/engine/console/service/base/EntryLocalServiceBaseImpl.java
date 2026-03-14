@@ -446,3 +446,4 @@ public abstract class EntryLocalServiceBaseImpl
 		EntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-142520620:-529934655:1773456076913

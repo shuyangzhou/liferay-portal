@@ -207,3 +207,4 @@ public class CommercePriceModifierRelCacheModel
 	public long classPK;
 
 }
+// SB-Hash:-2113300579:60415849:1773456076913

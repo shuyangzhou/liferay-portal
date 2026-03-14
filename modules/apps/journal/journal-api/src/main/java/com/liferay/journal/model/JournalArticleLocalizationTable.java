@@ -54,3 +54,4 @@ public class JournalArticleLocalizationTable
 	}
 
 }
+// SB-Hash:-937638254:-875965416:1773456076913

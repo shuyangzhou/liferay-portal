@@ -456,3 +456,4 @@ public abstract class FaroPreferencesLocalServiceBaseImpl
 		FaroPreferencesLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1003210469:1117559585:1773456076913

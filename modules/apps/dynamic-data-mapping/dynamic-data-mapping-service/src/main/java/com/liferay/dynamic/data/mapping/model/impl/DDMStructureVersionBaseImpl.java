@@ -39,3 +39,4 @@ public abstract class DDMStructureVersionBaseImpl
 	}
 
 }
+// SB-Hash:568023400:-1843255745:1773456076913

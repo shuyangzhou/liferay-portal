@@ -472,3 +472,4 @@ public class CalendarResourceLocalServiceUtil {
 			CalendarResourceLocalService.class);
 
 }
+// SB-Hash:1529605779:-1072954947:1773456076913

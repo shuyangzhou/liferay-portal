@@ -495,3 +495,4 @@ public abstract class NotificationQueueEntryAttachmentLocalServiceBaseImpl
 		NotificationQueueEntryAttachmentLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1647000328:-465969577:1773456076913

@@ -60,3 +60,4 @@ public interface KaleoInstanceService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:-1608123877:1967856607:1773456076913

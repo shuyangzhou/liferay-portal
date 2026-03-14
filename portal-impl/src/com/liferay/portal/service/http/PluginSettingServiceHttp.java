@@ -92,3 +92,4 @@ public class PluginSettingServiceHttp {
 		};
 
 }
+// SB-Hash:1192066878:1870610730:1773456076913

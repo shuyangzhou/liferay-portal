@@ -307,3 +307,4 @@ public class RedundantIndexEntryLocalServiceUtil {
 	private static volatile RedundantIndexEntryLocalService _service;
 
 }
+// SB-Hash:765595225:-644981214:1773456076913

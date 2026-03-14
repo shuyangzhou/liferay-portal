@@ -476,3 +476,4 @@ public abstract class CommerceWishListItemLocalServiceBaseImpl
 		CommerceWishListItemLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:228114758:529950479:1773456076913

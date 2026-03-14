@@ -55,3 +55,4 @@ public class FaroEmailLocalServiceUtil {
 			FaroEmailLocalServiceUtil.class, FaroEmailLocalService.class);
 
 }
+// SB-Hash:2048774540:1117559585:1773456076913

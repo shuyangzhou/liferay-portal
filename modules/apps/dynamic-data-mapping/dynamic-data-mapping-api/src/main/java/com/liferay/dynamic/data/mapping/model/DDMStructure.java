@@ -162,3 +162,4 @@ public interface DDMStructure extends DDMStructureModel, PersistedModel {
 	public void setDDMForm(DDMForm ddmForm);
 
 }
+// SB-Hash:1432027553:-1843255745:1773456076913

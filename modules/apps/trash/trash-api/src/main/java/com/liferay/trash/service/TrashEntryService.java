@@ -234,3 +234,4 @@ public interface TrashEntryService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:1376564440:267088611:1773456076913

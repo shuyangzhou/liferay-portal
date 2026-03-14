@@ -77,3 +77,4 @@ public abstract class KaleoProcessFinderBaseImpl
 		KaleoProcessFinderBaseImpl.class);
 
 }
+// SB-Hash:2027006931:-1498814602:1773456076913

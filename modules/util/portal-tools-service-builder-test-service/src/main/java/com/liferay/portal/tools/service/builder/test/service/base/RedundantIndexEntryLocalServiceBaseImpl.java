@@ -532,3 +532,4 @@ public abstract class RedundantIndexEntryLocalServiceBaseImpl
 		RedundantIndexEntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-975425927:-644981214:1773456076913

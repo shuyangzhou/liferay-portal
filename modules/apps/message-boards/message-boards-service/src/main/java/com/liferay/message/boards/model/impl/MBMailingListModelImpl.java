@@ -1601,3 +1601,4 @@ public class MBMailingListModelImpl
 	private MBMailingList _escapedModel;
 
 }
+// SB-Hash:-226303395:-1389537973:1773456076913

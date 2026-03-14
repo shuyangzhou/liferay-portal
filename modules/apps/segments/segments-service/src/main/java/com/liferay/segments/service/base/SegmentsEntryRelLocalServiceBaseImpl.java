@@ -479,3 +479,4 @@ public abstract class SegmentsEntryRelLocalServiceBaseImpl
 		SegmentsEntryRelLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1850802111:-1988984954:1773456076913

@@ -137,3 +137,4 @@ public abstract class CommerceShippingFixedOptionRelServiceBaseImpl
 		CommerceShippingFixedOptionRelServiceBaseImpl.class);
 
 }
+// SB-Hash:1528414698:1720224397:1773456076913

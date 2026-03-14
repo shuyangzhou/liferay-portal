@@ -422,3 +422,4 @@ public class ObjectFolderItemLocalServiceUtil {
 			ObjectFolderItemLocalService.class);
 
 }
+// SB-Hash:-576280919:-712801821:1773456076913

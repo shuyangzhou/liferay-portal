@@ -213,3 +213,4 @@ public interface Group extends GroupModel, PersistedModel, TreeModel {
 			typeSettingsUnicodeProperties);
 
 }
+// SB-Hash:1004181242:1870610730:1773456076913

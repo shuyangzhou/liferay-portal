@@ -554,3 +554,4 @@ public abstract class ObjectStateLocalServiceBaseImpl
 		ObjectStateLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1622400979:-712801821:1773456076913

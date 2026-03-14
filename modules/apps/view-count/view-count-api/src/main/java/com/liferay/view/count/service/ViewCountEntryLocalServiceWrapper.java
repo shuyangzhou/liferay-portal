@@ -386,3 +386,4 @@ public class ViewCountEntryLocalServiceWrapper
 	private ViewCountEntryLocalService _viewCountEntryLocalService;
 
 }
+// SB-Hash:-301936555:175929112:1773456076913

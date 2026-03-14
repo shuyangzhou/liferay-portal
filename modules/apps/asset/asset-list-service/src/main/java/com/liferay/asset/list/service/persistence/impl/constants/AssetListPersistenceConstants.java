@@ -21,3 +21,4 @@ public class AssetListPersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:-198230102:-1575459458:1773456076913

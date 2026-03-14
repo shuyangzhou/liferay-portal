@@ -50,3 +50,4 @@ public class ObjectStateTable extends BaseTable<ObjectStateTable> {
 	}
 
 }
+// SB-Hash:320854069:-712801821:1773456076913

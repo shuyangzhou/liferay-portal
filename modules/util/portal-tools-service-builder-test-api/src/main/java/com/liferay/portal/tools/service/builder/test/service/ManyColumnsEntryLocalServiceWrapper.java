@@ -359,3 +359,4 @@ public class ManyColumnsEntryLocalServiceWrapper
 	private ManyColumnsEntryLocalService _manyColumnsEntryLocalService;
 
 }
+// SB-Hash:-322708909:-644981214:1773456076913

@@ -272,3 +272,4 @@ public class CPDefinitionLocalizationCacheModel
 	public String shortDescription;
 
 }
+// SB-Hash:1370271246:2013809339:1773456076913

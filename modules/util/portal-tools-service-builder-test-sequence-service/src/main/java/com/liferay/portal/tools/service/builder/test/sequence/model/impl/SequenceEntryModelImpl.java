@@ -652,3 +652,4 @@ public class SequenceEntryModelImpl
 	private SequenceEntry _escapedModel;
 
 }
+// SB-Hash:-2114316452:608525136:1773456076913

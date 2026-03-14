@@ -844,3 +844,4 @@ public interface SXPBlueprintPersistence extends BasePersistence<SXPBlueprint> {
 	public int countAll();
 
 }
+// SB-Hash:-164965608:-627313431:1773456076913

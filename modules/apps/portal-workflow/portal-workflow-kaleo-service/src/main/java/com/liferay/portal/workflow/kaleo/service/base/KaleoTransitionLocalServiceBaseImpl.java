@@ -474,3 +474,4 @@ public abstract class KaleoTransitionLocalServiceBaseImpl
 		KaleoTransitionLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1007310712:1967856607:1773456076913

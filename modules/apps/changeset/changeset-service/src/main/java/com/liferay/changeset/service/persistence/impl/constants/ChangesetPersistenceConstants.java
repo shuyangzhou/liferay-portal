@@ -21,3 +21,4 @@ public class ChangesetPersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:-483225422:-138169221:1773456076913

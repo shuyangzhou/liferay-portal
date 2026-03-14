@@ -288,3 +288,4 @@ public interface PortalPreferencesLocalService
 		long ownerId, int ownerType, String xml);
 
 }
+// SB-Hash:1169234241:1870610730:1773456076913

@@ -1241,3 +1241,4 @@ public class MBMessageLocalServiceWrapper
 	private MBMessageLocalService _mbMessageLocalService;
 
 }
+// SB-Hash:1633566375:-1389537973:1773456076913

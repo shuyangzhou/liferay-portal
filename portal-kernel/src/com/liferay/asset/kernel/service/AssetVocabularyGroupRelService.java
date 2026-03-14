@@ -64,3 +64,4 @@ public interface AssetVocabularyGroupRelService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:-1391558458:-1753039864:1773456076913

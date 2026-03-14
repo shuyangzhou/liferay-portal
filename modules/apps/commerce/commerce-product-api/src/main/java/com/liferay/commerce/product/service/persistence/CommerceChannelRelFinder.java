@@ -29,3 +29,4 @@ public interface CommerceChannelRelFinder {
 			boolean inlineSQLHelper);
 
 }
+// SB-Hash:531387170:2013809339:1773456076913

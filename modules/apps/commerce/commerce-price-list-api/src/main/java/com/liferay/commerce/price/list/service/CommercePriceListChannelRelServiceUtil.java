@@ -133,3 +133,4 @@ public class CommercePriceListChannelRelServiceUtil {
 			CommercePriceListChannelRelService.class);
 
 }
+// SB-Hash:1041873305:1964328942:1773456076913

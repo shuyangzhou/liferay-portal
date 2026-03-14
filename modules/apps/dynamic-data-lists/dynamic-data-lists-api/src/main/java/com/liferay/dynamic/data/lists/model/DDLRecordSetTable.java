@@ -76,3 +76,4 @@ public class DDLRecordSetTable extends BaseTable<DDLRecordSetTable> {
 	}
 
 }
+// SB-Hash:69629581:1504452851:1773456076913

@@ -45,3 +45,4 @@ public class PortalLocalServiceUtil {
 	private static volatile PortalLocalService _service;
 
 }
+// SB-Hash:-594321311:1870610730:1773456076913

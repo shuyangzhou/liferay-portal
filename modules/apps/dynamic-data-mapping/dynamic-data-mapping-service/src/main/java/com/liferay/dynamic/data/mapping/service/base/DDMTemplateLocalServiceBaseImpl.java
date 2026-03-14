@@ -651,3 +651,4 @@ public abstract class DDMTemplateLocalServiceBaseImpl
 		DDMTemplateLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:445631529:-1843255745:1773456076913

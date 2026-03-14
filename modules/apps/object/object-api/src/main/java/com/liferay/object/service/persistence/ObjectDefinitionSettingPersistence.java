@@ -974,3 +974,4 @@ public interface ObjectDefinitionSettingPersistence
 	public int countAll();
 
 }
+// SB-Hash:1206333542:-712801821:1773456076913

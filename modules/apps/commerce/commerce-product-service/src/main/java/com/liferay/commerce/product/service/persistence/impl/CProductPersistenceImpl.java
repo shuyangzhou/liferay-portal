@@ -3191,3 +3191,4 @@ public class CProductPersistenceImpl
 	}
 
 }
+// SB-Hash:2119502543:2013809339:1773456076913

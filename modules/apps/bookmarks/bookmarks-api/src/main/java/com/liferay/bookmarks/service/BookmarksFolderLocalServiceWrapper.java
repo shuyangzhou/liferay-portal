@@ -706,3 +706,4 @@ public class BookmarksFolderLocalServiceWrapper
 	private BookmarksFolderLocalService _bookmarksFolderLocalService;
 
 }
+// SB-Hash:-1769914154:-1243805074:1773456076913

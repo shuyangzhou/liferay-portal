@@ -130,3 +130,4 @@ public abstract class CommerceTermEntryServiceBaseImpl
 		CommerceTermEntryServiceBaseImpl.class);
 
 }
+// SB-Hash:681622318:-914968174:1773456076913

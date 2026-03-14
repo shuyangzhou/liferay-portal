@@ -21,3 +21,4 @@ public interface CommercePriceModifierFinder {
 				long[] assetCategoriesIds, long[] commercePricingClassesIds);
 
 }
+// SB-Hash:-846253626:60415849:1773456076913

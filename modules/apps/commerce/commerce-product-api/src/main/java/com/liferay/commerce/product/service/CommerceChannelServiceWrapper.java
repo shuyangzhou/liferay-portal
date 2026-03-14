@@ -191,3 +191,4 @@ public class CommerceChannelServiceWrapper
 	private CommerceChannelService _commerceChannelService;
 
 }
+// SB-Hash:2120935402:2013809339:1773456076913

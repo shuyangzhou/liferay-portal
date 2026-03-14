@@ -515,3 +515,4 @@ public class ListTypeEntryLocalServiceWrapper
 	private ListTypeEntryLocalService _listTypeEntryLocalService;
 
 }
+// SB-Hash:-94440552:999634104:1773456076913

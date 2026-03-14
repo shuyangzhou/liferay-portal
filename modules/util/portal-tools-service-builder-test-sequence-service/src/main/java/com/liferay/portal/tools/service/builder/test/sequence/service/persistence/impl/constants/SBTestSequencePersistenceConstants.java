@@ -21,3 +21,4 @@ public class SBTestSequencePersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:-714998210:608525136:1773456076913

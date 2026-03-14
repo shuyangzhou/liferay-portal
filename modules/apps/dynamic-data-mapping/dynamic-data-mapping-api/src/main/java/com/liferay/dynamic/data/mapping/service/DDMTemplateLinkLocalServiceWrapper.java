@@ -444,3 +444,4 @@ public class DDMTemplateLinkLocalServiceWrapper
 	private DDMTemplateLinkLocalService _ddmTemplateLinkLocalService;
 
 }
+// SB-Hash:-422638415:-1843255745:1773456076913

@@ -564,3 +564,4 @@ public interface GroupService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:1174784291:1870610730:1773456076913

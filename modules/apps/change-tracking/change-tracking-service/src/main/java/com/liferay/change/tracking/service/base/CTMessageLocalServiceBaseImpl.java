@@ -445,3 +445,4 @@ public abstract class CTMessageLocalServiceBaseImpl
 		CTMessageLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-2110157192:195619156:1773456076913

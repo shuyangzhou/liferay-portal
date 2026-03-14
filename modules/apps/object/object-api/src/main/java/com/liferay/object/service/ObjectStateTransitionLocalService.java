@@ -318,3 +318,4 @@ public interface ObjectStateTransitionLocalService
 		throws PortalException;
 
 }
+// SB-Hash:-1842520567:-712801821:1773456076913

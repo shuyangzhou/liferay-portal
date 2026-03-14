@@ -595,3 +595,4 @@ public class KBCommentLocalServiceWrapper
 	private KBCommentLocalService _kbCommentLocalService;
 
 }
+// SB-Hash:1579949903:-560307709:1773456076913

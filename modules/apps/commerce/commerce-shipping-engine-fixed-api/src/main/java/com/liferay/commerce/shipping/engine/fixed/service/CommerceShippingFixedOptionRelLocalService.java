@@ -337,3 +337,4 @@ public interface CommerceShippingFixedOptionRelLocalService
 		throws PortalException;
 
 }
+// SB-Hash:1972639959:1720224397:1773456076913

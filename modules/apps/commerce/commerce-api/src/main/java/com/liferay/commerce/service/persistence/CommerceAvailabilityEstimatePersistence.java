@@ -604,3 +604,4 @@ public interface CommerceAvailabilityEstimatePersistence
 	public int countAll();
 
 }
+// SB-Hash:-1949064037:-329900582:1773456076913

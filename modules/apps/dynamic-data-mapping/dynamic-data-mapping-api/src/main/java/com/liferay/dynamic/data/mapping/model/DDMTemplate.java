@@ -81,3 +81,4 @@ public interface DDMTemplate extends DDMTemplateModel, PersistedModel {
 	public void setSmallImageType(String smallImageType);
 
 }
+// SB-Hash:-230755083:-1843255745:1773456076913

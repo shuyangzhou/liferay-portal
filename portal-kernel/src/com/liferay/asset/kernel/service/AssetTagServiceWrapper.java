@@ -269,3 +269,4 @@ public class AssetTagServiceWrapper
 	private AssetTagService _assetTagService;
 
 }
+// SB-Hash:926018192:-1753039864:1773456076913

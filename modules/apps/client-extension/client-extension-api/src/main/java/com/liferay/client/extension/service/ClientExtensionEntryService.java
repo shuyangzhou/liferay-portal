@@ -85,3 +85,4 @@ public interface ClientExtensionEntryService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:-529858062:1958305926:1773456076913

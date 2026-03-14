@@ -619,3 +619,4 @@ public abstract class SXPBlueprintLocalServiceBaseImpl
 		SXPBlueprintLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:2132477671:-627313431:1773456076913

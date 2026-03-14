@@ -79,3 +79,4 @@ public abstract class GroupBaseImpl extends GroupModelImpl implements Group {
 	}
 
 }
+// SB-Hash:-815606550:1870610730:1773456076913

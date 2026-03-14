@@ -792,3 +792,4 @@ public interface ObjectFolderItemPersistence
 	public int countAll();
 
 }
+// SB-Hash:372355483:-712801821:1773456076913

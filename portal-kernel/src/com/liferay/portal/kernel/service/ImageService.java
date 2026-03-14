@@ -52,3 +52,4 @@ public interface ImageService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:-1325945091:1870610730:1773456076913

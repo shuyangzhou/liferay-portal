@@ -229,3 +229,4 @@ public class DDMTemplateVersionServiceHttp {
 		new Class[] {long.class};
 
 }
+// SB-Hash:-882155041:-1843255745:1773456076913

@@ -462,3 +462,4 @@ public class FaroUserLocalServiceWrapper
 	private FaroUserLocalService _faroUserLocalService;
 
 }
+// SB-Hash:789172158:1117559585:1773456076913

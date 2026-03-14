@@ -50,3 +50,4 @@ public interface CTEntry extends CTEntryModel, PersistedModel {
 	public String getUserName();
 
 }
+// SB-Hash:184654661:195619156:1773456076913

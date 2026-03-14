@@ -64,3 +64,4 @@ public class AssetTagFinderBaseImpl extends BasePersistenceImpl<AssetTag> {
 		AssetTagFinderBaseImpl.class);
 
 }
+// SB-Hash:-585231577:-1753039864:1773456076913

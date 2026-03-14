@@ -343,3 +343,4 @@ public class MBThreadCacheModel
 	public long statusDate;
 
 }
+// SB-Hash:1050973563:-1389537973:1773456076913

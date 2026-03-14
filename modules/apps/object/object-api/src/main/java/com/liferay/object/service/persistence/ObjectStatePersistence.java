@@ -791,3 +791,4 @@ public interface ObjectStatePersistence extends BasePersistence<ObjectState> {
 	public int countAll();
 
 }
+// SB-Hash:-1395361288:-712801821:1773456076913

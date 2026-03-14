@@ -193,3 +193,4 @@ public class FaroPreferencesCacheModel
 	public String preferences;
 
 }
+// SB-Hash:1847864437:1117559585:1773456076913

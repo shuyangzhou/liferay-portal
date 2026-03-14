@@ -29,3 +29,4 @@ public abstract class StyleBookEntryVersionBaseImpl
 	 */
 
 }
+// SB-Hash:-523649113:1348678574:1773456076913

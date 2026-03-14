@@ -221,3 +221,4 @@ public class ObjectFolderItemCacheModel
 	public int positionY;
 
 }
+// SB-Hash:2133074145:-712801821:1773456076913

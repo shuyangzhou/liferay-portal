@@ -672,3 +672,4 @@ public class LayoutPageTemplateCollectionLocalServiceWrapper
 		_layoutPageTemplateCollectionLocalService;
 
 }
+// SB-Hash:-1884950835:231121481:1773456076913

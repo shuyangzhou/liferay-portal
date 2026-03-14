@@ -128,3 +128,4 @@ public abstract class AssetDisplayPageEntryServiceBaseImpl
 		AssetDisplayPageEntryServiceBaseImpl.class);
 
 }
+// SB-Hash:-779911163:2134388893:1773456076913

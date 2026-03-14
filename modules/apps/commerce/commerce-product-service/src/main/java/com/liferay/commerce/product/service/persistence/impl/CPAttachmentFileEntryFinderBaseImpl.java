@@ -78,3 +78,4 @@ public abstract class CPAttachmentFileEntryFinderBaseImpl
 		CPAttachmentFileEntryFinderBaseImpl.class);
 
 }
+// SB-Hash:545005899:2013809339:1773456076913

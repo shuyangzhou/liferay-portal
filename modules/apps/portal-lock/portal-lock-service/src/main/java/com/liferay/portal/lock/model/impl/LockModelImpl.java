@@ -982,3 +982,4 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 	private Lock _escapedModel;
 
 }
+// SB-Hash:1759206369:63939710:1773456076913

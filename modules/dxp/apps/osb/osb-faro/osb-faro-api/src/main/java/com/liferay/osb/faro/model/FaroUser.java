@@ -48,3 +48,4 @@ public interface FaroUser extends FaroUserModel, PersistedModel {
 		};
 
 }
+// SB-Hash:-84221121:1117559585:1773456076913

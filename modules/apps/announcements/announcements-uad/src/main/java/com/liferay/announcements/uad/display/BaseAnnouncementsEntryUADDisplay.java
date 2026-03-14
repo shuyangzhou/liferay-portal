@@ -78,3 +78,4 @@ public abstract class BaseAnnouncementsEntryUADDisplay
 	protected AnnouncementsEntryLocalService announcementsEntryLocalService;
 
 }
+// SB-Hash:728233821:-191752414:1773456076913

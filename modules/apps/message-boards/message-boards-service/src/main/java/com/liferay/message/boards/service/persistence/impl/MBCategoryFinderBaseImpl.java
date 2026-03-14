@@ -77,3 +77,4 @@ public abstract class MBCategoryFinderBaseImpl
 		MBCategoryFinderBaseImpl.class);
 
 }
+// SB-Hash:403547828:-1389537973:1773456076913

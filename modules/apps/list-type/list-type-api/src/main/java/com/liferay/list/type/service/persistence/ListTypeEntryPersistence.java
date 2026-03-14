@@ -1140,3 +1140,4 @@ public interface ListTypeEntryPersistence
 	public int countAll();
 
 }
+// SB-Hash:590001605:999634104:1773456076913

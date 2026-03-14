@@ -559,3 +559,4 @@ public abstract class ObjectActionLocalServiceBaseImpl
 		ObjectActionLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-786839857:-712801821:1773456076913

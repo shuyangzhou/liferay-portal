@@ -88,3 +88,4 @@ public interface CommercePriceListDiscountRelService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:1782816976:1964328942:1773456076913

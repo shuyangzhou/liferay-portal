@@ -353,3 +353,4 @@ public class DDMStructureVersionLocalServiceUtil {
 			DDMStructureVersionLocalService.class);
 
 }
+// SB-Hash:218827383:-1843255745:1773456076913

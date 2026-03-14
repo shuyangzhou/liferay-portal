@@ -224,3 +224,4 @@ public class SocialActivityCounterCacheModel
 	public boolean active;
 
 }
+// SB-Hash:-28698617:865570565:1773456076913

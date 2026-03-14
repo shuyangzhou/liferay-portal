@@ -93,3 +93,4 @@ public interface KaleoDefinitionService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:934078992:1967856607:1773456076913

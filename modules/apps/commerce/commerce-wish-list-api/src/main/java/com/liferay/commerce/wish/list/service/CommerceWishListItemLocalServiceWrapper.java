@@ -481,3 +481,4 @@ public class CommerceWishListItemLocalServiceWrapper
 	private CommerceWishListItemLocalService _commerceWishListItemLocalService;
 
 }
+// SB-Hash:-1096313181:529950479:1773456076913

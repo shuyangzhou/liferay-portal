@@ -432,3 +432,4 @@ public class CPConfigurationListRelLocalServiceUtil {
 			CPConfigurationListRelLocalService.class);
 
 }
+// SB-Hash:-1076986003:2013809339:1773456076913

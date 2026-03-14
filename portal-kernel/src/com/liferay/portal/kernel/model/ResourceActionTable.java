@@ -39,3 +39,4 @@ public class ResourceActionTable extends BaseTable<ResourceActionTable> {
 	}
 
 }
+// SB-Hash:1995240767:1870610730:1773456076913

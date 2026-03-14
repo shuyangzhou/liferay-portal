@@ -3377,3 +3377,4 @@ public class JournalArticleLocalServiceWrapper
 	private JournalArticleLocalService _journalArticleLocalService;
 
 }
+// SB-Hash:-2010132391:-875965416:1773456076913

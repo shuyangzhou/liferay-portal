@@ -403,3 +403,4 @@ public class MBBanLocalServiceUtil {
 		new Snapshot<>(MBBanLocalServiceUtil.class, MBBanLocalService.class);
 
 }
+// SB-Hash:12909442:-1389537973:1773456076913

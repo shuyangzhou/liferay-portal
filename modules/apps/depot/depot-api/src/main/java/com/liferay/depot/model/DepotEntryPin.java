@@ -48,3 +48,4 @@ public interface DepotEntryPin extends DepotEntryPinModel, PersistedModel {
 		};
 
 }
+// SB-Hash:1566134702:-1172556749:1773456076913

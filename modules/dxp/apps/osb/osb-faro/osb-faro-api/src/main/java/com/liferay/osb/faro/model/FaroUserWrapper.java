@@ -491,3 +491,4 @@ public class FaroUserWrapper
 	}
 
 }
+// SB-Hash:1826873976:1117559585:1773456076913

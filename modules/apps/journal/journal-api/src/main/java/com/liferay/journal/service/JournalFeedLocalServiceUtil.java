@@ -475,3 +475,4 @@ public class JournalFeedLocalServiceUtil {
 			JournalFeedLocalServiceUtil.class, JournalFeedLocalService.class);
 
 }
+// SB-Hash:760147481:-875965416:1773456076913

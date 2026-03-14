@@ -527,3 +527,4 @@ public class ExpandoColumnPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
+// SB-Hash:542569674:-1134458972:1773456076913

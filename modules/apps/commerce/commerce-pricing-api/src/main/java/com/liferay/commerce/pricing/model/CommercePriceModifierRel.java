@@ -58,3 +58,4 @@ public interface CommercePriceModifierRel
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 }
+// SB-Hash:-463073262:60415849:1773456076913

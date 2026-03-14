@@ -311,3 +311,4 @@ public interface SamlIdpSpConnectionLocalService
 		SamlIdpSpConnection samlIdpSpConnection);
 
 }
+// SB-Hash:585064795:-1058076342:1773456076913

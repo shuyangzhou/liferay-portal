@@ -525,3 +525,4 @@ public interface ObjectDefinitionLocalService
 		throws PortalException;
 
 }
+// SB-Hash:826568218:-712801821:1773456076913

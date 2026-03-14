@@ -349,3 +349,4 @@ public interface UndefinedDefaultOrderEntryPersistence
 	public int countAll();
 
 }
+// SB-Hash:-401402857:-644981214:1773456076913

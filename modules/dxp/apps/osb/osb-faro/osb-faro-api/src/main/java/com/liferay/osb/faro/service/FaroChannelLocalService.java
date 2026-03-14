@@ -307,3 +307,4 @@ public interface FaroChannelLocalService
 	public FaroChannel updateFaroChannel(FaroChannel faroChannel);
 
 }
+// SB-Hash:2099148038:1117559585:1773456076913

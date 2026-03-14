@@ -343,3 +343,4 @@ public interface SourceLocalService
 	public Source updateSource(Source source);
 
 }
+// SB-Hash:126773640:-529934655:1773456076913

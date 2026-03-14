@@ -540,3 +540,4 @@ public class CTCollectionTemplateUtil {
 	private static volatile CTCollectionTemplatePersistence _persistence;
 
 }
+// SB-Hash:912154650:195619156:1773456076913

@@ -595,3 +595,4 @@ public abstract class CPDAvailabilityEstimateLocalServiceBaseImpl
 		CPDAvailabilityEstimateLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-83032034:-329900582:1773456076913

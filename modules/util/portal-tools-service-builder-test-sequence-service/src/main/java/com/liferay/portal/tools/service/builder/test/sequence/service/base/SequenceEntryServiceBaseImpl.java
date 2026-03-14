@@ -125,3 +125,4 @@ public abstract class SequenceEntryServiceBaseImpl
 		SequenceEntryServiceBaseImpl.class);
 
 }
+// SB-Hash:274281952:608525136:1773456076913

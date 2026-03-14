@@ -264,3 +264,4 @@ public class ObjectFolderServiceHttp {
 		new Class[] {String.class, long.class, java.util.Map.class};
 
 }
+// SB-Hash:-974151628:-712801821:1773456076913

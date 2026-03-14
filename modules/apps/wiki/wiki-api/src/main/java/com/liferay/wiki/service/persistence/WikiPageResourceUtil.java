@@ -748,3 +748,4 @@ public class WikiPageResourceUtil {
 	private static volatile WikiPageResourcePersistence _persistence;
 
 }
+// SB-Hash:634340333:-385412670:1773456076913

@@ -129,3 +129,4 @@ public abstract class MBCategoryServiceBaseImpl
 		MBCategoryServiceBaseImpl.class);
 
 }
+// SB-Hash:-1519286694:-1389537973:1773456076913

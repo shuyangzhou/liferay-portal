@@ -101,3 +101,4 @@ public class MBStatsUserLocalServiceWrapper
 	private MBStatsUserLocalService _mbStatsUserLocalService;
 
 }
+// SB-Hash:-2139875218:-1389537973:1773456076913

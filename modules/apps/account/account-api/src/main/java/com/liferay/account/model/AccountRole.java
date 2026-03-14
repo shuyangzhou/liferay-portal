@@ -54,3 +54,4 @@ public interface AccountRole extends AccountRoleModel, PersistedModel {
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 }
+// SB-Hash:1655287842:1707331560:1773456076913

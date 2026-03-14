@@ -49,3 +49,4 @@ public interface CPInstanceOptionValueRelService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:-881892997:2013809339:1773456076913

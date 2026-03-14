@@ -62,3 +62,4 @@ public class ERAssetCategoryLocalServiceUtil {
 			ERAssetCategoryLocalService.class);
 
 }
+// SB-Hash:-2033009260:-700112462:1773456076913

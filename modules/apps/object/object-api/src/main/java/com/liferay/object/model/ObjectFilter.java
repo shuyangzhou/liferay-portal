@@ -48,3 +48,4 @@ public interface ObjectFilter extends ObjectFilterModel, PersistedModel {
 		};
 
 }
+// SB-Hash:-758125736:-712801821:1773456076913

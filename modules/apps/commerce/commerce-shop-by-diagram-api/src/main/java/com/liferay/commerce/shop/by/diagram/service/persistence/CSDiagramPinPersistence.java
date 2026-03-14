@@ -298,3 +298,4 @@ public interface CSDiagramPinPersistence
 	public int countAll();
 
 }
+// SB-Hash:822752573:243107995:1773456076913

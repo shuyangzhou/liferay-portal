@@ -942,3 +942,4 @@ public class JournalArticleResourceUtil {
 	private static volatile JournalArticleResourcePersistence _persistence;
 
 }
+// SB-Hash:2103309258:-875965416:1773456076913

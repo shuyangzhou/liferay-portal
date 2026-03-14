@@ -488,3 +488,4 @@ public class CPConfigurationEntrySettingLocalServiceWrapper
 		_cpConfigurationEntrySettingLocalService;
 
 }
+// SB-Hash:-1601344319:2013809339:1773456076913

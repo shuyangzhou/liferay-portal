@@ -75,3 +75,4 @@ public class AssetListEntryTable extends BaseTable<AssetListEntryTable> {
 	}
 
 }
+// SB-Hash:91353111:-1575459458:1773456076913

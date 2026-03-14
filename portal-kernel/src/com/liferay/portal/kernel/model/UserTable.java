@@ -125,3 +125,4 @@ public class UserTable extends BaseTable<UserTable> {
 	}
 
 }
+// SB-Hash:-350539866:1870610730:1773456076913

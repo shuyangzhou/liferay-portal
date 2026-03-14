@@ -1249,3 +1249,4 @@ public class ResourcePermissionLocalServiceWrapper
 	private ResourcePermissionLocalService _resourcePermissionLocalService;
 
 }
+// SB-Hash:1582507359:1870610730:1773456076913

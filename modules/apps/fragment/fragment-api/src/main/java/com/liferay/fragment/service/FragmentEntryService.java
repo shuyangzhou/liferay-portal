@@ -221,3 +221,4 @@ public interface FragmentEntryService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:404217129:-140381953:1773456076913

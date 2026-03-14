@@ -45,3 +45,4 @@ public class UserGroupGroupRoleFinderBaseImpl
 	protected UserGroupGroupRolePersistence userGroupGroupRolePersistence;
 
 }
+// SB-Hash:-1177871610:1870610730:1773456076913

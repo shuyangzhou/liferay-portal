@@ -77,3 +77,4 @@ public abstract class WikiPageFinderBaseImpl
 		WikiPageFinderBaseImpl.class);
 
 }
+// SB-Hash:-1878442666:-385412670:1773456076913

@@ -625,3 +625,4 @@ public abstract class TemplateEntryLocalServiceBaseImpl
 		TemplateEntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1445679426:-1502166916:1773456076913

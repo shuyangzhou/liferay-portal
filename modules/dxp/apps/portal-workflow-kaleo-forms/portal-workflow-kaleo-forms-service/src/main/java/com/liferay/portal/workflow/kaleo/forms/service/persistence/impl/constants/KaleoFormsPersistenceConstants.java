@@ -21,3 +21,4 @@ public class KaleoFormsPersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:-1931250956:-1498814602:1773456076913

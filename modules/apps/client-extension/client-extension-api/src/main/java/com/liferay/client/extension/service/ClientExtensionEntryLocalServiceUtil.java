@@ -457,3 +457,4 @@ public class ClientExtensionEntryLocalServiceUtil {
 			ClientExtensionEntryLocalService.class);
 
 }
+// SB-Hash:1851473346:1958305926:1773456076913

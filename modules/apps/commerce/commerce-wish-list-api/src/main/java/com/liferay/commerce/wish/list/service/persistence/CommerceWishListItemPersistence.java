@@ -959,3 +959,4 @@ public interface CommerceWishListItemPersistence
 	public int countAll();
 
 }
+// SB-Hash:-796510598:529950479:1773456076913

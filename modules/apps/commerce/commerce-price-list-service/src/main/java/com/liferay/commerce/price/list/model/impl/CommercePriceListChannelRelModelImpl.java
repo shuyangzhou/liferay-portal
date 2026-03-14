@@ -1088,3 +1088,4 @@ public class CommercePriceListChannelRelModelImpl
 	private CommercePriceListChannelRel _escapedModel;
 
 }
+// SB-Hash:-2101697130:1964328942:1773456076913

@@ -72,3 +72,4 @@ public interface DispatchLogService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:1637410486:893974761:1773456076913

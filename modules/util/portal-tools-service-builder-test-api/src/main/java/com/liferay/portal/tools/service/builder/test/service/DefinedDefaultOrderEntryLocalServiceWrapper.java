@@ -381,3 +381,4 @@ public class DefinedDefaultOrderEntryLocalServiceWrapper
 		_definedDefaultOrderEntryLocalService;
 
 }
+// SB-Hash:2035236040:-644981214:1773456076913

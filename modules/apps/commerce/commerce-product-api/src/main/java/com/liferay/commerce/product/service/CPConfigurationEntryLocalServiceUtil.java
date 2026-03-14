@@ -508,3 +508,4 @@ public class CPConfigurationEntryLocalServiceUtil {
 			CPConfigurationEntryLocalService.class);
 
 }
+// SB-Hash:-262944702:2013809339:1773456076913

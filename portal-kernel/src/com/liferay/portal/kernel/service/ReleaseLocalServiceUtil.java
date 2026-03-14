@@ -322,3 +322,4 @@ public class ReleaseLocalServiceUtil {
 	private static volatile ReleaseLocalService _service;
 
 }
+// SB-Hash:1130144118:1870610730:1773456076913

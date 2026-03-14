@@ -328,3 +328,4 @@ public class PluginSettingLocalServiceUtil {
 	private static volatile PluginSettingLocalService _service;
 
 }
+// SB-Hash:-374338301:1870610730:1773456076913

@@ -639,3 +639,4 @@ public abstract class CommerceNotificationTemplateLocalServiceBaseImpl
 		CommerceNotificationTemplateLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-420909284:-1700122728:1773456076913

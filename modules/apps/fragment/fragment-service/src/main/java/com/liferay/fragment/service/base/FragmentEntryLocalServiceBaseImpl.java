@@ -1109,3 +1109,4 @@ public abstract class FragmentEntryLocalServiceBaseImpl
 		FragmentEntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:440841233:-140381953:1773456076913

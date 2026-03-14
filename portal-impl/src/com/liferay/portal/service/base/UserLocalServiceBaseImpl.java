@@ -1349,3 +1349,4 @@ public abstract class UserLocalServiceBaseImpl
 		UserLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-726033299:1870610730:1773456076913

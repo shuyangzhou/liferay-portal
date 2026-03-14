@@ -2643,3 +2643,4 @@ public interface DDMStructurePersistence
 	public int countAll();
 
 }
+// SB-Hash:537022498:-1843255745:1773456076913

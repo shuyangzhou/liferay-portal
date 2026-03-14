@@ -39,3 +39,4 @@ public abstract class KBTemplateBaseImpl
 	}
 
 }
+// SB-Hash:1289120116:-560307709:1773456076913

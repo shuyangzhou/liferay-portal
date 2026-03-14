@@ -96,3 +96,4 @@ public interface CPDefinitionVirtualSettingService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:70712492:446411075:1773456076913

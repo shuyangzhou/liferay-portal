@@ -72,3 +72,4 @@ public class LayoutFinderBaseImpl extends BasePersistenceImpl<Layout> {
 		LayoutFinderBaseImpl.class);
 
 }
+// SB-Hash:667222670:1870610730:1773456076913

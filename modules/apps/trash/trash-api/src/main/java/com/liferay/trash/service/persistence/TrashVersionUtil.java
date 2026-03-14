@@ -685,3 +685,4 @@ public class TrashVersionUtil {
 	private static volatile TrashVersionPersistence _persistence;
 
 }
+// SB-Hash:597929530:267088611:1773456076913

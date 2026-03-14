@@ -82,3 +82,4 @@ public abstract class BaseBookmarksEntryUADExporter
 	protected BookmarksEntryLocalService bookmarksEntryLocalService;
 
 }
+// SB-Hash:714002341:-1243805074:1773456076913

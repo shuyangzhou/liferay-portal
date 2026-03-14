@@ -121,3 +121,4 @@ public abstract class ObjectViewColumnServiceBaseImpl
 		ObjectViewColumnServiceBaseImpl.class);
 
 }
+// SB-Hash:-1685993630:-712801821:1773456076913

@@ -1073,3 +1073,4 @@ public class CommerceInventoryBookedQuantityModelImpl
 	private CommerceInventoryBookedQuantity _escapedModel;
 
 }
+// SB-Hash:-514258673:-1537497261:1773456076913

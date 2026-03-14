@@ -63,3 +63,4 @@ public interface KaleoTaskInstanceToken
 		getKaleoTaskAssignmentInstances();
 
 }
+// SB-Hash:1862048218:1967856607:1773456076913

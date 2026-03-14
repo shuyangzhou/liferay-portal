@@ -79,3 +79,4 @@ public class AnnouncementsEntryTable
 	}
 
 }
+// SB-Hash:320046041:-191752414:1773456076913

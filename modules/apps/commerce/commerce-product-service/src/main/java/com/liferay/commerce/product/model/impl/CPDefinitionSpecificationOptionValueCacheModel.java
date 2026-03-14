@@ -332,3 +332,4 @@ public class CPDefinitionSpecificationOptionValueCacheModel
 	public long lastPublishDate;
 
 }
+// SB-Hash:480229209:2013809339:1773456076913

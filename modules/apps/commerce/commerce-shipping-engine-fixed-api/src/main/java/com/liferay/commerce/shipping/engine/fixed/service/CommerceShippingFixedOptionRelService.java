@@ -105,3 +105,4 @@ public interface CommerceShippingFixedOptionRelService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:974369645:1720224397:1773456076913

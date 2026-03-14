@@ -791,3 +791,4 @@ public class DDMStructurePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
+// SB-Hash:723632896:-1843255745:1773456076913

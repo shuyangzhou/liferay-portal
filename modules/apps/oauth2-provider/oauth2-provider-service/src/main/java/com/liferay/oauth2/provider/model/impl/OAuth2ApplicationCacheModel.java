@@ -458,3 +458,4 @@ public class OAuth2ApplicationCacheModel
 	public boolean trustedApplication;
 
 }
+// SB-Hash:-1038855590:-1760109681:1773456076913

@@ -67,3 +67,4 @@ public class ERAssetVocabularyLocalServiceWrapper
 	private ERAssetVocabularyLocalService _erAssetVocabularyLocalService;
 
 }
+// SB-Hash:-1977986615:-700112462:1773456076913

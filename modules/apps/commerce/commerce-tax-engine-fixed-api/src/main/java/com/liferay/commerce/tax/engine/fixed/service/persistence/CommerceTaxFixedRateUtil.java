@@ -718,3 +718,4 @@ public class CommerceTaxFixedRateUtil {
 	private static volatile CommerceTaxFixedRatePersistence _persistence;
 
 }
+// SB-Hash:-19098700:1597945076:1773456076913

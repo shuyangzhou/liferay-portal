@@ -41,3 +41,4 @@ public interface TeamFinder {
 			<com.liferay.portal.kernel.model.Team> orderByComparator);
 
 }
+// SB-Hash:-2142624733:1870610730:1773456076913

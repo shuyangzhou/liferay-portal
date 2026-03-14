@@ -84,3 +84,4 @@ public class CPSpecificationOptionListTypeDefinitionRelServiceWrapper
 		_cpSpecificationOptionListTypeDefinitionRelService;
 
 }
+// SB-Hash:1595189099:2013809339:1773456076913

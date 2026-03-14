@@ -704,3 +704,4 @@ public abstract class RepositoryLocalServiceBaseImpl
 		RepositoryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-546736279:1870610730:1773456076913

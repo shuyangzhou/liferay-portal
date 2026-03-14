@@ -273,3 +273,4 @@ public interface UndefinedDefaultOrderEntryLocalService
 		UndefinedDefaultOrderEntry undefinedDefaultOrderEntry);
 
 }
+// SB-Hash:1250789448:-644981214:1773456076913

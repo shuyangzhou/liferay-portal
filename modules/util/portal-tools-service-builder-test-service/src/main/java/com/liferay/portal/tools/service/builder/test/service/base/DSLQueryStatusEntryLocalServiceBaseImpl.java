@@ -532,3 +532,4 @@ public abstract class DSLQueryStatusEntryLocalServiceBaseImpl
 		DSLQueryStatusEntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:661923175:-644981214:1773456076913

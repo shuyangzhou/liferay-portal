@@ -125,3 +125,4 @@ public abstract class TranslationEntryServiceBaseImpl
 		TranslationEntryServiceBaseImpl.class);
 
 }
+// SB-Hash:-1966487331:327547453:1773456076913

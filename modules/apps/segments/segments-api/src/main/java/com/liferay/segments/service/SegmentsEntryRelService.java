@@ -82,3 +82,4 @@ public interface SegmentsEntryRelService extends BaseService {
 		long segmentsEntryId, long classNameId, long classPK);
 
 }
+// SB-Hash:1654934160:-1988984954:1773456076913

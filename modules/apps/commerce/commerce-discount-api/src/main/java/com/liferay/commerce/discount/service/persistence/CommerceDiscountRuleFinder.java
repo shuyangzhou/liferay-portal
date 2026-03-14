@@ -31,3 +31,4 @@ public interface CommerceDiscountRuleFinder {
 				boolean inlineSQLHelper);
 
 }
+// SB-Hash:-986651563:1570856832:1773456076913

@@ -1106,3 +1106,4 @@ public class CommerceOrderNoteModelImpl
 	private CommerceOrderNote _escapedModel;
 
 }
+// SB-Hash:-503420695:-329900582:1773456076913

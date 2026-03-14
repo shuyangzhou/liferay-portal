@@ -71,3 +71,4 @@ public class AssetVocabularyGroupRelServiceUtil {
 	private static volatile AssetVocabularyGroupRelService _service;
 
 }
+// SB-Hash:-1340836508:-1753039864:1773456076913

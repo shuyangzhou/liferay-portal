@@ -596,3 +596,4 @@ public abstract class ListTypeDefinitionLocalServiceBaseImpl
 		ListTypeDefinitionLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:326258999:999634104:1773456076913

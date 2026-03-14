@@ -61,3 +61,4 @@ public interface CommercePricingClassCPDefinitionRel
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 }
+// SB-Hash:-1930831838:60415849:1773456076913

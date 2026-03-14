@@ -2601,3 +2601,4 @@ public class UserGroupUtil {
 	private static volatile UserGroupPersistence _persistence;
 
 }
+// SB-Hash:1753427864:1870610730:1773456076913

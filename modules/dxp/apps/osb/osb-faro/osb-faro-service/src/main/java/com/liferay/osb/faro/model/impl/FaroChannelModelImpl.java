@@ -936,3 +936,4 @@ public class FaroChannelModelImpl
 	private FaroChannel _escapedModel;
 
 }
+// SB-Hash:-338282198:1117559585:1773456076913

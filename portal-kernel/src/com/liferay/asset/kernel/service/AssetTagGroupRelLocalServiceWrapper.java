@@ -478,3 +478,4 @@ public class AssetTagGroupRelLocalServiceWrapper
 	private AssetTagGroupRelLocalService _assetTagGroupRelLocalService;
 
 }
+// SB-Hash:-341795083:-1753039864:1773456076913

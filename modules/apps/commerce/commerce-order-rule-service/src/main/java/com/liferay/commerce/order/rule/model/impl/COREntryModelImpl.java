@@ -1540,3 +1540,4 @@ public class COREntryModelImpl
 	private COREntry _escapedModel;
 
 }
+// SB-Hash:396228110:147693042:1773456076913

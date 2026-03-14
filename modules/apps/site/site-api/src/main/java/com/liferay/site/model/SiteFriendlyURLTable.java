@@ -58,3 +58,4 @@ public class SiteFriendlyURLTable extends BaseTable<SiteFriendlyURLTable> {
 	}
 
 }
+// SB-Hash:-518305860:-2089841109:1773456076913

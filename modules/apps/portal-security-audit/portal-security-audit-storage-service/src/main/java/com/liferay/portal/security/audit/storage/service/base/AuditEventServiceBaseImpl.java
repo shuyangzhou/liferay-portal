@@ -126,3 +126,4 @@ public abstract class AuditEventServiceBaseImpl
 		AuditEventServiceBaseImpl.class);
 
 }
+// SB-Hash:-586138806:545657342:1773456076913

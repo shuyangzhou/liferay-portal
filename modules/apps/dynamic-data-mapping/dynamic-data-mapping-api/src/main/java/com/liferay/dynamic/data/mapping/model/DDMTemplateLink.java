@@ -53,3 +53,4 @@ public interface DDMTemplateLink extends DDMTemplateLinkModel, PersistedModel {
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 }
+// SB-Hash:-636788340:-1843255745:1773456076913

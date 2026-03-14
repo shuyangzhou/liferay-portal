@@ -341,3 +341,4 @@ public class CTCollectionTemplateLocalServiceUtil {
 			CTCollectionTemplateLocalService.class);
 
 }
+// SB-Hash:77605586:195619156:1773456076913

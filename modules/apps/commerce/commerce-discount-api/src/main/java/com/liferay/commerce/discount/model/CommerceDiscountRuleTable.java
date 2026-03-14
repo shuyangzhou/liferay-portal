@@ -64,3 +64,4 @@ public class CommerceDiscountRuleTable
 	}
 
 }
+// SB-Hash:-1078446127:1570856832:1773456076913

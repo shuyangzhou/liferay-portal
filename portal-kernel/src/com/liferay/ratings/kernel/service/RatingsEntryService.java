@@ -56,3 +56,4 @@ public interface RatingsEntryService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:1294882255:-1803523562:1773456076913

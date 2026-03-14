@@ -127,3 +127,4 @@ public interface KBCommentService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:863583888:-560307709:1773456076913

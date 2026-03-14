@@ -982,3 +982,4 @@ public interface DDMDataProviderInstancePersistence
 	public int countAll();
 
 }
+// SB-Hash:780829580:-1843255745:1773456076913

@@ -39,3 +39,4 @@ public class CTSchemaVersionTable extends BaseTable<CTSchemaVersionTable> {
 	}
 
 }
+// SB-Hash:369448266:195619156:1773456076913

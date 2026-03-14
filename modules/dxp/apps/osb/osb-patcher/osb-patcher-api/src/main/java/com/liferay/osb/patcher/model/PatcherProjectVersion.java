@@ -52,3 +52,4 @@ public interface PatcherProjectVersion
 			};
 
 }
+// SB-Hash:-730063076:-2116605064:1773456076913

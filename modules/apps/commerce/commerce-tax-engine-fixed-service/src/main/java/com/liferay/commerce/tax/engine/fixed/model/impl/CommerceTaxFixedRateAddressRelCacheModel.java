@@ -246,3 +246,4 @@ public class CommerceTaxFixedRateAddressRelCacheModel
 	public double rate;
 
 }
+// SB-Hash:-1748277985:1597945076:1773456076913

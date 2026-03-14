@@ -47,3 +47,4 @@ public interface ClassName extends ClassNameModel, PersistedModel {
 		};
 
 }
+// SB-Hash:-1799425870:1870610730:1773456076913

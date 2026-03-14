@@ -2104,3 +2104,4 @@ public class PortletPreferencesUtil {
 	private static volatile PortletPreferencesPersistence _persistence;
 
 }
+// SB-Hash:-1626940172:1870610730:1773456076913

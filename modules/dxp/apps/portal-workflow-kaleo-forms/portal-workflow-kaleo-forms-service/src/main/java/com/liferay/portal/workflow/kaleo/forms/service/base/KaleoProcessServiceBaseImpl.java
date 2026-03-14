@@ -130,3 +130,4 @@ public abstract class KaleoProcessServiceBaseImpl
 		KaleoProcessServiceBaseImpl.class);
 
 }
+// SB-Hash:-1560536372:-1498814602:1773456076913

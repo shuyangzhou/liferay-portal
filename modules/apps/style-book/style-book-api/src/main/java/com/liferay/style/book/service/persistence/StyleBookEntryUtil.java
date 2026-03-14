@@ -3824,3 +3824,4 @@ public class StyleBookEntryUtil {
 	private static volatile StyleBookEntryPersistence _persistence;
 
 }
+// SB-Hash:-1063087758:1348678574:1773456076913

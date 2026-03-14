@@ -495,3 +495,4 @@ public class KaleoLogLocalServiceUtil {
 			KaleoLogLocalServiceUtil.class, KaleoLogLocalService.class);
 
 }
+// SB-Hash:1389648775:1967856607:1773456076913

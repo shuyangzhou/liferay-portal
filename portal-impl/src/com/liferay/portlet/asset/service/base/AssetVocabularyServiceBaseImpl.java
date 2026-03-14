@@ -207,3 +207,4 @@ public abstract class AssetVocabularyServiceBaseImpl
 		AssetVocabularyServiceBaseImpl.class);
 
 }
+// SB-Hash:-1637559686:-1753039864:1773456076913

@@ -472,3 +472,4 @@ public interface CommercePricingClassModel
 	}
 
 }
+// SB-Hash:-1305074501:60415849:1773456076913

@@ -1841,3 +1841,4 @@ public class JournalArticleServiceUtil {
 			JournalArticleServiceUtil.class, JournalArticleService.class);
 
 }
+// SB-Hash:755842819:-875965416:1773456076913

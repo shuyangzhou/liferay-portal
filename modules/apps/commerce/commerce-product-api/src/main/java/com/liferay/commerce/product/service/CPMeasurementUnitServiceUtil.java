@@ -153,3 +153,4 @@ public class CPMeasurementUnitServiceUtil {
 			CPMeasurementUnitServiceUtil.class, CPMeasurementUnitService.class);
 
 }
+// SB-Hash:-1033404605:2013809339:1773456076913

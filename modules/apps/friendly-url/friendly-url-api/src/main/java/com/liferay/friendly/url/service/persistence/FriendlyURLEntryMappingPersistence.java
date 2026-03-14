@@ -209,3 +209,4 @@ public interface FriendlyURLEntryMappingPersistence
 	public int countAll();
 
 }
+// SB-Hash:-1062936396:854025060:1773456076913

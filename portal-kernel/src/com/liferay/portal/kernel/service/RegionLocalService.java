@@ -385,3 +385,4 @@ public interface RegionLocalService
 		throws E;
 
 }
+// SB-Hash:997113302:1870610730:1773456076913

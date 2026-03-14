@@ -102,3 +102,4 @@ public interface CPSpecificationOptionService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:-1285438361:2013809339:1773456076913

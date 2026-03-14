@@ -341,3 +341,4 @@ public class KaleoTaskAssignmentCacheModel
 	public String assigneeScriptRequiredContexts;
 
 }
+// SB-Hash:-391311192:1967856607:1773456076913

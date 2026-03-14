@@ -1040,3 +1040,4 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 	private Team _escapedModel;
 
 }
+// SB-Hash:-796867474:1870610730:1773456076913

@@ -654,3 +654,4 @@ public class SocialRelationLocalServiceWrapper
 	private SocialRelationLocalService _socialRelationLocalService;
 
 }
+// SB-Hash:1543145704:865570565:1773456076913

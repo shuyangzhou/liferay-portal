@@ -45,3 +45,4 @@ public class ResourcePermissionFinderBaseImpl
 	protected ResourcePermissionPersistence resourcePermissionPersistence;
 
 }
+// SB-Hash:583847454:1870610730:1773456076913

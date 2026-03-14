@@ -501,3 +501,4 @@ public class ResourceLocalServiceUtil {
 	private static volatile ResourceLocalService _service;
 
 }
+// SB-Hash:1974778828:1870610730:1773456076913

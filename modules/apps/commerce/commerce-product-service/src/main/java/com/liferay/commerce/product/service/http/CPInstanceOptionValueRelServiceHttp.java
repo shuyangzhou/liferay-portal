@@ -33,3 +33,4 @@ package com.liferay.commerce.product.service.http;
  */
 public class CPInstanceOptionValueRelServiceHttp {
 }
+// SB-Hash:-1614788915:2013809339:1773456076913

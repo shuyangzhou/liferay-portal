@@ -207,3 +207,4 @@ public class CommerceShippingFixedOptionQualifierCacheModel
 	public long commerceShippingFixedOptionId;
 
 }
+// SB-Hash:66630887:1720224397:1773456076913

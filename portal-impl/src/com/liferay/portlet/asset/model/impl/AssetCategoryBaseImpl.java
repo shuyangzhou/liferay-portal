@@ -81,3 +81,4 @@ public abstract class AssetCategoryBaseImpl
 	}
 
 }
+// SB-Hash:1003544929:-1753039864:1773456076913

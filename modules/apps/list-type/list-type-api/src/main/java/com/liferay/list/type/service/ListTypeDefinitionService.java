@@ -94,3 +94,4 @@ public interface ListTypeDefinitionService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:1938978087:999634104:1773456076913

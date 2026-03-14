@@ -631,3 +631,4 @@ public abstract class DepotEntryGroupRelLocalServiceBaseImpl
 		DepotEntryGroupRelLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1503758215:-1172556749:1773456076913

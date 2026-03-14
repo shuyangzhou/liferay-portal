@@ -506,3 +506,4 @@ public abstract class DDMDataProviderInstanceLinkLocalServiceBaseImpl
 		DDMDataProviderInstanceLinkLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1464588408:-1843255745:1773456076913

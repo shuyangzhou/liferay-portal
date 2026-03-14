@@ -220,3 +220,4 @@ public class RatingsEntryCacheModel
 	public double score;
 
 }
+// SB-Hash:-789035600:-1803523562:1773456076913

@@ -338,3 +338,4 @@ public interface CSDiagramSettingLocalService
 		throws E;
 
 }
+// SB-Hash:1430416209:243107995:1773456076913

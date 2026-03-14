@@ -683,3 +683,4 @@ public interface KBArticleLocalService
 		throws E;
 
 }
+// SB-Hash:1811097364:-560307709:1773456076913

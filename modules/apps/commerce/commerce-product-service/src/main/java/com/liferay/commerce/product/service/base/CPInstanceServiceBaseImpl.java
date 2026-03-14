@@ -129,3 +129,4 @@ public abstract class CPInstanceServiceBaseImpl
 		CPInstanceServiceBaseImpl.class);
 
 }
+// SB-Hash:10764363:2013809339:1773456076913

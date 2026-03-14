@@ -522,3 +522,4 @@ public class DefinitionLocalServiceWrapper
 	private DefinitionLocalService _definitionLocalService;
 
 }
+// SB-Hash:2119336597:-529934655:1773456076913

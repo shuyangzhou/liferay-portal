@@ -282,3 +282,4 @@ public class TrashEntryServiceWrapper
 	private TrashEntryService _trashEntryService;
 
 }
+// SB-Hash:392161676:267088611:1773456076913

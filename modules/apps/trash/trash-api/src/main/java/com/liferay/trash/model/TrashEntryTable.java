@@ -56,3 +56,4 @@ public class TrashEntryTable extends BaseTable<TrashEntryTable> {
 	}
 
 }
+// SB-Hash:-508885982:267088611:1773456076913

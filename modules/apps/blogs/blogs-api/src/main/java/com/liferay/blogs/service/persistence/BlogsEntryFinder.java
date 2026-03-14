@@ -42,3 +42,4 @@ public interface BlogsEntryFinder {
 				<com.liferay.blogs.model.BlogsEntry> queryDefinition);
 
 }
+// SB-Hash:544011503:-1236408536:1773456076913

@@ -63,3 +63,4 @@ public class KaleoDefinitionVersionServiceUtil {
 			KaleoDefinitionVersionService.class);
 
 }
+// SB-Hash:-964411657:1967856607:1773456076913

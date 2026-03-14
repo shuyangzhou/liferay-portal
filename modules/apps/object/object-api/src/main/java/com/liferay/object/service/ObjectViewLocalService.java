@@ -325,3 +325,4 @@ public interface ObjectViewLocalService
 	public ObjectView updateObjectView(ObjectView objectView);
 
 }
+// SB-Hash:-2105464024:-712801821:1773456076913

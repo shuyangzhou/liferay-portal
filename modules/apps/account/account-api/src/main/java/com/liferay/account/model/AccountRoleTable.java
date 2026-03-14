@@ -41,3 +41,4 @@ public class AccountRoleTable extends BaseTable<AccountRoleTable> {
 	}
 
 }
+// SB-Hash:-992234230:1707331560:1773456076913

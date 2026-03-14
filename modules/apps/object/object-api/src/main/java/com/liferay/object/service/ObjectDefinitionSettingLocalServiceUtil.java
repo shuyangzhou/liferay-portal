@@ -403,3 +403,4 @@ public class ObjectDefinitionSettingLocalServiceUtil {
 			ObjectDefinitionSettingLocalService.class);
 
 }
+// SB-Hash:-597159586:-712801821:1773456076913

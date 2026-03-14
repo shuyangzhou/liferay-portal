@@ -789,3 +789,4 @@ public class CPInstanceLocalServiceUtil {
 			CPInstanceLocalServiceUtil.class, CPInstanceLocalService.class);
 
 }
+// SB-Hash:1369807608:2013809339:1773456076913

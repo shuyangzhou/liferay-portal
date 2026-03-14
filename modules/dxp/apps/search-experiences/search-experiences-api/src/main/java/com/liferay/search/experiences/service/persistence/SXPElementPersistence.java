@@ -1531,3 +1531,4 @@ public interface SXPElementPersistence extends BasePersistence<SXPElement> {
 	public int countAll();
 
 }
+// SB-Hash:-1909714084:-627313431:1773456076913

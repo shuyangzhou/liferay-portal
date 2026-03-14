@@ -41,3 +41,4 @@ public class PatcherFixRelTable extends BaseTable<PatcherFixRelTable> {
 	}
 
 }
+// SB-Hash:-703555570:-2116605064:1773456076913

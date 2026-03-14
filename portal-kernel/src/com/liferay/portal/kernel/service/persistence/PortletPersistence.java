@@ -342,3 +342,4 @@ public interface PortletPersistence extends BasePersistence<Portlet> {
 	public int countAll();
 
 }
+// SB-Hash:-958579288:1870610730:1773456076913

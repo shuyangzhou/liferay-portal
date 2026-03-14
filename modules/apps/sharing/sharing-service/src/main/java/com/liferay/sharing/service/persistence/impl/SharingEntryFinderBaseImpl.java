@@ -77,3 +77,4 @@ public abstract class SharingEntryFinderBaseImpl
 		SharingEntryFinderBaseImpl.class);
 
 }
+// SB-Hash:-1880096384:286933966:1773456076913

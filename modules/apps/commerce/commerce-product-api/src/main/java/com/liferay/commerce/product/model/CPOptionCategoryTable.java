@@ -69,3 +69,4 @@ public class CPOptionCategoryTable extends BaseTable<CPOptionCategoryTable> {
 	}
 
 }
+// SB-Hash:2130174851:2013809339:1773456076913

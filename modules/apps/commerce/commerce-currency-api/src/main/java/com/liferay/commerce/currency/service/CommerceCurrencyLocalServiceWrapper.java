@@ -599,3 +599,4 @@ public class CommerceCurrencyLocalServiceWrapper
 	private CommerceCurrencyLocalService _commerceCurrencyLocalService;
 
 }
+// SB-Hash:-1946983008:-1200058624:1773456076913

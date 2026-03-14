@@ -73,3 +73,4 @@ public class CalendarResourceTable extends BaseTable<CalendarResourceTable> {
 	}
 
 }
+// SB-Hash:-79283774:-1072954947:1773456076913

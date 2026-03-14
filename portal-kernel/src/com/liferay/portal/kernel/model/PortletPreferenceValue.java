@@ -55,3 +55,4 @@ public interface PortletPreferenceValue
 	public void setValue(String value);
 
 }
+// SB-Hash:-479134065:1870610730:1773456076913

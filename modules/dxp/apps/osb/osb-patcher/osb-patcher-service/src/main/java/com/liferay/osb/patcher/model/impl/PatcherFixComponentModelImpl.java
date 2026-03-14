@@ -808,3 +808,4 @@ public class PatcherFixComponentModelImpl
 	private PatcherFixComponent _escapedModel;
 
 }
+// SB-Hash:-548814181:-2116605064:1773456076913

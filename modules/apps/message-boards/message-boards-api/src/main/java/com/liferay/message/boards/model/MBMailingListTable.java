@@ -94,3 +94,4 @@ public class MBMailingListTable extends BaseTable<MBMailingListTable> {
 	}
 
 }
+// SB-Hash:2024316939:-1389537973:1773456076913

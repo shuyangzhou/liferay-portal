@@ -657,3 +657,4 @@ public abstract class AssetListEntryAssetEntryRelLocalServiceBaseImpl
 		AssetListEntryAssetEntryRelLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:406121327:-1575459458:1773456076913

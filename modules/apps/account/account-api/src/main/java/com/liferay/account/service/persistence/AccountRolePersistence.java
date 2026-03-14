@@ -1143,3 +1143,4 @@ public interface AccountRolePersistence extends BasePersistence<AccountRole> {
 	public int countAll();
 
 }
+// SB-Hash:796512878:1707331560:1773456076913

@@ -485,3 +485,4 @@ public class CommerceOrderTypeServiceHttp {
 			new Class[] {String.class, long.class};
 
 }
+// SB-Hash:101323089:-329900582:1773456076913

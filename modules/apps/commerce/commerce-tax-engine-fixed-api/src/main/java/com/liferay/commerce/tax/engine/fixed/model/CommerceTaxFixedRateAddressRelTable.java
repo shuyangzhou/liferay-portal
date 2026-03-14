@@ -72,3 +72,4 @@ public class CommerceTaxFixedRateAddressRelTable
 	}
 
 }
+// SB-Hash:847009023:1597945076:1773456076913

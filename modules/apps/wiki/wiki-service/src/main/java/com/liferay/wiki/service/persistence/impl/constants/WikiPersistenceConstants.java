@@ -21,3 +21,4 @@ public class WikiPersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:-1961214828:-385412670:1773456076913

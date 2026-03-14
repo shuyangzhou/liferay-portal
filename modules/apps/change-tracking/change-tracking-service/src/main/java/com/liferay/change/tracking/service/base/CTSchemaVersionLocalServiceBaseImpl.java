@@ -456,3 +456,4 @@ public abstract class CTSchemaVersionLocalServiceBaseImpl
 		CTSchemaVersionLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1102978984:195619156:1773456076913

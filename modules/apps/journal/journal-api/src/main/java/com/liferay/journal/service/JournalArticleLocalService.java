@@ -2631,3 +2631,4 @@ public interface JournalArticleLocalService
 		throws E;
 
 }
+// SB-Hash:1184423876:-875965416:1773456076913

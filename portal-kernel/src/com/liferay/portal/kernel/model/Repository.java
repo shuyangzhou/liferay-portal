@@ -54,3 +54,4 @@ public interface Repository extends PersistedModel, RepositoryModel {
 			typeSettingsUnicodeProperties);
 
 }
+// SB-Hash:1254469671:1870610730:1773456076913

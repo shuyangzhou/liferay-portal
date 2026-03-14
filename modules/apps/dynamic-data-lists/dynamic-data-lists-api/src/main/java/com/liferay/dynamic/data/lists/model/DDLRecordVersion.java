@@ -61,3 +61,4 @@ public interface DDLRecordVersion
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 }
+// SB-Hash:155662759:1504452851:1773456076913

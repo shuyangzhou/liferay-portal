@@ -695,3 +695,4 @@ public class CommerceTaxMethodUtil {
 	private static volatile CommerceTaxMethodPersistence _persistence;
 
 }
+// SB-Hash:1870965675:676098184:1773456076913

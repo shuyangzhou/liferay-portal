@@ -21,3 +21,4 @@ public class CommercePersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:655841136:1381632536:1773456076913

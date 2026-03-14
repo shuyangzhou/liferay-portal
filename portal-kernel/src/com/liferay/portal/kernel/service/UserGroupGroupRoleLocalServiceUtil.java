@@ -406,3 +406,4 @@ public class UserGroupGroupRoleLocalServiceUtil {
 	private static volatile UserGroupGroupRoleLocalService _service;
 
 }
+// SB-Hash:-2053792004:1870610730:1773456076913

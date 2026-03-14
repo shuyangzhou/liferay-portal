@@ -413,3 +413,4 @@ public class JournalContentSearchLocalServiceUtil {
 			JournalContentSearchLocalService.class);
 
 }
+// SB-Hash:924590493:-875965416:1773456076913

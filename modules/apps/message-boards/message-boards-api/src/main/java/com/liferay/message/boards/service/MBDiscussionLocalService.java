@@ -379,3 +379,4 @@ public interface MBDiscussionLocalService
 		throws E;
 
 }
+// SB-Hash:1323138413:-1389537973:1773456076913

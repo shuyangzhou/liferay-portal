@@ -71,3 +71,4 @@ public class KBFolderTable extends BaseTable<KBFolderTable> {
 	}
 
 }
+// SB-Hash:1644712635:-560307709:1773456076913

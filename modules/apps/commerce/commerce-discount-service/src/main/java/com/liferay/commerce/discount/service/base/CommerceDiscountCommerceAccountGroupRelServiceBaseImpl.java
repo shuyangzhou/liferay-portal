@@ -137,3 +137,4 @@ public abstract class CommerceDiscountCommerceAccountGroupRelServiceBaseImpl
 		CommerceDiscountCommerceAccountGroupRelServiceBaseImpl.class);
 
 }
+// SB-Hash:1861045339:1570856832:1773456076913

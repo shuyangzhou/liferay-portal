@@ -201,3 +201,4 @@ public class CommerceDiscountUsageEntryCacheModel
 	public long commerceDiscountId;
 
 }
+// SB-Hash:737730159:1570856832:1773456076913

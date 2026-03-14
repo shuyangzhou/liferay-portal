@@ -1860,3 +1860,4 @@ public interface SocialActivityPersistence
 	public int countAll();
 
 }
+// SB-Hash:-2047018228:865570565:1773456076913

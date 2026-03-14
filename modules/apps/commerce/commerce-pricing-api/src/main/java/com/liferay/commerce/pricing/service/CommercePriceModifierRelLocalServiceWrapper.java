@@ -526,3 +526,4 @@ public class CommercePriceModifierRelLocalServiceWrapper
 		_commercePriceModifierRelLocalService;
 
 }
+// SB-Hash:106416644:60415849:1773456076913

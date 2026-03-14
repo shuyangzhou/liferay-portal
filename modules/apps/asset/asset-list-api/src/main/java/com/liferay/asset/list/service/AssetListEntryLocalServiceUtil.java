@@ -520,3 +520,4 @@ public class AssetListEntryLocalServiceUtil {
 			AssetListEntryLocalService.class);
 
 }
+// SB-Hash:1431026533:-1575459458:1773456076913

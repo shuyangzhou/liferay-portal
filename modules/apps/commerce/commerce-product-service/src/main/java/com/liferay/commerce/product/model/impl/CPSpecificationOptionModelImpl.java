@@ -1584,3 +1584,4 @@ public class CPSpecificationOptionModelImpl
 	private CPSpecificationOption _escapedModel;
 
 }
+// SB-Hash:2109181529:2013809339:1773456076913

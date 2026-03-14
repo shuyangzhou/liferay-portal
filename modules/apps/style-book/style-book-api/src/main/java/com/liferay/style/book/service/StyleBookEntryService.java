@@ -149,3 +149,4 @@ public interface StyleBookEntryService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:1056313029:1348678574:1773456076913

@@ -561,3 +561,4 @@ public class MBBanPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
+// SB-Hash:887610676:-1389537973:1773456076913

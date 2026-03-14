@@ -420,3 +420,4 @@ public interface AnnouncementsEntryLocalService
 		throws E;
 
 }
+// SB-Hash:777352455:-191752414:1773456076913

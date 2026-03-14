@@ -109,3 +109,4 @@ public abstract class CompareRunsLocalServiceBaseImpl
 		CompareRunsLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1351062916:1742339126:1773456076913

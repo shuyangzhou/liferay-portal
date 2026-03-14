@@ -135,3 +135,4 @@ public class BookmarksEntryModelArgumentsResolver implements ArgumentsResolver {
 	}
 
 }
+// SB-Hash:1253553403:-1243805074:1773456076913

@@ -371,3 +371,4 @@ public class OrgLaborLocalServiceWrapper
 	private OrgLaborLocalService _orgLaborLocalService;
 
 }
+// SB-Hash:-1137165935:1870610730:1773456076913

@@ -21,3 +21,4 @@ public class RSVPersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:115569013:446333568:1773456076913

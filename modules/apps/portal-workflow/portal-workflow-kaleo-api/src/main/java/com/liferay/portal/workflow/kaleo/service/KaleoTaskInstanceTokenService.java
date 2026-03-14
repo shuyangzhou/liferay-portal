@@ -54,3 +54,4 @@ public interface KaleoTaskInstanceTokenService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:74351398:1967856607:1773456076913

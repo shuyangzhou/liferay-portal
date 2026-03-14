@@ -67,3 +67,4 @@ public interface AssetTag extends AssetTagModel, PersistedModel {
 		};
 
 }
+// SB-Hash:984740420:-1753039864:1773456076913

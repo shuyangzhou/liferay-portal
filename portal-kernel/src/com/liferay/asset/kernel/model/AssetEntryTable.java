@@ -86,3 +86,4 @@ public class AssetEntryTable extends BaseTable<AssetEntryTable> {
 	}
 
 }
+// SB-Hash:247284121:-1753039864:1773456076913

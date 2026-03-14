@@ -440,3 +440,4 @@ public class AuditEventLocalServiceWrapper
 	private AuditEventLocalService _auditEventLocalService;
 
 }
+// SB-Hash:-1834371989:545657342:1773456076913

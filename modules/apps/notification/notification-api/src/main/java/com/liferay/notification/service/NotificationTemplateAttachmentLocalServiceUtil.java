@@ -336,3 +336,4 @@ public class NotificationTemplateAttachmentLocalServiceUtil {
 			NotificationTemplateAttachmentLocalService.class);
 
 }
+// SB-Hash:-857760227:-465969577:1773456076913

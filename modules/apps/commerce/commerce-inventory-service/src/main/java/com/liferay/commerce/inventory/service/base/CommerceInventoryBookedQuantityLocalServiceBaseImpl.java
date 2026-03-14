@@ -494,3 +494,4 @@ public abstract class CommerceInventoryBookedQuantityLocalServiceBaseImpl
 		CommerceInventoryBookedQuantityLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-279028893:-1537497261:1773456076913

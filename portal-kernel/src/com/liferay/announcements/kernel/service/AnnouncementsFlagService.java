@@ -58,3 +58,4 @@ public interface AnnouncementsFlagService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:1193456890:-191752414:1773456076913

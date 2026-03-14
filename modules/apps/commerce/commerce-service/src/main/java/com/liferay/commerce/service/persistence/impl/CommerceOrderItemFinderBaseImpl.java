@@ -96,3 +96,4 @@ public abstract class CommerceOrderItemFinderBaseImpl
 		CommerceOrderItemFinderBaseImpl.class);
 
 }
+// SB-Hash:1776246831:-329900582:1773456076913

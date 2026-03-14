@@ -50,3 +50,4 @@ public interface CTPreferences extends CTPreferencesModel, PersistedModel {
 		};
 
 }
+// SB-Hash:-999031791:195619156:1773456076913

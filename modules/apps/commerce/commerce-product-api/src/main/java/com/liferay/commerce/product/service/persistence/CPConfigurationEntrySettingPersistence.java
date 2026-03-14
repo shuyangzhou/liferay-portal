@@ -709,3 +709,4 @@ public interface CPConfigurationEntrySettingPersistence
 	public int countAll();
 
 }
+// SB-Hash:-713255261:2013809339:1773456076913

@@ -1674,3 +1674,4 @@ public class OAuth2ApplicationModelImpl
 	private OAuth2Application _escapedModel;
 
 }
+// SB-Hash:376422472:-1760109681:1773456076913

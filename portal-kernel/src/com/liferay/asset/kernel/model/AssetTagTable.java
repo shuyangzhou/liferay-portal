@@ -59,3 +59,4 @@ public class AssetTagTable extends BaseTable<AssetTagTable> {
 	}
 
 }
+// SB-Hash:303102317:-1753039864:1773456076913

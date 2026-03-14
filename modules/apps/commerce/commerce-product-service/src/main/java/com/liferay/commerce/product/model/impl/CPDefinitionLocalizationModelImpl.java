@@ -1002,3 +1002,4 @@ public class CPDefinitionLocalizationModelImpl
 	private CPDefinitionLocalization _escapedModel;
 
 }
+// SB-Hash:1264345319:2013809339:1773456076913

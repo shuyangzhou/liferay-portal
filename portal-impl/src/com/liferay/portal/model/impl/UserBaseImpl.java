@@ -38,3 +38,4 @@ public abstract class UserBaseImpl extends UserModelImpl implements User {
 	}
 
 }
+// SB-Hash:-364565606:1870610730:1773456076913

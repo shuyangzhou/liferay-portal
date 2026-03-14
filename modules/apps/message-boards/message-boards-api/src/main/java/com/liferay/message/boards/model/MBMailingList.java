@@ -50,3 +50,4 @@ public interface MBMailingList extends MBMailingListModel, PersistedModel {
 		};
 
 }
+// SB-Hash:-1309339088:-1389537973:1773456076913

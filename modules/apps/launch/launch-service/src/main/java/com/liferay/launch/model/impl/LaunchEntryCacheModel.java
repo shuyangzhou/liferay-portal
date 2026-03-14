@@ -229,3 +229,4 @@ public class LaunchEntryCacheModel
 	public String classVersion;
 
 }
+// SB-Hash:-451925477:-1586552034:1773456076913

@@ -222,3 +222,4 @@ public class LayoutPageTemplateCollectionServiceUtil {
 			LayoutPageTemplateCollectionService.class);
 
 }
+// SB-Hash:-64202457:231121481:1773456076913

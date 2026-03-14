@@ -327,3 +327,4 @@ public interface ObjectDefinitionSettingLocalService
 		ObjectDefinitionSetting objectDefinitionSetting);
 
 }
+// SB-Hash:-314973949:-712801821:1773456076913

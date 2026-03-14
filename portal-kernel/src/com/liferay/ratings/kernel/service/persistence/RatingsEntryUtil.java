@@ -1181,3 +1181,4 @@ public class RatingsEntryUtil {
 	private static volatile RatingsEntryPersistence _persistence;
 
 }
+// SB-Hash:-1944155019:-1803523562:1773456076913

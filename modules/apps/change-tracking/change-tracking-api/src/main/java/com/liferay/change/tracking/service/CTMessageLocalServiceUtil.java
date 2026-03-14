@@ -305,3 +305,4 @@ public class CTMessageLocalServiceUtil {
 			CTMessageLocalServiceUtil.class, CTMessageLocalService.class);
 
 }
+// SB-Hash:-899014813:195619156:1773456076913

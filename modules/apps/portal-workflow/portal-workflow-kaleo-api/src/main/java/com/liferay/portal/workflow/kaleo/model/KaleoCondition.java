@@ -50,3 +50,4 @@ public interface KaleoCondition extends KaleoConditionModel, PersistedModel {
 		};
 
 }
+// SB-Hash:-214318915:1967856607:1773456076913

@@ -188,3 +188,4 @@ public class CPInstanceUnitOfMeasureServiceWrapper
 	private CPInstanceUnitOfMeasureService _cpInstanceUnitOfMeasureService;
 
 }
+// SB-Hash:-490853596:2013809339:1773456076913

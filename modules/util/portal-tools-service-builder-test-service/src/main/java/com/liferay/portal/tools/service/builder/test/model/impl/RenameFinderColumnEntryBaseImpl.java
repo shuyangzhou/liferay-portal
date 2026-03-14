@@ -42,3 +42,4 @@ public abstract class RenameFinderColumnEntryBaseImpl
 	}
 
 }
+// SB-Hash:451718008:-644981214:1773456076913

@@ -42,3 +42,4 @@ public class UserGroupRoleTable extends BaseTable<UserGroupRoleTable> {
 	}
 
 }
+// SB-Hash:1112880910:1870610730:1773456076913

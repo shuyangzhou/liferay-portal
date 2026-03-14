@@ -579,3 +579,4 @@ public class DepotEntryGroupRelLocalServiceWrapper
 	private DepotEntryGroupRelLocalService _depotEntryGroupRelLocalService;
 
 }
+// SB-Hash:1882054153:-1172556749:1773456076913

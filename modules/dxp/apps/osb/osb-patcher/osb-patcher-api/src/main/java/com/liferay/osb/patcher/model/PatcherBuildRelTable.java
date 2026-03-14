@@ -43,3 +43,4 @@ public class PatcherBuildRelTable extends BaseTable<PatcherBuildRelTable> {
 	}
 
 }
+// SB-Hash:1351732192:-2116605064:1773456076913

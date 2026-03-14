@@ -54,3 +54,4 @@ public interface CommerceDiscount
 		getCommerceDiscountCommerceAccountGroupRels();
 
 }
+// SB-Hash:1760553485:1570856832:1773456076913

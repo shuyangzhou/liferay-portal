@@ -395,3 +395,4 @@ public class BatchPlannerPlanLocalServiceWrapper
 	private BatchPlannerPlanLocalService _batchPlannerPlanLocalService;
 
 }
+// SB-Hash:1083422234:96869502:1773456076913

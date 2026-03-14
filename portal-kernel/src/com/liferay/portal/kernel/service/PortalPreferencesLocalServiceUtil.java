@@ -346,3 +346,4 @@ public class PortalPreferencesLocalServiceUtil {
 	private static volatile PortalPreferencesLocalService _service;
 
 }
+// SB-Hash:1394348573:1870610730:1773456076913

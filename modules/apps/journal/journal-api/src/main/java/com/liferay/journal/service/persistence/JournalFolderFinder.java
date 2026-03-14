@@ -49,3 +49,4 @@ public interface JournalFolderFinder {
 		findF_ByNoAssets();
 
 }
+// SB-Hash:-1676683917:-875965416:1773456076913

@@ -899,3 +899,4 @@ public class CPInstanceLocalServiceWrapper
 	private CPInstanceLocalService _cpInstanceLocalService;
 
 }
+// SB-Hash:-1744458225:2013809339:1773456076913

@@ -93,3 +93,4 @@ public interface CPDVirtualSettingFileEntryService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:-846337197:446411075:1773456076913

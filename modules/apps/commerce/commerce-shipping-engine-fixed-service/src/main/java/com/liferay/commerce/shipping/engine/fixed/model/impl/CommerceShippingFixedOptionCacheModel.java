@@ -267,3 +267,4 @@ public class CommerceShippingFixedOptionCacheModel
 	public double priority;
 
 }
+// SB-Hash:-571497209:1720224397:1773456076913

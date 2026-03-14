@@ -456,3 +456,4 @@ public abstract class RSVEntryLocalServiceBaseImpl
 		RSVEntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-812113464:446333568:1773456076913

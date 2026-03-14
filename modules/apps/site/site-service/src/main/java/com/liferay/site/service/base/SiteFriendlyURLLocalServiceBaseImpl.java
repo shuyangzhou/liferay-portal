@@ -595,3 +595,4 @@ public abstract class SiteFriendlyURLLocalServiceBaseImpl
 		SiteFriendlyURLLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:742472219:-2089841109:1773456076913

@@ -280,3 +280,4 @@ public interface MBMessageService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:-1192078830:-1389537973:1773456076913

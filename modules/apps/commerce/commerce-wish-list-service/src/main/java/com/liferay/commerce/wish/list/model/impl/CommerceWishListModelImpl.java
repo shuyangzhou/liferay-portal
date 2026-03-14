@@ -1014,3 +1014,4 @@ public class CommerceWishListModelImpl
 	private CommerceWishList _escapedModel;
 
 }
+// SB-Hash:1052752867:529950479:1773456076913

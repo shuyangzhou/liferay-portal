@@ -607,3 +607,4 @@ public class PortletLocalServiceWrapper
 	private PortletLocalService _portletLocalService;
 
 }
+// SB-Hash:751490583:1870610730:1773456076913

@@ -66,3 +66,4 @@ public interface SocialActivity extends PersistedModel, SocialActivityModel {
 		throws com.liferay.portal.kernel.json.JSONException;
 
 }
+// SB-Hash:1727422064:865570565:1773456076913

@@ -546,3 +546,4 @@ public class DepotEntryLocalServiceWrapper
 	private DepotEntryLocalService _depotEntryLocalService;
 
 }
+// SB-Hash:1707714020:-1172556749:1773456076913

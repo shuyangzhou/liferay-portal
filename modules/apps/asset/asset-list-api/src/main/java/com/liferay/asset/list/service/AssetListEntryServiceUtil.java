@@ -312,3 +312,4 @@ public class AssetListEntryServiceUtil {
 			AssetListEntryServiceUtil.class, AssetListEntryService.class);
 
 }
+// SB-Hash:-1543305840:-1575459458:1773456076913

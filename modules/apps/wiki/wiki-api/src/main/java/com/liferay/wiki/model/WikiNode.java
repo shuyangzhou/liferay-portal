@@ -58,3 +58,4 @@ public interface WikiNode extends PersistedModel, WikiNodeModel {
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 }
+// SB-Hash:-1935756172:-385412670:1773456076913

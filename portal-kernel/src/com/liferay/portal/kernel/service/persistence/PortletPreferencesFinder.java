@@ -36,3 +36,4 @@ public interface PortletPreferencesFinder {
 			String portletId, boolean privateLayout);
 
 }
+// SB-Hash:1597167270:1870610730:1773456076913

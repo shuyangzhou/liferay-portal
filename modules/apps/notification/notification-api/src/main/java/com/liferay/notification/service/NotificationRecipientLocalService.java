@@ -305,3 +305,4 @@ public interface NotificationRecipientLocalService
 		NotificationRecipient notificationRecipient);
 
 }
+// SB-Hash:-1049870053:-465969577:1773456076913

@@ -213,3 +213,4 @@ public class DLOpenerFileEntryReferenceCacheModel
 	public int type;
 
 }
+// SB-Hash:2047306420:970711951:1773456076913

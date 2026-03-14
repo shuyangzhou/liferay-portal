@@ -60,3 +60,4 @@ public class FaroEmailLocalServiceWrapper
 	private FaroEmailLocalService _faroEmailLocalService;
 
 }
+// SB-Hash:713752408:1117559585:1773456076913

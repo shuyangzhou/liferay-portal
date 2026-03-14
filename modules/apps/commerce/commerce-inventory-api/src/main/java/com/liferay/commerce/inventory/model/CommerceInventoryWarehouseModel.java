@@ -608,3 +608,4 @@ public interface CommerceInventoryWarehouseModel
 	}
 
 }
+// SB-Hash:-364153256:-1537497261:1773456076913

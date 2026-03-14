@@ -270,3 +270,4 @@ public class AppCacheModel implements CacheModel<App>, Externalizable {
 	public boolean required;
 
 }
+// SB-Hash:-1020096628:1542546812:1773456076913

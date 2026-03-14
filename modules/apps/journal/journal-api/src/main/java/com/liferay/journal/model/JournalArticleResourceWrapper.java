@@ -294,3 +294,4 @@ public class JournalArticleResourceWrapper
 	}
 
 }
+// SB-Hash:-43192804:-875965416:1773456076913

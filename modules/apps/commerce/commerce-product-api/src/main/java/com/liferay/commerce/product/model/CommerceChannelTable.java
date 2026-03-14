@@ -78,3 +78,4 @@ public class CommerceChannelTable extends BaseTable<CommerceChannelTable> {
 	}
 
 }
+// SB-Hash:-827508503:2013809339:1773456076913

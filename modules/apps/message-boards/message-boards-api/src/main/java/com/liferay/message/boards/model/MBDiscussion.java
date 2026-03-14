@@ -50,3 +50,4 @@ public interface MBDiscussion extends MBDiscussionModel, PersistedModel {
 		};
 
 }
+// SB-Hash:506856581:-1389537973:1773456076913

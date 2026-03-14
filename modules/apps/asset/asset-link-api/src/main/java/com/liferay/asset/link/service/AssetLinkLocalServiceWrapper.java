@@ -573,3 +573,4 @@ public class AssetLinkLocalServiceWrapper
 	private AssetLinkLocalService _assetLinkLocalService;
 
 }
+// SB-Hash:1959529881:-685495848:1773456076913

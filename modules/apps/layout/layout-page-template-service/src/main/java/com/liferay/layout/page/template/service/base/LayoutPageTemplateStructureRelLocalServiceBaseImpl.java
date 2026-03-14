@@ -729,3 +729,4 @@ public abstract class LayoutPageTemplateStructureRelLocalServiceBaseImpl
 		LayoutPageTemplateStructureRelLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-879087408:231121481:1773456076913

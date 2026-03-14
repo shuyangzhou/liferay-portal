@@ -745,3 +745,4 @@ public abstract class DLFileShortcutLocalServiceBaseImpl
 		DLFileShortcutLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-215820543:1516786860:1773456076913

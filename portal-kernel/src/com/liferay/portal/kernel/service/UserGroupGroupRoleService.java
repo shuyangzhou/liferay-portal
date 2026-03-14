@@ -63,3 +63,4 @@ public interface UserGroupGroupRoleService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:-241880694:1870610730:1773456076913

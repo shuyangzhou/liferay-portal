@@ -167,3 +167,4 @@ public interface ObjectDefinitionService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:1935246906:-712801821:1773456076913

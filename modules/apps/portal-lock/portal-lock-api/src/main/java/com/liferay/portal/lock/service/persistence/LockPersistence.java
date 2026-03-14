@@ -1104,3 +1104,4 @@ public interface LockPersistence extends BasePersistence<Lock> {
 	public int countAll();
 
 }
+// SB-Hash:-1471750913:63939710:1773456076913

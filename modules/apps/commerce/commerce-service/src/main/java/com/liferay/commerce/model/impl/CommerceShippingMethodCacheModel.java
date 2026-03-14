@@ -297,3 +297,4 @@ public class CommerceShippingMethodCacheModel
 	public String typeSettings;
 
 }
+// SB-Hash:1527010396:-329900582:1773456076913

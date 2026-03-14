@@ -1350,3 +1350,4 @@ public interface ObjectEntryFolderPersistence
 	public int countAll();
 
 }
+// SB-Hash:19663266:-712801821:1773456076913

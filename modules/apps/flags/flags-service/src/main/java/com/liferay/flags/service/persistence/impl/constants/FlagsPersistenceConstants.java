@@ -21,3 +21,4 @@ public class FlagsPersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:159264295:-268290984:1773456076913

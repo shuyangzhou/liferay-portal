@@ -47,3 +47,4 @@ public interface ResourceAction extends PersistedModel, ResourceActionModel {
 		};
 
 }
+// SB-Hash:315181255:1870610730:1773456076913

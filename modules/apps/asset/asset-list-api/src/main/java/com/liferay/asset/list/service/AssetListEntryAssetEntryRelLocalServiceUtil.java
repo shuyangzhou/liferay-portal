@@ -505,3 +505,4 @@ public class AssetListEntryAssetEntryRelLocalServiceUtil {
 			AssetListEntryAssetEntryRelLocalService.class);
 
 }
+// SB-Hash:1879876173:-1575459458:1773456076913

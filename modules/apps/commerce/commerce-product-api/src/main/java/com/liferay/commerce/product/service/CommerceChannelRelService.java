@@ -123,3 +123,4 @@ public interface CommerceChannelRelService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:798695189:2013809339:1773456076913

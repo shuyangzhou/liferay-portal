@@ -145,3 +145,4 @@ public class CommercePricingClassCPDefinitionRelModelArgumentsResolver
 	}
 
 }
+// SB-Hash:1929195821:60415849:1773456076913

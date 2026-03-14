@@ -672,3 +672,4 @@ public class DDMStructureLayoutLocalServiceWrapper
 	private DDMStructureLayoutLocalService _ddmStructureLayoutLocalService;
 
 }
+// SB-Hash:1551073653:-1843255745:1773456076913

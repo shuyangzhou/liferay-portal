@@ -407,3 +407,4 @@ public class DDMContentLocalServiceUtil {
 			DDMContentLocalServiceUtil.class, DDMContentLocalService.class);
 
 }
+// SB-Hash:1421593038:-1843255745:1773456076913

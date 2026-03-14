@@ -45,3 +45,4 @@ public class PortletPreferencesFinderBaseImpl
 	protected PortletPreferencesPersistence portletPreferencesPersistence;
 
 }
+// SB-Hash:1570801412:1870610730:1773456076913

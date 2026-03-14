@@ -56,3 +56,4 @@ public class ReadingTimeEntryTable extends BaseTable<ReadingTimeEntryTable> {
 	}
 
 }
+// SB-Hash:231384843:151660805:1773456076913

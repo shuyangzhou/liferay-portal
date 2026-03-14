@@ -88,3 +88,4 @@ public interface DefinitionService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:1991504321:-529934655:1773456076913

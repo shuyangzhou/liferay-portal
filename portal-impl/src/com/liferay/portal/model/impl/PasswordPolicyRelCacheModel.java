@@ -141,3 +141,4 @@ public class PasswordPolicyRelCacheModel
 	public long classPK;
 
 }
+// SB-Hash:-1748427179:1870610730:1773456076913

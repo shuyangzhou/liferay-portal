@@ -78,3 +78,4 @@ public abstract class BaseJournalFolderUADExporter
 	protected JournalFolderLocalService journalFolderLocalService;
 
 }
+// SB-Hash:509214326:-875965416:1773456076913

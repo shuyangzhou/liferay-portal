@@ -128,3 +128,4 @@ public interface WikiNodeService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:773281633:-385412670:1773456076913

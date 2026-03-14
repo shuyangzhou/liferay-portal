@@ -50,3 +50,4 @@ public class AnalyticsMessageTable extends BaseTable<AnalyticsMessageTable> {
 	}
 
 }
+// SB-Hash:388558911:-441764813:1773456076913

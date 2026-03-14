@@ -54,3 +54,4 @@ public interface SocialActivityCounter
 	public boolean isActivePeriod(int periodLength);
 
 }
+// SB-Hash:-1641094290:865570565:1773456076913

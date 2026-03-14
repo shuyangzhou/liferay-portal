@@ -379,3 +379,4 @@ public class TrashVersionWrapper
 	}
 
 }
+// SB-Hash:-1394565291:267088611:1773456076913

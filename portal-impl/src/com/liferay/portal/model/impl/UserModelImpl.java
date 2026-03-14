@@ -2470,3 +2470,4 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 	private User _escapedModel;
 
 }
+// SB-Hash:1890632020:1870610730:1773456076913

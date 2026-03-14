@@ -215,3 +215,4 @@ public abstract class AssetVocabularyGroupRelServiceBaseImpl
 		AssetVocabularyGroupRelServiceBaseImpl.class);
 
 }
+// SB-Hash:2086754013:-1753039864:1773456076913

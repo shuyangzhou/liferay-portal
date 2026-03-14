@@ -1586,3 +1586,4 @@ public interface CPDefinitionSpecificationOptionValuePersistence
 	public int countAll();
 
 }
+// SB-Hash:1912963606:2013809339:1773456076913

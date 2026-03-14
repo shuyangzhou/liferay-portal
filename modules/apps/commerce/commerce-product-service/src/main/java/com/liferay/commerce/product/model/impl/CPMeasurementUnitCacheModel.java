@@ -305,3 +305,4 @@ public class CPMeasurementUnitCacheModel
 	public long lastPublishDate;
 
 }
+// SB-Hash:1464568136:2013809339:1773456076913

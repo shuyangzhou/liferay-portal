@@ -38,3 +38,4 @@ public class RenameFinderColumnEntryTable
 	}
 
 }
+// SB-Hash:278037133:-644981214:1773456076913

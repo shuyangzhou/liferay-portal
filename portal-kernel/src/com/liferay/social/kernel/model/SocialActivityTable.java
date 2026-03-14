@@ -64,3 +64,4 @@ public class SocialActivityTable extends BaseTable<SocialActivityTable> {
 	}
 
 }
+// SB-Hash:-105520325:865570565:1773456076913

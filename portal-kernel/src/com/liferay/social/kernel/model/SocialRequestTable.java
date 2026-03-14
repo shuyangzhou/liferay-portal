@@ -57,3 +57,4 @@ public class SocialRequestTable extends BaseTable<SocialRequestTable> {
 	}
 
 }
+// SB-Hash:-667291851:865570565:1773456076913

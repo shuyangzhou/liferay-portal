@@ -61,3 +61,4 @@ public interface BatchPlannerPlan
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 }
+// SB-Hash:230901390:96869502:1773456076913

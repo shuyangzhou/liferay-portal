@@ -212,3 +212,4 @@ public class FriendlyURLEntryCacheModel
 	public long classPK;
 
 }
+// SB-Hash:-398912548:854025060:1773456076913

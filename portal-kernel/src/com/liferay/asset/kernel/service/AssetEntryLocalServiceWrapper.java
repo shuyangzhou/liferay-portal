@@ -947,3 +947,4 @@ public class AssetEntryLocalServiceWrapper
 	private AssetEntryLocalService _assetEntryLocalService;
 
 }
+// SB-Hash:300908687:-1753039864:1773456076913

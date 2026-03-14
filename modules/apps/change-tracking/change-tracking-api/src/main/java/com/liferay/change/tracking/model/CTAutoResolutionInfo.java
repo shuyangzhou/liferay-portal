@@ -50,3 +50,4 @@ public interface CTAutoResolutionInfo extends CTAutoResolutionInfoModel {
 			};
 
 }
+// SB-Hash:1525125060:195619156:1773456076913

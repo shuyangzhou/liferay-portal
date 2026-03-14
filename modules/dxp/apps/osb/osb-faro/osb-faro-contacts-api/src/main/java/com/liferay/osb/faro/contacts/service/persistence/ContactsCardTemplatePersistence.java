@@ -298,3 +298,4 @@ public interface ContactsCardTemplatePersistence
 	public int countAll();
 
 }
+// SB-Hash:465330470:-1324228814:1773456076913

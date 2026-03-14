@@ -64,3 +64,4 @@ public interface CTCollection extends CTCollectionModel, PersistedModel {
 	public boolean isReadOnly();
 
 }
+// SB-Hash:838455712:195619156:1773456076913

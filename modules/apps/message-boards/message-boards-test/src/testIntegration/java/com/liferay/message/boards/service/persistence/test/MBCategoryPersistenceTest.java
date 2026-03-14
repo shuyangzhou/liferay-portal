@@ -809,3 +809,4 @@ public class MBCategoryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
+// SB-Hash:1571122642:-1389537973:1773456076913

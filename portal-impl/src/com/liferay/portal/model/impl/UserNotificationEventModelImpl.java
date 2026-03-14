@@ -1135,3 +1135,4 @@ public class UserNotificationEventModelImpl
 	private UserNotificationEvent _escapedModel;
 
 }
+// SB-Hash:-1766377671:1870610730:1773456076913

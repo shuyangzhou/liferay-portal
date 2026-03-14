@@ -127,3 +127,4 @@ public abstract class AssetCategoryPropertyServiceBaseImpl
 		AssetCategoryPropertyServiceBaseImpl.class);
 
 }
+// SB-Hash:-2067292703:1327068244:1773456076913

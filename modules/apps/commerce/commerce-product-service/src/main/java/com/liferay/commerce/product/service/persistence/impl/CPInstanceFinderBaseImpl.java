@@ -79,3 +79,4 @@ public abstract class CPInstanceFinderBaseImpl
 		CPInstanceFinderBaseImpl.class);
 
 }
+// SB-Hash:670720695:2013809339:1773456076913

@@ -846,3 +846,4 @@ public interface SourcePersistence extends BasePersistence<Source> {
 	public int countAll();
 
 }
+// SB-Hash:594360868:-529934655:1773456076913

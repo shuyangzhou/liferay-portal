@@ -370,3 +370,4 @@ public class CTCommentLocalServiceWrapper
 	private CTCommentLocalService _ctCommentLocalService;
 
 }
+// SB-Hash:415961817:195619156:1773456076913

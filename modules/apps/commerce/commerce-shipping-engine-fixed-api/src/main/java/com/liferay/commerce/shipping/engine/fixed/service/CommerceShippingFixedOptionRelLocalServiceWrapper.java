@@ -534,3 +534,4 @@ public class CommerceShippingFixedOptionRelLocalServiceWrapper
 		_commerceShippingFixedOptionRelLocalService;
 
 }
+// SB-Hash:-246244324:1720224397:1773456076913

@@ -14912,3 +14912,4 @@ public interface KBArticlePersistence
 	public int countAll();
 
 }
+// SB-Hash:-999982482:-560307709:1773456076913

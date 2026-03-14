@@ -421,3 +421,4 @@ public interface CPConfigurationListLocalService
 		throws E;
 
 }
+// SB-Hash:812830677:2013809339:1773456076913

@@ -21,3 +21,4 @@ public class LayoutPersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:1180539288:231121481:1773456076913

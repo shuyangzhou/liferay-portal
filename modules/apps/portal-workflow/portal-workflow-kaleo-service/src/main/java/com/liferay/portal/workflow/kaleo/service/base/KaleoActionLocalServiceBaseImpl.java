@@ -468,3 +468,4 @@ public abstract class KaleoActionLocalServiceBaseImpl
 		KaleoActionLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1940162754:1967856607:1773456076913

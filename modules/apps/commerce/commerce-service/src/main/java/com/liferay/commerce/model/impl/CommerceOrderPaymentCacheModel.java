@@ -236,3 +236,4 @@ public class CommerceOrderPaymentCacheModel
 	public int status;
 
 }
+// SB-Hash:913664456:-329900582:1773456076913

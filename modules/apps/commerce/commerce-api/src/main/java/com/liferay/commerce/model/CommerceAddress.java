@@ -65,3 +65,4 @@ public interface CommerceAddress extends CommerceAddressModel {
 	public boolean isSameAddress(CommerceAddress commerceAddress);
 
 }
+// SB-Hash:1275177839:-329900582:1773456076913

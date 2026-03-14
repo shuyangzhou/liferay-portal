@@ -328,3 +328,4 @@ public class KaleoTransitionCacheModel
 	public boolean defaultTransition;
 
 }
+// SB-Hash:1209697292:1967856607:1773456076913

@@ -21,3 +21,4 @@ public class StyleBookPersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:-1099793546:1348678574:1773456076913

@@ -339,3 +339,4 @@ public interface PatcherAccountLocalService
 	public PatcherAccount updatePatcherAccount(PatcherAccount patcherAccount);
 
 }
+// SB-Hash:680433404:-2116605064:1773456076913

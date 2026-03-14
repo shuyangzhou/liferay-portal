@@ -379,3 +379,4 @@ public class KaleoTaskLocalServiceWrapper
 	private KaleoTaskLocalService _kaleoTaskLocalService;
 
 }
+// SB-Hash:1441601369:1967856607:1773456076913

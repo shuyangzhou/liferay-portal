@@ -85,3 +85,4 @@ public class CommerceOrderTypeTable extends BaseTable<CommerceOrderTypeTable> {
 	}
 
 }
+// SB-Hash:-259441663:-329900582:1773456076913

@@ -64,3 +64,4 @@ public interface UserGroupRoleService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:-1033560625:1870610730:1773456076913

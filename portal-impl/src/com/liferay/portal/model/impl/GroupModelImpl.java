@@ -1990,3 +1990,4 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 	private Group _escapedModel;
 
 }
+// SB-Hash:1919400488:1870610730:1773456076913

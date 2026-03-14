@@ -147,3 +147,4 @@ public class CTPreferencesCacheModel
 	public boolean confirmationEnabled;
 
 }
+// SB-Hash:1482254921:195619156:1773456076913

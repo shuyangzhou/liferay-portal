@@ -316,3 +316,4 @@ public interface NotificationRecipientSettingLocalService
 		NotificationRecipientSetting notificationRecipientSetting);
 
 }
+// SB-Hash:519079899:-465969577:1773456076913

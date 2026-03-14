@@ -1431,3 +1431,4 @@ public class KBArticlePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
+// SB-Hash:376693266:-560307709:1773456076913

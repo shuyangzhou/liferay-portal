@@ -17,3 +17,4 @@ public interface CommerceCurrencyFinder {
 	public java.util.List<Long> getCompanyIds();
 
 }
+// SB-Hash:-1496548134:-1200058624:1773456076913

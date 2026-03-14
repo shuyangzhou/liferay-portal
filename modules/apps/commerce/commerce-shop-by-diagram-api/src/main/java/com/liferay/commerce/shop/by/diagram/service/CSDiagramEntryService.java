@@ -105,3 +105,4 @@ public interface CSDiagramEntryService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:882410607:243107995:1773456076913

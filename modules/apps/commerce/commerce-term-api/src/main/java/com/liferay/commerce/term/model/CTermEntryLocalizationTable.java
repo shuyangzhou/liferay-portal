@@ -52,3 +52,4 @@ public class CTermEntryLocalizationTable
 	}
 
 }
+// SB-Hash:2031474433:-914968174:1773456076913

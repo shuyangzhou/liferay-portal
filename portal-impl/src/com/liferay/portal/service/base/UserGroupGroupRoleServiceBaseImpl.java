@@ -231,3 +231,4 @@ public abstract class UserGroupGroupRoleServiceBaseImpl
 		UserGroupGroupRoleServiceBaseImpl.class);
 
 }
+// SB-Hash:129642734:1870610730:1773456076913

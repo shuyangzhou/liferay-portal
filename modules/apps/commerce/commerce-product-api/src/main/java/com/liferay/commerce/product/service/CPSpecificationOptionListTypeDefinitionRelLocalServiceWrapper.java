@@ -484,3 +484,4 @@ public class CPSpecificationOptionListTypeDefinitionRelLocalServiceWrapper
 		_cpSpecificationOptionListTypeDefinitionRelLocalService;
 
 }
+// SB-Hash:471964102:2013809339:1773456076913

@@ -1162,3 +1162,4 @@ public class UserGroupModelImpl
 	private UserGroup _escapedModel;
 
 }
+// SB-Hash:1128774792:1870610730:1773456076913

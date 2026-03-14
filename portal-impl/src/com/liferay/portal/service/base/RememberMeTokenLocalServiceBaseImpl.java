@@ -509,3 +509,4 @@ public abstract class RememberMeTokenLocalServiceBaseImpl
 		RememberMeTokenLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1420066213:1870610730:1773456076913

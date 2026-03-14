@@ -40,3 +40,4 @@ public abstract class CommerceOrderPaymentBaseImpl
 	}
 
 }
+// SB-Hash:-341004526:-329900582:1773456076913

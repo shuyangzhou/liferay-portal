@@ -98,3 +98,4 @@ public class MBSuspiciousActivityServiceUtil {
 			MBSuspiciousActivityService.class);
 
 }
+// SB-Hash:-619389639:-1389537973:1773456076913

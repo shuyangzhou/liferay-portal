@@ -492,3 +492,4 @@ public abstract class DDLRecordSetVersionLocalServiceBaseImpl
 		DDLRecordSetVersionLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1167146263:1504452851:1773456076913

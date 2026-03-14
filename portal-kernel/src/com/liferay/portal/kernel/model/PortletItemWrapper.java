@@ -412,3 +412,4 @@ public class PortletItemWrapper
 	}
 
 }
+// SB-Hash:-961118277:1870610730:1773456076913

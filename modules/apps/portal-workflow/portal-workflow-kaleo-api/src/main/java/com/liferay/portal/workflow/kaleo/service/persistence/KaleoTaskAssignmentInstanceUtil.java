@@ -1832,3 +1832,4 @@ public class KaleoTaskAssignmentInstanceUtil {
 	private static volatile KaleoTaskAssignmentInstancePersistence _persistence;
 
 }
+// SB-Hash:1679599313:1967856607:1773456076913

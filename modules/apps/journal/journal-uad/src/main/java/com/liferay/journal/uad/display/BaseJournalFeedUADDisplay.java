@@ -75,3 +75,4 @@ public abstract class BaseJournalFeedUADDisplay
 	protected JournalFeedLocalService journalFeedLocalService;
 
 }
+// SB-Hash:-1596228213:-875965416:1773456076913

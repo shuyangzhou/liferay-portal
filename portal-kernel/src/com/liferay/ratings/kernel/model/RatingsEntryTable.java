@@ -53,3 +53,4 @@ public class RatingsEntryTable extends BaseTable<RatingsEntryTable> {
 	}
 
 }
+// SB-Hash:1174113527:-1803523562:1773456076913

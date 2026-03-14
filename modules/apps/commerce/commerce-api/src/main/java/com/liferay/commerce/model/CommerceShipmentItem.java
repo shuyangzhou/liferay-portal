@@ -57,3 +57,4 @@ public interface CommerceShipmentItem
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 }
+// SB-Hash:980585624:-329900582:1773456076913

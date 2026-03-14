@@ -21,3 +21,4 @@ public class SharepointOAuthPersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:1975672820:682537493:1773456076913

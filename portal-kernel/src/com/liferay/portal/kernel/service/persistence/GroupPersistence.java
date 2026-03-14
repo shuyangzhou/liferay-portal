@@ -4658,3 +4658,4 @@ public interface GroupPersistence
 		long pk, java.util.List<com.liferay.portal.kernel.model.User> users);
 
 }
+// SB-Hash:-450125957:1870610730:1773456076913

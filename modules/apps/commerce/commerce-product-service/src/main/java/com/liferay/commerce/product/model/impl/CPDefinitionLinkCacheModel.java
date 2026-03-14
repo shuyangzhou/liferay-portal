@@ -333,3 +333,4 @@ public class CPDefinitionLinkCacheModel
 	public long statusDate;
 
 }
+// SB-Hash:-17107367:2013809339:1773456076913

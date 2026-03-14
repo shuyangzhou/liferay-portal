@@ -48,3 +48,4 @@ public class UserGroupGroupRoleTable
 	}
 
 }
+// SB-Hash:1254363466:1870610730:1773456076913

@@ -1479,3 +1479,4 @@ public class CompanyModelImpl
 	private Company _escapedModel;
 
 }
+// SB-Hash:988125139:1870610730:1773456076913

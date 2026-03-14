@@ -307,3 +307,4 @@ public interface LaunchEntryLocalService
 	public LaunchEntry updateLaunchEntry(LaunchEntry launchEntry);
 
 }
+// SB-Hash:428848852:-1586552034:1773456076913

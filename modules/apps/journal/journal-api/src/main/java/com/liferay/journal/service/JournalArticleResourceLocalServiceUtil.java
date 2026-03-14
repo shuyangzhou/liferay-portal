@@ -416,3 +416,4 @@ public class JournalArticleResourceLocalServiceUtil {
 			JournalArticleResourceLocalService.class);
 
 }
+// SB-Hash:-221852016:-875965416:1773456076913

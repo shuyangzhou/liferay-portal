@@ -109,3 +109,4 @@ public abstract class ERUserLocalServiceBaseImpl
 		ERUserLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1139711116:-700112462:1773456076913

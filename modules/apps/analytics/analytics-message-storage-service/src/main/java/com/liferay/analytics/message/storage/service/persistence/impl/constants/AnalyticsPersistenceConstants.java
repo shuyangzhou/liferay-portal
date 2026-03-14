@@ -21,3 +21,4 @@ public class AnalyticsPersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:-1304946094:-441764813:1773456076913

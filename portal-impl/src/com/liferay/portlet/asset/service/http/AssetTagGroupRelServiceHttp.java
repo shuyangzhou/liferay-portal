@@ -172,3 +172,4 @@ public class AssetTagGroupRelServiceHttp {
 		new Class[] {long.class, long[].class};
 
 }
+// SB-Hash:-233832462:-1753039864:1773456076913

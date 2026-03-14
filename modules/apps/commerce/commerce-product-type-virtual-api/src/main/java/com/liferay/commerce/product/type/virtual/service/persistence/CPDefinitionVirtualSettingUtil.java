@@ -791,3 +791,4 @@ public class CPDefinitionVirtualSettingUtil {
 	private static volatile CPDefinitionVirtualSettingPersistence _persistence;
 
 }
+// SB-Hash:591240619:446411075:1773456076913

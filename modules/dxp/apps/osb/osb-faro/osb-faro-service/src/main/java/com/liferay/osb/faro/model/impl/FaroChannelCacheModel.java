@@ -219,3 +219,4 @@ public class FaroChannelCacheModel
 	public long workspaceGroupId;
 
 }
+// SB-Hash:341048033:1117559585:1773456076913

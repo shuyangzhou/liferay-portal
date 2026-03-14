@@ -59,3 +59,4 @@ public interface ObjectEntryFolder
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 }
+// SB-Hash:-759128482:-712801821:1773456076913

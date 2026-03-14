@@ -35,3 +35,4 @@ public interface SocialActivityCounterFinder {
 		long groupId, String[] names, int start, int end);
 
 }
+// SB-Hash:-654931289:865570565:1773456076913

@@ -195,3 +195,4 @@ public interface CompanyInfoPersistence extends BasePersistence<CompanyInfo> {
 	public int countAll();
 
 }
+// SB-Hash:379282094:1870610730:1773456076913

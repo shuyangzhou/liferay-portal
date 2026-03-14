@@ -58,3 +58,4 @@ public class ResourcePermissionTable
 	}
 
 }
+// SB-Hash:1595856787:1870610730:1773456076913

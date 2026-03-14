@@ -69,3 +69,4 @@ public class CommerceInventoryBookedQuantityTable
 	}
 
 }
+// SB-Hash:612490746:-1537497261:1773456076913

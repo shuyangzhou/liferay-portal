@@ -469,3 +469,4 @@ public class ObjectEntryVersionLocalServiceUtil {
 			ObjectEntryVersionLocalService.class);
 
 }
+// SB-Hash:-1715928762:-712801821:1773456076913

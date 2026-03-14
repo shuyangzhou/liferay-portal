@@ -57,3 +57,4 @@ public interface UserNotificationEventService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:-450665420:1870610730:1773456076913

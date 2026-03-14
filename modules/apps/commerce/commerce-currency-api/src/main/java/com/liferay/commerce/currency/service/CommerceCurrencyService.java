@@ -133,3 +133,4 @@ public interface CommerceCurrencyService extends BaseService {
 	public void updateExchangeRates() throws PortalException;
 
 }
+// SB-Hash:707704585:-1200058624:1773456076913

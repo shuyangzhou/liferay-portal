@@ -94,3 +94,4 @@ public class MBMessageTable extends BaseTable<MBMessageTable> {
 	}
 
 }
+// SB-Hash:-1345852243:-1389537973:1773456076913

@@ -52,3 +52,4 @@ public interface PatcherFixComponent
 			};
 
 }
+// SB-Hash:1968974795:-2116605064:1773456076913

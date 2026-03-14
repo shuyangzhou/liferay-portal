@@ -547,3 +547,4 @@ public abstract class SAPEntryLocalServiceBaseImpl
 		SAPEntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:163272576:-24610301:1773456076913

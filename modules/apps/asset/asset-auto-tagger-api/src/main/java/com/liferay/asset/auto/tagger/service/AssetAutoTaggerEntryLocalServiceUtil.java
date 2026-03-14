@@ -340,3 +340,4 @@ public class AssetAutoTaggerEntryLocalServiceUtil {
 			AssetAutoTaggerEntryLocalService.class);
 
 }
+// SB-Hash:1463782235:-1895483204:1773456076913

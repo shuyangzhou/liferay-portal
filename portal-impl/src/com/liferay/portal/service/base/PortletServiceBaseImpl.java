@@ -202,3 +202,4 @@ public abstract class PortletServiceBaseImpl
 		PortletServiceBaseImpl.class);
 
 }
+// SB-Hash:1869947100:1870610730:1773456076913

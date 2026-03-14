@@ -585,3 +585,4 @@ public abstract class ObjectDefinitionLocalServiceBaseImpl
 		ObjectDefinitionLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:438140360:-712801821:1773456076913

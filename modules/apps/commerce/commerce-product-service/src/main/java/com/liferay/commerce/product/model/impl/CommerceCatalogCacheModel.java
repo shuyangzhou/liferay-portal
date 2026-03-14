@@ -287,3 +287,4 @@ public class CommerceCatalogCacheModel
 	public boolean system;
 
 }
+// SB-Hash:-1030211326:2013809339:1773456076913

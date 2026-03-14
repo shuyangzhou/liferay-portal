@@ -50,3 +50,4 @@ public interface ERCCompanyEntry extends ERCCompanyEntryModel, PersistedModel {
 		};
 
 }
+// SB-Hash:-1059222944:-644981214:1773456076913

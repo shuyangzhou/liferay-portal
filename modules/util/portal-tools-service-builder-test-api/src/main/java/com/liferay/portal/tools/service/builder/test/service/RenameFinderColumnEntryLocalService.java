@@ -273,3 +273,4 @@ public interface RenameFinderColumnEntryLocalService
 		RenameFinderColumnEntry renameFinderColumnEntry);
 
 }
+// SB-Hash:-999631712:-644981214:1773456076913

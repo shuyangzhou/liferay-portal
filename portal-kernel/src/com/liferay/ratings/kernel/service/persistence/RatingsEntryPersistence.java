@@ -913,3 +913,4 @@ public interface RatingsEntryPersistence
 	public int countAll();
 
 }
+// SB-Hash:946691352:-1803523562:1773456076913

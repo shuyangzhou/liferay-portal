@@ -144,3 +144,4 @@ public abstract class PermissionServiceBaseImpl
 		PermissionServiceBaseImpl.class);
 
 }
+// SB-Hash:357138628:1870610730:1773456076913

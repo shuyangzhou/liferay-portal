@@ -21,3 +21,4 @@ public class MarketplacePersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:-1081049186:1542546812:1773456076913

@@ -709,3 +709,4 @@ public abstract class MBMessageLocalServiceBaseImpl
 		MBMessageLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1357840147:-1389537973:1773456076913

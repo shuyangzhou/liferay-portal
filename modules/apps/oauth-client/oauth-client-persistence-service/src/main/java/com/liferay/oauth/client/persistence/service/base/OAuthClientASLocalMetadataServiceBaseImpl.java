@@ -132,3 +132,4 @@ public abstract class OAuthClientASLocalMetadataServiceBaseImpl
 		OAuthClientASLocalMetadataServiceBaseImpl.class);
 
 }
+// SB-Hash:2064126396:409117338:1773456076913

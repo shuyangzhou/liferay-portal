@@ -539,3 +539,4 @@ public abstract class SocialActivityLimitLocalServiceBaseImpl
 		SocialActivityLimitLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1840683671:865570565:1773456076913

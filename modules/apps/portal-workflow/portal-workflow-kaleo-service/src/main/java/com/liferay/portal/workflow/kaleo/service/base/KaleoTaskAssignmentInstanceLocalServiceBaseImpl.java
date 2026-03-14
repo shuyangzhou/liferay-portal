@@ -506,3 +506,4 @@ public abstract class KaleoTaskAssignmentInstanceLocalServiceBaseImpl
 		KaleoTaskAssignmentInstanceLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1259637248:1967856607:1773456076913

@@ -338,3 +338,4 @@ public interface CommerceTaxFixedRateAddressRelLocalService
 		throws PortalException;
 
 }
+// SB-Hash:1966720028:1597945076:1773456076913

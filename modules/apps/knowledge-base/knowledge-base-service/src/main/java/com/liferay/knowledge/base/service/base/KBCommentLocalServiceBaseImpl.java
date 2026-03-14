@@ -628,3 +628,4 @@ public abstract class KBCommentLocalServiceBaseImpl
 		KBCommentLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1603072257:-560307709:1773456076913

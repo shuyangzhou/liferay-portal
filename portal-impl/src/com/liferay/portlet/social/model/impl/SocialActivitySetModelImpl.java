@@ -1032,3 +1032,4 @@ public class SocialActivitySetModelImpl
 	private SocialActivitySet _escapedModel;
 
 }
+// SB-Hash:2002263089:865570565:1773456076913

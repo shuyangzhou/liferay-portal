@@ -47,3 +47,4 @@ public interface SequenceEntryService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:-35052154:608525136:1773456076913

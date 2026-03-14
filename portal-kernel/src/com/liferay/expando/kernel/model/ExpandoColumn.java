@@ -61,3 +61,4 @@ public interface ExpandoColumn extends ExpandoColumnModel, PersistedModel {
 			typeSettingsUnicodeProperties);
 
 }
+// SB-Hash:-499624011:-1134458972:1773456076913

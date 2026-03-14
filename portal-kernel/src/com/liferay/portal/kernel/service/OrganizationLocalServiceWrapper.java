@@ -1829,3 +1829,4 @@ public class OrganizationLocalServiceWrapper
 	private OrganizationLocalService _organizationLocalService;
 
 }
+// SB-Hash:-93855959:1870610730:1773456076913

@@ -551,3 +551,4 @@ public interface JournalFolderLocalService
 		throws E;
 
 }
+// SB-Hash:1254377223:-875965416:1773456076913

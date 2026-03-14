@@ -1112,3 +1112,4 @@ public class CPTaxCategoryUtil {
 	private static volatile CPTaxCategoryPersistence _persistence;
 
 }
+// SB-Hash:1547528790:2013809339:1773456076913

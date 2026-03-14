@@ -948,3 +948,4 @@ public class TranslationEntryUtil {
 	private static volatile TranslationEntryPersistence _persistence;
 
 }
+// SB-Hash:-847263517:327547453:1773456076913

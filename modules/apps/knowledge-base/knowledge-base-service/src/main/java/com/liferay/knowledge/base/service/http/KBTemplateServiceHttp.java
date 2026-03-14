@@ -392,3 +392,4 @@ public class KBTemplateServiceHttp {
 		};
 
 }
+// SB-Hash:1776659497:-560307709:1773456076913

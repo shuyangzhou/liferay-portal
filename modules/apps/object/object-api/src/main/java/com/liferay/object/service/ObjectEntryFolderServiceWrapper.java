@@ -234,3 +234,4 @@ public class ObjectEntryFolderServiceWrapper
 	private ObjectEntryFolderService _objectEntryFolderService;
 
 }
+// SB-Hash:423579147:-712801821:1773456076913

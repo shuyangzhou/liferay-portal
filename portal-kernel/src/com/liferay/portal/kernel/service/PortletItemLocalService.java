@@ -282,3 +282,4 @@ public interface PortletItemLocalService
 	public PortletItem updatePortletItem(PortletItem portletItem);
 
 }
+// SB-Hash:-1012981613:1870610730:1773456076913

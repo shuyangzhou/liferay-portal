@@ -453,3 +453,4 @@ public class MemberRequestLocalServiceWrapper
 	private MemberRequestLocalService _memberRequestLocalService;
 
 }
+// SB-Hash:1012736071:400171304:1773456076913

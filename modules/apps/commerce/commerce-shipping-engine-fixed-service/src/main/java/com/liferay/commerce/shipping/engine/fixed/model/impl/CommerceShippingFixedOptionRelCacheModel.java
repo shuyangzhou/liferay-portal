@@ -288,3 +288,4 @@ public class CommerceShippingFixedOptionRelCacheModel
 	public String zip;
 
 }
+// SB-Hash:1579244235:1720224397:1773456076913

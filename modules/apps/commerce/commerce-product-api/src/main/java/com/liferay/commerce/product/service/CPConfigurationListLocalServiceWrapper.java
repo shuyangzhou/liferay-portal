@@ -595,3 +595,4 @@ public class CPConfigurationListLocalServiceWrapper
 	private CPConfigurationListLocalService _cpConfigurationListLocalService;
 
 }
+// SB-Hash:-1182628334:2013809339:1773456076913

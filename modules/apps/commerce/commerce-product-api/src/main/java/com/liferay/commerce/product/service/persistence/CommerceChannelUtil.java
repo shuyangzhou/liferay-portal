@@ -1608,3 +1608,4 @@ public class CommerceChannelUtil {
 	private static volatile CommerceChannelPersistence _persistence;
 
 }
+// SB-Hash:-1964033549:2013809339:1773456076913

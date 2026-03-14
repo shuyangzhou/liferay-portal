@@ -53,3 +53,4 @@ public interface COREntryRel extends COREntryRelModel, PersistedModel {
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 }
+// SB-Hash:-1448574269:147693042:1773456076913

@@ -1050,3 +1050,4 @@ public class CommerceTaxCategoryMappingUtil {
 	private static volatile CommerceTaxCategoryMappingPersistence _persistence;
 
 }
+// SB-Hash:1048270918:676098184:1773456076913

@@ -56,3 +56,4 @@ public class KBTemplateTable extends BaseTable<KBTemplateTable> {
 	}
 
 }
+// SB-Hash:235070401:-560307709:1773456076913

@@ -51,3 +51,4 @@ public interface Region extends PersistedModel, RegionModel {
 	public void setTitleCurrentLanguageId(String languageId);
 
 }
+// SB-Hash:-1665430939:1870610730:1773456076913

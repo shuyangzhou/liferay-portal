@@ -379,3 +379,4 @@ public interface CPDefinitionInventoryLocalService
 		throws E;
 
 }
+// SB-Hash:746349957:-329900582:1773456076913

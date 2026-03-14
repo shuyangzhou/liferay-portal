@@ -748,3 +748,4 @@ public class CommercePricingClassWrapper
 	}
 
 }
+// SB-Hash:-1436370260:60415849:1773456076913

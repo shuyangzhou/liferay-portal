@@ -276,3 +276,4 @@ public interface OpenIdConnectUserLocalService
 		OpenIdConnectUser openIdConnectUser);
 
 }
+// SB-Hash:515356005:-964377512:1773456076913

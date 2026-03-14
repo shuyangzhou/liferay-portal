@@ -626,3 +626,4 @@ public abstract class CPSpecificationOptionLocalServiceBaseImpl
 		CPSpecificationOptionLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:860003192:2013809339:1773456076913

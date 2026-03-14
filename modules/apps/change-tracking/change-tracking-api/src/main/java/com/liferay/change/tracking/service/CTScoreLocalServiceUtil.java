@@ -304,3 +304,4 @@ public class CTScoreLocalServiceUtil {
 			CTScoreLocalServiceUtil.class, CTScoreLocalService.class);
 
 }
+// SB-Hash:-1323675259:195619156:1773456076913

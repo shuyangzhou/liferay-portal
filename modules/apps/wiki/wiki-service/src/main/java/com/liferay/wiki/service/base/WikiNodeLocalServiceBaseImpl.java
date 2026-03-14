@@ -679,3 +679,4 @@ public abstract class WikiNodeLocalServiceBaseImpl
 		WikiNodeLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1528851885:-385412670:1773456076913

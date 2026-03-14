@@ -461,3 +461,4 @@ public abstract class FaroNotificationLocalServiceBaseImpl
 		FaroNotificationLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1931629694:1117559585:1773456076913

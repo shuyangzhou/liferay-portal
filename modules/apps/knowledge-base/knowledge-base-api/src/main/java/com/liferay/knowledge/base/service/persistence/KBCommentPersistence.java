@@ -1521,3 +1521,4 @@ public interface KBCommentPersistence
 	public int countAll();
 
 }
+// SB-Hash:1702778223:-560307709:1773456076913

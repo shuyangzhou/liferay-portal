@@ -526,3 +526,4 @@ public class TranslationEntryLocalServiceWrapper
 	private TranslationEntryLocalService _translationEntryLocalService;
 
 }
+// SB-Hash:1915830584:327547453:1773456076913

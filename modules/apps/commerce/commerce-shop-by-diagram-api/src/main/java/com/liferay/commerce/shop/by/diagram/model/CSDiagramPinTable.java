@@ -53,3 +53,4 @@ public class CSDiagramPinTable extends BaseTable<CSDiagramPinTable> {
 	}
 
 }
+// SB-Hash:-189536314:243107995:1773456076913

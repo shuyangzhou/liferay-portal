@@ -48,3 +48,4 @@ public interface LaunchEntry extends LaunchEntryModel, PersistedModel {
 		};
 
 }
+// SB-Hash:-343509717:-1586552034:1773456076913

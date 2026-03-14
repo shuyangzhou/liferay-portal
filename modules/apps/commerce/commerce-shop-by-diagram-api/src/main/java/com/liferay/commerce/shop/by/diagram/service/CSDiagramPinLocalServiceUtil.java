@@ -324,3 +324,4 @@ public class CSDiagramPinLocalServiceUtil {
 			CSDiagramPinLocalServiceUtil.class, CSDiagramPinLocalService.class);
 
 }
+// SB-Hash:-634856479:243107995:1773456076913

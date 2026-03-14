@@ -21,3 +21,4 @@ public class ContactsPersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:619335101:993662475:1773456076913

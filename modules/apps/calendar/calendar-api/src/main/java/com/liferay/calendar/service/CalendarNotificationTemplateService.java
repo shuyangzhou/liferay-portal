@@ -65,3 +65,4 @@ public interface CalendarNotificationTemplateService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:1752300262:-1072954947:1773456076913

@@ -339,3 +339,4 @@ public class ModuleLocalServiceUtil {
 		new Snapshot<>(ModuleLocalServiceUtil.class, ModuleLocalService.class);
 
 }
+// SB-Hash:1812001527:1542546812:1773456076913

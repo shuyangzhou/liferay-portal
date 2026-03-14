@@ -314,3 +314,4 @@ public class JournalArticleLocalizationWrapper
 	}
 
 }
+// SB-Hash:-364965436:-875965416:1773456076913

@@ -48,3 +48,4 @@ public interface SiteFriendlyURL extends PersistedModel, SiteFriendlyURLModel {
 		};
 
 }
+// SB-Hash:-672187734:-2089841109:1773456076913

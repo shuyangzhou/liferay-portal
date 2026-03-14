@@ -385,3 +385,4 @@ public class KaleoNodeSettingLocalServiceWrapper
 	private KaleoNodeSettingLocalService _kaleoNodeSettingLocalService;
 
 }
+// SB-Hash:1864541228:1967856607:1773456076913

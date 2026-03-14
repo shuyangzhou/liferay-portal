@@ -180,3 +180,4 @@ public interface FragmentCollectionService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:-1058047915:-140381953:1773456076913

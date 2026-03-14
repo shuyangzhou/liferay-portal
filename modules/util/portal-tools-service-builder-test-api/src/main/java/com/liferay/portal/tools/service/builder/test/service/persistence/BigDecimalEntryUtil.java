@@ -1039,3 +1039,4 @@ public class BigDecimalEntryUtil {
 	private static volatile BigDecimalEntryPersistence _persistence;
 
 }
+// SB-Hash:-84227001:-644981214:1773456076913

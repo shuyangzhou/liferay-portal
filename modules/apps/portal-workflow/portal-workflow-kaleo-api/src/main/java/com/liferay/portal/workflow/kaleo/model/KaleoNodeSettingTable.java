@@ -57,3 +57,4 @@ public class KaleoNodeSettingTable extends BaseTable<KaleoNodeSettingTable> {
 	}
 
 }
+// SB-Hash:-333266536:1967856607:1773456076913

@@ -424,3 +424,4 @@ public class FaroChannelWrapper
 	}
 
 }
+// SB-Hash:-711531208:1117559585:1773456076913

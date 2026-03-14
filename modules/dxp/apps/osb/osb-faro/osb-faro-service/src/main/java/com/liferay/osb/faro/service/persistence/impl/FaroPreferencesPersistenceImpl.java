@@ -1395,3 +1395,4 @@ public class FaroPreferencesPersistenceImpl
 	}
 
 }
+// SB-Hash:249784467:1117559585:1773456076913

@@ -567,3 +567,4 @@ public class CommercePriceModifierLocalServiceUtil {
 			CommercePriceModifierLocalService.class);
 
 }
+// SB-Hash:79070464:60415849:1773456076913

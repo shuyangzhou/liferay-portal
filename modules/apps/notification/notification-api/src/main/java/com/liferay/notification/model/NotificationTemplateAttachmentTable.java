@@ -46,3 +46,4 @@ public class NotificationTemplateAttachmentTable
 	}
 
 }
+// SB-Hash:-1228743325:-465969577:1773456076913

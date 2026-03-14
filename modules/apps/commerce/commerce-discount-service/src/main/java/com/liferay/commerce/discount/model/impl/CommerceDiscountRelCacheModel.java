@@ -215,3 +215,4 @@ public class CommerceDiscountRelCacheModel
 	public String typeSettings;
 
 }
+// SB-Hash:1255362866:1570856832:1773456076913

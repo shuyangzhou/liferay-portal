@@ -68,3 +68,4 @@ public class SocialActivityCounterFinderBaseImpl
 		SocialActivityCounterFinderBaseImpl.class);
 
 }
+// SB-Hash:-373512466:865570565:1773456076913

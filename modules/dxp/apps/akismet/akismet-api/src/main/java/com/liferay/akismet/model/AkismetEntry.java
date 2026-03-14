@@ -48,3 +48,4 @@ public interface AkismetEntry extends AkismetEntryModel, PersistedModel {
 		};
 
 }
+// SB-Hash:1831110971:1043708052:1773456076913

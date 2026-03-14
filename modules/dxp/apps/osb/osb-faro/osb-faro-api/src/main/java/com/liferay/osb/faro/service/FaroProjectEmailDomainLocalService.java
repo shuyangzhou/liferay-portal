@@ -282,3 +282,4 @@ public interface FaroProjectEmailDomainLocalService
 		FaroProjectEmailDomain faroProjectEmailDomain);
 
 }
+// SB-Hash:135330376:1117559585:1773456076913

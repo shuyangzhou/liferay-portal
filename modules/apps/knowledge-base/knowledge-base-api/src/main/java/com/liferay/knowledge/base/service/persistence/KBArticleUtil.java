@@ -18151,3 +18151,4 @@ public class KBArticleUtil {
 	private static volatile KBArticlePersistence _persistence;
 
 }
+// SB-Hash:773842956:-560307709:1773456076913

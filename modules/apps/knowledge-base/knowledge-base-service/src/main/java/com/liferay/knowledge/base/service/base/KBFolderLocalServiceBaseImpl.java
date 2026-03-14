@@ -684,3 +684,4 @@ public abstract class KBFolderLocalServiceBaseImpl
 		KBFolderLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-506252156:-560307709:1773456076913

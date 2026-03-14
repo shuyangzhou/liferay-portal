@@ -56,3 +56,4 @@ public class SegmentsEntryRoleTable extends BaseTable<SegmentsEntryRoleTable> {
 	}
 
 }
+// SB-Hash:1480699489:-1988984954:1773456076913

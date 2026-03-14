@@ -347,3 +347,4 @@ public interface AkismetEntryPersistence extends BasePersistence<AkismetEntry> {
 	public int countAll();
 
 }
+// SB-Hash:1534242651:1043708052:1773456076913

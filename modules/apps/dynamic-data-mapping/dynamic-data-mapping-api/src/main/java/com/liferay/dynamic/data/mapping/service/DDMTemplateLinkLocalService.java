@@ -319,3 +319,4 @@ public interface DDMTemplateLinkLocalService
 		throws E;
 
 }
+// SB-Hash:1378838319:-1843255745:1773456076913

@@ -595,3 +595,4 @@ public abstract class AssetTagGroupRelLocalServiceBaseImpl
 		AssetTagGroupRelLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1737525764:-1753039864:1773456076913

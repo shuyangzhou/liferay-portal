@@ -21,3 +21,4 @@ public class BatchPlannerPersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:-689201680:96869502:1773456076913

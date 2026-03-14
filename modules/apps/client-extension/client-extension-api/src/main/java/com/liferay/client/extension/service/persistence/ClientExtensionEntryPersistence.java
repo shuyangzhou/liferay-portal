@@ -1075,3 +1075,4 @@ public interface ClientExtensionEntryPersistence
 	public int countAll();
 
 }
+// SB-Hash:-512010061:1958305926:1773456076913

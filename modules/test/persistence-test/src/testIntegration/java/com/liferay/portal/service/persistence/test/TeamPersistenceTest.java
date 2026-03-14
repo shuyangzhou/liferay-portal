@@ -586,3 +586,4 @@ public class TeamPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
+// SB-Hash:1005507279:1870610730:1773456076913

@@ -109,3 +109,4 @@ public abstract class EROrganizationLocalServiceBaseImpl
 		EROrganizationLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1755740164:-700112462:1773456076913

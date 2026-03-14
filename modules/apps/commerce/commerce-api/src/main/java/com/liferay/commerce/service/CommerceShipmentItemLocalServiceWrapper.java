@@ -649,3 +649,4 @@ public class CommerceShipmentItemLocalServiceWrapper
 	private CommerceShipmentItemLocalService _commerceShipmentItemLocalService;
 
 }
+// SB-Hash:-703385371:-329900582:1773456076913

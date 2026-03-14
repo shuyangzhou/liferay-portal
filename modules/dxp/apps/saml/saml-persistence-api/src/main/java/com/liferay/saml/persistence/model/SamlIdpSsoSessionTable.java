@@ -49,3 +49,4 @@ public class SamlIdpSsoSessionTable extends BaseTable<SamlIdpSsoSessionTable> {
 	}
 
 }
+// SB-Hash:-956087185:-1058076342:1773456076913

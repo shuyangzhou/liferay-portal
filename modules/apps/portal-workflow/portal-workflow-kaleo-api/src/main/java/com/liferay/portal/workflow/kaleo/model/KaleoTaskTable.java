@@ -59,3 +59,4 @@ public class KaleoTaskTable extends BaseTable<KaleoTaskTable> {
 	}
 
 }
+// SB-Hash:1562466015:1967856607:1773456076913

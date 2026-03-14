@@ -68,3 +68,4 @@ public class EROrganizationLocalServiceWrapper
 	private EROrganizationLocalService _erOrganizationLocalService;
 
 }
+// SB-Hash:1100675234:-700112462:1773456076913

@@ -54,3 +54,4 @@ public interface CommerceCatalog extends CommerceCatalogModel, PersistedModel {
 	public long getGroupId();
 
 }
+// SB-Hash:1645481940:2013809339:1773456076913

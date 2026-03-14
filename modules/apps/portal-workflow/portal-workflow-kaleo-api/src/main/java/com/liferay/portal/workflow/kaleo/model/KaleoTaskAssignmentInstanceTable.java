@@ -96,3 +96,4 @@ public class KaleoTaskAssignmentInstanceTable
 	}
 
 }
+// SB-Hash:1151768773:1967856607:1773456076913

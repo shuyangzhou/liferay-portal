@@ -1368,3 +1368,4 @@ public class CommerceTaxMethodModelImpl
 	private CommerceTaxMethod _escapedModel;
 
 }
+// SB-Hash:280836933:676098184:1773456076913

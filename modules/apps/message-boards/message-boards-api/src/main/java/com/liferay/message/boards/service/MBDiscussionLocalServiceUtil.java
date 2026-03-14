@@ -424,3 +424,4 @@ public class MBDiscussionLocalServiceUtil {
 			MBDiscussionLocalServiceUtil.class, MBDiscussionLocalService.class);
 
 }
+// SB-Hash:211059820:-1389537973:1773456076913

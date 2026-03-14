@@ -107,3 +107,4 @@ public class CPDefinitionInventoryServiceWrapper
 	private CPDefinitionInventoryService _cpDefinitionInventoryService;
 
 }
+// SB-Hash:-226405389:-329900582:1773456076913

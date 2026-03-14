@@ -21,3 +21,4 @@ public class SharingPersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:1697327772:286933966:1773456076913

@@ -378,3 +378,4 @@ public class SamlIdpSpConnectionLocalServiceUtil {
 			SamlIdpSpConnectionLocalService.class);
 
 }
+// SB-Hash:-1386259657:-1058076342:1773456076913

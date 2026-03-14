@@ -355,3 +355,4 @@ public interface UserGroupRoleLocalService
 		throws E;
 
 }
+// SB-Hash:816616271:1870610730:1773456076913

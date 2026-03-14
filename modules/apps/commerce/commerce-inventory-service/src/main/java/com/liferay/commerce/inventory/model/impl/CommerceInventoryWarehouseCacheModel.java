@@ -421,3 +421,4 @@ public class CommerceInventoryWarehouseCacheModel
 	public String type;
 
 }
+// SB-Hash:-2097447705:-1537497261:1773456076913

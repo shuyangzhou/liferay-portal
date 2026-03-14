@@ -38,3 +38,4 @@ public abstract class TeamBaseImpl extends TeamModelImpl implements Team {
 	}
 
 }
+// SB-Hash:-727933163:1870610730:1773456076913

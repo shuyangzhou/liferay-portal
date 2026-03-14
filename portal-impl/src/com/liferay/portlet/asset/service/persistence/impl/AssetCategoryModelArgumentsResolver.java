@@ -132,3 +132,4 @@ public class AssetCategoryModelArgumentsResolver implements ArgumentsResolver {
 	}
 
 }
+// SB-Hash:1696475417:-1753039864:1773456076913

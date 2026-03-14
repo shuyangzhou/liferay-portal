@@ -54,3 +54,4 @@ public interface CacheFieldEntry extends CacheFieldEntryModel, PersistedModel {
 	public void setNickname(String nickname);
 
 }
+// SB-Hash:-1910446386:-644981214:1773456076913

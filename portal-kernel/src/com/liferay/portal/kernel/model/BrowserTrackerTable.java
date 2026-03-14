@@ -39,3 +39,4 @@ public class BrowserTrackerTable extends BaseTable<BrowserTrackerTable> {
 	}
 
 }
+// SB-Hash:-976482027:1870610730:1773456076913

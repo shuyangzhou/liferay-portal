@@ -289,3 +289,4 @@ public interface SpringEntryLocalService
 	public SpringEntry updateSpringEntry(SpringEntry springEntry);
 
 }
+// SB-Hash:-129436217:1707161692:1773456076913

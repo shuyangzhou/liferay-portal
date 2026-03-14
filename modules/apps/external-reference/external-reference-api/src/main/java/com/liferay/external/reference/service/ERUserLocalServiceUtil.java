@@ -69,3 +69,4 @@ public class ERUserLocalServiceUtil {
 		new Snapshot<>(ERUserLocalServiceUtil.class, ERUserLocalService.class);
 
 }
+// SB-Hash:187338891:-700112462:1773456076913

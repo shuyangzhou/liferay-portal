@@ -385,3 +385,4 @@ public class ObjectLayoutTabLocalServiceUtil {
 			ObjectLayoutTabLocalService.class);
 
 }
+// SB-Hash:1280397748:-712801821:1773456076913

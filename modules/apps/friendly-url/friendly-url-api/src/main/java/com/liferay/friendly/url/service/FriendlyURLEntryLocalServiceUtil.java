@@ -669,3 +669,4 @@ public class FriendlyURLEntryLocalServiceUtil {
 			FriendlyURLEntryLocalService.class);
 
 }
+// SB-Hash:-721585294:854025060:1773456076913

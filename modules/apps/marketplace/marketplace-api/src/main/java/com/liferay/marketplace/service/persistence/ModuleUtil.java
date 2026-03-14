@@ -1376,3 +1376,4 @@ public class ModuleUtil {
 	private static volatile ModulePersistence _persistence;
 
 }
+// SB-Hash:1743352566:1542546812:1773456076913

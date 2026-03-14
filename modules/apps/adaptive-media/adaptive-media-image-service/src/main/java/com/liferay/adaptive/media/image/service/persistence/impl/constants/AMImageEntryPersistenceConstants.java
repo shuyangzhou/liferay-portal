@@ -21,3 +21,4 @@ public class AMImageEntryPersistenceConstants {
 		"(&" + ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER + "(name=service))";
 
 }
+// SB-Hash:-1742675591:-1733073034:1773456076913

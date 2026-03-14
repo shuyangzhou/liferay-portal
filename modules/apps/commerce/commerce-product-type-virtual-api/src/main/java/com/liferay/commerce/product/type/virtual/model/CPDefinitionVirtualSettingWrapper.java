@@ -961,3 +961,4 @@ public class CPDefinitionVirtualSettingWrapper
 	}
 
 }
+// SB-Hash:2010058199:446411075:1773456076913

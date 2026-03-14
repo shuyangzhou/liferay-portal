@@ -646,3 +646,4 @@ public abstract class DDMStructureLayoutLocalServiceBaseImpl
 		DDMStructureLayoutLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-643154290:-1843255745:1773456076913

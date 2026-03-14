@@ -97,3 +97,4 @@ public abstract class BaseMBCategoryUADAnonymizer
 	protected MBCategoryLocalService mbCategoryLocalService;
 
 }
+// SB-Hash:1836262443:-1389537973:1773456076913

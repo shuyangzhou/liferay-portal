@@ -55,3 +55,4 @@ public interface Definition extends DefinitionModel, PersistedModel {
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 }
+// SB-Hash:130492606:-529934655:1773456076913

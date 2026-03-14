@@ -54,3 +54,4 @@ public interface JournalArticleResource
 	public long getLatestArticlePK();
 
 }
+// SB-Hash:1422701186:-875965416:1773456076913

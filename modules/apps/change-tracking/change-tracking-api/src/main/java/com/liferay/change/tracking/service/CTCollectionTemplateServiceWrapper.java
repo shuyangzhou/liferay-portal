@@ -102,3 +102,4 @@ public class CTCollectionTemplateServiceWrapper
 	private CTCollectionTemplateService _ctCollectionTemplateService;
 
 }
+// SB-Hash:820454776:195619156:1773456076913

@@ -76,3 +76,4 @@ public abstract class BaseJournalArticleUADDisplay
 	protected JournalArticleLocalService journalArticleLocalService;
 
 }
+// SB-Hash:49130237:-875965416:1773456076913

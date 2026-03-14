@@ -499,3 +499,4 @@ public class UserGroupGroupRoleLocalServiceWrapper
 	private UserGroupGroupRoleLocalService _userGroupGroupRoleLocalService;
 
 }
+// SB-Hash:-2031339048:1870610730:1773456076913

@@ -416,3 +416,4 @@ public class MBCategoryServiceWrapper
 	private MBCategoryService _mbCategoryService;
 
 }
+// SB-Hash:-76238244:-1389537973:1773456076913

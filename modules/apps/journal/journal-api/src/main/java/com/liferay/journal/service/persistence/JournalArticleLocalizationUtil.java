@@ -559,3 +559,4 @@ public class JournalArticleLocalizationUtil {
 	private static volatile JournalArticleLocalizationPersistence _persistence;
 
 }
+// SB-Hash:1364423880:-875965416:1773456076913

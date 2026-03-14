@@ -30,3 +30,4 @@ public abstract class JournalArticleLocalizationBaseImpl
 	 */
 
 }
+// SB-Hash:1562214904:-875965416:1773456076913

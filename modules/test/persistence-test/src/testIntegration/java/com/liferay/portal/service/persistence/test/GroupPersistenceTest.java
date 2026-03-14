@@ -948,3 +948,4 @@ public class GroupPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
+// SB-Hash:-2007031751:1870610730:1773456076913

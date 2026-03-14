@@ -1816,3 +1816,4 @@ public interface CommercePriceModifierPersistence
 	public int countAll();
 
 }
+// SB-Hash:236756637:60415849:1773456076913

@@ -556,3 +556,4 @@ public abstract class ObjectFilterLocalServiceBaseImpl
 		ObjectFilterLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1731506609:-712801821:1773456076913

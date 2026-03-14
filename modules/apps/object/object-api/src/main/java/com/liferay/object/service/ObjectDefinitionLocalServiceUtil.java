@@ -724,3 +724,4 @@ public class ObjectDefinitionLocalServiceUtil {
 			ObjectDefinitionLocalService.class);
 
 }
+// SB-Hash:332335530:-712801821:1773456076913

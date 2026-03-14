@@ -564,3 +564,4 @@ public abstract class SocialActivityAchievementLocalServiceBaseImpl
 		SocialActivityAchievementLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-354031713:865570565:1773456076913

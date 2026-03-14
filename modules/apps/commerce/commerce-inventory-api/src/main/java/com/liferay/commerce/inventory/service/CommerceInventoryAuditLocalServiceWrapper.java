@@ -402,3 +402,4 @@ public class CommerceInventoryAuditLocalServiceWrapper
 		_commerceInventoryAuditLocalService;
 
 }
+// SB-Hash:-1298876049:-1537497261:1773456076913

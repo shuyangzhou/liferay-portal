@@ -39,3 +39,4 @@ public abstract class UserIdMapperBaseImpl
 	}
 
 }
+// SB-Hash:1514528535:1870610730:1773456076913

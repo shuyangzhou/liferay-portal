@@ -361,3 +361,4 @@ public interface CommerceInventoryBookedQuantityLocalService
 		throws PortalException;
 
 }
+// SB-Hash:-328469767:-1537497261:1773456076913

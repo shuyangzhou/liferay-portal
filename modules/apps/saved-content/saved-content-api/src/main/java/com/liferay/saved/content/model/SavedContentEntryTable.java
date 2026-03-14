@@ -60,3 +60,4 @@ public class SavedContentEntryTable extends BaseTable<SavedContentEntryTable> {
 	}
 
 }
+// SB-Hash:1256729837:1927668324:1773456076913

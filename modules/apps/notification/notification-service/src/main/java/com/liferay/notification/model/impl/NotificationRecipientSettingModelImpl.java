@@ -1179,3 +1179,4 @@ public class NotificationRecipientSettingModelImpl
 	private NotificationRecipientSetting _escapedModel;
 
 }
+// SB-Hash:304695566:-465969577:1773456076913

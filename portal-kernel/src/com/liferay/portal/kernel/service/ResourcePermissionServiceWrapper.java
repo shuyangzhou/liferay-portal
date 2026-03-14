@@ -220,3 +220,4 @@ public class ResourcePermissionServiceWrapper
 	private ResourcePermissionService _resourcePermissionService;
 
 }
+// SB-Hash:993922002:1870610730:1773456076913

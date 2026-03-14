@@ -985,3 +985,4 @@ public class JournalFeedUtil {
 	private static volatile JournalFeedPersistence _persistence;
 
 }
+// SB-Hash:979481680:-875965416:1773456076913

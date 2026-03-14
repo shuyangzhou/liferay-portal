@@ -131,3 +131,4 @@ public class PatcherBuildTable extends BaseTable<PatcherBuildTable> {
 	}
 
 }
+// SB-Hash:876953316:-2116605064:1773456076913

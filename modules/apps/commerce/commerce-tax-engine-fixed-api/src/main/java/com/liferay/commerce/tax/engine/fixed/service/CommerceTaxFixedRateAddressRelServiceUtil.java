@@ -123,3 +123,4 @@ public class CommerceTaxFixedRateAddressRelServiceUtil {
 			CommerceTaxFixedRateAddressRelService.class);
 
 }
+// SB-Hash:1835726476:1597945076:1773456076913

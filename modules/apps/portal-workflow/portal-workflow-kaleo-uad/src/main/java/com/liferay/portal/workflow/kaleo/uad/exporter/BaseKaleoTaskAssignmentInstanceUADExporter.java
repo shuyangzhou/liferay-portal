@@ -72,3 +72,4 @@ public abstract class BaseKaleoTaskAssignmentInstanceUADExporter
 		kaleoTaskAssignmentInstanceLocalService;
 
 }
+// SB-Hash:1152805593:1967856607:1773456076913

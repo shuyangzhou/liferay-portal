@@ -26,3 +26,4 @@ public interface EntryFinder {
 		long userId, String keywords, int start, int end);
 
 }
+// SB-Hash:572465556:993662475:1773456076913

@@ -175,3 +175,4 @@ public interface CommerceInventoryWarehouseItemService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:1479546741:-1537497261:1773456076913

@@ -59,3 +59,4 @@ public interface AssetListEntryAssetEntryRel
 	public void setAssetEntryUuid(String assetEntryUuid);
 
 }
+// SB-Hash:-527007039:-1575459458:1773456076913

@@ -492,3 +492,4 @@ public abstract class CommerceNotificationQueueEntryLocalServiceBaseImpl
 		CommerceNotificationQueueEntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1616380628:-1700122728:1773456076913

@@ -1511,3 +1511,4 @@ public class CommerceNotificationQueueEntryModelImpl
 	private CommerceNotificationQueueEntry _escapedModel;
 
 }
+// SB-Hash:-808025800:-1700122728:1773456076913

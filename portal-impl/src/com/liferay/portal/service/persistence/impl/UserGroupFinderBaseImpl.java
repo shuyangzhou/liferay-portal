@@ -65,3 +65,4 @@ public class UserGroupFinderBaseImpl extends BasePersistenceImpl<UserGroup> {
 		UserGroupFinderBaseImpl.class);
 
 }
+// SB-Hash:-1703597131:1870610730:1773456076913

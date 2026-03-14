@@ -575,3 +575,4 @@ public class FragmentCollectionLocalServiceWrapper
 	private FragmentCollectionLocalService _fragmentCollectionLocalService;
 
 }
+// SB-Hash:1790850097:-140381953:1773456076913

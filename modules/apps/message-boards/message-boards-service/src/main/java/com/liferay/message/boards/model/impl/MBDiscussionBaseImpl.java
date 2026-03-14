@@ -39,3 +39,4 @@ public abstract class MBDiscussionBaseImpl
 	}
 
 }
+// SB-Hash:-99930465:-1389537973:1773456076913

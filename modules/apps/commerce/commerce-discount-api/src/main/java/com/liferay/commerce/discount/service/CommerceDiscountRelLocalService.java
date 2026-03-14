@@ -356,3 +356,4 @@ public interface CommerceDiscountRelLocalService
 		CommerceDiscountRel commerceDiscountRel);
 
 }
+// SB-Hash:-1485691435:1570856832:1773456076913

@@ -505,3 +505,4 @@ public abstract class LayoutBranchLocalServiceBaseImpl
 		LayoutBranchLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1287032803:1870610730:1773456076913

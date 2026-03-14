@@ -50,3 +50,4 @@ public class JournalArticleLocalizationCTServiceImpl
 		_journalArticleLocalizationPersistence;
 
 }
+// SB-Hash:-2074742595:-875965416:1773456076913

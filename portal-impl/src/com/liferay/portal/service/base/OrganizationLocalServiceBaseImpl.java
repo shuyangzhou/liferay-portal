@@ -947,3 +947,4 @@ public abstract class OrganizationLocalServiceBaseImpl
 		OrganizationLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1636835766:1870610730:1773456076913

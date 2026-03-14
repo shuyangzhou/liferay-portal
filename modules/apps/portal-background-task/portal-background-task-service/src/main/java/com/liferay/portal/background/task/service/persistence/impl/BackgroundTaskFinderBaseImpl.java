@@ -57,3 +57,4 @@ public abstract class BackgroundTaskFinderBaseImpl
 	protected BackgroundTaskPersistence backgroundTaskPersistence;
 
 }
+// SB-Hash:-482471352:-1856322355:1773456076913

@@ -703,3 +703,4 @@ public abstract class CalendarBookingLocalServiceBaseImpl
 		CalendarBookingLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1831725609:-1072954947:1773456076913

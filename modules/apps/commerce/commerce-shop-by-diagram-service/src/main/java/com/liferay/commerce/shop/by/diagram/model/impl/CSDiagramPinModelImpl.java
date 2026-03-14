@@ -919,3 +919,4 @@ public class CSDiagramPinModelImpl
 	private CSDiagramPin _escapedModel;
 
 }
+// SB-Hash:-839941598:243107995:1773456076913

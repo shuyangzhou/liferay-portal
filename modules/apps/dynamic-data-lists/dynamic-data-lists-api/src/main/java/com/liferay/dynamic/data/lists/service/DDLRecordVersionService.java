@@ -128,3 +128,4 @@ public interface DDLRecordVersionService extends BaseService {
 	public int getRecordVersionsCount(long recordId) throws PortalException;
 
 }
+// SB-Hash:-1933300237:1504452851:1773456076913

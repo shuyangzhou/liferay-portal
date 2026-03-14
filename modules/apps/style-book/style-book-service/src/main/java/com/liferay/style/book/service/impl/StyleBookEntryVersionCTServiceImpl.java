@@ -48,3 +48,4 @@ public class StyleBookEntryVersionCTServiceImpl
 	private StyleBookEntryVersionPersistence _styleBookEntryVersionPersistence;
 
 }
+// SB-Hash:1106034590:1348678574:1773456076913

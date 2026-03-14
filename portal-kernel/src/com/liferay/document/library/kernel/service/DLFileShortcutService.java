@@ -91,3 +91,4 @@ public interface DLFileShortcutService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:820909616:1516786860:1773456076913

@@ -530,3 +530,4 @@ public abstract class
 		CPSpecificationOptionListTypeDefinitionRelLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-357970044:2013809339:1773456076913

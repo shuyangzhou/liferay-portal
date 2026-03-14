@@ -706,3 +706,4 @@ public interface TicketPersistence extends BasePersistence<Ticket> {
 	public int countAll();
 
 }
+// SB-Hash:744148952:1870610730:1773456076913

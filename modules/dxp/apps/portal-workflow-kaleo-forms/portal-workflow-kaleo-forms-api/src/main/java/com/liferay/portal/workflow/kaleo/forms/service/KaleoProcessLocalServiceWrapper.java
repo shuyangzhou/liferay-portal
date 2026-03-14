@@ -588,3 +588,4 @@ public class KaleoProcessLocalServiceWrapper
 	private KaleoProcessLocalService _kaleoProcessLocalService;
 
 }
+// SB-Hash:1850655551:-1498814602:1773456076913

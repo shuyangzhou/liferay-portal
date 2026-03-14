@@ -507,3 +507,4 @@ public class CommercePricingClassCPDefinitionRelLocalServiceWrapper
 		_commercePricingClassCPDefinitionRelLocalService;
 
 }
+// SB-Hash:1992137095:60415849:1773456076913

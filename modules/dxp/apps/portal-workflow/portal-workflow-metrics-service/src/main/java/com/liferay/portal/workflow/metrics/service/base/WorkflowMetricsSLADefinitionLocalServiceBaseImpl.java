@@ -679,3 +679,4 @@ public abstract class WorkflowMetricsSLADefinitionLocalServiceBaseImpl
 		WorkflowMetricsSLADefinitionLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1636733970:-322606409:1773456076913

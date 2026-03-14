@@ -3640,3 +3640,4 @@ public class PatcherFixUtil {
 	private static volatile PatcherFixPersistence _persistence;
 
 }
+// SB-Hash:-1046882906:-2116605064:1773456076913

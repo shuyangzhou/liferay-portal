@@ -517,3 +517,4 @@ public class VersionedEntryLocalServiceWrapper
 	private VersionedEntryLocalService _versionedEntryLocalService;
 
 }
+// SB-Hash:1179922925:-644981214:1773456076913

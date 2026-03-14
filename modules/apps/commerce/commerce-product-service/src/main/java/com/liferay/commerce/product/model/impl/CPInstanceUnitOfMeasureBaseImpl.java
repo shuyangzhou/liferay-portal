@@ -42,3 +42,4 @@ public abstract class CPInstanceUnitOfMeasureBaseImpl
 	}
 
 }
+// SB-Hash:1512114395:2013809339:1773456076913

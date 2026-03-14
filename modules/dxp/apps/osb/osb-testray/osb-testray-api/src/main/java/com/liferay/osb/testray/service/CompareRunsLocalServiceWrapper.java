@@ -53,3 +53,4 @@ public class CompareRunsLocalServiceWrapper
 	private CompareRunsLocalService _compareRunsLocalService;
 
 }
+// SB-Hash:2027130263:1742339126:1773456076913

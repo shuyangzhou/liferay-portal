@@ -47,3 +47,4 @@ public interface ObjectViewColumnService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:-335407425:-712801821:1773456076913

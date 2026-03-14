@@ -605,3 +605,4 @@ public abstract class MBMailingListLocalServiceBaseImpl
 		MBMailingListLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-13118628:-1389537973:1773456076913

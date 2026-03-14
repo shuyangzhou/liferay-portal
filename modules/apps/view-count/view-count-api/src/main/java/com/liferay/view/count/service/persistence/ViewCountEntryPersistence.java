@@ -312,3 +312,4 @@ public interface ViewCountEntryPersistence
 	public Set<String> getCompoundPKColumnNames();
 
 }
+// SB-Hash:-162948388:175929112:1773456076913

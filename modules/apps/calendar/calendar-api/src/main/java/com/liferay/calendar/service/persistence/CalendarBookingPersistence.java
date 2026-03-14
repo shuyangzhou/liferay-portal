@@ -1624,3 +1624,4 @@ public interface CalendarBookingPersistence
 	public int countAll();
 
 }
+// SB-Hash:-620396587:-1072954947:1773456076913

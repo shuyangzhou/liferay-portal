@@ -132,3 +132,4 @@ public abstract class CommerceShippingFixedOptionQualifierServiceBaseImpl
 		CommerceShippingFixedOptionQualifierServiceBaseImpl.class);
 
 }
+// SB-Hash:1574060528:1720224397:1773456076913

@@ -146,3 +146,4 @@ public abstract class DLTrashLocalServiceBaseImpl
 		DLTrashLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:951022454:1516786860:1773456076913

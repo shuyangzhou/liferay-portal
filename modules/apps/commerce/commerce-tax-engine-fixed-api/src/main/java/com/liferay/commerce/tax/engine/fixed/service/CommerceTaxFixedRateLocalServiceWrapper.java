@@ -454,3 +454,4 @@ public class CommerceTaxFixedRateLocalServiceWrapper
 	private CommerceTaxFixedRateLocalService _commerceTaxFixedRateLocalService;
 
 }
+// SB-Hash:-1055913208:1597945076:1773456076913

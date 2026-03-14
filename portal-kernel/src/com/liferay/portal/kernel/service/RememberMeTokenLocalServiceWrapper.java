@@ -381,3 +381,4 @@ public class RememberMeTokenLocalServiceWrapper
 	private RememberMeTokenLocalService _rememberMeTokenLocalService;
 
 }
+// SB-Hash:-1288977252:1870610730:1773456076913

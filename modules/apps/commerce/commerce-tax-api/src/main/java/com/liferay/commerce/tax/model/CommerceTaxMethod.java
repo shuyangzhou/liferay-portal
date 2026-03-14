@@ -59,3 +59,4 @@ public interface CommerceTaxMethod
 			typeSettingsUnicodeProperties);
 
 }
+// SB-Hash:453952667:676098184:1773456076913

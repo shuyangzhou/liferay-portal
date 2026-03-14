@@ -576,3 +576,4 @@ public class CompanyPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
+// SB-Hash:1335555811:1870610730:1773456076913

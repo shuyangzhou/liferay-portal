@@ -160,3 +160,4 @@ public class CPInstanceTable extends BaseTable<CPInstanceTable> {
 	}
 
 }
+// SB-Hash:-86441893:2013809339:1773456076913

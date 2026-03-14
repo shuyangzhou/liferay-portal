@@ -190,3 +190,4 @@ public class JournalArticleLocalizationCacheModel
 	public String languageId;
 
 }
+// SB-Hash:655599786:-875965416:1773456076913

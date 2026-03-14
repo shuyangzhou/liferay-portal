@@ -236,3 +236,4 @@ public class CommerceDiscountRuleCacheModel
 	public String typeSettings;
 
 }
+// SB-Hash:1003178708:1570856832:1773456076913

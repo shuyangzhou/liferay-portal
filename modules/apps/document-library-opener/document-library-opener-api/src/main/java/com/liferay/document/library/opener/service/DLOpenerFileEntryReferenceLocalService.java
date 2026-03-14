@@ -348,3 +348,4 @@ public interface DLOpenerFileEntryReferenceLocalService
 		String referenceKey, String referenceType, FileEntry fileEntry);
 
 }
+// SB-Hash:737819226:970711951:1773456076913

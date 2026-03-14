@@ -76,3 +76,4 @@ public interface NotificationTemplateService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:1859144085:-465969577:1773456076913

@@ -601,3 +601,4 @@ public abstract class CommerceAvailabilityEstimateLocalServiceBaseImpl
 		CommerceAvailabilityEstimateLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1934511558:-329900582:1773456076913

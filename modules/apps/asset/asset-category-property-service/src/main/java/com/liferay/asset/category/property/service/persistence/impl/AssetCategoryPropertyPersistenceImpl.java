@@ -3264,3 +3264,4 @@ public class AssetCategoryPropertyPersistenceImpl
 	}
 
 }
+// SB-Hash:-787777167:1327068244:1773456076913

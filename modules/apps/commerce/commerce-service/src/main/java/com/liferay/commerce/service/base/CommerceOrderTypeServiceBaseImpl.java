@@ -125,3 +125,4 @@ public abstract class CommerceOrderTypeServiceBaseImpl
 		CommerceOrderTypeServiceBaseImpl.class);
 
 }
+// SB-Hash:1897780215:-329900582:1773456076913

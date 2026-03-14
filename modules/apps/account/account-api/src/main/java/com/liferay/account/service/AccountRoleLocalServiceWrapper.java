@@ -489,3 +489,4 @@ public class AccountRoleLocalServiceWrapper
 	private AccountRoleLocalService _accountRoleLocalService;
 
 }
+// SB-Hash:-521910250:1707331560:1773456076913

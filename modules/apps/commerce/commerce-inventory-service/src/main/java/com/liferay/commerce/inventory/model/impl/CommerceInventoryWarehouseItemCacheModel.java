@@ -279,3 +279,4 @@ public class CommerceInventoryWarehouseItemCacheModel
 	public String unitOfMeasureKey;
 
 }
+// SB-Hash:-626015285:-1537497261:1773456076913

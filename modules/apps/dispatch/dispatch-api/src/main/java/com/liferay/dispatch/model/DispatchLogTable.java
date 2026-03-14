@@ -57,3 +57,4 @@ public class DispatchLogTable extends BaseTable<DispatchLogTable> {
 	}
 
 }
+// SB-Hash:631332911:893974761:1773456076913

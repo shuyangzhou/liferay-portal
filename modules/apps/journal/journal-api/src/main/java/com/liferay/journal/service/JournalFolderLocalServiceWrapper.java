@@ -843,3 +843,4 @@ public class JournalFolderLocalServiceWrapper
 	private JournalFolderLocalService _journalFolderLocalService;
 
 }
+// SB-Hash:747465235:-875965416:1773456076913

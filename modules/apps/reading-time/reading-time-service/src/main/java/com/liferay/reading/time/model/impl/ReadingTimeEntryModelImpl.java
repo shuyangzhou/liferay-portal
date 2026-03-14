@@ -1001,3 +1001,4 @@ public class ReadingTimeEntryModelImpl
 	private ReadingTimeEntry _escapedModel;
 
 }
+// SB-Hash:-627751089:151660805:1773456076913

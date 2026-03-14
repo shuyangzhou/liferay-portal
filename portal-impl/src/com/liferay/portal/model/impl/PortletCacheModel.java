@@ -159,3 +159,4 @@ public class PortletCacheModel
 	public boolean active;
 
 }
+// SB-Hash:-302983078:1870610730:1773456076913

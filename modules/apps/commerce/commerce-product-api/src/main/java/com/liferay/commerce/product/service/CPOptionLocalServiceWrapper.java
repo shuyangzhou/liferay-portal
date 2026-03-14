@@ -507,3 +507,4 @@ public class CPOptionLocalServiceWrapper
 	private CPOptionLocalService _cpOptionLocalService;
 
 }
+// SB-Hash:195750290:2013809339:1773456076913

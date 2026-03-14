@@ -152,3 +152,4 @@ public interface CommerceInventoryWarehouseRelService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:1004718148:-1537497261:1773456076913

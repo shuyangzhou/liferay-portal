@@ -399,3 +399,4 @@ public class DDLRecordVersionLocalServiceUtil {
 			DDLRecordVersionLocalService.class);
 
 }
+// SB-Hash:-1222689227:1504452851:1773456076913

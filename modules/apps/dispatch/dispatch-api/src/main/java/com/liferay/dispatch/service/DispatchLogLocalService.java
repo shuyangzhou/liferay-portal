@@ -293,3 +293,4 @@ public interface DispatchLogLocalService
 		throws PortalException;
 
 }
+// SB-Hash:-826486973:893974761:1773456076913

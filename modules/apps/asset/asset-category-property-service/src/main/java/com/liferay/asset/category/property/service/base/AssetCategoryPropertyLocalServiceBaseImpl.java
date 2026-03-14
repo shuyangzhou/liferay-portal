@@ -514,3 +514,4 @@ public abstract class AssetCategoryPropertyLocalServiceBaseImpl
 		AssetCategoryPropertyLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:634876609:1327068244:1773456076913

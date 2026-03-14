@@ -69,3 +69,4 @@ public class CommerceCatalogTable extends BaseTable<CommerceCatalogTable> {
 	}
 
 }
+// SB-Hash:938356693:2013809339:1773456076913

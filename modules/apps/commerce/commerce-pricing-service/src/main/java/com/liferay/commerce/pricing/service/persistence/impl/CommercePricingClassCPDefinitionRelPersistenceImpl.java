@@ -2498,3 +2498,4 @@ public class CommercePricingClassCPDefinitionRelPersistenceImpl
 	}
 
 }
+// SB-Hash:664044898:60415849:1773456076913

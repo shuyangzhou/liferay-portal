@@ -59,3 +59,4 @@ public interface CommercePriceListOrderTypeRel
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 }
+// SB-Hash:-859856821:1964328942:1773456076913

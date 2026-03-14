@@ -18,3 +18,4 @@ public interface ViewCountEntryFinder {
 		long companyId, long classNameId, long classPK, int increment);
 
 }
+// SB-Hash:1961334147:175929112:1773456076913

@@ -219,3 +219,4 @@ public class FaroNotificationCacheModel
 	public String subtype;
 
 }
+// SB-Hash:1837741584:1117559585:1773456076913

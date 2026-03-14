@@ -476,3 +476,4 @@ public abstract class BatchPlannerMappingLocalServiceBaseImpl
 		BatchPlannerMappingLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-1182428039:96869502:1773456076913

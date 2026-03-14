@@ -39,3 +39,4 @@ public abstract class ContactBaseImpl
 	}
 
 }
+// SB-Hash:-1235807566:1870610730:1773456076913

@@ -365,3 +365,4 @@ public interface ObjectValidationRuleLocalService
 		throws PortalException;
 
 }
+// SB-Hash:1948008677:-712801821:1773456076913

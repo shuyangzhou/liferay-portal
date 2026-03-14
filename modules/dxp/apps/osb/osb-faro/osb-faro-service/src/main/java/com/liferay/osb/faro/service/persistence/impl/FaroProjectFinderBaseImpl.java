@@ -77,3 +77,4 @@ public abstract class FaroProjectFinderBaseImpl
 		FaroProjectFinderBaseImpl.class);
 
 }
+// SB-Hash:2023848008:1117559585:1773456076913

@@ -242,3 +242,4 @@ public class CommercePriceListAccountRelCacheModel
 	public long lastPublishDate;
 
 }
+// SB-Hash:102778424:1964328942:1773456076913

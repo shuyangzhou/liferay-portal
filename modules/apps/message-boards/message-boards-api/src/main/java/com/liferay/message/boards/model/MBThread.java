@@ -69,3 +69,4 @@ public interface MBThread extends MBThreadModel, PersistedModel {
 	public boolean isLocked();
 
 }
+// SB-Hash:18211669:-1389537973:1773456076913

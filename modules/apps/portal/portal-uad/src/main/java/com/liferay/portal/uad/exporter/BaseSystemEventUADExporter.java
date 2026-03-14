@@ -66,3 +66,4 @@ public abstract class BaseSystemEventUADExporter
 	protected SystemEventLocalService systemEventLocalService;
 
 }
+// SB-Hash:216506582:1870610730:1773456076913

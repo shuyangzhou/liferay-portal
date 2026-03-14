@@ -139,3 +139,4 @@ public interface CommerceDiscountRelService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
+// SB-Hash:1256835745:1570856832:1773456076913

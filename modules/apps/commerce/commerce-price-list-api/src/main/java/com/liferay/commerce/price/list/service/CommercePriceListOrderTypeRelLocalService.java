@@ -354,3 +354,4 @@ public interface CommercePriceListOrderTypeRelLocalService
 		throws E;
 
 }
+// SB-Hash:1542042020:1964328942:1773456076913

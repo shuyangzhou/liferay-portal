@@ -539,3 +539,4 @@ public interface CommerceShippingFixedOptionQualifierPersistence
 	public int countAll();
 
 }
+// SB-Hash:-1511204557:1720224397:1773456076913

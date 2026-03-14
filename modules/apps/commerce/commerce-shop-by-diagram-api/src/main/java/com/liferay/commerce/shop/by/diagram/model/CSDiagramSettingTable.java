@@ -65,3 +65,4 @@ public class CSDiagramSettingTable extends BaseTable<CSDiagramSettingTable> {
 	}
 
 }
+// SB-Hash:524669119:243107995:1773456076913

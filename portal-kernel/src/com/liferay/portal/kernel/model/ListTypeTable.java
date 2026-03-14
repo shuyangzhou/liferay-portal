@@ -49,3 +49,4 @@ public class ListTypeTable extends BaseTable<ListTypeTable> {
 	}
 
 }
+// SB-Hash:1591485295:1870610730:1773456076913

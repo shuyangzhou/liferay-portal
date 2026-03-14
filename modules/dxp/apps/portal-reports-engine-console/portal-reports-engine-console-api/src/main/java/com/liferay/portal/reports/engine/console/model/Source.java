@@ -55,3 +55,4 @@ public interface Source extends PersistedModel, SourceModel {
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 }
+// SB-Hash:-388779842:-529934655:1773456076913

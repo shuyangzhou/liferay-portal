@@ -2048,3 +2048,4 @@ public interface ObjectEntryPersistence extends BasePersistence<ObjectEntry> {
 	public int countAll();
 
 }
+// SB-Hash:848779741:-712801821:1773456076913

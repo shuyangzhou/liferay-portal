@@ -77,3 +77,4 @@ public class CountryTable extends BaseTable<CountryTable> {
 	}
 
 }
+// SB-Hash:-2031535673:1870610730:1773456076913

@@ -548,3 +548,4 @@ public abstract class DefinedDefaultOrderEntryLocalServiceBaseImpl
 		DefinedDefaultOrderEntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-760476615:-644981214:1773456076913

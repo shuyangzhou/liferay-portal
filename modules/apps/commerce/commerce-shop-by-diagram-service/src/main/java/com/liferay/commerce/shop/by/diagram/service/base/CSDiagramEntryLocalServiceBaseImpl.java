@@ -489,3 +489,4 @@ public abstract class CSDiagramEntryLocalServiceBaseImpl
 		CSDiagramEntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1100313069:243107995:1773456076913

@@ -466,3 +466,4 @@ public abstract class KaleoTimerLocalServiceBaseImpl
 		KaleoTimerLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:615461594:1967856607:1773456076913

@@ -589,3 +589,4 @@ public interface CPInstanceLocalService
 		throws E;
 
 }
+// SB-Hash:1978963693:2013809339:1773456076913

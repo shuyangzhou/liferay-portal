@@ -461,3 +461,4 @@ public class CPConfigurationEntryCacheModel
 	public double width;
 
 }
+// SB-Hash:-788385515:2013809339:1773456076913

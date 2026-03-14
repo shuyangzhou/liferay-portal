@@ -596,3 +596,4 @@ public interface MBDiscussionPersistence
 	public int countAll();
 
 }
+// SB-Hash:-1703702295:-1389537973:1773456076913

@@ -54,3 +54,4 @@ public interface FaroEmailLocalService extends BaseLocalService {
 	public String getTemplate(String name) throws Exception;
 
 }
+// SB-Hash:-439895571:1117559585:1773456076913

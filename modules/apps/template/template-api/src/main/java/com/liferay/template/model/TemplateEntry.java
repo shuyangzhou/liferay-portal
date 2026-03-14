@@ -48,3 +48,4 @@ public interface TemplateEntry extends PersistedModel, TemplateEntryModel {
 		};
 
 }
+// SB-Hash:788992626:-1502166916:1773456076913

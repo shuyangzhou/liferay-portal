@@ -367,3 +367,4 @@ public class ObjectValidationRuleSettingLocalServiceUtil {
 			ObjectValidationRuleSettingLocalService.class);
 
 }
+// SB-Hash:1973595897:-712801821:1773456076913

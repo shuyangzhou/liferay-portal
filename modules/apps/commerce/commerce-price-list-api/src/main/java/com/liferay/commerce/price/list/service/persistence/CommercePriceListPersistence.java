@@ -3611,3 +3611,4 @@ public interface CommercePriceListPersistence
 	public int countAll();
 
 }
+// SB-Hash:1364793038:1964328942:1773456076913

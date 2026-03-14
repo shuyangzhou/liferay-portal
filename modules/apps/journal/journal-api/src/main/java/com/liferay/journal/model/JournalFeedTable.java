@@ -85,3 +85,4 @@ public class JournalFeedTable extends BaseTable<JournalFeedTable> {
 	}
 
 }
+// SB-Hash:1526783640:-875965416:1773456076913

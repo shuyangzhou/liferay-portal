@@ -239,3 +239,4 @@ public class CommerceTaxCategoryMappingCacheModel
 	public long CPTaxCategoryId;
 
 }
+// SB-Hash:-840371906:676098184:1773456076913

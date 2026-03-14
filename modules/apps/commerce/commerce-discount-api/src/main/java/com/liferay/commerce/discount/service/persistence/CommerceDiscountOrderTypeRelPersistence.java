@@ -807,3 +807,4 @@ public interface CommerceDiscountOrderTypeRelPersistence
 	public int countAll();
 
 }
+// SB-Hash:-382739231:1570856832:1773456076913

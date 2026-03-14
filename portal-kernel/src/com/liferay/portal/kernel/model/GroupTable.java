@@ -86,3 +86,4 @@ public class GroupTable extends BaseTable<GroupTable> {
 	}
 
 }
+// SB-Hash:886014136:1870610730:1773456076913

@@ -832,3 +832,4 @@ public class AssetCategoryLocalServiceWrapper
 	private AssetCategoryLocalService _assetCategoryLocalService;
 
 }
+// SB-Hash:-141568759:-1753039864:1773456076913

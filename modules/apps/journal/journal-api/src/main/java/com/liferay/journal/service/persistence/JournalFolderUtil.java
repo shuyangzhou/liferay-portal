@@ -2551,3 +2551,4 @@ public class JournalFolderUtil {
 	private static volatile JournalFolderPersistence _persistence;
 
 }
+// SB-Hash:-788694621:-875965416:1773456076913

@@ -298,3 +298,4 @@ public interface CommerceInventoryWarehouseItemModel
 	}
 
 }
+// SB-Hash:-921133965:-1537497261:1773456076913

@@ -310,3 +310,4 @@ public interface CommerceTaxFixedRateLocalService
 		throws PortalException;
 
 }
+// SB-Hash:1238724909:1597945076:1773456076913

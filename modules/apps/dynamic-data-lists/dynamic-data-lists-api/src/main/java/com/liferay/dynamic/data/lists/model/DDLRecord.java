@@ -79,3 +79,4 @@ public interface DDLRecord extends DDLRecordModel, PersistedModel {
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 }
+// SB-Hash:1296221373:1504452851:1773456076913

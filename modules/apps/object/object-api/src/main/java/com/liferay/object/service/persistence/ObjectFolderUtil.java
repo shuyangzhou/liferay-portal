@@ -1156,3 +1156,4 @@ public class ObjectFolderUtil {
 	private static volatile ObjectFolderPersistence _persistence;
 
 }
+// SB-Hash:-501164469:-712801821:1773456076913

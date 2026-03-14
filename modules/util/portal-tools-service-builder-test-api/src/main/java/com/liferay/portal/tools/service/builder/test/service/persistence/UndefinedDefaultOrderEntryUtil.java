@@ -531,3 +531,4 @@ public class UndefinedDefaultOrderEntryUtil {
 	private static volatile UndefinedDefaultOrderEntryPersistence _persistence;
 
 }
+// SB-Hash:1727093959:-644981214:1773456076913

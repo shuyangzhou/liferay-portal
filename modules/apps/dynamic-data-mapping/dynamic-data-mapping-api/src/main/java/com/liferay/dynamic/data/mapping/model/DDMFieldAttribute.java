@@ -53,3 +53,4 @@ public interface DDMFieldAttribute extends DDMFieldAttributeModel {
 	public void setAttributeValue(String value);
 
 }
+// SB-Hash:214333271:-1843255745:1773456076913

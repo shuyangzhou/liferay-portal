@@ -233,3 +233,4 @@ public class UserNotificationEventCacheModel
 	public boolean archived;
 
 }
+// SB-Hash:-1170683020:1870610730:1773456076913

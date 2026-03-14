@@ -71,3 +71,4 @@ public class CPDefinitionLocalizationTable
 	}
 
 }
+// SB-Hash:-1543048163:2013809339:1773456076913

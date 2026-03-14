@@ -321,3 +321,4 @@ public class TrashVersionLocalServiceUtil {
 			TrashVersionLocalServiceUtil.class, TrashVersionLocalService.class);
 
 }
+// SB-Hash:-303566839:267088611:1773456076913

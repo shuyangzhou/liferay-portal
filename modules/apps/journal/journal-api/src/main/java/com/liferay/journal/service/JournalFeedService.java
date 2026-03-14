@@ -80,3 +80,4 @@ public interface JournalFeedService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:-1773657483:-875965416:1773456076913

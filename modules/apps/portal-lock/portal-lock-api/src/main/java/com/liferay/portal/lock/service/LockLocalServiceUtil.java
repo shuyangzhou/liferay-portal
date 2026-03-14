@@ -429,3 +429,4 @@ public class LockLocalServiceUtil {
 		new Snapshot<>(LockLocalServiceUtil.class, LockLocalService.class);
 
 }
+// SB-Hash:235756908:63939710:1773456076913

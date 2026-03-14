@@ -360,3 +360,4 @@ public interface MBBanLocalService
 		throws E;
 
 }
+// SB-Hash:797062377:-1389537973:1773456076913

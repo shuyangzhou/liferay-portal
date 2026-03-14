@@ -850,3 +850,4 @@ public interface CommercePricingClassPersistence
 	public int countAll();
 
 }
+// SB-Hash:965671083:60415849:1773456076913

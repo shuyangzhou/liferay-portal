@@ -2113,3 +2113,4 @@ public interface CPDefinitionLinkPersistence
 	public int countAll();
 
 }
+// SB-Hash:-1230101563:2013809339:1773456076913

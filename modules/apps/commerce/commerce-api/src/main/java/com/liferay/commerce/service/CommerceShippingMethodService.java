@@ -147,3 +147,4 @@ public interface CommerceShippingMethodService extends BaseService {
 		throws PortalException;
 
 }
+// SB-Hash:-962785655:-329900582:1773456076913

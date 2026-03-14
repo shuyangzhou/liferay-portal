@@ -55,3 +55,4 @@ public interface KaleoProcessLink
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 }
+// SB-Hash:-1750715769:-1498814602:1773456076913

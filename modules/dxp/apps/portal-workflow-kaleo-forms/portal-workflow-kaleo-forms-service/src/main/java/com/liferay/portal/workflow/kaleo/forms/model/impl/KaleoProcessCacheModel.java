@@ -217,3 +217,4 @@ public class KaleoProcessCacheModel
 	public int workflowDefinitionVersion;
 
 }
+// SB-Hash:771482804:-1498814602:1773456076913

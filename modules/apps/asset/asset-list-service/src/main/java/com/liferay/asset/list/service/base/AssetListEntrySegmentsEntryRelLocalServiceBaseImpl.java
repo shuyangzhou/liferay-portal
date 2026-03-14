@@ -661,3 +661,4 @@ public abstract class AssetListEntrySegmentsEntryRelLocalServiceBaseImpl
 		AssetListEntrySegmentsEntryRelLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-285102021:-1575459458:1773456076913

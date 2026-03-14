@@ -47,3 +47,4 @@ public interface PortletItem extends PersistedModel, PortletItemModel {
 		};
 
 }
+// SB-Hash:2131507559:1870610730:1773456076913

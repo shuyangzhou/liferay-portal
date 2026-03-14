@@ -375,3 +375,4 @@ public interface MBMailingListLocalService
 		throws E;
 
 }
+// SB-Hash:456667695:-1389537973:1773456076913

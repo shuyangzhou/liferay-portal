@@ -39,3 +39,4 @@ public abstract class CommerceCurrencyBaseImpl
 	}
 
 }
+// SB-Hash:-1787505578:-1200058624:1773456076913

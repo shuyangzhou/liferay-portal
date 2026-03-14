@@ -71,3 +71,4 @@ public interface GenericMethodsEntryLocalService extends BaseLocalService {
 				BiConsumer<Long, N> biConsumer);
 
 }
+// SB-Hash:1162739857:-644981214:1773456076913

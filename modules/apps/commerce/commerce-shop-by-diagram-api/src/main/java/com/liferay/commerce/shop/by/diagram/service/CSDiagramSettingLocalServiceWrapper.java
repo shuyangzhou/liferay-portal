@@ -457,3 +457,4 @@ public class CSDiagramSettingLocalServiceWrapper
 	private CSDiagramSettingLocalService _csDiagramSettingLocalService;
 
 }
+// SB-Hash:961364154:243107995:1773456076913

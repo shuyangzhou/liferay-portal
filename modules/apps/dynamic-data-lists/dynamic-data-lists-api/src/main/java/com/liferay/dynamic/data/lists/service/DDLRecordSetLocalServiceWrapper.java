@@ -965,3 +965,4 @@ public class DDLRecordSetLocalServiceWrapper
 	private DDLRecordSetLocalService _ddlRecordSetLocalService;
 
 }
+// SB-Hash:316074321:1504452851:1773456076913

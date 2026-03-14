@@ -607,3 +607,4 @@ public abstract class KBTemplateLocalServiceBaseImpl
 		KBTemplateLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:1738012908:-560307709:1773456076913

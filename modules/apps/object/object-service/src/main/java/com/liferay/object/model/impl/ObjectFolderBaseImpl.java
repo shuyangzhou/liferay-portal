@@ -39,3 +39,4 @@ public abstract class ObjectFolderBaseImpl
 	}
 
 }
+// SB-Hash:-1862718468:-712801821:1773456076913

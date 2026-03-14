@@ -59,3 +59,4 @@ public interface TrashVersion extends PersistedModel, TrashVersionModel {
 			typeSettingsUnicodeProperties);
 
 }
+// SB-Hash:-403478774:267088611:1773456076913

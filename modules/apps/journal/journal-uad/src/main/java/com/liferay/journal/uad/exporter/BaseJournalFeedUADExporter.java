@@ -74,3 +74,4 @@ public abstract class BaseJournalFeedUADExporter
 	protected JournalFeedLocalService journalFeedLocalService;
 
 }
+// SB-Hash:1048330201:-875965416:1773456076913

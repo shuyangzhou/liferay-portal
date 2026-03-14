@@ -50,3 +50,4 @@ public interface RatingsStats extends PersistedModel, RatingsStatsModel {
 		};
 
 }
+// SB-Hash:-76753058:-1803523562:1773456076913

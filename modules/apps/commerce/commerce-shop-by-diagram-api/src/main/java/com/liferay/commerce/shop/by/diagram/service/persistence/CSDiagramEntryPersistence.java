@@ -687,3 +687,4 @@ public interface CSDiagramEntryPersistence
 	public int countAll();
 
 }
+// SB-Hash:-128713056:243107995:1773456076913

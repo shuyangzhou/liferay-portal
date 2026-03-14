@@ -49,3 +49,4 @@ public class EntryTable extends BaseTable<EntryTable> {
 	}
 
 }
+// SB-Hash:-677034301:993662475:1773456076913

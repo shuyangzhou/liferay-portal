@@ -1152,3 +1152,4 @@ public class CommerceOrderTypeRelUtil {
 	private static volatile CommerceOrderTypeRelPersistence _persistence;
 
 }
+// SB-Hash:-446569921:-329900582:1773456076913

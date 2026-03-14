@@ -48,3 +48,4 @@ public interface MBBan extends MBBanModel, PersistedModel {
 		};
 
 }
+// SB-Hash:1804359041:-1389537973:1773456076913

@@ -1635,3 +1635,4 @@ public class KBFolderUtil {
 	private static volatile KBFolderPersistence _persistence;
 
 }
+// SB-Hash:-1084029275:-560307709:1773456076913

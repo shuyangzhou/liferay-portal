@@ -1292,3 +1292,4 @@ public class CommerceWishListItemUtil {
 	private static volatile CommerceWishListItemPersistence _persistence;
 
 }
+// SB-Hash:-843411872:529950479:1773456076913

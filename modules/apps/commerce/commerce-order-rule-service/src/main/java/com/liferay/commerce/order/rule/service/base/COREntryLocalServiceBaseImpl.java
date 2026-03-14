@@ -607,3 +607,4 @@ public abstract class COREntryLocalServiceBaseImpl
 		COREntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:168433512:147693042:1773456076913

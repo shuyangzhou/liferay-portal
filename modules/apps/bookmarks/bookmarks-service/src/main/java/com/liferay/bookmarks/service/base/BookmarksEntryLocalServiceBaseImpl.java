@@ -674,3 +674,4 @@ public abstract class BookmarksEntryLocalServiceBaseImpl
 		BookmarksEntryLocalServiceBaseImpl.class);
 
 }
+// SB-Hash:-8260032:-1243805074:1773456076913

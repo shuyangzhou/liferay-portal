@@ -363,3 +363,4 @@ public interface CTCollectionTemplatePersistence
 	public int countAll();
 
 }
+// SB-Hash:2096255359:195619156:1773456076913
