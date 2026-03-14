@@ -285,9 +285,12 @@ message.
 	<target name="compile">
 		<lstopwatch action="start" name="compile" />
 
-		<setup-sdk />
+		<antcall inheritAll="false" target="update-gradle-properties" />
 
-		<setup-libs />
+		<gradle-execute task="setUpPortalTools setUpLibs">
+			<arg value="--build-file=${project.dir}/modules/util.gradle" />
+		</gradle-execute>
+
 		<setup-nodejs-sass />
 
 		<gradle-execute dir="modules/core" task="deploy">
