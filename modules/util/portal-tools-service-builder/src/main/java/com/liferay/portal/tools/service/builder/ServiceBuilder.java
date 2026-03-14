@@ -457,14 +457,26 @@ public class ServiceBuilder {
 				continue;
 			}
 
-			String apiModuleName =
-				moduleName.substring(0, moduleName.length() - 8) + "-api";
+			Path buildGradlePath = moduleDir.resolve("build.gradle");
 
-			Path apiDir = moduleDir.resolveSibling(
-				apiModuleName
-			).resolve(
-				"src/main/java"
-			);
+			if (!Files.exists(buildGradlePath)) {
+				continue;
+			}
+
+			String buildGradleContent = new String(
+				Files.readAllBytes(buildGradlePath), StandardCharsets.UTF_8);
+
+			String apiDirValue = _parseBuildServiceProperty(
+				buildGradleContent, "apiDir");
+
+			if (apiDirValue == null) {
+				String apiModuleName =
+					moduleName.substring(0, moduleName.length() - 8) + "-api";
+
+				apiDirValue = "../" + apiModuleName + "/src/main/java";
+			}
+
+			Path apiDir = moduleDir.resolve(apiDirValue);
 
 			if (!Files.exists(apiDir)) {
 				continue;
@@ -477,12 +489,35 @@ public class ServiceBuilder {
 				continue;
 			}
 
+			boolean autoNamespaceTables = true;
+
+			String autoNamespaceTablesValue = _parseBuildServiceProperty(
+				buildGradleContent, "autoNamespaceTables");
+
+			if (autoNamespaceTablesValue != null) {
+				autoNamespaceTables = GetterUtil.getBoolean(
+					autoNamespaceTablesValue);
+			}
+
 			Path hbmFile = resourcesDir.resolve("META-INF/module-hbm.xml");
 			Path springFile = resourcesDir.resolve(
 				"META-INF/spring/module-spring.xml");
 			Path modelHintsFile = resourcesDir.resolve(
 				"META-INF/portlet-model-hints.xml");
 			Path sqlDir = resourcesDir.resolve("META-INF/sql");
+
+			String testDirValue = _parseBuildServiceProperty(
+				buildGradleContent, "testDir");
+
+			String testDirName = null;
+
+			if (testDirValue != null) {
+				Path testDir = moduleDir.resolve(testDirValue);
+
+				if (Files.exists(testDir)) {
+					testDirName = testDir.toString();
+				}
+			}
 
 			String bundleSymbolicName = StringUtil.replace(
 				moduleName, '-', '.');
@@ -498,14 +533,15 @@ public class ServiceBuilder {
 				System.out.println("Processing " + moduleDir.getFileName());
 
 				new ServiceBuilder(
-					apiDir.toString(), true, true,
+					apiDir.toString(), true, autoNamespaceTables,
 					"com.liferay.util.bean.PortletBeanLocatorUtil", 1, true, 30,
 					hbmFile.toString(), implDir.toString(), new String[0],
 					serviceXmlPath.toString(), modelHintsFile.toString(), true,
 					"", propsUtil, readOnlyPrefixes, resourceActionModels,
 					resourcesDir.toString(), springFile.toString(),
 					new String[] {"beans"}, sqlDir.toString(), "tables.sql",
-					"indexes.sql", "sequences.sql", null, null, null, true);
+					"indexes.sql", "sequences.sql", null, testDirName, null,
+					true);
 			}
 			catch (Exception exception) {
 				System.err.println(
@@ -2346,6 +2382,43 @@ public class ServiceBuilder {
 		processModuleServiceFiles(Paths.get(inputFilesDirName), arguments);
 
 		Introspector.flushCaches();
+	}
+
+	private static String _parseBuildServiceProperty(
+		String buildGradleContent, String propertyName) {
+
+		int buildServiceIndex = buildGradleContent.indexOf("buildService {");
+
+		if (buildServiceIndex == -1) {
+			return null;
+		}
+
+		int closingBraceIndex = buildGradleContent.indexOf(
+			"}", buildServiceIndex);
+
+		if (closingBraceIndex == -1) {
+			return null;
+		}
+
+		String buildServiceBlock = buildGradleContent.substring(
+			buildServiceIndex, closingBraceIndex);
+
+		Pattern pattern = Pattern.compile(
+			propertyName + "\\s*=\\s*(?:\"([^\"]*)\"|([\\w]+))");
+
+		Matcher matcher = pattern.matcher(buildServiceBlock);
+
+		if (matcher.find()) {
+			String value = matcher.group(1);
+
+			if (value == null) {
+				value = matcher.group(2);
+			}
+
+			return value;
+		}
+
+		return null;
 	}
 
 	private static void _readResourceActionModels(
