@@ -289,7 +289,6 @@ message.
 
 		<setup-libs />
 		<setup-nodejs-sass />
-		<setup-yarn />
 
 		<gradle-execute dir="modules/core" task="deploy">
 			<arg value="--parallel" />
@@ -297,23 +296,29 @@ message.
 			<arg value="-Pforced.deploy.dir=${project.dir}/tmp/lib-pre" />
 		</gradle-execute>
 
-		<ant dir="portal-kernel" inheritAll="false" target="install-portal-snapshot" />
-
 		<parallel failonany="true" threadcount="${parallel.thread.count}">
-			<ant dir="support-tomcat" inheritAll="false" target="compile" />
-			<ant dir="util-bridges" inheritAll="false" target="compile" />
+			<setup-yarn />
 
 			<sequential>
-				<ant dir="util-java" inheritAll="false" target="compile" />
-				<ant dir="util-taglib" inheritAll="false" target="compile" />
+				<ant dir="portal-kernel" inheritAll="false" target="install-portal-snapshot" />
+
+				<parallel failonany="true" threadcount="${parallel.thread.count}">
+					<ant dir="support-tomcat" inheritAll="false" target="compile" />
+					<ant dir="util-bridges" inheritAll="false" target="compile" />
+
+					<sequential>
+						<ant dir="util-java" inheritAll="false" target="compile" />
+						<ant dir="util-taglib" inheritAll="false" target="compile" />
+					</sequential>
+
+					<ant dir="util-slf4j" inheritAll="false" target="compile" />
+				</parallel>
+
+				<ant dir="portal-impl" inheritAll="false" target="compile" />
+
+				<ant dir="portal-test" inheritAll="false" target="compile" />
 			</sequential>
-
-			<ant dir="util-slf4j" inheritAll="false" target="compile" />
 		</parallel>
-
-		<ant dir="portal-impl" inheritAll="false" target="compile" />
-
-		<ant dir="portal-test" inheritAll="false" target="compile" />
 
 		<print-current-time />
 
