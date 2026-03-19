@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.dao.db.IndexMetadata;
 import com.liferay.portal.kernel.dao.db.IndexMetadataFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.ModelHints;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.model.cache.CacheField;
 import com.liferay.portal.kernel.plugin.Version;
@@ -32,6 +33,7 @@ import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.StringUtil_IW;
 import com.liferay.portal.kernel.util.TextFormatter;
+import com.liferay.portal.kernel.util.Tuple;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.Validator_IW;
 import com.liferay.portal.tools.ArgumentsUtil;
@@ -111,6 +113,11 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -1237,7 +1244,10 @@ public class ServiceBuilder {
 		boolean useTempFile = false;
 
 		if (!refFile.exists()) {
-			refFileName = String.valueOf(System.currentTimeMillis());
+			refFileName = StringBundler.concat(
+				System.currentTimeMillis(), "-",
+				Thread.currentThread(
+				).getId());
 
 			refFile = new File(_TMP_DIR_NAME, refFileName);
 
@@ -2235,6 +2245,129 @@ public class ServiceBuilder {
 		return properties;
 	}
 
+	private static String _processModuleServiceFile(
+			Path baseDirPath, Path serviceXmlPath,
+			Map<String, String> arguments, String[] readOnlyPrefixes,
+			String[] resourceActionsConfigs)
+		throws Exception {
+
+		Path moduleDir = serviceXmlPath.getParent();
+
+		String moduleName = String.valueOf(moduleDir.getFileName());
+
+		String buildGradleContent = new String(
+			Files.readAllBytes(moduleDir.resolve("build.gradle")),
+			StandardCharsets.UTF_8);
+
+		Map<String, String> buildServiceProperties =
+			_parseBuildServiceProperties(buildGradleContent);
+
+		String apiDirValue = buildServiceProperties.get("apiDir");
+
+		if (apiDirValue == null) {
+			String apiModuleName =
+				moduleName.substring(0, moduleName.length() - 8) + "-api";
+
+			apiDirValue = "../" + apiModuleName + "/src/main/java";
+		}
+
+		Path apiDir = moduleDir.resolve(apiDirValue);
+		Path implDir = moduleDir.resolve("src/main/java");
+		Path resourcesDir = moduleDir.resolve("src/main/resources");
+
+		boolean autoNamespaceTables = GetterUtil.getBoolean(
+			buildServiceProperties.get("autoNamespaceTables"), true);
+
+		int databaseNameMaxLength = GetterUtil.getInteger(
+			buildServiceProperties.get("databaseNameMaxLength"), 30);
+
+		String[] incubationFeatures = StringUtil.split(
+			buildServiceProperties.getOrDefault(
+				"incubationFeatures",
+				arguments.get("service.incubation.features")));
+
+		Path hbmFile = resourcesDir.resolve("META-INF/module-hbm.xml");
+		Path springFile = resourcesDir.resolve(
+			"META-INF/spring/module-spring.xml");
+		Path modelHintsFile = resourcesDir.resolve(
+			"META-INF/portlet-model-hints.xml");
+		Path sqlDir = resourcesDir.resolve("META-INF/sql");
+
+		String testDirValue = buildServiceProperties.get("testDir");
+
+		String testDirName = null;
+
+		if (testDirValue != null) {
+			Path testDir = moduleDir.resolve(testDirValue);
+
+			if (Files.exists(testDir)) {
+				testDirName = testDir.toString();
+			}
+		}
+
+		String bundleSymbolicName = StringUtil.replace(moduleName, '-', '.');
+
+		String propsUtil = StringBundler.concat(
+			"com.liferay.", bundleSymbolicName, ".util.ServiceProps");
+
+		Set<String> resourceActionModels = readResourceActionModels(
+			implDir.toString(), resourcesDir.toString(),
+			resourceActionsConfigs);
+
+		ModelHintsImpl moduleModelHintsImpl = new ModelHintsImpl();
+
+		moduleModelHintsImpl.setModelHintsConfigs(
+			new String[] {
+				"classpath*:META-INF/portal-model-hints.xml",
+				"META-INF/portal-model-hints.xml",
+				"classpath*:META-INF/ext-model-hints.xml",
+				"classpath*:META-INF/portlet-model-hints.xml",
+				String.valueOf(modelHintsFile)
+			});
+
+		moduleModelHintsImpl.afterPropertiesSet();
+
+		_threadLocalModelHints.set(moduleModelHintsImpl);
+
+		try {
+			System.out.println("Processing " + moduleDir.getFileName());
+
+			new ServiceBuilder(
+				apiDir.toString(), true, autoNamespaceTables,
+				"com.liferay.util.bean.PortletBeanLocatorUtil", 1, true,
+				databaseNameMaxLength, hbmFile.toString(), implDir.toString(),
+				incubationFeatures, serviceXmlPath.toString(),
+				String.valueOf(modelHintsFile), true, "", propsUtil,
+				readOnlyPrefixes, resourceActionModels, resourcesDir.toString(),
+				springFile.toString(), new String[] {"beans"},
+				sqlDir.toString(), "tables.sql", "indexes.sql", "sequences.sql",
+				null, testDirName, null, true);
+
+			Path apiModuleDir = apiDir.getParent(
+			).getParent(
+			).getParent();
+
+			Path relativePath = baseDirPath.relativize(
+				apiModuleDir.normalize());
+
+			String gradleProjectPath = StringUtil.replace(
+				relativePath.toString(), File.separatorChar, ':');
+
+			return ":" + gradleProjectPath + ":baseline";
+		}
+		catch (Exception exception) {
+			System.err.println(
+				StringBundler.concat(
+					"Error processing ", moduleDir, ": ",
+					exception.getMessage()));
+
+			throw exception;
+		}
+		finally {
+			_threadLocalModelHints.remove();
+		}
+	}
+
 	private static List<String> _processModuleServiceFiles(
 			Path baseDirPath, Map<String, String> arguments)
 		throws Exception {
@@ -2305,122 +2438,40 @@ public class ServiceBuilder {
 
 		ModelHintsUtil modelHintsUtil = new ModelHintsUtil();
 
-		List<String> apiModulePaths = new ArrayList<>();
+		modelHintsUtil.setModelHints(new ThreadLocalModelHints());
+
+		int threadCount = Math.min(
+			serviceXmlPaths.size(),
+			Runtime.getRuntime(
+			).availableProcessors());
+
+		ExecutorService executorService = Executors.newFixedThreadPool(
+			threadCount);
+
+		List<Future<String>> futures = new ArrayList<>();
 
 		for (Path serviceXmlPath : serviceXmlPaths) {
-			Path moduleDir = serviceXmlPath.getParent();
+			futures.add(
+				executorService.submit(
+					() -> _processModuleServiceFile(
+						baseDirPath, serviceXmlPath, arguments,
+						readOnlyPrefixes, resourceActionsConfigs)));
+		}
 
-			String moduleName = String.valueOf(moduleDir.getFileName());
+		executorService.shutdown();
 
-			String buildGradleContent = new String(
-				Files.readAllBytes(moduleDir.resolve("build.gradle")),
-				StandardCharsets.UTF_8);
+		List<String> apiModulePaths = new ArrayList<>();
 
-			Map<String, String> buildServiceProperties =
-				_parseBuildServiceProperties(buildGradleContent);
+		for (Future<String> future : futures) {
+			try {
+				String baselineTask = future.get();
 
-			String apiDirValue = buildServiceProperties.get("apiDir");
-
-			if (apiDirValue == null) {
-				String apiModuleName =
-					moduleName.substring(0, moduleName.length() - 8) + "-api";
-
-				apiDirValue = "../" + apiModuleName + "/src/main/java";
-			}
-
-			Path apiDir = moduleDir.resolve(apiDirValue);
-			Path implDir = moduleDir.resolve("src/main/java");
-			Path resourcesDir = moduleDir.resolve("src/main/resources");
-
-			boolean autoNamespaceTables = GetterUtil.getBoolean(
-				buildServiceProperties.get("autoNamespaceTables"), true);
-
-			int databaseNameMaxLength = GetterUtil.getInteger(
-				buildServiceProperties.get("databaseNameMaxLength"), 30);
-
-			String[] incubationFeatures = StringUtil.split(
-				buildServiceProperties.getOrDefault(
-					"incubationFeatures",
-					arguments.get("service.incubation.features")));
-
-			Path hbmFile = resourcesDir.resolve("META-INF/module-hbm.xml");
-			Path springFile = resourcesDir.resolve(
-				"META-INF/spring/module-spring.xml");
-			Path modelHintsFile = resourcesDir.resolve(
-				"META-INF/portlet-model-hints.xml");
-			Path sqlDir = resourcesDir.resolve("META-INF/sql");
-
-			String testDirValue = buildServiceProperties.get("testDir");
-
-			String testDirName = null;
-
-			if (testDirValue != null) {
-				Path testDir = moduleDir.resolve(testDirValue);
-
-				if (Files.exists(testDir)) {
-					testDirName = testDir.toString();
+				if (baselineTask != null) {
+					apiModulePaths.add(baselineTask);
 				}
 			}
-
-			String bundleSymbolicName = StringUtil.replace(
-				moduleName, '-', '.');
-
-			String propsUtil = StringBundler.concat(
-				"com.liferay.", bundleSymbolicName, ".util.ServiceProps");
-
-			Set<String> resourceActionModels = readResourceActionModels(
-				implDir.toString(), resourcesDir.toString(),
-				resourceActionsConfigs);
-
-			ModelHintsImpl moduleModelHintsImpl = new ModelHintsImpl();
-
-			moduleModelHintsImpl.setModelHintsConfigs(
-				new String[] {
-					"classpath*:META-INF/portal-model-hints.xml",
-					"META-INF/portal-model-hints.xml",
-					"classpath*:META-INF/ext-model-hints.xml",
-					"classpath*:META-INF/portlet-model-hints.xml",
-					String.valueOf(modelHintsFile)
-				});
-
-			moduleModelHintsImpl.afterPropertiesSet();
-
-			modelHintsUtil.setModelHints(moduleModelHintsImpl);
-
-			try {
-				System.out.println("Processing " + moduleDir.getFileName());
-
-				new ServiceBuilder(
-					apiDir.toString(), true, autoNamespaceTables,
-					"com.liferay.util.bean.PortletBeanLocatorUtil", 1, true,
-					databaseNameMaxLength, hbmFile.toString(),
-					implDir.toString(), incubationFeatures,
-					serviceXmlPath.toString(), String.valueOf(modelHintsFile),
-					true, "", propsUtil, readOnlyPrefixes, resourceActionModels,
-					resourcesDir.toString(), springFile.toString(),
-					new String[] {"beans"}, sqlDir.toString(), "tables.sql",
-					"indexes.sql", "sequences.sql", null, testDirName, null,
-					true);
-
-				Path apiModuleDir = apiDir.getParent(
-				).getParent(
-				).getParent();
-
-				Path relativePath = baseDirPath.relativize(
-					apiModuleDir.normalize());
-
-				String gradleProjectPath = StringUtil.replace(
-					relativePath.toString(), File.separatorChar, ':');
-
-				String baselineTask = ":" + gradleProjectPath + ":baseline";
-
-				apiModulePaths.add(baselineTask);
-			}
-			catch (Exception exception) {
-				System.err.println(
-					StringBundler.concat(
-						"Error processing ", moduleDir, ": ",
-						exception.getMessage()));
+			catch (ExecutionException executionException) {
+				throw (Exception)executionException.getCause();
 			}
 		}
 
@@ -5226,24 +5277,37 @@ public class ServiceBuilder {
 	}
 
 	private Configuration _getConfiguration() {
-		if (_configuration != null) {
-			return _configuration;
+		Configuration configuration = _configuration;
+
+		if (configuration != null) {
+			return configuration;
 		}
 
-		_configuration = new Configuration(Configuration.VERSION_2_3_33);
+		synchronized (ServiceBuilder.class) {
+			configuration = _configuration;
 
-		_configuration.setNumberFormat("computer");
+			if (configuration != null) {
+				return configuration;
+			}
 
-		DefaultObjectWrapperBuilder defaultObjectWrapperBuilder =
-			new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_33);
+			configuration = new Configuration(Configuration.VERSION_2_3_33);
 
-		_configuration.setObjectWrapper(defaultObjectWrapperBuilder.build());
+			configuration.setNumberFormat("computer");
 
-		_configuration.setTemplateLoader(
-			new ClassTemplateLoader(ServiceBuilder.class, StringPool.SLASH));
-		_configuration.setTemplateUpdateDelayMilliseconds(Long.MAX_VALUE);
+			DefaultObjectWrapperBuilder defaultObjectWrapperBuilder =
+				new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_33);
 
-		return _configuration;
+			configuration.setObjectWrapper(defaultObjectWrapperBuilder.build());
+
+			configuration.setTemplateLoader(
+				new ClassTemplateLoader(
+					ServiceBuilder.class, StringPool.SLASH));
+			configuration.setTemplateUpdateDelayMilliseconds(Long.MAX_VALUE);
+
+			_configuration = configuration;
+		}
+
+		return configuration;
 	}
 
 	private Map<String, Object> _getContext() throws Exception {
@@ -5992,12 +6056,23 @@ public class ServiceBuilder {
 	private ClassLoader _getNegativeCachingClassLoader(
 		ClassLoader classLoader) {
 
-		if (_negativeCachingClassLoader == null) {
-			_negativeCachingClassLoader = new NegativeCachingClassLoader(
-				classLoader);
+		NegativeCachingClassLoader negativeCachingClassLoader =
+			_negativeCachingClassLoader;
+
+		if (negativeCachingClassLoader == null) {
+			synchronized (ServiceBuilder.class) {
+				negativeCachingClassLoader = _negativeCachingClassLoader;
+
+				if (negativeCachingClassLoader == null) {
+					negativeCachingClassLoader = new NegativeCachingClassLoader(
+						classLoader);
+
+					_negativeCachingClassLoader = negativeCachingClassLoader;
+				}
+			}
 		}
 
-		return _negativeCachingClassLoader;
+		return negativeCachingClassLoader;
 	}
 
 	private String _getSessionTypeName(int sessionType) {
@@ -8557,7 +8632,7 @@ public class ServiceBuilder {
 		"<beans[^>]*>");
 	private static final Pattern _buildServicePropertyPattern = Pattern.compile(
 		"(\\w+)\\s*=\\s*(?:\"([^\"]*)\"|([\\w]+))");
-	private static Configuration _configuration;
+	private static volatile Configuration _configuration;
 	private static final Pattern _dtdVersionPattern = Pattern.compile(
 		".*service-builder_([^\\.]+)\\.dtd");
 	private static final Pattern _getterPattern = Pattern.compile(
@@ -8566,9 +8641,12 @@ public class ServiceBuilder {
 			Pattern.quote("(")));
 	private static final List<String> _highCardinalityColumnNames =
 		Arrays.asList("externalReferenceCode", "uuid_");
-	private static NegativeCachingClassLoader _negativeCachingClassLoader;
+	private static volatile NegativeCachingClassLoader
+		_negativeCachingClassLoader;
 	private static final Pattern _setterPattern = Pattern.compile(
 		"public void set.*" + Pattern.quote("("));
+	private static final ThreadLocal<ModelHints> _threadLocalModelHints =
+		new ThreadLocal<>();
 
 	private String _apiDirName;
 	private String _apiPackagePath;
@@ -8694,7 +8772,152 @@ public class ServiceBuilder {
 
 			};
 
-		private final Set<String> _missingClassNames = new HashSet<>();
+		private final Set<String> _missingClassNames =
+			ConcurrentHashMap.newKeySet();
+
+	}
+
+	private static class ThreadLocalModelHints implements ModelHints {
+
+		@Override
+		public String buildCustomValidatorName(String validatorName) {
+			return _threadLocalModelHints.get(
+			).buildCustomValidatorName(
+				validatorName
+			);
+		}
+
+		@Override
+		public Map<String, String> getDefaultHints(String model) {
+			return _threadLocalModelHints.get(
+			).getDefaultHints(
+				model
+			);
+		}
+
+		@Override
+		public Object getFieldsElement(String model, String field) {
+			return _threadLocalModelHints.get(
+			).getFieldsElement(
+				model, field
+			);
+		}
+
+		@Override
+		public Map<String, String> getHints(String model, String field) {
+			return _threadLocalModelHints.get(
+			).getHints(
+				model, field
+			);
+		}
+
+		@Override
+		public int getMaxLength(String model, String field) {
+			return _threadLocalModelHints.get(
+			).getMaxLength(
+				model, field
+			);
+		}
+
+		@Override
+		public List<String> getModels() {
+			return _threadLocalModelHints.get(
+			).getModels();
+		}
+
+		@Override
+		public Tuple getSanitizeTuple(String model, String field) {
+			return _threadLocalModelHints.get(
+			).getSanitizeTuple(
+				model, field
+			);
+		}
+
+		@Override
+		public List<Tuple> getSanitizeTuples(String model) {
+			return _threadLocalModelHints.get(
+			).getSanitizeTuples(
+				model
+			);
+		}
+
+		@Override
+		public String getType(String model, String field) {
+			return _threadLocalModelHints.get(
+			).getType(
+				model, field
+			);
+		}
+
+		@Override
+		public List<Tuple> getValidators(String model, String field) {
+			return _threadLocalModelHints.get(
+			).getValidators(
+				model, field
+			);
+		}
+
+		@Override
+		public String getValue(
+			String model, String field, String name, String defaultValue) {
+
+			return _threadLocalModelHints.get(
+			).getValue(
+				model, field, name, defaultValue
+			);
+		}
+
+		@Override
+		public boolean hasField(String model, String field) {
+			return _threadLocalModelHints.get(
+			).hasField(
+				model, field
+			);
+		}
+
+		@Override
+		public boolean isCustomValidator(String validatorName) {
+			return _threadLocalModelHints.get(
+			).isCustomValidator(
+				validatorName
+			);
+		}
+
+		@Override
+		public boolean isLocalized(String model, String field) {
+			return _threadLocalModelHints.get(
+			).isLocalized(
+				model, field
+			);
+		}
+
+		@Override
+		public void read(ClassLoader classLoader, InputStream inputStream)
+			throws Exception {
+
+			_threadLocalModelHints.get(
+			).read(
+				classLoader, inputStream
+			);
+		}
+
+		@Override
+		public void read(ClassLoader classLoader, String source)
+			throws Exception {
+
+			_threadLocalModelHints.get(
+			).read(
+				classLoader, source
+			);
+		}
+
+		@Override
+		public String trimString(String model, String field, String value) {
+			return _threadLocalModelHints.get(
+			).trimString(
+				model, field, value
+			);
+		}
 
 	}
 
