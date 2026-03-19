@@ -5859,7 +5859,8 @@ public class ServiceBuilder {
 
 			Class<?> clazz = getClass();
 
-			classLibraryBuilder.appendClassLoader(clazz.getClassLoader());
+			classLibraryBuilder.appendClassLoader(
+				_getNegativeCachingClassLoader(clazz.getClassLoader()));
 
 			JavaProjectBuilder builder = new JavaProjectBuilder(
 				classLibraryBuilder);
@@ -5986,6 +5987,17 @@ public class ServiceBuilder {
 		sb.append(StringPool.CLOSE_PARENTHESIS);
 
 		return sb.toString();
+	}
+
+	private ClassLoader _getNegativeCachingClassLoader(
+		ClassLoader classLoader) {
+
+		if (_negativeCachingClassLoader == null) {
+			_negativeCachingClassLoader = new NegativeCachingClassLoader(
+				classLoader);
+		}
+
+		return _negativeCachingClassLoader;
 	}
 
 	private String _getSessionTypeName(int sessionType) {
@@ -8554,6 +8566,7 @@ public class ServiceBuilder {
 			Pattern.quote("(")));
 	private static final List<String> _highCardinalityColumnNames =
 		Arrays.asList("externalReferenceCode", "uuid_");
+	private static NegativeCachingClassLoader _negativeCachingClassLoader;
 	private static final Pattern _setterPattern = Pattern.compile(
 		"public void set.*" + Pattern.quote("("));
 
@@ -8648,5 +8661,41 @@ public class ServiceBuilder {
 	private final Map<String, List<Entity>> _uadApplicationEntities =
 		new HashMap<>();
 	private String _uadDirName;
+
+	private static class NegativeCachingClassLoader extends ClassLoader {
+
+		@Override
+		public Class<?> loadClass(String name) throws ClassNotFoundException {
+			if (_missingClassNames.contains(name)) {
+				throw _classNotFoundException;
+			}
+
+			try {
+				return super.loadClass(name);
+			}
+			catch (ClassNotFoundException classNotFoundException) {
+				_missingClassNames.add(name);
+
+				throw classNotFoundException;
+			}
+		}
+
+		private NegativeCachingClassLoader(ClassLoader parent) {
+			super(parent);
+		}
+
+		private static final ClassNotFoundException _classNotFoundException =
+			new ClassNotFoundException() {
+
+				@Override
+				public synchronized Throwable fillInStackTrace() {
+					return this;
+				}
+
+			};
+
+		private final Set<String> _missingClassNames = new HashSet<>();
+
+	}
 
 }
