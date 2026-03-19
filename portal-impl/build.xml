@@ -339,6 +339,7 @@
 					<then>
 						<gradle-execute dir="../modules" forcedcacheenabled="false" task="${service.builder.baseline.tasks}">
 							<arg value="--parallel" />
+							<arg value="--quiet" />
 						</gradle-execute>
 					</then>
 				</if>
