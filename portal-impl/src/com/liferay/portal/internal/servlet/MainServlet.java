@@ -59,6 +59,7 @@ import com.liferay.portal.kernel.servlet.InactiveRequestHandler;
 import com.liferay.portal.kernel.servlet.PortalSessionThreadLocal;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.upgrade.ReleaseManager;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
@@ -461,6 +462,8 @@ public class MainServlet extends HttpServlet {
 				long[] companyIds = ListUtil.toLongArray(
 					CompanyLocalServiceUtil.getCompanies(),
 					Company::getCompanyId);
+
+				companyIds = ArrayUtil.append(companyIds, 0L);
 
 				Method reindexMethod1 = ReflectionUtil.fetchDeclaredMethod(
 					backgroundTaskExecutor1.getClass(), "reindex",
