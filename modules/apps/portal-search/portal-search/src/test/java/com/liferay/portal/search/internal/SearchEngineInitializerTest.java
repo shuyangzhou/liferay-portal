@@ -93,7 +93,9 @@ public class SearchEngineInitializerTest {
 		_verify(0, 0, 1, 0, 0, 0);
 	}
 
-	private void _reindex(String executionMode, List<Indexer<?>> indexers) {
+	private void _reindex(String executionMode, List<Indexer<?>> indexers)
+		throws Exception {
+
 		SearchEngineInitializer searchEngineInitializer =
 			new SearchEngineInitializer(
 				RandomTestUtil.randomLong(), _concurrentReindexManager,
