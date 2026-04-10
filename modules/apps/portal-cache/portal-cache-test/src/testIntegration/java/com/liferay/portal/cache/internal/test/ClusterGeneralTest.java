@@ -6,6 +6,8 @@
 package com.liferay.portal.cache.internal.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.blogs.model.BlogsEntry;
+import com.liferay.blogs.service.BlogsEntryLocalServiceUtil;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalServiceUtil;
 import com.liferay.petra.lang.SafeCloseable;
@@ -125,6 +127,27 @@ public class ClusterGeneralTest implements Serializable {
 		_tomcatNode2 = builder2.build();
 
 		_tomcatNode2.start(true);
+	}
+
+	@Test
+	public void testAddAndDeleteBlogEntriesOnSeparateNodes() throws Exception {
+		long groupId = TestPropsValues.getGroupId();
+		long userId = TestPropsValues.getUserId();
+
+		long blogsEntryId1 = _tomcatNode1.syncExecute(
+			() -> {
+				BlogsEntry blogsEntry = BlogsEntryLocalServiceUtil.addEntry(
+					userId, "Blogs Entry1 Title", "Blogs Entry1 Content",
+					ServiceContextTestUtil.getServiceContext(groupId, userId));
+
+				return blogsEntry.getEntryId();
+			});
+
+		Assert.assertNotNull(
+			_tomcatNode2.syncExecute(
+				() -> BlogsEntryLocalServiceUtil.fetchBlogsEntry(
+					blogsEntryId1)));
+
 	}
 
 	private static String _getLocalClusterNodeId() {
