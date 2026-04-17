@@ -21,9 +21,12 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -158,10 +161,11 @@ public class SearchEngineHelperImpl implements SearchEngineHelper {
 		}
 
 		ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
-			0, maxPoolSize, 60, TimeUnit.SECONDS, new SynchronousQueue<>(),
+			maxPoolSize, maxPoolSize, 60, TimeUnit.SECONDS,
+			new ArrayBlockingQueue<>(maxPoolSize),
 			new NamedThreadFactory(
 				"DocumentsConsumer", Thread.NORM_PRIORITY, null),
-			new ThreadPoolExecutor.CallerRunsPolicy());
+			_BLOCKING_PUT_REJECTION_HANDLER);
 
 		threadPoolExecutor.allowCoreThreadTimeOut(true);
 
@@ -181,10 +185,11 @@ public class SearchEngineHelperImpl implements SearchEngineHelper {
 		}
 
 		ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
-			0, maxPoolSize, 60, TimeUnit.SECONDS, new SynchronousQueue<>(),
+			maxPoolSize, maxPoolSize, 60, TimeUnit.SECONDS,
+			new ArrayBlockingQueue<>(maxPoolSize),
 			new NamedThreadFactory(
 				"DocumentsProducer", Thread.NORM_PRIORITY, null),
-			new ThreadPoolExecutor.CallerRunsPolicy());
+			_BLOCKING_PUT_REJECTION_HANDLER);
 
 		threadPoolExecutor.allowCoreThreadTimeOut(true);
 
@@ -203,14 +208,36 @@ public class SearchEngineHelperImpl implements SearchEngineHelper {
 		}
 
 		ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
-			0, maxPoolSize, 60, TimeUnit.SECONDS, new SynchronousQueue<>(),
+			maxPoolSize, maxPoolSize, 60, TimeUnit.SECONDS,
+			new ArrayBlockingQueue<>(maxPoolSize),
 			new NamedThreadFactory("Indexer", Thread.NORM_PRIORITY, null),
-			new ThreadPoolExecutor.CallerRunsPolicy());
+			_BLOCKING_PUT_REJECTION_HANDLER);
 
 		threadPoolExecutor.allowCoreThreadTimeOut(true);
 
 		_indexerExecutorService = threadPoolExecutor;
 	}
+
+	private static final RejectedExecutionHandler
+		_BLOCKING_PUT_REJECTION_HANDLER = (runnable, threadPoolExecutor) -> {
+			if (threadPoolExecutor.isShutdown()) {
+				throw new RejectedExecutionException(
+					"Thread pool executor is shut down");
+			}
+
+			BlockingQueue<Runnable> blockingQueue =
+				threadPoolExecutor.getQueue();
+
+			try {
+				blockingQueue.put(runnable);
+			}
+			catch (InterruptedException interruptedException) {
+				Thread.currentThread(
+				).interrupt();
+
+				throw new RejectedExecutionException(interruptedException);
+			}
+		};
 
 	private static final int _DEFAULT_CONSUMER_MAX_POOL_SIZE;
 
