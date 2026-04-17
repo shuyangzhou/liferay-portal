@@ -83,7 +83,7 @@ public class ReindexPortalBackgroundTaskExecutor
 
 		long backgroundTaskId = BackgroundTaskThreadLocal.getBackgroundTaskId();
 		ExecutorService executorService =
-			_searchEngineHelper.getDocumentsProducerExecutorService();
+			_searchEngineHelper.getIndexerExecutorService();
 
 		try (SafeCloseable safeCloseable1 = SearchContext.openBatchMode()) {
 			List<SearchEngineInitializer> searchEngineInitializers =
