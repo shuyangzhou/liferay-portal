@@ -271,7 +271,7 @@ public class SearchEngineHelperImpl implements SearchEngineHelper {
 
 		int indexerMaxPoolSize = GetterUtil.getInteger(
 			PropsUtil.get("search.engine.helper.indexer.maxpoolsize"),
-			runtime.availableProcessors());
+			producerMaxPoolSize / 2);
 
 		if (indexerMaxPoolSize < 1) {
 			indexerMaxPoolSize = 1;
