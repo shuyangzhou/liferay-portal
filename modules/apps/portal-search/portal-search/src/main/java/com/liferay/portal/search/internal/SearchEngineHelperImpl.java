@@ -263,7 +263,7 @@ public class SearchEngineHelperImpl implements SearchEngineHelper {
 		int consumerMaxPoolSize = GetterUtil.getInteger(
 			PropsUtil.get(
 				"search.engine.helper.documents.consumer.maxpoolsize"),
-			producerMaxPoolSize / 2);
+			producerMaxPoolSize);
 
 		if (consumerMaxPoolSize < 1) {
 			consumerMaxPoolSize = 1;
