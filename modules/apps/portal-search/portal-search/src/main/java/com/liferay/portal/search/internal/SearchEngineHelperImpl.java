@@ -70,6 +70,11 @@ public class SearchEngineHelperImpl implements SearchEngineHelper {
 	}
 
 	@Override
+	public ExecutorService getIndexerExecutorService() {
+		return _indexerExecutorService;
+	}
+
+	@Override
 	public SearchEngine getSearchEngine() {
 		return _searchEngine;
 	}
@@ -100,6 +105,8 @@ public class SearchEngineHelperImpl implements SearchEngineHelper {
 			_searchEngineHelperConfiguration.documentsConsumerMaxPoolSize());
 		_initDocumentsProducerExecutorService(
 			_searchEngineHelperConfiguration.documentsProducerMaxPoolSize());
+		_initIndexerExecutorService(
+			_searchEngineHelperConfiguration.indexerMaxPoolSize());
 	}
 
 	@Deactivate
@@ -119,6 +126,17 @@ public class SearchEngineHelperImpl implements SearchEngineHelper {
 
 		try {
 			_documentsProducerExecutorService.awaitTermination(
+				_searchEngineHelperConfiguration.shutdownTimeout(),
+				TimeUnit.MILLISECONDS);
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException);
+		}
+
+		_indexerExecutorService.shutdown();
+
+		try {
+			_indexerExecutorService.awaitTermination(
 				_searchEngineHelperConfiguration.shutdownTimeout(),
 				TimeUnit.MILLISECONDS);
 		}
@@ -173,7 +191,30 @@ public class SearchEngineHelperImpl implements SearchEngineHelper {
 		_documentsProducerExecutorService = threadPoolExecutor;
 	}
 
+	private void _initIndexerExecutorService(int maxPoolSize) {
+		if (maxPoolSize < 1) {
+			maxPoolSize = _DEFAULT_INDEXER_MAX_POOL_SIZE;
+		}
+
+		ExecutorService indexerExecutorService = _indexerExecutorService;
+
+		if (indexerExecutorService != null) {
+			indexerExecutorService.shutdown();
+		}
+
+		ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
+			0, maxPoolSize, 60, TimeUnit.SECONDS, new SynchronousQueue<>(),
+			new NamedThreadFactory("Indexer", Thread.NORM_PRIORITY, null),
+			new ThreadPoolExecutor.CallerRunsPolicy());
+
+		threadPoolExecutor.allowCoreThreadTimeOut(true);
+
+		_indexerExecutorService = threadPoolExecutor;
+	}
+
 	private static final int _DEFAULT_CONSUMER_MAX_POOL_SIZE;
+
+	private static final int _DEFAULT_INDEXER_MAX_POOL_SIZE;
 
 	private static final int _DEFAULT_PRODUCER_MAX_POOL_SIZE;
 
@@ -201,7 +242,16 @@ public class SearchEngineHelperImpl implements SearchEngineHelper {
 			consumerMaxPoolSize = 1;
 		}
 
+		int indexerMaxPoolSize = GetterUtil.getInteger(
+			PropsUtil.get("search.engine.helper.indexer.maxpoolsize"),
+			runtime.availableProcessors());
+
+		if (indexerMaxPoolSize < 1) {
+			indexerMaxPoolSize = 1;
+		}
+
 		_DEFAULT_CONSUMER_MAX_POOL_SIZE = consumerMaxPoolSize;
+		_DEFAULT_INDEXER_MAX_POOL_SIZE = indexerMaxPoolSize;
 		_DEFAULT_PRODUCER_MAX_POOL_SIZE = producerMaxPoolSize;
 	}
 
@@ -209,6 +259,7 @@ public class SearchEngineHelperImpl implements SearchEngineHelper {
 	private volatile ExecutorService _documentsProducerExecutorService;
 	private final Set<String> _excludedEntryClassNames =
 		Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());
+	private volatile ExecutorService _indexerExecutorService;
 
 	@Reference(
 		policy = ReferencePolicy.DYNAMIC,

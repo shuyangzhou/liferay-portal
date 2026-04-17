@@ -18,6 +18,8 @@ public interface SearchEngineHelper {
 
 	public String[] getEntryClassNames();
 
+	public ExecutorService getIndexerExecutorService();
+
 	public SearchEngine getSearchEngine();
 
 	public void initialize(long companyId);

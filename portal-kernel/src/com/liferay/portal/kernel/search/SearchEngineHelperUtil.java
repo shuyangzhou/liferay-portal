@@ -35,6 +35,13 @@ public class SearchEngineHelperUtil {
 		return searchEngineHelper.getEntryClassNames();
 	}
 
+	public static ExecutorService getIndexerExecutorService() {
+		SearchEngineHelper searchEngineHelper =
+			_searchEngineHelperSnapshot.get();
+
+		return searchEngineHelper.getIndexerExecutorService();
+	}
+
 	public static SearchEngine getSearchEngine() {
 		SearchEngineHelper searchEngineHelper =
 			_searchEngineHelperSnapshot.get();

@@ -41,6 +41,9 @@ public interface SearchEngineHelperConfiguration {
 	)
 	public String[] excludedEntryClassNames();
 
+	@Meta.AD(deflt = "-1", name = "indexer-max-pool-size", required = false)
+	public int indexerMaxPoolSize();
+
 	@Meta.AD(deflt = "60000", name = "shutdown-timeout", required = false)
 	public long shutdownTimeout();
 
