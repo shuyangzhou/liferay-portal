@@ -5,6 +5,8 @@
 
 package com.liferay.portal.search.elasticsearch8.internal.logging;
 
+import co.elastic.clients.elasticsearch._types.ElasticsearchException;
+
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -204,11 +206,12 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 			}
 
 			_assertLogCapture(
-				message -> Assert.assertTrue(
-					message.contains(
-						StringBundler.concat(
-							"[es/delete] failed: [index_not_found_exception] ",
-							"no such index [", uid, "]"))),
+				message -> Assert.assertEquals(
+					StringBundler.concat(
+						ElasticsearchException.class.getName(),
+						": [es/delete] failed: [index_not_found_exception] no ",
+						"such index [", uid, "]"),
+					message),
 				logCapture, LoggerTestUtil.INFO);
 		}
 	}
