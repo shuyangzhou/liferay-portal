@@ -17,6 +17,7 @@ import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.search.elasticsearch8.internal.ElasticsearchIndexWriter;
 import com.liferay.portal.search.elasticsearch8.internal.indexing.LiferayElasticsearchIndexingFixtureFactory;
+import com.liferay.portal.search.elasticsearch8.internal.search.engine.adapter.document.BulkDocumentRequestExecutor;
 import com.liferay.portal.search.test.util.indexing.BaseIndexingTestCase;
 import com.liferay.portal.search.test.util.indexing.DocumentCreationHelpers;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
@@ -61,22 +62,27 @@ public class ElasticsearchIndexWriterExceptionsTest
 		expectedException.expect(RuntimeException.class);
 		expectedException.expectMessage("Bulk add failed");
 
-		List<Document> documents = new ArrayList<>();
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				BulkDocumentRequestExecutor.class.getName(),
+				LoggerTestUtil.ERROR)) {
 
-		Document document = new DocumentImpl();
+			List<Document> documents = new ArrayList<>();
 
-		document.addKeyword(Field.EXPIRATION_DATE, "text");
+			Document document = new DocumentImpl();
 
-		documents.add(document);
+			document.addKeyword(Field.EXPIRATION_DATE, "text");
 
-		IndexWriter indexWriter = getIndexWriter();
+			documents.add(document);
 
-		try {
-			indexWriter.addDocuments(createSearchContext(), documents);
-		}
-		catch (SearchException searchException) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(searchException);
+			IndexWriter indexWriter = getIndexWriter();
+
+			try {
+				indexWriter.addDocuments(createSearchContext(), documents);
+			}
+			catch (SearchException searchException) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(searchException);
+				}
 			}
 		}
 	}
@@ -135,22 +141,27 @@ public class ElasticsearchIndexWriterExceptionsTest
 		expectedException.expect(RuntimeException.class);
 		expectedException.expectMessage("Bulk delete failed");
 
-		SearchContext searchContext = new SearchContext();
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				BulkDocumentRequestExecutor.class.getName(),
+				LoggerTestUtil.ERROR)) {
 
-		searchContext.setCompanyId(1);
+			SearchContext searchContext = new SearchContext();
 
-		List<String> uids = new ArrayList<>();
+			searchContext.setCompanyId(1);
 
-		uids.add("1");
+			List<String> uids = new ArrayList<>();
 
-		IndexWriter indexWriter = getIndexWriter();
+			uids.add("1");
 
-		try {
-			indexWriter.deleteDocuments(searchContext, uids);
-		}
-		catch (SearchException searchException) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(searchException);
+			IndexWriter indexWriter = getIndexWriter();
+
+			try {
+				indexWriter.deleteDocuments(searchContext, uids);
+			}
+			catch (SearchException searchException) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(searchException);
+				}
 			}
 		}
 	}
@@ -208,19 +219,24 @@ public class ElasticsearchIndexWriterExceptionsTest
 		expectedException.expect(RuntimeException.class);
 		expectedException.expectMessage("Update failed");
 
-		Document document = new DocumentImpl();
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				BulkDocumentRequestExecutor.class.getName(),
+				LoggerTestUtil.ERROR)) {
 
-		document.addKeyword(Field.EXPIRATION_DATE, "text");
-		document.addKeyword(Field.UID, "1");
+			Document document = new DocumentImpl();
 
-		IndexWriter indexWriter = getIndexWriter();
+			document.addKeyword(Field.EXPIRATION_DATE, "text");
+			document.addKeyword(Field.UID, "1");
 
-		try {
-			indexWriter.updateDocument(createSearchContext(), document);
-		}
-		catch (SearchException searchException) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(searchException);
+			IndexWriter indexWriter = getIndexWriter();
+
+			try {
+				indexWriter.updateDocument(createSearchContext(), document);
+			}
+			catch (SearchException searchException) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(searchException);
+				}
 			}
 		}
 	}
