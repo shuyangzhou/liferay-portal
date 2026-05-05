@@ -49,17 +49,20 @@ public class ElasticsearchIndexWriterExceptionsTest
 
 	@Test
 	public void testAddDocument() {
+		String expectedMessage =
+			"failed to parse field [expirationDate] of type [date]";
+
 		ElasticsearchException elasticsearchException = Assert.assertThrows(
 			ElasticsearchException.class,
 			() -> addDocument(
 				DocumentCreationHelpers.singleKeyword(
 					Field.EXPIRATION_DATE, "text")));
 
+		String message = elasticsearchException.getMessage();
+
 		Assert.assertTrue(
-			elasticsearchException.getMessage(
-			).contains(
-				"failed to parse field [expirationDate] of type [date]"
-			));
+			message + " does not contain " + expectedMessage,
+			message.contains(expectedMessage));
 	}
 
 	@Test
@@ -67,6 +70,10 @@ public class ElasticsearchIndexWriterExceptionsTest
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				BulkDocumentRequestExecutor.class.getName(),
 				LoggerTestUtil.ERROR)) {
+
+			String expectedMessage =
+				"failed to parse field [expirationDate] of type [date] in " +
+					"document with id";
 
 			List<Document> documents = new ArrayList<>();
 
@@ -88,15 +95,16 @@ public class ElasticsearchIndexWriterExceptionsTest
 
 			_assertLogCapture(
 				message -> Assert.assertTrue(
-					message.contains(
-						"failed to parse field [expirationDate] of type " +
-							"[date] in document with id")),
+					message + " does not contain " + expectedMessage,
+					message.contains(expectedMessage)),
 				logCapture, LoggerTestUtil.ERROR);
 		}
 	}
 
 	@Test
 	public void testCommit() {
+		String expectedMessage = "[index_not_found_exception] no such index";
+
 		SearchContext searchContext = new SearchContext();
 
 		searchContext.setCompanyId(1);
@@ -107,11 +115,11 @@ public class ElasticsearchIndexWriterExceptionsTest
 			ElasticsearchException.class,
 			() -> indexWriter.commit(searchContext));
 
+		String message = elasticsearchException.getMessage();
+
 		Assert.assertTrue(
-			elasticsearchException.getMessage(
-			).contains(
-				"[index_not_found_exception] no such index"
-			));
+			message + " does not contain " + expectedMessage,
+			message.contains(expectedMessage));
 	}
 
 	@Test
@@ -156,6 +164,9 @@ public class ElasticsearchIndexWriterExceptionsTest
 
 			String uid = "1";
 
+			String expectedMessage = StringBundler.concat(
+				"no such index [", uid, "]");
+
 			SearchContext searchContext = new SearchContext();
 
 			searchContext.setCompanyId(1);
@@ -175,14 +186,16 @@ public class ElasticsearchIndexWriterExceptionsTest
 
 			_assertLogCapture(
 				message -> Assert.assertTrue(
-					message.contains(
-						StringBundler.concat("no such index [", uid, "]"))),
+					message + " does not contain " + expectedMessage,
+					message.contains(expectedMessage)),
 				logCapture, LoggerTestUtil.ERROR);
 		}
 	}
 
 	@Test
 	public void testDeleteEntityDocuments() {
+		String expectedMessage = "[index_not_found_exception] no such index";
+
 		SearchContext searchContext = new SearchContext();
 
 		searchContext.setCompanyId(1);
@@ -193,11 +206,11 @@ public class ElasticsearchIndexWriterExceptionsTest
 			ElasticsearchException.class,
 			() -> indexWriter.deleteEntityDocuments(searchContext, "test"));
 
+		String message = elasticsearchException.getMessage();
+
 		Assert.assertTrue(
-			elasticsearchException.getMessage(
-			).contains(
-				"[index_not_found_exception] no such index"
-			));
+			message + " does not contain " + expectedMessage,
+			message.contains(expectedMessage));
 	}
 
 	@Test
@@ -232,6 +245,10 @@ public class ElasticsearchIndexWriterExceptionsTest
 				BulkDocumentRequestExecutor.class.getName(),
 				LoggerTestUtil.ERROR)) {
 
+			String expectedMessage =
+				"failed to parse field [expirationDate] of type [date] in " +
+					"document with id";
+
 			Document document = new DocumentImpl();
 
 			document.addKeyword(Field.EXPIRATION_DATE, "text");
@@ -248,9 +265,8 @@ public class ElasticsearchIndexWriterExceptionsTest
 
 			_assertLogCapture(
 				message -> Assert.assertTrue(
-					message.contains(
-						"failed to parse field [expirationDate] of type " +
-							"[date] in document with id")),
+					message + " does not contain " + expectedMessage,
+					message.contains(expectedMessage)),
 				logCapture, LoggerTestUtil.ERROR);
 		}
 	}
@@ -260,6 +276,10 @@ public class ElasticsearchIndexWriterExceptionsTest
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				BulkDocumentRequestExecutor.class.getName(),
 				LoggerTestUtil.ERROR)) {
+
+			String expectedMessage =
+				"failed to parse field [expirationDate] of type [date] in " +
+					"document with id";
 
 			List<Document> documents = new ArrayList<>();
 
@@ -282,9 +302,8 @@ public class ElasticsearchIndexWriterExceptionsTest
 
 			_assertLogCapture(
 				message -> Assert.assertTrue(
-					message.contains(
-						"failed to parse field [expirationDate] of type " +
-							"[date] in document with id")),
+					message + " does not contain " + expectedMessage,
+					message.contains(expectedMessage)),
 				logCapture, LoggerTestUtil.ERROR);
 		}
 	}
