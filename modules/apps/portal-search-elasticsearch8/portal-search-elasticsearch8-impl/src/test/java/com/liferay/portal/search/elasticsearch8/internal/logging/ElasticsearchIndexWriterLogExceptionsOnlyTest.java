@@ -188,8 +188,6 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 				ElasticsearchIndexWriter.class.getName(),
 				LoggerTestUtil.INFO)) {
 
-			String uid = "1";
-
 			SearchContext searchContext = new SearchContext();
 
 			searchContext.setCompanyId(1);
@@ -197,7 +195,7 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 			IndexWriter indexWriter = getIndexWriter();
 
 			try {
-				indexWriter.deleteDocument(searchContext, uid);
+				indexWriter.deleteDocument(searchContext, _UID);
 			}
 			catch (SearchException searchException) {
 				if (_log.isDebugEnabled()) {
@@ -210,7 +208,7 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 					StringBundler.concat(
 						ElasticsearchException.class.getName(),
 						": [es/delete] failed: [index_not_found_exception] no ",
-						"such index [", uid, "]"),
+						"such index [", _UID, "]"),
 					message),
 				logCapture, LoggerTestUtil.INFO);
 		}
@@ -253,15 +251,13 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 				BulkDocumentRequestExecutor.class.getName(),
 				LoggerTestUtil.ERROR)) {
 
-			String uid = "1";
-
 			SearchContext searchContext = new SearchContext();
 
 			searchContext.setCompanyId(1);
 
 			List<String> uids = new ArrayList<>();
 
-			uids.add(uid);
+			uids.add(_UID);
 
 			IndexWriter indexWriter = getIndexWriter();
 
@@ -276,7 +272,7 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 
 			_assertLogCapture(
 				message -> Assert.assertTrue(
-					message.contains("no such index [" + uid + "]")),
+					message.contains("no such index [" + _UID + "]")),
 				logCapture, LoggerTestUtil.ERROR);
 		}
 	}
@@ -388,12 +384,10 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 				BulkDocumentRequestExecutor.class.getName(),
 				LoggerTestUtil.ERROR)) {
 
-			String uid = "1";
-
 			Document document = new DocumentImpl();
 
 			document.addKeyword(Field.EXPIRATION_DATE, "text");
-			document.addKeyword(Field.UID, uid);
+			document.addKeyword(Field.UID, _UID);
 
 			IndexWriter indexWriter = getIndexWriter();
 
@@ -411,7 +405,7 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 					message.contains(
 						StringBundler.concat(
 							"failed to parse field [expirationDate] of type ",
-							"[date] in document with id '", uid, "'."))),
+							"[date] in document with id '", _UID, "'."))),
 				logCapture, LoggerTestUtil.ERROR);
 		}
 	}
@@ -454,14 +448,12 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 				BulkDocumentRequestExecutor.class.getName(),
 				LoggerTestUtil.ERROR)) {
 
-			String uid = "1";
-
 			List<Document> documents = new ArrayList<>();
 
 			Document document = new DocumentImpl();
 
 			document.addKeyword(Field.EXPIRATION_DATE, "text");
-			document.addKeyword(Field.UID, uid);
+			document.addKeyword(Field.UID, _UID);
 
 			documents.add(document);
 
@@ -481,7 +473,7 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 					message.contains(
 						StringBundler.concat(
 							"failed to parse field [expirationDate] of type ",
-							"[date] in document with id '", uid, "'."))),
+							"[date] in document with id '", _UID, "'."))),
 				logCapture, LoggerTestUtil.ERROR);
 		}
 	}
@@ -517,6 +509,8 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 		Assert.assertEquals(logLevel, logEntry.getPriority());
 		consumer.accept(logEntry.getMessage());
 	}
+
+	private static final String _UID = "1";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ElasticsearchIndexWriterLogExceptionsOnlyTest.class);
