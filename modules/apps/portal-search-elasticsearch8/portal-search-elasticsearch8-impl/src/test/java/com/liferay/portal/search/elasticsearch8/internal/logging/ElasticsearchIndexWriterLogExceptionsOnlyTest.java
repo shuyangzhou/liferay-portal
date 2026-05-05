@@ -179,7 +179,7 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 		IndexWriter indexWriter = getIndexWriter();
 
 		try {
-			indexWriter.deleteDocument(searchContext, "1");
+			indexWriter.deleteDocument(searchContext, _UID);
 		}
 		catch (SearchException searchException) {
 			if (_log.isDebugEnabled()) {
@@ -232,7 +232,7 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 
 			List<String> uids = new ArrayList<>();
 
-			uids.add("1");
+			uids.add(_UID);
 
 			IndexWriter indexWriter = getIndexWriter();
 
@@ -320,7 +320,7 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 	public void testPartiallyUpdateDocument() throws SearchException {
 		Document document = new DocumentImpl();
 
-		document.addKeyword(Field.UID, "1");
+		document.addKeyword(Field.UID, _UID);
 
 		IndexWriter indexWriter = getIndexWriter();
 
@@ -333,7 +333,7 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 
 		List<Document> documents = new ArrayList<>();
 
-		document.addKeyword(Field.UID, "1");
+		document.addKeyword(Field.UID, _UID);
 
 		documents.add(document);
 
@@ -350,7 +350,7 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 
 		List<Document> documents = new ArrayList<>();
 
-		document.addKeyword(Field.UID, "1");
+		document.addKeyword(Field.UID, _UID);
 
 		documents.add(document);
 
@@ -368,7 +368,7 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 			Document document = new DocumentImpl();
 
 			document.addKeyword(Field.EXPIRATION_DATE, "text");
-			document.addKeyword(Field.UID, "1");
+			document.addKeyword(Field.UID, _UID);
 
 			IndexWriter indexWriter = getIndexWriter();
 
@@ -432,7 +432,7 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 			Document document = new DocumentImpl();
 
 			document.addKeyword(Field.EXPIRATION_DATE, "text");
-			document.addKeyword(Field.UID, "1");
+			document.addKeyword(Field.UID, _UID);
 
 			documents.add(document);
 
