@@ -151,12 +151,12 @@ public class ElasticsearchSearchEngineAdapterLoggingTest {
 	private void _assertLogEntry(
 		LogEntry logEntry, String expectedMessage, String logLevel) {
 
+		String message = logEntry.getMessage();
+
 		Assert.assertEquals(logLevel, logEntry.getPriority());
 		Assert.assertTrue(
-			logEntry.getMessage(
-			).startsWith(
-				expectedMessage
-			));
+			message + " does not start with " + expectedMessage,
+			message.startsWith(expectedMessage));
 	}
 
 	private void _assertSearchRequestExecutorLogEntries(
