@@ -128,8 +128,6 @@ public class ElasticsearchIndexWriterExceptionsTest
 				ElasticsearchIndexWriter.class.getName(),
 				LoggerTestUtil.INFO)) {
 
-			String uid = "1";
-
 			SearchContext searchContext = new SearchContext();
 
 			searchContext.setCompanyId(1);
@@ -137,7 +135,7 @@ public class ElasticsearchIndexWriterExceptionsTest
 			IndexWriter indexWriter = getIndexWriter();
 
 			try {
-				indexWriter.deleteDocument(searchContext, uid);
+				indexWriter.deleteDocument(searchContext, _UID);
 			}
 			catch (SearchException searchException) {
 				if (_log.isDebugEnabled()) {
@@ -150,7 +148,7 @@ public class ElasticsearchIndexWriterExceptionsTest
 					StringBundler.concat(
 						ElasticsearchException.class.getName(),
 						": [es/delete] failed: [index_not_found_exception] no ",
-						"such index [", uid, "]"),
+						"such index [", _UID, "]"),
 					message),
 				logCapture, LoggerTestUtil.INFO);
 		}
@@ -162,10 +160,8 @@ public class ElasticsearchIndexWriterExceptionsTest
 				BulkDocumentRequestExecutor.class.getName(),
 				LoggerTestUtil.ERROR)) {
 
-			String uid = "1";
-
 			String expectedMessage = StringBundler.concat(
-				"no such index [", uid, "]");
+				"no such index [", _UID, "]");
 
 			SearchContext searchContext = new SearchContext();
 
@@ -173,7 +169,7 @@ public class ElasticsearchIndexWriterExceptionsTest
 
 			List<String> uids = new ArrayList<>();
 
-			uids.add(uid);
+			uids.add(_UID);
 
 			IndexWriter indexWriter = getIndexWriter();
 
@@ -325,6 +321,8 @@ public class ElasticsearchIndexWriterExceptionsTest
 		Assert.assertEquals(logLevel, logEntry.getPriority());
 		consumer.accept(logEntry.getMessage());
 	}
+
+	private static final String _UID = "1";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ElasticsearchIndexWriterExceptionsTest.class);
