@@ -145,7 +145,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 		IndexWriter indexWriter = getIndexWriter();
 
 		try {
-			indexWriter.deleteDocument(searchContext, "1");
+			indexWriter.deleteDocument(searchContext, _UID);
 		}
 		catch (SearchException searchException) {
 			if (_log.isDebugEnabled()) {
@@ -167,7 +167,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 		IndexWriter indexWriter = getIndexWriter();
 
 		try {
-			indexWriter.deleteDocument(searchContext, "1");
+			indexWriter.deleteDocument(searchContext, _UID);
 		}
 		catch (SearchException searchException) {
 			if (_log.isDebugEnabled()) {
@@ -189,7 +189,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 
 		List<String> uids = new ArrayList<>();
 
-		uids.add("1");
+		uids.add(_UID);
 
 		IndexWriter indexWriter = getIndexWriter();
 
@@ -215,7 +215,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 
 		List<String> uids = new ArrayList<>();
 
-		uids.add("1");
+		uids.add(_UID);
 
 		IndexWriter indexWriter = getIndexWriter();
 
@@ -255,7 +255,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 	public void testPartiallyUpdateDocument() {
 		Document document = new DocumentImpl();
 
-		document.addKeyword(Field.UID, "1");
+		document.addKeyword(Field.UID, _UID);
 
 		IndexWriter indexWriter = getIndexWriter();
 
@@ -276,7 +276,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 
 		List<Document> documents = new ArrayList<>();
 
-		document.addKeyword(Field.UID, "1");
+		document.addKeyword(Field.UID, _UID);
 
 		documents.add(document);
 
@@ -304,7 +304,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 
 		List<Document> documents = new ArrayList<>();
 
-		document.addKeyword(Field.UID, "1");
+		document.addKeyword(Field.UID, _UID);
 
 		documents.add(document);
 
@@ -330,7 +330,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 		Document document = new DocumentImpl();
 
 		document.addKeyword(Field.EXPIRATION_DATE, "text");
-		document.addKeyword(Field.UID, "1");
+		document.addKeyword(Field.UID, _UID);
 
 		IndexWriter indexWriter = getIndexWriter();
 
@@ -354,7 +354,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 		Document document = new DocumentImpl();
 
 		document.addKeyword(Field.EXPIRATION_DATE, "text");
-		document.addKeyword(Field.UID, "1");
+		document.addKeyword(Field.UID, _UID);
 
 		IndexWriter indexWriter = getIndexWriter();
 
@@ -380,7 +380,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 		Document document = new DocumentImpl();
 
 		document.addKeyword(Field.EXPIRATION_DATE, "text");
-		document.addKeyword(Field.UID, "1");
+		document.addKeyword(Field.UID, _UID);
 
 		documents.add(document);
 
@@ -408,7 +408,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 		Document document = new DocumentImpl();
 
 		document.addKeyword(Field.EXPIRATION_DATE, "text");
-		document.addKeyword(Field.UID, "1");
+		document.addKeyword(Field.UID, _UID);
 
 		documents.add(document);
 
@@ -434,6 +434,8 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 				).build())
 		).build();
 	}
+
+	private static final String _UID = "1";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		OpenSearchIndexWriterLogExceptionsOnlyTest.class);
