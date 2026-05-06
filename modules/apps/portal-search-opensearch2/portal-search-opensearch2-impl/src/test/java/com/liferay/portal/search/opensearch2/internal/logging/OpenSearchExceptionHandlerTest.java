@@ -18,9 +18,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 /**
  * @author Adam Brandizzi
@@ -78,16 +76,24 @@ public class OpenSearchExceptionHandlerTest {
 	}
 
 	@Test
-	public void testDeleteLogExceptionsOnlyFalse() throws Throwable {
-		expectedException.expect(SearchException.class);
-		expectedException.expectMessage(
-			"deletion failed and results in exception");
+	public void testDeleteLogExceptionsOnlyFalse() {
+		try {
+			OpenSearchExceptionHandler openSearchExceptionHandler =
+				new OpenSearchExceptionHandler(_log, false);
 
-		OpenSearchExceptionHandler openSearchExceptionHandler =
-			new OpenSearchExceptionHandler(_log, false);
+			openSearchExceptionHandler.handleDeleteDocumentException(
+				new SearchException(
+					"deletion failed and results in exception"));
 
-		openSearchExceptionHandler.handleDeleteDocumentException(
-			new SearchException("deletion failed and results in exception"));
+			Assert.fail("Expected SearchException was not thrown");
+		}
+		catch (SearchException searchException) {
+			Assert.assertEquals(
+				SearchException.class, searchException.getClass());
+			Assert.assertEquals(
+				"deletion failed and results in exception",
+				searchException.getMessage());
+		}
 	}
 
 	@Test
@@ -111,15 +117,22 @@ public class OpenSearchExceptionHandlerTest {
 	}
 
 	@Test
-	public void testLogExceptionsOnlyFalse() throws Throwable {
-		expectedException.expect(SearchException.class);
-		expectedException.expectMessage("some other random message");
+	public void testLogExceptionsOnlyFalse() {
+		try {
+			OpenSearchExceptionHandler openSearchExceptionHandler =
+				new OpenSearchExceptionHandler(_log, false);
 
-		OpenSearchExceptionHandler openSearchExceptionHandler =
-			new OpenSearchExceptionHandler(_log, false);
+			openSearchExceptionHandler.logOrThrow(
+				new SearchException("some other random message"));
 
-		openSearchExceptionHandler.logOrThrow(
-			new SearchException("some other random message"));
+			Assert.fail("Expected SearchException was not thrown");
+		}
+		catch (SearchException searchException) {
+			Assert.assertEquals(
+				SearchException.class, searchException.getClass());
+			Assert.assertEquals(
+				"some other random message", searchException.getMessage());
+		}
 	}
 
 	@Test
@@ -140,9 +153,6 @@ public class OpenSearchExceptionHandlerTest {
 				logCapture, searchException, LoggerTestUtil.ERROR);
 		}
 	}
-
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
 
 	private void _assertLogCapture(
 		LogCapture logCapture, SearchException searchException,
