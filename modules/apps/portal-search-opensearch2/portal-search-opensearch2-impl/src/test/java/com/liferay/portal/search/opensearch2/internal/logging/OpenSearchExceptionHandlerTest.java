@@ -18,9 +18,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 /**
  * @author Adam Brandizzi
@@ -78,16 +76,19 @@ public class OpenSearchExceptionHandlerTest {
 	}
 
 	@Test
-	public void testDeleteLogExceptionsOnlyFalse() throws Throwable {
-		expectedException.expect(SearchException.class);
-		expectedException.expectMessage(
-			"deletion failed and results in exception");
-
+	public void testDeleteLogExceptionsOnlyFalse() {
 		OpenSearchExceptionHandler openSearchExceptionHandler =
 			new OpenSearchExceptionHandler(_log, false);
 
-		openSearchExceptionHandler.handleDeleteDocumentException(
-			new SearchException("deletion failed and results in exception"));
+		SearchException searchException = Assert.assertThrows(
+			SearchException.class,
+			() -> openSearchExceptionHandler.handleDeleteDocumentException(
+				new SearchException(
+					"deletion failed and results in exception")));
+
+		Assert.assertEquals(
+			"deletion failed and results in exception",
+			searchException.getMessage());
 	}
 
 	@Test
@@ -110,15 +111,17 @@ public class OpenSearchExceptionHandlerTest {
 	}
 
 	@Test
-	public void testLogExceptionsOnlyFalse() throws Throwable {
-		expectedException.expect(SearchException.class);
-		expectedException.expectMessage("some other random message");
-
+	public void testLogExceptionsOnlyFalse() {
 		OpenSearchExceptionHandler openSearchExceptionHandler =
 			new OpenSearchExceptionHandler(_log, false);
 
-		openSearchExceptionHandler.logOrThrow(
-			new SearchException("some other random message"));
+		SearchException searchException = Assert.assertThrows(
+			SearchException.class,
+			() -> openSearchExceptionHandler.logOrThrow(
+				new SearchException("some other random message")));
+
+		Assert.assertEquals(
+			"some other random message", searchException.getMessage());
 	}
 
 	@Test
@@ -139,9 +142,6 @@ public class OpenSearchExceptionHandlerTest {
 				logCapture, expectedMessage, LoggerTestUtil.ERROR);
 		}
 	}
-
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
 
 	private void _assertLogCapture(
 		LogCapture logCapture, String expectedMessage, String logLevel) {
