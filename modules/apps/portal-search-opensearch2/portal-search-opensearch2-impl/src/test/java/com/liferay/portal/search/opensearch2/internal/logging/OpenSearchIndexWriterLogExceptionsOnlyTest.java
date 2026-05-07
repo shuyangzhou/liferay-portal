@@ -57,7 +57,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 	public void testAddDocument() throws Exception {
 		addDocument(
 			DocumentCreationHelpers.singleKeyword(
-				Field.EXPIRATION_DATE, "text"));
+				Field.EXPIRATION_DATE, _EXPIRATION_DATE));
 	}
 
 	@ExpectedLog(
@@ -71,7 +71,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 
 		Document document = new DocumentImpl();
 
-		document.addKeyword(Field.EXPIRATION_DATE, "text");
+		document.addKeyword(Field.EXPIRATION_DATE, _EXPIRATION_DATE);
 
 		documents.add(document);
 
@@ -98,7 +98,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 
 		Document document = new DocumentImpl();
 
-		document.addKeyword(Field.EXPIRATION_DATE, "text");
+		document.addKeyword(Field.EXPIRATION_DATE, _EXPIRATION_DATE);
 
 		documents.add(document);
 
@@ -329,7 +329,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 	public void testUpdateDocument() {
 		Document document = new DocumentImpl();
 
-		document.addKeyword(Field.EXPIRATION_DATE, "text");
+		document.addKeyword(Field.EXPIRATION_DATE, _EXPIRATION_DATE);
 		document.addKeyword(Field.UID, _UID);
 
 		IndexWriter indexWriter = getIndexWriter();
@@ -353,7 +353,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 	public void testUpdateDocumentBulkExecutor() {
 		Document document = new DocumentImpl();
 
-		document.addKeyword(Field.EXPIRATION_DATE, "text");
+		document.addKeyword(Field.EXPIRATION_DATE, _EXPIRATION_DATE);
 		document.addKeyword(Field.UID, _UID);
 
 		IndexWriter indexWriter = getIndexWriter();
@@ -379,7 +379,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 
 		Document document = new DocumentImpl();
 
-		document.addKeyword(Field.EXPIRATION_DATE, "text");
+		document.addKeyword(Field.EXPIRATION_DATE, _EXPIRATION_DATE);
 		document.addKeyword(Field.UID, _UID);
 
 		documents.add(document);
@@ -407,7 +407,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 
 		Document document = new DocumentImpl();
 
-		document.addKeyword(Field.EXPIRATION_DATE, "text");
+		document.addKeyword(Field.EXPIRATION_DATE, _EXPIRATION_DATE);
 		document.addKeyword(Field.UID, _UID);
 
 		documents.add(document);
@@ -434,6 +434,8 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 				).build())
 		).build();
 	}
+
+	private static final String _EXPIRATION_DATE = "text";
 
 	private static final String _UID = "1";
 
