@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -49,6 +50,18 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 	@ClassRule
 	public static OpenSearchTestRule openSearchTestRule =
 		OpenSearchTestRule.INSTANCE;
+
+	@After
+	public void tearDownOpenSearchIndexWriterLogExceptionsOnlyTest() {
+		try {
+			getIndexWriter().deleteDocument(createSearchContext(), _UID);
+		}
+		catch (SearchException searchException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(searchException);
+			}
+		}
+	}
 
 	@Test
 	public void testAddDocument() throws Exception {
