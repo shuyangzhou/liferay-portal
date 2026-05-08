@@ -41,16 +41,16 @@ public class OpenSearchExceptionHandlerTest {
 				OpenSearchExceptionHandlerTest.class.getName(),
 				LoggerTestUtil.INFO)) {
 
-			String expectedMessage =
-				OpenSearchExceptionHandler.INDEX_NOT_FOUND_EXCEPTION_MESSAGE;
-
 			OpenSearchExceptionHandler openSearchExceptionHandler =
 				new OpenSearchExceptionHandler(_log, false);
 
-			openSearchExceptionHandler.handleDeleteDocumentException(
-				new SearchException(expectedMessage));
+			SearchException searchException = new SearchException(
+				OpenSearchExceptionHandler.INDEX_NOT_FOUND_EXCEPTION_MESSAGE);
 
-			_assertLogCapture(logCapture, expectedMessage, LoggerTestUtil.INFO);
+			openSearchExceptionHandler.handleDeleteDocumentException(
+				searchException);
+
+			_assertLogCapture(logCapture, searchException, LoggerTestUtil.INFO);
 		}
 	}
 
@@ -62,16 +62,16 @@ public class OpenSearchExceptionHandlerTest {
 				OpenSearchExceptionHandlerTest.class.getName(),
 				LoggerTestUtil.INFO)) {
 
-			String expectedMessage =
-				OpenSearchExceptionHandler.INDEX_NOT_FOUND_EXCEPTION_MESSAGE;
-
 			OpenSearchExceptionHandler openSearchExceptionHandler =
 				new OpenSearchExceptionHandler(_log, true);
 
-			openSearchExceptionHandler.handleDeleteDocumentException(
-				new SearchException(expectedMessage));
+			SearchException searchException = new SearchException(
+				OpenSearchExceptionHandler.INDEX_NOT_FOUND_EXCEPTION_MESSAGE);
 
-			_assertLogCapture(logCapture, expectedMessage, LoggerTestUtil.INFO);
+			openSearchExceptionHandler.handleDeleteDocumentException(
+				searchException);
+
+			_assertLogCapture(logCapture, searchException, LoggerTestUtil.INFO);
 		}
 	}
 
@@ -97,16 +97,17 @@ public class OpenSearchExceptionHandlerTest {
 				OpenSearchExceptionHandlerTest.class.getName(),
 				LoggerTestUtil.ERROR)) {
 
-			String expectedMessage = "deletion failed is only logged";
-
 			OpenSearchExceptionHandler openSearchExceptionHandler =
 				new OpenSearchExceptionHandler(_log, true);
 
+			SearchException searchException = new SearchException(
+				"deletion failed is only logged");
+
 			openSearchExceptionHandler.handleDeleteDocumentException(
-				new SearchException(expectedMessage));
+				searchException);
 
 			_assertLogCapture(
-				logCapture, expectedMessage, LoggerTestUtil.ERROR);
+				logCapture, searchException, LoggerTestUtil.ERROR);
 		}
 	}
 
@@ -130,21 +131,22 @@ public class OpenSearchExceptionHandlerTest {
 				OpenSearchExceptionHandlerTest.class.getName(),
 				LoggerTestUtil.ERROR)) {
 
-			String expectedMessage = "some random message";
-
 			OpenSearchExceptionHandler openSearchExceptionHandler =
 				new OpenSearchExceptionHandler(_log, true);
 
-			openSearchExceptionHandler.logOrThrow(
-				new SearchException(expectedMessage));
+			SearchException searchException = new SearchException(
+				"some random message");
+
+			openSearchExceptionHandler.logOrThrow(searchException);
 
 			_assertLogCapture(
-				logCapture, expectedMessage, LoggerTestUtil.ERROR);
+				logCapture, searchException, LoggerTestUtil.ERROR);
 		}
 	}
 
 	private void _assertLogCapture(
-		LogCapture logCapture, String expectedMessage, String logLevel) {
+		LogCapture logCapture, SearchException searchException,
+		String logLevel) {
 
 		List<LogEntry> logEntries = logCapture.getLogEntries();
 
@@ -154,10 +156,7 @@ public class OpenSearchExceptionHandlerTest {
 
 		Assert.assertEquals(logLevel, logEntry.getPriority());
 
-		Throwable throwable = logEntry.getThrowable();
-
-		Assert.assertEquals(expectedMessage, throwable.getMessage());
-		Assert.assertSame(SearchException.class, throwable.getClass());
+		Assert.assertSame(searchException, logEntry.getThrowable());
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
