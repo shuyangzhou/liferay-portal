@@ -158,7 +158,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 
 			SearchContext searchContext = new SearchContext();
 
-			searchContext.setCompanyId(1);
+			searchContext.setCompanyId(_COMPANY_ID);
 
 			IndexWriter indexWriter = getIndexWriter();
 
@@ -173,8 +173,9 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 
 			_assertLogCapture(
 				message -> Assert.assertEquals(
-					"Request failed: [index_not_found_exception] no such " +
-						"index [1]",
+					StringBundler.concat(
+						"Request failed: [index_not_found_exception] no such ",
+						"index [", _COMPANY_ID, "]"),
 					message),
 				logCapture, LoggerTestUtil.ERROR);
 		}
@@ -184,7 +185,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 	public void testDeleteDocument() {
 		SearchContext searchContext = new SearchContext();
 
-		searchContext.setCompanyId(1);
+		searchContext.setCompanyId(_COMPANY_ID);
 
 		IndexWriter indexWriter = getIndexWriter();
 
@@ -204,11 +205,12 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 				OpenSearchIndexWriter.class.getName(), LoggerTestUtil.INFO)) {
 
 			String expectedMessage =
-				"Request failed: [index_not_found_exception] no such index [1]";
+				"Request failed: [index_not_found_exception] no such index [" +
+					_COMPANY_ID + "]";
 
 			SearchContext searchContext = new SearchContext();
 
-			searchContext.setCompanyId(1);
+			searchContext.setCompanyId(_COMPANY_ID);
 
 			IndexWriter indexWriter = getIndexWriter();
 
@@ -236,7 +238,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 
 			SearchContext searchContext = new SearchContext();
 
-			searchContext.setCompanyId(1);
+			searchContext.setCompanyId(_COMPANY_ID);
 
 			List<String> uids = new ArrayList<>();
 
@@ -265,11 +267,11 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 				BulkDocumentRequestExecutor.class.getName(),
 				LoggerTestUtil.ERROR)) {
 
-			String expectedMessage = "no such index [1]";
+			String expectedMessage = "no such index [" + _COMPANY_ID + "]";
 
 			SearchContext searchContext = new SearchContext();
 
-			searchContext.setCompanyId(1);
+			searchContext.setCompanyId(_COMPANY_ID);
 
 			List<String> uids = new ArrayList<>();
 
@@ -301,7 +303,7 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 
 			SearchContext searchContext = new SearchContext();
 
-			searchContext.setCompanyId(1);
+			searchContext.setCompanyId(_COMPANY_ID);
 
 			IndexWriter indexWriter = getIndexWriter();
 
@@ -316,8 +318,9 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 
 			_assertLogCapture(
 				message -> Assert.assertEquals(
-					"Request failed: [index_not_found_exception] no such " +
-						"index [1]",
+					StringBundler.concat(
+						"Request failed: [index_not_found_exception] no such ",
+						"index [", _COMPANY_ID, "]"),
 					message),
 				logCapture, LoggerTestUtil.ERROR);
 		}
@@ -556,6 +559,8 @@ public class OpenSearchIndexWriterLogExceptionsOnlyTest
 		Assert.assertEquals(logLevel, logEntry.getPriority());
 		consumer.accept(logEntry.getMessage());
 	}
+
+	private static final long _COMPANY_ID = 1;
 
 	private static final String _EXPIRATION_DATE = "text";
 
