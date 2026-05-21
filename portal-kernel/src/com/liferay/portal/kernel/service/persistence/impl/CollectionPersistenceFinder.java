@@ -15,6 +15,8 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.lang.reflect.Array;
@@ -61,7 +63,7 @@ public class CollectionPersistenceFinder
 			_arrayableIndexes = null;
 		}
 		else {
-			_arrayableIndexes = arrayableIndexes.toArray(new Integer[0]);
+			_arrayableIndexes = ArrayUtil.toIntArray(arrayableIndexes);
 		}
 	}
 
@@ -83,29 +85,17 @@ public class CollectionPersistenceFinder
 				_countFinderPath, finderArgs, basePersistenceImpl);
 
 			if (count == null) {
-				String sql = buildSQLWhere(_sqlCountWhere, values);
+				List<Object[]> valuesList = _paginate(
+					values, basePersistenceImpl.databaseInMaxParameters);
 
-				Session session = null;
-
-				try {
-					session = basePersistenceImpl.openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					bindQueryParams(queryPos, values);
-
-					count = (Long)query.uniqueResult();
-
-					finderCache.putResult(_countFinderPath, finderArgs, count);
+				if (valuesList == null) {
+					count = _runCountSql(values);
 				}
-				catch (Exception exception) {
-					throw basePersistenceImpl.processException(exception);
+				else {
+					count = _countChunked(valuesList);
 				}
-				finally {
-					basePersistenceImpl.closeSession(session);
-				}
+
+				finderCache.putResult(_countFinderPath, finderArgs, count);
 			}
 
 			return count.intValue();
@@ -153,8 +143,7 @@ public class CollectionPersistenceFinder
 
 			if ((_unpaginatedFindPath != null) &&
 				(start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null) &&
-				!_isMultiElementArrayable(values)) {
+				(orderByComparator == null)) {
 
 				if (useFinderCache) {
 					finderPath = _unpaginatedFindPath;
@@ -185,33 +174,21 @@ public class CollectionPersistenceFinder
 			}
 
 			if (list == null) {
-				String sql = _buildFindSql(values, orderByComparator);
+				List<Object[]> valuesList = _paginate(
+					values, basePersistenceImpl.databaseInMaxParameters);
 
-				Session session = null;
-
-				try {
-					session = basePersistenceImpl.openSession();
-
-					Query query = session.createQuery(sql);
-
-					QueryPos queryPos = QueryPos.getInstance(query);
-
-					bindQueryParams(queryPos, values);
-
-					list = (List<T>)QueryUtil.list(
-						query, basePersistenceImpl.getDialect(), start, end);
+				if (valuesList == null) {
+					list = _runFindSql(values, start, end, orderByComparator);
 
 					basePersistenceImpl.cacheResult(list);
+				}
+				else {
+					list = _findChunked(
+						valuesList, start, end, orderByComparator);
+				}
 
-					if (useFinderCache) {
-						finderCache.putResult(finderPath, finderArgs, list);
-					}
-				}
-				catch (Exception exception) {
-					throw basePersistenceImpl.processException(exception);
-				}
-				finally {
-					basePersistenceImpl.closeSession(session);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
 
@@ -306,20 +283,135 @@ public class CollectionPersistenceFinder
 		return finderArgs;
 	}
 
-	private boolean _isMultiElementArrayable(Object[] values) {
-		if (_arrayableIndexes == null) {
-			return false;
+	private long _countChunked(List<Object[]> valuesList) {
+		long total = 0L;
+
+		for (Object[] values : valuesList) {
+			total += _runCountSql(values);
 		}
+
+		return total;
+	}
+
+	private List<T> _findChunked(
+		List<Object[]> valuesList, int start, int end,
+		OrderByComparator<T> orderByComparator) {
+
+		List<T> result = new ArrayList<>();
+
+		for (Object[] values : valuesList) {
+			result.addAll(
+				_runFindSql(
+					values, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+					orderByComparator));
+		}
+
+		Collections.sort(result, orderByComparator);
+
+		basePersistenceImpl.cacheResult(result);
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS)) {
+			return Collections.unmodifiableList(result);
+		}
+
+		return Collections.unmodifiableList(
+			ListUtil.subList(result, start, end));
+	}
+
+	private List<Object[]> _paginate(Object[] values, int maxParameters) {
+		if ((_arrayableIndexes == null) || (maxParameters <= 0)) {
+			return null;
+		}
+
+		List<Object[]> valuesList = null;
 
 		for (int index : _arrayableIndexes) {
-			Object[] array = (Object[])values[index];
+			Object array = values[index];
 
-			if (array.length > 1) {
-				return true;
+			if (Array.getLength(array) <= maxParameters) {
+				continue;
 			}
+
+			Object[] pages = (Object[])ArrayUtil.split(array, maxParameters);
+
+			if (valuesList == null) {
+				valuesList = new ArrayList<>(1);
+
+				valuesList.add(values);
+			}
+
+			List<Object[]> expandedValuesList = new ArrayList<>(
+				valuesList.size() * pages.length);
+
+			for (Object[] currentValues : valuesList) {
+				for (Object page : pages) {
+					Object[] newValues = currentValues.clone();
+
+					newValues[index] = page;
+
+					expandedValuesList.add(newValues);
+				}
+			}
+
+			valuesList = expandedValuesList;
 		}
 
-		return false;
+		return valuesList;
+	}
+
+	private long _runCountSql(Object[] values) {
+		String sql = buildSQLWhere(_sqlCountWhere, values);
+
+		Session session = null;
+
+		try {
+			session = basePersistenceImpl.openSession();
+
+			Query query = session.createQuery(sql);
+
+			QueryPos queryPos = QueryPos.getInstance(query);
+
+			bindQueryParams(queryPos, values);
+
+			Long count = (Long)query.uniqueResult();
+
+			return count.longValue();
+		}
+		catch (Exception exception) {
+			throw basePersistenceImpl.processException(exception);
+		}
+		finally {
+			basePersistenceImpl.closeSession(session);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<T> _runFindSql(
+		Object[] values, int start, int end,
+		OrderByComparator<T> orderByComparator) {
+
+		String sql = _buildFindSql(values, orderByComparator);
+
+		Session session = null;
+
+		try {
+			session = basePersistenceImpl.openSession();
+
+			Query query = session.createQuery(sql);
+
+			QueryPos queryPos = QueryPos.getInstance(query);
+
+			bindQueryParams(queryPos, values);
+
+			return (List<T>)QueryUtil.list(
+				query, basePersistenceImpl.getDialect(), start, end);
+		}
+		catch (Exception exception) {
+			throw basePersistenceImpl.processException(exception);
+		}
+		finally {
+			basePersistenceImpl.closeSession(session);
+		}
 	}
 
 	private boolean _unwrapIfAllArrayableLengthOne(Object[] values) {
@@ -340,7 +432,7 @@ public class CollectionPersistenceFinder
 		return true;
 	}
 
-	private final Integer[] _arrayableIndexes;
+	private final int[] _arrayableIndexes;
 	private final FinderPath _countFinderPath;
 	private final String _defaultOrderByJpql;
 	private final String _orderByEntityAlias;
