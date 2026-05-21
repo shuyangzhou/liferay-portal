@@ -3081,6 +3081,75 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				</#if>
 			</#if>
 
+			<#if entityFinder.uniquePersistenceFinderEnabled>
+				_uniquePersistenceFinderBy${entityFinder.name} =
+					new UniquePersistenceFinder<>(
+						this,
+						createUniqueFinderPath(
+							FINDER_CLASS_NAME_ENTITY,
+							"fetchBy${entityFinder.name}",
+							new String[] {
+								<#list entityColumns as entityColumn>
+									${serviceBuilder.getPrimitiveObj("${entityColumn.type}")}.class.getName()
+
+									<#if entityColumn_has_next>
+										,
+									</#if>
+								</#list>
+							},
+							new String[] {
+								<#list entityColumns as entityColumn>
+									"${entityColumn.DBName}"
+
+									<#if entityColumn_has_next>
+										,
+									</#if>
+								</#list>
+								},
+							${caseInsensitiveBitmask}, ${convertNullBitmask},
+							<#if entityFinder.isPretouch()>true<#else>false</#if>
+
+							<#list entityColumns as entityColumn>
+								,
+								<#if stringUtil.equals(entityColumn.type, "String") && !entityColumn.isCaseSensitive()>
+									convertCaseFunction(${entity.name}::get${entityColumn.methodName})
+								<#elseif stringUtil.equals(entityColumn.type, "String") && entityColumn.isConvertNull()>
+									convertNullFunction(${entity.name}::get${entityColumn.methodName})
+								<#elseif stringUtil.equals(entityColumn.type, "Date")>
+									convertDateFunction(${entity.name}::get${entityColumn.methodName})
+								<#else>
+									${entity.name}::<#if stringUtil.equals(entityColumn.type, "boolean")>is<#else>get</#if>${entityColumn.methodName}
+								</#if>
+							</#list>
+							),
+						_SQL_SELECT_${entity.alias?upper_case}_WHERE,
+						"${entityFinder.where!}",
+						<#list entityColumns as entityColumn>
+							new FinderColumn<>(
+								"${entity.alias}.",
+								<#if entity.hasCompoundPK() && entityColumn.isPrimary()>
+									"id.${entityColumn.name}",
+								<#else>
+									"${entityColumn.name}",
+								</#if>
+								${entityColumn.finderColumnTypeName},
+								"${entityColumn.comparator}",
+								${entityColumn.isCaseSensitive()?c},
+								${entityColumn.isConvertNull()?c},
+								<#if stringUtil.equals(entityColumn.type, "boolean")>
+									${entity.name}::is${entityColumn.methodName}
+								<#else>
+									${entity.name}::get${entityColumn.methodName}
+								</#if>
+							)
+
+							<#if entityColumn_has_next>
+								,
+							</#if>
+						</#list>
+					);
+			</#if>
+
 			<#if entityFinder.collectionPersistenceFinderEnabled>
 				<#assign filterEnabled = entity.isPermissionCheckEnabled(entityFinder) />
 
@@ -3111,7 +3180,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 								</#list>
 								},
 							true),
-						<#if !entityFinder.hasCustomComparator()>
+						<#if !entityFinder.hasCustomComparator() && !entityFinder.hasArrayablePagination()>
 							new FinderPath(
 								FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 								"findBy${entityFinder.name}",
@@ -3207,6 +3276,11 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 						${entity.name}ModelImpl.ORDER_BY_JPQL,
 						_ENTITY_ALIAS_PREFIX,
 						"${entityFinder.where!}",
+						<#if entityFinder.uniquePersistenceFinderEnabled>
+							_uniquePersistenceFinderBy${entityFinder.name},
+						<#else>
+							null,
+						</#if>
 						<#list entityColumns as entityColumn>
 							<#if entityColumn.hasArrayableOperator()>
 								new ArrayableFinderColumn<>(
@@ -3246,75 +3320,6 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 									</#if>
 								)
 							</#if>
-
-							<#if entityColumn_has_next>
-								,
-							</#if>
-						</#list>
-					);
-			</#if>
-
-			<#if entityFinder.uniquePersistenceFinderEnabled>
-				_uniquePersistenceFinderBy${entityFinder.name} =
-					new UniquePersistenceFinder<>(
-						this,
-						createUniqueFinderPath(
-							FINDER_CLASS_NAME_ENTITY,
-							"fetchBy${entityFinder.name}",
-							new String[] {
-								<#list entityColumns as entityColumn>
-									${serviceBuilder.getPrimitiveObj("${entityColumn.type}")}.class.getName()
-
-									<#if entityColumn_has_next>
-										,
-									</#if>
-								</#list>
-							},
-							new String[] {
-								<#list entityColumns as entityColumn>
-									"${entityColumn.DBName}"
-
-									<#if entityColumn_has_next>
-										,
-									</#if>
-								</#list>
-								},
-							${caseInsensitiveBitmask}, ${convertNullBitmask},
-							<#if entityFinder.isPretouch()>true<#else>false</#if>
-
-							<#list entityColumns as entityColumn>
-								,
-								<#if stringUtil.equals(entityColumn.type, "String") && !entityColumn.isCaseSensitive()>
-									convertCaseFunction(${entity.name}::get${entityColumn.methodName})
-								<#elseif stringUtil.equals(entityColumn.type, "String") && entityColumn.isConvertNull()>
-									convertNullFunction(${entity.name}::get${entityColumn.methodName})
-								<#elseif stringUtil.equals(entityColumn.type, "Date")>
-									convertDateFunction(${entity.name}::get${entityColumn.methodName})
-								<#else>
-									${entity.name}::<#if stringUtil.equals(entityColumn.type, "boolean")>is<#else>get</#if>${entityColumn.methodName}
-								</#if>
-							</#list>
-							),
-						_SQL_SELECT_${entity.alias?upper_case}_WHERE,
-						"${entityFinder.where!}",
-						<#list entityColumns as entityColumn>
-							new FinderColumn<>(
-								"${entity.alias}.",
-								<#if entity.hasCompoundPK() && entityColumn.isPrimary()>
-									"id.${entityColumn.name}",
-								<#else>
-									"${entityColumn.name}",
-								</#if>
-								${entityColumn.finderColumnTypeName},
-								"${entityColumn.comparator}",
-								${entityColumn.isCaseSensitive()?c},
-								${entityColumn.isConvertNull()?c},
-								<#if stringUtil.equals(entityColumn.type, "boolean")>
-									${entity.name}::is${entityColumn.methodName}
-								<#else>
-									${entity.name}::get${entityColumn.methodName}
-								</#if>
-							)
 
 							<#if entityColumn_has_next>
 								,
@@ -3523,7 +3528,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		<#assign hasNonDelegatedCollectionFilterFinder = false />
 
 		<#list entity.entityFinders as orderByEntityTableEntityFinder>
-			<#if orderByEntityTableEntityFinder.isCollection() && !orderByEntityTableEntityFinder.finderDelegationEnabled>
+			<#if orderByEntityTableEntityFinder.isCollection() && !serviceBuilder.isVersionGTE_7_4_0()>
 				<#assign hasNonDelegatedCollectionFilterFinder = true />
 
 				<#break>
