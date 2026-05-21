@@ -33,12 +33,13 @@ public class FilterCollectionPersistenceFinder
 		FinderPath paginatedFindPath, FinderPath unpaginatedFindPath,
 		FinderPath countFinderPath, String sqlSelectWhere, String sqlCountWhere,
 		String defaultOrderByJpql, String orderByEntityAlias, String where,
+		UniquePersistenceFinder<T, E> uniquePersistenceFinder,
 		FinderColumn<T>... finderColumns) {
 
 		super(
 			basePersistenceImpl, paginatedFindPath, unpaginatedFindPath,
 			countFinderPath, sqlSelectWhere, sqlCountWhere, defaultOrderByJpql,
-			orderByEntityAlias, where, finderColumns);
+			orderByEntityAlias, where, uniquePersistenceFinder, finderColumns);
 
 		String entityAlias = basePersistenceImpl.getEntityAlias();
 		String tableName = basePersistenceImpl.getTableName();
