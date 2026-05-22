@@ -15,8 +15,6 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.DuplicatePhoneExternalReferenceCodeException;
 import com.liferay.portal.kernel.exception.NoSuchPhoneException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.PhoneTable;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
@@ -1402,12 +1400,6 @@ public class PhonePersistenceImpl
 	private static final String _SQL_COUNT_PHONE_WHERE =
 		"SELECT COUNT(phone) FROM Phone phone WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No Phone exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		PhonePersistenceImpl.class);
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid", "number", "primary"});
 
@@ -1417,4 +1409,4 @@ public class PhonePersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1416784298
+// LIFERAY-SERVICE-BUILDER-HASH:1842566063

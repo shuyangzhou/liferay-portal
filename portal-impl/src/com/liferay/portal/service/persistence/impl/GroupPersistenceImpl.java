@@ -17,8 +17,6 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.DuplicateGroupExternalReferenceCodeException;
 import com.liferay.portal.kernel.exception.NoSuchGroupException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupTable;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
@@ -5672,12 +5670,6 @@ public class GroupPersistenceImpl
 	private static final String _SQL_COUNT_GROUP__WHERE =
 		"SELECT COUNT(group_) FROM Group group_ WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No Group exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		GroupPersistenceImpl.class);
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid", "type", "active"});
 
@@ -5687,4 +5679,4 @@ public class GroupPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1141233154
+// LIFERAY-SERVICE-BUILDER-HASH:1833915265

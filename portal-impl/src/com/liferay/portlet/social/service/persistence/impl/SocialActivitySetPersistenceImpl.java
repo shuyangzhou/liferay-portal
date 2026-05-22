@@ -1172,9 +1172,6 @@ public class SocialActivitySetPersistenceImpl
 	private static final String _SQL_COUNT_SOCIALACTIVITYSET_WHERE =
 		"SELECT COUNT(socialActivitySet) FROM SocialActivitySet socialActivitySet WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No SocialActivitySet exists with the key {";
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"type"});
 
@@ -1184,4 +1181,4 @@ public class SocialActivitySetPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1218966702
+// LIFERAY-SERVICE-BUILDER-HASH:-744888097

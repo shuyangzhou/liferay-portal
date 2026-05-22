@@ -15,8 +15,6 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.DuplicateRepositoryExternalReferenceCodeException;
 import com.liferay.portal.kernel.exception.NoSuchRepositoryException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Repository;
 import com.liferay.portal.kernel.model.RepositoryTable;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
@@ -1183,12 +1181,6 @@ public class RepositoryPersistenceImpl
 	private static final String _SQL_COUNT_REPOSITORY_WHERE =
 		"SELECT COUNT(repository) FROM Repository repository WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No Repository exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		RepositoryPersistenceImpl.class);
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid"});
 
@@ -1198,4 +1190,4 @@ public class RepositoryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1022198261
+// LIFERAY-SERVICE-BUILDER-HASH:159738427

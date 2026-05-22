@@ -20,8 +20,6 @@ import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
@@ -954,12 +952,6 @@ public class MBMailingListPersistenceImpl
 	private static final String _SQL_COUNT_MBMAILINGLIST_WHERE =
 		"SELECT COUNT(mbMailingList) FROM MBMailingList mbMailingList WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No MBMailingList exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		MBMailingListPersistenceImpl.class);
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid", "active"});
 
@@ -969,4 +961,4 @@ public class MBMailingListPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1206102007
+// LIFERAY-SERVICE-BUILDER-HASH:-438668238

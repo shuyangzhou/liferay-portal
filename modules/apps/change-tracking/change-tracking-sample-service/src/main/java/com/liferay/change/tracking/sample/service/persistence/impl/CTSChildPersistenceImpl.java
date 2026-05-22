@@ -710,13 +710,10 @@ public class CTSChildPersistenceImpl
 	private static final String _SQL_COUNT_CTSCHILD_WHERE =
 		"SELECT COUNT(ctsChild) FROM CTSChild ctsChild WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No CTSChild exists with the key {";
-
 	@Override
 	protected FinderCache getFinderCache() {
 		return finderCache;
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1180460871
+// LIFERAY-SERVICE-BUILDER-HASH:657970381

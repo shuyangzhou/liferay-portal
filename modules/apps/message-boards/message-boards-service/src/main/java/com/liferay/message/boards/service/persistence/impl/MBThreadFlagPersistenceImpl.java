@@ -20,8 +20,6 @@ import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
@@ -1042,12 +1040,6 @@ public class MBThreadFlagPersistenceImpl
 	private static final String _SQL_COUNT_MBTHREADFLAG_WHERE =
 		"SELECT COUNT(mbThreadFlag) FROM MBThreadFlag mbThreadFlag WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No MBThreadFlag exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		MBThreadFlagPersistenceImpl.class);
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid"});
 
@@ -1057,4 +1049,4 @@ public class MBThreadFlagPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:670561017
+// LIFERAY-SERVICE-BUILDER-HASH:-476981133

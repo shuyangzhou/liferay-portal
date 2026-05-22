@@ -17,8 +17,6 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.DuplicateOrganizationExternalReferenceCodeException;
 import com.liferay.portal.kernel.exception.NoSuchOrganizationException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.OrganizationTable;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
@@ -3334,12 +3332,6 @@ public class OrganizationPersistenceImpl
 	private static final String _SQL_COUNT_ORGANIZATION_WHERE =
 		"SELECT COUNT(organization) FROM Organization organization WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No Organization exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		OrganizationPersistenceImpl.class);
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid", "type", "groups"});
 
@@ -3349,4 +3341,4 @@ public class OrganizationPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-263419573
+// LIFERAY-SERVICE-BUILDER-HASH:-452350438

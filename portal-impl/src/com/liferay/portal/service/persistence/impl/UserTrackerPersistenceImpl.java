@@ -605,13 +605,10 @@ public class UserTrackerPersistenceImpl
 	private static final String _SQL_COUNT_USERTRACKER_WHERE =
 		"SELECT COUNT(userTracker) FROM UserTracker userTracker WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No UserTracker exists with the key {";
-
 	@Override
 	protected FinderCache getFinderCache() {
 		return FinderCacheUtil.getFinderCache();
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:21708603
+// LIFERAY-SERVICE-BUILDER-HASH:262053058

@@ -701,9 +701,6 @@ public class ObjectLayoutBoxPersistenceImpl
 	private static final String _SQL_COUNT_OBJECTLAYOUTBOX_WHERE =
 		"SELECT COUNT(objectLayoutBox) FROM ObjectLayoutBox objectLayoutBox WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No ObjectLayoutBox exists with the key {";
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid", "type"});
 
@@ -713,4 +710,4 @@ public class ObjectLayoutBoxPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-315643670
+// LIFERAY-SERVICE-BUILDER-HASH:1544093693

@@ -13,8 +13,6 @@ import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.NoSuchLayoutFriendlyURLException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.LayoutFriendlyURL;
 import com.liferay.portal.kernel.model.LayoutFriendlyURLTable;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
@@ -1732,12 +1730,6 @@ public class LayoutFriendlyURLPersistenceImpl
 	private static final String _SQL_COUNT_LAYOUTFRIENDLYURL_WHERE =
 		"SELECT COUNT(layoutFriendlyURL) FROM LayoutFriendlyURL layoutFriendlyURL WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No LayoutFriendlyURL exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		LayoutFriendlyURLPersistenceImpl.class);
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid"});
 
@@ -1747,4 +1739,4 @@ public class LayoutFriendlyURLPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1071082538
+// LIFERAY-SERVICE-BUILDER-HASH:414009498

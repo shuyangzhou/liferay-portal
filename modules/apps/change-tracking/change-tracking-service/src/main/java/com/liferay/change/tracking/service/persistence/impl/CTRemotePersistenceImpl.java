@@ -462,13 +462,10 @@ public class CTRemotePersistenceImpl
 	private static final String _SQL_COUNT_CTREMOTE_WHERE =
 		"SELECT COUNT(ctRemote) FROM CTRemote ctRemote WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No CTRemote exists with the key {";
-
 	@Override
 	protected FinderCache getFinderCache() {
 		return finderCache;
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-11708433
+// LIFERAY-SERVICE-BUILDER-HASH:-396227578

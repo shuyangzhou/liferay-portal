@@ -20,8 +20,6 @@ import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
@@ -1154,12 +1152,6 @@ public class MBSuspiciousActivityPersistenceImpl
 	private static final String _SQL_COUNT_MBSUSPICIOUSACTIVITY_WHERE =
 		"SELECT COUNT(mbSuspiciousActivity) FROM MBSuspiciousActivity mbSuspiciousActivity WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No MBSuspiciousActivity exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		MBSuspiciousActivityPersistenceImpl.class);
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid"});
 
@@ -1169,4 +1161,4 @@ public class MBSuspiciousActivityPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1126019522
+// LIFERAY-SERVICE-BUILDER-HASH:-100229278

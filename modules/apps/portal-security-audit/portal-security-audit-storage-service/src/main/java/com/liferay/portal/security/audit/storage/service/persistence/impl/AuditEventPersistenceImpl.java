@@ -415,13 +415,10 @@ public class AuditEventPersistenceImpl
 	private static final String _SQL_COUNT_AUDITEVENT_WHERE =
 		"SELECT COUNT(auditEvent) FROM AuditEvent auditEvent WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No AuditEvent exists with the key {";
-
 	@Override
 	protected FinderCache getFinderCache() {
 		return dummyFinderCache;
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:407678167
+// LIFERAY-SERVICE-BUILDER-HASH:986831536

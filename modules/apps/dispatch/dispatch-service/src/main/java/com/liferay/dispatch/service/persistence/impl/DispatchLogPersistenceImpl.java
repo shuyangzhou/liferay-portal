@@ -569,9 +569,6 @@ public class DispatchLogPersistenceImpl
 	private static final String _SQL_COUNT_DISPATCHLOG_WHERE =
 		"SELECT COUNT(dispatchLog) FROM DispatchLog dispatchLog WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No DispatchLog exists with the key {";
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"output"});
 
@@ -581,4 +578,4 @@ public class DispatchLogPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1858878795
+// LIFERAY-SERVICE-BUILDER-HASH:-975336795

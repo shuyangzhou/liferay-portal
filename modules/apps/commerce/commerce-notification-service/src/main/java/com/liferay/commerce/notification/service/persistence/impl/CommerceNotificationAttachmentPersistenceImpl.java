@@ -19,8 +19,6 @@ import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
@@ -843,12 +841,6 @@ public class CommerceNotificationAttachmentPersistenceImpl
 		_SQL_COUNT_COMMERCENOTIFICATIONATTACHMENT_WHERE =
 			"SELECT COUNT(commerceNotificationAttachment) FROM CommerceNotificationAttachment commerceNotificationAttachment WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No CommerceNotificationAttachment exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceNotificationAttachmentPersistenceImpl.class);
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {
 			"uuid", "commerceNotificationAttachmentId",
@@ -861,4 +853,4 @@ public class CommerceNotificationAttachmentPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1747703686
+// LIFERAY-SERVICE-BUILDER-HASH:-1482564383

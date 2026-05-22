@@ -13,8 +13,6 @@ import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.NoSuchPortletPreferenceValueException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.PortletPreferenceValue;
 import com.liferay.portal.kernel.model.PortletPreferenceValueTable;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
@@ -1011,12 +1009,6 @@ public class PortletPreferenceValuePersistenceImpl
 	private static final String _SQL_COUNT_PORTLETPREFERENCEVALUE_WHERE =
 		"SELECT COUNT(portletPreferenceValue) FROM PortletPreferenceValue portletPreferenceValue WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No PortletPreferenceValue exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		PortletPreferenceValuePersistenceImpl.class);
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"index"});
 
@@ -1026,4 +1018,4 @@ public class PortletPreferenceValuePersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1804031512
+// LIFERAY-SERVICE-BUILDER-HASH:-47439054

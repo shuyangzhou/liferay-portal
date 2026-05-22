@@ -1080,13 +1080,10 @@ public class KaleoInstanceTokenPersistenceImpl
 	private static final String _SQL_COUNT_KALEOINSTANCETOKEN_WHERE =
 		"SELECT COUNT(kaleoInstanceToken) FROM KaleoInstanceToken kaleoInstanceToken WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No KaleoInstanceToken exists with the key {";
-
 	@Override
 	protected FinderCache getFinderCache() {
 		return finderCache;
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1053159938
+// LIFERAY-SERVICE-BUILDER-HASH:308556629

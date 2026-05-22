@@ -16,8 +16,6 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.DuplicateCountryExternalReferenceCodeException;
 import com.liferay.portal.kernel.exception.NoSuchCountryException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.CountryTable;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
@@ -2732,12 +2730,6 @@ public class CountryPersistenceImpl
 	private static final String _SQL_COUNT_COUNTRY_WHERE =
 		"SELECT COUNT(country) FROM Country country WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No Country exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		CountryPersistenceImpl.class);
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid", "active", "idd", "number"});
 
@@ -2747,4 +2739,4 @@ public class CountryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1272210975
+// LIFERAY-SERVICE-BUILDER-HASH:91876166

@@ -23,8 +23,6 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
 import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
@@ -1960,12 +1958,6 @@ public class FragmentCompositionPersistenceImpl
 	private static final String _SQL_COUNT_FRAGMENTCOMPOSITION_WHERE =
 		"SELECT COUNT(fragmentComposition) FROM FragmentComposition fragmentComposition WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No FragmentComposition exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		FragmentCompositionPersistenceImpl.class);
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid", "data"});
 
@@ -1975,4 +1967,4 @@ public class FragmentCompositionPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1175964563
+// LIFERAY-SERVICE-BUILDER-HASH:-782193985

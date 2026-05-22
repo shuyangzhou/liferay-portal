@@ -13,8 +13,6 @@ import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.NoSuchLayoutSetException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutSetTable;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
@@ -941,12 +939,6 @@ public class LayoutSetPersistenceImpl
 	private static final String _SQL_COUNT_LAYOUTSET_WHERE =
 		"SELECT COUNT(layoutSet) FROM LayoutSet layoutSet WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No LayoutSet exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		LayoutSetPersistenceImpl.class);
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"settings"});
 
@@ -956,4 +948,4 @@ public class LayoutSetPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:703791476
+// LIFERAY-SERVICE-BUILDER-HASH:145463807

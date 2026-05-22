@@ -21,8 +21,6 @@ import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
@@ -1457,16 +1455,10 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 	private static final String _SQL_COUNT_FRIENDLYURLENTRYLOCALIZATION_WHERE =
 		"SELECT COUNT(friendlyURLEntryLocalization) FROM FriendlyURLEntryLocalization friendlyURLEntryLocalization WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No FriendlyURLEntryLocalization exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		FriendlyURLEntryLocalizationPersistenceImpl.class);
-
 	@Override
 	protected FinderCache getFinderCache() {
 		return finderCache;
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1345564969
+// LIFERAY-SERVICE-BUILDER-HASH:-2076458072

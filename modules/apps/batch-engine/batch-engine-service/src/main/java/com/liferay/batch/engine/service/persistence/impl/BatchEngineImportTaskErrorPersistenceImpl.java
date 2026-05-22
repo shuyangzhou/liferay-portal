@@ -464,13 +464,10 @@ public class BatchEngineImportTaskErrorPersistenceImpl
 	private static final String _SQL_COUNT_BATCHENGINEIMPORTTASKERROR_WHERE =
 		"SELECT COUNT(batchEngineImportTaskError) FROM BatchEngineImportTaskError batchEngineImportTaskError WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No BatchEngineImportTaskError exists with the key {";
-
 	@Override
 	protected FinderCache getFinderCache() {
 		return finderCache;
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1436616602
+// LIFERAY-SERVICE-BUILDER-HASH:-1880152112

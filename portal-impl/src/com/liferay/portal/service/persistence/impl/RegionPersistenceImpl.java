@@ -16,8 +16,6 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.DuplicateRegionExternalReferenceCodeException;
 import com.liferay.portal.kernel.exception.NoSuchRegionException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.model.RegionTable;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
@@ -1196,12 +1194,6 @@ public class RegionPersistenceImpl
 	private static final String _SQL_COUNT_REGION_WHERE =
 		"SELECT COUNT(region) FROM Region region WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No Region exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		RegionPersistenceImpl.class);
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid", "active"});
 
@@ -1211,4 +1203,4 @@ public class RegionPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1540831057
+// LIFERAY-SERVICE-BUILDER-HASH:-153051257

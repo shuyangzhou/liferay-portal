@@ -896,13 +896,10 @@ public class CommerceDiscountUsageEntryPersistenceImpl
 	private static final String _SQL_COUNT_COMMERCEDISCOUNTUSAGEENTRY_WHERE =
 		"SELECT COUNT(commerceDiscountUsageEntry) FROM CommerceDiscountUsageEntry commerceDiscountUsageEntry WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No CommerceDiscountUsageEntry exists with the key {";
-
 	@Override
 	protected FinderCache getFinderCache() {
 		return finderCache;
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1202564439
+// LIFERAY-SERVICE-BUILDER-HASH:-869609171

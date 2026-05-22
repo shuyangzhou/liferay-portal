@@ -14,7 +14,6 @@ import com.liferay.launch.model.impl.LaunchSetModelImpl;
 import com.liferay.launch.service.persistence.LaunchSetPersistence;
 import com.liferay.launch.service.persistence.LaunchSetUtil;
 import com.liferay.launch.service.persistence.impl.constants.LaunchPersistenceConstants;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -22,8 +21,6 @@ import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
 import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
@@ -482,26 +479,9 @@ public class LaunchSetPersistenceImpl
 			OrderByComparator<LaunchSet> orderByComparator)
 		throws NoSuchLaunchSetException {
 
-		LaunchSet launchSet = fetchByC_S_First(
-			companyId, status, orderByComparator);
-
-		if (launchSet != null) {
-			return launchSet;
-		}
-
-		StringBundler sb = new StringBundler(6);
-
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-		sb.append("companyId=");
-		sb.append(companyId);
-
-		sb.append(", status=");
-		sb.append(status);
-
-		sb.append("}");
-
-		throw new NoSuchLaunchSetException(sb.toString());
+		return _collectionPersistenceFinderByC_S.findFirst(
+			finderCache, new Object[] {companyId, new int[] {status}},
+			orderByComparator);
 	}
 
 	/**
@@ -1131,12 +1111,6 @@ public class LaunchSetPersistenceImpl
 	private static final String _SQL_COUNT_LAUNCHSET_WHERE =
 		"SELECT COUNT(launchSet) FROM LaunchSet launchSet WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No LaunchSet exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		LaunchSetPersistenceImpl.class);
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid"});
 
@@ -1146,4 +1120,4 @@ public class LaunchSetPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:214910261
+// LIFERAY-SERVICE-BUILDER-HASH:2014033799

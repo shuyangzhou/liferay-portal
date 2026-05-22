@@ -805,9 +805,6 @@ public class CommerceInventoryBookedQuantityPersistenceImpl
 		_SQL_COUNT_COMMERCEINVENTORYBOOKEDQUANTITY_WHERE =
 			"SELECT COUNT(commerceInventoryBookedQuantity) FROM CommerceInventoryBookedQuantity commerceInventoryBookedQuantity WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No CommerceInventoryBookedQuantity exists with the key {";
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"commerceInventoryBookedQuantityId"});
 
@@ -817,4 +814,4 @@ public class CommerceInventoryBookedQuantityPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1150800018
+// LIFERAY-SERVICE-BUILDER-HASH:803422788

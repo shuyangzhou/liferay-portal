@@ -636,9 +636,6 @@ public class SpringEntryPersistenceImpl
 	private static final String _SQL_COUNT_SPRINGENTRY_WHERE =
 		"SELECT COUNT(springEntry) FROM SpringEntry springEntry WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No SpringEntry exists with the key {";
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid"});
 
@@ -648,4 +645,4 @@ public class SpringEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-775566512
+// LIFERAY-SERVICE-BUILDER-HASH:1342772884

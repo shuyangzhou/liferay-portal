@@ -817,13 +817,10 @@ public class KaleoTimerPersistenceImpl
 	private static final String _SQL_COUNT_KALEOTIMER_WHERE =
 		"SELECT COUNT(kaleoTimer) FROM KaleoTimer kaleoTimer WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No KaleoTimer exists with the key {";
-
 	@Override
 	protected FinderCache getFinderCache() {
 		return finderCache;
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-950908137
+// LIFERAY-SERVICE-BUILDER-HASH:1396516492

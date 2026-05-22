@@ -11,8 +11,6 @@ import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
@@ -898,12 +896,6 @@ public class SourcePersistenceImpl
 	private static final String _SQL_COUNT_SOURCE_WHERE =
 		"SELECT COUNT(source) FROM Source source WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No Source exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		SourcePersistenceImpl.class);
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid"});
 
@@ -913,4 +905,4 @@ public class SourcePersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1745797506
+// LIFERAY-SERVICE-BUILDER-HASH:-1359341108

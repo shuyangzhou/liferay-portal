@@ -690,9 +690,6 @@ public class ObjectFilterPersistenceImpl
 	private static final String _SQL_COUNT_OBJECTFILTER_WHERE =
 		"SELECT COUNT(objectFilter) FROM ObjectFilter objectFilter WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No ObjectFilter exists with the key {";
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid"});
 
@@ -702,4 +699,4 @@ public class ObjectFilterPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1324235867
+// LIFERAY-SERVICE-BUILDER-HASH:802578021

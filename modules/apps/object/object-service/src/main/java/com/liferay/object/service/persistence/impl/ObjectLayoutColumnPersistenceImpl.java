@@ -823,9 +823,6 @@ public class ObjectLayoutColumnPersistenceImpl
 	private static final String _SQL_COUNT_OBJECTLAYOUTCOLUMN_WHERE =
 		"SELECT COUNT(objectLayoutColumn) FROM ObjectLayoutColumn objectLayoutColumn WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No ObjectLayoutColumn exists with the key {";
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid", "size"});
 
@@ -835,4 +832,4 @@ public class ObjectLayoutColumnPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2009910566
+// LIFERAY-SERVICE-BUILDER-HASH:-106884177

@@ -14,8 +14,6 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.DuplicateWebsiteExternalReferenceCodeException;
 import com.liferay.portal.kernel.exception.NoSuchWebsiteException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Website;
 import com.liferay.portal.kernel.model.WebsiteTable;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
@@ -1320,12 +1318,6 @@ public class WebsitePersistenceImpl
 	private static final String _SQL_COUNT_WEBSITE_WHERE =
 		"SELECT COUNT(website) FROM Website website WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No Website exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		WebsitePersistenceImpl.class);
-
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"uuid", "primary"});
 
@@ -1335,4 +1327,4 @@ public class WebsitePersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-416717885
+// LIFERAY-SERVICE-BUILDER-HASH:352771982
