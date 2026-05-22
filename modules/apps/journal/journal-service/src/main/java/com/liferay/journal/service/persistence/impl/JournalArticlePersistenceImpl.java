@@ -6260,6 +6260,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "resourcePrimKey",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -6284,6 +6285,7 @@ public class JournalArticlePersistenceImpl
 				0, 1, false, null),
 			_SQL_SELECT_JOURNALARTICLE_WHERE, _SQL_COUNT_JOURNALARTICLE_WHERE,
 			JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"journalArticle.", "uuid", FinderColumn.Type.STRING, "=", true,
 				true, JournalArticle::getUuid));
@@ -6326,6 +6328,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, JournalArticle::getUuid),
@@ -6355,6 +6358,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getGroupId));
@@ -6381,6 +6385,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "companyId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getCompanyId));
@@ -6409,6 +6414,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "DDMStructureId", FinderColumn.Type.LONG,
 					"=", true, true, JournalArticle::getDDMStructureId));
@@ -6438,6 +6444,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "DDMTemplateKey",
 					FinderColumn.Type.STRING, "=", true, true,
@@ -6465,6 +6472,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "layoutUuid", FinderColumn.Type.STRING,
 					"=", true, true, JournalArticle::getLayoutUuid));
@@ -6492,6 +6500,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "smallImageId", FinderColumn.Type.LONG,
 					"=", true, true, JournalArticle::getSmallImageId));
@@ -6516,6 +6525,7 @@ public class JournalArticlePersistenceImpl
 				new String[] {"resourcePrimKey", "indexable"}, false),
 			_SQL_SELECT_JOURNALARTICLE_WHERE, _SQL_COUNT_JOURNALARTICLE_WHERE,
 			JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"journalArticle.", "resourcePrimKey", FinderColumn.Type.LONG,
 				"=", true, true, JournalArticle::getResourcePrimKey),
@@ -6543,6 +6553,7 @@ public class JournalArticlePersistenceImpl
 				new String[] {"resourcePrimKey", "status"}, false),
 			_SQL_SELECT_JOURNALARTICLE_WHERE, _SQL_COUNT_JOURNALARTICLE_WHERE,
 			JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"journalArticle.", "resourcePrimKey", FinderColumn.Type.LONG,
 				"=", true, true, JournalArticle::getResourcePrimKey),
@@ -6572,6 +6583,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getGroupId),
@@ -6603,6 +6615,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getGroupId),
@@ -6633,6 +6646,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getGroupId),
@@ -6662,6 +6676,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getGroupId),
@@ -6691,6 +6706,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getGroupId),
@@ -6720,6 +6736,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getGroupId),
@@ -6751,6 +6768,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getGroupId),
@@ -6781,6 +6799,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getGroupId),
@@ -6814,6 +6833,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getGroupId),
@@ -6841,6 +6861,7 @@ public class JournalArticlePersistenceImpl
 				new String[] {"companyId", "version"}, false),
 			_SQL_SELECT_JOURNALARTICLE_WHERE, _SQL_COUNT_JOURNALARTICLE_WHERE,
 			JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"journalArticle.", "companyId", FinderColumn.Type.LONG, "=",
 				true, true, JournalArticle::getCompanyId),
@@ -6868,6 +6889,7 @@ public class JournalArticlePersistenceImpl
 				new String[] {"companyId", "status"}, false),
 			_SQL_SELECT_JOURNALARTICLE_WHERE, _SQL_COUNT_JOURNALARTICLE_WHERE,
 			JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"journalArticle.", "companyId", FinderColumn.Type.LONG, "=",
 				true, true, JournalArticle::getCompanyId),
@@ -6896,6 +6918,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "companyId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getCompanyId),
@@ -6920,6 +6943,7 @@ public class JournalArticlePersistenceImpl
 				new String[] {"displayDate", "status"}, false),
 			_SQL_SELECT_JOURNALARTICLE_WHERE, _SQL_COUNT_JOURNALARTICLE_WHERE,
 			JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"journalArticle.", "displayDate", FinderColumn.Type.DATE, "<",
 				true, true, JournalArticle::getDisplayDate),
@@ -6953,6 +6977,7 @@ public class JournalArticlePersistenceImpl
 				new String[] {"resourcePrimKey", "indexable", "status"}, false),
 			_SQL_SELECT_JOURNALARTICLE_WHERE, _SQL_COUNT_JOURNALARTICLE_WHERE,
 			JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"journalArticle.", "resourcePrimKey", FinderColumn.Type.LONG,
 				"=", true, true, JournalArticle::getResourcePrimKey),
@@ -6992,6 +7017,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getGroupId),
@@ -7058,6 +7084,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getGroupId),
@@ -7098,6 +7125,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getGroupId),
@@ -7137,6 +7165,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getGroupId),
@@ -7204,6 +7233,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getGroupId),
@@ -7247,6 +7277,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getGroupId),
@@ -7282,6 +7313,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getGroupId),
@@ -7346,6 +7378,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getGroupId),
@@ -7379,6 +7412,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getGroupId),
@@ -7420,6 +7454,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getGroupId),
@@ -7459,6 +7494,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "companyId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getCompanyId),
@@ -7499,6 +7535,7 @@ public class JournalArticlePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLE_WHERE,
 				_SQL_COUNT_JOURNALARTICLE_WHERE,
 				JournalArticleModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"journalArticle.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, JournalArticle::getGroupId),
@@ -7584,4 +7621,4 @@ public class JournalArticlePersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:45407203
+// LIFERAY-SERVICE-BUILDER-HASH:-1158569248

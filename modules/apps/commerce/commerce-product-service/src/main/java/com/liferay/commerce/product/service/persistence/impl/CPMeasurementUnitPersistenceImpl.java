@@ -1146,6 +1146,7 @@ public class CPMeasurementUnitPersistenceImpl
 			_SQL_SELECT_CPMEASUREMENTUNIT_WHERE,
 			_SQL_COUNT_CPMEASUREMENTUNIT_WHERE,
 			CPMeasurementUnitModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"cpMeasurementUnit.", "uuid", FinderColumn.Type.STRING, "=",
 				true, true, CPMeasurementUnit::getUuid));
@@ -1188,7 +1189,7 @@ public class CPMeasurementUnitPersistenceImpl
 				_SQL_SELECT_CPMEASUREMENTUNIT_WHERE,
 				_SQL_COUNT_CPMEASUREMENTUNIT_WHERE,
 				CPMeasurementUnitModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"cpMeasurementUnit.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, CPMeasurementUnit::getUuid),
@@ -1218,7 +1219,7 @@ public class CPMeasurementUnitPersistenceImpl
 				_SQL_SELECT_CPMEASUREMENTUNIT_WHERE,
 				_SQL_COUNT_CPMEASUREMENTUNIT_WHERE,
 				CPMeasurementUnitModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"cpMeasurementUnit.", "companyId", FinderColumn.Type.LONG,
 					"=", true, true, CPMeasurementUnit::getCompanyId));
@@ -1260,6 +1261,7 @@ public class CPMeasurementUnitPersistenceImpl
 			_SQL_SELECT_CPMEASUREMENTUNIT_WHERE,
 			_SQL_COUNT_CPMEASUREMENTUNIT_WHERE,
 			CPMeasurementUnitModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"cpMeasurementUnit.", "companyId", FinderColumn.Type.LONG, "=",
 				true, true, CPMeasurementUnit::getCompanyId),
@@ -1294,6 +1296,7 @@ public class CPMeasurementUnitPersistenceImpl
 			_SQL_SELECT_CPMEASUREMENTUNIT_WHERE,
 			_SQL_COUNT_CPMEASUREMENTUNIT_WHERE,
 			CPMeasurementUnitModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"cpMeasurementUnit.", "companyId", FinderColumn.Type.LONG, "=",
 				true, true, CPMeasurementUnit::getCompanyId),
@@ -1395,4 +1398,4 @@ public class CPMeasurementUnitPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1740914202
+// LIFERAY-SERVICE-BUILDER-HASH:1836137690

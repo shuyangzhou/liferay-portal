@@ -890,7 +890,7 @@ public class CommerceTaxCategoryMappingPersistenceImpl
 			_SQL_SELECT_COMMERCETAXCATEGORYMAPPING_WHERE,
 			_SQL_COUNT_COMMERCETAXCATEGORYMAPPING_WHERE,
 			CommerceTaxCategoryMappingModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"commerceTaxCategoryMapping.", "uuid", FinderColumn.Type.STRING,
 				"=", true, true, CommerceTaxCategoryMapping::getUuid));
@@ -934,7 +934,7 @@ public class CommerceTaxCategoryMappingPersistenceImpl
 				_SQL_SELECT_COMMERCETAXCATEGORYMAPPING_WHERE,
 				_SQL_COUNT_COMMERCETAXCATEGORYMAPPING_WHERE,
 				CommerceTaxCategoryMappingModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"commerceTaxCategoryMapping.", "uuid",
 					FinderColumn.Type.STRING, "=", true, true,
@@ -969,7 +969,7 @@ public class CommerceTaxCategoryMappingPersistenceImpl
 				_SQL_SELECT_COMMERCETAXCATEGORYMAPPING_WHERE,
 				_SQL_COUNT_COMMERCETAXCATEGORYMAPPING_WHERE,
 				CommerceTaxCategoryMappingModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"commerceTaxCategoryMapping.", "commerceTaxMethodId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1082,4 +1082,4 @@ public class CommerceTaxCategoryMappingPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1625625736
+// LIFERAY-SERVICE-BUILDER-HASH:-840419310

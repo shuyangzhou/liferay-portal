@@ -1516,7 +1516,7 @@ public class AnnouncementsEntryPersistenceImpl
 				_SQL_SELECT_ANNOUNCEMENTSENTRY_WHERE,
 				_SQL_COUNT_ANNOUNCEMENTSENTRY_WHERE,
 				AnnouncementsEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"announcementsEntry.", "uuid", FinderColumn.Type.STRING,
 					"=", true, true, AnnouncementsEntry::getUuid));
@@ -1543,7 +1543,7 @@ public class AnnouncementsEntryPersistenceImpl
 				_SQL_SELECT_ANNOUNCEMENTSENTRY_WHERE,
 				_SQL_COUNT_ANNOUNCEMENTSENTRY_WHERE,
 				AnnouncementsEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"announcementsEntry.", "uuid", FinderColumn.Type.STRING,
 					"=", true, true, AnnouncementsEntry::getUuid),
@@ -1573,7 +1573,7 @@ public class AnnouncementsEntryPersistenceImpl
 				_SQL_SELECT_ANNOUNCEMENTSENTRY_WHERE,
 				_SQL_COUNT_ANNOUNCEMENTSENTRY_WHERE,
 				AnnouncementsEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"announcementsEntry.", "companyId", FinderColumn.Type.LONG,
 					"=", true, true, AnnouncementsEntry::getCompanyId));
@@ -1600,7 +1600,7 @@ public class AnnouncementsEntryPersistenceImpl
 				_SQL_SELECT_ANNOUNCEMENTSENTRY_WHERE,
 				_SQL_COUNT_ANNOUNCEMENTSENTRY_WHERE,
 				AnnouncementsEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"announcementsEntry.", "userId", FinderColumn.Type.LONG,
 					"=", true, true, AnnouncementsEntry::getUserId));
@@ -1627,7 +1627,7 @@ public class AnnouncementsEntryPersistenceImpl
 				_SQL_SELECT_ANNOUNCEMENTSENTRY_WHERE,
 				_SQL_COUNT_ANNOUNCEMENTSENTRY_WHERE,
 				AnnouncementsEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"announcementsEntry.", "classNameId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1666,7 +1666,7 @@ public class AnnouncementsEntryPersistenceImpl
 				_SQL_SELECT_ANNOUNCEMENTSENTRY_WHERE,
 				_SQL_COUNT_ANNOUNCEMENTSENTRY_WHERE,
 				AnnouncementsEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"announcementsEntry.", "companyId", FinderColumn.Type.LONG,
 					"=", true, true, AnnouncementsEntry::getCompanyId),
@@ -1707,7 +1707,7 @@ public class AnnouncementsEntryPersistenceImpl
 				_SQL_SELECT_ANNOUNCEMENTSENTRY_WHERE,
 				_SQL_COUNT_ANNOUNCEMENTSENTRY_WHERE,
 				AnnouncementsEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"announcementsEntry.", "classNameId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1757,7 +1757,7 @@ public class AnnouncementsEntryPersistenceImpl
 				_SQL_SELECT_ANNOUNCEMENTSENTRY_WHERE,
 				_SQL_COUNT_ANNOUNCEMENTSENTRY_WHERE,
 				AnnouncementsEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"announcementsEntry.", "companyId", FinderColumn.Type.LONG,
 					"=", true, true, AnnouncementsEntry::getCompanyId),
@@ -1805,4 +1805,4 @@ public class AnnouncementsEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-174723756
+// LIFERAY-SERVICE-BUILDER-HASH:92583852

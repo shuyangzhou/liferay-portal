@@ -1602,6 +1602,7 @@ public class DLFileEntryTypePersistenceImpl
 				0, 1, false, null),
 			_SQL_SELECT_DLFILEENTRYTYPE_WHERE, _SQL_COUNT_DLFILEENTRYTYPE_WHERE,
 			DLFileEntryTypeModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"dlFileEntryType.", "uuid", FinderColumn.Type.STRING, "=", true,
 				true, DLFileEntryType::getUuid));
@@ -1644,7 +1645,7 @@ public class DLFileEntryTypePersistenceImpl
 				_SQL_SELECT_DLFILEENTRYTYPE_WHERE,
 				_SQL_COUNT_DLFILEENTRYTYPE_WHERE,
 				DLFileEntryTypeModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"dlFileEntryType.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, DLFileEntryType::getUuid),
@@ -1674,7 +1675,7 @@ public class DLFileEntryTypePersistenceImpl
 				_SQL_SELECT_DLFILEENTRYTYPE_WHERE,
 				_SQL_COUNT_DLFILEENTRYTYPE_WHERE,
 				DLFileEntryTypeModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new ArrayableFinderColumn<>(
 					"dlFileEntryType.", "groupId", FinderColumn.Type.LONG, "=",
 					false, true, true, DLFileEntryType::getGroupId));
@@ -1701,7 +1702,7 @@ public class DLFileEntryTypePersistenceImpl
 				_SQL_SELECT_DLFILEENTRYTYPE_WHERE,
 				_SQL_COUNT_DLFILEENTRYTYPE_WHERE,
 				DLFileEntryTypeModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"dlFileEntryType.", "companyId", FinderColumn.Type.LONG,
 					"=", true, true, DLFileEntryType::getCompanyId));
@@ -1801,4 +1802,4 @@ public class DLFileEntryTypePersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:711242852
+// LIFERAY-SERVICE-BUILDER-HASH:-1407881711

@@ -636,7 +636,7 @@ public class DDLRecordSetVersionPersistenceImpl
 				_SQL_SELECT_DDLRECORDSETVERSION_WHERE,
 				_SQL_COUNT_DDLRECORDSETVERSION_WHERE,
 				DDLRecordSetVersionModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"ddlRecordSetVersion.", "recordSetId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -679,7 +679,7 @@ public class DDLRecordSetVersionPersistenceImpl
 			_SQL_SELECT_DDLRECORDSETVERSION_WHERE,
 			_SQL_COUNT_DDLRECORDSETVERSION_WHERE,
 			DDLRecordSetVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-			"",
+			"", null,
 			new FinderColumn<>(
 				"ddlRecordSetVersion.", "recordSetId", FinderColumn.Type.LONG,
 				"=", true, true, DDLRecordSetVersion::getRecordSetId),
@@ -759,4 +759,4 @@ public class DDLRecordSetVersionPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1493684350
+// LIFERAY-SERVICE-BUILDER-HASH:1560933938

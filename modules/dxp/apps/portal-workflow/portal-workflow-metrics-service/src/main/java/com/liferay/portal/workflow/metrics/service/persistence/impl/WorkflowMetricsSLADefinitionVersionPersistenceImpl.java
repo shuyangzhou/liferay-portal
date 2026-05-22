@@ -792,7 +792,7 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 			_SQL_SELECT_WORKFLOWMETRICSSLADEFINITIONVERSION_WHERE,
 			_SQL_COUNT_WORKFLOWMETRICSSLADEFINITIONVERSION_WHERE,
 			WorkflowMetricsSLADefinitionVersionModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"workflowMetricsSLADefinitionVersion.", "uuid",
 				FinderColumn.Type.STRING, "=", true, true,
@@ -839,7 +839,7 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 				_SQL_SELECT_WORKFLOWMETRICSSLADEFINITIONVERSION_WHERE,
 				_SQL_COUNT_WORKFLOWMETRICSSLADEFINITIONVERSION_WHERE,
 				WorkflowMetricsSLADefinitionVersionModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"workflowMetricsSLADefinitionVersion.", "uuid",
 					FinderColumn.Type.STRING, "=", true, true,
@@ -874,7 +874,7 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 				_SQL_SELECT_WORKFLOWMETRICSSLADEFINITIONVERSION_WHERE,
 				_SQL_COUNT_WORKFLOWMETRICSSLADEFINITIONVERSION_WHERE,
 				WorkflowMetricsSLADefinitionVersionModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"workflowMetricsSLADefinitionVersion.",
 					"workflowMetricsSLADefinitionId", FinderColumn.Type.LONG,
@@ -980,4 +980,4 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:885645755
+// LIFERAY-SERVICE-BUILDER-HASH:800014091

@@ -730,6 +730,7 @@ public class LayoutSEOEntryPersistenceImpl
 				0, 1, false, null),
 			_SQL_SELECT_LAYOUTSEOENTRY_WHERE, _SQL_COUNT_LAYOUTSEOENTRY_WHERE,
 			LayoutSEOEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"layoutSEOEntry.", "uuid", FinderColumn.Type.STRING, "=", true,
 				true, LayoutSEOEntry::getUuid));
@@ -772,6 +773,7 @@ public class LayoutSEOEntryPersistenceImpl
 				_SQL_SELECT_LAYOUTSEOENTRY_WHERE,
 				_SQL_COUNT_LAYOUTSEOENTRY_WHERE,
 				LayoutSEOEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"layoutSEOEntry.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, LayoutSEOEntry::getUuid),
@@ -873,4 +875,4 @@ public class LayoutSEOEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1651481726
+// LIFERAY-SERVICE-BUILDER-HASH:-190824964

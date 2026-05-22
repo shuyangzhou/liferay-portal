@@ -624,7 +624,7 @@ public class DDMTemplateVersionPersistenceImpl
 				_SQL_SELECT_DDMTEMPLATEVERSION_WHERE,
 				_SQL_COUNT_DDMTEMPLATEVERSION_WHERE,
 				DDMTemplateVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"ddmTemplateVersion.", "templateId", FinderColumn.Type.LONG,
 					"=", true, true, DDMTemplateVersion::getTemplateId));
@@ -666,6 +666,7 @@ public class DDMTemplateVersionPersistenceImpl
 			_SQL_SELECT_DDMTEMPLATEVERSION_WHERE,
 			_SQL_COUNT_DDMTEMPLATEVERSION_WHERE,
 			DDMTemplateVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"ddmTemplateVersion.", "templateId", FinderColumn.Type.LONG,
 				"=", true, true, DDMTemplateVersion::getTemplateId),
@@ -742,4 +743,4 @@ public class DDMTemplateVersionPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-115811736
+// LIFERAY-SERVICE-BUILDER-HASH:-1320014778

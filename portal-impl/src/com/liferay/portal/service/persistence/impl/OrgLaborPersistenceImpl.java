@@ -336,7 +336,7 @@ public class OrgLaborPersistenceImpl
 					new String[] {Long.class.getName()},
 					new String[] {"organizationId"}, false),
 				_SQL_SELECT_ORGLABOR_WHERE, _SQL_COUNT_ORGLABOR_WHERE,
-				OrgLaborModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				OrgLaborModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"orgLabor.", "organizationId", FinderColumn.Type.LONG, "=",
 					true, true, OrgLabor::getOrganizationId));
@@ -371,4 +371,4 @@ public class OrgLaborPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-490700815
+// LIFERAY-SERVICE-BUILDER-HASH:-1776912393

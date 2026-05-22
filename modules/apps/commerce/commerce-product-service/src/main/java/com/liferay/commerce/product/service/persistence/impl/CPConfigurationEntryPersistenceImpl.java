@@ -1173,7 +1173,7 @@ public class CPConfigurationEntryPersistenceImpl
 			_SQL_SELECT_CPCONFIGURATIONENTRY_WHERE,
 			_SQL_COUNT_CPCONFIGURATIONENTRY_WHERE,
 			CPConfigurationEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-			"",
+			"", null,
 			new FinderColumn<>(
 				"cpConfigurationEntry.", "uuid", FinderColumn.Type.STRING, "=",
 				true, true, CPConfigurationEntry::getUuid));
@@ -1216,7 +1216,7 @@ public class CPConfigurationEntryPersistenceImpl
 				_SQL_SELECT_CPCONFIGURATIONENTRY_WHERE,
 				_SQL_COUNT_CPCONFIGURATIONENTRY_WHERE,
 				CPConfigurationEntryModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"cpConfigurationEntry.", "uuid", FinderColumn.Type.STRING,
 					"=", true, true, CPConfigurationEntry::getUuid),
@@ -1247,7 +1247,7 @@ public class CPConfigurationEntryPersistenceImpl
 				_SQL_SELECT_CPCONFIGURATIONENTRY_WHERE,
 				_SQL_COUNT_CPCONFIGURATIONENTRY_WHERE,
 				CPConfigurationEntryModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"cpConfigurationEntry.", "companyId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1278,7 +1278,7 @@ public class CPConfigurationEntryPersistenceImpl
 				_SQL_SELECT_CPCONFIGURATIONENTRY_WHERE,
 				_SQL_COUNT_CPCONFIGURATIONENTRY_WHERE,
 				CPConfigurationEntryModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"cpConfigurationEntry.", "CPConfigurationListId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1305,7 +1305,7 @@ public class CPConfigurationEntryPersistenceImpl
 			_SQL_SELECT_CPCONFIGURATIONENTRY_WHERE,
 			_SQL_COUNT_CPCONFIGURATIONENTRY_WHERE,
 			CPConfigurationEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-			"",
+			"", null,
 			new FinderColumn<>(
 				"cpConfigurationEntry.", "classNameId", FinderColumn.Type.LONG,
 				"=", true, true, CPConfigurationEntry::getClassNameId),
@@ -1430,4 +1430,4 @@ public class CPConfigurationEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2073911604
+// LIFERAY-SERVICE-BUILDER-HASH:115273372

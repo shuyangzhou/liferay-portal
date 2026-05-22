@@ -958,7 +958,7 @@ public class MBSuspiciousActivityPersistenceImpl
 			_SQL_SELECT_MBSUSPICIOUSACTIVITY_WHERE,
 			_SQL_COUNT_MBSUSPICIOUSACTIVITY_WHERE,
 			MBSuspiciousActivityModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-			"",
+			"", null,
 			new FinderColumn<>(
 				"mbSuspiciousActivity.", "uuid", FinderColumn.Type.STRING, "=",
 				true, true, MBSuspiciousActivity::getUuid));
@@ -1001,7 +1001,7 @@ public class MBSuspiciousActivityPersistenceImpl
 				_SQL_SELECT_MBSUSPICIOUSACTIVITY_WHERE,
 				_SQL_COUNT_MBSUSPICIOUSACTIVITY_WHERE,
 				MBSuspiciousActivityModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"mbSuspiciousActivity.", "uuid", FinderColumn.Type.STRING,
 					"=", true, true, MBSuspiciousActivity::getUuid),
@@ -1032,7 +1032,7 @@ public class MBSuspiciousActivityPersistenceImpl
 				_SQL_SELECT_MBSUSPICIOUSACTIVITY_WHERE,
 				_SQL_COUNT_MBSUSPICIOUSACTIVITY_WHERE,
 				MBSuspiciousActivityModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"mbSuspiciousActivity.", "messageId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1060,7 +1060,7 @@ public class MBSuspiciousActivityPersistenceImpl
 				_SQL_SELECT_MBSUSPICIOUSACTIVITY_WHERE,
 				_SQL_COUNT_MBSUSPICIOUSACTIVITY_WHERE,
 				MBSuspiciousActivityModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"mbSuspiciousActivity.", "threadId", FinderColumn.Type.LONG,
 					"=", true, true, MBSuspiciousActivity::getThreadId));
@@ -1169,4 +1169,4 @@ public class MBSuspiciousActivityPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1428561112
+// LIFERAY-SERVICE-BUILDER-HASH:-1126019522

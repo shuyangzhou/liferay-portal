@@ -850,7 +850,7 @@ public class ListTypeDefinitionPersistenceImpl
 				_SQL_SELECT_LISTTYPEDEFINITION_WHERE,
 				_SQL_COUNT_LISTTYPEDEFINITION_WHERE,
 				ListTypeDefinitionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"listTypeDefinition.", "uuid", FinderColumn.Type.STRING,
 					"=", true, true, ListTypeDefinition::getUuid));
@@ -877,7 +877,7 @@ public class ListTypeDefinitionPersistenceImpl
 				_SQL_SELECT_LISTTYPEDEFINITION_WHERE,
 				_SQL_COUNT_LISTTYPEDEFINITION_WHERE,
 				ListTypeDefinitionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"listTypeDefinition.", "uuid", FinderColumn.Type.STRING,
 					"=", true, true, ListTypeDefinition::getUuid),
@@ -907,7 +907,7 @@ public class ListTypeDefinitionPersistenceImpl
 				_SQL_SELECT_LISTTYPEDEFINITION_WHERE,
 				_SQL_COUNT_LISTTYPEDEFINITION_WHERE,
 				ListTypeDefinitionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"listTypeDefinition.", "companyId", FinderColumn.Type.LONG,
 					"=", true, true, ListTypeDefinition::getCompanyId),
@@ -1003,4 +1003,4 @@ public class ListTypeDefinitionPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1223698890
+// LIFERAY-SERVICE-BUILDER-HASH:-434980438

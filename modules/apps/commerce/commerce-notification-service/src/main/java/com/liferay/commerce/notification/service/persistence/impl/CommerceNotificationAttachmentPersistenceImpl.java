@@ -697,7 +697,7 @@ public class CommerceNotificationAttachmentPersistenceImpl
 			_SQL_SELECT_COMMERCENOTIFICATIONATTACHMENT_WHERE,
 			_SQL_COUNT_COMMERCENOTIFICATIONATTACHMENT_WHERE,
 			CommerceNotificationAttachmentModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"commerceNotificationAttachment.", "uuid",
 				FinderColumn.Type.STRING, "=", true, true,
@@ -743,7 +743,7 @@ public class CommerceNotificationAttachmentPersistenceImpl
 				_SQL_SELECT_COMMERCENOTIFICATIONATTACHMENT_WHERE,
 				_SQL_COUNT_COMMERCENOTIFICATIONATTACHMENT_WHERE,
 				CommerceNotificationAttachmentModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"commerceNotificationAttachment.", "uuid",
 					FinderColumn.Type.STRING, "=", true, true,
@@ -778,7 +778,7 @@ public class CommerceNotificationAttachmentPersistenceImpl
 				_SQL_SELECT_COMMERCENOTIFICATIONATTACHMENT_WHERE,
 				_SQL_COUNT_COMMERCENOTIFICATIONATTACHMENT_WHERE,
 				CommerceNotificationAttachmentModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"commerceNotificationAttachment.",
 					"commerceNotificationQueueEntryId", FinderColumn.Type.LONG,
@@ -861,4 +861,4 @@ public class CommerceNotificationAttachmentPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:262382236
+// LIFERAY-SERVICE-BUILDER-HASH:-1747703686

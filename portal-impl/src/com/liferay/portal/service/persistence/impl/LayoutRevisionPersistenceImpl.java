@@ -1601,6 +1601,7 @@ public class LayoutRevisionPersistenceImpl
 				_SQL_SELECT_LAYOUTREVISION_WHERE,
 				_SQL_COUNT_LAYOUTREVISION_WHERE,
 				LayoutRevisionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"layoutRevision.", "layoutSetBranchId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1625,6 +1626,7 @@ public class LayoutRevisionPersistenceImpl
 				false),
 			_SQL_SELECT_LAYOUTREVISION_WHERE, _SQL_COUNT_LAYOUTREVISION_WHERE,
 			LayoutRevisionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"layoutRevision.", "plid", FinderColumn.Type.LONG, "=", true,
 				true, LayoutRevision::getPlid));
@@ -1651,6 +1653,7 @@ public class LayoutRevisionPersistenceImpl
 				_SQL_SELECT_LAYOUTREVISION_WHERE,
 				_SQL_COUNT_LAYOUTREVISION_WHERE,
 				LayoutRevisionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"layoutRevision.", "status", FinderColumn.Type.INTEGER, "=",
 					true, true, LayoutRevision::getStatus));
@@ -1675,6 +1678,7 @@ public class LayoutRevisionPersistenceImpl
 				new String[] {"layoutSetBranchId", "head"}, false),
 			_SQL_SELECT_LAYOUTREVISION_WHERE, _SQL_COUNT_LAYOUTREVISION_WHERE,
 			LayoutRevisionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"layoutRevision.", "layoutSetBranchId", FinderColumn.Type.LONG,
 				"=", true, true, LayoutRevision::getLayoutSetBranchId),
@@ -1702,6 +1706,7 @@ public class LayoutRevisionPersistenceImpl
 				new String[] {"layoutSetBranchId", "plid"}, false),
 			_SQL_SELECT_LAYOUTREVISION_WHERE, _SQL_COUNT_LAYOUTREVISION_WHERE,
 			LayoutRevisionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"layoutRevision.", "layoutSetBranchId", FinderColumn.Type.LONG,
 				"=", true, true, LayoutRevision::getLayoutSetBranchId),
@@ -1729,6 +1734,7 @@ public class LayoutRevisionPersistenceImpl
 				new String[] {"layoutSetBranchId", "status"}, false),
 			_SQL_SELECT_LAYOUTREVISION_WHERE, _SQL_COUNT_LAYOUTREVISION_WHERE,
 			LayoutRevisionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"layoutRevision.", "layoutSetBranchId", FinderColumn.Type.LONG,
 				"=", true, true, LayoutRevision::getLayoutSetBranchId),
@@ -1756,6 +1762,7 @@ public class LayoutRevisionPersistenceImpl
 				new String[] {"head", "plid"}, false),
 			_SQL_SELECT_LAYOUTREVISION_WHERE, _SQL_COUNT_LAYOUTREVISION_WHERE,
 			LayoutRevisionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"layoutRevision.", "head", FinderColumn.Type.BOOLEAN, "=", true,
 				true, LayoutRevision::isHead),
@@ -1784,6 +1791,7 @@ public class LayoutRevisionPersistenceImpl
 				_SQL_SELECT_LAYOUTREVISION_WHERE,
 				_SQL_COUNT_LAYOUTREVISION_WHERE,
 				LayoutRevisionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"layoutRevision.", "plid", FinderColumn.Type.LONG, "=",
 					true, true, LayoutRevision::getPlid),
@@ -1820,7 +1828,7 @@ public class LayoutRevisionPersistenceImpl
 				false),
 			_SQL_SELECT_LAYOUTREVISION_WHERE, _SQL_COUNT_LAYOUTREVISION_WHERE,
 			LayoutRevisionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-			"layoutRevision.status != 5",
+			"layoutRevision.status != 5", null,
 			new FinderColumn<>(
 				"layoutRevision.", "layoutSetBranchId", FinderColumn.Type.LONG,
 				"=", true, true, LayoutRevision::getLayoutSetBranchId),
@@ -1866,6 +1874,7 @@ public class LayoutRevisionPersistenceImpl
 				false),
 			_SQL_SELECT_LAYOUTREVISION_WHERE, _SQL_COUNT_LAYOUTREVISION_WHERE,
 			LayoutRevisionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"layoutRevision.", "layoutSetBranchId", FinderColumn.Type.LONG,
 				"=", true, true, LayoutRevision::getLayoutSetBranchId),
@@ -1909,6 +1918,7 @@ public class LayoutRevisionPersistenceImpl
 				_SQL_SELECT_LAYOUTREVISION_WHERE,
 				_SQL_COUNT_LAYOUTREVISION_WHERE,
 				LayoutRevisionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"layoutRevision.", "layoutSetBranchId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1946,6 +1956,7 @@ public class LayoutRevisionPersistenceImpl
 				new String[] {"layoutSetBranchId", "head", "status"}, false),
 			_SQL_SELECT_LAYOUTREVISION_WHERE, _SQL_COUNT_LAYOUTREVISION_WHERE,
 			LayoutRevisionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"layoutRevision.", "layoutSetBranchId", FinderColumn.Type.LONG,
 				"=", true, true, LayoutRevision::getLayoutSetBranchId),
@@ -1982,6 +1993,7 @@ public class LayoutRevisionPersistenceImpl
 				new String[] {"layoutSetBranchId", "plid", "status"}, false),
 			_SQL_SELECT_LAYOUTREVISION_WHERE, _SQL_COUNT_LAYOUTREVISION_WHERE,
 			LayoutRevisionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"layoutRevision.", "layoutSetBranchId", FinderColumn.Type.LONG,
 				"=", true, true, LayoutRevision::getLayoutSetBranchId),
@@ -2022,4 +2034,4 @@ public class LayoutRevisionPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1282602556
+// LIFERAY-SERVICE-BUILDER-HASH:-985500746

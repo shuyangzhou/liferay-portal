@@ -460,6 +460,7 @@ public class CSDiagramPinPersistenceImpl
 					new String[] {"CPDefinitionId"}, false),
 				_SQL_SELECT_CSDIAGRAMPIN_WHERE, _SQL_COUNT_CSDIAGRAMPIN_WHERE,
 				CSDiagramPinModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"csDiagramPin.", "CPDefinitionId", FinderColumn.Type.LONG,
 					"=", true, true, CSDiagramPin::getCPDefinitionId));
@@ -530,4 +531,4 @@ public class CSDiagramPinPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-450074057
+// LIFERAY-SERVICE-BUILDER-HASH:1973567703

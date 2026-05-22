@@ -780,7 +780,7 @@ public class DepotEntryPersistenceImpl
 				new String[] {String.class.getName()}, new String[] {"uuid_"},
 				0, 1, false, null),
 			_SQL_SELECT_DEPOTENTRY_WHERE, _SQL_COUNT_DEPOTENTRY_WHERE,
-			DepotEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			DepotEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"depotEntry.", "uuid", FinderColumn.Type.STRING, "=", true,
 				true, DepotEntry::getUuid));
@@ -822,6 +822,7 @@ public class DepotEntryPersistenceImpl
 					new String[] {"uuid_", "companyId"}, 0, 1, false, null),
 				_SQL_SELECT_DEPOTENTRY_WHERE, _SQL_COUNT_DEPOTENTRY_WHERE,
 				DepotEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"depotEntry.", "uuid", FinderColumn.Type.STRING, "=", true,
 					true, DepotEntry::getUuid),
@@ -859,7 +860,7 @@ public class DepotEntryPersistenceImpl
 				new String[] {Long.class.getName(), Integer.class.getName()},
 				new String[] {"companyId", "type_"}, false),
 			_SQL_SELECT_DEPOTENTRY_WHERE, _SQL_COUNT_DEPOTENTRY_WHERE,
-			DepotEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			DepotEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"depotEntry.", "companyId", FinderColumn.Type.LONG, "=", true,
 				true, DepotEntry::getCompanyId),
@@ -939,4 +940,4 @@ public class DepotEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2007636878
+// LIFERAY-SERVICE-BUILDER-HASH:1243668862

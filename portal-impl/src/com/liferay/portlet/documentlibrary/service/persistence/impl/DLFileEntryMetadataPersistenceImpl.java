@@ -945,7 +945,7 @@ public class DLFileEntryMetadataPersistenceImpl
 			_SQL_SELECT_DLFILEENTRYMETADATA_WHERE,
 			_SQL_COUNT_DLFILEENTRYMETADATA_WHERE,
 			DLFileEntryMetadataModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-			"",
+			"", null,
 			new FinderColumn<>(
 				"dlFileEntryMetadata.", "uuid", FinderColumn.Type.STRING, "=",
 				true, true, DLFileEntryMetadata::getUuid));
@@ -972,7 +972,7 @@ public class DLFileEntryMetadataPersistenceImpl
 				_SQL_SELECT_DLFILEENTRYMETADATA_WHERE,
 				_SQL_COUNT_DLFILEENTRYMETADATA_WHERE,
 				DLFileEntryMetadataModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"dlFileEntryMetadata.", "uuid", FinderColumn.Type.STRING,
 					"=", true, true, DLFileEntryMetadata::getUuid),
@@ -1002,7 +1002,7 @@ public class DLFileEntryMetadataPersistenceImpl
 				_SQL_SELECT_DLFILEENTRYMETADATA_WHERE,
 				_SQL_COUNT_DLFILEENTRYMETADATA_WHERE,
 				DLFileEntryMetadataModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"dlFileEntryMetadata.", "fileEntryId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1031,7 +1031,7 @@ public class DLFileEntryMetadataPersistenceImpl
 				_SQL_SELECT_DLFILEENTRYMETADATA_WHERE,
 				_SQL_COUNT_DLFILEENTRYMETADATA_WHERE,
 				DLFileEntryMetadataModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"dlFileEntryMetadata.", "fileVersionId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1109,4 +1109,4 @@ public class DLFileEntryMetadataPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1720836281
+// LIFERAY-SERVICE-BUILDER-HASH:1835378675

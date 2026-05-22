@@ -656,6 +656,7 @@ public class ObjectFieldSettingPersistenceImpl
 			_SQL_SELECT_OBJECTFIELDSETTING_WHERE,
 			_SQL_COUNT_OBJECTFIELDSETTING_WHERE,
 			ObjectFieldSettingModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"objectFieldSetting.", "uuid", FinderColumn.Type.STRING, "=",
 				true, true, ObjectFieldSetting::getUuid));
@@ -682,7 +683,7 @@ public class ObjectFieldSettingPersistenceImpl
 				_SQL_SELECT_OBJECTFIELDSETTING_WHERE,
 				_SQL_COUNT_OBJECTFIELDSETTING_WHERE,
 				ObjectFieldSettingModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"objectFieldSetting.", "uuid", FinderColumn.Type.STRING,
 					"=", true, true, ObjectFieldSetting::getUuid),
@@ -713,7 +714,7 @@ public class ObjectFieldSettingPersistenceImpl
 				_SQL_SELECT_OBJECTFIELDSETTING_WHERE,
 				_SQL_COUNT_OBJECTFIELDSETTING_WHERE,
 				ObjectFieldSettingModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"objectFieldSetting.", "objectFieldId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -804,4 +805,4 @@ public class ObjectFieldSettingPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1279859873
+// LIFERAY-SERVICE-BUILDER-HASH:-624232539

@@ -666,7 +666,7 @@ public class PLOEntryPersistenceImpl
 					"countByCompanyId", new String[] {Long.class.getName()},
 					new String[] {"companyId"}, false),
 				_SQL_SELECT_PLOENTRY_WHERE, _SQL_COUNT_PLOENTRY_WHERE,
-				PLOEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				PLOEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"ploEntry.", "companyId", FinderColumn.Type.LONG, "=", true,
 					true, PLOEntry::getCompanyId));
@@ -690,7 +690,7 @@ public class PLOEntryPersistenceImpl
 				new String[] {Long.class.getName(), String.class.getName()},
 				new String[] {"companyId", "key_"}, 0, 2, false, null),
 			_SQL_SELECT_PLOENTRY_WHERE, _SQL_COUNT_PLOENTRY_WHERE,
-			PLOEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			PLOEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"ploEntry.", "companyId", FinderColumn.Type.LONG, "=", true,
 				true, PLOEntry::getCompanyId),
@@ -717,7 +717,7 @@ public class PLOEntryPersistenceImpl
 				new String[] {Long.class.getName(), String.class.getName()},
 				new String[] {"companyId", "languageId"}, 0, 2, false, null),
 			_SQL_SELECT_PLOENTRY_WHERE, _SQL_COUNT_PLOENTRY_WHERE,
-			PLOEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			PLOEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"ploEntry.", "companyId", FinderColumn.Type.LONG, "=", true,
 				true, PLOEntry::getCompanyId),
@@ -816,4 +816,4 @@ public class PLOEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-284522794
+// LIFERAY-SERVICE-BUILDER-HASH:1344049870

@@ -1925,6 +1925,7 @@ public class DLFileVersionPersistenceImpl
 				0, 1, false, null),
 			_SQL_SELECT_DLFILEVERSION_WHERE, _SQL_COUNT_DLFILEVERSION_WHERE,
 			DLFileVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"dlFileVersion.", "uuid", FinderColumn.Type.STRING, "=", true,
 				true, DLFileVersion::getUuid));
@@ -1966,6 +1967,7 @@ public class DLFileVersionPersistenceImpl
 					new String[] {"uuid_", "companyId"}, 0, 1, false, null),
 				_SQL_SELECT_DLFILEVERSION_WHERE, _SQL_COUNT_DLFILEVERSION_WHERE,
 				DLFileVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"dlFileVersion.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, DLFileVersion::getUuid),
@@ -1994,6 +1996,7 @@ public class DLFileVersionPersistenceImpl
 					new String[] {"companyId"}, false),
 				_SQL_SELECT_DLFILEVERSION_WHERE, _SQL_COUNT_DLFILEVERSION_WHERE,
 				DLFileVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"dlFileVersion.", "companyId", FinderColumn.Type.LONG, "=",
 					true, true, DLFileVersion::getCompanyId));
@@ -2019,6 +2022,7 @@ public class DLFileVersionPersistenceImpl
 					new String[] {"fileEntryId"}, false),
 				_SQL_SELECT_DLFILEVERSION_WHERE, _SQL_COUNT_DLFILEVERSION_WHERE,
 				DLFileVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"dlFileVersion.", "fileEntryId", FinderColumn.Type.LONG,
 					"=", true, true, DLFileVersion::getFileEntryId));
@@ -2044,6 +2048,7 @@ public class DLFileVersionPersistenceImpl
 					new String[] {"mimeType"}, 0, 1, false, null),
 				_SQL_SELECT_DLFILEVERSION_WHERE, _SQL_COUNT_DLFILEVERSION_WHERE,
 				DLFileVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"dlFileVersion.", "mimeType", FinderColumn.Type.STRING, "=",
 					true, true, DLFileVersion::getMimeType));
@@ -2068,6 +2073,7 @@ public class DLFileVersionPersistenceImpl
 				new String[] {"companyId", "storeUUID"}, 0, 2, false, null),
 			_SQL_SELECT_DLFILEVERSION_WHERE, _SQL_COUNT_DLFILEVERSION_WHERE,
 			DLFileVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"dlFileVersion.", "companyId", FinderColumn.Type.LONG, "=",
 				true, true, DLFileVersion::getCompanyId),
@@ -2095,6 +2101,7 @@ public class DLFileVersionPersistenceImpl
 					new String[] {"companyId", "status"}, false),
 				_SQL_SELECT_DLFILEVERSION_WHERE, _SQL_COUNT_DLFILEVERSION_WHERE,
 				DLFileVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"dlFileVersion.", "companyId", FinderColumn.Type.LONG, "=",
 					true, true, DLFileVersion::getCompanyId),
@@ -2138,6 +2145,7 @@ public class DLFileVersionPersistenceImpl
 				new String[] {"fileEntryId", "status"}, false),
 			_SQL_SELECT_DLFILEVERSION_WHERE, _SQL_COUNT_DLFILEVERSION_WHERE,
 			DLFileVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"dlFileVersion.", "fileEntryId", FinderColumn.Type.LONG, "=",
 				true, true, DLFileVersion::getFileEntryId),
@@ -2162,6 +2170,7 @@ public class DLFileVersionPersistenceImpl
 				new String[] {"displayDate", "status"}, false),
 			_SQL_SELECT_DLFILEVERSION_WHERE, _SQL_COUNT_DLFILEVERSION_WHERE,
 			DLFileVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"dlFileVersion.", "displayDate", FinderColumn.Type.DATE, "<",
 				true, true, DLFileVersion::getDisplayDate),
@@ -2195,6 +2204,7 @@ public class DLFileVersionPersistenceImpl
 				new String[] {"groupId", "folderId", "status"}, false),
 			_SQL_SELECT_DLFILEVERSION_WHERE, _SQL_COUNT_DLFILEVERSION_WHERE,
 			DLFileVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"dlFileVersion.", "groupId", FinderColumn.Type.LONG, "=", true,
 				true, DLFileVersion::getGroupId),
@@ -2231,6 +2241,7 @@ public class DLFileVersionPersistenceImpl
 				new String[] {"companyId", "expirationDate", "status"}, false),
 			_SQL_SELECT_DLFILEVERSION_WHERE, _SQL_COUNT_DLFILEVERSION_WHERE,
 			DLFileVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"dlFileVersion.", "companyId", FinderColumn.Type.LONG, "=",
 				true, true, DLFileVersion::getCompanyId),
@@ -2272,6 +2283,7 @@ public class DLFileVersionPersistenceImpl
 					12, false, null),
 				_SQL_SELECT_DLFILEVERSION_WHERE, _SQL_COUNT_DLFILEVERSION_WHERE,
 				DLFileVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"dlFileVersion.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, DLFileVersion::getGroupId),
@@ -2329,4 +2341,4 @@ public class DLFileVersionPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1233105394
+// LIFERAY-SERVICE-BUILDER-HASH:527564948

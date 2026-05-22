@@ -1635,6 +1635,7 @@ public class AssetVocabularyPersistenceImpl
 				0, 1, false, null),
 			_SQL_SELECT_ASSETVOCABULARY_WHERE, _SQL_COUNT_ASSETVOCABULARY_WHERE,
 			AssetVocabularyModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"assetVocabulary.", "uuid", FinderColumn.Type.STRING, "=", true,
 				true, AssetVocabulary::getUuid));
@@ -1677,7 +1678,7 @@ public class AssetVocabularyPersistenceImpl
 				_SQL_SELECT_ASSETVOCABULARY_WHERE,
 				_SQL_COUNT_ASSETVOCABULARY_WHERE,
 				AssetVocabularyModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"assetVocabulary.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, AssetVocabulary::getUuid),
@@ -1707,7 +1708,7 @@ public class AssetVocabularyPersistenceImpl
 				_SQL_SELECT_ASSETVOCABULARY_WHERE,
 				_SQL_COUNT_ASSETVOCABULARY_WHERE,
 				AssetVocabularyModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new ArrayableFinderColumn<>(
 					"assetVocabulary.", "groupId", FinderColumn.Type.LONG, "=",
 					false, true, true, AssetVocabulary::getGroupId));
@@ -1734,7 +1735,7 @@ public class AssetVocabularyPersistenceImpl
 				_SQL_SELECT_ASSETVOCABULARY_WHERE,
 				_SQL_COUNT_ASSETVOCABULARY_WHERE,
 				AssetVocabularyModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"assetVocabulary.", "companyId", FinderColumn.Type.LONG,
 					"=", true, true, AssetVocabulary::getCompanyId));
@@ -1774,7 +1775,7 @@ public class AssetVocabularyPersistenceImpl
 				_SQL_SELECT_ASSETVOCABULARY_WHERE,
 				_SQL_COUNT_ASSETVOCABULARY_WHERE,
 				AssetVocabularyModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"assetVocabulary.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, AssetVocabulary::getGroupId),
@@ -1808,7 +1809,7 @@ public class AssetVocabularyPersistenceImpl
 				_SQL_SELECT_ASSETVOCABULARY_WHERE,
 				_SQL_COUNT_ASSETVOCABULARY_WHERE,
 				AssetVocabularyModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new ArrayableFinderColumn<>(
 					"assetVocabulary.", "groupId", FinderColumn.Type.LONG, "=",
 					false, true, true, AssetVocabulary::getGroupId),
@@ -1870,4 +1871,4 @@ public class AssetVocabularyPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-837633946
+// LIFERAY-SERVICE-BUILDER-HASH:1832072095

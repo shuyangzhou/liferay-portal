@@ -800,7 +800,7 @@ public class DDMContentPersistenceImpl
 				new String[] {String.class.getName()}, new String[] {"uuid_"},
 				0, 1, false, null),
 			_SQL_SELECT_DDMCONTENT_WHERE, _SQL_COUNT_DDMCONTENT_WHERE,
-			DDMContentModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			DDMContentModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"ddmContent.", "uuid", FinderColumn.Type.STRING, "=", true,
 				true, DDMContent::getUuid));
@@ -842,6 +842,7 @@ public class DDMContentPersistenceImpl
 					new String[] {"uuid_", "companyId"}, 0, 1, false, null),
 				_SQL_SELECT_DDMCONTENT_WHERE, _SQL_COUNT_DDMCONTENT_WHERE,
 				DDMContentModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"ddmContent.", "uuid", FinderColumn.Type.STRING, "=", true,
 					true, DDMContent::getUuid),
@@ -870,6 +871,7 @@ public class DDMContentPersistenceImpl
 					new String[] {"groupId"}, false),
 				_SQL_SELECT_DDMCONTENT_WHERE, _SQL_COUNT_DDMCONTENT_WHERE,
 				DDMContentModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"ddmContent.", "groupId", FinderColumn.Type.LONG, "=", true,
 					true, DDMContent::getGroupId));
@@ -895,6 +897,7 @@ public class DDMContentPersistenceImpl
 					new String[] {"companyId"}, false),
 				_SQL_SELECT_DDMCONTENT_WHERE, _SQL_COUNT_DDMCONTENT_WHERE,
 				DDMContentModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"ddmContent.", "companyId", FinderColumn.Type.LONG, "=",
 					true, true, DDMContent::getCompanyId));
@@ -971,4 +974,4 @@ public class DDMContentPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-180880868
+// LIFERAY-SERVICE-BUILDER-HASH:193340594

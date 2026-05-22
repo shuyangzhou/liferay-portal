@@ -1275,7 +1275,7 @@ public class CPDefinitionOptionValueRelPersistenceImpl
 			_SQL_SELECT_CPDEFINITIONOPTIONVALUEREL_WHERE,
 			_SQL_COUNT_CPDEFINITIONOPTIONVALUEREL_WHERE,
 			CPDefinitionOptionValueRelModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"cpDefinitionOptionValueRel.", "uuid", FinderColumn.Type.STRING,
 				"=", true, true, CPDefinitionOptionValueRel::getUuid));
@@ -1319,7 +1319,7 @@ public class CPDefinitionOptionValueRelPersistenceImpl
 				_SQL_SELECT_CPDEFINITIONOPTIONVALUEREL_WHERE,
 				_SQL_COUNT_CPDEFINITIONOPTIONVALUEREL_WHERE,
 				CPDefinitionOptionValueRelModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"cpDefinitionOptionValueRel.", "uuid",
 					FinderColumn.Type.STRING, "=", true, true,
@@ -1351,7 +1351,7 @@ public class CPDefinitionOptionValueRelPersistenceImpl
 				_SQL_SELECT_CPDEFINITIONOPTIONVALUEREL_WHERE,
 				_SQL_COUNT_CPDEFINITIONOPTIONVALUEREL_WHERE,
 				CPDefinitionOptionValueRelModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"cpDefinitionOptionValueRel.", "groupId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1379,7 +1379,7 @@ public class CPDefinitionOptionValueRelPersistenceImpl
 				_SQL_SELECT_CPDEFINITIONOPTIONVALUEREL_WHERE,
 				_SQL_COUNT_CPDEFINITIONOPTIONVALUEREL_WHERE,
 				CPDefinitionOptionValueRelModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"cpDefinitionOptionValueRel.", "companyId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1410,7 +1410,7 @@ public class CPDefinitionOptionValueRelPersistenceImpl
 				_SQL_SELECT_CPDEFINITIONOPTIONVALUEREL_WHERE,
 				_SQL_COUNT_CPDEFINITIONOPTIONVALUEREL_WHERE,
 				CPDefinitionOptionValueRelModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"cpDefinitionOptionValueRel.", "CPDefinitionOptionRelId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1441,7 +1441,7 @@ public class CPDefinitionOptionValueRelPersistenceImpl
 				_SQL_SELECT_CPDEFINITIONOPTIONVALUEREL_WHERE,
 				_SQL_COUNT_CPDEFINITIONOPTIONVALUEREL_WHERE,
 				CPDefinitionOptionValueRelModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"cpDefinitionOptionValueRel.", "CPInstanceUuid",
 					FinderColumn.Type.STRING, "=", true, true,
@@ -1467,7 +1467,7 @@ public class CPDefinitionOptionValueRelPersistenceImpl
 			_SQL_SELECT_CPDEFINITIONOPTIONVALUEREL_WHERE,
 			_SQL_COUNT_CPDEFINITIONOPTIONVALUEREL_WHERE,
 			CPDefinitionOptionValueRelModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"cpDefinitionOptionValueRel.", "key", FinderColumn.Type.STRING,
 				"=", true, true, CPDefinitionOptionValueRel::getKey));
@@ -1518,7 +1518,7 @@ public class CPDefinitionOptionValueRelPersistenceImpl
 				_SQL_SELECT_CPDEFINITIONOPTIONVALUEREL_WHERE,
 				_SQL_COUNT_CPDEFINITIONOPTIONVALUEREL_WHERE,
 				CPDefinitionOptionValueRelModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"cpDefinitionOptionValueRel.", "CPDefinitionOptionRelId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1600,4 +1600,4 @@ public class CPDefinitionOptionValueRelPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-761101622
+// LIFERAY-SERVICE-BUILDER-HASH:1967207312

@@ -990,7 +990,7 @@ public class CPOptionCategoryPersistenceImpl
 				_SQL_SELECT_CPOPTIONCATEGORY_WHERE,
 				_SQL_COUNT_CPOPTIONCATEGORY_WHERE,
 				CPOptionCategoryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"cpOptionCategory.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, CPOptionCategory::getUuid));
@@ -1017,7 +1017,7 @@ public class CPOptionCategoryPersistenceImpl
 				_SQL_SELECT_CPOPTIONCATEGORY_WHERE,
 				_SQL_COUNT_CPOPTIONCATEGORY_WHERE,
 				CPOptionCategoryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"cpOptionCategory.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, CPOptionCategory::getUuid),
@@ -1047,7 +1047,7 @@ public class CPOptionCategoryPersistenceImpl
 				_SQL_SELECT_CPOPTIONCATEGORY_WHERE,
 				_SQL_COUNT_CPOPTIONCATEGORY_WHERE,
 				CPOptionCategoryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"cpOptionCategory.", "companyId", FinderColumn.Type.LONG,
 					"=", true, true, CPOptionCategory::getCompanyId));
@@ -1158,4 +1158,4 @@ public class CPOptionCategoryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1768638887
+// LIFERAY-SERVICE-BUILDER-HASH:-1432595211

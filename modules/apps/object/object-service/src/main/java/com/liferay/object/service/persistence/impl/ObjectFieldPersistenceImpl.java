@@ -1878,7 +1878,7 @@ public class ObjectFieldPersistenceImpl
 				new String[] {String.class.getName()}, new String[] {"uuid_"},
 				0, 1, false, null),
 			_SQL_SELECT_OBJECTFIELD_WHERE, _SQL_COUNT_OBJECTFIELD_WHERE,
-			ObjectFieldModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			ObjectFieldModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"objectField.", "uuid", FinderColumn.Type.STRING, "=", true,
 				true, ObjectField::getUuid));
@@ -1904,6 +1904,7 @@ public class ObjectFieldPersistenceImpl
 					new String[] {"uuid_", "companyId"}, 0, 1, false, null),
 				_SQL_SELECT_OBJECTFIELD_WHERE, _SQL_COUNT_OBJECTFIELD_WHERE,
 				ObjectFieldModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"objectField.", "uuid", FinderColumn.Type.STRING, "=", true,
 					true, ObjectField::getUuid),
@@ -1932,6 +1933,7 @@ public class ObjectFieldPersistenceImpl
 					new String[] {"companyId"}, false),
 				_SQL_SELECT_OBJECTFIELD_WHERE, _SQL_COUNT_OBJECTFIELD_WHERE,
 				ObjectFieldModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"objectField.", "companyId", FinderColumn.Type.LONG, "=",
 					true, true, ObjectField::getCompanyId));
@@ -1960,6 +1962,7 @@ public class ObjectFieldPersistenceImpl
 					new String[] {"listTypeDefinitionId"}, false),
 				_SQL_SELECT_OBJECTFIELD_WHERE, _SQL_COUNT_OBJECTFIELD_WHERE,
 				ObjectFieldModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"objectField.", "listTypeDefinitionId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1989,6 +1992,7 @@ public class ObjectFieldPersistenceImpl
 					new String[] {"objectDefinitionId"}, false),
 				_SQL_SELECT_OBJECTFIELD_WHERE, _SQL_COUNT_OBJECTFIELD_WHERE,
 				ObjectFieldModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"objectField.", "objectDefinitionId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -2013,7 +2017,7 @@ public class ObjectFieldPersistenceImpl
 				new String[] {Long.class.getName(), Long.class.getName()},
 				new String[] {"companyId", "userId"}, false),
 			_SQL_SELECT_OBJECTFIELD_WHERE, _SQL_COUNT_OBJECTFIELD_WHERE,
-			ObjectFieldModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			ObjectFieldModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"objectField.", "companyId", FinderColumn.Type.LONG, "=", true,
 				true, ObjectField::getCompanyId),
@@ -2040,7 +2044,7 @@ public class ObjectFieldPersistenceImpl
 				new String[] {Long.class.getName(), String.class.getName()},
 				new String[] {"companyId", "businessType"}, 0, 2, false, null),
 			_SQL_SELECT_OBJECTFIELD_WHERE, _SQL_COUNT_OBJECTFIELD_WHERE,
-			ObjectFieldModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			ObjectFieldModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"objectField.", "companyId", FinderColumn.Type.LONG, "=", true,
 				true, ObjectField::getCompanyId),
@@ -2073,6 +2077,7 @@ public class ObjectFieldPersistenceImpl
 					new String[] {"listTypeDefinitionId", "state_"}, false),
 				_SQL_SELECT_OBJECTFIELD_WHERE, _SQL_COUNT_OBJECTFIELD_WHERE,
 				ObjectFieldModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"objectField.", "listTypeDefinitionId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -2104,6 +2109,7 @@ public class ObjectFieldPersistenceImpl
 					false, null),
 				_SQL_SELECT_OBJECTFIELD_WHERE, _SQL_COUNT_OBJECTFIELD_WHERE,
 				ObjectFieldModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"objectField.", "objectDefinitionId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -2135,6 +2141,7 @@ public class ObjectFieldPersistenceImpl
 					false, null),
 				_SQL_SELECT_OBJECTFIELD_WHERE, _SQL_COUNT_OBJECTFIELD_WHERE,
 				ObjectFieldModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"objectField.", "objectDefinitionId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -2162,7 +2169,7 @@ public class ObjectFieldPersistenceImpl
 				new String[] {Long.class.getName(), Boolean.class.getName()},
 				new String[] {"objectDefinitionId", "indexed"}, false),
 			_SQL_SELECT_OBJECTFIELD_WHERE, _SQL_COUNT_OBJECTFIELD_WHERE,
-			ObjectFieldModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			ObjectFieldModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"objectField.", "objectDefinitionId", FinderColumn.Type.LONG,
 				"=", true, true, ObjectField::getObjectDefinitionId),
@@ -2189,7 +2196,7 @@ public class ObjectFieldPersistenceImpl
 				new String[] {Long.class.getName(), Boolean.class.getName()},
 				new String[] {"objectDefinitionId", "localized"}, false),
 			_SQL_SELECT_OBJECTFIELD_WHERE, _SQL_COUNT_OBJECTFIELD_WHERE,
-			ObjectFieldModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			ObjectFieldModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"objectField.", "objectDefinitionId", FinderColumn.Type.LONG,
 				"=", true, true, ObjectField::getObjectDefinitionId),
@@ -2232,7 +2239,7 @@ public class ObjectFieldPersistenceImpl
 				new String[] {Long.class.getName(), Boolean.class.getName()},
 				new String[] {"objectDefinitionId", "system_"}, false),
 			_SQL_SELECT_OBJECTFIELD_WHERE, _SQL_COUNT_OBJECTFIELD_WHERE,
-			ObjectFieldModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			ObjectFieldModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"objectField.", "objectDefinitionId", FinderColumn.Type.LONG,
 				"=", true, true, ObjectField::getObjectDefinitionId),
@@ -2299,6 +2306,7 @@ public class ObjectFieldPersistenceImpl
 					2, false, null),
 				_SQL_SELECT_OBJECTFIELD_WHERE, _SQL_COUNT_OBJECTFIELD_WHERE,
 				ObjectFieldModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"objectField.", "objectDefinitionId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -2341,6 +2349,7 @@ public class ObjectFieldPersistenceImpl
 					false),
 				_SQL_SELECT_OBJECTFIELD_WHERE, _SQL_COUNT_OBJECTFIELD_WHERE,
 				ObjectFieldModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"objectField.", "objectDefinitionId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -2421,4 +2430,4 @@ public class ObjectFieldPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:176268004
+// LIFERAY-SERVICE-BUILDER-HASH:-750795256

@@ -669,7 +669,7 @@ public class CPDAvailabilityEstimatePersistenceImpl
 			_SQL_SELECT_CPDAVAILABILITYESTIMATE_WHERE,
 			_SQL_COUNT_CPDAVAILABILITYESTIMATE_WHERE,
 			CPDAvailabilityEstimateModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"cpdAvailabilityEstimate.", "uuid", FinderColumn.Type.STRING,
 				"=", true, true, CPDAvailabilityEstimate::getUuid));
@@ -696,7 +696,7 @@ public class CPDAvailabilityEstimatePersistenceImpl
 				_SQL_SELECT_CPDAVAILABILITYESTIMATE_WHERE,
 				_SQL_COUNT_CPDAVAILABILITYESTIMATE_WHERE,
 				CPDAvailabilityEstimateModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"cpdAvailabilityEstimate.", "uuid",
 					FinderColumn.Type.STRING, "=", true, true,
@@ -731,7 +731,7 @@ public class CPDAvailabilityEstimatePersistenceImpl
 				_SQL_SELECT_CPDAVAILABILITYESTIMATE_WHERE,
 				_SQL_COUNT_CPDAVAILABILITYESTIMATE_WHERE,
 				CPDAvailabilityEstimateModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"cpdAvailabilityEstimate.",
 					"commerceAvailabilityEstimateId", FinderColumn.Type.LONG,
@@ -821,4 +821,4 @@ public class CPDAvailabilityEstimatePersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1837971381
+// LIFERAY-SERVICE-BUILDER-HASH:-1413877247

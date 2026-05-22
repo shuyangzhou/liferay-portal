@@ -2364,7 +2364,7 @@ public class MicroblogsEntryPersistenceImpl
 				_SQL_SELECT_MICROBLOGSENTRY_WHERE,
 				_SQL_COUNT_MICROBLOGSENTRY_WHERE,
 				MicroblogsEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"microblogsEntry.", "companyId", FinderColumn.Type.LONG,
 					"=", true, true, MicroblogsEntry::getCompanyId));
@@ -2391,7 +2391,7 @@ public class MicroblogsEntryPersistenceImpl
 				_SQL_SELECT_MICROBLOGSENTRY_WHERE,
 				_SQL_COUNT_MICROBLOGSENTRY_WHERE,
 				MicroblogsEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"microblogsEntry.", "userId", FinderColumn.Type.LONG, "=",
 					true, true, MicroblogsEntry::getUserId));
@@ -2422,7 +2422,7 @@ public class MicroblogsEntryPersistenceImpl
 				_SQL_SELECT_MICROBLOGSENTRY_WHERE,
 				_SQL_COUNT_MICROBLOGSENTRY_WHERE,
 				MicroblogsEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"microblogsEntry.", "userId", FinderColumn.Type.LONG, "=",
 					true, true, MicroblogsEntry::getUserId),
@@ -2456,7 +2456,7 @@ public class MicroblogsEntryPersistenceImpl
 				_SQL_SELECT_MICROBLOGSENTRY_WHERE,
 				_SQL_COUNT_MICROBLOGSENTRY_WHERE,
 				MicroblogsEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"microblogsEntry.", "creatorClassNameId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -2492,7 +2492,7 @@ public class MicroblogsEntryPersistenceImpl
 				_SQL_SELECT_MICROBLOGSENTRY_WHERE,
 				_SQL_COUNT_MICROBLOGSENTRY_WHERE,
 				MicroblogsEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"microblogsEntry.", "creatorClassNameId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -2527,7 +2527,7 @@ public class MicroblogsEntryPersistenceImpl
 				_SQL_SELECT_MICROBLOGSENTRY_WHERE,
 				_SQL_COUNT_MICROBLOGSENTRY_WHERE,
 				MicroblogsEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"microblogsEntry.", "type", FinderColumn.Type.INTEGER, "=",
 					true, true, MicroblogsEntry::getType),
@@ -2576,7 +2576,7 @@ public class MicroblogsEntryPersistenceImpl
 				_SQL_SELECT_MICROBLOGSENTRY_WHERE,
 				_SQL_COUNT_MICROBLOGSENTRY_WHERE,
 				MicroblogsEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"microblogsEntry.", "companyId", FinderColumn.Type.LONG,
 					"=", true, true, MicroblogsEntry::getCompanyId),
@@ -2622,7 +2622,7 @@ public class MicroblogsEntryPersistenceImpl
 				_SQL_SELECT_MICROBLOGSENTRY_WHERE,
 				_SQL_COUNT_MICROBLOGSENTRY_WHERE,
 				MicroblogsEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"microblogsEntry.", "companyId", FinderColumn.Type.LONG,
 					"=", true, true, MicroblogsEntry::getCompanyId),
@@ -2674,7 +2674,7 @@ public class MicroblogsEntryPersistenceImpl
 				_SQL_SELECT_MICROBLOGSENTRY_WHERE,
 				_SQL_COUNT_MICROBLOGSENTRY_WHERE,
 				MicroblogsEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"microblogsEntry.", "creatorClassNameId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -2731,7 +2731,7 @@ public class MicroblogsEntryPersistenceImpl
 				_SQL_SELECT_MICROBLOGSENTRY_WHERE,
 				_SQL_COUNT_MICROBLOGSENTRY_WHERE,
 				MicroblogsEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"microblogsEntry.", "companyId", FinderColumn.Type.LONG,
 					"=", true, true, MicroblogsEntry::getCompanyId),
@@ -2785,7 +2785,7 @@ public class MicroblogsEntryPersistenceImpl
 				_SQL_SELECT_MICROBLOGSENTRY_WHERE,
 				_SQL_COUNT_MICROBLOGSENTRY_WHERE,
 				MicroblogsEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"microblogsEntry.", "userId", FinderColumn.Type.LONG, "=",
 					true, true, MicroblogsEntry::getUserId),
@@ -2866,4 +2866,4 @@ public class MicroblogsEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-662080846
+// LIFERAY-SERVICE-BUILDER-HASH:-1375818366

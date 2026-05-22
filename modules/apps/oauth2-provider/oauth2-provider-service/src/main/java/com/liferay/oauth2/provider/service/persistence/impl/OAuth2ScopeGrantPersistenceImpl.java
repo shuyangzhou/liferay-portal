@@ -857,7 +857,7 @@ public class OAuth2ScopeGrantPersistenceImpl
 				_SQL_SELECT_OAUTH2SCOPEGRANT_WHERE,
 				_SQL_COUNT_OAUTH2SCOPEGRANT_WHERE,
 				OAuth2ScopeGrantModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"oAuth2ScopeGrant.", "oAuth2ApplicationScopeAliasesId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -976,4 +976,4 @@ public class OAuth2ScopeGrantPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-120918251
+// LIFERAY-SERVICE-BUILDER-HASH:-371587237

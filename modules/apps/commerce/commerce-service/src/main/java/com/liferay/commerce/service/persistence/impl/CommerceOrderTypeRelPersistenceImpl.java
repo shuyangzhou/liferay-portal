@@ -908,7 +908,7 @@ public class CommerceOrderTypeRelPersistenceImpl
 			_SQL_SELECT_COMMERCEORDERTYPEREL_WHERE,
 			_SQL_COUNT_COMMERCEORDERTYPEREL_WHERE,
 			CommerceOrderTypeRelModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-			"",
+			"", null,
 			new FinderColumn<>(
 				"commerceOrderTypeRel.", "uuid", FinderColumn.Type.STRING, "=",
 				true, true, CommerceOrderTypeRel::getUuid));
@@ -935,7 +935,7 @@ public class CommerceOrderTypeRelPersistenceImpl
 				_SQL_SELECT_COMMERCEORDERTYPEREL_WHERE,
 				_SQL_COUNT_COMMERCEORDERTYPEREL_WHERE,
 				CommerceOrderTypeRelModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"commerceOrderTypeRel.", "uuid", FinderColumn.Type.STRING,
 					"=", true, true, CommerceOrderTypeRel::getUuid),
@@ -969,7 +969,7 @@ public class CommerceOrderTypeRelPersistenceImpl
 				_SQL_SELECT_COMMERCEORDERTYPEREL_WHERE,
 				_SQL_COUNT_COMMERCEORDERTYPEREL_WHERE,
 				CommerceOrderTypeRelModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"commerceOrderTypeRel.", "commerceOrderTypeId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -996,7 +996,7 @@ public class CommerceOrderTypeRelPersistenceImpl
 			_SQL_SELECT_COMMERCEORDERTYPEREL_WHERE,
 			_SQL_COUNT_COMMERCEORDERTYPEREL_WHERE,
 			CommerceOrderTypeRelModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-			"",
+			"", null,
 			new FinderColumn<>(
 				"commerceOrderTypeRel.", "classNameId", FinderColumn.Type.LONG,
 				"=", true, true, CommerceOrderTypeRel::getClassNameId),
@@ -1117,4 +1117,4 @@ public class CommerceOrderTypeRelPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-137150088
+// LIFERAY-SERVICE-BUILDER-HASH:1465116062

@@ -646,7 +646,7 @@ public class CommerceChannelRelPersistenceImpl
 				_SQL_SELECT_COMMERCECHANNELREL_WHERE,
 				_SQL_COUNT_COMMERCECHANNELREL_WHERE,
 				CommerceChannelRelModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"commerceChannelRel.", "commerceChannelId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -673,6 +673,7 @@ public class CommerceChannelRelPersistenceImpl
 			_SQL_SELECT_COMMERCECHANNELREL_WHERE,
 			_SQL_COUNT_COMMERCECHANNELREL_WHERE,
 			CommerceChannelRelModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"commerceChannelRel.", "classNameId", FinderColumn.Type.LONG,
 				"=", true, true, CommerceChannelRel::getClassNameId),
@@ -773,4 +774,4 @@ public class CommerceChannelRelPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:963586046
+// LIFERAY-SERVICE-BUILDER-HASH:-1436645506

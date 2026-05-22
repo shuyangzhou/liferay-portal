@@ -480,7 +480,7 @@ public class LVEntryLocalizationPersistenceImpl
 				_SQL_SELECT_LVENTRYLOCALIZATION_WHERE,
 				_SQL_COUNT_LVENTRYLOCALIZATION_WHERE,
 				LVEntryLocalizationModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"lvEntryLocalization.", "lvEntryId", FinderColumn.Type.LONG,
 					"=", true, true, LVEntryLocalization::getLvEntryId));
@@ -553,4 +553,4 @@ public class LVEntryLocalizationPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-146036795
+// LIFERAY-SERVICE-BUILDER-HASH:-454737649

@@ -1317,6 +1317,7 @@ public class SocialRelationPersistenceImpl
 				0, 1, false, null),
 			_SQL_SELECT_SOCIALRELATION_WHERE, _SQL_COUNT_SOCIALRELATION_WHERE,
 			SocialRelationModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"socialRelation.", "uuid", FinderColumn.Type.STRING, "=", true,
 				true, SocialRelation::getUuid));
@@ -1343,6 +1344,7 @@ public class SocialRelationPersistenceImpl
 				_SQL_SELECT_SOCIALRELATION_WHERE,
 				_SQL_COUNT_SOCIALRELATION_WHERE,
 				SocialRelationModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"socialRelation.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, SocialRelation::getUuid),
@@ -1372,6 +1374,7 @@ public class SocialRelationPersistenceImpl
 				_SQL_SELECT_SOCIALRELATION_WHERE,
 				_SQL_COUNT_SOCIALRELATION_WHERE,
 				SocialRelationModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"socialRelation.", "companyId", FinderColumn.Type.LONG, "=",
 					true, true, SocialRelation::getCompanyId));
@@ -1398,6 +1401,7 @@ public class SocialRelationPersistenceImpl
 				_SQL_SELECT_SOCIALRELATION_WHERE,
 				_SQL_COUNT_SOCIALRELATION_WHERE,
 				SocialRelationModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"socialRelation.", "userId1", FinderColumn.Type.LONG, "=",
 					true, true, SocialRelation::getUserId1));
@@ -1424,6 +1428,7 @@ public class SocialRelationPersistenceImpl
 				_SQL_SELECT_SOCIALRELATION_WHERE,
 				_SQL_COUNT_SOCIALRELATION_WHERE,
 				SocialRelationModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"socialRelation.", "userId2", FinderColumn.Type.LONG, "=",
 					true, true, SocialRelation::getUserId2));
@@ -1447,6 +1452,7 @@ public class SocialRelationPersistenceImpl
 				false),
 			_SQL_SELECT_SOCIALRELATION_WHERE, _SQL_COUNT_SOCIALRELATION_WHERE,
 			SocialRelationModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"socialRelation.", "type", FinderColumn.Type.INTEGER, "=", true,
 				true, SocialRelation::getType));
@@ -1471,6 +1477,7 @@ public class SocialRelationPersistenceImpl
 				new String[] {"companyId", "type_"}, false),
 			_SQL_SELECT_SOCIALRELATION_WHERE, _SQL_COUNT_SOCIALRELATION_WHERE,
 			SocialRelationModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"socialRelation.", "companyId", FinderColumn.Type.LONG, "=",
 				true, true, SocialRelation::getCompanyId),
@@ -1498,6 +1505,7 @@ public class SocialRelationPersistenceImpl
 				new String[] {"userId1", "userId2"}, false),
 			_SQL_SELECT_SOCIALRELATION_WHERE, _SQL_COUNT_SOCIALRELATION_WHERE,
 			SocialRelationModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"socialRelation.", "userId1", FinderColumn.Type.LONG, "=", true,
 				true, SocialRelation::getUserId1),
@@ -1525,6 +1533,7 @@ public class SocialRelationPersistenceImpl
 				new String[] {"userId1", "type_"}, false),
 			_SQL_SELECT_SOCIALRELATION_WHERE, _SQL_COUNT_SOCIALRELATION_WHERE,
 			SocialRelationModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"socialRelation.", "userId1", FinderColumn.Type.LONG, "=", true,
 				true, SocialRelation::getUserId1),
@@ -1552,6 +1561,7 @@ public class SocialRelationPersistenceImpl
 				new String[] {"userId2", "type_"}, false),
 			_SQL_SELECT_SOCIALRELATION_WHERE, _SQL_COUNT_SOCIALRELATION_WHERE,
 			SocialRelationModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"socialRelation.", "userId2", FinderColumn.Type.LONG, "=", true,
 				true, SocialRelation::getUserId2),
@@ -1617,4 +1627,4 @@ public class SocialRelationPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-567659553
+// LIFERAY-SERVICE-BUILDER-HASH:856565125

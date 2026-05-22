@@ -928,6 +928,7 @@ public class ObjectEntryVersionPersistenceImpl
 			_SQL_SELECT_OBJECTENTRYVERSION_WHERE,
 			_SQL_COUNT_OBJECTENTRYVERSION_WHERE,
 			ObjectEntryVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"objectEntryVersion.", "uuid", FinderColumn.Type.STRING, "=",
 				true, true, ObjectEntryVersion::getUuid));
@@ -954,7 +955,7 @@ public class ObjectEntryVersionPersistenceImpl
 				_SQL_SELECT_OBJECTENTRYVERSION_WHERE,
 				_SQL_COUNT_OBJECTENTRYVERSION_WHERE,
 				ObjectEntryVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"objectEntryVersion.", "uuid", FinderColumn.Type.STRING,
 					"=", true, true, ObjectEntryVersion::getUuid),
@@ -987,7 +988,7 @@ public class ObjectEntryVersionPersistenceImpl
 				_SQL_SELECT_OBJECTENTRYVERSION_WHERE,
 				_SQL_COUNT_OBJECTENTRYVERSION_WHERE,
 				ObjectEntryVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"objectEntryVersion.", "objectDefinitionId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1016,7 +1017,7 @@ public class ObjectEntryVersionPersistenceImpl
 				_SQL_SELECT_OBJECTENTRYVERSION_WHERE,
 				_SQL_COUNT_OBJECTENTRYVERSION_WHERE,
 				ObjectEntryVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"objectEntryVersion.", "objectEntryId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1043,6 +1044,7 @@ public class ObjectEntryVersionPersistenceImpl
 			_SQL_SELECT_OBJECTENTRYVERSION_WHERE,
 			_SQL_COUNT_OBJECTENTRYVERSION_WHERE,
 			ObjectEntryVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"objectEntryVersion.", "companyId", FinderColumn.Type.LONG, "=",
 				true, true, ObjectEntryVersion::getCompanyId),
@@ -1087,6 +1089,7 @@ public class ObjectEntryVersionPersistenceImpl
 			_SQL_SELECT_OBJECTENTRYVERSION_WHERE,
 			_SQL_COUNT_OBJECTENTRYVERSION_WHERE,
 			ObjectEntryVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"objectEntryVersion.", "objectEntryId", FinderColumn.Type.LONG,
 				"=", true, true, ObjectEntryVersion::getObjectEntryId),
@@ -1163,4 +1166,4 @@ public class ObjectEntryVersionPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:861991697
+// LIFERAY-SERVICE-BUILDER-HASH:-317413067

@@ -1468,7 +1468,7 @@ public class FaroNotificationPersistenceImpl
 				_SQL_SELECT_FARONOTIFICATION_WHERE,
 				_SQL_COUNT_FARONOTIFICATION_WHERE,
 				FaroNotificationModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"faroNotification.", "createTime", FinderColumn.Type.LONG,
 					"<", true, true, FaroNotification::getCreateTime));
@@ -1498,7 +1498,7 @@ public class FaroNotificationPersistenceImpl
 				_SQL_SELECT_FARONOTIFICATION_WHERE,
 				_SQL_COUNT_FARONOTIFICATION_WHERE,
 				FaroNotificationModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"faroNotification.read = [$FALSE$]",
+				"faroNotification.read = [$FALSE$]", null,
 				new FinderColumn<>(
 					"faroNotification.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, FaroNotification::getGroupId),
@@ -1544,7 +1544,7 @@ public class FaroNotificationPersistenceImpl
 				_SQL_SELECT_FARONOTIFICATION_WHERE,
 				_SQL_COUNT_FARONOTIFICATION_WHERE,
 				FaroNotificationModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"faroNotification.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, FaroNotification::getGroupId),
@@ -1596,7 +1596,7 @@ public class FaroNotificationPersistenceImpl
 				_SQL_SELECT_FARONOTIFICATION_WHERE,
 				_SQL_COUNT_FARONOTIFICATION_WHERE,
 				FaroNotificationModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"faroNotification.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, FaroNotification::getGroupId),
@@ -1682,4 +1682,4 @@ public class FaroNotificationPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1217260303
+// LIFERAY-SERVICE-BUILDER-HASH:-729840130

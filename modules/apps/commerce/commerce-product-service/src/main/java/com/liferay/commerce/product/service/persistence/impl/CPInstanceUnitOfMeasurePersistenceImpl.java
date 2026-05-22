@@ -1132,7 +1132,7 @@ public class CPInstanceUnitOfMeasurePersistenceImpl
 			_SQL_SELECT_CPINSTANCEUNITOFMEASURE_WHERE,
 			_SQL_COUNT_CPINSTANCEUNITOFMEASURE_WHERE,
 			CPInstanceUnitOfMeasureModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"cpInstanceUnitOfMeasure.", "uuid", FinderColumn.Type.STRING,
 				"=", true, true, CPInstanceUnitOfMeasure::getUuid));
@@ -1159,7 +1159,7 @@ public class CPInstanceUnitOfMeasurePersistenceImpl
 				_SQL_SELECT_CPINSTANCEUNITOFMEASURE_WHERE,
 				_SQL_COUNT_CPINSTANCEUNITOFMEASURE_WHERE,
 				CPInstanceUnitOfMeasureModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"cpInstanceUnitOfMeasure.", "uuid",
 					FinderColumn.Type.STRING, "=", true, true,
@@ -1192,7 +1192,7 @@ public class CPInstanceUnitOfMeasurePersistenceImpl
 				_SQL_SELECT_CPINSTANCEUNITOFMEASURE_WHERE,
 				_SQL_COUNT_CPINSTANCEUNITOFMEASURE_WHERE,
 				CPInstanceUnitOfMeasureModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"cpInstanceUnitOfMeasure.", "CPInstanceId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1219,7 +1219,7 @@ public class CPInstanceUnitOfMeasurePersistenceImpl
 			_SQL_SELECT_CPINSTANCEUNITOFMEASURE_WHERE,
 			_SQL_COUNT_CPINSTANCEUNITOFMEASURE_WHERE,
 			CPInstanceUnitOfMeasureModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"cpInstanceUnitOfMeasure.", "companyId", FinderColumn.Type.LONG,
 				"=", true, true, CPInstanceUnitOfMeasure::getCompanyId),
@@ -1248,7 +1248,7 @@ public class CPInstanceUnitOfMeasurePersistenceImpl
 			_SQL_SELECT_CPINSTANCEUNITOFMEASURE_WHERE,
 			_SQL_COUNT_CPINSTANCEUNITOFMEASURE_WHERE,
 			CPInstanceUnitOfMeasureModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"cpInstanceUnitOfMeasure.", "CPInstanceId",
 				FinderColumn.Type.LONG, "=", true, true,
@@ -1295,7 +1295,7 @@ public class CPInstanceUnitOfMeasurePersistenceImpl
 			_SQL_SELECT_CPINSTANCEUNITOFMEASURE_WHERE,
 			_SQL_COUNT_CPINSTANCEUNITOFMEASURE_WHERE,
 			CPInstanceUnitOfMeasureModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"cpInstanceUnitOfMeasure.", "CPInstanceId",
 				FinderColumn.Type.LONG, "=", true, true,
@@ -1332,7 +1332,7 @@ public class CPInstanceUnitOfMeasurePersistenceImpl
 			_SQL_SELECT_CPINSTANCEUNITOFMEASURE_WHERE,
 			_SQL_COUNT_CPINSTANCEUNITOFMEASURE_WHERE,
 			CPInstanceUnitOfMeasureModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"cpInstanceUnitOfMeasure.", "companyId", FinderColumn.Type.LONG,
 				"=", true, true, CPInstanceUnitOfMeasure::getCompanyId),
@@ -1418,4 +1418,4 @@ public class CPInstanceUnitOfMeasurePersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-968137325
+// LIFERAY-SERVICE-BUILDER-HASH:1376161815

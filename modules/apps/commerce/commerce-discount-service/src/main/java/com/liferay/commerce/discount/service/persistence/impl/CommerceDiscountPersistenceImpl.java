@@ -1631,7 +1631,7 @@ public class CommerceDiscountPersistenceImpl
 				_SQL_SELECT_COMMERCEDISCOUNT_WHERE,
 				_SQL_COUNT_COMMERCEDISCOUNT_WHERE,
 				CommerceDiscountModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"commerceDiscount.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, CommerceDiscount::getUuid));
@@ -1658,7 +1658,7 @@ public class CommerceDiscountPersistenceImpl
 				_SQL_SELECT_COMMERCEDISCOUNT_WHERE,
 				_SQL_COUNT_COMMERCEDISCOUNT_WHERE,
 				CommerceDiscountModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"commerceDiscount.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, CommerceDiscount::getUuid),
@@ -1688,7 +1688,7 @@ public class CommerceDiscountPersistenceImpl
 				_SQL_SELECT_COMMERCEDISCOUNT_WHERE,
 				_SQL_COUNT_COMMERCEDISCOUNT_WHERE,
 				CommerceDiscountModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"commerceDiscount.", "companyId", FinderColumn.Type.LONG,
 					"=", true, true, CommerceDiscount::getCompanyId));
@@ -1716,7 +1716,7 @@ public class CommerceDiscountPersistenceImpl
 				_SQL_SELECT_COMMERCEDISCOUNT_WHERE,
 				_SQL_COUNT_COMMERCEDISCOUNT_WHERE,
 				CommerceDiscountModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"commerceDiscount.", "companyId", FinderColumn.Type.LONG,
 					"=", true, true, CommerceDiscount::getCompanyId),
@@ -1745,7 +1745,7 @@ public class CommerceDiscountPersistenceImpl
 				_SQL_SELECT_COMMERCEDISCOUNT_WHERE,
 				_SQL_COUNT_COMMERCEDISCOUNT_WHERE,
 				CommerceDiscountModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"commerceDiscount.", "displayDate", FinderColumn.Type.DATE,
 					"<", true, true, CommerceDiscount::getDisplayDate),
@@ -1774,7 +1774,7 @@ public class CommerceDiscountPersistenceImpl
 				_SQL_SELECT_COMMERCEDISCOUNT_WHERE,
 				_SQL_COUNT_COMMERCEDISCOUNT_WHERE,
 				CommerceDiscountModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"commerceDiscount.", "expirationDate",
 					FinderColumn.Type.DATE, "<", true, true,
@@ -1844,7 +1844,7 @@ public class CommerceDiscountPersistenceImpl
 				_SQL_SELECT_COMMERCEDISCOUNT_WHERE,
 				_SQL_COUNT_COMMERCEDISCOUNT_WHERE,
 				CommerceDiscountModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"commerceDiscount.", "companyId", FinderColumn.Type.LONG,
 					"=", true, true, CommerceDiscount::getCompanyId),
@@ -1945,4 +1945,4 @@ public class CommerceDiscountPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1990201180
+// LIFERAY-SERVICE-BUILDER-HASH:792598552

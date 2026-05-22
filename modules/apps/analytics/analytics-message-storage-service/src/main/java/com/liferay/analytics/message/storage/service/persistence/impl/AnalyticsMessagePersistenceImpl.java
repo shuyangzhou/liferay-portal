@@ -451,7 +451,7 @@ public class AnalyticsMessagePersistenceImpl
 				_SQL_SELECT_ANALYTICSMESSAGE_WHERE,
 				_SQL_COUNT_ANALYTICSMESSAGE_WHERE,
 				AnalyticsMessageModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"analyticsMessage.", "companyId", FinderColumn.Type.LONG,
 					"=", true, true, AnalyticsMessage::getCompanyId));
@@ -522,4 +522,4 @@ public class AnalyticsMessagePersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1111256831
+// LIFERAY-SERVICE-BUILDER-HASH:1319274655

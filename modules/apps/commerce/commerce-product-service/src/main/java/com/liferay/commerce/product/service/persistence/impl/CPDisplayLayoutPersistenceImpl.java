@@ -1366,6 +1366,7 @@ public class CPDisplayLayoutPersistenceImpl
 				0, 1, false, null),
 			_SQL_SELECT_CPDISPLAYLAYOUT_WHERE, _SQL_COUNT_CPDISPLAYLAYOUT_WHERE,
 			CPDisplayLayoutModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"cpDisplayLayout.", "uuid", FinderColumn.Type.STRING, "=", true,
 				true, CPDisplayLayout::getUuid));
@@ -1408,7 +1409,7 @@ public class CPDisplayLayoutPersistenceImpl
 				_SQL_SELECT_CPDISPLAYLAYOUT_WHERE,
 				_SQL_COUNT_CPDISPLAYLAYOUT_WHERE,
 				CPDisplayLayoutModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"cpDisplayLayout.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, CPDisplayLayout::getUuid),
@@ -1438,7 +1439,7 @@ public class CPDisplayLayoutPersistenceImpl
 				_SQL_SELECT_CPDISPLAYLAYOUT_WHERE,
 				_SQL_COUNT_CPDISPLAYLAYOUT_WHERE,
 				CPDisplayLayoutModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"cpDisplayLayout.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, CPDisplayLayout::getGroupId));
@@ -1463,6 +1464,7 @@ public class CPDisplayLayoutPersistenceImpl
 				new String[] {"groupId", "classNameId"}, false),
 			_SQL_SELECT_CPDISPLAYLAYOUT_WHERE, _SQL_COUNT_CPDISPLAYLAYOUT_WHERE,
 			CPDisplayLayoutModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"cpDisplayLayout.", "groupId", FinderColumn.Type.LONG, "=",
 				true, true, CPDisplayLayout::getGroupId),
@@ -1495,7 +1497,7 @@ public class CPDisplayLayoutPersistenceImpl
 				_SQL_SELECT_CPDISPLAYLAYOUT_WHERE,
 				_SQL_COUNT_CPDISPLAYLAYOUT_WHERE,
 				CPDisplayLayoutModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"cpDisplayLayout.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, CPDisplayLayout::getGroupId),
@@ -1524,6 +1526,7 @@ public class CPDisplayLayoutPersistenceImpl
 				new String[] {"groupId", "layoutUuid"}, 0, 2, false, null),
 			_SQL_SELECT_CPDISPLAYLAYOUT_WHERE, _SQL_COUNT_CPDISPLAYLAYOUT_WHERE,
 			CPDisplayLayoutModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"cpDisplayLayout.", "groupId", FinderColumn.Type.LONG, "=",
 				true, true, CPDisplayLayout::getGroupId),
@@ -1551,6 +1554,7 @@ public class CPDisplayLayoutPersistenceImpl
 				new String[] {"classNameId", "classPK"}, false),
 			_SQL_SELECT_CPDISPLAYLAYOUT_WHERE, _SQL_COUNT_CPDISPLAYLAYOUT_WHERE,
 			CPDisplayLayoutModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"cpDisplayLayout.", "classNameId", FinderColumn.Type.LONG, "=",
 				true, true, CPDisplayLayout::getClassNameId),
@@ -1582,7 +1586,7 @@ public class CPDisplayLayoutPersistenceImpl
 				_SQL_SELECT_CPDISPLAYLAYOUT_WHERE,
 				_SQL_COUNT_CPDISPLAYLAYOUT_WHERE,
 				CPDisplayLayoutModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"cpDisplayLayout.layoutPageTemplateEntryUuid IS NOT NULL",
+				"cpDisplayLayout.layoutPageTemplateEntryUuid IS NOT NULL", null,
 				new FinderColumn<>(
 					"cpDisplayLayout.", "classNameId", FinderColumn.Type.LONG,
 					"=", true, true, CPDisplayLayout::getClassNameId),
@@ -1610,7 +1614,7 @@ public class CPDisplayLayoutPersistenceImpl
 				new String[] {"classNameId", "classPK"}, false),
 			_SQL_SELECT_CPDISPLAYLAYOUT_WHERE, _SQL_COUNT_CPDISPLAYLAYOUT_WHERE,
 			CPDisplayLayoutModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-			"cpDisplayLayout.layoutUuid IS NOT NULL",
+			"cpDisplayLayout.layoutUuid IS NOT NULL", null,
 			new FinderColumn<>(
 				"cpDisplayLayout.", "classNameId", FinderColumn.Type.LONG, "=",
 				true, true, CPDisplayLayout::getClassNameId),
@@ -1712,4 +1716,4 @@ public class CPDisplayLayoutPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2025422386
+// LIFERAY-SERVICE-BUILDER-HASH:-968451454

@@ -836,7 +836,7 @@ public class BatchEngineImportTaskPersistenceImpl
 			_SQL_SELECT_BATCHENGINEIMPORTTASK_WHERE,
 			_SQL_COUNT_BATCHENGINEIMPORTTASK_WHERE,
 			BatchEngineImportTaskModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-			"",
+			"", null,
 			new FinderColumn<>(
 				"batchEngineImportTask.", "uuid", FinderColumn.Type.STRING, "=",
 				true, true, BatchEngineImportTask::getUuid));
@@ -863,7 +863,7 @@ public class BatchEngineImportTaskPersistenceImpl
 				_SQL_SELECT_BATCHENGINEIMPORTTASK_WHERE,
 				_SQL_COUNT_BATCHENGINEIMPORTTASK_WHERE,
 				BatchEngineImportTaskModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"batchEngineImportTask.", "uuid", FinderColumn.Type.STRING,
 					"=", true, true, BatchEngineImportTask::getUuid),
@@ -894,7 +894,7 @@ public class BatchEngineImportTaskPersistenceImpl
 				_SQL_SELECT_BATCHENGINEIMPORTTASK_WHERE,
 				_SQL_COUNT_BATCHENGINEIMPORTTASK_WHERE,
 				BatchEngineImportTaskModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"batchEngineImportTask.", "companyId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -925,7 +925,7 @@ public class BatchEngineImportTaskPersistenceImpl
 				_SQL_SELECT_BATCHENGINEIMPORTTASK_WHERE,
 				_SQL_COUNT_BATCHENGINEIMPORTTASK_WHERE,
 				BatchEngineImportTaskModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"batchEngineImportTask.", "executeStatus",
 					FinderColumn.Type.STRING, "=", true, true,
@@ -1019,4 +1019,4 @@ public class BatchEngineImportTaskPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-173703244
+// LIFERAY-SERVICE-BUILDER-HASH:1789890340

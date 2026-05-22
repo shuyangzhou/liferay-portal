@@ -821,7 +821,7 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 			_SQL_SELECT_CPDEFINITIONGROUPEDENTRY_WHERE,
 			_SQL_COUNT_CPDEFINITIONGROUPEDENTRY_WHERE,
 			CPDefinitionGroupedEntryModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"cpDefinitionGroupedEntry.", "uuid", FinderColumn.Type.STRING,
 				"=", true, true, CPDefinitionGroupedEntry::getUuid));
@@ -864,7 +864,7 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 				_SQL_SELECT_CPDEFINITIONGROUPEDENTRY_WHERE,
 				_SQL_COUNT_CPDEFINITIONGROUPEDENTRY_WHERE,
 				CPDefinitionGroupedEntryModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"cpDefinitionGroupedEntry.", "uuid",
 					FinderColumn.Type.STRING, "=", true, true,
@@ -898,7 +898,7 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 				_SQL_SELECT_CPDEFINITIONGROUPEDENTRY_WHERE,
 				_SQL_COUNT_CPDEFINITIONGROUPEDENTRY_WHERE,
 				CPDefinitionGroupedEntryModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"cpDefinitionGroupedEntry.", "CPDefinitionId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -929,7 +929,7 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 				_SQL_SELECT_CPDEFINITIONGROUPEDENTRY_WHERE,
 				_SQL_COUNT_CPDEFINITIONGROUPEDENTRY_WHERE,
 				CPDefinitionGroupedEntryModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"cpDefinitionGroupedEntry.", "entryCProductId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1022,4 +1022,4 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-97979810
+// LIFERAY-SERVICE-BUILDER-HASH:1896684574

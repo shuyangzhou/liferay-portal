@@ -1835,7 +1835,7 @@ public class CPConfigurationListPersistenceImpl
 			_SQL_SELECT_CPCONFIGURATIONLIST_WHERE,
 			_SQL_COUNT_CPCONFIGURATIONLIST_WHERE,
 			CPConfigurationListModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-			"",
+			"", null,
 			new FinderColumn<>(
 				"cpConfigurationList.", "uuid", FinderColumn.Type.STRING, "=",
 				true, true, CPConfigurationList::getUuid));
@@ -1878,7 +1878,7 @@ public class CPConfigurationListPersistenceImpl
 				_SQL_SELECT_CPCONFIGURATIONLIST_WHERE,
 				_SQL_COUNT_CPCONFIGURATIONLIST_WHERE,
 				CPConfigurationListModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"cpConfigurationList.", "uuid", FinderColumn.Type.STRING,
 					"=", true, true, CPConfigurationList::getUuid),
@@ -1908,7 +1908,7 @@ public class CPConfigurationListPersistenceImpl
 				_SQL_SELECT_CPCONFIGURATIONLIST_WHERE,
 				_SQL_COUNT_CPCONFIGURATIONLIST_WHERE,
 				CPConfigurationListModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"cpConfigurationList.", "companyId", FinderColumn.Type.LONG,
 					"=", true, true, CPConfigurationList::getCompanyId));
@@ -1938,7 +1938,7 @@ public class CPConfigurationListPersistenceImpl
 				_SQL_SELECT_CPCONFIGURATIONLIST_WHERE,
 				_SQL_COUNT_CPCONFIGURATIONLIST_WHERE,
 				CPConfigurationListModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"cpConfigurationList.", "parentCPConfigurationListId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1965,7 +1965,7 @@ public class CPConfigurationListPersistenceImpl
 			_SQL_SELECT_CPCONFIGURATIONLIST_WHERE,
 			_SQL_COUNT_CPCONFIGURATIONLIST_WHERE,
 			CPConfigurationListModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-			"",
+			"", null,
 			new ArrayableFinderColumn<>(
 				"cpConfigurationList.", "groupId", FinderColumn.Type.LONG, "=",
 				false, true, true, CPConfigurationList::getGroupId),
@@ -1994,7 +1994,7 @@ public class CPConfigurationListPersistenceImpl
 			_SQL_SELECT_CPCONFIGURATIONLIST_WHERE,
 			_SQL_COUNT_CPCONFIGURATIONLIST_WHERE,
 			CPConfigurationListModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-			"",
+			"", null,
 			new FinderColumn<>(
 				"cpConfigurationList.", "groupId", FinderColumn.Type.LONG, "=",
 				true, true, CPConfigurationList::getGroupId),
@@ -2020,7 +2020,7 @@ public class CPConfigurationListPersistenceImpl
 			_SQL_SELECT_CPCONFIGURATIONLIST_WHERE,
 			_SQL_COUNT_CPCONFIGURATIONLIST_WHERE,
 			CPConfigurationListModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-			"",
+			"", null,
 			new FinderColumn<>(
 				"cpConfigurationList.", "displayDate", FinderColumn.Type.DATE,
 				"<", true, true, CPConfigurationList::getDisplayDate),
@@ -2055,7 +2055,7 @@ public class CPConfigurationListPersistenceImpl
 			_SQL_SELECT_CPCONFIGURATIONLIST_WHERE,
 			_SQL_COUNT_CPCONFIGURATIONLIST_WHERE,
 			CPConfigurationListModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-			"",
+			"", null,
 			new ArrayableFinderColumn<>(
 				"cpConfigurationList.", "groupId", FinderColumn.Type.LONG, "=",
 				false, true, true, CPConfigurationList::getGroupId),
@@ -2089,7 +2089,7 @@ public class CPConfigurationListPersistenceImpl
 				_SQL_SELECT_CPCONFIGURATIONLIST_WHERE,
 				_SQL_COUNT_CPCONFIGURATIONLIST_WHERE,
 				CPConfigurationListModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new ArrayableFinderColumn<>(
 					"cpConfigurationList.", "groupId", FinderColumn.Type.LONG,
 					"=", false, true, true, CPConfigurationList::getGroupId),
@@ -2191,4 +2191,4 @@ public class CPConfigurationListPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:602300665
+// LIFERAY-SERVICE-BUILDER-HASH:-1243072860

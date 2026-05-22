@@ -785,7 +785,7 @@ public class LaunchEntryPersistenceImpl
 				new String[] {String.class.getName()}, new String[] {"uuid_"},
 				0, 1, false, null),
 			_SQL_SELECT_LAUNCHENTRY_WHERE, _SQL_COUNT_LAUNCHENTRY_WHERE,
-			LaunchEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			LaunchEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"launchEntry.", "uuid", FinderColumn.Type.STRING, "=", true,
 				true, LaunchEntry::getUuid));
@@ -811,6 +811,7 @@ public class LaunchEntryPersistenceImpl
 					new String[] {"uuid_", "companyId"}, 0, 1, false, null),
 				_SQL_SELECT_LAUNCHENTRY_WHERE, _SQL_COUNT_LAUNCHENTRY_WHERE,
 				LaunchEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"launchEntry.", "uuid", FinderColumn.Type.STRING, "=", true,
 					true, LaunchEntry::getUuid),
@@ -839,6 +840,7 @@ public class LaunchEntryPersistenceImpl
 					new String[] {"launchSetId"}, false),
 				_SQL_SELECT_LAUNCHENTRY_WHERE, _SQL_COUNT_LAUNCHENTRY_WHERE,
 				LaunchEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"launchEntry.", "launchSetId", FinderColumn.Type.LONG, "=",
 					true, true, LaunchEntry::getLaunchSetId));
@@ -952,4 +954,4 @@ public class LaunchEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1243807074
+// LIFERAY-SERVICE-BUILDER-HASH:-1846552516

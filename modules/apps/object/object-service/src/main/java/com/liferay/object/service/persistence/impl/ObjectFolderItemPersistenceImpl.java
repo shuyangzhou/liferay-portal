@@ -740,6 +740,7 @@ public class ObjectFolderItemPersistenceImpl
 			_SQL_SELECT_OBJECTFOLDERITEM_WHERE,
 			_SQL_COUNT_OBJECTFOLDERITEM_WHERE,
 			ObjectFolderItemModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"objectFolderItem.", "uuid", FinderColumn.Type.STRING, "=",
 				true, true, ObjectFolderItem::getUuid));
@@ -766,7 +767,7 @@ public class ObjectFolderItemPersistenceImpl
 				_SQL_SELECT_OBJECTFOLDERITEM_WHERE,
 				_SQL_COUNT_OBJECTFOLDERITEM_WHERE,
 				ObjectFolderItemModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"objectFolderItem.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, ObjectFolderItem::getUuid),
@@ -799,7 +800,7 @@ public class ObjectFolderItemPersistenceImpl
 				_SQL_SELECT_OBJECTFOLDERITEM_WHERE,
 				_SQL_COUNT_OBJECTFOLDERITEM_WHERE,
 				ObjectFolderItemModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"objectFolderItem.", "objectDefinitionId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -829,7 +830,7 @@ public class ObjectFolderItemPersistenceImpl
 				_SQL_SELECT_OBJECTFOLDERITEM_WHERE,
 				_SQL_COUNT_OBJECTFOLDERITEM_WHERE,
 				ObjectFolderItemModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"objectFolderItem.", "objectFolderId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -921,4 +922,4 @@ public class ObjectFolderItemPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1937232852
+// LIFERAY-SERVICE-BUILDER-HASH:687252712

@@ -774,7 +774,7 @@ public class JournalArticleResourcePersistenceImpl
 			_SQL_SELECT_JOURNALARTICLERESOURCE_WHERE,
 			_SQL_COUNT_JOURNALARTICLERESOURCE_WHERE,
 			JournalArticleResourceModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-			"",
+			"", null,
 			new FinderColumn<>(
 				"journalArticleResource.", "uuid", FinderColumn.Type.STRING,
 				"=", true, true, JournalArticleResource::getUuid));
@@ -817,7 +817,7 @@ public class JournalArticleResourcePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLERESOURCE_WHERE,
 				_SQL_COUNT_JOURNALARTICLERESOURCE_WHERE,
 				JournalArticleResourceModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"journalArticleResource.", "uuid", FinderColumn.Type.STRING,
 					"=", true, true, JournalArticleResource::getUuid),
@@ -848,7 +848,7 @@ public class JournalArticleResourcePersistenceImpl
 				_SQL_SELECT_JOURNALARTICLERESOURCE_WHERE,
 				_SQL_COUNT_JOURNALARTICLERESOURCE_WHERE,
 				JournalArticleResourceModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"journalArticleResource.", "groupId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -943,4 +943,4 @@ public class JournalArticleResourcePersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1666031214
+// LIFERAY-SERVICE-BUILDER-HASH:1903718410

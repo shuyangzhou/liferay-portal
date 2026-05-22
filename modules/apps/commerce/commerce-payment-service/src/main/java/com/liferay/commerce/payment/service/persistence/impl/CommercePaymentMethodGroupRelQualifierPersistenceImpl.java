@@ -652,7 +652,7 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceImpl
 				_SQL_SELECT_COMMERCEPAYMENTMETHODGROUPRELQUALIFIER_WHERE,
 				_SQL_COUNT_COMMERCEPAYMENTMETHODGROUPRELQUALIFIER_WHERE,
 				CommercePaymentMethodGroupRelQualifierModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"commercePaymentMethodGroupRelQualifier.",
 					"commercePaymentMethodGroupRelId", FinderColumn.Type.LONG,
@@ -682,7 +682,7 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceImpl
 			_SQL_SELECT_COMMERCEPAYMENTMETHODGROUPRELQUALIFIER_WHERE,
 			_SQL_COUNT_COMMERCEPAYMENTMETHODGROUPRELQUALIFIER_WHERE,
 			CommercePaymentMethodGroupRelQualifierModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"commercePaymentMethodGroupRelQualifier.", "classNameId",
 				FinderColumn.Type.LONG, "=", true, true,
@@ -802,4 +802,4 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1925351457
+// LIFERAY-SERVICE-BUILDER-HASH:419369547

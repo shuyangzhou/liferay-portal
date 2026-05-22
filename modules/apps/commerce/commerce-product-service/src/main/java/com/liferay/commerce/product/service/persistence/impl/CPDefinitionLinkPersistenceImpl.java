@@ -1766,6 +1766,7 @@ public class CPDefinitionLinkPersistenceImpl
 			_SQL_SELECT_CPDEFINITIONLINK_WHERE,
 			_SQL_COUNT_CPDEFINITIONLINK_WHERE,
 			CPDefinitionLinkModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"cpDefinitionLink.", "uuid", FinderColumn.Type.STRING, "=",
 				true, true, CPDefinitionLink::getUuid));
@@ -1808,7 +1809,7 @@ public class CPDefinitionLinkPersistenceImpl
 				_SQL_SELECT_CPDEFINITIONLINK_WHERE,
 				_SQL_COUNT_CPDEFINITIONLINK_WHERE,
 				CPDefinitionLinkModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"cpDefinitionLink.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, CPDefinitionLink::getUuid),
@@ -1840,7 +1841,7 @@ public class CPDefinitionLinkPersistenceImpl
 				_SQL_SELECT_CPDEFINITIONLINK_WHERE,
 				_SQL_COUNT_CPDEFINITIONLINK_WHERE,
 				CPDefinitionLinkModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"cpDefinitionLink.", "CPDefinitionId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1868,7 +1869,7 @@ public class CPDefinitionLinkPersistenceImpl
 				_SQL_SELECT_CPDEFINITIONLINK_WHERE,
 				_SQL_COUNT_CPDEFINITIONLINK_WHERE,
 				CPDefinitionLinkModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"cpDefinitionLink.", "CProductId", FinderColumn.Type.LONG,
 					"=", true, true, CPDefinitionLink::getCProductId));
@@ -1894,6 +1895,7 @@ public class CPDefinitionLinkPersistenceImpl
 			_SQL_SELECT_CPDEFINITIONLINK_WHERE,
 			_SQL_COUNT_CPDEFINITIONLINK_WHERE,
 			CPDefinitionLinkModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"cpDefinitionLink.", "CPDefinitionId", FinderColumn.Type.LONG,
 				"=", true, true, CPDefinitionLink::getCPDefinitionId),
@@ -1922,6 +1924,7 @@ public class CPDefinitionLinkPersistenceImpl
 			_SQL_SELECT_CPDEFINITIONLINK_WHERE,
 			_SQL_COUNT_CPDEFINITIONLINK_WHERE,
 			CPDefinitionLinkModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"cpDefinitionLink.", "CPDefinitionId", FinderColumn.Type.LONG,
 				"=", true, true, CPDefinitionLink::getCPDefinitionId),
@@ -1950,6 +1953,7 @@ public class CPDefinitionLinkPersistenceImpl
 			_SQL_SELECT_CPDEFINITIONLINK_WHERE,
 			_SQL_COUNT_CPDEFINITIONLINK_WHERE,
 			CPDefinitionLinkModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"cpDefinitionLink.", "CProductId", FinderColumn.Type.LONG, "=",
 				true, true, CPDefinitionLink::getCProductId),
@@ -1978,6 +1982,7 @@ public class CPDefinitionLinkPersistenceImpl
 			_SQL_SELECT_CPDEFINITIONLINK_WHERE,
 			_SQL_COUNT_CPDEFINITIONLINK_WHERE,
 			CPDefinitionLinkModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"cpDefinitionLink.", "CProductId", FinderColumn.Type.LONG, "=",
 				true, true, CPDefinitionLink::getCProductId),
@@ -2003,6 +2008,7 @@ public class CPDefinitionLinkPersistenceImpl
 			_SQL_SELECT_CPDEFINITIONLINK_WHERE,
 			_SQL_COUNT_CPDEFINITIONLINK_WHERE,
 			CPDefinitionLinkModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"cpDefinitionLink.", "displayDate", FinderColumn.Type.DATE, "<",
 				true, true, CPDefinitionLink::getDisplayDate),
@@ -2028,6 +2034,7 @@ public class CPDefinitionLinkPersistenceImpl
 			_SQL_SELECT_CPDEFINITIONLINK_WHERE,
 			_SQL_COUNT_CPDEFINITIONLINK_WHERE,
 			CPDefinitionLinkModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"cpDefinitionLink.", "expirationDate", FinderColumn.Type.DATE,
 				"<", true, true, CPDefinitionLink::getExpirationDate),
@@ -2089,7 +2096,7 @@ public class CPDefinitionLinkPersistenceImpl
 				_SQL_SELECT_CPDEFINITIONLINK_WHERE,
 				_SQL_COUNT_CPDEFINITIONLINK_WHERE,
 				CPDefinitionLinkModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"cpDefinitionLink.", "CPDefinitionId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -2132,7 +2139,7 @@ public class CPDefinitionLinkPersistenceImpl
 				_SQL_SELECT_CPDEFINITIONLINK_WHERE,
 				_SQL_COUNT_CPDEFINITIONLINK_WHERE,
 				CPDefinitionLinkModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"cpDefinitionLink.", "CProductId", FinderColumn.Type.LONG,
 					"=", true, true, CPDefinitionLink::getCProductId),
@@ -2215,4 +2222,4 @@ public class CPDefinitionLinkPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1883015780
+// LIFERAY-SERVICE-BUILDER-HASH:-850651432

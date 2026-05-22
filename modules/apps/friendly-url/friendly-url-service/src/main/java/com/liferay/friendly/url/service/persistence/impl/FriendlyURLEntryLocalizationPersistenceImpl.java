@@ -1136,7 +1136,7 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 				_SQL_SELECT_FRIENDLYURLENTRYLOCALIZATION_WHERE,
 				_SQL_COUNT_FRIENDLYURLENTRYLOCALIZATION_WHERE,
 				FriendlyURLEntryLocalizationModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"friendlyURLEntryLocalization.", "friendlyURLEntryId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1192,7 +1192,7 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 			_SQL_SELECT_FRIENDLYURLENTRYLOCALIZATION_WHERE,
 			_SQL_COUNT_FRIENDLYURLENTRYLOCALIZATION_WHERE,
 			FriendlyURLEntryLocalizationModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"friendlyURLEntryLocalization.", "groupId",
 				FinderColumn.Type.LONG, "=", true, true,
@@ -1244,7 +1244,7 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 				_SQL_SELECT_FRIENDLYURLENTRYLOCALIZATION_WHERE,
 				_SQL_COUNT_FRIENDLYURLENTRYLOCALIZATION_WHERE,
 				FriendlyURLEntryLocalizationModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"friendlyURLEntryLocalization.", "companyId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1300,7 +1300,7 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 				_SQL_SELECT_FRIENDLYURLENTRYLOCALIZATION_WHERE,
 				_SQL_COUNT_FRIENDLYURLENTRYLOCALIZATION_WHERE,
 				FriendlyURLEntryLocalizationModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"friendlyURLEntryLocalization.", "groupId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1381,7 +1381,7 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 				_SQL_SELECT_FRIENDLYURLENTRYLOCALIZATION_WHERE,
 				_SQL_COUNT_FRIENDLYURLENTRYLOCALIZATION_WHERE,
 				FriendlyURLEntryLocalizationModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"friendlyURLEntryLocalization.", "groupId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1469,4 +1469,4 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1669770123
+// LIFERAY-SERVICE-BUILDER-HASH:1345564969

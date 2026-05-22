@@ -1455,6 +1455,7 @@ public class IndexEntryPersistenceImpl
 					new String[] {"ownerId"}, false),
 				_SQL_SELECT_INDEXENTRY_WHERE, _SQL_COUNT_INDEXENTRY_WHERE,
 				IndexEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"indexEntry.", "ownerId", FinderColumn.Type.LONG, "=", true,
 					true, IndexEntry::getOwnerId));
@@ -1477,7 +1478,7 @@ public class IndexEntryPersistenceImpl
 				new String[] {Long.class.getName()}, new String[] {"plid"},
 				false),
 			_SQL_SELECT_INDEXENTRY_WHERE, _SQL_COUNT_INDEXENTRY_WHERE,
-			IndexEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			IndexEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"indexEntry.", "plid", FinderColumn.Type.LONG, "=", true, true,
 				IndexEntry::getPlid));
@@ -1503,6 +1504,7 @@ public class IndexEntryPersistenceImpl
 					new String[] {"portletId"}, 0, 1, false, null),
 				_SQL_SELECT_INDEXENTRY_WHERE, _SQL_COUNT_INDEXENTRY_WHERE,
 				IndexEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"indexEntry.", "portletId", FinderColumn.Type.STRING, "=",
 					true, true, IndexEntry::getPortletId));
@@ -1526,7 +1528,7 @@ public class IndexEntryPersistenceImpl
 				new String[] {Integer.class.getName(), String.class.getName()},
 				new String[] {"ownerType", "portletId"}, 0, 2, false, null),
 			_SQL_SELECT_INDEXENTRY_WHERE, _SQL_COUNT_INDEXENTRY_WHERE,
-			IndexEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			IndexEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"indexEntry.", "ownerType", FinderColumn.Type.INTEGER, "=",
 				true, true, IndexEntry::getOwnerType),
@@ -1553,7 +1555,7 @@ public class IndexEntryPersistenceImpl
 				new String[] {Long.class.getName(), String.class.getName()},
 				new String[] {"plid", "portletId"}, 0, 2, false, null),
 			_SQL_SELECT_INDEXENTRY_WHERE, _SQL_COUNT_INDEXENTRY_WHERE,
-			IndexEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			IndexEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"indexEntry.", "plid", FinderColumn.Type.LONG, "=", true, true,
 				IndexEntry::getPlid),
@@ -1586,7 +1588,7 @@ public class IndexEntryPersistenceImpl
 				},
 				new String[] {"ownerId", "ownerType", "plid"}, false),
 			_SQL_SELECT_INDEXENTRY_WHERE, _SQL_COUNT_INDEXENTRY_WHERE,
-			IndexEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			IndexEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"indexEntry.", "ownerId", FinderColumn.Type.LONG, "=", true,
 				true, IndexEntry::getOwnerId),
@@ -1627,6 +1629,7 @@ public class IndexEntryPersistenceImpl
 					false, null),
 				_SQL_SELECT_INDEXENTRY_WHERE, _SQL_COUNT_INDEXENTRY_WHERE,
 				IndexEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"indexEntry.", "ownerId", FinderColumn.Type.LONG, "=", true,
 					true, IndexEntry::getOwnerId),
@@ -1664,7 +1667,7 @@ public class IndexEntryPersistenceImpl
 				new String[] {"ownerType", "plid", "portletId"}, 0, 4, false,
 				null),
 			_SQL_SELECT_INDEXENTRY_WHERE, _SQL_COUNT_INDEXENTRY_WHERE,
-			IndexEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			IndexEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"indexEntry.", "ownerType", FinderColumn.Type.INTEGER, "=",
 				true, true, IndexEntry::getOwnerType),
@@ -1704,6 +1707,7 @@ public class IndexEntryPersistenceImpl
 					false),
 				_SQL_SELECT_INDEXENTRY_WHERE, _SQL_COUNT_INDEXENTRY_WHERE,
 				IndexEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"indexEntry.", "companyId", FinderColumn.Type.LONG, "=",
 					true, true, IndexEntry::getCompanyId),
@@ -1803,4 +1807,4 @@ public class IndexEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1909754925
+// LIFERAY-SERVICE-BUILDER-HASH:-726579001

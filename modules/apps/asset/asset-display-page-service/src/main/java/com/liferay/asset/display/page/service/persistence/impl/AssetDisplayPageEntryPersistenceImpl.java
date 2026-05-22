@@ -1011,7 +1011,7 @@ public class AssetDisplayPageEntryPersistenceImpl
 			_SQL_SELECT_ASSETDISPLAYPAGEENTRY_WHERE,
 			_SQL_COUNT_ASSETDISPLAYPAGEENTRY_WHERE,
 			AssetDisplayPageEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-			"",
+			"", null,
 			new FinderColumn<>(
 				"assetDisplayPageEntry.", "uuid", FinderColumn.Type.STRING, "=",
 				true, true, AssetDisplayPageEntry::getUuid));
@@ -1054,7 +1054,7 @@ public class AssetDisplayPageEntryPersistenceImpl
 				_SQL_SELECT_ASSETDISPLAYPAGEENTRY_WHERE,
 				_SQL_COUNT_ASSETDISPLAYPAGEENTRY_WHERE,
 				AssetDisplayPageEntryModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"assetDisplayPageEntry.", "uuid", FinderColumn.Type.STRING,
 					"=", true, true, AssetDisplayPageEntry::getUuid),
@@ -1085,7 +1085,7 @@ public class AssetDisplayPageEntryPersistenceImpl
 				_SQL_SELECT_ASSETDISPLAYPAGEENTRY_WHERE,
 				_SQL_COUNT_ASSETDISPLAYPAGEENTRY_WHERE,
 				AssetDisplayPageEntryModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"assetDisplayPageEntry.", "groupId", FinderColumn.Type.LONG,
 					"=", true, true, AssetDisplayPageEntry::getGroupId));
@@ -1115,7 +1115,7 @@ public class AssetDisplayPageEntryPersistenceImpl
 				_SQL_SELECT_ASSETDISPLAYPAGEENTRY_WHERE,
 				_SQL_COUNT_ASSETDISPLAYPAGEENTRY_WHERE,
 				AssetDisplayPageEntryModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"assetDisplayPageEntry.", "layoutPageTemplateEntryId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1142,7 +1142,7 @@ public class AssetDisplayPageEntryPersistenceImpl
 			_SQL_SELECT_ASSETDISPLAYPAGEENTRY_WHERE,
 			_SQL_COUNT_ASSETDISPLAYPAGEENTRY_WHERE,
 			AssetDisplayPageEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-			"",
+			"", null,
 			new FinderColumn<>(
 				"assetDisplayPageEntry.", "groupId", FinderColumn.Type.LONG,
 				"=", true, true, AssetDisplayPageEntry::getGroupId),
@@ -1245,4 +1245,4 @@ public class AssetDisplayPageEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2078543719
+// LIFERAY-SERVICE-BUILDER-HASH:1254948659

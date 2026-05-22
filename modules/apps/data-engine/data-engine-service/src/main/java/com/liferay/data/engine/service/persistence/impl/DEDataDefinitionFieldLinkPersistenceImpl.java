@@ -1502,7 +1502,7 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 			_SQL_SELECT_DEDATADEFINITIONFIELDLINK_WHERE,
 			_SQL_COUNT_DEDATADEFINITIONFIELDLINK_WHERE,
 			DEDataDefinitionFieldLinkModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"deDataDefinitionFieldLink.", "uuid", FinderColumn.Type.STRING,
 				"=", true, true, DEDataDefinitionFieldLink::getUuid));
@@ -1545,7 +1545,7 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				_SQL_SELECT_DEDATADEFINITIONFIELDLINK_WHERE,
 				_SQL_COUNT_DEDATADEFINITIONFIELDLINK_WHERE,
 				DEDataDefinitionFieldLinkModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"deDataDefinitionFieldLink.", "uuid",
 					FinderColumn.Type.STRING, "=", true, true,
@@ -1579,7 +1579,7 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				_SQL_SELECT_DEDATADEFINITIONFIELDLINK_WHERE,
 				_SQL_COUNT_DEDATADEFINITIONFIELDLINK_WHERE,
 				DEDataDefinitionFieldLinkModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"deDataDefinitionFieldLink.", "ddmStructureId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1606,7 +1606,7 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 			_SQL_SELECT_DEDATADEFINITIONFIELDLINK_WHERE,
 			_SQL_COUNT_DEDATADEFINITIONFIELDLINK_WHERE,
 			DEDataDefinitionFieldLinkModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"deDataDefinitionFieldLink.", "classNameId",
 				FinderColumn.Type.LONG, "=", true, true,
@@ -1637,7 +1637,7 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				_SQL_SELECT_DEDATADEFINITIONFIELDLINK_WHERE,
 				_SQL_COUNT_DEDATADEFINITIONFIELDLINK_WHERE,
 				DEDataDefinitionFieldLinkModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"deDataDefinitionFieldLink.", "classNameId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1671,7 +1671,7 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				_SQL_SELECT_DEDATADEFINITIONFIELDLINK_WHERE,
 				_SQL_COUNT_DEDATADEFINITIONFIELDLINK_WHERE,
 				DEDataDefinitionFieldLinkModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"deDataDefinitionFieldLink.", "ddmStructureId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1714,7 +1714,7 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				_SQL_SELECT_DEDATADEFINITIONFIELDLINK_WHERE,
 				_SQL_COUNT_DEDATADEFINITIONFIELDLINK_WHERE,
 				DEDataDefinitionFieldLinkModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"deDataDefinitionFieldLink.", "classNameId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1843,4 +1843,4 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:117063824
+// LIFERAY-SERVICE-BUILDER-HASH:746925470

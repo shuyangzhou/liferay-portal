@@ -856,7 +856,7 @@ public class ObjectDefinitionSettingPersistenceImpl
 			_SQL_SELECT_OBJECTDEFINITIONSETTING_WHERE,
 			_SQL_COUNT_OBJECTDEFINITIONSETTING_WHERE,
 			ObjectDefinitionSettingModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"objectDefinitionSetting.", "uuid", FinderColumn.Type.STRING,
 				"=", true, true, ObjectDefinitionSetting::getUuid));
@@ -883,7 +883,7 @@ public class ObjectDefinitionSettingPersistenceImpl
 				_SQL_SELECT_OBJECTDEFINITIONSETTING_WHERE,
 				_SQL_COUNT_OBJECTDEFINITIONSETTING_WHERE,
 				ObjectDefinitionSettingModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"objectDefinitionSetting.", "uuid",
 					FinderColumn.Type.STRING, "=", true, true,
@@ -918,7 +918,7 @@ public class ObjectDefinitionSettingPersistenceImpl
 				_SQL_SELECT_OBJECTDEFINITIONSETTING_WHERE,
 				_SQL_COUNT_OBJECTDEFINITIONSETTING_WHERE,
 				ObjectDefinitionSettingModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"objectDefinitionSetting.", "objectDefinitionId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -945,7 +945,7 @@ public class ObjectDefinitionSettingPersistenceImpl
 			_SQL_SELECT_OBJECTDEFINITIONSETTING_WHERE,
 			_SQL_COUNT_OBJECTDEFINITIONSETTING_WHERE,
 			ObjectDefinitionSettingModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"objectDefinitionSetting.", "companyId", FinderColumn.Type.LONG,
 				"=", true, true, ObjectDefinitionSetting::getCompanyId),
@@ -997,7 +997,7 @@ public class ObjectDefinitionSettingPersistenceImpl
 			_SQL_SELECT_OBJECTDEFINITIONSETTING_WHERE,
 			_SQL_COUNT_OBJECTDEFINITIONSETTING_WHERE,
 			ObjectDefinitionSettingModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"objectDefinitionSetting.", "companyId", FinderColumn.Type.LONG,
 				"=", true, true, ObjectDefinitionSetting::getCompanyId),
@@ -1077,4 +1077,4 @@ public class ObjectDefinitionSettingPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1833621685
+// LIFERAY-SERVICE-BUILDER-HASH:1157135261

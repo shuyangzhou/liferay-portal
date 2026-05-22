@@ -652,7 +652,7 @@ public class KaleoDefinitionVersionPersistenceImpl
 				_SQL_SELECT_KALEODEFINITIONVERSION_WHERE,
 				_SQL_COUNT_KALEODEFINITIONVERSION_WHERE,
 				KaleoDefinitionVersionModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"kaleoDefinitionVersion.", "companyId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -679,7 +679,7 @@ public class KaleoDefinitionVersionPersistenceImpl
 			_SQL_SELECT_KALEODEFINITIONVERSION_WHERE,
 			_SQL_COUNT_KALEODEFINITIONVERSION_WHERE,
 			KaleoDefinitionVersionModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-			"",
+			"", null,
 			new FinderColumn<>(
 				"kaleoDefinitionVersion.", "companyId", FinderColumn.Type.LONG,
 				"=", true, true, KaleoDefinitionVersion::getCompanyId),
@@ -779,4 +779,4 @@ public class KaleoDefinitionVersionPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-704638955
+// LIFERAY-SERVICE-BUILDER-HASH:323826209

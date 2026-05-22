@@ -947,7 +947,7 @@ public class LaunchSetPersistenceImpl
 				new String[] {String.class.getName()}, new String[] {"uuid_"},
 				0, 1, false, null),
 			_SQL_SELECT_LAUNCHSET_WHERE, _SQL_COUNT_LAUNCHSET_WHERE,
-			LaunchSetModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			LaunchSetModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"launchSet.", "uuid", FinderColumn.Type.STRING, "=", true, true,
 				LaunchSet::getUuid));
@@ -973,6 +973,7 @@ public class LaunchSetPersistenceImpl
 					new String[] {"uuid_", "companyId"}, 0, 1, false, null),
 				_SQL_SELECT_LAUNCHSET_WHERE, _SQL_COUNT_LAUNCHSET_WHERE,
 				LaunchSetModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"launchSet.", "uuid", FinderColumn.Type.STRING, "=", true,
 					true, LaunchSet::getUuid),
@@ -1001,6 +1002,7 @@ public class LaunchSetPersistenceImpl
 					new String[] {"companyId"}, false),
 				_SQL_SELECT_LAUNCHSET_WHERE, _SQL_COUNT_LAUNCHSET_WHERE,
 				LaunchSetModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"launchSet.", "companyId", FinderColumn.Type.LONG, "=",
 					true, true, LaunchSet::getCompanyId));
@@ -1024,7 +1026,7 @@ public class LaunchSetPersistenceImpl
 				new String[] {Long.class.getName(), Long.class.getName()},
 				new String[] {"companyId", "userId"}, false),
 			_SQL_SELECT_LAUNCHSET_WHERE, _SQL_COUNT_LAUNCHSET_WHERE,
-			LaunchSetModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			LaunchSetModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"launchSet.", "companyId", FinderColumn.Type.LONG, "=", true,
 				true, LaunchSet::getCompanyId),
@@ -1051,7 +1053,7 @@ public class LaunchSetPersistenceImpl
 				new String[] {Long.class.getName(), Integer.class.getName()},
 				new String[] {"companyId", "status"}, false),
 			_SQL_SELECT_LAUNCHSET_WHERE, _SQL_COUNT_LAUNCHSET_WHERE,
-			LaunchSetModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			LaunchSetModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"launchSet.", "companyId", FinderColumn.Type.LONG, "=", true,
 				true, LaunchSet::getCompanyId),
@@ -1144,4 +1146,4 @@ public class LaunchSetPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-602191436
+// LIFERAY-SERVICE-BUILDER-HASH:214910261

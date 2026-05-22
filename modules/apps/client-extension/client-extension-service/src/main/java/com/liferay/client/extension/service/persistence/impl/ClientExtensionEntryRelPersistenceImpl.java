@@ -1192,7 +1192,7 @@ public class ClientExtensionEntryRelPersistenceImpl
 			_SQL_SELECT_CLIENTEXTENSIONENTRYREL_WHERE,
 			_SQL_COUNT_CLIENTEXTENSIONENTRYREL_WHERE,
 			ClientExtensionEntryRelModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"clientExtensionEntryRel.", "uuid", FinderColumn.Type.STRING,
 				"=", true, true, ClientExtensionEntryRel::getUuid));
@@ -1235,7 +1235,7 @@ public class ClientExtensionEntryRelPersistenceImpl
 				_SQL_SELECT_CLIENTEXTENSIONENTRYREL_WHERE,
 				_SQL_COUNT_CLIENTEXTENSIONENTRYREL_WHERE,
 				ClientExtensionEntryRelModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"clientExtensionEntryRel.", "uuid",
 					FinderColumn.Type.STRING, "=", true, true,
@@ -1265,7 +1265,7 @@ public class ClientExtensionEntryRelPersistenceImpl
 			_SQL_SELECT_CLIENTEXTENSIONENTRYREL_WHERE,
 			_SQL_COUNT_CLIENTEXTENSIONENTRYREL_WHERE,
 			ClientExtensionEntryRelModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"clientExtensionEntryRel.", "type", FinderColumn.Type.STRING,
 				"=", true, true, ClientExtensionEntryRel::getType));
@@ -1296,7 +1296,7 @@ public class ClientExtensionEntryRelPersistenceImpl
 				_SQL_SELECT_CLIENTEXTENSIONENTRYREL_WHERE,
 				_SQL_COUNT_CLIENTEXTENSIONENTRYREL_WHERE,
 				ClientExtensionEntryRelModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"clientExtensionEntryRel.", "companyId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1327,7 +1327,7 @@ public class ClientExtensionEntryRelPersistenceImpl
 			_SQL_SELECT_CLIENTEXTENSIONENTRYREL_WHERE,
 			_SQL_COUNT_CLIENTEXTENSIONENTRYREL_WHERE,
 			ClientExtensionEntryRelModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"clientExtensionEntryRel.", "classNameId",
 				FinderColumn.Type.LONG, "=", true, true,
@@ -1365,7 +1365,7 @@ public class ClientExtensionEntryRelPersistenceImpl
 			_SQL_SELECT_CLIENTEXTENSIONENTRYREL_WHERE,
 			_SQL_COUNT_CLIENTEXTENSIONENTRYREL_WHERE,
 			ClientExtensionEntryRelModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"clientExtensionEntryRel.", "classNameId",
 				FinderColumn.Type.LONG, "=", true, true,
@@ -1467,4 +1467,4 @@ public class ClientExtensionEntryRelPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1004091730
+// LIFERAY-SERVICE-BUILDER-HASH:-292077864

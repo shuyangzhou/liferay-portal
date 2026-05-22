@@ -2132,6 +2132,7 @@ public class CommerceOrderPersistenceImpl
 				0, 1, false, null),
 			_SQL_SELECT_COMMERCEORDER_WHERE, _SQL_COUNT_COMMERCEORDER_WHERE,
 			CommerceOrderModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"commerceOrder.", "uuid", FinderColumn.Type.STRING, "=", true,
 				true, CommerceOrder::getUuid));
@@ -2173,6 +2174,7 @@ public class CommerceOrderPersistenceImpl
 					new String[] {"uuid_", "companyId"}, 0, 1, false, null),
 				_SQL_SELECT_COMMERCEORDER_WHERE, _SQL_COUNT_COMMERCEORDER_WHERE,
 				CommerceOrderModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"commerceOrder.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, CommerceOrder::getUuid),
@@ -2201,6 +2203,7 @@ public class CommerceOrderPersistenceImpl
 					new String[] {"groupId"}, false),
 				_SQL_SELECT_COMMERCEORDER_WHERE, _SQL_COUNT_COMMERCEORDER_WHERE,
 				CommerceOrderModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"commerceOrder.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, CommerceOrder::getGroupId));
@@ -2226,6 +2229,7 @@ public class CommerceOrderPersistenceImpl
 					new String[] {"userId"}, false),
 				_SQL_SELECT_COMMERCEORDER_WHERE, _SQL_COUNT_COMMERCEORDER_WHERE,
 				CommerceOrderModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"commerceOrder.", "userId", FinderColumn.Type.LONG, "=",
 					true, true, CommerceOrder::getUserId));
@@ -2254,6 +2258,7 @@ public class CommerceOrderPersistenceImpl
 					new String[] {"billingAddressId"}, false),
 				_SQL_SELECT_COMMERCEORDER_WHERE, _SQL_COUNT_COMMERCEORDER_WHERE,
 				CommerceOrderModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"commerceOrder.", "billingAddressId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -2283,6 +2288,7 @@ public class CommerceOrderPersistenceImpl
 					new String[] {"commerceAccountId"}, false),
 				_SQL_SELECT_COMMERCEORDER_WHERE, _SQL_COUNT_COMMERCEORDER_WHERE,
 				CommerceOrderModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"commerceOrder.", "commerceAccountId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -2312,6 +2318,7 @@ public class CommerceOrderPersistenceImpl
 					new String[] {"shippingAddressId"}, false),
 				_SQL_SELECT_COMMERCEORDER_WHERE, _SQL_COUNT_COMMERCEORDER_WHERE,
 				CommerceOrderModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"commerceOrder.", "shippingAddressId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -2338,6 +2345,7 @@ public class CommerceOrderPersistenceImpl
 					new String[] {"groupId", "commerceAccountId"}, false),
 				_SQL_SELECT_COMMERCEORDER_WHERE, _SQL_COUNT_COMMERCEORDER_WHERE,
 				CommerceOrderModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"commerceOrder.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, CommerceOrder::getGroupId),
@@ -2369,6 +2377,7 @@ public class CommerceOrderPersistenceImpl
 					false, null),
 				_SQL_SELECT_COMMERCEORDER_WHERE, _SQL_COUNT_COMMERCEORDER_WHERE,
 				CommerceOrderModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"commerceOrder.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, CommerceOrder::getGroupId),
@@ -2405,6 +2414,7 @@ public class CommerceOrderPersistenceImpl
 					new String[] {"groupId", "userId", "orderStatus"}, false),
 				_SQL_SELECT_COMMERCEORDER_WHERE, _SQL_COUNT_COMMERCEORDER_WHERE,
 				CommerceOrderModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"commerceOrder.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, CommerceOrder::getGroupId),
@@ -2452,6 +2462,7 @@ public class CommerceOrderPersistenceImpl
 					false),
 				_SQL_SELECT_COMMERCEORDER_WHERE, _SQL_COUNT_COMMERCEORDER_WHERE,
 				CommerceOrderModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"commerceOrder.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, CommerceOrder::getGroupId),
@@ -2486,6 +2497,7 @@ public class CommerceOrderPersistenceImpl
 					false),
 				_SQL_SELECT_COMMERCEORDER_WHERE, _SQL_COUNT_COMMERCEORDER_WHERE,
 				CommerceOrderModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"commerceOrder.", "userId", FinderColumn.Type.LONG, "=",
 					true, true, CommerceOrder::getUserId),
@@ -2524,6 +2536,7 @@ public class CommerceOrderPersistenceImpl
 					false),
 				_SQL_SELECT_COMMERCEORDER_WHERE, _SQL_COUNT_COMMERCEORDER_WHERE,
 				CommerceOrderModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"commerceOrder.", "createDate", FinderColumn.Type.DATE, "<",
 					true, true, CommerceOrder::getCreateDate),
@@ -2645,4 +2658,4 @@ public class CommerceOrderPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-642898400
+// LIFERAY-SERVICE-BUILDER-HASH:-1730145916

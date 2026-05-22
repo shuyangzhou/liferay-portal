@@ -501,7 +501,7 @@ public class SamlSpAuthRequestPersistenceImpl
 				_SQL_SELECT_SAMLSPAUTHREQUEST_WHERE,
 				_SQL_COUNT_SAMLSPAUTHREQUEST_WHERE,
 				SamlSpAuthRequestModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"samlSpAuthRequest.", "createDate", FinderColumn.Type.DATE,
 					"<", true, true, SamlSpAuthRequest::getCreateDate));
@@ -592,4 +592,4 @@ public class SamlSpAuthRequestPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1393699535
+// LIFERAY-SERVICE-BUILDER-HASH:-1206646323

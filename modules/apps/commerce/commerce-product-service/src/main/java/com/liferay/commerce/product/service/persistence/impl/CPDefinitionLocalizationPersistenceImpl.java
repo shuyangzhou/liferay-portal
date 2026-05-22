@@ -601,7 +601,7 @@ public class CPDefinitionLocalizationPersistenceImpl
 				_SQL_SELECT_CPDEFINITIONLOCALIZATION_WHERE,
 				_SQL_COUNT_CPDEFINITIONLOCALIZATION_WHERE,
 				CPDefinitionLocalizationModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"cpDefinitionLocalization.", "CPDefinitionId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -697,4 +697,4 @@ public class CPDefinitionLocalizationPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2130311310
+// LIFERAY-SERVICE-BUILDER-HASH:857255762

@@ -1814,6 +1814,7 @@ public class BackgroundTaskPersistenceImpl
 				_SQL_SELECT_BACKGROUNDTASK_WHERE,
 				_SQL_COUNT_BACKGROUNDTASK_WHERE,
 				BackgroundTaskModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"backgroundTask.", "groupId", FinderColumn.Type.LONG, "=",
 					true, true, BackgroundTask::getGroupId));
@@ -1840,6 +1841,7 @@ public class BackgroundTaskPersistenceImpl
 				_SQL_SELECT_BACKGROUNDTASK_WHERE,
 				_SQL_COUNT_BACKGROUNDTASK_WHERE,
 				BackgroundTaskModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"backgroundTask.", "companyId", FinderColumn.Type.LONG, "=",
 					true, true, BackgroundTask::getCompanyId));
@@ -1866,6 +1868,7 @@ public class BackgroundTaskPersistenceImpl
 				_SQL_SELECT_BACKGROUNDTASK_WHERE,
 				_SQL_COUNT_BACKGROUNDTASK_WHERE,
 				BackgroundTaskModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"backgroundTask.", "completed", FinderColumn.Type.BOOLEAN,
 					"=", true, true, BackgroundTask::isCompleted));
@@ -1892,6 +1895,7 @@ public class BackgroundTaskPersistenceImpl
 				_SQL_SELECT_BACKGROUNDTASK_WHERE,
 				_SQL_COUNT_BACKGROUNDTASK_WHERE,
 				BackgroundTaskModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"backgroundTask.", "status", FinderColumn.Type.INTEGER, "=",
 					true, true, BackgroundTask::getStatus));
@@ -1918,6 +1922,7 @@ public class BackgroundTaskPersistenceImpl
 				null),
 			_SQL_SELECT_BACKGROUNDTASK_WHERE, _SQL_COUNT_BACKGROUNDTASK_WHERE,
 			BackgroundTaskModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new ArrayableFinderColumn<>(
 				"backgroundTask.", "groupId", FinderColumn.Type.LONG, "=",
 				false, true, true, BackgroundTask::getGroupId),
@@ -1946,6 +1951,7 @@ public class BackgroundTaskPersistenceImpl
 				new String[] {"groupId", "status"}, false),
 			_SQL_SELECT_BACKGROUNDTASK_WHERE, _SQL_COUNT_BACKGROUNDTASK_WHERE,
 			BackgroundTaskModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"backgroundTask.", "groupId", FinderColumn.Type.LONG, "=", true,
 				true, BackgroundTask::getGroupId),
@@ -1975,6 +1981,7 @@ public class BackgroundTaskPersistenceImpl
 				null),
 			_SQL_SELECT_BACKGROUNDTASK_WHERE, _SQL_COUNT_BACKGROUNDTASK_WHERE,
 			BackgroundTaskModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new ArrayableFinderColumn<>(
 				"backgroundTask.", "taskExecutorClassName",
 				FinderColumn.Type.STRING, "=", false, true, true,
@@ -2012,6 +2019,7 @@ public class BackgroundTaskPersistenceImpl
 				false, null),
 			_SQL_SELECT_BACKGROUNDTASK_WHERE, _SQL_COUNT_BACKGROUNDTASK_WHERE,
 			BackgroundTaskModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new ArrayableFinderColumn<>(
 				"backgroundTask.", "groupId", FinderColumn.Type.LONG, "=",
 				false, true, true, BackgroundTask::getGroupId),
@@ -2052,6 +2060,7 @@ public class BackgroundTaskPersistenceImpl
 				0, 2, false, null),
 			_SQL_SELECT_BACKGROUNDTASK_WHERE, _SQL_COUNT_BACKGROUNDTASK_WHERE,
 			BackgroundTaskModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new ArrayableFinderColumn<>(
 				"backgroundTask.", "groupId", FinderColumn.Type.LONG, "=",
 				false, true, true, BackgroundTask::getGroupId),
@@ -2092,6 +2101,7 @@ public class BackgroundTaskPersistenceImpl
 				2, false, null),
 			_SQL_SELECT_BACKGROUNDTASK_WHERE, _SQL_COUNT_BACKGROUNDTASK_WHERE,
 			BackgroundTaskModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"backgroundTask.", "groupId", FinderColumn.Type.LONG, "=", true,
 				true, BackgroundTask::getGroupId),
@@ -2141,6 +2151,7 @@ public class BackgroundTaskPersistenceImpl
 				_SQL_SELECT_BACKGROUNDTASK_WHERE,
 				_SQL_COUNT_BACKGROUNDTASK_WHERE,
 				BackgroundTaskModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new ArrayableFinderColumn<>(
 					"backgroundTask.", "groupId", FinderColumn.Type.LONG, "=",
 					false, true, true, BackgroundTask::getGroupId),
@@ -2218,4 +2229,4 @@ public class BackgroundTaskPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-267544640
+// LIFERAY-SERVICE-BUILDER-HASH:895569147

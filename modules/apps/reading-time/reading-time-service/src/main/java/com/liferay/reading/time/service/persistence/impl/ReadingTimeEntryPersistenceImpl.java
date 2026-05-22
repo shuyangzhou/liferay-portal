@@ -716,6 +716,7 @@ public class ReadingTimeEntryPersistenceImpl
 			_SQL_SELECT_READINGTIMEENTRY_WHERE,
 			_SQL_COUNT_READINGTIMEENTRY_WHERE,
 			ReadingTimeEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"readingTimeEntry.", "uuid", FinderColumn.Type.STRING, "=",
 				true, true, ReadingTimeEntry::getUuid));
@@ -758,7 +759,7 @@ public class ReadingTimeEntryPersistenceImpl
 				_SQL_SELECT_READINGTIMEENTRY_WHERE,
 				_SQL_COUNT_READINGTIMEENTRY_WHERE,
 				ReadingTimeEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"readingTimeEntry.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, ReadingTimeEntry::getUuid),
@@ -860,4 +861,4 @@ public class ReadingTimeEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-972392651
+// LIFERAY-SERVICE-BUILDER-HASH:1499444151

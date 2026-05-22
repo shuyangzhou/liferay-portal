@@ -1066,7 +1066,7 @@ public class DDLRecordSetPersistenceImpl
 				new String[] {String.class.getName()}, new String[] {"uuid_"},
 				0, 1, false, null),
 			_SQL_SELECT_DDLRECORDSET_WHERE, _SQL_COUNT_DDLRECORDSET_WHERE,
-			DDLRecordSetModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			DDLRecordSetModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"ddlRecordSet.", "uuid", FinderColumn.Type.STRING, "=", true,
 				true, DDLRecordSet::getUuid));
@@ -1108,6 +1108,7 @@ public class DDLRecordSetPersistenceImpl
 					new String[] {"uuid_", "companyId"}, 0, 1, false, null),
 				_SQL_SELECT_DDLRECORDSET_WHERE, _SQL_COUNT_DDLRECORDSET_WHERE,
 				DDLRecordSetModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"ddlRecordSet.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, DDLRecordSet::getUuid),
@@ -1136,6 +1137,7 @@ public class DDLRecordSetPersistenceImpl
 					new String[] {"groupId"}, false),
 				_SQL_SELECT_DDLRECORDSET_WHERE, _SQL_COUNT_DDLRECORDSET_WHERE,
 				DDLRecordSetModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new ArrayableFinderColumn<>(
 					"ddlRecordSet.", "groupId", FinderColumn.Type.LONG, "=",
 					false, true, true, DDLRecordSet::getGroupId));
@@ -1163,6 +1165,7 @@ public class DDLRecordSetPersistenceImpl
 					new String[] {"DDMStructureId"}, false),
 				_SQL_SELECT_DDLRECORDSET_WHERE, _SQL_COUNT_DDLRECORDSET_WHERE,
 				DDLRecordSetModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new ArrayableFinderColumn<>(
 					"ddlRecordSet.", "DDMStructureId", FinderColumn.Type.LONG,
 					"=", false, true, true, DDLRecordSet::getDDMStructureId));
@@ -1255,4 +1258,4 @@ public class DDLRecordSetPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1235042077
+// LIFERAY-SERVICE-BUILDER-HASH:1793714087

@@ -907,7 +907,7 @@ public class CommerceOrderAttachmentPersistenceImpl
 			_SQL_SELECT_COMMERCEORDERATTACHMENT_WHERE,
 			_SQL_COUNT_COMMERCEORDERATTACHMENT_WHERE,
 			CommerceOrderAttachmentModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"commerceOrderAttachment.", "uuid", FinderColumn.Type.STRING,
 				"=", true, true, CommerceOrderAttachment::getUuid));
@@ -950,7 +950,7 @@ public class CommerceOrderAttachmentPersistenceImpl
 				_SQL_SELECT_COMMERCEORDERATTACHMENT_WHERE,
 				_SQL_COUNT_COMMERCEORDERATTACHMENT_WHERE,
 				CommerceOrderAttachmentModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"commerceOrderAttachment.", "uuid",
 					FinderColumn.Type.STRING, "=", true, true,
@@ -985,7 +985,7 @@ public class CommerceOrderAttachmentPersistenceImpl
 				_SQL_SELECT_COMMERCEORDERATTACHMENT_WHERE,
 				_SQL_COUNT_COMMERCEORDERATTACHMENT_WHERE,
 				CommerceOrderAttachmentModelImpl.ORDER_BY_JPQL,
-				_ENTITY_ALIAS_PREFIX, "",
+				_ENTITY_ALIAS_PREFIX, "", null,
 				new FinderColumn<>(
 					"commerceOrderAttachment.", "commerceOrderId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1012,7 +1012,7 @@ public class CommerceOrderAttachmentPersistenceImpl
 			_SQL_SELECT_COMMERCEORDERATTACHMENT_WHERE,
 			_SQL_COUNT_COMMERCEORDERATTACHMENT_WHERE,
 			CommerceOrderAttachmentModelImpl.ORDER_BY_JPQL,
-			_ENTITY_ALIAS_PREFIX, "",
+			_ENTITY_ALIAS_PREFIX, "", null,
 			new FinderColumn<>(
 				"commerceOrderAttachment.", "commerceOrderId",
 				FinderColumn.Type.LONG, "=", true, true,
@@ -1110,4 +1110,4 @@ public class CommerceOrderAttachmentPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1241384751
+// LIFERAY-SERVICE-BUILDER-HASH:1662715665

@@ -817,6 +817,7 @@ public class TranslationEntryPersistenceImpl
 			_SQL_SELECT_TRANSLATIONENTRY_WHERE,
 			_SQL_COUNT_TRANSLATIONENTRY_WHERE,
 			TranslationEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"translationEntry.", "uuid", FinderColumn.Type.STRING, "=",
 				true, true, TranslationEntry::getUuid));
@@ -859,7 +860,7 @@ public class TranslationEntryPersistenceImpl
 				_SQL_SELECT_TRANSLATIONENTRY_WHERE,
 				_SQL_COUNT_TRANSLATIONENTRY_WHERE,
 				TranslationEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"translationEntry.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, TranslationEntry::getUuid),
@@ -888,6 +889,7 @@ public class TranslationEntryPersistenceImpl
 			_SQL_SELECT_TRANSLATIONENTRY_WHERE,
 			_SQL_COUNT_TRANSLATIONENTRY_WHERE,
 			TranslationEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"translationEntry.", "classNameId", FinderColumn.Type.LONG, "=",
 				true, true, TranslationEntry::getClassNameId),
@@ -990,4 +992,4 @@ public class TranslationEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:324096342
+// LIFERAY-SERVICE-BUILDER-HASH:-874988016

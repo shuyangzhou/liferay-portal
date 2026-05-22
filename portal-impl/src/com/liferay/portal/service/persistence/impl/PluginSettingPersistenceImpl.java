@@ -435,6 +435,7 @@ public class PluginSettingPersistenceImpl
 					new String[] {"companyId"}, false),
 				_SQL_SELECT_PLUGINSETTING_WHERE, _SQL_COUNT_PLUGINSETTING_WHERE,
 				PluginSettingModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"pluginSetting.", "companyId", FinderColumn.Type.LONG, "=",
 					true, true, PluginSetting::getCompanyId));
@@ -498,4 +499,4 @@ public class PluginSettingPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:179500535
+// LIFERAY-SERVICE-BUILDER-HASH:1407195423

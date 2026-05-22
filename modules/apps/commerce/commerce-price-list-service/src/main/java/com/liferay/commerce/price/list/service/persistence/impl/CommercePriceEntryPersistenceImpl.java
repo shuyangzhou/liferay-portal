@@ -1618,6 +1618,7 @@ public class CommercePriceEntryPersistenceImpl
 			_SQL_SELECT_COMMERCEPRICEENTRY_WHERE,
 			_SQL_COUNT_COMMERCEPRICEENTRY_WHERE,
 			CommercePriceEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"commercePriceEntry.", "uuid", FinderColumn.Type.STRING, "=",
 				true, true, CommercePriceEntry::getUuid));
@@ -1644,7 +1645,7 @@ public class CommercePriceEntryPersistenceImpl
 				_SQL_SELECT_COMMERCEPRICEENTRY_WHERE,
 				_SQL_COUNT_COMMERCEPRICEENTRY_WHERE,
 				CommercePriceEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"commercePriceEntry.", "uuid", FinderColumn.Type.STRING,
 					"=", true, true, CommercePriceEntry::getUuid),
@@ -1674,7 +1675,7 @@ public class CommercePriceEntryPersistenceImpl
 				_SQL_SELECT_COMMERCEPRICEENTRY_WHERE,
 				_SQL_COUNT_COMMERCEPRICEENTRY_WHERE,
 				CommercePriceEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"commercePriceEntry.", "companyId", FinderColumn.Type.LONG,
 					"=", true, true, CommercePriceEntry::getCompanyId));
@@ -1704,7 +1705,7 @@ public class CommercePriceEntryPersistenceImpl
 				_SQL_SELECT_COMMERCEPRICEENTRY_WHERE,
 				_SQL_COUNT_COMMERCEPRICEENTRY_WHERE,
 				CommercePriceEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"commercePriceEntry.", "commercePriceListId",
 					FinderColumn.Type.LONG, "=", true, true,
@@ -1735,7 +1736,7 @@ public class CommercePriceEntryPersistenceImpl
 				_SQL_SELECT_COMMERCEPRICEENTRY_WHERE,
 				_SQL_COUNT_COMMERCEPRICEENTRY_WHERE,
 				CommercePriceEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"commercePriceEntry.", "CPInstanceUuid",
 					FinderColumn.Type.STRING, "=", true, true,
@@ -1764,6 +1765,7 @@ public class CommercePriceEntryPersistenceImpl
 			_SQL_SELECT_COMMERCEPRICEENTRY_WHERE,
 			_SQL_COUNT_COMMERCEPRICEENTRY_WHERE,
 			CommercePriceEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"commercePriceEntry.", "commercePriceListId",
 				FinderColumn.Type.LONG, "=", true, true,
@@ -1791,6 +1793,7 @@ public class CommercePriceEntryPersistenceImpl
 			_SQL_SELECT_COMMERCEPRICEENTRY_WHERE,
 			_SQL_COUNT_COMMERCEPRICEENTRY_WHERE,
 			CommercePriceEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"commercePriceEntry.", "displayDate", FinderColumn.Type.DATE,
 				"<", true, true, CommercePriceEntry::getDisplayDate),
@@ -1816,6 +1819,7 @@ public class CommercePriceEntryPersistenceImpl
 			_SQL_SELECT_COMMERCEPRICEENTRY_WHERE,
 			_SQL_COUNT_COMMERCEPRICEENTRY_WHERE,
 			CommercePriceEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"commercePriceEntry.", "expirationDate", FinderColumn.Type.DATE,
 				"<", true, true, CommercePriceEntry::getExpirationDate),
@@ -1859,6 +1863,7 @@ public class CommercePriceEntryPersistenceImpl
 			_SQL_SELECT_COMMERCEPRICEENTRY_WHERE,
 			_SQL_COUNT_COMMERCEPRICEENTRY_WHERE,
 			CommercePriceEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"commercePriceEntry.", "commercePriceListId",
 				FinderColumn.Type.LONG, "=", true, true,
@@ -1901,6 +1906,7 @@ public class CommercePriceEntryPersistenceImpl
 			_SQL_SELECT_COMMERCEPRICEENTRY_WHERE,
 			_SQL_COUNT_COMMERCEPRICEENTRY_WHERE,
 			CommercePriceEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"commercePriceEntry.", "CPInstanceUuid",
 				FinderColumn.Type.STRING, "=", true, true,
@@ -2005,4 +2011,4 @@ public class CommercePriceEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-17688950
+// LIFERAY-SERVICE-BUILDER-HASH:-1176468464
