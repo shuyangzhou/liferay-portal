@@ -412,13 +412,10 @@ public class WhereClauseEntryPersistenceImpl
 	private static final String _SQL_COUNT_WHERECLAUSEENTRY_WHERE =
 		"SELECT COUNT(whereClauseEntry) FROM WhereClauseEntry whereClauseEntry WHERE ";
 
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No WhereClauseEntry exists with the key {";
-
 	@Override
 	protected FinderCache getFinderCache() {
 		return finderCache;
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1480087570
+// LIFERAY-SERVICE-BUILDER-HASH:1726474168
