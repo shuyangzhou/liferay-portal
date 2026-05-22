@@ -443,6 +443,7 @@ public class LazyBlobEntryPersistenceImpl
 				0, 1, false, null),
 			_SQL_SELECT_LAZYBLOBENTRY_WHERE, _SQL_COUNT_LAZYBLOBENTRY_WHERE,
 			LazyBlobEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"lazyBlobEntry.", "uuid", FinderColumn.Type.STRING, "=", true,
 				true, LazyBlobEntry::getUuid));
@@ -532,4 +533,4 @@ public class LazyBlobEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:461771986
+// LIFERAY-SERVICE-BUILDER-HASH:-63123640

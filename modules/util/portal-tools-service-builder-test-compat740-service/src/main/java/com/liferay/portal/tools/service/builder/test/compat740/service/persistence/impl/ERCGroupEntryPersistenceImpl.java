@@ -670,6 +670,7 @@ public class ERCGroupEntryPersistenceImpl
 				0, 1, false, null),
 			_SQL_SELECT_ERCGROUPENTRY_WHERE, _SQL_COUNT_ERCGROUPENTRY_WHERE,
 			ERCGroupEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"ercGroupEntry.", "uuid", FinderColumn.Type.STRING, "=", true,
 				true, ERCGroupEntry::getUuid));
@@ -711,6 +712,7 @@ public class ERCGroupEntryPersistenceImpl
 					new String[] {"uuid_", "companyId"}, 0, 1, false, null),
 				_SQL_SELECT_ERCGROUPENTRY_WHERE, _SQL_COUNT_ERCGROUPENTRY_WHERE,
 				ERCGroupEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+				null,
 				new FinderColumn<>(
 					"ercGroupEntry.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, ERCGroupEntry::getUuid),
@@ -804,4 +806,4 @@ public class ERCGroupEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-727785125
+// LIFERAY-SERVICE-BUILDER-HASH:-419709547

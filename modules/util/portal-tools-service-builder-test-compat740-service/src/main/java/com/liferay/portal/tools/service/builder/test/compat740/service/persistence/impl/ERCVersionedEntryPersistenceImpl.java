@@ -1128,6 +1128,7 @@ public class ERCVersionedEntryPersistenceImpl
 			_SQL_SELECT_ERCVERSIONEDENTRY_WHERE,
 			_SQL_COUNT_ERCVERSIONEDENTRY_WHERE,
 			ERCVersionedEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"ercVersionedEntry.", "uuid", FinderColumn.Type.STRING, "=",
 				true, true, ERCVersionedEntry::getUuid));
@@ -1160,7 +1161,7 @@ public class ERCVersionedEntryPersistenceImpl
 				_SQL_SELECT_ERCVERSIONEDENTRY_WHERE,
 				_SQL_COUNT_ERCVERSIONEDENTRY_WHERE,
 				ERCVersionedEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"ercVersionedEntry.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, ERCVersionedEntry::getUuid),
@@ -1190,7 +1191,7 @@ public class ERCVersionedEntryPersistenceImpl
 				_SQL_SELECT_ERCVERSIONEDENTRY_WHERE,
 				_SQL_COUNT_ERCVERSIONEDENTRY_WHERE,
 				ERCVersionedEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"ercVersionedEntry.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, ERCVersionedEntry::getUuid),
@@ -1242,7 +1243,7 @@ public class ERCVersionedEntryPersistenceImpl
 				_SQL_SELECT_ERCVERSIONEDENTRY_WHERE,
 				_SQL_COUNT_ERCVERSIONEDENTRY_WHERE,
 				ERCVersionedEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"ercVersionedEntry.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, ERCVersionedEntry::getUuid),
@@ -1283,7 +1284,7 @@ public class ERCVersionedEntryPersistenceImpl
 				_SQL_SELECT_ERCVERSIONEDENTRY_WHERE,
 				_SQL_COUNT_ERCVERSIONEDENTRY_WHERE,
 				ERCVersionedEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX,
-				"",
+				"", null,
 				new FinderColumn<>(
 					"ercVersionedEntry.", "uuid", FinderColumn.Type.STRING, "=",
 					true, true, ERCVersionedEntry::getUuid),
@@ -1317,6 +1318,7 @@ public class ERCVersionedEntryPersistenceImpl
 			_SQL_SELECT_ERCVERSIONEDENTRY_WHERE,
 			_SQL_COUNT_ERCVERSIONEDENTRY_WHERE,
 			ERCVersionedEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
+			null,
 			new FinderColumn<>(
 				"ercVersionedEntry.", "externalReferenceCode",
 				FinderColumn.Type.STRING, "=", true, true,
@@ -1430,4 +1432,4 @@ public class ERCVersionedEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-168676328
+// LIFERAY-SERVICE-BUILDER-HASH:-2136326416
