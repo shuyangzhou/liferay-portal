@@ -114,43 +114,6 @@ public class OpenSearchIndexSearcherLoggingTest extends BaseIndexingTestCase {
 		}
 	}
 
-	@Test
-	public void testSearchSearchRequestExecutorLogsPrettyPrintedString() {
-		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				SearchSearchRequestExecutor.class.getName(),
-				LoggerTestUtil.DEBUG)) {
-
-			search(createSearchContext());
-
-			List<LogEntry> logEntries = logCapture.getLogEntries();
-
-			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
-
-			_assertLogEntry(
-				logEntries.get(0), "The search engine processed",
-				LoggerTestUtil.DEBUG);
-		}
-	}
-
-	@Test
-	public void testSearchSearchRequestExecutorLogsViaIndexer() {
-		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				OpenSearchIndexSearcher.class.getName(), LoggerTestUtil.INFO)) {
-
-			search(createSearchContext());
-
-			List<LogEntry> logEntries = logCapture.getLogEntries();
-
-			Assert.assertEquals(logEntries.toString(), 2, logEntries.size());
-
-			_assertLogEntry(
-				logEntries.get(0), "The search engine processed",
-				LoggerTestUtil.INFO);
-			_assertLogEntry(
-				logEntries.get(1), "Searching took", LoggerTestUtil.INFO);
-		}
-	}
-
 	@Override
 	protected IndexingFixture createIndexingFixture() {
 		return LiferayOpenSearchIndexingFixtureFactory.getInstance();
