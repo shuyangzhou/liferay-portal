@@ -6,19 +6,23 @@
 package com.liferay.portal.search.opensearch2.internal.logging;
 
 import com.liferay.portal.kernel.search.MatchAllQuery;
-import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.search.opensearch2.internal.OpenSearchIndexSearcher;
 import com.liferay.portal.search.opensearch2.internal.OpenSearchTestRule;
 import com.liferay.portal.search.opensearch2.internal.indexing.LiferayOpenSearchIndexingFixtureFactory;
 import com.liferay.portal.search.opensearch2.internal.search.engine.adapter.search.CountSearchRequestExecutor;
 import com.liferay.portal.search.opensearch2.internal.search.engine.adapter.search.SearchSearchRequestExecutor;
-import com.liferay.portal.search.test.rule.logging.ExpectedLogMethodTestRule;
 import com.liferay.portal.search.test.util.indexing.BaseIndexingTestCase;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
-import com.liferay.portal.search.test.util.logging.ExpectedLog;
+import com.liferay.portal.test.log.LogCapture;
+import com.liferay.portal.test.log.LogEntry;
+import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
+import java.util.List;
+
+import org.junit.Assert;
 import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 /**
@@ -28,66 +32,140 @@ import org.junit.Test;
 public class OpenSearchIndexSearcherLoggingTest extends BaseIndexingTestCase {
 
 	@ClassRule
-	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			ExpectedLogMethodTestRule.INSTANCE, LiferayUnitTestRule.INSTANCE);
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@ClassRule
 	public static OpenSearchTestRule openSearchTestRule =
 		OpenSearchTestRule.INSTANCE;
 
-	@ExpectedLog(
-		expectedClass = CountSearchRequestExecutor.class,
-		expectedLevel = ExpectedLog.Level.FINE,
-		expectedLog = "The search engine processed"
-	)
 	@Test
 	public void testCountSearchRequestExecutorLogsViaIndexer() {
-		searchCount(createSearchContext(), new MatchAllQuery());
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				CountSearchRequestExecutor.class.getName(),
+				LoggerTestUtil.DEBUG)) {
+
+			searchCount(createSearchContext(), new MatchAllQuery());
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
+
+			_assertLogEntry(
+				logEntries.get(0), "The search engine processed",
+				LoggerTestUtil.DEBUG);
+		}
 	}
 
-	@ExpectedLog(
-		expectedClass = OpenSearchIndexSearcher.class,
-		expectedLevel = ExpectedLog.Level.INFO,
-		expectedLog = "The search engine processed"
-	)
 	@Test
 	public void testIndexerSearchCountLogs() {
-		searchCount(createSearchContext(), new MatchAllQuery());
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				OpenSearchIndexSearcher.class.getName(), LoggerTestUtil.INFO)) {
+
+			searchCount(createSearchContext(), new MatchAllQuery());
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertEquals(logEntries.toString(), 2, logEntries.size());
+
+			_assertLogEntry(
+				logEntries.get(0), "The search engine processed",
+				LoggerTestUtil.INFO);
+			_assertLogEntry(
+				logEntries.get(1), "Searching took", LoggerTestUtil.INFO);
+		}
 	}
 
-	@ExpectedLog(
-		expectedClass = OpenSearchIndexSearcher.class,
-		expectedLevel = ExpectedLog.Level.INFO,
-		expectedLog = "The search engine processed"
-	)
 	@Test
 	public void testIndexerSearchLogs() {
-		search(createSearchContext());
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				OpenSearchIndexSearcher.class.getName(), LoggerTestUtil.INFO)) {
+
+			search(createSearchContext());
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertEquals(logEntries.toString(), 2, logEntries.size());
+
+			_assertLogEntry(
+				logEntries.get(0), "The search engine processed",
+				LoggerTestUtil.INFO);
+			_assertLogEntry(
+				logEntries.get(1), "Searching took", LoggerTestUtil.INFO);
+		}
 	}
 
-	@ExpectedLog(
-		expectedClass = SearchSearchRequestExecutor.class,
-		expectedLevel = ExpectedLog.Level.FINEST, expectedLog = "Search query:"
-	)
+	@Test
+	public void testSearchSearchRequestExecutorLogs() {
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				SearchSearchRequestExecutor.class.getName(),
+				LoggerTestUtil.DEBUG)) {
+
+			search(createSearchContext());
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
+
+			_assertLogEntry(
+				logEntries.get(0), "The search engine processed",
+				LoggerTestUtil.DEBUG);
+		}
+	}
+
 	@Test
 	public void testSearchSearchRequestExecutorLogsPrettyPrintedString() {
-		search(createSearchContext());
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				SearchSearchRequestExecutor.class.getName(),
+				LoggerTestUtil.DEBUG)) {
+
+			search(createSearchContext());
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
+
+			_assertLogEntry(
+				logEntries.get(0), "The search engine processed",
+				LoggerTestUtil.DEBUG);
+		}
 	}
 
-	@ExpectedLog(
-		expectedClass = SearchSearchRequestExecutor.class,
-		expectedLevel = ExpectedLog.Level.FINE,
-		expectedLog = "The search engine processed"
-	)
 	@Test
 	public void testSearchSearchRequestExecutorLogsViaIndexer() {
-		search(createSearchContext());
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				OpenSearchIndexSearcher.class.getName(), LoggerTestUtil.INFO)) {
+
+			search(createSearchContext());
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertEquals(logEntries.toString(), 2, logEntries.size());
+
+			_assertLogEntry(
+				logEntries.get(0), "The search engine processed",
+				LoggerTestUtil.INFO);
+			_assertLogEntry(
+				logEntries.get(1), "Searching took", LoggerTestUtil.INFO);
+		}
 	}
 
 	@Override
 	protected IndexingFixture createIndexingFixture() {
 		return LiferayOpenSearchIndexingFixtureFactory.getInstance();
+	}
+
+	private void _assertLogEntry(
+		LogEntry logEntry, String expectedMessage, String logLevel) {
+
+		Assert.assertEquals(logLevel, logEntry.getPriority());
+
+		String message = logEntry.getMessage();
+
+		Assert.assertTrue(
+			message + " does not start with " + expectedMessage,
+			message.startsWith(expectedMessage));
 	}
 
 }
