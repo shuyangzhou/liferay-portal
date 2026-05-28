@@ -49,7 +49,7 @@ public class OpenSearchSearchEngineAdapterLoggingTest
 			searchEngineAdapter.execute(
 				new CountSearchRequest() {
 					{
-						setIndexNames("_all");
+						setIndexNames(_INDEX_NAME);
 						setQuery(new MatchAllQuery());
 					}
 				});
@@ -70,7 +70,7 @@ public class OpenSearchSearchEngineAdapterLoggingTest
 						addSearchSearchRequest(
 							new SearchSearchRequest() {
 								{
-									setIndexNames("_all");
+									setIndexNames(_INDEX_NAME);
 									setQuery(new MatchAllQuery());
 								}
 							});
@@ -90,7 +90,7 @@ public class OpenSearchSearchEngineAdapterLoggingTest
 			searchEngineAdapter.execute(
 				new SearchSearchRequest() {
 					{
-						setIndexNames("_all");
+						setIndexNames(_INDEX_NAME);
 						setQuery(new MatchAllQuery());
 					}
 				});
@@ -117,5 +117,7 @@ public class OpenSearchSearchEngineAdapterLoggingTest
 			message + " does not match " + expectedMessagePattern,
 			message.matches(expectedMessagePattern));
 	}
+
+	private static final String _INDEX_NAME = "_all";
 
 }
