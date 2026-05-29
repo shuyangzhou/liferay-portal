@@ -56,7 +56,7 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 		try {
 			addDocument(
 				DocumentCreationHelpers.singleKeyword(
-					Field.EXPIRATION_DATE, "text"));
+					Field.EXPIRATION_DATE, _EXPIRATION_DATE));
 
 			Assert.fail();
 		}
@@ -81,7 +81,7 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 
 			Document document = new DocumentImpl();
 
-			document.addKeyword(Field.EXPIRATION_DATE, "text");
+			document.addKeyword(Field.EXPIRATION_DATE, _EXPIRATION_DATE);
 
 			IndexWriter indexWriter = getIndexWriter();
 
@@ -112,7 +112,7 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 	public void testCommit() throws SearchException {
 		SearchContext searchContext = new SearchContext();
 
-		searchContext.setCompanyId(1);
+		searchContext.setCompanyId(_COMPANY_ID);
 
 		IndexWriter indexWriter = getIndexWriter();
 
@@ -123,7 +123,8 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 		}
 		catch (OpenSearchException openSearchException) {
 			_assertOpenSearchException(
-				message -> Assert.assertEquals("no such index [1]", message),
+				message -> Assert.assertEquals(
+					"no such index [" + _COMPANY_ID + "]", message),
 				openSearchException, "index_not_found_exception");
 		}
 	}
@@ -135,15 +136,15 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 
 			SearchContext searchContext = new SearchContext();
 
-			searchContext.setCompanyId(1);
+			searchContext.setCompanyId(_COMPANY_ID);
 
 			IndexWriter indexWriter = getIndexWriter();
 
-			indexWriter.deleteDocument(searchContext, "1");
+			indexWriter.deleteDocument(searchContext, _UID);
 
 			String expectedMessage = StringBundler.concat(
 				"Request failed: [index_not_found_exception] no such index [",
-				1, "]");
+				_COMPANY_ID, "]");
 
 			_assertLogCapture(
 				message -> Assert.assertTrue(
@@ -161,12 +162,12 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 
 			SearchContext searchContext = new SearchContext();
 
-			searchContext.setCompanyId(1);
+			searchContext.setCompanyId(_COMPANY_ID);
 
 			IndexWriter indexWriter = getIndexWriter();
 
 			try {
-				indexWriter.deleteDocuments(searchContext, Arrays.asList("1"));
+				indexWriter.deleteDocuments(searchContext, Arrays.asList(_UID));
 
 				Assert.fail();
 			}
@@ -175,7 +176,7 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 					"Bulk delete failed", systemException.getMessage());
 			}
 
-			String expectedMessage = "no such index [1]";
+			String expectedMessage = "no such index [" + _COMPANY_ID + "]";
 
 			_assertLogCapture(
 				message -> Assert.assertTrue(
@@ -189,7 +190,7 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 	public void testDeleteEntityDocuments() throws SearchException {
 		SearchContext searchContext = new SearchContext();
 
-		searchContext.setCompanyId(1);
+		searchContext.setCompanyId(_COMPANY_ID);
 
 		IndexWriter indexWriter = getIndexWriter();
 
@@ -200,7 +201,8 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 		}
 		catch (OpenSearchException openSearchException) {
 			_assertOpenSearchException(
-				message -> Assert.assertEquals("no such index [1]", message),
+				message -> Assert.assertEquals(
+					"no such index [" + _COMPANY_ID + "]", message),
 				openSearchException, "index_not_found_exception");
 		}
 	}
@@ -209,7 +211,7 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 	public void testPartiallyUpdateDocument() throws SearchException {
 		Document document = new DocumentImpl();
 
-		document.addKeyword(Field.UID, "1");
+		document.addKeyword(Field.UID, _UID);
 
 		IndexWriter indexWriter = getIndexWriter();
 
@@ -224,7 +226,7 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 
 			Document document = new DocumentImpl();
 
-			document.addKeyword(Field.UID, "1");
+			document.addKeyword(Field.UID, _UID);
 
 			IndexWriter indexWriter = getIndexWriter();
 
@@ -239,7 +241,7 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 					"Bulk partial update failed", systemException.getMessage());
 			}
 
-			String expectedMessage = "[1]: document missing";
+			String expectedMessage = "[" + _UID + "]: document missing";
 
 			_assertLogCapture(
 				message -> Assert.assertTrue(
@@ -257,8 +259,8 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 
 			Document document = new DocumentImpl();
 
-			document.addKeyword(Field.EXPIRATION_DATE, "text");
-			document.addKeyword(Field.UID, "1");
+			document.addKeyword(Field.EXPIRATION_DATE, _EXPIRATION_DATE);
+			document.addKeyword(Field.UID, _UID);
 
 			IndexWriter indexWriter = getIndexWriter();
 
@@ -292,8 +294,8 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 
 			Document document = new DocumentImpl();
 
-			document.addKeyword(Field.EXPIRATION_DATE, "text");
-			document.addKeyword(Field.UID, "1");
+			document.addKeyword(Field.EXPIRATION_DATE, _EXPIRATION_DATE);
+			document.addKeyword(Field.UID, _UID);
 
 			IndexWriter indexWriter = getIndexWriter();
 
@@ -347,5 +349,11 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 		Assert.assertEquals(expectedType, errorCause.type());
 		consumer.accept(errorCause.reason());
 	}
+
+	private static final long _COMPANY_ID = 1;
+
+	private static final String _EXPIRATION_DATE = "text";
+
+	private static final String _UID = "1";
 
 }
