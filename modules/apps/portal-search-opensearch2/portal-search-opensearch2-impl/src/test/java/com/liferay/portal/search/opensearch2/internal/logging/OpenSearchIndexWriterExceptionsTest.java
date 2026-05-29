@@ -34,6 +34,7 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import org.opensearch.client.opensearch._types.ErrorCause;
 import org.opensearch.client.opensearch._types.OpenSearchException;
 
 /**
@@ -61,14 +62,14 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 		}
 		catch (OpenSearchException openSearchException) {
 			String expectedMessage =
-				"[mapper_parsing_exception] failed to parse field " +
-					"[expirationDate] of type [date]";
+				"failed to parse field [expirationDate] of type [date] in " +
+					"document with id";
 
-			String message = openSearchException.getMessage();
-
-			Assert.assertTrue(
-				message + " does not contain " + expectedMessage,
-				message.contains(expectedMessage));
+			_assertOpenSearchException(
+				message -> Assert.assertTrue(
+					message + " does not contain " + expectedMessage,
+					message.contains(expectedMessage)),
+				openSearchException, "mapper_parsing_exception");
 		}
 	}
 
@@ -121,14 +122,9 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 			Assert.fail();
 		}
 		catch (OpenSearchException openSearchException) {
-			String expectedMessage =
-				"[index_not_found_exception] no such index";
-
-			String message = openSearchException.getMessage();
-
-			Assert.assertTrue(
-				message + " does not contain " + expectedMessage,
-				message.contains(expectedMessage));
+			_assertOpenSearchException(
+				message -> Assert.assertEquals("no such index [1]", message),
+				openSearchException, "index_not_found_exception");
 		}
 	}
 
@@ -203,14 +199,9 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 			Assert.fail();
 		}
 		catch (OpenSearchException openSearchException) {
-			String expectedMessage =
-				"[index_not_found_exception] no such index";
-
-			String message = openSearchException.getMessage();
-
-			Assert.assertTrue(
-				message + " does not contain " + expectedMessage,
-				message.contains(expectedMessage));
+			_assertOpenSearchException(
+				message -> Assert.assertEquals("no such index [1]", message),
+				openSearchException, "index_not_found_exception");
 		}
 	}
 
@@ -324,6 +315,16 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 
 		Assert.assertEquals(logLevel, logEntry.getPriority());
 		consumer.accept(logEntry.getMessage());
+	}
+
+	private void _assertOpenSearchException(
+		Consumer<String> consumer, OpenSearchException openSearchException,
+		String expectedType) {
+
+		ErrorCause errorCause = openSearchException.error();
+
+		Assert.assertEquals(expectedType, errorCause.type());
+		consumer.accept(errorCause.reason());
 	}
 
 }
