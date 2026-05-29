@@ -143,13 +143,12 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 			indexWriter.deleteDocument(searchContext, _UID);
 
 			String expectedMessage = StringBundler.concat(
-				"Request failed: [index_not_found_exception] no such index [",
-				_COMPANY_ID, "]");
+				OpenSearchException.class.getName(),
+				": Request failed: [index_not_found_exception] no such index ",
+				"[", _COMPANY_ID, "]");
 
 			_assertLogCapture(
-				message -> Assert.assertTrue(
-					message + " does not contain " + expectedMessage,
-					message.contains(expectedMessage)),
+				message -> Assert.assertEquals(expectedMessage, message),
 				logCapture, LoggerTestUtil.INFO);
 		}
 	}
