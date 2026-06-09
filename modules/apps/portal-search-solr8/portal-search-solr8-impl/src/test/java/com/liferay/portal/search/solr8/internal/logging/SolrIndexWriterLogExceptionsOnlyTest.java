@@ -111,26 +111,18 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 			catch (SearchException searchException) {
 			}
 
-			String expectedMessagePrefix =
-				"{class=class " +
-					HttpSolrClient.RemoteSolrException.class.getName() +
-						", message=Error from server at";
-			String expectedMimeType =
-				"Expected mime type application/octet-stream but got text";
-			String expectedStatus = "Error 404 Not Found";
-
 			_assertLogCapture(
 				message -> {
 					Assert.assertTrue(
-						message + " does not contain " + expectedMimeType,
-						message.contains(expectedMimeType));
+						message + " does not contain " + _EXPECTED_MIME_TYPE,
+						message.contains(_EXPECTED_MIME_TYPE));
 					Assert.assertTrue(
 						message + " does not start with " +
-							expectedMessagePrefix,
-						message.startsWith(expectedMessagePrefix));
+							_EXPECTED_BULK_PREFIX,
+						message.startsWith(_EXPECTED_BULK_PREFIX));
 					Assert.assertTrue(
-						message + " does not contain " + expectedStatus,
-						message.contains(expectedStatus));
+						message + " does not contain " + _EXPECTED_STATUS,
+						message.contains(_EXPECTED_STATUS));
 				},
 				logCapture, LoggerTestUtil.WARN);
 		}
@@ -209,26 +201,18 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 			catch (SearchException searchException) {
 			}
 
-			String expectedMessagePrefix =
-				"{class=class " +
-					HttpSolrClient.RemoteSolrException.class.getName() +
-						", message=Error from server at";
-			String expectedMimeType =
-				"Expected mime type application/octet-stream but got text";
-			String expectedStatus = "Error 404 Not Found";
-
 			_assertLogCapture(
 				message -> {
 					Assert.assertTrue(
-						message + " does not contain " + expectedMimeType,
-						message.contains(expectedMimeType));
+						message + " does not contain " + _EXPECTED_MIME_TYPE,
+						message.contains(_EXPECTED_MIME_TYPE));
 					Assert.assertTrue(
 						message + " does not start with " +
-							expectedMessagePrefix,
-						message.startsWith(expectedMessagePrefix));
+							_EXPECTED_BULK_PREFIX,
+						message.startsWith(_EXPECTED_BULK_PREFIX));
 					Assert.assertTrue(
-						message + " does not contain " + expectedStatus,
-						message.contains(expectedStatus));
+						message + " does not contain " + _EXPECTED_STATUS,
+						message.contains(_EXPECTED_STATUS));
 				},
 				logCapture, LoggerTestUtil.WARN);
 		}
@@ -314,26 +298,18 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 			catch (SearchException searchException) {
 			}
 
-			String expectedMessagePrefix =
-				"{class=class " +
-					HttpSolrClient.RemoteSolrException.class.getName() +
-						", message=Error from server at";
-			String expectedMimeType =
-				"Expected mime type application/octet-stream but got text";
-			String expectedStatus = "Error 404 Not Found";
-
 			_assertLogCapture(
 				message -> {
 					Assert.assertTrue(
-						message + " does not contain " + expectedMimeType,
-						message.contains(expectedMimeType));
+						message + " does not contain " + _EXPECTED_MIME_TYPE,
+						message.contains(_EXPECTED_MIME_TYPE));
 					Assert.assertTrue(
 						message + " does not start with " +
-							expectedMessagePrefix,
-						message.startsWith(expectedMessagePrefix));
+							_EXPECTED_BULK_PREFIX,
+						message.startsWith(_EXPECTED_BULK_PREFIX));
 					Assert.assertTrue(
-						message + " does not contain " + expectedStatus,
-						message.contains(expectedStatus));
+						message + " does not contain " + _EXPECTED_STATUS,
+						message.contains(_EXPECTED_STATUS));
 				},
 				logCapture, LoggerTestUtil.WARN);
 		}
@@ -353,23 +329,20 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 			catch (SearchException searchException) {
 			}
 
-			String expectedMessagePrefix =
-				"Update failed: Error from server at";
-			String expectedMimeType =
-				"Expected mime type application/octet-stream but got text";
+			String expectedMessagePrefix = "Update failed: " + _EXPECTED_PREFIX;
 
 			_assertLogCapture(
 				message -> {
 					Assert.assertTrue(
-						message + " does not contain " + expectedMimeType,
-						message.contains(expectedMimeType));
+						message + " does not contain " + _EXPECTED_MIME_TYPE,
+						message.contains(_EXPECTED_MIME_TYPE));
 					Assert.assertTrue(
 						message + " does not start with " +
 							expectedMessagePrefix,
 						message.startsWith(expectedMessagePrefix));
 					Assert.assertTrue(
-						message + " does not contain Error 404 Not Found",
-						message.contains("Error 404 Not Found"));
+						message + " does not contain " + _EXPECTED_STATUS,
+						message.contains(_EXPECTED_STATUS));
 				},
 				logCapture, LoggerTestUtil.ERROR);
 		}
@@ -390,14 +363,6 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 			catch (SearchException searchException) {
 			}
 
-			String expectedMessagePrefix =
-				"{class=class " +
-					HttpSolrClient.RemoteSolrException.class.getName() +
-						", message=Error from server at";
-			String expectedMimeType =
-				"Expected mime type application/octet-stream but got text";
-			String expectedStatus = "Error 404 Not Found";
-
 			List<LogEntry> logEntries = logCapture.getLogEntries();
 
 			Assert.assertEquals(logEntries.toString(), 2, logEntries.size());
@@ -406,15 +371,16 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 				_assertLogEntry(
 					message -> {
 						Assert.assertTrue(
-							message + " does not contain " + expectedMimeType,
-							message.contains(expectedMimeType));
+							message + " does not contain " +
+								_EXPECTED_MIME_TYPE,
+							message.contains(_EXPECTED_MIME_TYPE));
 						Assert.assertTrue(
 							message + " does not start with " +
-								expectedMessagePrefix,
-							message.startsWith(expectedMessagePrefix));
+								_EXPECTED_BULK_PREFIX,
+							message.startsWith(_EXPECTED_BULK_PREFIX));
 						Assert.assertTrue(
-							message + " does not contain " + expectedStatus,
-							message.contains(expectedStatus));
+							message + " does not contain " + _EXPECTED_STATUS,
+							message.contains(_EXPECTED_STATUS));
 					},
 					logEntry, LoggerTestUtil.WARN);
 			}
@@ -436,23 +402,20 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 			catch (SearchException searchException) {
 			}
 
-			String expectedMessagePrefix =
-				"Update failed: Error from server at";
-			String expectedMimeType =
-				"Expected mime type application/octet-stream but got text";
+			String expectedMessagePrefix = "Update failed: " + _EXPECTED_PREFIX;
 
 			_assertLogCapture(
 				message -> {
 					Assert.assertTrue(
-						message + " does not contain " + expectedMimeType,
-						message.contains(expectedMimeType));
+						message + " does not contain " + _EXPECTED_MIME_TYPE,
+						message.contains(_EXPECTED_MIME_TYPE));
 					Assert.assertTrue(
 						message + " does not start with " +
 							expectedMessagePrefix,
 						message.startsWith(expectedMessagePrefix));
 					Assert.assertTrue(
-						message + " does not contain Error 404 Not Found",
-						message.contains("Error 404 Not Found"));
+						message + " does not contain " + _EXPECTED_STATUS,
+						message.contains(_EXPECTED_STATUS));
 				},
 				logCapture, LoggerTestUtil.ERROR);
 		}
@@ -474,14 +437,6 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 			catch (SearchException searchException) {
 			}
 
-			String expectedMessagePrefix =
-				"{class=class " +
-					HttpSolrClient.RemoteSolrException.class.getName() +
-						", message=Error from server at";
-			String expectedMimeType =
-				"Expected mime type application/octet-stream but got text";
-			String expectedStatus = "Error 404 Not Found";
-
 			List<LogEntry> logEntries = logCapture.getLogEntries();
 
 			Assert.assertEquals(logEntries.toString(), 2, logEntries.size());
@@ -490,15 +445,16 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 				_assertLogEntry(
 					message -> {
 						Assert.assertTrue(
-							message + " does not contain " + expectedMimeType,
-							message.contains(expectedMimeType));
+							message + " does not contain " +
+								_EXPECTED_MIME_TYPE,
+							message.contains(_EXPECTED_MIME_TYPE));
 						Assert.assertTrue(
 							message + " does not start with " +
-								expectedMessagePrefix,
-							message.startsWith(expectedMessagePrefix));
+								_EXPECTED_BULK_PREFIX,
+							message.startsWith(_EXPECTED_BULK_PREFIX));
 						Assert.assertTrue(
-							message + " does not contain " + expectedStatus,
-							message.contains(expectedStatus));
+							message + " does not contain " + _EXPECTED_STATUS,
+							message.contains(_EXPECTED_STATUS));
 					},
 					logEntry, LoggerTestUtil.WARN);
 			}
@@ -525,19 +481,15 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 	}
 
 	private void _assertHttpSolrClientErrorMessage(String message) {
-		String expectedMimeType =
-			"Expected mime type application/octet-stream but got text";
-
 		Assert.assertTrue(
-			message + " does not contain " + expectedMimeType,
-			message.contains(expectedMimeType));
-
+			message + " does not contain " + _EXPECTED_MIME_TYPE,
+			message.contains(_EXPECTED_MIME_TYPE));
 		Assert.assertTrue(
-			message + " does not start with Error from server at",
-			message.startsWith("Error from server at"));
+			message + " does not start with " + _EXPECTED_PREFIX,
+			message.startsWith(_EXPECTED_PREFIX));
 		Assert.assertTrue(
-			message + " does not contain Error 404 Not Found",
-			message.contains("Error 404 Not Found"));
+			message + " does not contain " + _EXPECTED_STATUS,
+			message.contains(_EXPECTED_STATUS));
 	}
 
 	private void _assertLogCapture(
@@ -558,5 +510,16 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 	}
 
 	private static final String _COLLECTION_NAME = "alpha";
+
+	private static final String _EXPECTED_BULK_PREFIX =
+		"{class=class " + HttpSolrClient.RemoteSolrException.class.getName() +
+			", message=Error from server at";
+
+	private static final String _EXPECTED_MIME_TYPE =
+		"Expected mime type application/octet-stream but got text";
+
+	private static final String _EXPECTED_PREFIX = "Error from server at";
+
+	private static final String _EXPECTED_STATUS = "Error 404 Not Found";
 
 }
