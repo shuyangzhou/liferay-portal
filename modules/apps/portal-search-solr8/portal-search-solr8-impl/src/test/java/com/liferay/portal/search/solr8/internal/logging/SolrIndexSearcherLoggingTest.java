@@ -6,18 +6,22 @@
 package com.liferay.portal.search.solr8.internal.logging;
 
 import com.liferay.portal.kernel.search.MatchAllQuery;
-import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.search.solr8.internal.SolrIndexSearcher;
 import com.liferay.portal.search.solr8.internal.SolrUnitTestRequirements;
 import com.liferay.portal.search.solr8.internal.indexing.SolrIndexingFixture;
 import com.liferay.portal.search.solr8.internal.search.engine.adapter.search.CountSearchRequestExecutor;
 import com.liferay.portal.search.solr8.internal.search.engine.adapter.search.SearchSearchRequestExecutor;
-import com.liferay.portal.search.test.rule.logging.ExpectedLogMethodTestRule;
 import com.liferay.portal.search.test.util.indexing.BaseIndexingTestCase;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
-import com.liferay.portal.search.test.util.logging.ExpectedLog;
+import com.liferay.portal.test.log.LogCapture;
+import com.liferay.portal.test.log.LogEntry;
+import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
+import java.util.List;
+import java.util.function.Consumer;
+
+import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -31,9 +35,8 @@ public class SolrIndexSearcherLoggingTest extends BaseIndexingTestCase {
 
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			ExpectedLogMethodTestRule.INSTANCE, LiferayUnitTestRule.INSTANCE);
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -41,49 +44,132 @@ public class SolrIndexSearcherLoggingTest extends BaseIndexingTestCase {
 			SolrUnitTestRequirements.isSolrExternallyStartedByDeveloper());
 	}
 
-	@ExpectedLog(
-		expectedClass = CountSearchRequestExecutor.class,
-		expectedLevel = ExpectedLog.Level.FINE,
-		expectedLog = "The search engine processed"
-	)
 	@Test
 	public void testCountSearchRequestExecutorLogsViaIndexer() {
-		searchCount(createSearchContext(), new MatchAllQuery());
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				CountSearchRequestExecutor.class.getName(),
+				LoggerTestUtil.DEBUG)) {
+
+			searchCount(createSearchContext(), new MatchAllQuery());
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertEquals(logEntries.toString(), 2, logEntries.size());
+
+			_assertLogEntry(
+				message -> {
+					Assert.assertTrue(
+						message + " does not start with Search query",
+						message.startsWith("Search query"));
+					Assert.assertTrue(
+						message + " does not contain rows=0",
+						message.contains("rows=0"));
+				},
+				logEntries.get(0), LoggerTestUtil.DEBUG);
+
+			_assertLogEntry(
+				message -> Assert.assertTrue(
+					message +
+						" does not start with The search engine processed",
+					message.startsWith("The search engine processed")),
+				logEntries.get(1), LoggerTestUtil.DEBUG);
+		}
 	}
 
-	@ExpectedLog(
-		expectedClass = SolrIndexSearcher.class,
-		expectedLevel = ExpectedLog.Level.INFO,
-		expectedLog = "The search engine processed"
-	)
 	@Test
 	public void testIndexerSearchCountLogs() {
-		searchCount(createSearchContext(), new MatchAllQuery());
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				SolrIndexSearcher.class.getName(), LoggerTestUtil.INFO)) {
+
+			searchCount(createSearchContext(), new MatchAllQuery());
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertEquals(logEntries.toString(), 2, logEntries.size());
+
+			_assertLogEntry(
+				message -> Assert.assertTrue(
+					message +
+						" does not start with The search engine processed",
+					message.startsWith("The search engine processed")),
+				logEntries.get(0), LoggerTestUtil.INFO);
+
+			_assertLogEntry(
+				message -> Assert.assertTrue(
+					message + " does not start with Searching took",
+					message.startsWith("Searching took")),
+				logEntries.get(1), LoggerTestUtil.INFO);
+		}
 	}
 
-	@ExpectedLog(
-		expectedClass = SolrIndexSearcher.class,
-		expectedLevel = ExpectedLog.Level.INFO,
-		expectedLog = "The search engine processed"
-	)
 	@Test
 	public void testIndexerSearchLogs() {
-		search(createSearchContext());
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				SolrIndexSearcher.class.getName(), LoggerTestUtil.INFO)) {
+
+			search(createSearchContext());
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertEquals(logEntries.toString(), 2, logEntries.size());
+
+			_assertLogEntry(
+				message -> Assert.assertTrue(
+					message +
+						" does not start with The search engine processed",
+					message.startsWith("The search engine processed")),
+				logEntries.get(0), LoggerTestUtil.INFO);
+
+			_assertLogEntry(
+				message -> Assert.assertTrue(
+					message + " does not start with Searching took",
+					message.startsWith("Searching took")),
+				logEntries.get(1), LoggerTestUtil.INFO);
+		}
 	}
 
-	@ExpectedLog(
-		expectedClass = SearchSearchRequestExecutor.class,
-		expectedLevel = ExpectedLog.Level.FINE,
-		expectedLog = "The search engine processed"
-	)
 	@Test
 	public void testSearchSearchRequestExecutorLogsViaIndexer() {
-		search(createSearchContext());
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				SearchSearchRequestExecutor.class.getName(),
+				LoggerTestUtil.DEBUG)) {
+
+			search(createSearchContext());
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertEquals(logEntries.toString(), 2, logEntries.size());
+
+			_assertLogEntry(
+				message -> {
+					Assert.assertTrue(
+						message + " does not start with Search query",
+						message.startsWith("Search query"));
+					Assert.assertTrue(
+						message + " does not contain rows=20",
+						message.contains("rows=20"));
+				},
+				logEntries.get(0), LoggerTestUtil.DEBUG);
+
+			_assertLogEntry(
+				message -> Assert.assertTrue(
+					message +
+						" does not start with The search engine processed",
+					message.startsWith("The search engine processed")),
+				logEntries.get(1), LoggerTestUtil.DEBUG);
+		}
 	}
 
 	@Override
 	protected IndexingFixture createIndexingFixture() throws Exception {
 		return new SolrIndexingFixture();
+	}
+
+	private void _assertLogEntry(
+		Consumer<String> consumer, LogEntry logEntry, String logLevel) {
+
+		Assert.assertEquals(logLevel, logEntry.getPriority());
+		consumer.accept(logEntry.getMessage());
 	}
 
 }
