@@ -69,9 +69,9 @@ public class SolrIndexSearcherLoggingTest extends BaseIndexingTestCase {
 
 			_assertLogEntry(
 				message -> Assert.assertTrue(
-					message +
-						" does not start with The search engine processed",
-					message.startsWith("The search engine processed")),
+					message + " does not start with " +
+						_SEARCH_ENGINE_PROCESSED,
+					message.startsWith(_SEARCH_ENGINE_PROCESSED)),
 				logEntries.get(1), LoggerTestUtil.DEBUG);
 		}
 	}
@@ -89,9 +89,9 @@ public class SolrIndexSearcherLoggingTest extends BaseIndexingTestCase {
 
 			_assertLogEntry(
 				message -> Assert.assertTrue(
-					message +
-						" does not start with The search engine processed",
-					message.startsWith("The search engine processed")),
+					message + " does not start with " +
+						_SEARCH_ENGINE_PROCESSED,
+					message.startsWith(_SEARCH_ENGINE_PROCESSED)),
 				logEntries.get(0), LoggerTestUtil.INFO);
 
 			_assertLogEntry(
@@ -115,9 +115,9 @@ public class SolrIndexSearcherLoggingTest extends BaseIndexingTestCase {
 
 			_assertLogEntry(
 				message -> Assert.assertTrue(
-					message +
-						" does not start with The search engine processed",
-					message.startsWith("The search engine processed")),
+					message + " does not start with " +
+						_SEARCH_ENGINE_PROCESSED,
+					message.startsWith(_SEARCH_ENGINE_PROCESSED)),
 				logEntries.get(0), LoggerTestUtil.INFO);
 
 			_assertLogEntry(
@@ -153,9 +153,9 @@ public class SolrIndexSearcherLoggingTest extends BaseIndexingTestCase {
 
 			_assertLogEntry(
 				message -> Assert.assertTrue(
-					message +
-						" does not start with The search engine processed",
-					message.startsWith("The search engine processed")),
+					message + " does not start with " +
+						_SEARCH_ENGINE_PROCESSED,
+					message.startsWith(_SEARCH_ENGINE_PROCESSED)),
 				logEntries.get(1), LoggerTestUtil.DEBUG);
 		}
 	}
@@ -171,5 +171,8 @@ public class SolrIndexSearcherLoggingTest extends BaseIndexingTestCase {
 		Assert.assertEquals(logLevel, logEntry.getPriority());
 		consumer.accept(logEntry.getMessage());
 	}
+
+	private static final String _SEARCH_ENGINE_PROCESSED =
+		"The search engine processed";
 
 }
