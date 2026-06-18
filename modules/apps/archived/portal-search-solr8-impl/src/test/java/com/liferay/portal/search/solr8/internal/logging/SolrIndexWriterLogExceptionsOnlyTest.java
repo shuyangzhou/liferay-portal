@@ -69,6 +69,7 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 					Field.EXPIRATION_DATE, "text"));
 
 			_assertLogCapture(
+				HttpSolrClient.RemoteSolrException.class,
 				this::_assertHttpSolrClientErrorMessage, logCapture,
 				LoggerTestUtil.ERROR);
 		}
@@ -131,6 +132,7 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 			}
 
 			_assertLogCapture(
+				HttpSolrClient.RemoteSolrException.class,
 				this::_assertHttpSolrClientErrorMessage, logCapture,
 				LoggerTestUtil.ERROR);
 		}
@@ -150,6 +152,7 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 			}
 
 			_assertLogCapture(
+				HttpSolrClient.RemoteSolrException.class,
 				this::_assertHttpSolrClientErrorMessage, logCapture,
 				LoggerTestUtil.ERROR);
 		}
@@ -233,6 +236,7 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 			}
 
 			_assertLogCapture(
+				HttpSolrClient.RemoteSolrException.class,
 				this::_assertHttpSolrClientErrorMessage, logCapture,
 				LoggerTestUtil.ERROR);
 		}
@@ -445,6 +449,21 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 		Assert.assertTrue(
 			message + " does not contain " + _EXPECTED_STATUS,
 			message.contains(_EXPECTED_STATUS));
+	}
+
+	private void _assertLogCapture(
+		Class<? extends Throwable> throwableClass, Consumer<String> consumer,
+		LogCapture logCapture, String logLevel) {
+
+		_assertLogCapture(consumer, logCapture, logLevel);
+
+		Assert.assertSame(
+			throwableClass,
+			logCapture.getLogEntries(
+			).get(
+				0
+			).getThrowable(
+			).getClass());
 	}
 
 	private void _assertLogCapture(
