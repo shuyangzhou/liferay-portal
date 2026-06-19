@@ -457,11 +457,10 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 
 		_assertLogCapture(consumer, logCapture, logLevel);
 
-		List<LogEntry> logEntries = logCapture.getLogEntries();
-
 		Assert.assertSame(
 			throwableClass,
-			logEntries.get(
+			logCapture.getLogEntries(
+			).get(
 				0
 			).getThrowable(
 			).getClass());
