@@ -346,21 +346,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		catch (Throwable throwable) {
 			try {
 				if (newDBPartitionAdded) {
-					long addedCompanyId = companyId;
-
-					try {
-						TransactionInvokerUtil.invoke(
-							_transactionConfig,
-							() -> {
-								DBPartitionUtil.removeDBPartition(
-									addedCompanyId);
-
-								return null;
-							});
-					}
-					catch (Throwable throwable2) {
-						throw new PortalException(throwable2);
-					}
+					_removeDBPartition(companyId, false);
 				}
 			}
 			finally {
@@ -458,25 +444,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			return importedCompany;
 		}
 		catch (Throwable throwable) {
-			try (SafeCloseable safeCloseable3 =
-					PortalInstances.
-						setCompanyInDeletionProcessWithSafeCloseable(
-							companyId)) {
-
-				try {
-					TransactionInvokerUtil.invoke(
-						_transactionConfig,
-						() -> {
-							exportCompany(companyId);
-
-							DBPartitionUtil.removeDBPartition(companyId);
-
-							return null;
-						});
-				}
-				catch (Throwable throwable2) {
-					throw new PortalException(throwable2);
-				}
+			try {
+				_removeDBPartition(companyId, true);
 			}
 			finally {
 				safeCloseable1.close();
@@ -709,23 +678,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			return copiedCompany;
 		}
 		catch (Throwable throwable) {
-			try (SafeCloseable safeCloseable3 =
-					PortalInstances.
-						setCompanyInDeletionProcessWithSafeCloseable(
-							companyId)) {
-
-				try {
-					TransactionInvokerUtil.invoke(
-						_transactionConfig,
-						() -> {
-							DBPartitionUtil.removeDBPartition(companyId);
-
-							return null;
-						});
-				}
-				catch (Throwable throwable2) {
-					throw new PortalException(throwable2);
-				}
+			try {
+				_removeDBPartition(companyId, false);
 			}
 			finally {
 				safeCloseable1.close();
@@ -2511,6 +2465,30 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		}
 
 		return nextLong;
+	}
+
+	private void _removeDBPartition(long companyId, boolean export)
+		throws PortalException {
+
+		try (SafeCloseable safeCloseable =
+				PortalInstances.setCompanyInDeletionProcessWithSafeCloseable(
+					companyId)) {
+
+			TransactionInvokerUtil.invoke(
+				_transactionConfig,
+				() -> {
+					if (export) {
+						exportCompany(companyId);
+					}
+
+					DBPartitionUtil.removeDBPartition(companyId);
+
+					return null;
+				});
+		}
+		catch (Throwable throwable) {
+			throw new PortalException(throwable);
+		}
 	}
 
 	private void _synchronizePortalInstances() {
