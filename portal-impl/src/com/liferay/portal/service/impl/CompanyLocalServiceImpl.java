@@ -394,7 +394,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			companyPersistence.clearCache();
 			_virtualHostPersistence.clearCache();
 
-			return TransactionInvokerUtil.invoke(
+			Company dbPartitionCompany = TransactionInvokerUtil.invoke(
 				_transactionConfig,
 				() -> {
 					Company company = companyPersistence.findByPrimaryKey(
@@ -437,6 +437,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 					return _addDBPartitionCompany(company);
 				});
+
+			return _registerDBPartitionCompany(dbPartitionCompany);
 		}
 		catch (Throwable throwable) {
 			_removeDBPartition(companyId, true);
@@ -647,7 +649,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		long companyId = toCompanyId;
 
 		try {
-			return TransactionInvokerUtil.invoke(
+			Company dbPartitionCompany = TransactionInvokerUtil.invoke(
 				_transactionConfig,
 				() -> {
 					Company company = fromCompany.cloneWithOriginalValues();
@@ -664,6 +666,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 					return _addDBPartitionCompany(company);
 				});
+
+			return _registerDBPartitionCompany(dbPartitionCompany);
 		}
 		catch (Throwable throwable) {
 			_removeDBPartition(companyId, false);
@@ -2273,20 +2277,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		_portletLocalService.checkPortlets(company.getCompanyId());
 
-		TransactionCommitCallbackUtil.registerCallback(
-			() -> {
-				Company dbPartitionCompany =
-					companyPersistence.findByPrimaryKey(company.getCompanyId());
-
-				registerCompany(dbPartitionCompany);
-
-				PortalInstances.initCompany(dbPartitionCompany, true);
-
-				_synchronizePortalInstances();
-
-				return null;
-			});
-
 		return company;
 	}
 
@@ -2451,6 +2441,16 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		}
 
 		return nextLong;
+	}
+
+	private Company _registerDBPartitionCompany(Company company) {
+		registerCompany(company);
+
+		PortalInstances.initCompany(company, true);
+
+		_synchronizePortalInstances();
+
+		return company;
 	}
 
 	private void _removeDBPartition(long companyId, boolean export)
