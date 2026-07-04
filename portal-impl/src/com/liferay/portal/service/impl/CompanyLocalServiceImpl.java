@@ -240,6 +240,10 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		boolean newDBPartitionAdded = DBPartitionUtil.addDBPartition(companyId);
 
+		SafeCloseable safeCloseable =
+			CompanyThreadLocal.setRawCompanyIdWithSafeCloseable(
+				company.getCompanyId());
+
 		Callable<Company> callable = () -> {
 			company.setWebId(webId);
 			company.setMx(mx);
@@ -321,24 +325,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			_roleLocalService.setUserRoles(
 				guestUser.getUserId(), new long[] {guestRole.getRoleId()});
 
-			return updatedCompany;
-		};
-
-		SafeCloseable safeCloseable =
-			CompanyThreadLocal.setRawCompanyIdWithSafeCloseable(
-				company.getCompanyId());
-
-		try {
-			Company addedCompany = null;
-
-			if (PropsValues.DATABASE_PARTITION_ENABLED) {
-				addedCompany = TransactionInvokerUtil.invoke(
-					_transactionConfig, callable);
-			}
-			else {
-				addedCompany = callable.call();
-			}
-
 			TransactionCommitCallbackUtil.registerCallback(
 				() -> {
 					safeCloseable.close();
@@ -346,7 +332,16 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 					return null;
 				});
 
-			return addedCompany;
+			return updatedCompany;
+		};
+
+		try {
+			if (PropsValues.DATABASE_PARTITION_ENABLED) {
+				return TransactionInvokerUtil.invoke(
+					_transactionConfig, callable);
+			}
+
+			return callable.call();
 		}
 		catch (Throwable throwable) {
 			try {
