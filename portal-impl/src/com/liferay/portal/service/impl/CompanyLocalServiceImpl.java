@@ -394,7 +394,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			companyPersistence.clearCache();
 			_virtualHostPersistence.clearCache();
 
-			Company importedCompany = TransactionInvokerUtil.invoke(
+			return TransactionInvokerUtil.invoke(
 				_transactionConfig,
 				() -> {
 					Company company = companyPersistence.findByPrimaryKey(
@@ -437,22 +437,15 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 					return _addDBPartitionCompany(company);
 				});
-
-			safeCloseable1.close();
-			safeCloseable2.close();
-
-			return importedCompany;
 		}
 		catch (Throwable throwable) {
-			try {
-				_removeDBPartition(companyId, true);
-			}
-			finally {
-				safeCloseable1.close();
-				safeCloseable2.close();
-			}
+			_removeDBPartition(companyId, true);
 
 			throw new PortalException(throwable);
+		}
+		finally {
+			safeCloseable1.close();
+			safeCloseable2.close();
 		}
 	}
 
@@ -654,7 +647,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		long companyId = toCompanyId;
 
 		try {
-			Company copiedCompany = TransactionInvokerUtil.invoke(
+			return TransactionInvokerUtil.invoke(
 				_transactionConfig,
 				() -> {
 					Company company = fromCompany.cloneWithOriginalValues();
@@ -671,22 +664,15 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 					return _addDBPartitionCompany(company);
 				});
-
-			safeCloseable1.close();
-			safeCloseable2.close();
-
-			return copiedCompany;
 		}
 		catch (Throwable throwable) {
-			try {
-				_removeDBPartition(companyId, false);
-			}
-			finally {
-				safeCloseable1.close();
-				safeCloseable2.close();
-			}
+			_removeDBPartition(companyId, false);
 
 			throw new PortalException(throwable);
+		}
+		finally {
+			safeCloseable1.close();
+			safeCloseable2.close();
 		}
 	}
 
