@@ -106,7 +106,7 @@ import com.liferay.portal.kernel.service.persistence.PortletPersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.service.persistence.VirtualHostPersistence;
 import com.liferay.portal.kernel.transaction.Propagation;
-import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
+import com.liferay.portal.kernel.transaction.TransactionCallbackUtil;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -325,7 +325,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			_roleLocalService.setUserRoles(
 				guestUser.getUserId(), new long[] {guestRole.getRoleId()});
 
-			TransactionCommitCallbackUtil.registerCallback(
+			TransactionCallbackUtil.registerCompletionCallback(
 				() -> {
 					safeCloseable.close();
 
@@ -503,7 +503,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 			Company finalCompany = company;
 
-			TransactionCommitCallbackUtil.registerCallback(
+			TransactionCallbackUtil.registerCommitCallback(
 				() -> {
 					registerCompany(finalCompany);
 
@@ -1596,7 +1596,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			VirtualHost virtualHost = _virtualHostPersistence.fetchByHostname(
 				company.getVirtualHostname());
 
-			TransactionCommitCallbackUtil.registerCallback(
+			TransactionCallbackUtil.registerCommitCallback(
 				() -> {
 					EntityCacheUtil.removeResult(
 						company.getClass(), company.getPrimaryKeyObj());
@@ -2412,7 +2412,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		// Portal instance
 
-		TransactionCommitCallbackUtil.registerCallback(
+		TransactionCallbackUtil.registerCommitCallback(
 			() -> {
 				PortalInstances.removeCompany(company.getCompanyId());
 
