@@ -904,7 +904,33 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 					CompanyThreadLocal.getCompanyId(), " is locked"));
 		}
 
+		Set<Long> persistedCompanyIds = new HashSet<>();
+
+		for (Company company : companyLocalService.getCompanies()) {
+			persistedCompanyIds.add(company.getCompanyId());
+		}
+
 		for (long companyId : companyIds) {
+			if (PortalInstances.isCompanyInDeletionProcess(companyId)) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Skipping company " + companyId +
+							" because it is in the deletion process");
+				}
+
+				continue;
+			}
+
+			if (!persistedCompanyIds.contains(companyId)) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Skipping company " + companyId +
+							" because it no longer exists");
+				}
+
+				continue;
+			}
+
 			try (SafeCloseable safeCloseable =
 					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
 						companyId)) {
