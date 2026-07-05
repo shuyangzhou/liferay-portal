@@ -44,11 +44,11 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.sql.SQLException;
 
-import java.util.List;
+import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Brian Wing Shun Chan
@@ -373,7 +373,28 @@ public class PortalInstances {
 	}
 
 	public static boolean isCompanyInDeletionProcess(long companyId) {
-		return _companyIdsInDeletionProcess.contains(companyId);
+		Long timestamp = _companyIdsInDeletionProcess.get(companyId);
+
+		if (timestamp == null) {
+			return false;
+		}
+
+		long elapsedTime = System.currentTimeMillis() - timestamp;
+
+		if (elapsedTime <= PropsValues.COMPANY_DELETE_IN_PROCESS_MAX_TIME) {
+			return true;
+		}
+
+		if (_companyIdsInDeletionProcess.remove(companyId, timestamp) &&
+			_log.isWarnEnabled()) {
+
+			_log.warn(
+				StringBundler.concat(
+					"Removing company ", companyId,
+					" from the deletion process after ", elapsedTime, " ms"));
+		}
+
+		return false;
 	}
 
 	public static boolean isCompanyInImportProcess() {
@@ -385,8 +406,7 @@ public class PortalInstances {
 	}
 
 	public static boolean isCurrentCompanyInDeletionProcess() {
-		return _companyIdsInDeletionProcess.contains(
-			CompanyThreadLocal.getCompanyId());
+		return isCompanyInDeletionProcess(CompanyThreadLocal.getCompanyId());
 	}
 
 	public static boolean isVirtualHostsIgnoreHost(String host) {
@@ -416,14 +436,16 @@ public class PortalInstances {
 	public static SafeCloseable setCompanyInDeletionProcessWithSafeCloseable(
 		long companyId) {
 
-		if (_companyIdsInDeletionProcess.contains(companyId)) {
+		if (isCompanyInDeletionProcess(companyId)) {
 			throw new UnsupportedOperationException(
 				companyId + " is already in deletion");
 		}
 
-		_companyIdsInDeletionProcess.add(companyId);
+		Long timestamp = System.currentTimeMillis();
 
-		return () -> _companyIdsInDeletionProcess.remove(companyId);
+		_companyIdsInDeletionProcess.put(companyId, timestamp);
+
+		return () -> _companyIdsInDeletionProcess.remove(companyId, timestamp);
 	}
 
 	public static SafeCloseable setCopyInProcessCompanyIdWithSafeCloseable(
@@ -567,8 +589,8 @@ public class PortalInstances {
 
 	private static final Set<String> _autoLoginIgnoreHosts;
 	private static final Set<String> _autoLoginIgnorePaths;
-	private static final List<Long> _companyIdsInDeletionProcess =
-		new CopyOnWriteArrayList<>();
+	private static final Map<Long, Long> _companyIdsInDeletionProcess =
+		new ConcurrentHashMap<>();
 	private static Long _copyInProcessCompanyId;
 	private static Long _importInProcessCompanyId;
 	private static final Set<String> _virtualHostsIgnoreHosts;
