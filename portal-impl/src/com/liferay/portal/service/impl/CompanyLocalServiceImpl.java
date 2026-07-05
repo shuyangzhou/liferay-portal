@@ -2257,13 +2257,19 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				PortalInstances.initCompany(company);
 			});
 
-		companyLocalService.forEachCompanyId(
-			companyId -> {
-				PortalInstances.removeCompany(companyId);
+		for (long companyId : companyIds) {
+			PortalInstances.removeCompany(companyId);
+
+			try (SafeCloseable safeCloseable1 =
+					CompanyThreadLocal.setRawCompanyIdWithSafeCloseable(
+						companyId);
+				SafeCloseable safeCloseable2 =
+					CTCollectionThreadLocal.
+						setProductionModeWithSafeCloseable()) {
 
 				CacheRegistryUtil.clear();
-			},
-			ArrayUtil.toLongArray(companyIds));
+			}
+		}
 	}
 
 	private Company _addDBPartitionCompany(Company company)
