@@ -325,6 +325,20 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			_roleLocalService.setUserRoles(
 				guestUser.getUserId(), new long[] {guestRole.getRoleId()});
 
+			return updatedCompany;
+		};
+
+		try {
+			Company addedCompany;
+
+			if (PropsValues.DATABASE_PARTITION_ENABLED) {
+				addedCompany = TransactionInvokerUtil.invoke(
+					_transactionConfig, callable);
+			}
+			else {
+				addedCompany = callable.call();
+			}
+
 			TransactionCallbackUtil.registerCompletionCallback(
 				() -> {
 					safeCloseable.close();
@@ -332,16 +346,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 					return null;
 				});
 
-			return updatedCompany;
-		};
-
-		try {
-			if (PropsValues.DATABASE_PARTITION_ENABLED) {
-				return TransactionInvokerUtil.invoke(
-					_transactionConfig, callable);
-			}
-
-			return callable.call();
+			return addedCompany;
 		}
 		catch (Throwable throwable) {
 			try {
