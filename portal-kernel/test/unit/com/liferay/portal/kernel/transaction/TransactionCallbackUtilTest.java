@@ -148,6 +148,54 @@ public class TransactionCallbackUtilTest {
 	}
 
 	@Test
+	public void testRollbackedWhenCallableThrows() {
+		_fireCreated(Propagation.REQUIRED, true);
+
+		Exception exception1 = new Exception();
+		Exception exception2 = new Exception();
+
+		TransactionCallbackUtil.registerRollbackCallback(
+			() -> {
+				throw exception1;
+			});
+		TransactionCallbackUtil.registerRollbackCallback(
+			() -> _records.add("rollback"));
+		TransactionCallbackUtil.registerCompletionCallback(
+			() -> {
+				throw exception2;
+			});
+		TransactionCallbackUtil.registerCompletionCallback(
+			() -> _records.add("completion"));
+
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				TransactionCallbackUtil.class.getName(),
+				LoggerTestUtil.ERROR)) {
+
+			_fireRollbacked(Propagation.REQUIRED, true);
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertEquals(logEntries.toString(), 2, logEntries.size());
+
+			LogEntry logEntry1 = logEntries.get(0);
+
+			Assert.assertEquals(
+				"Unable to execute transaction callback",
+				logEntry1.getMessage());
+			Assert.assertSame(exception1, logEntry1.getThrowable());
+
+			LogEntry logEntry2 = logEntries.get(1);
+
+			Assert.assertEquals(
+				"Unable to execute transaction callback",
+				logEntry2.getMessage());
+			Assert.assertSame(exception2, logEntry2.getThrowable());
+		}
+
+		Assert.assertEquals(Arrays.asList("rollback", "completion"), _records);
+	}
+
+	@Test
 	public void testRollbackedWithOpenSavepointScopes() {
 		_fireCreated(Propagation.REQUIRED, true);
 
