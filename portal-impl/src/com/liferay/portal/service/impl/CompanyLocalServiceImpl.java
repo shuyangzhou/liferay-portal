@@ -2504,9 +2504,20 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	private Company _registerDBPartitionCompany(Company company) {
 		registerCompany(company);
 
-		PortalInstances.initCompany(company, true);
+		try {
+			PortalInstances.initCompany(company, true);
 
-		_synchronizePortalInstances();
+			_synchronizePortalInstances();
+		}
+		catch (RuntimeException runtimeException) {
+
+			// registerCompany already ran, so undo it rather than leave
+			// listeners bound to a company that never finished initializing
+
+			unregisterCompany(company);
+
+			throw runtimeException;
+		}
 
 		return company;
 	}
