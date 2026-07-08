@@ -45,7 +45,10 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.io.RandomAccessFile;
 import java.io.Serializable;
+import java.io.StringWriter;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -89,6 +92,8 @@ public class TomcatNode {
 		LogHolder.info("Destroying Tomcat node " + toString());
 
 		_destroyed = true;
+
+		_tailRunning = false;
 
 		Files.walkFileTree(
 			Paths.get(_liferayHome),
@@ -284,6 +289,31 @@ public class TomcatNode {
 				},
 				false);
 		}
+
+		// DEBUG: ask the node for its PID (so we know which uncaught-exception
+		// file it writes to) and tail that file into the controller's stdout, so
+		// node-side failures survive even when the process pipe is jammed
+
+		_nodePid = _syncExecute(() -> ProcessHandle.current().pid(), false);
+
+		_startUncaughtTailThread();
+
+		// TEMP verification: make the node throw an uncaught exception on a new
+		// thread so it reaches the node's DefaultUncaughtExceptionHandler
+
+		_syncExecute(
+			() -> {
+				Thread thread = new Thread(
+					() -> {
+						throw new RuntimeException(
+							"DELIBERATE TEST uncaught exception from node");
+					});
+
+				thread.start();
+
+				return "triggered";
+			},
+			false);
 
 		return _processChannel;
 	}
@@ -499,6 +529,53 @@ public class TomcatNode {
 			_clusterOwnerJarPath);
 	}
 
+	private void _startUncaughtTailThread() {
+		Path path = Paths.get(
+			"/tmp", "tomcatnode-uncaught-" + _nodePid + ".log");
+
+		String prefix = "[TomcatNode-" + _nodeId + " uncaught-tail] ";
+
+		_tailRunning = true;
+
+		_tailThread = new Thread(
+			() -> {
+				long pointer = 0;
+
+				while (_tailRunning) {
+					File file = path.toFile();
+
+					try {
+						if (file.exists() && (file.length() > pointer)) {
+							try (RandomAccessFile randomAccessFile =
+									new RandomAccessFile(file, "r")) {
+
+								randomAccessFile.seek(pointer);
+
+								String line = randomAccessFile.readLine();
+
+								while (line != null) {
+									System.out.println(prefix + line);
+
+									line = randomAccessFile.readLine();
+								}
+
+								pointer = randomAccessFile.getFilePointer();
+							}
+						}
+
+						Thread.sleep(500);
+					}
+					catch (Exception exception) {
+					}
+				}
+			},
+			"TomcatNode-" + _nodeId + "-uncaught-tail");
+
+		_tailThread.setDaemon(true);
+
+		_tailThread.start();
+	}
+
 	private <V extends Serializable> NoticeableFuture<V> _execute(
 		ClusterExecutable<V> clusterExecutable, boolean osgiify) {
 
@@ -592,9 +669,12 @@ public class TomcatNode {
 	private final String _jvmArgs;
 	private final String _liferayHome;
 	private final int _nodeId;
+	private volatile long _nodePid;
 	private final Path _portalExtPropertiesPath;
 	private volatile ProcessChannel<String> _processChannel;
 	private final int _shutdownPort;
+	private volatile boolean _tailRunning;
+	private volatile Thread _tailThread;
 	private volatile boolean _testBundleInstalled;
 
 	private static class BootstrapStartProcessCallable
@@ -605,9 +685,54 @@ public class TomcatNode {
 
 		@Override
 		public String call() {
+			_installUncaughtExceptionHandler();
+
 			Bootstrap.main(new String[] {"start"});
 
 			return "Done";
+		}
+
+		private void _debugWrite(
+			Path path, String message, Throwable throwable) {
+
+			StringWriter stringWriter = new StringWriter();
+
+			PrintWriter printWriter = new PrintWriter(stringWriter);
+
+			printWriter.println(
+				"=== [TomcatNode-" + _nodeId + "] " + message + " @" +
+					System.currentTimeMillis() + " ===");
+
+			if (throwable != null) {
+				throwable.printStackTrace(printWriter);
+			}
+
+			printWriter.flush();
+
+			try {
+				Files.write(
+					path, stringWriter.toString().getBytes(),
+					StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+			}
+			catch (IOException ioException) {
+			}
+		}
+
+		private void _installUncaughtExceptionHandler() {
+			ProcessHandle processHandle = ProcessHandle.current();
+
+			Path path = Paths.get(
+				"/tmp", "tomcatnode-uncaught-" + processHandle.pid() + ".log");
+
+			_debugWrite(
+				path,
+				"uncaught exception handler installed, pid=" +
+					processHandle.pid(),
+				null);
+
+			Thread.setDefaultUncaughtExceptionHandler(
+				(thread, throwable) -> _debugWrite(
+					path, "UNCAUGHT in thread " + thread.getName(), throwable));
 		}
 
 		@Override
