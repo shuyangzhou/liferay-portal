@@ -461,9 +461,27 @@ public class ClusterGeneralTest implements Serializable {
 
 		_assertNodesVisibleToEachOther(_tomcatNode1, _tomcatNode2);
 
-		// Restart node 2, use node 1 as the verifier node
+		// DEBUG (LPD-88080 follow-up, cluster-hang-debug branch only, NOT for
+		// merge): loop the stop/restart cycle within this single test run to
+		// hammer the intermittent shutdown hang many times per CI bundle build,
+		// avoiding one PR (and one bundle build) per attempt. The first
+		// iteration that hangs freezes the loop and hangs the job -- that is
+		// the reproduction we want; otherwise every iteration passes and the
+		// test passes. Override the count with
+		// -Dcluster.hang.repro.iterations=N.
 
-		_restartAndVerifyNode(_tomcatNode2, _tomcatNode1);
+		int hangReproIterations = Integer.getInteger(
+			"cluster.hang.repro.iterations", 50);
+
+		for (int i = 1; i <= hangReproIterations; i++) {
+			System.out.println(
+				"[cluster-hang-repro] iteration " + i + " of " +
+					hangReproIterations);
+
+			// Restart node 2, use node 1 as the verifier node
+
+			_restartAndVerifyNode(_tomcatNode2, _tomcatNode1);
+		}
 	}
 
 	@Test
