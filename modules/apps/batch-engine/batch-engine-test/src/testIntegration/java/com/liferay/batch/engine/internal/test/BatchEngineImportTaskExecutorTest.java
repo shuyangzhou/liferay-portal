@@ -24,6 +24,7 @@ import com.liferay.headless.admin.user.client.resource.v1_0.AccountResource;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
+import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -34,6 +35,9 @@ import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.TransactionConfig;
+import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropsValues;
@@ -335,78 +339,38 @@ public class BatchEngineImportTaskExecutorTest
 
 	@Test
 	public void testCreateBlogPostingsWithInvalidCSVFileAndOnErrorContinue()
-		throws Exception {
+		throws Throwable {
 
-		ExportImportThreadLocal.setPortletImportInProcess(true);
-
-		int exportImportReportEntriesCount =
-			_exportImportReportEntryLocalService.
-				getExportImportReportEntriesCount();
-
-		StringBundler sb = new StringBundler();
-
-		_createCSVRow(sb, FIELD_NAMES);
-
-		String[] blogPostingItem = {
-			"alternativeHeadline", "articleBody",
-			dateFormat.format(new Date(baseDate.getTime())), "headline",
-			String.valueOf(TestPropsValues.getGroupId())
-		};
-
-		_createCSVRow(sb, blogPostingItem);
-
-		String[] blogPostingItemWithUnknownColumn = {
-			"alternativeHeadline", "articleBody",
-			dateFormat.format(new Date(baseDate.getTime())), "headline",
-			String.valueOf(TestPropsValues.getGroupId()), "unknownColumn"
-		};
-
-		int blogPostingItemWithUnknownColumnRowNumber = 2;
-
-		_createCSVRow(sb, blogPostingItemWithUnknownColumn);
-
-		String[] blogPostingItemWithInvalidValue = {
-			"alternativeHeadline", null,
-			dateFormat.format(new Date(baseDate.getTime())), "headline",
-			String.valueOf(TestPropsValues.getGroupId())
-		};
-
-		int blogPostingItemWithInvalidValueRowNumber = 3;
-
-		_createCSVRow(sb, blogPostingItemWithInvalidValue);
-
-		String content = sb.toString();
-
-		try (LogCapture logCapture1 = LoggerTestUtil.configureLog4JLogger(
-				"com.liferay.batch.engine.internal." +
-					"BatchEngineImportTaskExecutorImpl",
-				LoggerTestUtil.ERROR);
-			LogCapture logCapture2 = LoggerTestUtil.configureLog4JLogger(
-				_CLASS_NAME_BATCH_ENGINE_IMPORT_TASK_EXECUTOR_IMPL,
-				LoggerTestUtil.ERROR)) {
-
-			_importBlogPostings(
-				BatchEngineTaskOperation.CREATE,
-				_compressContent(
-					content.getBytes(StandardCharsets.UTF_8), "CSV"),
-				"CSV", null,
+		_assertCreateBlogPostingsWithInvalidCSVFileAndOnErrorContinue(
+			content -> _importBlogPostings(
+				BatchEngineTaskOperation.CREATE, content, "CSV", null,
 				BatchEngineImportTaskConstants.
-					IMPORT_STRATEGY_ON_ERROR_CONTINUE);
+					IMPORT_STRATEGY_ON_ERROR_CONTINUE));
+	}
 
-			Assert.assertEquals(
-				exportImportReportEntriesCount + 1,
-				_exportImportReportEntryLocalService.
-					getExportImportReportEntriesCount());
-		}
-		finally {
-			ExportImportThreadLocal.setPortletImportInProcess(false);
-		}
+	@Test
+	public void testCreateBlogPostingsWithInvalidCSVFileAndOnErrorContinueInEnclosingTransaction()
+		throws Throwable {
 
-		_assertInvalidFileImportWithOnErrorContinueStrategy(
-			Arrays.asList(
-				blogPostingItemWithUnknownColumnRowNumber,
-				blogPostingItemWithInvalidValueRowNumber),
-			3);
+		// Run the import inside an enclosing transaction, the way portal
+		// instance registration and staging invoke it. On PostgreSQL a failing
+		// item aborts the whole database transaction, so this only completes if
+		// each item's nested savepoint rolls back and restores the shared
+		// connection, letting the enclosing transaction record the error and
+		// commit the valid items.
+
+		_assertCreateBlogPostingsWithInvalidCSVFileAndOnErrorContinue(
+			content -> TransactionInvokerUtil.invoke(
+				TransactionConfig.Factory.create(
+					Propagation.REQUIRED, new Class<?>[] {Exception.class}),
+				() -> {
+					_importBlogPostings(
+						BatchEngineTaskOperation.CREATE, content, "CSV", null,
+						BatchEngineImportTaskConstants.
+							IMPORT_STRATEGY_ON_ERROR_CONTINUE);
+
+					return null;
+				}));
 	}
 
 	@Test
@@ -845,6 +809,83 @@ public class BatchEngineImportTaskExecutorTest
 			_getBlogPostingsXLSUpdateContent(blogsEntries), "XLS", null);
 
 		_assertUpdatedBlogPostings();
+	}
+
+	private void _assertCreateBlogPostingsWithInvalidCSVFileAndOnErrorContinue(
+			UnsafeConsumer<byte[], Throwable> importUnsafeConsumer)
+		throws Throwable {
+
+		ExportImportThreadLocal.setPortletImportInProcess(true);
+
+		try {
+			int exportImportReportEntriesCount =
+				_exportImportReportEntryLocalService.
+					getExportImportReportEntriesCount();
+
+			StringBundler sb = new StringBundler();
+
+			_createCSVRow(sb, FIELD_NAMES);
+
+			String[] blogPostingItem = {
+				"alternativeHeadline", "articleBody",
+				dateFormat.format(new Date(baseDate.getTime())), "headline",
+				String.valueOf(TestPropsValues.getGroupId())
+			};
+
+			_createCSVRow(sb, blogPostingItem);
+
+			String[] blogPostingItemWithUnknownColumn = {
+				"alternativeHeadline", "articleBody",
+				dateFormat.format(new Date(baseDate.getTime())), "headline",
+				String.valueOf(TestPropsValues.getGroupId()), "unknownColumn"
+			};
+
+			int blogPostingItemWithUnknownColumnRowNumber = 2;
+
+			_createCSVRow(sb, blogPostingItemWithUnknownColumn);
+
+			String[] blogPostingItemWithInvalidValue = {
+				"alternativeHeadline", null,
+				dateFormat.format(new Date(baseDate.getTime())), "headline",
+				String.valueOf(TestPropsValues.getGroupId())
+			};
+
+			int blogPostingItemWithInvalidValueRowNumber = 3;
+
+			_createCSVRow(sb, blogPostingItemWithInvalidValue);
+
+			byte[] content = _compressContent(
+				sb.toString(
+				).getBytes(
+					StandardCharsets.UTF_8
+				),
+				"CSV");
+
+			try (LogCapture logCapture1 = LoggerTestUtil.configureLog4JLogger(
+					"com.liferay.batch.engine.internal." +
+						"BatchEngineImportTaskExecutorImpl",
+					LoggerTestUtil.ERROR);
+				LogCapture logCapture2 = LoggerTestUtil.configureLog4JLogger(
+					_CLASS_NAME_BATCH_ENGINE_IMPORT_TASK_EXECUTOR_IMPL,
+					LoggerTestUtil.ERROR)) {
+
+				importUnsafeConsumer.accept(content);
+
+				Assert.assertEquals(
+					exportImportReportEntriesCount + 1,
+					_exportImportReportEntryLocalService.
+						getExportImportReportEntriesCount());
+			}
+
+			_assertInvalidFileImportWithOnErrorContinueStrategy(
+				Arrays.asList(
+					blogPostingItemWithUnknownColumnRowNumber,
+					blogPostingItemWithInvalidValueRowNumber),
+				3);
+		}
+		finally {
+			ExportImportThreadLocal.setPortletImportInProcess(false);
+		}
 	}
 
 	private void _assertCreatedBlogPostings() throws Exception {
