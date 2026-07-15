@@ -66,7 +66,7 @@ public abstract class BaseMultipleEntryBulkSelection<T>
 		return StringUtil.merge(_entryIds, StringPool.COMMA);
 	}
 
-	protected abstract T fetchEntry(long entryId);
+	protected abstract T fetchEntry(long entryId) throws PortalException;
 
 	private final long[] _entryIds;
 	private final Map<String, String[]> _parameterMap;
