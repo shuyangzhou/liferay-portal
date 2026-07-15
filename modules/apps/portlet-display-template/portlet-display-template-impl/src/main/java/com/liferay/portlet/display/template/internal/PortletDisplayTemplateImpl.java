@@ -5,13 +5,11 @@
 
 package com.liferay.portlet.display.template.internal;
 
-import com.liferay.dynamic.data.mapping.exception.NoSuchTemplateException;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalService;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.bean.ClassLoaderBeanHandler;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -77,40 +75,28 @@ public class PortletDisplayTemplateImpl implements PortletDisplayTemplate {
 
 	@Override
 	public DDMTemplate fetchDDMTemplate(long groupId, String displayStyle) {
+		String uuid = getDDMTemplateKey(displayStyle);
+
+		if (Validator.isNull(uuid)) {
+			return null;
+		}
+
+		DDMTemplate ddmTemplate =
+			_ddmTemplateLocalService.fetchDDMTemplateByUuidAndGroupId(
+				uuid, groupId);
+
+		if (ddmTemplate != null) {
+			return ddmTemplate;
+		}
+
 		try {
-			String uuid = getDDMTemplateKey(displayStyle);
-
-			if (Validator.isNull(uuid)) {
-				return null;
-			}
-
-			try {
-				return _ddmTemplateLocalService.getDDMTemplateByUuidAndGroupId(
-					uuid, groupId);
-			}
-			catch (PortalException portalException) {
-
-				// LPS-52675
-
-				if (_log.isDebugEnabled()) {
-					_log.debug(portalException);
-				}
-			}
-
 			Group group = _groupLocalService.getGroup(groupId);
 
 			Group companyGroup = _groupLocalService.getCompanyGroup(
 				group.getCompanyId());
 
-			try {
-				return _ddmTemplateLocalService.getDDMTemplateByUuidAndGroupId(
-					uuid, companyGroup.getGroupId());
-			}
-			catch (NoSuchTemplateException noSuchTemplateException) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(noSuchTemplateException);
-				}
-			}
+			return _ddmTemplateLocalService.fetchDDMTemplateByUuidAndGroupId(
+				uuid, companyGroup.getGroupId());
 		}
 		catch (Exception exception) {
 			if (_log.isWarnEnabled()) {
