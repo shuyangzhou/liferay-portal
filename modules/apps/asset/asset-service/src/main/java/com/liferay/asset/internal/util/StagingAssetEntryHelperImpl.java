@@ -191,10 +191,10 @@ public class StagingAssetEntryHelperImpl implements StagingAssetEntryHelper {
 			StagedGroupedModel stagedGroupedModel =
 				(StagedGroupedModel)stagedModel;
 
-			Group group = _groupLocalService.getGroup(
+			Group group = _groupLocalService.fetchGroup(
 				stagedGroupedModel.getGroupId());
 
-			if (group.isStagingGroup()) {
+			if ((group == null) || group.isStagingGroup()) {
 				return false;
 			}
 		}
