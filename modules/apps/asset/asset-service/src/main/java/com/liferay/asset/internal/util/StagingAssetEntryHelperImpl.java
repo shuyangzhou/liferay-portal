@@ -139,17 +139,10 @@ public class StagingAssetEntryHelperImpl implements StagingAssetEntryHelper {
 		// Try to fetch the existing staged model from the company
 
 		for (AssetEntry assetEntry : assetEntries) {
-			try {
-				if ((assetEntry.getCompanyId() == group.getCompanyId()) &&
-					isAssetEntryApplicable(assetEntry)) {
+			if ((assetEntry.getCompanyId() == group.getCompanyId()) &&
+				isAssetEntryApplicable(assetEntry)) {
 
-					return assetEntry;
-				}
-			}
-			catch (PortalException portalException) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(portalException);
-				}
+				return assetEntry;
 			}
 		}
 
@@ -157,9 +150,7 @@ public class StagingAssetEntryHelperImpl implements StagingAssetEntryHelper {
 	}
 
 	@Override
-	public boolean isAssetEntryApplicable(AssetEntry assetEntry)
-		throws PortalException {
-
+	public boolean isAssetEntryApplicable(AssetEntry assetEntry) {
 		AssetRenderer<? extends StagedModel> assetRenderer = null;
 
 		StagedModel stagedModel = null;

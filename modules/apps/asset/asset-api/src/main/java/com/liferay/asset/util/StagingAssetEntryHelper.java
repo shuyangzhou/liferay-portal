@@ -23,7 +23,6 @@ public interface StagingAssetEntryHelper {
 	public AssetEntry fetchAssetEntry(long groupId, String uuid)
 		throws PortalException;
 
-	public boolean isAssetEntryApplicable(AssetEntry assetEntry)
-		throws PortalException;
+	public boolean isAssetEntryApplicable(AssetEntry assetEntry);
 
 }
