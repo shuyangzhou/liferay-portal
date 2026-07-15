@@ -15,6 +15,8 @@ import com.liferay.document.library.kernel.exception.DuplicateFolderNameExceptio
 import com.liferay.document.library.kernel.exception.FileEntryLockException;
 import com.liferay.document.library.kernel.exception.InvalidFolderException;
 import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
+import com.liferay.document.library.kernel.exception.NoSuchFileShortcutException;
+import com.liferay.document.library.kernel.exception.NoSuchFolderException;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.model.DLFileEntryConstants;
 import com.liferay.document.library.kernel.model.DLFileEntryTypeConstants;
@@ -1041,6 +1043,60 @@ public class DLAppServiceImpl extends DLAppServiceBaseImpl {
 
 		TempFileEntryUtil.deleteTempFileEntry(
 			groupId, getUserId(), folderName, fileName);
+	}
+
+	@Override
+	public FileEntry fetchFileEntry(long fileEntryId) throws PortalException {
+		try {
+			Repository repository =
+				RepositoryProviderUtil.getFileEntryRepository(fileEntryId);
+
+			return repository.getFileEntry(fileEntryId);
+		}
+		catch (NoSuchFileEntryException noSuchFileEntryException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(noSuchFileEntryException);
+			}
+
+			return null;
+		}
+	}
+
+	@Override
+	public FileShortcut fetchFileShortcut(long fileShortcutId)
+		throws PortalException {
+
+		try {
+			Repository repository =
+				RepositoryProviderUtil.getFileShortcutRepository(
+					fileShortcutId);
+
+			return repository.getFileShortcut(fileShortcutId);
+		}
+		catch (NoSuchFileShortcutException noSuchFileShortcutException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(noSuchFileShortcutException);
+			}
+
+			return null;
+		}
+	}
+
+	@Override
+	public Folder fetchFolder(long folderId) throws PortalException {
+		try {
+			Repository repository = RepositoryProviderUtil.getFolderRepository(
+				folderId);
+
+			return repository.getFolder(folderId);
+		}
+		catch (NoSuchFolderException noSuchFolderException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(noSuchFolderException);
+			}
+
+			return null;
+		}
 	}
 
 	/**
