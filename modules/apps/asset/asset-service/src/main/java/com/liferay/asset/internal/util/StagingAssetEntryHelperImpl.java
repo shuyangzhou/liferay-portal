@@ -74,6 +74,12 @@ public class StagingAssetEntryHelperImpl implements StagingAssetEntryHelper {
 	public AssetEntry fetchAssetEntry(long groupId, String uuid)
 		throws PortalException {
 
+		Group group = _groupLocalService.fetchGroup(groupId);
+
+		if (group == null) {
+			return null;
+		}
+
 		DynamicQuery dynamicQuery = _assetEntryLocalService.dynamicQuery();
 
 		Property classUuidProperty = PropertyFactoryUtil.forName("classUuid");
@@ -97,12 +103,6 @@ public class StagingAssetEntryHelperImpl implements StagingAssetEntryHelper {
 
 		if (assetEntryMap.containsKey(groupId)) {
 			return assetEntryMap.get(groupId);
-		}
-
-		Group group = _groupLocalService.fetchGroup(groupId);
-
-		if (group == null) {
-			return null;
 		}
 
 		// Try to fetch the existing staged model from parent sites
