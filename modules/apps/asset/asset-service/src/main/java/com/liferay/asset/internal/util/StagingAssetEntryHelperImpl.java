@@ -128,10 +128,12 @@ public class StagingAssetEntryHelperImpl implements StagingAssetEntryHelper {
 		Group companyGroup = _groupLocalService.fetchCompanyGroup(
 			group.getCompanyId());
 
-		groupAssetEntry = assetEntryMap.remove(companyGroup.getGroupId());
+		if (companyGroup != null) {
+			groupAssetEntry = assetEntryMap.remove(companyGroup.getGroupId());
 
-		if (groupAssetEntry != null) {
-			return groupAssetEntry;
+			if (groupAssetEntry != null) {
+				return groupAssetEntry;
+			}
 		}
 
 		// Try to fetch the existing staged model from the company
