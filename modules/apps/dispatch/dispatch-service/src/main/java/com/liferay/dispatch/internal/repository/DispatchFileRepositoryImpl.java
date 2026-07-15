@@ -65,14 +65,22 @@ public class DispatchFileRepositoryImpl implements DispatchFileRepository {
 
 	@Override
 	public FileEntry fetchFileEntry(long dispatchTriggerId) {
+		DispatchTrigger dispatchTrigger =
+			_dispatchTriggerLocalService.fetchDispatchTrigger(
+				dispatchTriggerId);
+
+		if (dispatchTrigger == null) {
+			return null;
+		}
+
+		Company company = _companyLocalService.fetchCompany(
+			dispatchTrigger.getCompanyId());
+
+		if (company == null) {
+			return null;
+		}
+
 		try {
-			DispatchTrigger dispatchTrigger =
-				_dispatchTriggerLocalService.getDispatchTrigger(
-					dispatchTriggerId);
-
-			Company company = _companyLocalService.getCompany(
-				dispatchTrigger.getCompanyId());
-
 			Folder folder = _getFolder(
 				company.getGroupId(), dispatchTrigger.getUserId());
 
