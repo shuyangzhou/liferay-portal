@@ -112,6 +112,21 @@ public class AccountRoleServiceImpl extends AccountRoleServiceBaseImpl {
 	}
 
 	@Override
+	public AccountRole fetchAccountRoleByRoleId(long roleId)
+		throws PortalException {
+
+		AccountRole accountRole =
+			accountRoleLocalService.fetchAccountRoleByRoleId(roleId);
+
+		if (accountRole != null) {
+			_accountRoleModelResourcePermission.check(
+				getPermissionChecker(), accountRole, ActionKeys.VIEW);
+		}
+
+		return accountRole;
+	}
+
+	@Override
 	public AccountRole getAccountRoleByRoleId(long roleId)
 		throws PortalException {
 
