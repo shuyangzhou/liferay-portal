@@ -348,6 +348,45 @@ public class BlogsEntryServiceHttp {
 		}
 	}
 
+	public static com.liferay.blogs.model.BlogsEntry fetchEntry(
+			HttpPrincipal httpPrincipal, long entryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				BlogsEntryServiceUtil.class, "fetchEntry",
+				_fetchEntryParameterTypes7);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey, entryId);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return (com.liferay.blogs.model.BlogsEntry)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
 	public static com.liferay.portal.kernel.repository.model.FileEntry
 			getAttachmentFileEntry(
 				HttpPrincipal httpPrincipal, long fileEntryId)
@@ -356,7 +395,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "getAttachmentFileEntry",
-				_getAttachmentFileEntryParameterTypes7);
+				_getAttachmentFileEntryParameterTypes8);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, fileEntryId);
@@ -400,7 +439,7 @@ public class BlogsEntryServiceHttp {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class,
 				"getAttachmentFileEntryByExternalReferenceCode",
-				_getAttachmentFileEntryByExternalReferenceCodeParameterTypes8);
+				_getAttachmentFileEntryByExternalReferenceCodeParameterTypes9);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, externalReferenceCode, groupId);
@@ -444,7 +483,7 @@ public class BlogsEntryServiceHttp {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class,
 				"getBlogsEntryByExternalReferenceCode",
-				_getBlogsEntryByExternalReferenceCodeParameterTypes9);
+				_getBlogsEntryByExternalReferenceCodeParameterTypes10);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, groupId, externalReferenceCode);
@@ -486,7 +525,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "getCompanyEntries",
-				_getCompanyEntriesParameterTypes10);
+				_getCompanyEntriesParameterTypes11);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, companyId, displayDate, status, max);
@@ -531,7 +570,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "getCompanyEntriesRSS",
-				_getCompanyEntriesRSSParameterTypes11);
+				_getCompanyEntriesRSSParameterTypes12);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, companyId, displayDate, status, max, type, version,
@@ -572,7 +611,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "getEntriesPrevAndNext",
-				_getEntriesPrevAndNextParameterTypes12);
+				_getEntriesPrevAndNextParameterTypes13);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, entryId);
 
@@ -611,7 +650,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "getEntry",
-				_getEntryParameterTypes13);
+				_getEntryParameterTypes14);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, entryId);
 
@@ -650,7 +689,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "getEntry",
-				_getEntryParameterTypes14);
+				_getEntryParameterTypes15);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, groupId, urlTitle);
@@ -691,7 +730,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "getGroupEntries",
-				_getGroupEntriesParameterTypes15);
+				_getGroupEntriesParameterTypes16);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, groupId, displayDate, status, max);
@@ -726,7 +765,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "getGroupEntries",
-				_getGroupEntriesParameterTypes16);
+				_getGroupEntriesParameterTypes17);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, groupId, displayDate, status, start, end);
@@ -760,7 +799,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "getGroupEntries",
-				_getGroupEntriesParameterTypes17);
+				_getGroupEntriesParameterTypes18);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, groupId, status, max);
@@ -795,7 +834,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "getGroupEntries",
-				_getGroupEntriesParameterTypes18);
+				_getGroupEntriesParameterTypes19);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, groupId, status, start, end);
@@ -832,7 +871,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "getGroupEntries",
-				_getGroupEntriesParameterTypes19);
+				_getGroupEntriesParameterTypes20);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, groupId, status, start, end, orderByComparator);
@@ -866,7 +905,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "getGroupEntriesCount",
-				_getGroupEntriesCountParameterTypes20);
+				_getGroupEntriesCountParameterTypes21);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, groupId, displayDate, status);
@@ -898,7 +937,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "getGroupEntriesCount",
-				_getGroupEntriesCountParameterTypes21);
+				_getGroupEntriesCountParameterTypes22);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, groupId, status);
@@ -935,7 +974,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "getGroupEntriesRSS",
-				_getGroupEntriesRSSParameterTypes22);
+				_getGroupEntriesRSSParameterTypes23);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, groupId, displayDate, status, max, type, version,
@@ -978,7 +1017,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "getGroupsEntries",
-				_getGroupsEntriesParameterTypes23);
+				_getGroupsEntriesParameterTypes24);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, companyId, groupId, displayDate, status, max);
@@ -1022,7 +1061,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "getGroupUserEntries",
-				_getGroupUserEntriesParameterTypes24);
+				_getGroupUserEntriesParameterTypes25);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, groupId, userId, status, start, end,
@@ -1060,7 +1099,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "getGroupUserEntries",
-				_getGroupUserEntriesParameterTypes25);
+				_getGroupUserEntriesParameterTypes26);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, groupId, userId, statuses, start, end,
@@ -1094,7 +1133,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "getGroupUserEntriesCount",
-				_getGroupUserEntriesCountParameterTypes26);
+				_getGroupUserEntriesCountParameterTypes27);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, groupId, userId, status);
@@ -1127,7 +1166,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "getGroupUserEntriesCount",
-				_getGroupUserEntriesCountParameterTypes27);
+				_getGroupUserEntriesCountParameterTypes28);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, groupId, userId, statuses);
@@ -1162,7 +1201,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "getOrganizationEntries",
-				_getOrganizationEntriesParameterTypes28);
+				_getOrganizationEntriesParameterTypes29);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, organizationId, displayDate, status, max);
@@ -1207,7 +1246,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "getOrganizationEntriesRSS",
-				_getOrganizationEntriesRSSParameterTypes29);
+				_getOrganizationEntriesRSSParameterTypes30);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, organizationId, displayDate, status, max, type,
@@ -1248,7 +1287,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "moveEntryToTrash",
-				_moveEntryToTrashParameterTypes30);
+				_moveEntryToTrashParameterTypes31);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, entryId);
 
@@ -1287,7 +1326,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "restoreEntryFromTrash",
-				_restoreEntryFromTrashParameterTypes31);
+				_restoreEntryFromTrashParameterTypes32);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, entryId);
 
@@ -1321,7 +1360,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "subscribe",
-				_subscribeParameterTypes32);
+				_subscribeParameterTypes33);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, groupId);
 
@@ -1355,7 +1394,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "unsubscribe",
-				_unsubscribeParameterTypes33);
+				_unsubscribeParameterTypes34);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, groupId);
 
@@ -1400,7 +1439,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "updateEntry",
-				_updateEntryParameterTypes34);
+				_updateEntryParameterTypes35);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, entryId, title, subtitle, description, content,
@@ -1455,7 +1494,7 @@ public class BlogsEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BlogsEntryServiceUtil.class, "updateEntry",
-				_updateEntryParameterTypes35);
+				_updateEntryParameterTypes36);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, entryId, title, subtitle, urlTitle, description,
@@ -1528,93 +1567,96 @@ public class BlogsEntryServiceHttp {
 		_fetchBlogsEntryByExternalReferenceCodeParameterTypes6 = new Class[] {
 			long.class, String.class
 		};
-	private static final Class<?>[] _getAttachmentFileEntryParameterTypes7 =
+	private static final Class<?>[] _fetchEntryParameterTypes7 = new Class[] {
+		long.class
+	};
+	private static final Class<?>[] _getAttachmentFileEntryParameterTypes8 =
 		new Class[] {long.class};
 	private static final Class<?>[]
-		_getAttachmentFileEntryByExternalReferenceCodeParameterTypes8 =
+		_getAttachmentFileEntryByExternalReferenceCodeParameterTypes9 =
 			new Class[] {String.class, long.class};
 	private static final Class<?>[]
-		_getBlogsEntryByExternalReferenceCodeParameterTypes9 = new Class[] {
+		_getBlogsEntryByExternalReferenceCodeParameterTypes10 = new Class[] {
 			long.class, String.class
 		};
-	private static final Class<?>[] _getCompanyEntriesParameterTypes10 =
+	private static final Class<?>[] _getCompanyEntriesParameterTypes11 =
 		new Class[] {long.class, java.util.Date.class, int.class, int.class};
-	private static final Class<?>[] _getCompanyEntriesRSSParameterTypes11 =
+	private static final Class<?>[] _getCompanyEntriesRSSParameterTypes12 =
 		new Class[] {
 			long.class, java.util.Date.class, int.class, int.class,
 			String.class, double.class, String.class, String.class,
 			String.class, com.liferay.portal.kernel.theme.ThemeDisplay.class
 		};
-	private static final Class<?>[] _getEntriesPrevAndNextParameterTypes12 =
+	private static final Class<?>[] _getEntriesPrevAndNextParameterTypes13 =
 		new Class[] {long.class};
-	private static final Class<?>[] _getEntryParameterTypes13 = new Class[] {
+	private static final Class<?>[] _getEntryParameterTypes14 = new Class[] {
 		long.class
 	};
-	private static final Class<?>[] _getEntryParameterTypes14 = new Class[] {
+	private static final Class<?>[] _getEntryParameterTypes15 = new Class[] {
 		long.class, String.class
 	};
-	private static final Class<?>[] _getGroupEntriesParameterTypes15 =
-		new Class[] {long.class, java.util.Date.class, int.class, int.class};
 	private static final Class<?>[] _getGroupEntriesParameterTypes16 =
+		new Class[] {long.class, java.util.Date.class, int.class, int.class};
+	private static final Class<?>[] _getGroupEntriesParameterTypes17 =
 		new Class[] {
 			long.class, java.util.Date.class, int.class, int.class, int.class
 		};
-	private static final Class<?>[] _getGroupEntriesParameterTypes17 =
-		new Class[] {long.class, int.class, int.class};
 	private static final Class<?>[] _getGroupEntriesParameterTypes18 =
-		new Class[] {long.class, int.class, int.class, int.class};
+		new Class[] {long.class, int.class, int.class};
 	private static final Class<?>[] _getGroupEntriesParameterTypes19 =
+		new Class[] {long.class, int.class, int.class, int.class};
+	private static final Class<?>[] _getGroupEntriesParameterTypes20 =
 		new Class[] {
 			long.class, int.class, int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _getGroupEntriesCountParameterTypes20 =
-		new Class[] {long.class, java.util.Date.class, int.class};
 	private static final Class<?>[] _getGroupEntriesCountParameterTypes21 =
+		new Class[] {long.class, java.util.Date.class, int.class};
+	private static final Class<?>[] _getGroupEntriesCountParameterTypes22 =
 		new Class[] {long.class, int.class};
-	private static final Class<?>[] _getGroupEntriesRSSParameterTypes22 =
+	private static final Class<?>[] _getGroupEntriesRSSParameterTypes23 =
 		new Class[] {
 			long.class, java.util.Date.class, int.class, int.class,
 			String.class, double.class, String.class, String.class,
 			String.class, com.liferay.portal.kernel.theme.ThemeDisplay.class
 		};
-	private static final Class<?>[] _getGroupsEntriesParameterTypes23 =
+	private static final Class<?>[] _getGroupsEntriesParameterTypes24 =
 		new Class[] {
 			long.class, long.class, java.util.Date.class, int.class, int.class
 		};
-	private static final Class<?>[] _getGroupUserEntriesParameterTypes24 =
+	private static final Class<?>[] _getGroupUserEntriesParameterTypes25 =
 		new Class[] {
 			long.class, long.class, int.class, int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _getGroupUserEntriesParameterTypes25 =
+	private static final Class<?>[] _getGroupUserEntriesParameterTypes26 =
 		new Class[] {
 			long.class, long.class, int[].class, int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _getGroupUserEntriesCountParameterTypes26 =
-		new Class[] {long.class, long.class, int.class};
 	private static final Class<?>[] _getGroupUserEntriesCountParameterTypes27 =
+		new Class[] {long.class, long.class, int.class};
+	private static final Class<?>[] _getGroupUserEntriesCountParameterTypes28 =
 		new Class[] {long.class, long.class, int[].class};
-	private static final Class<?>[] _getOrganizationEntriesParameterTypes28 =
+	private static final Class<?>[] _getOrganizationEntriesParameterTypes29 =
 		new Class[] {long.class, java.util.Date.class, int.class, int.class};
-	private static final Class<?>[] _getOrganizationEntriesRSSParameterTypes29 =
+	private static final Class<?>[] _getOrganizationEntriesRSSParameterTypes30 =
 		new Class[] {
 			long.class, java.util.Date.class, int.class, int.class,
 			String.class, double.class, String.class, String.class,
 			String.class, com.liferay.portal.kernel.theme.ThemeDisplay.class
 		};
-	private static final Class<?>[] _moveEntryToTrashParameterTypes30 =
+	private static final Class<?>[] _moveEntryToTrashParameterTypes31 =
 		new Class[] {long.class};
-	private static final Class<?>[] _restoreEntryFromTrashParameterTypes31 =
+	private static final Class<?>[] _restoreEntryFromTrashParameterTypes32 =
 		new Class[] {long.class};
-	private static final Class<?>[] _subscribeParameterTypes32 = new Class[] {
+	private static final Class<?>[] _subscribeParameterTypes33 = new Class[] {
 		long.class
 	};
-	private static final Class<?>[] _unsubscribeParameterTypes33 = new Class[] {
+	private static final Class<?>[] _unsubscribeParameterTypes34 = new Class[] {
 		long.class
 	};
-	private static final Class<?>[] _updateEntryParameterTypes34 = new Class[] {
+	private static final Class<?>[] _updateEntryParameterTypes35 = new Class[] {
 		long.class, String.class, String.class, String.class, String.class,
 		int.class, int.class, int.class, int.class, int.class, boolean.class,
 		boolean.class, String[].class, String.class,
@@ -1622,7 +1664,7 @@ public class BlogsEntryServiceHttp {
 		com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector.class,
 		com.liferay.portal.kernel.service.ServiceContext.class
 	};
-	private static final Class<?>[] _updateEntryParameterTypes35 = new Class[] {
+	private static final Class<?>[] _updateEntryParameterTypes36 = new Class[] {
 		long.class, String.class, String.class, String.class, String.class,
 		String.class, int.class, int.class, int.class, int.class, int.class,
 		boolean.class, boolean.class, String[].class, String.class,
@@ -1632,4 +1674,4 @@ public class BlogsEntryServiceHttp {
 	};
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1105594064
+// LIFERAY-SERVICE-BUILDER-HASH:-886076094

@@ -110,6 +110,10 @@ public class BlogsEntryServiceUtil {
 			groupId, externalReferenceCode);
 	}
 
+	public static BlogsEntry fetchEntry(long entryId) throws PortalException {
+		return getService().fetchEntry(entryId);
+	}
+
 	public static com.liferay.portal.kernel.repository.model.FileEntry
 			getAttachmentFileEntry(long fileEntryId)
 		throws PortalException {
@@ -363,4 +367,4 @@ public class BlogsEntryServiceUtil {
 		new Snapshot<>(BlogsEntryServiceUtil.class, BlogsEntryService.class);
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1361543771
+// LIFERAY-SERVICE-BUILDER-HASH:969139725

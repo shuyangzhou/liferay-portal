@@ -113,6 +113,13 @@ public class BlogsEntryServiceWrapper
 	}
 
 	@Override
+	public BlogsEntry fetchEntry(long entryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _blogsEntryService.fetchEntry(entryId);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.repository.model.FileEntry
 			getAttachmentFileEntry(long fileEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -411,4 +418,4 @@ public class BlogsEntryServiceWrapper
 	private BlogsEntryService _blogsEntryService;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1063801881
+// LIFERAY-SERVICE-BUILDER-HASH:-60384129

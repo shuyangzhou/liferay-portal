@@ -92,6 +92,9 @@ public interface BlogsEntryService extends BaseService {
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public BlogsEntry fetchEntry(long entryId) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public FileEntry getAttachmentFileEntry(long fileEntryId)
 		throws PortalException;
 
@@ -233,4 +236,4 @@ public interface BlogsEntryService extends BaseService {
 		throws PortalException;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:895960708
+// LIFERAY-SERVICE-BUILDER-HASH:387530009
