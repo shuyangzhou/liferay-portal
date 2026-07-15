@@ -21,7 +21,7 @@ public class CPAttachmentFileEntryImpl extends CPAttachmentFileEntryBaseImpl {
 			return null;
 		}
 
-		return DLAppLocalServiceUtil.getFileEntry(getFileEntryId());
+		return DLAppLocalServiceUtil.fetchFileEntry(getFileEntryId());
 	}
 
 }
