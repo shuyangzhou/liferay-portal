@@ -77,20 +77,15 @@ public class FileShortcutStagedModelDataHandler
 	public FileShortcut fetchStagedModelByUuidAndGroupId(
 		String uuid, long groupId) {
 
-		try {
-			DLFileShortcut dlFileShortcut =
-				_dlFileShortcutLocalService.getDLFileShortcutByUuidAndGroupId(
-					uuid, groupId);
+		DLFileShortcut dlFileShortcut =
+			_dlFileShortcutLocalService.fetchDLFileShortcutByUuidAndGroupId(
+				uuid, groupId);
 
-			return new LiferayFileShortcut(dlFileShortcut);
-		}
-		catch (PortalException portalException) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(portalException);
-			}
-
+		if (dlFileShortcut == null) {
 			return null;
 		}
+
+		return new LiferayFileShortcut(dlFileShortcut);
 	}
 
 	@Override
