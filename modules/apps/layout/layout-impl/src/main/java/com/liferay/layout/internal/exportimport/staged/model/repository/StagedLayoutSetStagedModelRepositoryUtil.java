@@ -9,9 +9,6 @@ import com.liferay.exportimport.kernel.lar.ExportImportHelper;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.layout.set.model.adapter.StagedLayoutSet;
 import com.liferay.petra.function.transform.TransformUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.module.service.Snapshot;
@@ -53,30 +50,19 @@ public class StagedLayoutSetStagedModelRepositoryUtil {
 	public static StagedLayoutSet fetchExistingLayoutSet(
 		long groupId, boolean privateLayout) {
 
-		StagedLayoutSet stagedLayoutSet = null;
+		LayoutSetLocalService layoutSetLocalService =
+			_layoutSetLocalServiceSnapshot.get();
 
-		try {
-			LayoutSetLocalService layoutSetLocalService =
-				_layoutSetLocalServiceSnapshot.get();
+		LayoutSet layoutSet = layoutSetLocalService.fetchLayoutSet(
+			groupId, privateLayout);
 
-			stagedLayoutSet = ModelAdapterUtil.adapt(
-				layoutSetLocalService.getLayoutSet(groupId, privateLayout),
-				LayoutSet.class, StagedLayoutSet.class);
-		}
-		catch (PortalException portalException) {
-
-			// LPS-52675
-
-			if (_log.isDebugEnabled()) {
-				_log.debug(portalException);
-			}
+		if (layoutSet == null) {
+			return null;
 		}
 
-		return stagedLayoutSet;
+		return ModelAdapterUtil.adapt(
+			layoutSet, LayoutSet.class, StagedLayoutSet.class);
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		StagedLayoutSetStagedModelRepositoryUtil.class);
 
 	private static final Snapshot<ExportImportHelper>
 		_exportImportHelperSnapshot = new Snapshot<>(

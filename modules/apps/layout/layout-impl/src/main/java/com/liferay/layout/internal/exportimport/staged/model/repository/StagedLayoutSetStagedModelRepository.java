@@ -15,8 +15,6 @@ import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.service.LayoutSetLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -79,21 +77,15 @@ public class StagedLayoutSetStagedModelRepository
 
 		boolean privateLayout = GetterUtil.getBoolean(uuid);
 
-		try {
-			return ModelAdapterUtil.adapt(
-				_layoutSetLocalService.getLayoutSet(groupId, privateLayout),
-				LayoutSet.class, StagedLayoutSet.class);
-		}
-		catch (PortalException portalException) {
+		LayoutSet layoutSet = _layoutSetLocalService.fetchLayoutSet(
+			groupId, privateLayout);
 
-			// LPS-52675
-
-			if (_log.isDebugEnabled()) {
-				_log.debug(portalException);
-			}
-
+		if (layoutSet == null) {
 			return null;
 		}
+
+		return ModelAdapterUtil.adapt(
+			layoutSet, LayoutSet.class, StagedLayoutSet.class);
 	}
 
 	@Override
@@ -189,9 +181,6 @@ public class StagedLayoutSetStagedModelRepository
 		return ModelAdapterUtil.adapt(
 			existingLayoutSet, LayoutSet.class, StagedLayoutSet.class);
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		StagedLayoutSetStagedModelRepository.class);
 
 	@Reference
 	private LayoutSetLocalService _layoutSetLocalService;
