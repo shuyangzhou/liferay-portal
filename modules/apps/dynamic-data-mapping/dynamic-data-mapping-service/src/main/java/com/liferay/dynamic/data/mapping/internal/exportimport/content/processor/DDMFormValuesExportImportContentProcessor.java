@@ -19,7 +19,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerRegistryUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.journal.article.dynamic.data.mapping.form.field.type.constants.JournalArticleDDMFormFieldTypeConstants;
-import com.liferay.journal.exception.NoSuchArticleException;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.layout.dynamic.data.mapping.form.field.type.constants.LayoutDDMFormFieldTypeConstants;
@@ -446,16 +445,11 @@ public class DDMFormValuesExportImportContentProcessor
 			long newClassPK = MapUtil.getLong(classPKs, classPK, classPK);
 
 			if (newClassPK > 0) {
-				try {
-					return _dlAppLocalService.getFileEntry(newClassPK);
-				}
-				catch (PortalException portalException) {
-					if (_log.isWarnEnabled()) {
-						_log.warn(
-							"Unable to find file entry with file entry ID " +
-								newClassPK,
-							portalException);
-					}
+				FileEntry fileEntry = _dlAppLocalService.fetchFileEntry(
+					newClassPK);
+
+				if (fileEntry != null) {
+					return fileEntry;
 				}
 			}
 
@@ -665,17 +659,11 @@ public class DDMFormValuesExportImportContentProcessor
 			long newClassPK = MapUtil.getLong(classPKs, classPK, classPK);
 
 			if (newClassPK > 0) {
-				try {
-					return _journalArticleLocalService.getLatestArticle(
-						newClassPK);
-				}
-				catch (NoSuchArticleException noSuchArticleException) {
-					if (_log.isWarnEnabled()) {
-						_log.warn(
-							"Unable to find journal article with primary key " +
-								newClassPK,
-							noSuchArticleException);
-					}
+				JournalArticle journalArticle =
+					_journalArticleLocalService.fetchLatestArticle(newClassPK);
+
+				if (journalArticle != null) {
+					return journalArticle;
 				}
 			}
 
