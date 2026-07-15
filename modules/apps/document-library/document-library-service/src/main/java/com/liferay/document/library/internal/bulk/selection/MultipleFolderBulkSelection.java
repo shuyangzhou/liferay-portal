@@ -9,12 +9,8 @@ import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.bulk.selection.BaseMultipleEntryBulkSelection;
 import com.liferay.bulk.selection.BulkSelection;
 import com.liferay.bulk.selection.BulkSelectionFactory;
-import com.liferay.document.library.kernel.exception.NoSuchFolderException;
 import com.liferay.document.library.kernel.service.DLAppService;
-import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.Folder;
 
 import java.util.Map;
@@ -47,24 +43,9 @@ public class MultipleFolderBulkSelection
 	}
 
 	@Override
-	protected Folder fetchEntry(long folderId) {
-		try {
-			return _dlAppService.getFolder(folderId);
-		}
-		catch (NoSuchFolderException noSuchFolderException) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(noSuchFolderException);
-			}
-
-			return null;
-		}
-		catch (PortalException portalException) {
-			return ReflectionUtil.throwException(portalException);
-		}
+	protected Folder fetchEntry(long folderId) throws PortalException {
+		return _dlAppService.fetchFolder(folderId);
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		MultipleFolderBulkSelection.class);
 
 	private final DLAppService _dlAppService;
 
