@@ -180,11 +180,15 @@ public abstract class BaseStagedModelDataHandler<T extends StagedModel>
 			return existingStagedModel;
 		}
 
+		Group originalGroup = GroupLocalServiceUtil.fetchGroup(groupId);
+
+		if (originalGroup == null) {
+			return null;
+		}
+
 		try {
 
 			// Try to fetch the existing staged model from the parent sites
-
-			Group originalGroup = GroupLocalServiceUtil.getGroup(groupId);
 
 			Group group = originalGroup.getParentGroup();
 
