@@ -96,15 +96,14 @@ public class StagingAssetEntryHelperImpl implements StagingAssetEntryHelper {
 		Map<Long, AssetEntry> assetEntryMap = new HashMap<>();
 
 		for (AssetEntry assetEntry : assetEntries) {
+
+			// Try to fetch the existing staged model from the importing group
+
+			if (assetEntry.getGroupId() == groupId) {
+				return assetEntry;
+			}
+
 			assetEntryMap.put(assetEntry.getGroupId(), assetEntry);
-		}
-
-		// Try to fetch the existing staged model from the importing group
-
-		AssetEntry groupAssetEntry = assetEntryMap.remove(groupId);
-
-		if (groupAssetEntry != null) {
-			return groupAssetEntry;
 		}
 
 		// Try to fetch the existing staged model from parent sites
@@ -112,7 +111,8 @@ public class StagingAssetEntryHelperImpl implements StagingAssetEntryHelper {
 		Group parentGroup = group.getParentGroup();
 
 		while (parentGroup != null) {
-			groupAssetEntry = assetEntryMap.remove(parentGroup.getGroupId());
+			AssetEntry groupAssetEntry = assetEntryMap.remove(
+				parentGroup.getGroupId());
 
 			if ((groupAssetEntry != null) &&
 				isAssetEntryApplicable(groupAssetEntry)) {
@@ -129,7 +129,8 @@ public class StagingAssetEntryHelperImpl implements StagingAssetEntryHelper {
 			group.getCompanyId());
 
 		if (companyGroup != null) {
-			groupAssetEntry = assetEntryMap.remove(companyGroup.getGroupId());
+			AssetEntry groupAssetEntry = assetEntryMap.remove(
+				companyGroup.getGroupId());
 
 			if (groupAssetEntry != null) {
 				return groupAssetEntry;
