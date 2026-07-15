@@ -31,7 +31,7 @@ public class AccountRoleRoleServiceWrapper extends RoleServiceWrapper {
 		if ((role != null) &&
 			Objects.equals(role.getType(), RoleConstants.TYPE_ACCOUNT)) {
 
-			_accountRoleService.getAccountRoleByRoleId(roleId);
+			_accountRoleService.fetchAccountRoleByRoleId(roleId);
 
 			return role;
 		}
