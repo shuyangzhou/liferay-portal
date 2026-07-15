@@ -99,9 +99,13 @@ public class StagingAssetEntryHelperImpl implements StagingAssetEntryHelper {
 			return assetEntryMap.get(groupId);
 		}
 
-		// Try to fetch the existing staged model from parent sites
+		Group group = _groupLocalService.fetchGroup(groupId);
 
-		Group group = _groupLocalService.getGroup(groupId);
+		if (group == null) {
+			return null;
+		}
+
+		// Try to fetch the existing staged model from parent sites
 
 		Group parentGroup = group.getParentGroup();
 
