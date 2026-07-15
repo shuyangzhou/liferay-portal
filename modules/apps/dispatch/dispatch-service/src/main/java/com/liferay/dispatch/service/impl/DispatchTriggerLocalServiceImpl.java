@@ -151,14 +151,34 @@ public class DispatchTriggerLocalServiceImpl
 
 	@Override
 	public Date fetchNextFireDate(long dispatchTriggerId) {
-		try {
-			return getNextFireDate(dispatchTriggerId);
+		DispatchTrigger dispatchTrigger =
+			dispatchTriggerPersistence.fetchByPrimaryKey(dispatchTriggerId);
+
+		if (dispatchTrigger == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Unable to fetch dispatch trigger ID " + dispatchTriggerId);
+			}
+
+			return null;
 		}
-		catch (PortalException portalException) {
-			_log.error(
-				"Unable to resolve next fire date for dispatch trigger ID " +
-					dispatchTriggerId,
-				portalException);
+
+		DispatchTaskClusterMode dispatchTaskClusterMode =
+			DispatchTaskClusterMode.valueOf(
+				dispatchTrigger.getDispatchTaskClusterMode());
+
+		try {
+			return _dispatchTriggerHelper.getNextFireDate(
+				dispatchTrigger, dispatchTaskClusterMode.getStorageType());
+		}
+		catch (SchedulerException schedulerException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					StringBundler.concat(
+						"Unable to fetch next fire date for dispatch trigger ",
+						"ID ", dispatchTriggerId),
+					schedulerException);
+			}
 		}
 
 		return null;
