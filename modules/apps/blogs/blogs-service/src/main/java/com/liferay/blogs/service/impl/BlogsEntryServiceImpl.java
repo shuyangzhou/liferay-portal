@@ -182,6 +182,18 @@ public class BlogsEntryServiceImpl extends BlogsEntryServiceBaseImpl {
 	}
 
 	@Override
+	public BlogsEntry fetchEntry(long entryId) throws PortalException {
+		BlogsEntry entry = blogsEntryLocalService.fetchBlogsEntry(entryId);
+
+		if (entry != null) {
+			_blogsEntryModelResourcePermission.check(
+				getPermissionChecker(), entry, ActionKeys.VIEW);
+		}
+
+		return entry;
+	}
+
+	@Override
 	public FileEntry getAttachmentFileEntry(long fileEntryId)
 		throws PortalException {
 
