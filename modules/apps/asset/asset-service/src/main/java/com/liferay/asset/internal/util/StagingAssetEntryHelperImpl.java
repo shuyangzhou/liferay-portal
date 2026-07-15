@@ -136,17 +136,11 @@ public class StagingAssetEntryHelperImpl implements StagingAssetEntryHelper {
 
 		// Try to fetch the existing staged model from the company
 
-		List<AssetEntry> companyAssetEntries = ListUtil.filter(
-			assetEntries,
-			entry -> entry.getCompanyId() == group.getCompanyId());
-
-		if (ListUtil.isEmpty(companyAssetEntries)) {
-			return null;
-		}
-
-		for (AssetEntry assetEntry : companyAssetEntries) {
+		for (AssetEntry assetEntry : assetEntries) {
 			try {
-				if (isAssetEntryApplicable(assetEntry)) {
+				if ((assetEntry.getCompanyId() == group.getCompanyId()) &&
+					isAssetEntryApplicable(assetEntry)) {
+
 					return assetEntry;
 				}
 			}
