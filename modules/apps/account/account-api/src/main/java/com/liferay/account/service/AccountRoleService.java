@@ -66,6 +66,10 @@ public interface AccountRoleService extends BaseService {
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountRole fetchAccountRoleByRoleId(long roleId)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountRole getAccountRoleByRoleId(long roleId)
 		throws PortalException;
 
@@ -92,4 +96,4 @@ public interface AccountRoleService extends BaseService {
 		throws PortalException;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1435157455
+// LIFERAY-SERVICE-BUILDER-HASH:-1950086403

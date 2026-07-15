@@ -240,6 +240,45 @@ public class AccountRoleServiceHttp {
 		}
 	}
 
+	public static com.liferay.account.model.AccountRole
+			fetchAccountRoleByRoleId(HttpPrincipal httpPrincipal, long roleId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				AccountRoleServiceUtil.class, "fetchAccountRoleByRoleId",
+				_fetchAccountRoleByRoleIdParameterTypes5);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey, roleId);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return (com.liferay.account.model.AccountRole)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
 	public static com.liferay.account.model.AccountRole getAccountRoleByRoleId(
 			HttpPrincipal httpPrincipal, long roleId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -247,7 +286,7 @@ public class AccountRoleServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				AccountRoleServiceUtil.class, "getAccountRoleByRoleId",
-				_getAccountRoleByRoleIdParameterTypes5);
+				_getAccountRoleByRoleIdParameterTypes6);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, roleId);
 
@@ -292,7 +331,7 @@ public class AccountRoleServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				AccountRoleServiceUtil.class, "searchAccountRoles",
-				_searchAccountRolesParameterTypes6);
+				_searchAccountRolesParameterTypes7);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, companyId, accountEntryIds, keywords, params, start,
@@ -335,7 +374,7 @@ public class AccountRoleServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				AccountRoleServiceUtil.class, "setUserAccountRoles",
-				_setUserAccountRolesParameterTypes7);
+				_setUserAccountRolesParameterTypes8);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, accountEntryId, accountRoleIds, userId);
@@ -372,7 +411,7 @@ public class AccountRoleServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				AccountRoleServiceUtil.class, "unassociateUser",
-				_unassociateUserParameterTypes8);
+				_unassociateUserParameterTypes9);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, accountEntryId, accountRoleId, userId);
@@ -417,18 +456,20 @@ public class AccountRoleServiceHttp {
 		new Class[] {com.liferay.account.model.AccountRole.class};
 	private static final Class<?>[] _deleteAccountRoleParameterTypes4 =
 		new Class[] {long.class};
-	private static final Class<?>[] _getAccountRoleByRoleIdParameterTypes5 =
+	private static final Class<?>[] _fetchAccountRoleByRoleIdParameterTypes5 =
 		new Class[] {long.class};
-	private static final Class<?>[] _searchAccountRolesParameterTypes6 =
+	private static final Class<?>[] _getAccountRoleByRoleIdParameterTypes6 =
+		new Class[] {long.class};
+	private static final Class<?>[] _searchAccountRolesParameterTypes7 =
 		new Class[] {
 			long.class, long[].class, String.class,
 			java.util.LinkedHashMap.class, int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _setUserAccountRolesParameterTypes7 =
+	private static final Class<?>[] _setUserAccountRolesParameterTypes8 =
 		new Class[] {long.class, long[].class, long.class};
-	private static final Class<?>[] _unassociateUserParameterTypes8 =
+	private static final Class<?>[] _unassociateUserParameterTypes9 =
 		new Class[] {long.class, long.class, long.class};
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-715490538
+// LIFERAY-SERVICE-BUILDER-HASH:-1107319166

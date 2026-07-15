@@ -68,6 +68,12 @@ public class AccountRoleServiceUtil {
 		return getService().deleteAccountRole(accountRoleId);
 	}
 
+	public static AccountRole fetchAccountRoleByRoleId(long roleId)
+		throws PortalException {
+
+		return getService().fetchAccountRoleByRoleId(roleId);
+	}
+
 	public static AccountRole getAccountRoleByRoleId(long roleId)
 		throws PortalException {
 
@@ -118,4 +124,4 @@ public class AccountRoleServiceUtil {
 		new Snapshot<>(AccountRoleServiceUtil.class, AccountRoleService.class);
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1965524121
+// LIFERAY-SERVICE-BUILDER-HASH:1332955669

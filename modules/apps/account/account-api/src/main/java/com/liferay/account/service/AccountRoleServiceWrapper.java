@@ -72,6 +72,14 @@ public class AccountRoleServiceWrapper
 	}
 
 	@Override
+	public com.liferay.account.model.AccountRole fetchAccountRoleByRoleId(
+			long roleId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _accountRoleService.fetchAccountRoleByRoleId(roleId);
+	}
+
+	@Override
 	public com.liferay.account.model.AccountRole getAccountRoleByRoleId(
 			long roleId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -135,4 +143,4 @@ public class AccountRoleServiceWrapper
 	private AccountRoleService _accountRoleService;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1900220341
+// LIFERAY-SERVICE-BUILDER-HASH:278814299
