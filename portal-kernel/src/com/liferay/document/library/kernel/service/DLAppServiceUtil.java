@@ -700,6 +700,27 @@ public class DLAppServiceUtil {
 			groupId, folderId, folderName, fileName);
 	}
 
+	public static com.liferay.portal.kernel.repository.model.FileEntry
+			fetchFileEntry(long fileEntryId)
+		throws PortalException {
+
+		return getService().fetchFileEntry(fileEntryId);
+	}
+
+	public static com.liferay.portal.kernel.repository.model.FileShortcut
+			fetchFileShortcut(long fileShortcutId)
+		throws PortalException {
+
+		return getService().fetchFileShortcut(fileShortcutId);
+	}
+
+	public static com.liferay.portal.kernel.repository.model.Folder fetchFolder(
+			long folderId)
+		throws PortalException {
+
+		return getService().fetchFolder(folderId);
+	}
+
 	/**
 	 * Returns all the file entries in the folder.
 	 *
@@ -2521,4 +2542,4 @@ public class DLAppServiceUtil {
 	private static volatile DLAppService _service;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-35035
+// LIFERAY-SERVICE-BUILDER-HASH:253921324

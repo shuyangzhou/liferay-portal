@@ -718,6 +718,30 @@ public class DLAppServiceWrapper
 			groupId, folderId, folderName, fileName);
 	}
 
+	@Override
+	public com.liferay.portal.kernel.repository.model.FileEntry fetchFileEntry(
+			long fileEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dlAppService.fetchFileEntry(fileEntryId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.repository.model.FileShortcut
+			fetchFileShortcut(long fileShortcutId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dlAppService.fetchFileShortcut(fileShortcutId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.repository.model.Folder fetchFolder(
+			long folderId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dlAppService.fetchFolder(folderId);
+	}
+
 	/**
 	 * Returns all the file entries in the folder.
 	 *
@@ -2629,4 +2653,4 @@ public class DLAppServiceWrapper
 	private DLAppService _dlAppService;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1002062415
+// LIFERAY-SERVICE-BUILDER-HASH:928596330
