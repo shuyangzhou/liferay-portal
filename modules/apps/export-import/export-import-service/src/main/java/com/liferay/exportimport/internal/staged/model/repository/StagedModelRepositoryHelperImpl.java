@@ -45,11 +45,15 @@ public class StagedModelRepositoryHelperImpl
 			return existingStagedModel;
 		}
 
+		Group originalGroup = _groupLocalService.fetchGroup(groupId);
+
+		if (originalGroup == null) {
+			return null;
+		}
+
 		try {
 
 			// Try to fetch the existing staged model from parent sites
-
-			Group originalGroup = _groupLocalService.getGroup(groupId);
 
 			Group group = originalGroup.getParentGroup();
 
