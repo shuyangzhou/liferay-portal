@@ -7,10 +7,6 @@ package com.liferay.site.internal.exportimport.staged.model.repository;
 
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.layout.set.model.adapter.StagedLayoutSet;
-import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.StagedModel;
@@ -40,23 +36,16 @@ public class StagedGroupStagedModelRepositoryUtil {
 
 		long groupId = group.getGroupId();
 
-		try {
-			LayoutSetLocalService layoutSetLocalService =
-				_layoutSetLocalServiceSnapshot.get();
+		LayoutSetLocalService layoutSetLocalService =
+			_layoutSetLocalServiceSnapshot.get();
 
+		LayoutSet layoutSet = layoutSetLocalService.fetchLayoutSet(
+			groupId, portletDataContext.isPrivateLayout());
+
+		if (layoutSet != null) {
 			childrenStagedModels.add(
 				ModelAdapterUtil.adapt(
-					layoutSetLocalService.getLayoutSet(
-						groupId, portletDataContext.isPrivateLayout()),
-					LayoutSet.class, StagedLayoutSet.class));
-		}
-		catch (PortalException portalException) {
-			_log.error(
-				StringBundler.concat(
-					"Unable to fetch Layout Set with groupId ", groupId,
-					" and private layout ",
-					portletDataContext.isPrivateLayout()),
-				portalException);
+					layoutSet, LayoutSet.class, StagedLayoutSet.class));
 		}
 
 		return childrenStagedModels;
@@ -134,9 +123,6 @@ public class StagedGroupStagedModelRepositoryUtil {
 		return groupLocalService.fetchGroup(
 			portletDataContext.getScopeGroupId());
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		StagedGroupStagedModelRepositoryUtil.class);
 
 	private static final Snapshot<GroupLocalService>
 		_groupLocalServiceSnapshot = new Snapshot<>(
