@@ -7,16 +7,12 @@ package com.liferay.blogs.web.internal.bulk.selection;
 
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
-import com.liferay.blogs.exception.NoSuchEntryException;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryService;
 import com.liferay.bulk.selection.BaseMultipleEntryBulkSelection;
 import com.liferay.bulk.selection.BulkSelection;
 import com.liferay.bulk.selection.BulkSelectionFactory;
-import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.util.Map;
 
@@ -51,24 +47,9 @@ public class MultipleBlogsEntryBulkSelection
 	}
 
 	@Override
-	protected BlogsEntry fetchEntry(long entryId) {
-		try {
-			return _blogsEntryService.getEntry(entryId);
-		}
-		catch (NoSuchEntryException noSuchEntryException) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(noSuchEntryException);
-			}
-
-			return null;
-		}
-		catch (PortalException portalException) {
-			return ReflectionUtil.throwException(portalException);
-		}
+	protected BlogsEntry fetchEntry(long entryId) throws PortalException {
+		return _blogsEntryService.fetchEntry(entryId);
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		MultipleBlogsEntryBulkSelection.class);
 
 	private final AssetEntryLocalService _assetEntryLocalService;
 	private final BlogsEntryService _blogsEntryService;
