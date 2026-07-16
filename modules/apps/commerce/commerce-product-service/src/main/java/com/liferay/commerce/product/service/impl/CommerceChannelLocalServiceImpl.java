@@ -283,7 +283,11 @@ public class CommerceChannelLocalServiceImpl
 		throws PortalException {
 
 		CommerceChannel commerceChannel =
-			commerceChannelLocalService.getCommerceChannel(commerceChannelId);
+			commerceChannelPersistence.fetchByPrimaryKey(commerceChannelId);
+
+		if (commerceChannel == null) {
+			return null;
+		}
 
 		return _groupLocalService.fetchGroup(
 			commerceChannel.getCompanyId(),
