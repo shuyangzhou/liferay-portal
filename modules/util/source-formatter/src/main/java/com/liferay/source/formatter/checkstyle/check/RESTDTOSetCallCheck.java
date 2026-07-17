@@ -231,8 +231,10 @@ public class RESTDTOSetCallCheck extends BaseCheck {
 	private JavaClass _getDTOJavaClass(
 		String absolutePath, String fullyQualifiedTypeName) {
 
-		if (_dtoJavaClasses.containsKey(fullyQualifiedTypeName)) {
-			return _dtoJavaClasses.get(fullyQualifiedTypeName);
+		JavaClass dtoJavaClass = _dtoJavaClasses.get(fullyQualifiedTypeName);
+
+		if (dtoJavaClass != null) {
+			return dtoJavaClass;
 		}
 
 		File javaFile = JavaSourceUtil.getJavaFile(
