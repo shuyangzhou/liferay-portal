@@ -302,7 +302,7 @@ public class ClientExtensionEntryLocalServiceImpl
 		_companyLocalService.forEachCompanyId(
 			companyId -> {
 				List<ClientExtensionEntry> clientExtensionEntries =
-					clientExtensionEntryLocalService.getClientExtensionEntries(
+					clientExtensionEntryPersistence.findByCompanyId(
 						companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 				for (ClientExtensionEntry clientExtensionEntry :
