@@ -9,6 +9,8 @@ import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.model.ObjectEntryWrapper;
 
 /**
+ * Wraps a Service Builder {@link ObjectEntry} while retaining its REST DTO.
+ *
  * @author Eudaldo Alonso
  */
 public class ProxyObjectEntry extends ObjectEntryWrapper {
