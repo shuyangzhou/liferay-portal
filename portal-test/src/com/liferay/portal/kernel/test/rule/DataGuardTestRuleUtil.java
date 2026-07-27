@@ -216,6 +216,16 @@ public class DataGuardTestRuleUtil {
 								}
 							}
 
+							// The raw session.delete removed the row
+							// but left the entity and finder caches
+							// pointing at it. Evict them to prevent a
+							// later phantom finder lookup.
+
+							BasePersistence persistence = basePersistence;
+
+							persistence.clearCache(
+								(BaseModel<?>)persistedModel);
+
 							return null;
 						}
 					});
