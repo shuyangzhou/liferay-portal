@@ -164,6 +164,7 @@ import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.comparator.GroupIdComparator;
 import com.liferay.portal.kernel.util.comparator.GroupNameComparator;
+import com.liferay.portal.model.impl.GroupImpl;
 import com.liferay.portal.model.impl.GroupModelImpl;
 import com.liferay.portal.model.impl.LayoutImpl;
 import com.liferay.portal.security.permission.PermissionCacheUtil;
@@ -277,7 +278,7 @@ import org.osgi.framework.ServiceRegistration;
  * @author Alexander Chow
  * @author Bruno Farache
  * @author Wesley Gong
- * @see    com.liferay.portal.model.impl.GroupImpl
+ * @see    GroupImpl
  */
 public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
@@ -812,6 +813,14 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		String[] systemGroups = ArrayUtil.append(
 			PortalUtil.getSystemGroups(), companyIdString);
 
+		// Rebuild this company's entries from scratch so that neither a group
+		// that no longer exists nor a placeholder for a group that now exists
+		// can survive the check
+
+		for (String groupKey : systemGroups) {
+			_systemGroupsMap.remove(companyIdHexString.concat(groupKey));
+		}
+
 		for (Group group :
 				groupPersistence.findByC_GK(companyId, systemGroups)) {
 
@@ -824,6 +833,9 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		for (String groupKey : systemGroups) {
 			if (groupKey.equals(GroupConstants.CMS) &&
 				!FeatureFlagManagerUtil.isEnabled("LPD-17564")) {
+
+				_systemGroupsMap.put(
+					companyIdHexString.concat(groupKey), _nullGroup);
 
 				continue;
 			}
@@ -1546,6 +1558,10 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 		Group group = _systemGroupsMap.get(companyIdHexString.concat(groupKey));
 
+		if (group == _nullGroup) {
+			return null;
+		}
+
 		if (group != null) {
 			return group;
 		}
@@ -1840,6 +1856,12 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		String companyIdHexString = StringUtil.toHexString(companyId);
 
 		Group group = _systemGroupsMap.get(companyIdHexString.concat(groupKey));
+
+		if (group == _nullGroup) {
+			throw new NoSuchGroupException(
+				StringBundler.concat(
+					"{companyId=", companyId, ", groupKey=", groupKey, "}"));
+		}
 
 		if (group != null) {
 			return group;
@@ -5699,6 +5721,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		new MethodHandler(
 			new MethodKey(
 				GroupLocalServiceImpl.class, "_doClearStagingGroupIds"));
+	private static final Group _nullGroup = new GroupImpl();
 	private static final Snapshot<ReindexerBridge> _reindexerBridgeSnapshot =
 		new Snapshot<>(GroupLocalServiceImpl.class, ReindexerBridge.class);
 	private static final DCLSingleton<Map<Long, Long>>
