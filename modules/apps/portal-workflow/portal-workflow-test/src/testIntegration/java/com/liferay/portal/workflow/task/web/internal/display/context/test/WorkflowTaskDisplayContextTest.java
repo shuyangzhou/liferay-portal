@@ -54,6 +54,7 @@ import com.liferay.portal.kernel.workflow.WorkflowHandler;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
 import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
 import com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil;
+import com.liferay.portal.test.rule.FeatureFlag;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.test.MockLiferayPortletContext;
@@ -75,6 +76,7 @@ import org.junit.runner.RunWith;
 /**
  * @author Alicia García
  */
+@FeatureFlag("LPD-17564")
 @RunWith(Arquillian.class)
 public class WorkflowTaskDisplayContextTest {
 
