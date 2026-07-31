@@ -143,6 +143,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.mass.delete.MassDeleteCacheThreadLocal;
 import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.GroupConstants;
+import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
@@ -755,6 +756,8 @@ public class ObjectDefinitionLocalServiceImpl
 	@Override
 	public void deployObjectDefinition(ObjectDefinition objectDefinition) {
 		undeployObjectDefinition(objectDefinition);
+
+		_removeStalePortlet(objectDefinition);
 
 		_deploy(
 			_objectDefinitionDeployer,
@@ -2616,6 +2619,23 @@ public class ObjectDefinitionLocalServiceImpl
 					return null;
 				});
 		}
+	}
+
+	private void _removeStalePortlet(ObjectDefinition objectDefinition) {
+		Portlet portlet = _portletLocalService.getPortletById(
+			objectDefinition.getPortletId());
+
+		if (portlet == null) {
+			return;
+		}
+
+		// The portlet id derives from the object definition's globally unique
+		// class name, so once this object definition has been undeployed a
+		// portlet still registered under that id belongs to a leftover object
+		// definition that was deleted without being undeployed. Destroy the
+		// stale portlet so its lingering registration cannot block this deploy.
+
+		_portletLocalService.destroyPortlet(portlet);
 	}
 
 	private void _setValidationErrorEntryKey(
