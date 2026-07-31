@@ -51,9 +51,11 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.test.rule.FeatureFlag;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
+import com.liferay.site.cms.site.initializer.test.util.CMSTestUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -111,6 +113,7 @@ public class ObjectFieldInfoFieldConverterTest {
 			).build());
 	}
 
+	@FeatureFlag("LPD-17564")
 	@Test
 	public void testAddRelationshipInfoFieldAttributes() throws Exception {
 		ObjectDefinition objectDefinition2 =
@@ -154,8 +157,8 @@ public class ObjectFieldInfoFieldConverterTest {
 				_portal.getPortalURL(new MockHttpServletRequest()) +
 					_portal.getPathContext()));
 
-		Group cmsGroup = GroupTestUtil.getOrAddCMSGroup(
-			TestPropsValues.getCompanyId());
+		Group cmsGroup = CMSTestUtil.getOrAddGroup(
+			ObjectFieldInfoFieldConverterTest.class);
 
 		RESTContextPathResolver restContextPathResolver =
 			_restContextPathResolverRegistry.getRESTContextPathResolver(
