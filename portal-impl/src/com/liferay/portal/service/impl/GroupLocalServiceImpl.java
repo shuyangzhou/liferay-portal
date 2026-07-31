@@ -36,9 +36,14 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManagerUtil;
 import com.liferay.portal.kernel.backgroundtask.constants.BackgroundTaskConstants;
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.cache.PortalCache;
+import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
+import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
+import com.liferay.portal.kernel.cache.PortalCacheMapSynchronizeUtil;
 import com.liferay.portal.kernel.cache.thread.local.ThreadLocalCachable;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
+import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
@@ -89,6 +94,7 @@ import com.liferay.portal.kernel.model.UserPersonalSite;
 import com.liferay.portal.kernel.model.WorkflowDefinitionLink;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.module.service.Snapshot;
+import com.liferay.portal.kernel.module.util.ServiceLatch;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelperUtil;
 import com.liferay.portal.kernel.scheduler.StorageType;
@@ -199,6 +205,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 import org.osgi.framework.BundleContext;
@@ -774,6 +781,33 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 			ModelListener.class, new GroupModelListener(),
 			MapUtil.singletonDictionary(
 				"persistence.test.rule.aware", Boolean.TRUE));
+
+		ServiceLatch serviceLatch = SystemBundleUtil.newServiceLatch();
+
+		serviceLatch.waitFor(
+			EntityCache.class,
+			entityCache -> {
+
+				// A group can leave the database without going through
+				// deleteGroup, which would leave the pre-warmed entries
+				// standing for groups that no longer exist. Discard them
+				// whenever the group entity cache is flushed wholesale, so
+				// that the next lookup rebuilds from the database
+
+				PortalCache<?, ?> portalCache = entityCache.getPortalCache(
+					GroupImpl.class);
+
+				PortalCacheMapSynchronizeUtil.synchronize(
+					PortalCacheHelperUtil.getPortalCache(
+						PortalCacheManagerNames.MULTI_VM,
+						portalCache.getPortalCacheName(), portalCache.isMVCC(),
+						portalCache.isSharded()),
+					_systemGroupsMap, _synchronizer);
+			});
+
+		serviceLatch.openOn(
+			() -> {
+			});
 	}
 
 	@Override
@@ -5726,6 +5760,10 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		new Snapshot<>(GroupLocalServiceImpl.class, ReindexerBridge.class);
 	private static final DCLSingleton<Map<Long, Long>>
 		_stagingGroupIdsDCLSingleton = new DCLSingleton<>();
+	private static final PortalCacheMapSynchronizeUtil.Synchronizer
+		<Serializable, Serializable> _synchronizer =
+			(map, key, value, timeToLive) -> {
+			};
 
 	@BeanReference(type = AssetEntryLocalService.class)
 	private AssetEntryLocalService _assetEntryLocalService;
@@ -5816,7 +5854,8 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	@BeanReference(type = SystemEventLocalService.class)
 	private SystemEventLocalService _systemEventLocalService;
 
-	private final Map<String, Group> _systemGroupsMap = new HashMap<>();
+	private final Map<String, Group> _systemGroupsMap =
+		new ConcurrentHashMap<>();
 
 	@BeanReference(type = TeamLocalService.class)
 	private TeamLocalService _teamLocalService;
