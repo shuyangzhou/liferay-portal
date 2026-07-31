@@ -831,20 +831,23 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		long guestUserId = _userLocalService.getGuestUserId(companyId);
 
 		for (String groupKey : systemGroups) {
-			if (groupKey.equals(GroupConstants.CMS) &&
-				!FeatureFlagManagerUtil.isEnabled("LPD-17564")) {
-
-				_systemGroupsMap.put(
-					companyIdHexString.concat(groupKey), _nullGroup);
-
-				continue;
-			}
-
 			String groupCacheKey = companyIdHexString.concat(groupKey);
 
 			Group group = _systemGroupsMap.get(groupCacheKey);
 
 			if (group == null) {
+				if (groupKey.equals(GroupConstants.CMS) &&
+					!FeatureFlagManagerUtil.isEnabled(companyId, "LPD-17564")) {
+
+					// Reached only when the preceding query found no CMS
+					// group, so the placeholder records an absence that the
+					// database agrees with
+
+					_systemGroupsMap.put(groupCacheKey, _nullGroup);
+
+					continue;
+				}
+
 				String className = null;
 				long classPK = 0;
 				int type = GroupConstants.TYPE_SITE_RESTRICTED;
