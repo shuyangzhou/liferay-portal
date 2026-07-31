@@ -813,19 +813,16 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		String[] systemGroups = ArrayUtil.append(
 			PortalUtil.getSystemGroups(), companyIdString);
 
-		// Rebuild this company's entries from scratch so that neither a group
-		// that no longer exists nor a placeholder for a group that now exists
-		// can survive the check
+		// Decide what to create from the query result rather than from the
+		// shared cache, so that each key moves straight from its old value to
+		// its new one and a concurrent lookup never finds the key missing
 
-		for (String groupKey : systemGroups) {
-			_systemGroupsMap.remove(companyIdHexString.concat(groupKey));
-		}
+		Map<String, Group> companyGroupsMap = new HashMap<>();
 
 		for (Group group :
 				groupPersistence.findByC_GK(companyId, systemGroups)) {
 
-			_systemGroupsMap.put(
-				companyIdHexString.concat(group.getGroupKey()), group);
+			companyGroupsMap.put(group.getGroupKey(), group);
 		}
 
 		long guestUserId = _userLocalService.getGuestUserId(companyId);
@@ -833,7 +830,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		for (String groupKey : systemGroups) {
 			String groupCacheKey = companyIdHexString.concat(groupKey);
 
-			Group group = _systemGroupsMap.get(groupCacheKey);
+			Group group = companyGroupsMap.get(groupKey);
 
 			if (group == null) {
 				if (groupKey.equals(GroupConstants.CMS) &&
