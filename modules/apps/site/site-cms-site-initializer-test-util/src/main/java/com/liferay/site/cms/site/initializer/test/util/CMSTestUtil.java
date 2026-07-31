@@ -17,8 +17,6 @@ import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUti
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.site.initializer.SiteInitializer;
@@ -40,15 +38,12 @@ public class CMSTestUtil {
 			return group;
 		}
 
-		// Create the group with the guest user as the creator, exactly as the
-		// production GroupLocalServiceImpl#checkSystemGroups path provisions
-		// the CMS system group. A nonguest creator would be added as the site
-		// owner and a group member, which production never does, and that
-		// membership would dangle once the group is removed.
+		// Provision the CMS system group through the portal so that it is
+		// created exactly as it is on a running instance
 
-		group = GroupTestUtil.addGroup(
-			companyId, UserLocalServiceUtil.getGuestUserId(companyId), 0,
-			GroupConstants.CMS);
+		GroupLocalServiceUtil.checkSystemGroups(companyId);
+
+		group = GroupLocalServiceUtil.getGroup(companyId, GroupConstants.CMS);
 
 		PermissionChecker originalPermissionChecker =
 			PermissionThreadLocal.getPermissionChecker();

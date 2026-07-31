@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.test.randomizerbumpers.SiteFriendlyURLKeywordRandomizerBumper;
 import com.liferay.portal.kernel.test.randomizerbumpers.UniqueStringRandomizerBumper;
@@ -336,9 +335,14 @@ public class GroupTestUtil {
 			companyId, GroupConstants.CMS);
 
 		if (cmsGroup == null) {
-			cmsGroup = addGroup(
-				companyId, UserLocalServiceUtil.getGuestUserId(companyId), 0,
-				GroupConstants.CMS);
+
+			// Provision the CMS system group through the portal so that it is
+			// created exactly as it is on a running instance
+
+			GroupLocalServiceUtil.checkSystemGroups(companyId);
+
+			cmsGroup = GroupLocalServiceUtil.getGroup(
+				companyId, GroupConstants.CMS);
 		}
 
 		return cmsGroup;
