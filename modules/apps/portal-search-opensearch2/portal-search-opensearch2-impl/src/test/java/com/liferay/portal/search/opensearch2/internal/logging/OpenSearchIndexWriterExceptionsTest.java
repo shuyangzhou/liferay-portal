@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -50,6 +51,13 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 	@ClassRule
 	public static OpenSearchTestRule openSearchTestRule =
 		OpenSearchTestRule.INSTANCE;
+
+	@After
+	public void tearDownOpenSearchIndexWriterExceptionsTest()
+		throws SearchException {
+
+		getIndexWriter().deleteDocument(createSearchContext(), _UID);
+	}
 
 	@Test
 	public void testAddDocument() throws SearchException {
