@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.JAXRSWhiteboardTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -121,6 +122,8 @@ public abstract class BaseAccountResourceTestCase {
 	public static void setUpClass() throws Exception {
 		_format = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+		JAXRSWhiteboardTestUtil.ensureReady();
 	}
 
 	@Before
@@ -1370,7 +1373,8 @@ public abstract class BaseAccountResourceTestCase {
 			accountGroupId, randomAccount());
 
 		page = accountResource.getAccountGroupAccountsPage(
-			accountGroupId, null, null, Pagination.of(1, 10), null);
+			accountGroupId, null, null, Pagination.of(1, (int)totalCount + 2),
+			null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -1786,7 +1790,7 @@ public abstract class BaseAccountResourceTestCase {
 		page =
 			accountResource.getAccountGroupByExternalReferenceCodeAccountsPage(
 				accountGroupExternalReferenceCode, null, null,
-				Pagination.of(1, 10), null);
+				Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -2200,7 +2204,7 @@ public abstract class BaseAccountResourceTestCase {
 		Account account2 = testGetAccountsPage_addAccount(randomAccount());
 
 		page = accountResource.getAccountsPage(
-			null, null, Pagination.of(1, 10), null);
+			null, null, Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -2607,7 +2611,8 @@ public abstract class BaseAccountResourceTestCase {
 			organizationId, randomAccount());
 
 		page = accountResource.getOrganizationAccountsPage(
-			organizationId, null, null, Pagination.of(1, 10), null);
+			organizationId, null, null, Pagination.of(1, (int)totalCount + 2),
+			null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -3021,7 +3026,8 @@ public abstract class BaseAccountResourceTestCase {
 
 		page =
 			accountResource.getOrganizationByExternalReferenceCodeAccountsPage(
-				externalReferenceCode, null, null, Pagination.of(1, 10), null);
+				externalReferenceCode, null, null,
+				Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -3473,7 +3479,7 @@ public abstract class BaseAccountResourceTestCase {
 			accountResource.
 				getOrganizationByExternalReferenceCodeOrganizationExternalReferenceCodeAccountsByExternalReferenceCodePage(
 					organizationExternalReferenceCode, null, null,
-					Pagination.of(1, 10), null);
+					Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -6544,4 +6550,4 @@ public abstract class BaseAccountResourceTestCase {
 		_vulcanCRUDItemDelegateBuilderRegistry;
 
 }
-// LIFERAY-REST-BUILDER-HASH:-618723767
+// LIFERAY-REST-BUILDER-HASH:1263881662

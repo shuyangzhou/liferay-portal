@@ -45,6 +45,7 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.JAXRSWhiteboardTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
@@ -126,6 +127,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 	public static void setUpClass() throws Exception {
 		_format = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+		JAXRSWhiteboardTestUtil.ensureReady();
 	}
 
 	@Before
@@ -1047,7 +1050,7 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			messageBoardMessageResource.
 				getMessageBoardMessageMessageBoardMessagesPage(
 					parentMessageBoardMessageId, null, null, null, null,
-					Pagination.of(1, 10), null);
+					Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -1564,7 +1567,7 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			messageBoardMessageResource.
 				getMessageBoardThreadMessageBoardMessagesPage(
 					messageBoardThreadId, null, null, null,
-					Pagination.of(1, 10), null);
+					Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -2493,7 +2496,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 				siteId, randomMessageBoardMessage());
 
 		page = messageBoardMessageResource.getSiteMessageBoardMessagesPage(
-			siteId, null, null, null, null, Pagination.of(1, 10), null);
+			siteId, null, null, null, null,
+			Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -2966,7 +2970,7 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 		page =
 			messageBoardMessageResource.
 				getSiteUserMessageBoardMessagesActivityPage(
-					siteId, userId, Pagination.of(1, 10));
+					siteId, userId, Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -5730,4 +5734,4 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 		_vulcanCRUDItemDelegateBuilderRegistry;
 
 }
-// LIFERAY-REST-BUILDER-HASH:-778766806
+// LIFERAY-REST-BUILDER-HASH:-167585309

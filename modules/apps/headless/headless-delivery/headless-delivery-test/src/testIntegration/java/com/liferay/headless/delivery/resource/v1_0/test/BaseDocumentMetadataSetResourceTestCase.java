@@ -45,6 +45,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.JAXRSWhiteboardTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
@@ -125,6 +126,8 @@ public abstract class BaseDocumentMetadataSetResourceTestCase {
 	public static void setUpClass() throws Exception {
 		_format = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+		JAXRSWhiteboardTestUtil.ensureReady();
 	}
 
 	@Before
@@ -962,7 +965,7 @@ public abstract class BaseDocumentMetadataSetResourceTestCase {
 
 		page =
 			documentMetadataSetResource.getAssetLibraryDocumentMetadataSetsPage(
-				assetLibraryId, Pagination.of(1, 10));
+				assetLibraryId, Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -1752,7 +1755,7 @@ public abstract class BaseDocumentMetadataSetResourceTestCase {
 				siteId, randomDocumentMetadataSet());
 
 		page = documentMetadataSetResource.getSiteDocumentMetadataSetsPage(
-			siteId, Pagination.of(1, 10));
+			siteId, Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -3809,4 +3812,4 @@ public abstract class BaseDocumentMetadataSetResourceTestCase {
 		_vulcanCRUDItemDelegateBuilderRegistry;
 
 }
-// LIFERAY-REST-BUILDER-HASH:1050077563
+// LIFERAY-REST-BUILDER-HASH:1376886082

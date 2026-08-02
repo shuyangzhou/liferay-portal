@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.JAXRSWhiteboardTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -115,6 +116,8 @@ public abstract class BaseRelatedProductResourceTestCase {
 	public static void setUpClass() throws Exception {
 		_format = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+		JAXRSWhiteboardTestUtil.ensureReady();
 	}
 
 	@Before
@@ -421,7 +424,8 @@ public abstract class BaseRelatedProductResourceTestCase {
 		page =
 			relatedProductResource.
 				getProductByExternalReferenceCodeRelatedProductsPage(
-					externalReferenceCode, null, Pagination.of(1, 10));
+					externalReferenceCode, null,
+					Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -621,7 +625,7 @@ public abstract class BaseRelatedProductResourceTestCase {
 				id, randomRelatedProduct());
 
 		page = relatedProductResource.getProductIdRelatedProductsPage(
-			id, null, Pagination.of(1, 10));
+			id, null, Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -2013,4 +2017,4 @@ public abstract class BaseRelatedProductResourceTestCase {
 		_vulcanCRUDItemDelegateBuilderRegistry;
 
 }
-// LIFERAY-REST-BUILDER-HASH:388084191
+// LIFERAY-REST-BUILDER-HASH:79942154
