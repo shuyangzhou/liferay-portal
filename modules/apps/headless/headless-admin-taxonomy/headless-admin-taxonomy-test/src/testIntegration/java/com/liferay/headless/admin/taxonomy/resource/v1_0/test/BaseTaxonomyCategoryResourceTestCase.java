@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.JAXRSWhiteboardTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -104,6 +105,8 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 	public static void setUpClass() throws Exception {
 		_format = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+		JAXRSWhiteboardTestUtil.ensureReady();
 	}
 
 	@Before
@@ -959,7 +962,8 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 				assetLibraryId, randomTaxonomyCategory());
 
 		page = taxonomyCategoryResource.getAssetLibraryTaxonomyCategoriesPage(
-			assetLibraryId, null, null, null, Pagination.of(1, 10), null);
+			assetLibraryId, null, null, null,
+			Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -1719,7 +1723,8 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 				siteId, randomTaxonomyCategory());
 
 		page = taxonomyCategoryResource.getSiteTaxonomyCategoriesPage(
-			siteId, null, null, null, Pagination.of(1, 10), null);
+			siteId, null, null, null, Pagination.of(1, (int)totalCount + 2),
+			null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -2413,7 +2418,7 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 				randomTaxonomyCategory());
 
 		page = taxonomyCategoryResource.getTaxonomyCategoriesRankedPage(
-			null, Pagination.of(1, 10));
+			null, Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -2876,7 +2881,7 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 		page =
 			taxonomyCategoryResource.getTaxonomyCategoryTaxonomyCategoriesPage(
 				parentTaxonomyCategoryId, null, null, null,
-				Pagination.of(1, 10), null);
+				Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -3466,7 +3471,7 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 			taxonomyCategoryResource.
 				getTaxonomyVocabularyTaxonomyCategoriesPage(
 					taxonomyVocabularyId, null, null, null, null,
-					Pagination.of(1, 10), null);
+					Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -7078,4 +7083,4 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 			TaxonomyCategoryResource _taxonomyCategoryResource;
 
 }
-// LIFERAY-REST-BUILDER-HASH:-267051721
+// LIFERAY-REST-BUILDER-HASH:-1630058949

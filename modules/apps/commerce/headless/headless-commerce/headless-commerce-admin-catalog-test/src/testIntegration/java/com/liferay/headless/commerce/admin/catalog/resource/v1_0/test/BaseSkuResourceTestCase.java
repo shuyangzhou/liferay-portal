@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.JAXRSWhiteboardTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -118,6 +119,8 @@ public abstract class BaseSkuResourceTestCase {
 	public static void setUpClass() throws Exception {
 		_format = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+		JAXRSWhiteboardTestUtil.ensureReady();
 	}
 
 	@Before
@@ -545,7 +548,7 @@ public abstract class BaseSkuResourceTestCase {
 			externalReferenceCode, randomSku());
 
 		page = skuResource.getProductByExternalReferenceCodeSkusPage(
-			externalReferenceCode, Pagination.of(1, 10));
+			externalReferenceCode, Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -709,7 +712,8 @@ public abstract class BaseSkuResourceTestCase {
 
 		Sku sku2 = testGetProductIdSkusPage_addSku(id, randomSku());
 
-		page = skuResource.getProductIdSkusPage(id, Pagination.of(1, 10));
+		page = skuResource.getProductIdSkusPage(
+			id, Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -1253,7 +1257,8 @@ public abstract class BaseSkuResourceTestCase {
 
 		Sku sku2 = testGetSkusPage_addSku(randomSku());
 
-		page = skuResource.getSkusPage(null, null, Pagination.of(1, 10), null);
+		page = skuResource.getSkusPage(
+			null, null, Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -1556,7 +1561,7 @@ public abstract class BaseSkuResourceTestCase {
 		Sku sku2 = testGetUnitOfMeasureSkusPage_addSku(randomSku());
 
 		page = skuResource.getUnitOfMeasureSkusPage(
-			null, null, Pagination.of(1, 10), null);
+			null, null, Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -3901,4 +3906,4 @@ public abstract class BaseSkuResourceTestCase {
 		_vulcanCRUDItemDelegateBuilderRegistry;
 
 }
-// LIFERAY-REST-BUILDER-HASH:1592372145
+// LIFERAY-REST-BUILDER-HASH:1604406676

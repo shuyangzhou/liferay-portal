@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.JAXRSWhiteboardTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -86,6 +87,8 @@ public abstract class BaseProductOptionResourceTestCase {
 	public static void setUpClass() throws Exception {
 		_format = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+		JAXRSWhiteboardTestUtil.ensureReady();
 	}
 
 	@Before
@@ -251,7 +254,7 @@ public abstract class BaseProductOptionResourceTestCase {
 			productOptionResource.
 				getChannelByExternalReferenceCodeChannelExternalReferenceCodeProductByExternalReferenceCodeProductExternalReferenceCodeProductOptionsPage(
 					channelExternalReferenceCode, productExternalReferenceCode,
-					Pagination.of(1, 10));
+					Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -481,7 +484,7 @@ public abstract class BaseProductOptionResourceTestCase {
 				channelId, productId, randomProductOption());
 
 		page = productOptionResource.getChannelProductProductOptionsPage(
-			channelId, productId, Pagination.of(1, 10));
+			channelId, productId, Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -1730,4 +1733,4 @@ public abstract class BaseProductOptionResourceTestCase {
 		ProductOptionResource _productOptionResource;
 
 }
-// LIFERAY-REST-BUILDER-HASH:-317905841
+// LIFERAY-REST-BUILDER-HASH:1838767012

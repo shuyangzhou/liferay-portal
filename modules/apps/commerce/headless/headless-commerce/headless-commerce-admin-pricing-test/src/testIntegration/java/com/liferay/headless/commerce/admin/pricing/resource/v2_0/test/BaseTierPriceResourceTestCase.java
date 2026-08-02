@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.JAXRSWhiteboardTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -116,6 +117,8 @@ public abstract class BaseTierPriceResourceTestCase {
 	public static void setUpClass() throws Exception {
 		_format = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+		JAXRSWhiteboardTestUtil.ensureReady();
 	}
 
 	@Before
@@ -571,7 +574,8 @@ public abstract class BaseTierPriceResourceTestCase {
 		page =
 			tierPriceResource.
 				getPriceEntryByExternalReferenceCodeTierPricesPage(
-					externalReferenceCode, Pagination.of(1, 10));
+					externalReferenceCode,
+					Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -756,7 +760,7 @@ public abstract class BaseTierPriceResourceTestCase {
 			priceEntryId, randomTierPrice());
 
 		page = tierPriceResource.getPriceEntryIdTierPricesPage(
-			priceEntryId, Pagination.of(1, 10));
+			priceEntryId, Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -2781,4 +2785,4 @@ public abstract class BaseTierPriceResourceTestCase {
 		_vulcanCRUDItemDelegateBuilderRegistry;
 
 }
-// LIFERAY-REST-BUILDER-HASH:43885944
+// LIFERAY-REST-BUILDER-HASH:-555411077

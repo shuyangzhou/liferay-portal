@@ -45,6 +45,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.JAXRSWhiteboardTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
@@ -123,6 +124,8 @@ public abstract class BaseImportProcessResourceTestCase {
 	public static void setUpClass() throws Exception {
 		_format = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+		JAXRSWhiteboardTestUtil.ensureReady();
 	}
 
 	@Before
@@ -367,7 +370,7 @@ public abstract class BaseImportProcessResourceTestCase {
 
 		page = importProcessResource.getAssetLibraryImportProcessesPage(
 			assetLibraryExternalReferenceCode, null, null, null,
-			Pagination.of(1, 10), null);
+			Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -749,7 +752,7 @@ public abstract class BaseImportProcessResourceTestCase {
 
 		page = importProcessResource.getAssetLibraryPortletImportProcessesPage(
 			assetLibraryExternalReferenceCode, portletId, null, null, null,
-			Pagination.of(1, 10), null);
+			Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -1317,7 +1320,7 @@ public abstract class BaseImportProcessResourceTestCase {
 			testGetImportProcessesPage_addImportProcess(randomImportProcess());
 
 		page = importProcessResource.getImportProcessesPage(
-			null, null, null, Pagination.of(1, 10), null);
+			null, null, null, Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -1627,8 +1630,8 @@ public abstract class BaseImportProcessResourceTestCase {
 				siteExternalReferenceCode, randomImportProcess());
 
 		page = importProcessResource.getSiteImportProcessesPage(
-			siteExternalReferenceCode, null, null, null, Pagination.of(1, 10),
-			null);
+			siteExternalReferenceCode, null, null, null,
+			Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -1996,7 +1999,7 @@ public abstract class BaseImportProcessResourceTestCase {
 
 		page = importProcessResource.getSitePortletImportProcessesPage(
 			siteExternalReferenceCode, portletId, null, null, null,
-			Pagination.of(1, 10), null);
+			Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -3537,4 +3540,4 @@ public abstract class BaseImportProcessResourceTestCase {
 		_vulcanCRUDItemDelegateBuilderRegistry;
 
 }
-// LIFERAY-REST-BUILDER-HASH:1167690064
+// LIFERAY-REST-BUILDER-HASH:-698764076

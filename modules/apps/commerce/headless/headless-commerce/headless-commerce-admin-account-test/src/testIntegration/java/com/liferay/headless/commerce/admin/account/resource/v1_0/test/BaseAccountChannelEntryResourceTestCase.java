@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.JAXRSWhiteboardTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -88,6 +89,8 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 	public static void setUpClass() throws Exception {
 		_format = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+		JAXRSWhiteboardTestUtil.ensureReady();
 	}
 
 	@Before
@@ -1253,7 +1256,8 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 		page =
 			accountChannelEntryResource.
 				getAccountByExternalReferenceCodeAccountChannelBillingAddressesPage(
-					externalReferenceCode, Pagination.of(1, 10));
+					externalReferenceCode,
+					Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -1469,7 +1473,8 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 		page =
 			accountChannelEntryResource.
 				getAccountByExternalReferenceCodeAccountChannelCurrenciesPage(
-					externalReferenceCode, Pagination.of(1, 10));
+					externalReferenceCode,
+					Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -1685,7 +1690,8 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 		page =
 			accountChannelEntryResource.
 				getAccountByExternalReferenceCodeAccountChannelDeliveryTermsPage(
-					externalReferenceCode, Pagination.of(1, 10));
+					externalReferenceCode,
+					Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -1901,7 +1907,8 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 		page =
 			accountChannelEntryResource.
 				getAccountByExternalReferenceCodeAccountChannelDiscountsPage(
-					externalReferenceCode, Pagination.of(1, 10));
+					externalReferenceCode,
+					Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -2117,7 +2124,8 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 		page =
 			accountChannelEntryResource.
 				getAccountByExternalReferenceCodeAccountChannelPaymentMethodsPage(
-					externalReferenceCode, Pagination.of(1, 10));
+					externalReferenceCode,
+					Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -2333,7 +2341,8 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 		page =
 			accountChannelEntryResource.
 				getAccountByExternalReferenceCodeAccountChannelPaymentTermsPage(
-					externalReferenceCode, Pagination.of(1, 10));
+					externalReferenceCode,
+					Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -2549,7 +2558,8 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 		page =
 			accountChannelEntryResource.
 				getAccountByExternalReferenceCodeAccountChannelPriceListsPage(
-					externalReferenceCode, Pagination.of(1, 10));
+					externalReferenceCode,
+					Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -2765,7 +2775,8 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 		page =
 			accountChannelEntryResource.
 				getAccountByExternalReferenceCodeAccountChannelShippingAddressesPage(
-					externalReferenceCode, Pagination.of(1, 10));
+					externalReferenceCode,
+					Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -2981,7 +2992,8 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 		page =
 			accountChannelEntryResource.
 				getAccountByExternalReferenceCodeAccountChannelUsersPage(
-					externalReferenceCode, Pagination.of(1, 10));
+					externalReferenceCode,
+					Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -4275,7 +4287,7 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 		page =
 			accountChannelEntryResource.
 				getAccountIdAccountChannelBillingAddressesPage(
-					id, Pagination.of(1, 10));
+					id, Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -4481,7 +4493,7 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 		page =
 			accountChannelEntryResource.
 				getAccountIdAccountChannelCurrenciesPage(
-					id, Pagination.of(1, 10));
+					id, Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -4687,7 +4699,7 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 		page =
 			accountChannelEntryResource.
 				getAccountIdAccountChannelDeliveryTermsPage(
-					id, Pagination.of(1, 10));
+					id, Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -4889,7 +4901,7 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 
 		page =
 			accountChannelEntryResource.getAccountIdAccountChannelDiscountsPage(
-				id, Pagination.of(1, 10));
+				id, Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -5093,7 +5105,7 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 		page =
 			accountChannelEntryResource.
 				getAccountIdAccountChannelPaymentMethodsPage(
-					id, Pagination.of(1, 10));
+					id, Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -5299,7 +5311,7 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 		page =
 			accountChannelEntryResource.
 				getAccountIdAccountChannelPaymentTermsPage(
-					id, Pagination.of(1, 10));
+					id, Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -5505,7 +5517,7 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 		page =
 			accountChannelEntryResource.
 				getAccountIdAccountChannelPriceListsPage(
-					id, Pagination.of(1, 10));
+					id, Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -5711,7 +5723,7 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 		page =
 			accountChannelEntryResource.
 				getAccountIdAccountChannelShippingAddressesPage(
-					id, Pagination.of(1, 10));
+					id, Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -5911,7 +5923,7 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 				id, randomAccountChannelEntry());
 
 		page = accountChannelEntryResource.getAccountIdAccountChannelUsersPage(
-			id, Pagination.of(1, 10));
+			id, Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -7817,4 +7829,4 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 		AccountChannelEntryResource _accountChannelEntryResource;
 
 }
-// LIFERAY-REST-BUILDER-HASH:-1808801039
+// LIFERAY-REST-BUILDER-HASH:508384582

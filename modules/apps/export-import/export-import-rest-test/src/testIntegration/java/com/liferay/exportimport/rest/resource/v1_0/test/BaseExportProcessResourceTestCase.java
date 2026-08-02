@@ -45,6 +45,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.JAXRSWhiteboardTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
@@ -123,6 +124,8 @@ public abstract class BaseExportProcessResourceTestCase {
 	public static void setUpClass() throws Exception {
 		_format = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+		JAXRSWhiteboardTestUtil.ensureReady();
 	}
 
 	@Before
@@ -367,7 +370,7 @@ public abstract class BaseExportProcessResourceTestCase {
 
 		page = exportProcessResource.getAssetLibraryExportProcessesPage(
 			assetLibraryExternalReferenceCode, null, null, null,
-			Pagination.of(1, 10), null);
+			Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -749,7 +752,7 @@ public abstract class BaseExportProcessResourceTestCase {
 
 		page = exportProcessResource.getAssetLibraryPortletExportProcessesPage(
 			assetLibraryExternalReferenceCode, portletId, null, null, null,
-			Pagination.of(1, 10), null);
+			Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -1322,7 +1325,7 @@ public abstract class BaseExportProcessResourceTestCase {
 			testGetExportProcessesPage_addExportProcess(randomExportProcess());
 
 		page = exportProcessResource.getExportProcessesPage(
-			null, null, null, Pagination.of(1, 10), null);
+			null, null, null, Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -1632,8 +1635,8 @@ public abstract class BaseExportProcessResourceTestCase {
 				siteExternalReferenceCode, randomExportProcess());
 
 		page = exportProcessResource.getSiteExportProcessesPage(
-			siteExternalReferenceCode, null, null, null, Pagination.of(1, 10),
-			null);
+			siteExternalReferenceCode, null, null, null,
+			Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -2001,7 +2004,7 @@ public abstract class BaseExportProcessResourceTestCase {
 
 		page = exportProcessResource.getSitePortletExportProcessesPage(
 			siteExternalReferenceCode, portletId, null, null, null,
-			Pagination.of(1, 10), null);
+			Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -3561,4 +3564,4 @@ public abstract class BaseExportProcessResourceTestCase {
 		_vulcanCRUDItemDelegateBuilderRegistry;
 
 }
-// LIFERAY-REST-BUILDER-HASH:885777814
+// LIFERAY-REST-BUILDER-HASH:1372187482

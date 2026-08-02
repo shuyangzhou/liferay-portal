@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.JAXRSWhiteboardTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -92,6 +93,8 @@ public abstract class BaseAccountRoleResourceTestCase {
 	public static void setUpClass() throws Exception {
 		_format = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+		JAXRSWhiteboardTestUtil.ensureReady();
 	}
 
 	@Before
@@ -883,8 +886,8 @@ public abstract class BaseAccountRoleResourceTestCase {
 		page =
 			accountRoleResource.
 				getAccountAccountRolesByExternalReferenceCodePage(
-					externalReferenceCode, null, null, Pagination.of(1, 10),
-					null);
+					externalReferenceCode, null, null,
+					Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -1445,7 +1448,7 @@ public abstract class BaseAccountRoleResourceTestCase {
 				accountId, randomAccountRole());
 
 		page = accountRoleResource.getAccountAccountRolesPage(
-			accountId, null, null, Pagination.of(1, 10), null);
+			accountId, null, null, Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -3564,4 +3567,4 @@ public abstract class BaseAccountRoleResourceTestCase {
 		_accountRoleResource;
 
 }
-// LIFERAY-REST-BUILDER-HASH:-1860062267
+// LIFERAY-REST-BUILDER-HASH:272884620

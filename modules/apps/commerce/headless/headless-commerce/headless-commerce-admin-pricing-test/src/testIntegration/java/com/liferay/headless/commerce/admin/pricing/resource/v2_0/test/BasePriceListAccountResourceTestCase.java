@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.JAXRSWhiteboardTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -92,6 +93,8 @@ public abstract class BasePriceListAccountResourceTestCase {
 	public static void setUpClass() throws Exception {
 		_format = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+		JAXRSWhiteboardTestUtil.ensureReady();
 	}
 
 	@Before
@@ -363,7 +366,8 @@ public abstract class BasePriceListAccountResourceTestCase {
 		page =
 			priceListAccountResource.
 				getPriceListByExternalReferenceCodePriceListAccountsPage(
-					externalReferenceCode, Pagination.of(1, 10));
+					externalReferenceCode,
+					Pagination.of(1, (int)totalCount + 2));
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -568,7 +572,7 @@ public abstract class BasePriceListAccountResourceTestCase {
 				id, randomPriceListAccount());
 
 		page = priceListAccountResource.getPriceListIdPriceListAccountsPage(
-			id, null, null, Pagination.of(1, 10), null);
+			id, null, null, Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -1999,4 +2003,4 @@ public abstract class BasePriceListAccountResourceTestCase {
 		PriceListAccountResource _priceListAccountResource;
 
 }
-// LIFERAY-REST-BUILDER-HASH:5549615
+// LIFERAY-REST-BUILDER-HASH:1048201324

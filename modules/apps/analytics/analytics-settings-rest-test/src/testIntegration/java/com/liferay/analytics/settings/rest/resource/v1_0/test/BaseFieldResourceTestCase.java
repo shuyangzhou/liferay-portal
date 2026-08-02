@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.JAXRSWhiteboardTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -88,6 +89,8 @@ public abstract class BaseFieldResourceTestCase {
 	public static void setUpClass() throws Exception {
 		_format = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+		JAXRSWhiteboardTestUtil.ensureReady();
 	}
 
 	@Before
@@ -200,7 +203,7 @@ public abstract class BaseFieldResourceTestCase {
 		Field field2 = testGetFieldsAccountsPage_addField(randomField());
 
 		page = fieldResource.getFieldsAccountsPage(
-			null, Pagination.of(1, 10), null);
+			null, Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -436,7 +439,7 @@ public abstract class BaseFieldResourceTestCase {
 		Field field2 = testGetFieldsOrdersPage_addField(randomField());
 
 		page = fieldResource.getFieldsOrdersPage(
-			null, Pagination.of(1, 10), null);
+			null, Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -671,7 +674,7 @@ public abstract class BaseFieldResourceTestCase {
 		Field field2 = testGetFieldsPeoplePage_addField(randomField());
 
 		page = fieldResource.getFieldsPeoplePage(
-			null, Pagination.of(1, 10), null);
+			null, Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -906,7 +909,7 @@ public abstract class BaseFieldResourceTestCase {
 		Field field2 = testGetFieldsProductsPage_addField(randomField());
 
 		page = fieldResource.getFieldsProductsPage(
-			null, Pagination.of(1, 10), null);
+			null, Pagination.of(1, (int)totalCount + 2), null);
 
 		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
@@ -2012,4 +2015,4 @@ public abstract class BaseFieldResourceTestCase {
 		_fieldResource;
 
 }
-// LIFERAY-REST-BUILDER-HASH:-1690384034
+// LIFERAY-REST-BUILDER-HASH:-2101729229
