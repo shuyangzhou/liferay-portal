@@ -208,8 +208,12 @@ public class CMSDefaultPermissionUtil {
 			}
 		}
 
-		Group group = GroupLocalServiceUtil.getGroup(
+		Group group = GroupLocalServiceUtil.fetchGroup(
 			objectEntryFolder.getGroupId());
+
+		if (group == null) {
+			return null;
+		}
 
 		return getJSONObject(
 			group.getCompanyId(), group.getCreatorUserId(),
