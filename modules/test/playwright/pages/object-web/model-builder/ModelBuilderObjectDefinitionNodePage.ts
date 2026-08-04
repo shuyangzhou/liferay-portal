@@ -123,7 +123,7 @@ export class ModelBuilderObjectDefinitionNodePage {
 		await objectDefinitionNodes
 			.filter({hasText: objectDefinitionName})
 			.getByRole('button', {name: 'Show All Fields'})
-			.click();
+			.dispatchEvent('click');
 	}
 
 	async createObjectField({
