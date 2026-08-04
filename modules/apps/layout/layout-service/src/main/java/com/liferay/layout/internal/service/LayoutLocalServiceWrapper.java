@@ -113,9 +113,54 @@ import org.osgi.service.component.annotations.Reference;
 public class LayoutLocalServiceWrapper
 	extends com.liferay.portal.kernel.service.LayoutLocalServiceWrapper {
 
+	@org.osgi.service.component.annotations.Activate
+	protected void probeActivate() {
+		System.out.println(
+			"LLSW-DIAG WRAPPER-ACTIVATE inst=" + System.identityHashCode(this) +
+				" t=" + System.currentTimeMillis() + " thread=" +
+					Thread.currentThread().getName());
+		new Throwable("LLSW-DIAG-WRAPPER-ACTIVATE-STACK").printStackTrace(
+			System.out);
+	}
+
+	@org.osgi.service.component.annotations.Deactivate
+	protected void probeDeactivate() {
+		System.out.println(
+			"LLSW-DIAG WRAPPER-DEACTIVATE inst=" +
+				System.identityHashCode(this) + " t=" +
+					System.currentTimeMillis() + " thread=" +
+						Thread.currentThread().getName());
+		new Throwable("LLSW-DIAG-WRAPPER-DEACTIVATE-STACK").printStackTrace(
+			System.out);
+	}
+
+	@Override
+	public void setWrappedService(
+		com.liferay.portal.kernel.service.LayoutLocalService
+			layoutLocalService) {
+
+		System.out.println(
+			"LLSW-DIAG WRAPPER-SETWRAPPED inst=" +
+				System.identityHashCode(this) + " wrapped=" +
+					((layoutLocalService == null) ? "NULL" :
+						layoutLocalService.getClass().getName() + "#" +
+							System.identityHashCode(layoutLocalService)) + " t=" +
+								System.currentTimeMillis() + " thread=" +
+									Thread.currentThread().getName());
+		new Throwable("LLSW-DIAG-WRAPPER-SETWRAPPED-STACK").printStackTrace(
+			System.out);
+
+		super.setWrappedService(layoutLocalService);
+	}
+
 	@Override
 	public Layout copyLayoutContent(Layout sourceLayout, Layout targetLayout)
 		throws Exception {
+
+		System.out.println(
+			"LLSW-DIAG WRAPPER-COPY inst=" + System.identityHashCode(this) +
+				" t=" + System.currentTimeMillis() + " thread=" +
+					Thread.currentThread().getName());
 
 		List<SegmentsExperience> segmentsExperiences =
 			_segmentsExperienceLocalService.getSegmentsExperiences(

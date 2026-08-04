@@ -33,6 +33,9 @@ public class ServiceBag<V> {
 		_bundleContext = bundleContext;
 		_serviceReference = serviceReference;
 
+		_diagLLS = serviceTypeClass.getName().equals(
+			"com.liferay.portal.kernel.service.LayoutLocalService");
+
 		Object previousService = serviceWrapper.getWrappedService();
 
 		if (!(previousService instanceof ServiceWrapper)) {
@@ -71,11 +74,50 @@ public class ServiceBag<V> {
 		_aopInvocationHandler.setTarget(nextTarget);
 
 		_serviceWrapper = (ServiceWrapper<?>)nextTarget;
+
+		if (_diagLLS) {
+			System.out.println(
+				"LLSW-DIAG BAG-APPLY handler=" +
+					System.identityHashCode(aopInvocationHandler) +
+						" serviceWrapper=" +
+							serviceWrapper.getClass().getName() + "#" +
+								System.identityHashCode(serviceWrapper) +
+									" nextTarget=" +
+										nextTarget.getClass().getName() + "#" +
+											System.identityHashCode(nextTarget) +
+												" t=" +
+													System.currentTimeMillis() +
+														" thread=" +
+															Thread.currentThread(
+															).getName());
+			new Throwable("LLSW-DIAG-BAG-APPLY-STACK").printStackTrace(
+				System.out);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T> void replace() {
 		Object currentService = _aopInvocationHandler.getTarget();
+
+		if (_diagLLS) {
+			System.out.println(
+				"LLSW-DIAG BAG-REPLACE handler=" +
+					System.identityHashCode(_aopInvocationHandler) +
+						" serviceWrapper=" +
+							_serviceWrapper.getClass().getName() + "#" +
+								System.identityHashCode(_serviceWrapper) +
+									" currentTarget=" +
+										((currentService == null) ? "null" :
+											currentService.getClass().getName() +
+												"#" + System.identityHashCode(
+													currentService)) + " t=" +
+														System.currentTimeMillis() +
+															" thread=" +
+																Thread.currentThread(
+																).getName());
+			new Throwable("LLSW-DIAG-BAG-REPLACE-STACK").printStackTrace(
+				System.out);
+		}
 
 		ServiceWrapper<T> previousService = null;
 
@@ -193,6 +235,7 @@ public class ServiceBag<V> {
 
 	private final AopInvocationHandler _aopInvocationHandler;
 	private final BundleContext _bundleContext;
+	private final boolean _diagLLS;
 	private final ServiceReference<?> _serviceReference;
 	private final ServiceWrapper<?> _serviceWrapper;
 
