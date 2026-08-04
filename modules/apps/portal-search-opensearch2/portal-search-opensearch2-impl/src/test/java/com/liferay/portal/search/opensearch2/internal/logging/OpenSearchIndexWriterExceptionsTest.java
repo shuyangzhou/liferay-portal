@@ -61,19 +61,15 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 			Assert.fail();
 		}
 		catch (OpenSearchException openSearchException) {
-			ErrorCause errorCause = openSearchException.error();
-
-			Assert.assertEquals("mapper_parsing_exception", errorCause.type());
-
 			String expectedMessage =
 				"failed to parse field [expirationDate] of type [date] in " +
 					"document with id";
 
-			String message = errorCause.reason();
-
-			Assert.assertTrue(
-				message + " does not contain " + expectedMessage,
-				message.contains(expectedMessage));
+			_assertOpenSearchException(
+				message -> Assert.assertTrue(
+					message + " does not contain " + expectedMessage,
+					message.contains(expectedMessage)),
+				openSearchException, "mapper_parsing_exception");
 		}
 	}
 
@@ -126,10 +122,9 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 			Assert.fail();
 		}
 		catch (OpenSearchException openSearchException) {
-			ErrorCause errorCause = openSearchException.error();
-
-			Assert.assertEquals("index_not_found_exception", errorCause.type());
-			Assert.assertEquals("no such index [1]", errorCause.reason());
+			_assertOpenSearchException(
+				message -> Assert.assertEquals("no such index [1]", message),
+				openSearchException, "index_not_found_exception");
 		}
 	}
 
@@ -204,10 +199,9 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 			Assert.fail();
 		}
 		catch (OpenSearchException openSearchException) {
-			ErrorCause errorCause = openSearchException.error();
-
-			Assert.assertEquals("index_not_found_exception", errorCause.type());
-			Assert.assertEquals("no such index [1]", errorCause.reason());
+			_assertOpenSearchException(
+				message -> Assert.assertEquals("no such index [1]", message),
+				openSearchException, "index_not_found_exception");
 		}
 	}
 
@@ -342,6 +336,16 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 
 		Assert.assertEquals(logLevel, logEntry.getPriority());
 		consumer.accept(logEntry.getMessage());
+	}
+
+	private void _assertOpenSearchException(
+		Consumer<String> consumer, OpenSearchException openSearchException,
+		String expectedType) {
+
+		ErrorCause errorCause = openSearchException.error();
+
+		Assert.assertEquals(expectedType, errorCause.type());
+		consumer.accept(errorCause.reason());
 	}
 
 }
