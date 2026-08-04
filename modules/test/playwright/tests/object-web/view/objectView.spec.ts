@@ -1783,7 +1783,7 @@ test(
 		yesterday.setDate(yesterday.getDate() - 1);
 
 		const formatDate = (d: Date) =>
-			`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+			`${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}/${d.getFullYear()}`;
 
 		await page
 			.getByRole('textbox', {name: 'From'})
@@ -1794,7 +1794,7 @@ test(
 		await page.getByRole('button', {name: 'Add Filter'}).click();
 
 		const formatDisplayDate = (d: Date) =>
-			`${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+			`${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}/${d.getFullYear()}`;
 
 		await expect(page.getByText('1 Result Found for:')).toBeVisible();
 
@@ -1891,7 +1891,7 @@ test(
 		yesterday.setDate(yesterday.getDate() - 1);
 
 		const formatDate = (d: Date) =>
-			`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+			`${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}/${d.getFullYear()}`;
 
 		await page
 			.getByRole('textbox', {name: 'From'})
@@ -1902,7 +1902,7 @@ test(
 		await page.getByRole('button', {name: 'Add Filter'}).click();
 
 		const formatDisplayDate = (d: Date) =>
-			`${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+			`${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}/${d.getFullYear()}`;
 
 		await expect(page.getByText('1 Result Found for:')).toBeVisible();
 
