@@ -2855,7 +2855,7 @@ test.describe('Manage object fields default value properties', () => {
 				await modelBuilderDiagramPage.objectDefinitionNodes
 					.filter({hasText: objectName})
 					.getByText('Boolean', {exact: true})
-					.click();
+					.dispatchEvent('click');
 
 				await modelBuilderRightSidebarPage.setDefaultValue(
 					'Boolean',
@@ -2888,7 +2888,7 @@ test.describe('Manage object fields default value properties', () => {
 				await modelBuilderDiagramPage.objectDefinitionNodes
 					.filter({hasText: objectName})
 					.getByText('Boolean', {exact: true})
-					.click();
+					.dispatchEvent('click');
 
 				await modelBuilderRightSidebarPage.setDefaultValue(
 					'Boolean',
@@ -2919,7 +2919,7 @@ test.describe('Manage object fields default value properties', () => {
 				await modelBuilderDiagramPage.objectDefinitionNodes
 					.filter({hasText: objectName})
 					.getByText('Boolean', {exact: true})
-					.click();
+					.dispatchEvent('click');
 
 				await modelBuilderRightSidebarPage.advancedTab.click();
 
