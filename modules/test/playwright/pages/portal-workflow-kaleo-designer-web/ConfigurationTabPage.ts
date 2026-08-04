@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {Locator, Page} from '@playwright/test';
+import {Locator, Page, expect} from '@playwright/test';
 
 import {waitForAlert} from '../../utils/waitForAlert';
 import {ProcessBuilderPage} from './ProcessBuilderPage';
@@ -31,8 +31,6 @@ export class ConfigurationTabPage {
 	}
 
 	private async clickAssetTypeEditButton(assetType: string) {
-		await this.page.waitForLoadState('networkidle');
-
 		const editButton = this.page
 			.getByRole('row')
 			.filter({
@@ -43,7 +41,31 @@ export class ConfigurationTabPage {
 			})
 			.getByRole('button', {name: 'Edit'});
 
-		await editButton.click();
+		// The asset type row can land on a later page of the configuration
+		// list and can take a moment to register after the object definition
+		// is created, so page through everything and retry until it shows.
+
+		await expect(async () => {
+			await this.page.waitForLoadState('networkidle');
+
+			const itemsPerPageButton = this.page.getByRole('combobox', {
+				name: 'Items per Page',
+			});
+
+			if (await itemsPerPageButton.isVisible()) {
+				await itemsPerPageButton.click();
+
+				await this.page
+					.getByRole('option', {exact: true, name: '60'})
+					.dispatchEvent('click');
+
+				await this.page.waitForLoadState('networkidle');
+			}
+
+			await expect(editButton).toBeVisible({timeout: 10000});
+		}).toPass({timeout: 60000});
+
+		await editButton.dispatchEvent('click');
 	}
 
 	private async clickAssetTypeSaveButton(
