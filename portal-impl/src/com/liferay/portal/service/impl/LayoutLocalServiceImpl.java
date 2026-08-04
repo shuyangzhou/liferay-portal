@@ -926,6 +926,16 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 	public Layout copyLayoutContent(Layout sourceLayout, Layout targetLayout)
 		throws Exception {
 
+		System.out.println(
+			"LLSW-DIAG STUB-HIT copyLayoutContent(Layout,Layout) t=" +
+				System.currentTimeMillis() + " thread=" +
+					Thread.currentThread().getName() + " this=" +
+						System.identityHashCode(this) + " sourcePlid=" +
+							((sourceLayout == null) ? -1 :
+								sourceLayout.getPlid()));
+
+		new Throwable("LLSW-DIAG-STUB-HIT-STACK").printStackTrace(System.out);
+
 		throw new UnsupportedOperationException();
 	}
 
@@ -934,6 +944,14 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			long sourceSegmentsExperienceId, Layout sourceLayout,
 			long targetSegmentsExperienceId, Layout targetLayout)
 		throws Exception {
+
+		System.out.println(
+			"LLSW-DIAG STUB-HIT copyLayoutContent(long,Layout,long,Layout) t=" +
+				System.currentTimeMillis() + " thread=" +
+					Thread.currentThread().getName() + " this=" +
+						System.identityHashCode(this));
+
+		new Throwable("LLSW-DIAG-STUB-HIT-STACK").printStackTrace(System.out);
 
 		throw new UnsupportedOperationException();
 	}

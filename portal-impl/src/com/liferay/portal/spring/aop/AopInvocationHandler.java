@@ -34,6 +34,17 @@ public class AopInvocationHandler implements InvocationHandler {
 	public Object invoke(Object proxy, Method method, Object[] arguments)
 		throws Throwable {
 
+		if (_diagLLS && "copyLayoutContent".equals(method.getName())) {
+			System.out.println(
+				"LLSW-DIAG AOPHANDLER-INVOKE-COPY handler=" +
+					System.identityHashCode(this) + " target=" +
+						((_target == null) ? "null" :
+							_target.getClass().getName() + "#" +
+								System.identityHashCode(_target)) + " t=" +
+									System.currentTimeMillis() + " thread=" +
+										Thread.currentThread().getName());
+		}
+
 		AopMethodInvocation aopMethodInvocation = _getAopMethodInvocation(
 			method);
 
@@ -41,6 +52,27 @@ public class AopInvocationHandler implements InvocationHandler {
 	}
 
 	public synchronized void setTarget(Object target) {
+		if (_diagLLS) {
+			System.out.println(
+				"LLSW-DIAG AOPHANDLER-SETTARGET handler=" +
+					System.identityHashCode(this) + " oldTarget=" +
+						((_target == null) ? "null" :
+							_target.getClass().getName() + "#" +
+								System.identityHashCode(_target)) +
+									" newTarget=" +
+										((target == null) ? "null" :
+											target.getClass().getName() + "#" +
+												System.identityHashCode(
+													target)) + " t=" +
+														System.currentTimeMillis() +
+															" thread=" +
+																Thread.currentThread(
+																).getName());
+			new Throwable(
+				"LLSW-DIAG-AOPHANDLER-SETTARGET-STACK").printStackTrace(
+					System.out);
+		}
+
 		_target = target;
 
 		_aopMethodInvocations.clear();
@@ -55,6 +87,22 @@ public class AopInvocationHandler implements InvocationHandler {
 
 		_transactionInterceptor = new TransactionInterceptor(
 			transactionExecutor);
+
+		_diagLLS =
+			target instanceof
+				com.liferay.portal.kernel.service.LayoutLocalService;
+
+		if (_diagLLS) {
+			System.out.println(
+				"LLSW-DIAG AOPHANDLER-NEW handler=" +
+					System.identityHashCode(this) + " target=" +
+						target.getClass().getName() + "#" +
+							System.identityHashCode(target) + " t=" +
+								System.currentTimeMillis() + " thread=" +
+									Thread.currentThread().getName());
+			new Throwable("LLSW-DIAG-AOPHANDLER-NEW-STACK").printStackTrace(
+				System.out);
+		}
 	}
 
 	protected synchronized void reset() {
@@ -144,6 +192,7 @@ public class AopInvocationHandler implements InvocationHandler {
 	private final Map<Method, AopMethodInvocation> _aopMethodInvocations =
 		new ConcurrentHashMap<>();
 	private ChainableMethodAdvice[] _chainableMethodAdvices;
+	private final boolean _diagLLS;
 	private volatile Object _target;
 	private final TransactionInterceptor _transactionInterceptor;
 
