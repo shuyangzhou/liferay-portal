@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {Locator, Page} from '@playwright/test';
+import {Locator, Page, expect} from '@playwright/test';
 
 import {waitForAlert} from '../../utils/waitForAlert';
 import {ProcessBuilderPage} from './ProcessBuilderPage';
@@ -33,6 +33,10 @@ export class ConfigurationTabPage {
 	private async clickAssetTypeEditButton(assetType: string) {
 		await this.page.waitForLoadState('networkidle');
 
+		// The table lists every workflow enabled asset type in the instance, so
+		// the wanted row is only on the first page while few of them exist.
+		// Filter by name so the lookup does not depend on that.
+
 		const editButton = this.page
 			.getByRole('row')
 			.filter({
@@ -42,6 +46,25 @@ export class ConfigurationTabPage {
 				}),
 			})
 			.getByRole('button', {name: 'Edit'});
+
+		// The table re-renders while it loads, which can clear the search input
+		// before it is submitted, so submit until the row is actually filtered in.
+
+		await expect(async () => {
+			const searchInput = this.page.getByPlaceholder('Search for');
+
+			await searchInput.waitFor({state: 'visible', timeout: 10000});
+
+			await searchInput.fill(assetType);
+
+			await searchInput.press('Enter');
+
+			await this.page.waitForLoadState('load');
+
+			await this.page.waitForLoadState('networkidle');
+
+			await expect(editButton).toBeVisible({timeout: 25000});
+		}).toPass({timeout: 90000});
 
 		await editButton.click();
 	}
