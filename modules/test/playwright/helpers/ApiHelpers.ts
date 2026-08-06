@@ -106,7 +106,22 @@ interface RequestOptions<T> {
 }
 
 async function getCSRFTokenHeader(page: Page) {
-	const authToken = await page.evaluate(() => Liferay.authToken);
+	let authToken: string;
+
+	try {
+		authToken = await page.evaluate(() => Liferay.authToken);
+	}
+	catch {
+
+		// A navigation racing this call destroys the execution context and
+		// kills the evaluation. The token is a global served on every portal
+		// page, including the navigation's destination, so settle the
+		// navigation and read the token there.
+
+		await page.waitForLoadState();
+
+		authToken = await page.evaluate(() => Liferay.authToken);
+	}
 
 	return {
 		'x-csrf-token': authToken,
