@@ -264,12 +264,32 @@ export class ViewObjectEntriesPage {
 		const [_, objectDefinitionClassNameSuffix] =
 			objectDefinitionClassName.split('#');
 
-		await this.page.goto(
-			`/${regionalCode}/group${siteUrl ?? '/guest'}${
-				PORTLET_URLS.objects
-			}_${objectDefinitionClassNameSuffix}`,
-			{waitUntil: 'networkidle'}
-		);
+		try {
+			await this.page.goto(
+				`/${regionalCode}/group${siteUrl ?? '/guest'}${
+					PORTLET_URLS.objects
+				}_${objectDefinitionClassNameSuffix}`,
+				{waitUntil: 'networkidle'}
+			);
+		}
+		catch (error) {
+
+			// A language prefixed address for the instance's default language
+			// canonicalizes to the same address without the prefix, and when
+			// that client side navigation races the pending one Playwright
+			// reports the navigation as interrupted. The page still lands on
+			// the requested portlet, so settle and continue.
+
+			if (
+				!String(error.message).includes(
+					'interrupted by another navigation'
+				)
+			) {
+				throw error;
+			}
+
+			await this.page.waitForLoadState('networkidle');
+		}
 	}
 
 	async goToObjectDefinitionEntry(objectDefinition: string) {
