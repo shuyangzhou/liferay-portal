@@ -218,8 +218,15 @@ export default function ObjectRelationship({
 				};
 
 				if (value) {
+
+					// The stored value is the item's valueKey property, which
+					// system object definitions can map to a property other
+					// than id, so resolve the selection through the same key
+					// the selection was stored with.
+
 					let selected: Item | void = items.find(
-						({id}) => Number(id) === Number(value)
+						(item) =>
+							Number(item[valueKey] ?? item.id) === Number(value)
 					);
 
 					if (!selected && !parameterObjectFieldName) {
@@ -231,7 +238,8 @@ export default function ObjectRelationship({
 						);
 
 						selected =
-							Number(item?.id) === Number(value)
+							Number(item?.[valueKey] ?? item?.id) ===
+							Number(value)
 								? item
 								: undefined;
 					}
@@ -268,6 +276,7 @@ export default function ObjectRelationship({
 		parameterObjectFieldName,
 		searchTerm,
 		value,
+		valueKey,
 		url,
 	]);
 
