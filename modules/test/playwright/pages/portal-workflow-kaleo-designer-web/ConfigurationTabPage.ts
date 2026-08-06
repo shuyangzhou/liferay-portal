@@ -65,7 +65,11 @@ export class ConfigurationTabPage {
 
 		await searchInput.press('Enter');
 
-		await expect(editButton).toBeVisible();
+		// The submit triggers a server round trip that re-renders the table,
+		// so give the filtered row more headroom than the default expect
+		// timeout
+
+		await expect(editButton).toBeVisible({timeout: 30000});
 
 		await editButton.click();
 	}
