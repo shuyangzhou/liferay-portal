@@ -5,6 +5,7 @@
 
 import {test} from '@playwright/test';
 
+import {performLoginViaApi} from '../../../../utils/performLogin';
 import {LocalizationInstanceSettingsPage} from '../pages/LocalizationInstanceSettingsPage';
 
 const localizationPagesTest = test.extend<{
@@ -22,6 +23,14 @@ const localizationPagesTest = test.extend<{
 			await use();
 		}
 		finally {
+
+			// The test may end signed out or with its session invalidated by
+			// the instance language change, so sign back in first: every step
+			// below needs an authenticated session, and a thrown step here
+			// would skip the instance default language restore that every
+			// later test depends on.
+
+			await performLoginViaApi({page, screenName: 'test'});
 
 			// Render the admin UI in English regardless of the current
 			// instance default language, so the settings navigation and
