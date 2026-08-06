@@ -60,7 +60,7 @@ definition {
 			isCollapsible = "Yes",
 			tabName = "Field Tab");
 
-		CreateObject.saveObject();
+		ObjectAdmin.saveSidePanel();
 
 		Navigator.openURL();
 
