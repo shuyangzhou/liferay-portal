@@ -14,6 +14,25 @@ definition {
 	tearDown {
 		ObjectAdmin.deleteAllCustomObjectsViaAPI();
 
+		var groupId = JSONGroupSetter.setGroupId(groupName = "Guest");
+		var portalURL = JSONCompany.getPortalURL();
+		var userLoginInfo = JSONUtil2.formatJSONUser();
+
+		var curl = '''
+			${portalURL}/api/jsonws/layout/get-layouts \
+				-u ${userLoginInfo} \
+				-d groupId=${groupId} \
+				-d privateLayout=false
+		''';
+
+		var layoutId = JSONCurlUtil.post(${curl}, "$.[?(@['nameCurrentValue'] == 'Object Page')]['layoutId']");
+
+		if (${layoutId} != "") {
+			JSONLayout.deletePublicLayout(
+				groupName = "Guest",
+				layoutName = "Object Page");
+		}
+
 		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
 		if (${testLiferayVirtualInstance} == "true") {
@@ -51,6 +70,20 @@ definition {
 				locator1 = "ToggleSwitch#ANY_TOGGLE_SWITCH");
 
 			PortletEntry.publish();
+		}
+
+		task ("and Given the object entry portlet has deployed") {
+
+			// Publishing kicks off an asynchronous deployment, and the page
+			// editor lists the object as a form type only once it finishes.
+			// The portlet's product menu entry comes from the same deployment,
+			// so reaching it proves the deployment is done.
+
+			Navigator.openURL();
+
+			ProductMenu.gotoPortlet(
+				category = "Content & Data",
+				portlet = "Custom Objects 197509");
 		}
 
 		task ("and Given a mapped form container on a content page") {
