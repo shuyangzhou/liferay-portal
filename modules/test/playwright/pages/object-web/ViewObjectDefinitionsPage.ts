@@ -114,6 +114,14 @@ export class ViewObjectDefinitionsPage {
 
 		await input.fill(objectDefinitionLabel);
 
+		// The search submit button is served disabled and enabled by the
+		// toolbar's script, and a form whose default button is disabled
+		// ignores Enter, so wait for the button before submitting.
+
+		await expect(
+			this.page.locator('.management-bar button[type="submit"]')
+		).toBeEnabled();
+
 		await this.page.keyboard.press('Enter');
 
 		await this.page
