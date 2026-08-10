@@ -77,11 +77,14 @@ public class SalesforceAccessTokenWebCacheItem implements WebCacheItem {
 			Http.Response response = options.getResponse();
 
 			if (response.getResponseCode() != HttpURLConnection.HTTP_OK) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(
+				if (_log.isWarnEnabled()) {
+					_log.warn(
 						StringBundler.concat(
-							"Response code ", response.getResponseCode(), ": ",
-							responseJSON));
+							"Unable to get a Salesforce access token for ",
+							"consumer key ",
+							_salesforceConfiguration.consumerKey(),
+							", response code ", response.getResponseCode(),
+							": ", responseJSON));
 				}
 
 				return null;
@@ -90,8 +93,8 @@ public class SalesforceAccessTokenWebCacheItem implements WebCacheItem {
 			return JSONFactoryUtil.createJSONObject(responseJSON);
 		}
 		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception);
+			if (_log.isWarnEnabled()) {
+				_log.warn(exception);
 			}
 
 			return null;
