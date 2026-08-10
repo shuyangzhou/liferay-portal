@@ -199,11 +199,30 @@ export class ViewObjectDefinitionsPage {
 	};
 
 	async goto(siteUrl?: Site['friendlyUrlPath']) {
+
+		// The object definitions list is a frontend data set: its management
+		// toolbar and search box render only after the fetch behind it resolves.
+		// On a slow load, such as the post-upgrade routine, the document is at
+		// load state before that fetch returns, so a caller that types into the
+		// search box next times out waiting for it. Wait for the fetch here so
+		// the list is data-ready when goto returns.
+
+		const responsePromise = this.page.waitForResponse(
+			(response: Response) =>
+				response
+					.url()
+					.includes('/o/object-admin/v1.0/object-definitions') &&
+				response.request().method() === 'GET' &&
+				response.status() === 200
+		);
+
 		await gotoWithRetry(
 			this.page,
 			`/group${siteUrl || '/guest'}${PORTLET_URLS.objects}`,
 			{waitUntil: 'load'}
 		);
+
+		await responsePromise;
 	}
 
 	async importObjectDefinition(
