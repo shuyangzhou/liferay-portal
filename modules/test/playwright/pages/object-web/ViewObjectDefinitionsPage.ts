@@ -199,11 +199,51 @@ export class ViewObjectDefinitionsPage {
 	};
 
 	async goto(siteUrl?: Site['friendlyUrlPath']) {
+		const diagResponses: string[] = [];
+
+		this.page.on('response', (response) => {
+			const responseURL = response.url();
+
+			if (
+				responseURL.includes('object-admin') ||
+				responseURL.includes('object-definition') ||
+				responseURL.includes('object-folder')
+			) {
+				diagResponses.push(
+					`${response.status()} ${response.request().method()} ${responseURL}`
+				);
+			}
+		});
+
+		const diagConsoleErrors: string[] = [];
+
+		this.page.on('console', (message) => {
+			if (message.type() === 'error') {
+				diagConsoleErrors.push(message.text());
+			}
+		});
+
 		await gotoWithRetry(
 			this.page,
 			`/group${siteUrl || '/guest'}${PORTLET_URLS.objects}`,
 			{waitUntil: 'load'}
 		);
+
+		const managementBarCount = await this.page
+			.locator('.management-bar')
+			.count();
+		const searchboxCount = await this.page
+			.locator('.management-bar')
+			.getByRole('searchbox')
+			.count();
+
+		if (searchboxCount === 0) {
+			const pageHTML = await this.page.content();
+
+			throw new Error(
+				`[DIAG] mb=${managementBarCount} sb=${searchboxCount} url=${this.page.url()} | responses=[${diagResponses.join(' ~ ')}] | consoleErrors=[${diagConsoleErrors.slice(0, 5).join(' ~ ')}] | html=${pageHTML.slice(0, 1200)}`
+			);
+		}
 	}
 
 	async importObjectDefinition(
