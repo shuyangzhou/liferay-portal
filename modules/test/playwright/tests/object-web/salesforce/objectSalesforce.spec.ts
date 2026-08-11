@@ -78,6 +78,18 @@ test('Assert CRUD with created custom object using Salesforce storage type', asy
 	page,
 	viewObjectEntriesPage,
 }) => {
+	const diagResponses: string[] = [];
+
+	page.on('response', (response) => {
+		const request = response.request();
+
+		if (request.method() !== 'GET') {
+			diagResponses.push(
+				`${request.method()} ${response.url().slice(-90)} -> ${response.status()}`
+			);
+		}
+	});
+
 	const objectFields = generateObjectFields({
 		objectFieldBusinessTypes: [
 			{
@@ -133,9 +145,16 @@ test('Assert CRUD with created custom object using Salesforce storage type', asy
 	});
 
 	await test.step('Read Object Entry', async () => {
-		await expect(
-			page.getByRole('cell', {name: objectFieldValue})
-		).toBeVisible();
+		try {
+			await expect(
+				page.getByRole('cell', {name: objectFieldValue})
+			).toBeVisible();
+		}
+		catch (error) {
+			throw new Error(
+				`[SFDIAG-CLIENT] entry cell absent | posts=${diagResponses.join(' ; ').slice(0, 3000)}`
+			);
+		}
 	});
 
 	await test.step('Update Object Entry', async () => {

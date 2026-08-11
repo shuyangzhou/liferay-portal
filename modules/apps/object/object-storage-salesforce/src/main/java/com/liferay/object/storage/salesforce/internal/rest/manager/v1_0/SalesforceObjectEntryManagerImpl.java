@@ -502,6 +502,12 @@ public class SalesforceObjectEntryManagerImpl
 					retry++;
 				}
 
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"[SFDIAG] token null after 3 attempts, companyId " +
+							companyId);
+				}
+
 				throw new ObjectEntryManagerHttpException(
 					"Unable to authenticate with Salesforce");
 			}
@@ -527,6 +533,12 @@ public class SalesforceObjectEntryManagerImpl
 						SalesforceConfiguration.class, companyId, groupId);
 				}
 				catch (ConfigurationException configurationException) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							"[SFDIAG] configuration lookup failed",
+							configurationException);
+					}
+
 					return ReflectionUtil.throwException(
 						configurationException);
 				}
