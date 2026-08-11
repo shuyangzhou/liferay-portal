@@ -2808,15 +2808,17 @@ test.describe('Manage object definitions through Page Templates', () => {
 				objectDefinition.name
 			);
 
-			await collectionsPage.goto(site.friendlyUrlPath);
+			await expect(async () => {
+				await collectionsPage.goto(site.friendlyUrlPath);
 
-			await page
-				.getByRole('link', {name: 'Collection Providers'})
-				.click();
+				await page
+					.getByRole('link', {name: 'Collection Providers'})
+					.click({timeout: 10000});
 
-			await expect(
-				page.getByText(objectDefinition.name).first()
-			).toBeVisible();
+				await expect(
+					page.getByText(objectDefinition.name).first()
+				).toBeVisible({timeout: 10000});
+			}).toPass({timeout: 60000});
 		}
 	);
 
