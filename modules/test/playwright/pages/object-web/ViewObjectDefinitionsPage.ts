@@ -199,11 +199,58 @@ export class ViewObjectDefinitionsPage {
 	};
 
 	async goto(siteUrl?: Site['friendlyUrlPath']) {
+		this.page.on('response', (response) => {
+			const responseURL = response.url();
+
+			if (
+				responseURL.includes('object-admin') ||
+				responseURL.includes('object-definition') ||
+				responseURL.includes('object-folder')
+			) {
+				console.log(
+					`[DIAG resp] ${response.status()} ${response.request().method()} ${responseURL}`
+				);
+			}
+		});
+
+		this.page.on('console', (message) => {
+			if (message.type() === 'error') {
+				console.log(`[DIAG console.error] ${message.text()}`);
+			}
+		});
+
 		await gotoWithRetry(
 			this.page,
 			`/group${siteUrl || '/guest'}${PORTLET_URLS.objects}`,
 			{waitUntil: 'load'}
 		);
+
+		await this.page
+			.locator('.management-bar')
+			.getByRole('searchbox')
+			.first()
+			.waitFor({state: 'visible', timeout: 60000})
+			.catch((error) => {
+				console.log(`[DIAG domwait timeout] ${error.message}`);
+			});
+
+		const managementBarCount = await this.page
+			.locator('.management-bar')
+			.count();
+		const searchboxCount = await this.page
+			.locator('.management-bar')
+			.getByRole('searchbox')
+			.count();
+
+		console.log(
+			`[DIAG after goto] management-bar=${managementBarCount} searchbox=${searchboxCount} url=${this.page.url()}`
+		);
+
+		if (searchboxCount === 0) {
+			const pageHTML = await this.page.content();
+
+			console.log(`[DIAG html] ${pageHTML.slice(0, 3000)}`);
+		}
 	}
 
 	async importObjectDefinition(
