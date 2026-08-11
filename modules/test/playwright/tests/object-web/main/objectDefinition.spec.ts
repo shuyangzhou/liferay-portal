@@ -2808,15 +2808,30 @@ test.describe('Manage object definitions through Page Templates', () => {
 				objectDefinition.name
 			);
 
-			await collectionsPage.goto(site.friendlyUrlPath);
+			await expect(async () => {
+				await collectionsPage.goto(site.friendlyUrlPath);
 
-			await page
-				.getByRole('link', {name: 'Collection Providers'})
-				.click();
+				await page
+					.getByRole('link', {name: 'Collection Providers'})
+					.click({timeout: 10000});
 
-			await expect(
-				page.getByText(objectDefinition.name).first()
-			).toBeVisible();
+				const diagVisible = await page
+					.getByText(objectDefinition.name)
+					.first()
+					.isVisible();
+
+				if (!diagVisible) {
+					const diagProviders = await page
+						.locator('.lfr-search-container-wrapper, table')
+						.first()
+						.innerText()
+						.catch(() => 'no-list');
+
+					throw new Error(
+						`[DIAG] ${objectDefinition.name} absent after reactivation | providers=${diagProviders.slice(0, 700)}`
+					);
+				}
+			}).toPass({timeout: 90000});
 		}
 	);
 
