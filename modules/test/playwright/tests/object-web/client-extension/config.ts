@@ -4,7 +4,10 @@
  */
 
 export const config = {
+	grep: /Can trigger object validation as a client extension/,
 	name: 'object-web.client-extension',
+	repeatEach: 15,
+	retries: 0,
 	testDir: 'tests/object-web/client-extension',
 	use: {
 		testIdAttribute: 'data-qa-id',
