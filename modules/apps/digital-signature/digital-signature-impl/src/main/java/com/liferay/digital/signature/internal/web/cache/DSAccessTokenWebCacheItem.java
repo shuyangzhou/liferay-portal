@@ -93,13 +93,31 @@ public class DSAccessTokenWebCacheItem implements WebCacheItem {
 				"https://" + _environmentBaseURI + "/oauth/token");
 			options.setPost(true);
 
-			return JSONFactoryUtil.createJSONObject(
-				HttpUtil.URLtoString(options));
+			String response = HttpUtil.URLtoString(options);
+
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(response);
+
+			if (!jsonObject.has("access_token")) {
+				_log.warn(
+					"[DSDIAG] token response without access_token: " +
+						StringUtil.shorten(response, 300));
+			}
+
+			return jsonObject;
 		}
 		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception);
-			}
+			String rsaPrivateKey = new String(_rsaPrivateKeyBytes);
+
+			_log.warn(
+				StringBundler.concat(
+					"[DSDIAG] token fetch failed: ", exception.getMessage(),
+					" | keyLength=", rsaPrivateKey.length(),
+					" | literalBackslashN=",
+					rsaPrivateKey.contains("\\n"), " | realNewlines=",
+					StringUtil.count(rsaPrivateKey, StringPool.NEW_LINE),
+					" | beginGlued=",
+					!rsaPrivateKey.contains("-----BEGIN RSA PRIVATE KEY-----\n")),
+				exception);
 
 			return JSONFactoryUtil.createJSONObject();
 		}
