@@ -4,7 +4,10 @@
  */
 
 export const config = {
+	grep: /Object is displayed on the Workflow Process Builder page|completed entry is displayed with an Approved status/,
 	name: 'object-web.workflow',
+	repeatEach: 15,
+	retries: 0,
 	testDir: 'tests/object-web/workflow',
 	use: {
 		testIdAttribute: 'data-qa-id',
