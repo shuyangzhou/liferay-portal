@@ -1975,7 +1975,23 @@ test(
 			'Approved, Denied, Draft, Expired, Inactive, Incomplete, In Recycle Bin, Scheduled'
 		);
 
-		await sidePanel.getByRole('button', {name: 'Save'}).last().click();
+		try {
+			await sidePanel
+				.getByRole('button', {name: 'Save'})
+				.last()
+				.click({timeout: 30000});
+		}
+		catch (error) {
+			const iframeText = await page
+				.frameLocator('iframe')
+				.locator('body')
+				.innerText()
+				.catch(() => 'no-iframe-body');
+
+			throw new Error(
+				`[DIAG] view Save absent after filter modal closed | url=${page.url().slice(-120)} | iframe=${iframeText.slice(0, 800)}`
+			);
+		}
 
 		await page.waitForLoadState('networkidle');
 
