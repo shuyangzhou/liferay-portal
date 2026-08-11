@@ -1987,6 +1987,22 @@ test(
 			page.getByText(approvedEntry.textField, {exact: true})
 		).toBeVisible();
 
+		const diagPendingVisible = await page
+			.getByText(pendingEntry.textField, {exact: true})
+			.isVisible();
+
+		if (diagPendingVisible) {
+			const diagTable = await page
+				.locator('.table-list-title, table, [role="table"]')
+				.first()
+				.innerText()
+				.catch(() => 'no-table');
+
+			throw new Error(
+				`[DIAG] pending "${pendingEntry.textField}" still visible after status filter | createStatus=${JSON.stringify(pendingEntry.status)} | table=${diagTable.slice(0, 600)}`
+			);
+		}
+
 		await expect(
 			page.getByText(pendingEntry.textField, {exact: true})
 		).not.toBeVisible();
