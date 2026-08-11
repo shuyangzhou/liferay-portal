@@ -5,6 +5,8 @@
 
 import {FrameLocator, Locator, Page} from '@playwright/test';
 
+import {clickAndExpectToBeHidden} from '../../../utils/clickAndExpectToBeHidden';
+
 export class EditObjectViewPage {
 	readonly addButton: Locator;
 	readonly addColumnButton: Locator;
@@ -78,7 +80,16 @@ export class EditObjectViewPage {
 			await this.filterValue.press('Escape');
 		}
 
-		await this.saveFilter.dispatchEvent('click');
+		// A dispatched click fires whether or not the modal's script has
+		// wired the button, and it reports no outcome: when it is swallowed
+		// the modal stays open, and the caller's next click lands on the
+		// modal's Cancel instead. Click for real and retry until the modal
+		// actually closes.
+
+		await clickAndExpectToBeHidden({
+			target: this.sidePanel.getByLabel('New Filter'),
+			trigger: this.saveFilter,
+		});
 	}
 
 	async addDefaultSort(columnName: string, sortOrder: string) {
