@@ -188,7 +188,6 @@ test(
 	async ({
 		apiHelpers,
 		configurationTabPage,
-		globalMenuPage,
 		page,
 		viewObjectDefinitionsPage,
 	}) => {
@@ -202,9 +201,7 @@ test(
 			type: 'objectDefinition',
 		});
 
-		await globalMenuPage.goToApplications('Process Builder');
-
-		await configurationTabPage.configurationTabLink.click();
+		await configurationTabPage.goTo();
 
 		await expect(
 			page.getByRole('row', {
@@ -218,9 +215,7 @@ test(
 			objectDefinition.label['en_US']
 		);
 
-		await globalMenuPage.goToApplications('Process Builder');
-
-		await configurationTabPage.configurationTabLink.click();
+		await configurationTabPage.goTo();
 
 		await expect(
 			page.getByRole('row', {
@@ -234,9 +229,7 @@ test(
 			objectDefinition.label['en_US']
 		);
 
-		await globalMenuPage.goToApplications('Process Builder');
-
-		await configurationTabPage.configurationTabLink.click();
+		await configurationTabPage.goTo();
 
 		await expect(
 			page.getByRole('row', {
