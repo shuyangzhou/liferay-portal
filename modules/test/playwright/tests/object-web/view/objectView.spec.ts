@@ -1544,7 +1544,10 @@ test(
 
 		await editObjectViewPage.createFilter('Status', 'Includes', 'Pending');
 
-		await sidePanel.getByRole('button', {name: 'Save'}).last().click();
+		await sidePanel
+			.locator('.lfr-objects__side-panel-content-container')
+			.getByRole('button', {name: 'Save'})
+			.click();
 
 		await page.waitForLoadState('networkidle');
 
@@ -1585,7 +1588,10 @@ test(
 			.getByRole('button', {name: 'Save'})
 			.click();
 
-		await sidePanel.getByRole('button', {name: 'Save'}).last().click();
+		await sidePanel
+			.locator('.lfr-objects__side-panel-content-container')
+			.getByRole('button', {name: 'Save'})
+			.click();
 
 		await page.waitForLoadState('networkidle');
 
@@ -1975,7 +1981,10 @@ test(
 			'Approved, Denied, Draft, Expired, Inactive, Incomplete, In Recycle Bin, Scheduled'
 		);
 
-		await sidePanel.getByRole('button', {name: 'Save'}).last().click();
+		await sidePanel
+			.locator('.lfr-objects__side-panel-content-container')
+			.getByRole('button', {name: 'Save'})
+			.click();
 
 		await page.waitForLoadState('networkidle');
 
