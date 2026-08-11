@@ -77,11 +77,12 @@ public class SalesforceAccessTokenWebCacheItem implements WebCacheItem {
 			Http.Response response = options.getResponse();
 
 			if (response.getResponseCode() != HttpURLConnection.HTTP_OK) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(
+				if (_log.isWarnEnabled()) {
+					_log.warn(
 						StringBundler.concat(
-							"Response code ", response.getResponseCode(), ": ",
-							responseJSON));
+							"[SFDIAG] token response code ",
+							response.getResponseCode(), ": ",
+							_truncate(responseJSON)));
 				}
 
 				return null;
@@ -90,8 +91,10 @@ public class SalesforceAccessTokenWebCacheItem implements WebCacheItem {
 			return JSONFactoryUtil.createJSONObject(responseJSON);
 		}
 		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception);
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"[SFDIAG] token fetch failed: " + exception.getMessage(),
+					exception);
 			}
 
 			return null;
@@ -101,6 +104,18 @@ public class SalesforceAccessTokenWebCacheItem implements WebCacheItem {
 	@Override
 	public long getRefreshTime() {
 		return _REFRESH_TIME;
+	}
+
+	private String _truncate(String responseJSON) {
+		if (responseJSON == null) {
+			return "null";
+		}
+
+		if (responseJSON.length() <= 300) {
+			return responseJSON;
+		}
+
+		return responseJSON.substring(0, 300);
 	}
 
 	private static final long _REFRESH_TIME = Time.MINUTE * 45;
