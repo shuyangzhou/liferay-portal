@@ -15,6 +15,8 @@ import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
@@ -58,21 +60,48 @@ public class AddDSEnvelopeMVCResourceCommand extends BaseMVCResourceCommand {
 
 		User user = themeDisplay.getUser();
 
-		DSEnvelope dsEnvelope = _dsEnvelopeManager.addDSEnvelope(
-			themeDisplay.getCompanyId(), themeDisplay.getSiteGroupId(),
-			new DSEnvelope() {
-				{
-					dsDocuments = _getDSDocuments(resourceRequest);
-					dsRecipients = _getDSRecipients(resourceRequest);
-					emailBlurb = ParamUtil.getString(
-						resourceRequest, "emailMessage");
-					emailSubject = ParamUtil.getString(
-						resourceRequest, "emailSubject");
-					name = ParamUtil.getString(resourceRequest, "envelopeName");
-					senderEmailAddress = user.getEmailAddress();
-					status = "sent";
-				}
-			});
+		_log.error(
+			"[DSDIAG] Portlet received add envelope request, name " +
+				ParamUtil.getString(resourceRequest, "envelopeName") +
+					", company " + themeDisplay.getCompanyId() + ", group " +
+						themeDisplay.getSiteGroupId());
+
+		DSEnvelope dsEnvelope = null;
+
+		try {
+			dsEnvelope = _dsEnvelopeManager.addDSEnvelope(
+				themeDisplay.getCompanyId(), themeDisplay.getSiteGroupId(),
+				new DSEnvelope() {
+					{
+						dsDocuments = _getDSDocuments(resourceRequest);
+						dsRecipients = _getDSRecipients(resourceRequest);
+						emailBlurb = ParamUtil.getString(
+							resourceRequest, "emailMessage");
+						emailSubject = ParamUtil.getString(
+							resourceRequest, "emailSubject");
+						name = ParamUtil.getString(
+							resourceRequest, "envelopeName");
+						senderEmailAddress = user.getEmailAddress();
+						status = "sent";
+					}
+				});
+		}
+		catch (Exception exception) {
+			_log.error(
+				"[DSDIAG] Portlet failed the add envelope request", exception);
+
+			throw exception;
+		}
+
+		if (dsEnvelope.getDSEnvelopeId() == null) {
+			_log.error(
+				"[DSDIAG] Portlet got a null envelope id, DocuSign returned " +
+					"no usable envelope and the browser will show no toast");
+		}
+
+		_log.error(
+			"[DSDIAG] Portlet replying to add envelope request, envelope id " +
+				dsEnvelope.getDSEnvelopeId());
 
 		JSONPortletResponseUtil.writeJSON(
 			resourceRequest, resourceResponse,
@@ -121,6 +150,9 @@ public class AddDSEnvelopeMVCResourceCommand extends BaseMVCResourceCommand {
 
 	@Reference
 	private DLAppLocalService _dlAppLocalService;
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AddDSEnvelopeMVCResourceCommand.class);
 
 	@Reference
 	private DSEnvelopeManager _dsEnvelopeManager;
