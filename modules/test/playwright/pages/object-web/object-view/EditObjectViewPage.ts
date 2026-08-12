@@ -78,7 +78,11 @@ export class EditObjectViewPage {
 			await this.filterValue.press('Escape');
 		}
 
-		await this.saveFilter.dispatchEvent('click');
+		await this.saveFilter.click({timeout: 15000});
+
+		await this.sidePanel
+			.getByLabel('New Filter')
+			.waitFor({state: 'hidden', timeout: 15000});
 	}
 
 	async addDefaultSort(columnName: string, sortOrder: string) {

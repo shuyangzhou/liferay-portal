@@ -90,8 +90,11 @@ import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
 import com.liferay.portal.kernel.trash.TrashHandler;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.workflow.WorkflowHandler;
@@ -541,6 +544,13 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					"model.class.name", objectDefinition.getClassName()
 				).build()));
 
+		_log.error(
+			StringBundler.concat(
+				"[OWDIAG] Registered workflow handler for ",
+				objectDefinition.getClassName(), ", label ",
+				objectDefinition.getLabel(LocaleUtil.getDefault()),
+				", active ", objectDefinition.isActive()));
+
 		ObjectLayout objectLayout = null;
 
 		if (objectLayouts == null) {
@@ -689,6 +699,9 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 	private final AccountEntryOrganizationRelLocalService
 		_accountEntryOrganizationRelLocalService;
 	private final AssetEntryLocalService _assetEntryLocalService;
+	private static final Log _log = LogFactoryUtil.getLog(
+		ObjectDefinitionDeployerImpl.class);
+
 	private final BundleContext _bundleContext;
 	private final DepotEntryGroupRelLocalService
 		_depotEntryGroupRelLocalService;

@@ -5,7 +5,11 @@
 
 package com.liferay.portal.workflow.web.internal.display.context;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -286,6 +290,25 @@ public class WorkflowDefinitionLinkDisplayContext {
 			ListUtil.sort(
 				workflowDefinitionLinkSearchEntries,
 				searchContainer.getOrderByComparator()));
+
+		if (_log.isErrorEnabled()) {
+			StringBundler sb = new StringBundler();
+
+			for (WorkflowDefinitionLinkSearchEntry
+					workflowDefinitionLinkSearchEntry :
+						workflowDefinitionLinkSearchEntries) {
+
+				sb.append(workflowDefinitionLinkSearchEntry.getResource());
+				sb.append(StringPool.COMMA_AND_SPACE);
+			}
+
+			_log.error(
+				StringBundler.concat(
+					"[OWDIAG] Configuration table built, keywords ",
+					searchTerms.getKeywords(), ", rows ",
+					workflowDefinitionLinkSearchEntries.size(), ", resources ",
+					sb.toString()));
+		}
 
 		return searchContainer;
 	}
@@ -570,6 +593,9 @@ public class WorkflowDefinitionLinkDisplayContext {
 			_workflowDefinitionLinkRequestHelper.getCompanyId(), getGroupId(),
 			className, 0, 0, true);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		WorkflowDefinitionLinkDisplayContext.class);
 
 	private final HttpServletRequest _httpServletRequest;
 	private final LiferayPortletRequest _liferayPortletRequest;

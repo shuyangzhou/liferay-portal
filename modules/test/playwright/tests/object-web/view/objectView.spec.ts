@@ -1921,6 +1921,55 @@ test(
 		page,
 		viewObjectEntriesPage,
 	}) => {
+		const apiCalls: string[] = [];
+		const consoleMessages: string[] = [];
+		const pageErrors: string[] = [];
+
+		page.on('pageerror', (pageError) => {
+			pageErrors.push(String(pageError).slice(0, 400));
+		});
+
+		page.on('console', (consoleMessage) => {
+			if (
+				consoleMessage.type() === 'error' ||
+				consoleMessage.type() === 'warning'
+			) {
+				consoleMessages.push(
+					`${consoleMessage.type()}: ${consoleMessage.text().slice(0, 300)}`
+				);
+			}
+		});
+
+		page.on('response', async (response) => {
+			const url = response.url();
+
+			if (!url.includes('/o/')) {
+				return;
+			}
+
+			let body = '';
+
+			try {
+				body = (await response.text()).slice(0, 200);
+			}
+			catch (error) {
+				body = '<unreadable>';
+			}
+
+			apiCalls.push(`${response.status()} ${url.slice(-110)} :: ${body}`);
+		});
+
+		await page.addInitScript(() => {
+			(window as any).__mutations = 0;
+
+			new MutationObserver((mutations) => {
+				(window as any).__mutations += mutations.length;
+			}).observe(document.documentElement, {
+				childList: true,
+				subtree: true,
+			});
+		});
+
 		const objectDefinition =
 			await apiHelpers.objectAdmin.postRandomObjectDefinition({
 				status: {code: 0},
@@ -1969,13 +2018,49 @@ test(
 
 		await editObjectViewPage.selectObjectFields(['textField', 'Status']);
 
-		await editObjectViewPage.createFilter(
-			'Status',
-			'Includes',
-			'Approved, Denied, Draft, Expired, Inactive, Incomplete, In Recycle Bin, Scheduled'
-		);
+		try {
+			await editObjectViewPage.createFilter(
+				'Status',
+				'Includes',
+				'Approved, Denied, Draft, Expired, Inactive, Incomplete, In Recycle Bin, Scheduled'
+			);
 
-		await sidePanel.getByRole('button', {name: 'Save'}).last().click();
+			await sidePanel
+				.getByRole('button', {name: 'Save'})
+				.last()
+				.click({timeout: 15000});
+		}
+		catch (error) {
+			const designerFrame = page
+				.frames()
+				.find((candidateFrame) => candidateFrame !== page.mainFrame());
+
+			const census = designerFrame
+				? await designerFrame
+						.evaluate(() => ({
+							bodyText: document.body.innerText
+								.replace(/\s+/g, ' ')
+								.slice(0, 400),
+							filterRows: document.querySelectorAll(
+								'.lfr-objects__object-builder-screen-first-column'
+							).length,
+							modals: document.querySelectorAll('.modal').length,
+							mutations: (window as any).__mutations,
+							saveButtons: Array.from(
+								document.querySelectorAll('button')
+							).filter((buttonElement) =>
+								buttonElement.textContent?.includes('Save')
+							).length,
+						}))
+						.catch((evaluateError) => ({
+							error: String(evaluateError).slice(0, 200),
+						}))
+				: null;
+
+			throw new Error(
+				`[OVDIAG-FE] ${String(error).slice(0, 250)} | census=${JSON.stringify(census)} | pageErrors=${JSON.stringify(pageErrors).slice(0, 600)} | console=${JSON.stringify(consoleMessages.slice(-12)).slice(0, 1600)} | api=${JSON.stringify(apiCalls.slice(-8)).slice(0, 1200)}`
+			);
+		}
 
 		await page.waitForLoadState('networkidle');
 

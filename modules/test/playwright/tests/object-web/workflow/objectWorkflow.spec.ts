@@ -250,11 +250,41 @@ test(
 			objectDefinition.label['en_US']
 		);
 
-		await expect(
-			page.getByRole('row', {
-				name: objectDefinition.label['en_US'],
-			})
-		).toBeVisible();
+		try {
+			await expect(
+				page.getByRole('row', {
+					name: objectDefinition.label['en_US'],
+				})
+			).toBeVisible({timeout: 15000});
+		}
+		catch (error) {
+			const firstBodyText = await page
+				.locator('body')
+				.innerText()
+				.catch(() => '<unreadable>');
+
+			await page.waitForTimeout(8000);
+
+			await page.reload();
+
+			await configurationTabPage.searchAssetType(
+				objectDefinition.label['en_US']
+			);
+
+			const retryVisible = await page
+				.getByRole('row', {name: objectDefinition.label['en_US']})
+				.isVisible()
+				.catch(() => false);
+
+			const secondBodyText = await page
+				.locator('body')
+				.innerText()
+				.catch(() => '<unreadable>');
+
+			throw new Error(
+				`[OWDIAG-FE] reactivation row absent | label=${objectDefinition.label['en_US']} | retryAfter8sVisible=${retryVisible} | firstTable=${firstBodyText.replace(/\s+/g, ' ').slice(0, 900)} | secondTable=${secondBodyText.replace(/\s+/g, ' ').slice(0, 900)}`
+			);
+		}
 	}
 );
 

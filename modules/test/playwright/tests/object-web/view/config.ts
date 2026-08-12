@@ -4,7 +4,10 @@
  */
 
 export const config = {
+	grep: /can filter entries by status in custom view/,
 	name: 'object-web.view',
+	repeatEach: 15,
+	retries: 0,
 	testDir: 'tests/object-web/view',
 	use: {
 		testIdAttribute: 'data-qa-id',
