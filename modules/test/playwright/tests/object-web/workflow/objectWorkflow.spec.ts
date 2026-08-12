@@ -206,6 +206,10 @@ test(
 
 		await configurationTabPage.configurationTabLink.click();
 
+		await configurationTabPage.searchAssetType(
+			objectDefinition.label['en_US']
+		);
+
 		await expect(
 			page.getByRole('row', {
 				name: objectDefinition.label['en_US'],
@@ -222,6 +226,10 @@ test(
 
 		await configurationTabPage.configurationTabLink.click();
 
+		await configurationTabPage.searchAssetType(
+			objectDefinition.label['en_US']
+		);
+
 		await expect(
 			page.getByRole('row', {
 				name: objectDefinition.label['en_US'],
@@ -237,6 +245,10 @@ test(
 		await globalMenuPage.goToApplications('Process Builder');
 
 		await configurationTabPage.configurationTabLink.click();
+
+		await configurationTabPage.searchAssetType(
+			objectDefinition.label['en_US']
+		);
 
 		await expect(
 			page.getByRole('row', {
