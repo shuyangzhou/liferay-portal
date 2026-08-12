@@ -191,14 +191,17 @@ public class DSHttp {
 					(bodyJSONObject == null) ? null :
 						bodyJSONObject.toString())));
 
+		long startTime = System.currentTimeMillis();
+
 		try {
 			byte[] bytes = _http.URLtoByteArray(options);
 
 			_log.error(
 				StringBundler.concat(
 					"[DSDIAG] Response ", String.valueOf(method), " ",
-					options.getLocation(), ", code ",
-					_responseCode(options), ", length ",
+					options.getLocation(), ", elapsed ",
+					String.valueOf(System.currentTimeMillis() - startTime),
+					" ms, code ", _responseCode(options), ", length ",
 					String.valueOf((bytes == null) ? -1 : bytes.length),
 					", headers ", _responseHeaders(options), ", body ",
 					_truncate((bytes == null) ? null : new String(bytes))));
@@ -209,8 +212,10 @@ public class DSHttp {
 			_log.error(
 				StringBundler.concat(
 					"[DSDIAG] Failed ", String.valueOf(method), " ",
-					options.getLocation(), ", code ", _responseCode(options),
-					", headers ", _responseHeaders(options)),
+					options.getLocation(), ", elapsed ",
+					String.valueOf(System.currentTimeMillis() - startTime),
+					" ms, code ", _responseCode(options), ", headers ",
+					_responseHeaders(options)),
 				exception);
 
 			throw exception;

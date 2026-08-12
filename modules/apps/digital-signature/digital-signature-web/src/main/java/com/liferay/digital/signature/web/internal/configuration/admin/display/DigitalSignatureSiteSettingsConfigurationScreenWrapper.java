@@ -5,11 +5,14 @@
 
 package com.liferay.digital.signature.web.internal.configuration.admin.display;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.configuration.admin.display.ConfigurationScreen;
 import com.liferay.configuration.admin.display.ConfigurationScreenWrapper;
 import com.liferay.digital.signature.configuration.DigitalSignatureConfiguration;
 import com.liferay.digital.signature.configuration.DigitalSignatureConfigurationUtil;
 import com.liferay.digital.signature.web.internal.constants.DigitalSignatureWebKeys;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
@@ -39,6 +42,9 @@ public class DigitalSignatureSiteSettingsConfigurationScreenWrapper
 		return _siteSettingsConfigurationScreenFactory.create(
 			new DigitalSignatureSiteSettingsConfigurationScreenContributor());
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		DigitalSignatureSiteSettingsConfigurationScreenWrapper.class);
 
 	@Reference
 	private Language _language;
@@ -103,11 +109,25 @@ public class DigitalSignatureSiteSettingsConfigurationScreenWrapper
 						themeDisplay.getCompanyId(),
 						themeDisplay.getSiteGroupId());
 
-			httpServletRequest.setAttribute(
-				DigitalSignatureConfiguration.class.getName(),
+			DigitalSignatureConfiguration companyDigitalSignatureConfiguration =
 				DigitalSignatureConfigurationUtil.
 					getDigitalSignatureConfiguration(
-						themeDisplay.getCompanyId(), 0));
+						themeDisplay.getCompanyId(), 0);
+
+			_log.error(
+				StringBundler.concat(
+					"[DSDIAG] Site settings screen render, company ",
+					themeDisplay.getCompanyId(), ", site group ",
+					themeDisplay.getSiteGroupId(),
+					", company scope strategy ",
+					companyDigitalSignatureConfiguration.
+						siteSettingsStrategy(),
+					", group scope strategy ",
+					digitalSignatureConfiguration.siteSettingsStrategy()));
+
+			httpServletRequest.setAttribute(
+				DigitalSignatureConfiguration.class.getName(),
+				companyDigitalSignatureConfiguration);
 
 			httpServletRequest.setAttribute(
 				DigitalSignatureWebKeys.DIGITAL_SIGNATURE_ACCOUNT_BASE_URI,

@@ -11,6 +11,8 @@ import com.liferay.portal.configuration.module.configuration.ConfigurationProvid
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -46,6 +48,10 @@ public class SaveCompanyConfigurationMVCActionCommand
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
+		_log.error(
+			"[DSDIAG] Company configuration save invoked, strategy param " +
+				ParamUtil.getString(actionRequest, "siteSettingsStrategy"));
+
 		PermissionChecker permissionChecker =
 			PermissionThreadLocal.getPermissionChecker();
 
@@ -56,6 +62,9 @@ public class SaveCompanyConfigurationMVCActionCommand
 
 			return;
 		}
+
+		_log.error(
+			"[DSDIAG] Company configuration save passed the permission check");
 
 		_configurationProvider.saveCompanyConfiguration(
 			DigitalSignatureConfiguration.class, themeDisplay.getCompanyId(),
@@ -82,6 +91,9 @@ public class SaveCompanyConfigurationMVCActionCommand
 				ParamUtil.getString(actionRequest, "siteSettingsStrategy")
 			).build());
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		SaveCompanyConfigurationMVCActionCommand.class);
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
