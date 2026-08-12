@@ -86,6 +86,12 @@ definition {
 				Refresh();
 			}
 
+			if (IsElementNotPresent(key_text = "Text Field", locator1 = "TextInput#ANY")) {
+				var pageSource = selenium.getHtmlSource();
+
+				echo("DIAGSRC-START${pageSource}DIAGSRC-END");
+			}
+
 			Type.sendKeys(
 				key_text = "Text Field",
 				locator1 = "TextInput#ANY",
