@@ -77,6 +77,15 @@ definition {
 				pageName = "Object Page",
 				siteName = "Guest");
 
+			// The object definition was published moments earlier on a cold
+			// instance, so the first guest render can beat the object's form
+			// provider registration and leave the form container empty.
+			// Reload until the mapped input renders.
+
+			while ((IsElementNotPresent(key_text = "Text Field", locator1 = "TextInput#ANY")) && (maxIterations = "5")) {
+				Refresh();
+			}
+
 			Type.sendKeys(
 				key_text = "Text Field",
 				locator1 = "TextInput#ANY",
