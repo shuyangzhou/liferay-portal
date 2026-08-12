@@ -154,7 +154,7 @@ test('Assert CRUD with created custom object using Salesforce storage type', asy
 
 	await test.step('Read Object Entry', async () => {
 		await expect(
-			page.getByRole('cell', {name: objectFieldValue})
+			page.getByRole('cell', {exact: true, name: objectFieldValue})
 		).toBeVisible();
 	});
 
@@ -176,7 +176,7 @@ test('Assert CRUD with created custom object using Salesforce storage type', asy
 		await viewObjectEntriesPage.backButton.click();
 
 		await expect(
-			page.getByRole('cell', {name: objectFieldUpdatedValue})
+			page.getByRole('cell', {exact: true, name: objectFieldUpdatedValue})
 		).toBeVisible();
 	});
 
@@ -191,7 +191,7 @@ test('Assert CRUD with created custom object using Salesforce storage type', asy
 			.click();
 
 		await expect(
-			page.getByRole('cell', {name: objectFieldUpdatedValue})
+			page.getByRole('cell', {exact: true, name: objectFieldUpdatedValue})
 		).toBeAttached({attached: false});
 	});
 });
@@ -295,7 +295,9 @@ test('Assert CRUD with created custom object using Salesforce storage type in fo
 	await test.step('Read Object Entry in object admin', async () => {
 		await viewObjectEntriesPage.goto(objectDefinition.className);
 
-		await expect(page.getByRole('cell', {name: entryValue})).toBeVisible();
+		await expect(
+			page.getByRole('cell', {exact: true, name: entryValue})
+		).toBeVisible();
 	});
 
 	await test.step('Delete Object Entry', async () => {
@@ -308,7 +310,9 @@ test('Assert CRUD with created custom object using Salesforce storage type in fo
 			.getByRole('button', {name: 'Delete'})
 			.click();
 
-		await expect(page.getByRole('cell', {name: entryValue})).toBeAttached({
+		await expect(
+			page.getByRole('cell', {exact: true, name: entryValue})
+		).toBeAttached({
 			attached: false,
 		});
 	});
