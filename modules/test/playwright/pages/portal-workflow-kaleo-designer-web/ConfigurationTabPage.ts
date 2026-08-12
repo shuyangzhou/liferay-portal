@@ -31,11 +31,11 @@ export class ConfigurationTabPage {
 		);
 	}
 
-	private async clickAssetTypeEditButton(assetType: string) {
+	async searchAssetType(assetType: string) {
 
 		// Callers reach this tab either through goTo, which waits for the tab's
 		// own address, or by clicking the tab link themselves and continuing
-		// straight into an assignment. Until that navigation lands, the tab the
+		// straight into a search. Until that navigation lands, the tab the
 		// caller came from is still on screen, and its management bar carries
 		// its own enabled search form, so a submit sent in that window filters
 		// that other table and leaves this one empty for good. Wait for the
@@ -44,21 +44,6 @@ export class ConfigurationTabPage {
 		await this.page.waitForURL((url) =>
 			url.href.includes('=configuration')
 		);
-
-		// The table lists every workflow enabled asset type in the instance and
-		// pages at twenty rows, which leaves a generated object definition on the
-		// boundary of the first page. Filter by name so the lookup does not
-		// depend on how many asset types the instance happens to hold.
-
-		const editButton = this.page
-			.getByRole('row')
-			.filter({
-				has: this.page.getByRole('cell', {
-					exact: true,
-					name: assetType,
-				}),
-			})
-			.getByRole('button', {name: 'Edit'});
 
 		// The search submit button is served disabled and the toolbar's script
 		// enables it only once it runs. It is the form's default button, and a
@@ -77,6 +62,26 @@ export class ConfigurationTabPage {
 		await searchInput.fill(assetType);
 
 		await searchInput.press('Enter');
+	}
+
+	private async clickAssetTypeEditButton(assetType: string) {
+
+		// The table lists every workflow enabled asset type in the instance and
+		// pages at twenty rows, which leaves a generated object definition on the
+		// boundary of the first page. Filter by name so the lookup does not
+		// depend on how many asset types the instance happens to hold.
+
+		await this.searchAssetType(assetType);
+
+		const editButton = this.page
+			.getByRole('row')
+			.filter({
+				has: this.page.getByRole('cell', {
+					exact: true,
+					name: assetType,
+				}),
+			})
+			.getByRole('button', {name: 'Edit'});
 
 		await expect(editButton).toBeVisible();
 
