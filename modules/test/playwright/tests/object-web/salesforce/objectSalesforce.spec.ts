@@ -133,9 +133,17 @@ test('Assert CRUD with created custom object using Salesforce storage type', asy
 	});
 
 	await test.step('Read Object Entry', async () => {
-		await expect(
-			page.getByRole('cell', {name: objectFieldValue})
-		).toBeVisible();
+
+		// Salesforce persists the entry (the create POST returns 200) but its
+		// query API lags behind writes, so reload until the row shows.
+
+		await expect(async () => {
+			await page.reload();
+
+			await expect(
+				page.getByRole('cell', {name: objectFieldValue})
+			).toBeVisible({timeout: 5000});
+		}).toPass({timeout: 90000});
 	});
 
 	await test.step('Update Object Entry', async () => {
@@ -252,7 +260,16 @@ test('Assert CRUD with created custom object using Salesforce storage type in fo
 	await test.step('Read Object Entry in object admin', async () => {
 		await viewObjectEntriesPage.goto(objectDefinition.className);
 
-		await expect(page.getByRole('cell', {name: entryValue})).toBeVisible();
+		// Salesforce persists the entry but its query API lags behind writes,
+		// so reload until the row shows.
+
+		await expect(async () => {
+			await page.reload();
+
+			await expect(
+				page.getByRole('cell', {name: entryValue})
+			).toBeVisible({timeout: 5000});
+		}).toPass({timeout: 90000});
 	});
 
 	await test.step('Delete Object Entry', async () => {
