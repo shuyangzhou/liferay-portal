@@ -76,56 +76,58 @@ export function BuilderScreen({
 							</ManagementToolbar.Container>
 						</ClayList.Item>
 
-						{tableItems.map((viewColumn, index) => (
-							<React.Fragment key={viewColumn?.objectFieldName}>
-								{index === 0 && (
-									<ClayList.Item flex>
-										<ClayList.ItemField
-											className={classNames(
-												'lfr-object__object-builder-screen-first-column',
-												!hasDragAndDrop &&
-													'lfr-object__object-builder-screen-first-column--not-draggable'
-											)}
-											expand
-										>
-											{firstColumnHeader}
-										</ClayList.ItemField>
+						{
 
-										<ClayList.ItemField
-											className={classNames(
-												'lfr-object__object-builder-screen-second-column',
-												!hasDragAndDrop &&
-													'lfr-object__object-builder-screen-second-column--not-draggable'
-											)}
-											expand
-										>
-											<ClayList.ItemField>
-												{secondColumnHeader}
-											</ClayList.ItemField>
-										</ClayList.ItemField>
+							// @ts-ignore
 
-										{thirdColumnHeader && (
-											<ClayList.ItemField
-												className={classNames(
-													'lfr-object__object-builder-screen-third-column',
-													!hasDragAndDrop &&
-														'lfr-object__object-builder-screen-third-column--not-draggable'
-												)}
-												expand
-											>
-												<ClayList.ItemField>
-													{thirdColumnHeader}
+							<DndProvider backend={HTML5Backend}>
+								{tableItems.map((viewColumn, index) => (
+									<React.Fragment
+										key={viewColumn?.objectFieldName}
+									>
+										{index === 0 && (
+											<ClayList.Item flex>
+												<ClayList.ItemField
+													className={classNames(
+														'lfr-object__object-builder-screen-first-column',
+														!hasDragAndDrop &&
+															'lfr-object__object-builder-screen-first-column--not-draggable'
+													)}
+													expand
+												>
+													{firstColumnHeader}
 												</ClayList.ItemField>
-											</ClayList.ItemField>
+
+												<ClayList.ItemField
+													className={classNames(
+														'lfr-object__object-builder-screen-second-column',
+														!hasDragAndDrop &&
+															'lfr-object__object-builder-screen-second-column--not-draggable'
+													)}
+													expand
+												>
+													<ClayList.ItemField>
+														{secondColumnHeader}
+													</ClayList.ItemField>
+												</ClayList.ItemField>
+
+												{thirdColumnHeader && (
+													<ClayList.ItemField
+														className={classNames(
+															'lfr-object__object-builder-screen-third-column',
+															!hasDragAndDrop &&
+																'lfr-object__object-builder-screen-third-column--not-draggable'
+														)}
+														expand
+													>
+														<ClayList.ItemField>
+															{thirdColumnHeader}
+														</ClayList.ItemField>
+													</ClayList.ItemField>
+												)}
+											</ClayList.Item>
 										)}
-									</ClayList.Item>
-								)}
 
-								{
-
-									// @ts-ignore
-
-									<DndProvider backend={HTML5Backend}>
 										<BuilderListItem
 											disableEdit={
 												disableEdit ||
@@ -174,10 +176,10 @@ export function BuilderScreen({
 												viewColumn?.value
 											}
 										/>
-									</DndProvider>
-								}
-							</React.Fragment>
-						))}
+									</React.Fragment>
+								))}
+							</DndProvider>
+						}
 					</div>
 				</ClayList>
 			) : query ? (
