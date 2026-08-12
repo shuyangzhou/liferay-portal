@@ -32,6 +32,32 @@ test('Verify that pending and completed Object entries with workflow are not dis
 	page,
 	viewObjectDefinitionsPage,
 }) => {
+	const apiCalls: string[] = [];
+	const pageErrors: string[] = [];
+
+	page.on('pageerror', (pageError) => {
+		pageErrors.push(String(pageError).slice(0, 300));
+	});
+
+	page.on('response', async (response) => {
+		const url = response.url();
+
+		if (!url.includes('workflow') && !url.includes('/o/')) {
+			return;
+		}
+
+		let body = '';
+
+		try {
+			body = (await response.text()).slice(0, 300);
+		}
+		catch (error) {
+			body = '<unreadable>';
+		}
+
+		apiCalls.push(`${response.status()} ${url.slice(-130)} :: ${body}`);
+	});
+
 	const objectFields = generateObjectFields({
 		objectFieldBusinessTypes: ['Text'],
 	});
@@ -84,7 +110,21 @@ test('Verify that pending and completed Object entries with workflow are not dis
 
 	await metricsPage.chooseProcess('Single Approver');
 
-	await expect(page.getByText('0', {exact: true}).first()).toBeVisible();
+	try {
+		await expect(page.getByText('0', {exact: true}).first()).toBeVisible({
+			timeout: 30000,
+		});
+	}
+	catch (error) {
+		const bodyText = await page
+			.locator('body')
+			.innerText()
+			.catch(() => '<unreadable>');
+
+		throw new Error(
+			`[AIDIAG] metrics assertion failed | url=${page.url().slice(-130)} | ui=${bodyText.replace(/\s+/g, ' ').slice(0, 700)} | pageErrors=${JSON.stringify(pageErrors).slice(0, 400)} | api=${JSON.stringify(apiCalls.slice(-10)).slice(0, 1800)}`
+		);
+	}
 
 	// Reactivate the object and unassign workflow for cleanup
 

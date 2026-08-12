@@ -14,6 +14,8 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.Http;
@@ -84,10 +86,28 @@ public class DSHttp {
 			digitalSignatureConfiguration.rsaPrivateKey());
 
 		if (Validator.isNotNull(jsonObject.getString("error"))) {
+			_log.error(
+				"[DSDIAG] Token grant failed, error " +
+					jsonObject.getString("error") + ", description " +
+						jsonObject.getString("error_description"));
+
 			throw new PortalException(jsonObject.getString("error"));
 		}
 
-		return jsonObject.getString("access_token");
+		String accessToken = jsonObject.getString("access_token");
+
+		_log.error(
+			StringBundler.concat(
+				"[DSDIAG] Token grant, user ",
+				digitalSignatureConfiguration.apiUsername(), ", environment ",
+				digitalSignatureConfiguration.environment(),
+				", integration key length ",
+				_length(digitalSignatureConfiguration.integrationKey()),
+				", private key length ",
+				_length(digitalSignatureConfiguration.rsaPrivateKey()),
+				", access token length ", _length(accessToken)));
+
+		return accessToken;
 	}
 
 	private JSONObject _invoke(
@@ -139,8 +159,68 @@ public class DSHttp {
 		options.setMethod(method);
 		options.setTimeout(digitalSignatureConfiguration.httpTimeout());
 
-		return _http.URLtoByteArray(options);
+		_log.error(
+			StringBundler.concat(
+				"[DSDIAG] Request ", String.valueOf(method), " ",
+				options.getLocation(), ", account base URI ",
+				digitalSignatureConfiguration.accountBaseURI(),
+				", account id ",
+				digitalSignatureConfiguration.apiAccountId(), ", timeout ",
+				String.valueOf(
+					digitalSignatureConfiguration.httpTimeout()),
+				", body ",
+				_truncate(
+					(bodyJSONObject == null) ? null :
+						bodyJSONObject.toString())));
+
+		try {
+			byte[] bytes = _http.URLtoByteArray(options);
+
+			Http.Response response = options.getResponse();
+
+			_log.error(
+				StringBundler.concat(
+					"[DSDIAG] Response ", String.valueOf(method), " ",
+					options.getLocation(), ", code ",
+					String.valueOf(response.getResponseCode()), ", length ",
+					String.valueOf((bytes == null) ? -1 : bytes.length),
+					", body ",
+					_truncate((bytes == null) ? null : new String(bytes))));
+
+			return bytes;
+		}
+		catch (Exception exception) {
+			_log.error(
+				StringBundler.concat(
+					"[DSDIAG] Failed ", String.valueOf(method), " ",
+					options.getLocation()),
+				exception);
+
+			throw exception;
+		}
 	}
+
+	private String _length(String value) {
+		if (value == null) {
+			return "null";
+		}
+
+		return String.valueOf(value.length());
+	}
+
+	private String _truncate(String value) {
+		if (value == null) {
+			return "null";
+		}
+
+		if (value.length() <= 800) {
+			return value;
+		}
+
+		return value.substring(0, 800) + "...";
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(DSHttp.class);
 
 	@Reference
 	private Http _http;

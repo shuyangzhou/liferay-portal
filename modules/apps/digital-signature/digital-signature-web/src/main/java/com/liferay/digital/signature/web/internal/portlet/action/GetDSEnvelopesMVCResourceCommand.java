@@ -9,6 +9,8 @@ import com.liferay.digital.signature.constants.DigitalSignaturePortletKeys;
 import com.liferay.digital.signature.manager.DSEnvelopeManager;
 import com.liferay.digital.signature.model.DSEnvelope;
 import com.liferay.petra.string.CharPool;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
@@ -61,9 +63,22 @@ public class GetDSEnvelopesMVCResourceCommand extends BaseMVCResourceCommand {
 				ParamUtil.getInteger(resourceRequest, "pageSize")),
 			ParamUtil.getString(resourceRequest, "status"));
 
+		String json = page.toString();
+
+		_log.error(
+			"[DSDIAG] Portlet replying to envelope list request, keywords " +
+				ParamUtil.getString(resourceRequest, "keywords") + ", status " +
+					ParamUtil.getString(resourceRequest, "status") +
+						", total " + page.getTotalCount() + ", payload " +
+							((json.length() <= 800) ? json :
+								json.substring(0, 800) + "..."));
+
 		JSONPortletResponseUtil.writeJSON(
-			resourceRequest, resourceResponse, page.toString());
+			resourceRequest, resourceResponse, json);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		GetDSEnvelopesMVCResourceCommand.class);
 
 	@Reference
 	private DSEnvelopeManager _dsEnvelopeManager;
