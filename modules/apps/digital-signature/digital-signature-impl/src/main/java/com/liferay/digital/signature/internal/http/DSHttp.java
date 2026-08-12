@@ -19,7 +19,10 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -106,6 +109,21 @@ public class DSHttp {
 				", private key length ",
 				_length(digitalSignatureConfiguration.rsaPrivateKey()),
 				", access token length ", _length(accessToken)));
+
+		_log.error(
+			StringBundler.concat(
+				"[DSDIAG] Configuration shape, account base URI ",
+				_describeValue(
+					digitalSignatureConfiguration.accountBaseURI()),
+				", account id ",
+				_describeValue(digitalSignatureConfiguration.apiAccountId()),
+				", user ",
+				_describeValue(digitalSignatureConfiguration.apiUsername()),
+				", integration key ",
+				_describeValue(
+					digitalSignatureConfiguration.integrationKey()),
+				", private key ",
+				_describePEM(digitalSignatureConfiguration.rsaPrivateKey())));
 
 		return accessToken;
 	}
@@ -227,6 +245,86 @@ public class DSHttp {
 		catch (Exception exception) {
 			return "unavailable " + exception;
 		}
+	}
+
+	private String _describePEM(String value) {
+		if (value == null) {
+			return "null";
+		}
+
+		StringBundler sb = new StringBundler();
+
+		sb.append("{length ");
+		sb.append(value.length());
+
+		String[] lines = value.split("\n", -1);
+
+		sb.append(", lines ");
+		sb.append(lines.length);
+
+		sb.append(", carriage returns ");
+		sb.append(StringUtil.count(value, "\r"));
+
+		sb.append(", literal backslash n ");
+		sb.append(StringUtil.count(value, "\\n"));
+
+		sb.append(", begin marker ");
+		sb.append(value.contains("-----BEGIN"));
+
+		sb.append(", end marker ");
+		sb.append(value.contains("-----END"));
+
+		int bodyLength = 0;
+
+		for (String line : lines) {
+			String trimmedLine = line.trim();
+
+			if (trimmedLine.startsWith("-----")) {
+				continue;
+			}
+
+			bodyLength += trimmedLine.length();
+		}
+
+		sb.append(", body characters ");
+		sb.append(bodyLength);
+
+		sb.append(", first line ");
+		sb.append(_describePEMLine(lines[0]));
+
+		sb.append(", last line ");
+		sb.append(_describePEMLine(lines[lines.length - 1]));
+
+		sb.append(", leading whitespace ");
+		sb.append(Character.isWhitespace(value.charAt(0)));
+
+		sb.append(", trailing whitespace ");
+		sb.append(Character.isWhitespace(value.charAt(value.length() - 1)));
+
+		sb.append("}");
+
+		return sb.toString();
+	}
+
+	private String _describePEMLine(String line) {
+		String trimmedLine = line.trim();
+
+		if (trimmedLine.startsWith("-----")) {
+			return StringBundler.concat("\"", trimmedLine, "\"");
+		}
+
+		return "nonmarker length " + trimmedLine.length();
+	}
+
+	private String _describeValue(String value) {
+		if (value == null) {
+			return "null";
+		}
+
+		return StringBundler.concat(
+			"{length ", String.valueOf(value.length()), ", lines ",
+			String.valueOf(StringUtil.count(value, "\n") + 1), ", trimmed ",
+			String.valueOf(Objects.equals(value, value.trim())), "}");
 	}
 
 	private String _length(String value) {
