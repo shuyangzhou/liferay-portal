@@ -188,6 +188,7 @@ test(
 	async ({
 		apiHelpers,
 		configurationTabPage,
+		globalMenuPage,
 		page,
 		viewObjectDefinitionsPage,
 	}) => {
@@ -201,27 +202,19 @@ test(
 			type: 'objectDefinition',
 		});
 
-		await configurationTabPage.goTo();
+		await expect(async () => {
+			await globalMenuPage.goToApplications('Process Builder');
 
-		await expect(
-			page.getByRole('row', {
-				name: objectDefinition.label['en_US'],
-			})
-		).toBeVisible();
+			await configurationTabPage.configurationTabLink.click({
+				timeout: 15000,
+			});
 
-		await viewObjectDefinitionsPage.goto();
-
-		await viewObjectDefinitionsPage.changeObjectActivateStatus(
-			objectDefinition.label['en_US']
-		);
-
-		await configurationTabPage.goTo();
-
-		await expect(
-			page.getByRole('row', {
-				name: objectDefinition.label['en_US'],
-			})
-		).toBeHidden();
+			await expect(
+				page.getByRole('row', {
+					name: objectDefinition.label['en_US'],
+				})
+			).toBeVisible({timeout: 15000});
+		}).toPass({timeout: 90000});
 
 		await viewObjectDefinitionsPage.goto();
 
@@ -229,13 +222,39 @@ test(
 			objectDefinition.label['en_US']
 		);
 
-		await configurationTabPage.goTo();
+		await expect(async () => {
+			await globalMenuPage.goToApplications('Process Builder');
 
-		await expect(
-			page.getByRole('row', {
-				name: objectDefinition.label['en_US'],
-			})
-		).toBeVisible();
+			await configurationTabPage.configurationTabLink.click({
+				timeout: 15000,
+			});
+
+			await expect(
+				page.getByRole('row', {
+					name: objectDefinition.label['en_US'],
+				})
+			).toBeHidden({timeout: 15000});
+		}).toPass({timeout: 90000});
+
+		await viewObjectDefinitionsPage.goto();
+
+		await viewObjectDefinitionsPage.changeObjectActivateStatus(
+			objectDefinition.label['en_US']
+		);
+
+		await expect(async () => {
+			await globalMenuPage.goToApplications('Process Builder');
+
+			await configurationTabPage.configurationTabLink.click({
+				timeout: 15000,
+			});
+
+			await expect(
+				page.getByRole('row', {
+					name: objectDefinition.label['en_US'],
+				})
+			).toBeVisible({timeout: 15000});
+		}).toPass({timeout: 90000});
 	}
 );
 
