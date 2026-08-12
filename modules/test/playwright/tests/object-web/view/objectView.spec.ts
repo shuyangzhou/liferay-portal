@@ -1921,6 +1921,12 @@ test(
 		page,
 		viewObjectEntriesPage,
 	}) => {
+		const pageErrors: string[] = [];
+
+		page.on('pageerror', (pageError) => {
+			pageErrors.push(String(pageError).slice(0, 500));
+		});
+
 		const objectDefinition =
 			await apiHelpers.objectAdmin.postRandomObjectDefinition({
 				status: {code: 0},
@@ -1969,13 +1975,42 @@ test(
 
 		await editObjectViewPage.selectObjectFields(['textField', 'Status']);
 
-		await editObjectViewPage.createFilter(
-			'Status',
-			'Includes',
-			'Approved, Denied, Draft, Expired, Inactive, Incomplete, In Recycle Bin, Scheduled'
-		);
+		try {
+			await editObjectViewPage.createFilter(
+				'Status',
+				'Includes',
+				'Approved, Denied, Draft, Expired, Inactive, Incomplete, In Recycle Bin, Scheduled'
+			);
 
-		await sidePanel.getByRole('button', {name: 'Save'}).last().click();
+			await sidePanel
+				.getByRole('button', {name: 'Save'})
+				.last()
+				.click({timeout: 15000});
+		}
+		catch (error) {
+			const designerFrame = page
+				.frames()
+				.find((candidateFrame) => candidateFrame !== page.mainFrame());
+
+			const probe = designerFrame
+				? await designerFrame.evaluate(() => ({
+						backendFlag:
+							(window as any).__isReactDndBackendSetUp === true,
+						bodyText: document.body.innerText
+							.replace(/\s+/g, ' ')
+							.slice(0, 300),
+						singletonSlot: Boolean(
+							(window as any)[
+								Symbol.for('__REACT_DND_CONTEXT_INSTANCE__')
+							]
+						),
+					}))
+				: null;
+
+			throw new Error(
+				`[DIAG3] error=${String(error).slice(0, 300)} | pageErrors=${JSON.stringify(pageErrors).slice(0, 1500)} | probe=${JSON.stringify(probe)}`
+			);
+		}
 
 		await page.waitForLoadState('networkidle');
 
