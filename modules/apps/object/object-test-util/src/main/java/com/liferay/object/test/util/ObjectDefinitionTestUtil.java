@@ -7,7 +7,6 @@ package com.liferay.object.test.util;
 
 import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.constants.ObjectFieldConstants;
-import com.liferay.object.definition.util.ObjectDefinitionUtil;
 import com.liferay.object.field.builder.TextObjectFieldBuilder;
 import com.liferay.object.field.util.ObjectFieldUtil;
 import com.liferay.object.model.ObjectDefinition;
@@ -133,13 +132,12 @@ public class ObjectDefinitionTestUtil {
 		throws Exception {
 
 		return ObjectDefinitionLocalServiceUtil.addSystemObjectDefinition(
-			null, userId, 0, ObjectDefinitionUtil.generateRandomClassName(),
-			dbTableName, true, false, true, false, true, false, false, false,
-			false, false, null, labelMap, true, name, null, null,
-			pkObjectFieldDBColumnName, pkObjectFieldName, pluralLabelMap, false,
-			scope, titleObjectFieldName, version,
-			WorkflowConstants.STATUS_DRAFT, Collections.emptyList(),
-			objectFields, Collections.emptyList());
+			null, userId, 0, getRandomClassName(), dbTableName, true, false,
+			true, false, true, false, false, false, false, false, null,
+			labelMap, true, name, null, null, pkObjectFieldDBColumnName,
+			pkObjectFieldName, pluralLabelMap, false, scope,
+			titleObjectFieldName, version, WorkflowConstants.STATUS_DRAFT,
+			Collections.emptyList(), objectFields, Collections.emptyList());
 	}
 
 	public static ObjectDefinition addUnmodifiableSystemObjectDefinition(
@@ -158,6 +156,19 @@ public class ObjectDefinitionTestUtil {
 			pkObjectFieldName, pluralLabelMap, false, scope,
 			titleObjectFieldName, version, WorkflowConstants.STATUS_APPROVED,
 			Collections.emptyList(), objectFields, Collections.emptyList());
+	}
+
+	public static String getRandomClassName() {
+
+		// A generated class name is four characters wide, so a blind draw picks
+		// from 67600 names and collides with the ones the batch engine units
+		// hardcode. The service demands a class name for a modifiable system
+		// object and rejects a duplicate before reaching the code that would
+		// draw again, so ask for a name long enough that it cannot collide.
+
+		return ObjectDefinitionConstants.
+			CLASS_NAME_PREFIX_CUSTOM_OBJECT_DEFINITION +
+				RandomTestUtil.randomString();
 	}
 
 	public static String getRandomModifiableSystemObjectDefinitionName() {
