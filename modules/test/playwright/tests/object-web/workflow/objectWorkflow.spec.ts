@@ -202,87 +202,137 @@ test(
 			type: 'objectDefinition',
 		});
 
-		await globalMenuPage.goToApplications('Process Builder');
+		const label = objectDefinition.label['en_US'];
 
-		await configurationTabPage.configurationTabLink.click();
+		const pageErrors: string[] = [];
+		const documentResponses: string[] = [];
 
-		await configurationTabPage.searchAssetType(
-			objectDefinition.label['en_US']
-		);
+		page.on('pageerror', (pageError) => {
+			pageErrors.push(String(pageError).slice(0, 300));
+		});
+
+		page.on('response', (response) => {
+			if (response.request().resourceType() !== 'document') {
+				return;
+			}
+
+			documentResponses.push(
+				`${response.status()} ${response.url().slice(-120)}`
+			);
+		});
+
+		// Reports where the Workflow admin page stood when a step failed. The
+		// portal log is archived separately and its console capture stops before
+		// the tests start, so the backend state has to travel out through the
+		// thrown message to be readable.
+
+		const describe = async (step: string, error: unknown) => {
+			const definition = await apiHelpers.objectAdmin
+				.getObjectDefinitionByName(objectDefinition.name)
+				.then((found) =>
+					found
+						? {active: found.active, status: found.status?.code}
+						: '<not found>'
+				)
+				.catch((lookupError) => String(lookupError).slice(0, 200));
+
+			const dom = await page
+				.evaluate(() => ({
+					bodyText: document.body?.innerText
+						.replace(/\s+/g, ' ')
+						.slice(0, 600),
+					links: Array.from(document.querySelectorAll('a'))
+						.map((anchor) => anchor.textContent?.trim())
+						.filter((text) => text && text.length < 40)
+						.slice(0, 30),
+					menuItems:
+						document.querySelectorAll('[role="menuitem"]').length,
+					portlets: document.querySelectorAll('.portlet').length,
+					title: document.title,
+				}))
+				.catch((evaluateError) => String(evaluateError).slice(0, 200));
+
+			return new Error(
+				`[OWDIAG-FE] step=${step} | error=${String(error).slice(0, 1800)} | definition=${JSON.stringify(definition)} | url=${page.url().slice(0, 200)} | dom=${JSON.stringify(dom)} | documents=${JSON.stringify(documentResponses.slice(-6))} | pageErrors=${JSON.stringify(pageErrors.slice(-4))}`
+			);
+		};
+
+		const goToConfigurationTab = async (step: string) => {
+			try {
+				await globalMenuPage.goToApplications('Process Builder');
+			}
+			catch (error) {
+				throw await describe(`${step}:goToApplications`, error);
+			}
+
+			try {
+				await configurationTabPage.configurationTabLink.click();
+			}
+			catch (error) {
+				throw await describe(`${step}:configurationTabLink`, error);
+			}
+
+			try {
+				await configurationTabPage.searchAssetType(label);
+			}
+			catch (error) {
+				throw await describe(`${step}:searchAssetType`, error);
+			}
+		};
+
+		await goToConfigurationTab('initial');
 
 		await expect(
 			page.getByRole('row', {
-				name: objectDefinition.label['en_US'],
+				name: label,
 			})
 		).toBeVisible();
 
 		await viewObjectDefinitionsPage.goto();
 
-		await viewObjectDefinitionsPage.changeObjectActivateStatus(
-			objectDefinition.label['en_US']
-		);
+		await viewObjectDefinitionsPage.changeObjectActivateStatus(label);
 
-		await globalMenuPage.goToApplications('Process Builder');
-
-		await configurationTabPage.configurationTabLink.click();
-
-		await configurationTabPage.searchAssetType(
-			objectDefinition.label['en_US']
-		);
-
-		await expect(
-			page.getByRole('row', {
-				name: objectDefinition.label['en_US'],
-			})
-		).toBeHidden();
-
-		await viewObjectDefinitionsPage.goto();
-
-		await viewObjectDefinitionsPage.changeObjectActivateStatus(
-			objectDefinition.label['en_US']
-		);
-
-		await globalMenuPage.goToApplications('Process Builder');
-
-		await configurationTabPage.configurationTabLink.click();
-
-		await configurationTabPage.searchAssetType(
-			objectDefinition.label['en_US']
-		);
+		await goToConfigurationTab('deactivated');
 
 		try {
 			await expect(
 				page.getByRole('row', {
-					name: objectDefinition.label['en_US'],
+					name: label,
+				})
+			).toBeHidden();
+		}
+		catch (error) {
+			throw await describe('deactivated:rowHidden', error);
+		}
+
+		await viewObjectDefinitionsPage.goto();
+
+		await viewObjectDefinitionsPage.changeObjectActivateStatus(label);
+
+		await goToConfigurationTab('reactivated');
+
+		try {
+			await expect(
+				page.getByRole('row', {
+					name: label,
 				})
 			).toBeVisible({timeout: 15000});
 		}
 		catch (error) {
-			const firstBodyText = await page
-				.locator('body')
-				.innerText()
-				.catch(() => '<unreadable>');
-
 			await page.waitForTimeout(8000);
 
 			await page.reload();
 
-			await configurationTabPage.searchAssetType(
-				objectDefinition.label['en_US']
-			);
+			await configurationTabPage.searchAssetType(label);
 
 			const retryVisible = await page
-				.getByRole('row', {name: objectDefinition.label['en_US']})
+				.getByRole('row', {name: label})
 				.isVisible()
 				.catch(() => false);
 
-			const secondBodyText = await page
-				.locator('body')
-				.innerText()
-				.catch(() => '<unreadable>');
-
-			throw new Error(
-				`[OWDIAG-FE] reactivation row absent | label=${objectDefinition.label['en_US']} | retryAfter8sVisible=${retryVisible} | firstTable=${firstBodyText.replace(/\s+/g, ' ').slice(0, 900)} | secondTable=${secondBodyText.replace(/\s+/g, ' ').slice(0, 900)}`
+			throw await describe(
+				`reactivated:rowVisible retryAfter8sVisible=${retryVisible}`,
+				error
 			);
 		}
 	}

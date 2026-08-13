@@ -1959,15 +1959,33 @@ test(
 			apiCalls.push(`${response.status()} ${url.slice(-110)} :: ${body}`);
 		});
 
+		// addInitScript runs at document start in every frame, including blank
+		// ones that have no root node yet, so installing the observer straight
+		// away throws and leaves the counter dead. Wait for a node to watch.
+
 		await page.addInitScript(() => {
 			(window as any).__mutations = 0;
 
-			new MutationObserver((mutations) => {
-				(window as any).__mutations += mutations.length;
-			}).observe(document.documentElement, {
-				childList: true,
-				subtree: true,
-			});
+			const observe = () => {
+				const root = document.documentElement || document.body;
+
+				if (!root) {
+					return false;
+				}
+
+				new MutationObserver((mutations) => {
+					(window as any).__mutations += mutations.length;
+				}).observe(root, {
+					childList: true,
+					subtree: true,
+				});
+
+				return true;
+			};
+
+			if (!observe()) {
+				document.addEventListener('DOMContentLoaded', observe);
+			}
 		});
 
 		const objectDefinition =
@@ -2031,34 +2049,71 @@ test(
 				.click({timeout: 15000});
 		}
 		catch (error) {
-			const designerFrame = page
-				.frames()
-				.find((candidateFrame) => candidateFrame !== page.mainFrame());
 
-			const census = designerFrame
-				? await designerFrame
-						.evaluate(() => ({
-							bodyText: document.body.innerText
-								.replace(/\s+/g, ' ')
-								.slice(0, 400),
-							filterRows: document.querySelectorAll(
-								'.lfr-objects__object-builder-screen-first-column'
-							).length,
-							modals: document.querySelectorAll('.modal').length,
-							mutations: (window as any).__mutations,
-							saveButtons: Array.from(
-								document.querySelectorAll('button')
-							).filter((buttonElement) =>
-								buttonElement.textContent?.includes('Save')
-							).length,
-						}))
-						.catch((evaluateError) => ({
-							error: String(evaluateError).slice(0, 200),
-						}))
-				: null;
+			// Playwright reported the Save button as resolved and then timed out
+			// on the click itself, so the answer is what the button looked like
+			// at that moment: whether it was visible, steady, enabled, and on
+			// top. Ask the frame that actually holds the button, not the first
+			// frame that happens to exist.
+
+			const saveButtonState = await page
+				.frameLocator('iframe')
+				.getByRole('button', {name: 'Save'})
+				.last()
+				.evaluate((buttonElement) => {
+					const rect = buttonElement.getBoundingClientRect();
+					const style = window.getComputedStyle(buttonElement);
+
+					const centerX = rect.left + rect.width / 2;
+					const centerY = rect.top + rect.height / 2;
+
+					const topElement = document.elementFromPoint(
+						centerX,
+						centerY
+					);
+
+					return {
+						box: `${Math.round(rect.width)}x${Math.round(rect.height)} at ${Math.round(rect.left)},${Math.round(rect.top)}`,
+						covering:
+							topElement === buttonElement
+								? '<self>'
+								: `${topElement?.tagName}.${String(topElement?.className).slice(0, 60)}`,
+						disabled: (buttonElement as HTMLButtonElement).disabled,
+						inViewport:
+							centerY >= 0 && centerY <= window.innerHeight,
+						opacity: style.opacity,
+						pointerEvents: style.pointerEvents,
+						visibility: `${style.display}/${style.visibility}`,
+					};
+				})
+				.catch((evaluateError) => ({
+					error: String(evaluateError).slice(0, 250),
+				}));
+
+			const census = await page
+				.frameLocator('iframe')
+				.locator('body')
+				.evaluate((bodyElement) => ({
+					bodyText: (bodyElement.textContent || '')
+						.replace(/\s+/g, ' ')
+						.slice(0, 400),
+					filterRows: document.querySelectorAll(
+						'.lfr-objects__object-builder-screen-first-column'
+					).length,
+					modals: document.querySelectorAll('.modal').length,
+					mutations: (window as any).__mutations,
+					saveButtons: Array.from(
+						document.querySelectorAll('button')
+					).filter((buttonElement) =>
+						buttonElement.textContent?.includes('Save')
+					).length,
+				}))
+				.catch((evaluateError) => ({
+					error: String(evaluateError).slice(0, 250),
+				}));
 
 			throw new Error(
-				`[OVDIAG-FE] ${String(error).slice(0, 250)} | census=${JSON.stringify(census)} | pageErrors=${JSON.stringify(pageErrors).slice(0, 600)} | console=${JSON.stringify(consoleMessages.slice(-12)).slice(0, 1600)} | api=${JSON.stringify(apiCalls.slice(-8)).slice(0, 1200)}`
+				`[OVDIAG-FE] saveButton=${JSON.stringify(saveButtonState)} | census=${JSON.stringify(census)} | frames=${page.frames().length} | error=${String(error).slice(0, 2500)} | pageErrors=${JSON.stringify(pageErrors.slice(-4)).slice(0, 600)} | console=${JSON.stringify(consoleMessages.slice(-8)).slice(0, 1200)} | api=${JSON.stringify(apiCalls.slice(-8)).slice(0, 1200)}`
 			);
 		}
 
