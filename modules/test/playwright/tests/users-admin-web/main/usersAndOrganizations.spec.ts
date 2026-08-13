@@ -1105,7 +1105,7 @@ test(
 
 		await performUserSwitch(page, userAccount2.alternateName);
 
-		await notificationsPage.goto(userAccount2.name);
+		await notificationsPage.goto();
 
 		await expect(
 			notificationsPage.sharingNotificationMessage(
