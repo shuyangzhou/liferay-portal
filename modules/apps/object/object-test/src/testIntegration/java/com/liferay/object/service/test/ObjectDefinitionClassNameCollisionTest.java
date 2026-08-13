@@ -12,6 +12,7 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.test.util.ObjectDefinitionTestUtil;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -127,8 +128,10 @@ public class ObjectDefinitionClassNameCollisionTest {
 			null, TestPropsValues.getUserId(), 0, className, null, true, false,
 			true, false, true, false, false, false, false, false, null,
 			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			true, ObjectDefinitionTestUtil.getRandomName(), null, null, null,
-			null,
+			true,
+			ObjectDefinitionTestUtil.
+				getRandomModifiableSystemObjectDefinitionName(),
+			null, null, null, null,
 			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 			false, ObjectDefinitionConstants.SCOPE_COMPANY, null, 1,
 			WorkflowConstants.STATUS_DRAFT, Collections.emptyList(),
@@ -138,10 +141,19 @@ public class ObjectDefinitionClassNameCollisionTest {
 	private List<String> _getFourCharacterClassNames() throws Exception {
 		List<String> classNames = new ArrayList<>();
 
+		// Ask for every definition and keep this company's. The finder that
+		// takes a status matches it exactly, so STATUS_ANY, which is minus one,
+		// matches nothing and would report the company as holding no names.
+
 		for (ObjectDefinition objectDefinition :
 				_objectDefinitionLocalService.getObjectDefinitions(
-					TestPropsValues.getCompanyId(),
-					WorkflowConstants.STATUS_ANY)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+
+			if (objectDefinition.getCompanyId() !=
+					TestPropsValues.getCompanyId()) {
+
+				continue;
+			}
 
 			String className = objectDefinition.getClassName();
 
