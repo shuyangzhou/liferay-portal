@@ -45,21 +45,31 @@ const test = mergeTests(
 const applicationName = 'c/playwrighttests';
 
 test.afterEach(async ({apiHelpers}) => {
-	const {items} =
-		await apiHelpers.objectEntry.getObjectDefinitionObjectEntries(
-			applicationName,
-			new URLSearchParams({page: '1', pageSize: '100'})
-		);
 
-	for (const item of items ?? []) {
-		await apiHelpers.objectEntry.deleteObjectEntry(
-			applicationName,
-			item.id
-		);
+	// A run that stopped before creating the object definition has nothing to
+	// clean, and asking for its entries answers with the login page rather than
+	// JSON. Cleaning up is not what the tests report on, so let it be quiet.
+
+	try {
+		const {items} =
+			await apiHelpers.objectEntry.getObjectDefinitionObjectEntries(
+				applicationName,
+				new URLSearchParams({page: '1', pageSize: '100'})
+			);
+
+		for (const item of items ?? []) {
+			await apiHelpers.objectEntry.deleteObjectEntry(
+				applicationName,
+				item.id
+			);
+		}
+	}
+	catch (error) {
+		return;
 	}
 });
 
-test.beforeEach(async ({instanceSettingsPage, page}) => {
+test.beforeEach(async ({apiHelpers, instanceSettingsPage, page}) => {
 	test.skip(
 		!salesforceConfig.salesforceLoginURL ||
 			!salesforceConfig.salesforceConsumerKey ||
@@ -68,6 +78,32 @@ test.beforeEach(async ({instanceSettingsPage, page}) => {
 			!salesforceConfig.salesforcePassword,
 		'Requires Salesforce environment variables.'
 	);
+
+	// Both tests ask for one fixed external reference code, because it names the
+	// object in Salesforce. So a definition left behind by an earlier run takes
+	// the name for good and every run after it is rejected as a duplicate.
+	// Claim the name here rather than trusting the run before to have let go.
+
+	const objectDefinitionAPIClient =
+		await apiHelpers.buildRestClient(ObjectDefinitionAPI);
+
+	try {
+		const {body: objectDefinition} =
+			await objectDefinitionAPIClient.getObjectDefinitionByExternalReferenceCode(
+				'Playwright_Test__c'
+			);
+
+		if (objectDefinition?.id) {
+			await objectDefinitionAPIClient.deleteObjectDefinition(
+				objectDefinition.id
+			);
+		}
+	}
+	catch (error) {
+
+		// Nothing holds the name, which is the state the tests want.
+
+	}
 
 	page.setViewportSize({height: 1080, width: 1920});
 
