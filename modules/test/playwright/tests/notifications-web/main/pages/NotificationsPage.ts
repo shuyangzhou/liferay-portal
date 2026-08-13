@@ -5,6 +5,9 @@
 
 import {Locator, Page} from '@playwright/test';
 
+import {gotoWithRetry} from '../../../../utils/gotoWithRetry';
+import {PORTLET_URLS} from '../../../../utils/portletUrls';
+
 export class NotificationsPage {
 	readonly page: Page;
 	readonly backButton: Locator;
@@ -55,16 +58,20 @@ export class NotificationsPage {
 		};
 	}
 
-	async goto(userName: string = 'Test Test') {
-		await this.page.getByLabel(`${userName} User Profile`).click();
+	async goto() {
 
-		// The control panel sidebar can hold a menu item also named
-		// Notifications, the push notifications portlet's entry, so stay
-		// inside the dropdown this click just opened.
+		// Clicking through the profile dropdown leaves the test waiting out its
+		// whole timeout for a menu item that never appears. No test asserts
+		// that walk, so ask for the portlet by address, which does not depend
+		// on a menu opening or on what it holds. The address names its site,
+		// because the root path only reaches the site where a default site
+		// host is configured, and it carries the back url the dropdown's own
+		// link carries, because the back button the portlet renders from it is
+		// asserted here.
 
-		await this.page
-			.locator('.dropdown-menu.show')
-			.getByRole('menuitem', {name: 'Notifications'})
-			.click();
+		await gotoWithRetry(
+			this.page,
+			`/group/guest${PORTLET_URLS.notifications}&_com_liferay_notifications_web_portlet_NotificationsPortlet_backURL=%2F`
+		);
 	}
 }
