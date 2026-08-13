@@ -37,6 +37,28 @@ const test = mergeTests(
 	pageEditorPagesTest
 );
 
+// Entries of a Salesforce backed object live in Salesforce, so deleting the
+// object definition leaves them there. Every run that stops before its own
+// delete step would strand one in the org, and a list the tests read page one
+// of grows until a new entry no longer shows on it.
+
+const applicationName = 'c/playwrighttests';
+
+test.afterEach(async ({apiHelpers}) => {
+	const {items} =
+		await apiHelpers.objectEntry.getObjectDefinitionObjectEntries(
+			applicationName,
+			new URLSearchParams({page: '1', pageSize: '100'})
+		);
+
+	for (const item of items ?? []) {
+		await apiHelpers.objectEntry.deleteObjectEntry(
+			applicationName,
+			item.id
+		);
+	}
+});
+
 test.beforeEach(async ({instanceSettingsPage, page}) => {
 	test.skip(
 		!salesforceConfig.salesforceLoginURL ||
