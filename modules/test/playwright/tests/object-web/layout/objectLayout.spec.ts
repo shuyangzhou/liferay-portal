@@ -869,6 +869,45 @@ test.describe('Manage custom layouts through object layout tab', () => {
 			.getByRole('textbox')
 			.fill(updatedObjectLayoutName);
 
+		// DEBUG do not merge. saveAndReload() schedules the parent reload on a
+		// 300ms timer owned by the frame closeSidePanel() tears down. The
+		// teardown ends on the first transitionend to reach .fds-side-panel,
+		// and transitionend bubbles, so a descendant finishing sooner ends it
+		// early and the reload is never issued. Locally, forcing the panel
+		// transition to 1ms reproduces this failure exactly: 8 of 8 runs report
+		// reloads=0 and fail, against 8 of 8 passing at the shipped 500ms. This
+		// records which transitionend arrives first on CI, and whether the
+		// reload survived.
+
+		await page.evaluate(() => {
+			const transitions: string[] = [];
+
+			(window as unknown as {_transitions: string[]})._transitions =
+				transitions;
+
+			document.querySelector('.fds-side-panel')?.addEventListener(
+				'transitionend',
+				(event) => {
+					const target = event.target as Element;
+
+					transitions.push(
+						`${Math.round(performance.now())}:${
+							target.className || target.nodeName
+						}:${(event as TransitionEvent).propertyName}`
+					);
+				},
+				true
+			);
+		});
+
+		const reloads: string[] = [];
+
+		page.on('framenavigated', (frame) => {
+			if (frame === page.mainFrame()) {
+				reloads.push(frame.url());
+			}
+		});
+
 		await objectLayoutsPage.iframeLocator
 			.getByRole('button', {name: 'Save'})
 			.first()
@@ -876,9 +915,32 @@ test.describe('Manage custom layouts through object layout tab', () => {
 
 		await waitForAlert(page, 'The object layout was updated successfully');
 
-		await expect(
-			page.getByText(updatedObjectLayoutName).first()
-		).toBeVisible();
+		let newNameVisible = true;
+
+		try {
+			await expect(
+				page.getByText(updatedObjectLayoutName).first()
+			).toBeVisible({timeout: 15000});
+		}
+		catch (error) {
+			newNameVisible = false;
+		}
+
+		const transitions = reloads.length
+			? []
+			: await page
+					.evaluate(
+						() =>
+							(window as unknown as {_transitions?: string[]})
+								._transitions ?? []
+					)
+					.catch(() => ['unreadable']);
+
+		throw new Error(
+			`LAYOUTDIAG reloads=${reloads.length} newName=${newNameVisible} te=${transitions
+				.slice(0, 3)
+				.join(',')}`
+		);
 	});
 
 	test('can update an entry on the relationship tab with update permission', async ({
