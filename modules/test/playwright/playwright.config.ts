@@ -530,6 +530,7 @@ export default defineConfig({
 				] as ReporterDescription[])
 			: []),
 	],
+	repeatEach: 6,
 	retries: process.env.CI ? 1 : 0,
 	testDir: './tests',
 	timeout: 90 * 1000,
