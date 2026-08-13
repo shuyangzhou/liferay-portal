@@ -5,6 +5,8 @@
 
 import {Locator, Page} from '@playwright/test';
 
+import {PORTLET_URLS} from '../../../../utils/portletUrls';
+
 export class NotificationsPage {
 	readonly page: Page;
 	readonly backButton: Locator;
@@ -55,16 +57,15 @@ export class NotificationsPage {
 		};
 	}
 
-	async goto(userName: string = 'Test Test') {
-		await this.page.getByLabel(`${userName} User Profile`).click();
+	async goto() {
 
-		// The control panel sidebar can hold a menu item also named
-		// Notifications, the push notifications portlet's entry, so stay
-		// inside the dropdown this click just opened.
+		// Opening the profile dropdown and clicking through it makes the test
+		// wait on an animating menu, where the item resolves but never settles
+		// and the click burns the whole timeout. No test asserts that walk, so
+		// ask for the portlet by address.
 
-		await this.page
-			.locator('.dropdown-menu.show')
-			.getByRole('menuitem', {name: 'Notifications'})
-			.click();
+		await this.page.goto(`/group/guest${PORTLET_URLS.notifications}`);
+
+		await this.page.waitForLoadState('networkidle');
 	}
 }

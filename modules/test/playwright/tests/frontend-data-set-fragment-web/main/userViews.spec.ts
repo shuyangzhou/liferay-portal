@@ -1071,7 +1071,7 @@ test(
 		await test.step('Recipient sees the share notification', async () => {
 			const notificationsPage = new NotificationsPage(page);
 
-			await notificationsPage.goto(user.name);
+			await notificationsPage.goto();
 
 			await expect(
 				notificationsPage.sharingNotificationMessage(
