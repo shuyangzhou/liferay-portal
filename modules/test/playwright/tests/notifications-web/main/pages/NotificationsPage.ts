@@ -5,6 +5,7 @@
 
 import {Locator, Page} from '@playwright/test';
 
+import {gotoWithRetry} from '../../../../utils/gotoWithRetry';
 import {PORTLET_URLS} from '../../../../utils/portletUrls';
 
 export class NotificationsPage {
@@ -64,7 +65,10 @@ export class NotificationsPage {
 		// and the click burns the whole timeout. No test asserts that walk, so
 		// ask for the portlet by address.
 
-		await this.page.goto(`/group/guest${PORTLET_URLS.notifications}`);
+		await gotoWithRetry(
+			this.page,
+			`/group/guest${PORTLET_URLS.notifications}`
+		);
 
 		await this.page.waitForLoadState('networkidle');
 	}
