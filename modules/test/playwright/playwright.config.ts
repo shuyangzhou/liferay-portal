@@ -503,6 +503,8 @@ export default defineConfig({
 		wikiWebConfig,
 		...setupProjects,
 	],
+	grep: /can add entry with translation of picklist imported|Can send user notification to a regular role/,
+	repeatEach: 20,
 	reporter: [
 		[
 			'html',
