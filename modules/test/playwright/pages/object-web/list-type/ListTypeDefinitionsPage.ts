@@ -5,6 +5,7 @@
 
 import {FrameLocator, Locator, Page} from '@playwright/test';
 
+import {gotoWithRetry} from '../../../utils/gotoWithRetry';
 import {PORTLET_URLS} from '../../../utils/portletUrls';
 import {GlobalMenuPage} from '../../product-navigation-applications-menu/GlobalMenuPage';
 
@@ -93,7 +94,7 @@ export class ListTypeDefinitionsPage {
 	}
 
 	async goto() {
-		await this.page.goto(`/group/guest${PORTLET_URLS.picklists}`, {
+		await gotoWithRetry(this.page, `/group/guest${PORTLET_URLS.picklists}`, {
 			waitUntil: 'load',
 		});
 	}
