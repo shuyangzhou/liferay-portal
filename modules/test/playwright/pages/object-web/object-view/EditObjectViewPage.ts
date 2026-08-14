@@ -79,6 +79,13 @@ export class EditObjectViewPage {
 		}
 
 		await this.saveFilter.dispatchEvent('click');
+
+		// The New Filter modal carries a Save button of its own, and it sorts
+		// after the panel's, so a caller reading the last Save takes the
+		// modal's while it unmounts. Wait the modal out and leave only the
+		// panel's behind.
+
+		await this.saveFilter.waitFor({state: 'hidden'});
 	}
 
 	async addDefaultSort(columnName: string, sortOrder: string) {
