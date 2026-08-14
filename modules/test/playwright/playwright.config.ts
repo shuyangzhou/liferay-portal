@@ -503,6 +503,8 @@ export default defineConfig({
 		wikiWebConfig,
 		...setupProjects,
 	],
+	grep: /can filter entries by status in custom view|can edit a filter in custom view/,
+	repeatEach: 20,
 	reporter: [
 		[
 			'html',

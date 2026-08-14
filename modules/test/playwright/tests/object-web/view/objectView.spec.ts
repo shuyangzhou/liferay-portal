@@ -1544,7 +1544,74 @@ test(
 
 		await editObjectViewPage.createFilter('Status', 'Includes', 'Pending');
 
-		await sidePanel.getByRole('button', {name: 'Save'}).last().click();
+		{
+			const measure = async () =>
+				page.evaluate(() => {
+					const iframe = document.querySelector('iframe');
+					const ir = iframe.getBoundingClientRect();
+					const doc = iframe.contentDocument;
+					const saves = Array.from(
+						doc.querySelectorAll('button')
+					).filter((b) => (b.textContent || '').trim() === 'Save');
+					const btn = saves[saves.length - 1];
+					const br = btn.getBoundingClientRect();
+					const de = doc.documentElement;
+					const content = doc.querySelector(
+						'.lfr-objects__side-panel-content'
+					);
+					let scroller = 'none';
+					for (let e = btn.parentElement; e; e = e.parentElement) {
+						const s = doc.defaultView.getComputedStyle(e);
+						if (
+							e.scrollHeight > e.clientHeight + 1 &&
+							/auto|scroll/.test(s.overflowY)
+						) {
+							scroller =
+								e.className.slice(0, 28) +
+								' sh=' +
+								e.scrollHeight +
+								' ch=' +
+								e.clientHeight;
+							break;
+						}
+					}
+					return {
+						btnBottomInPage: Math.round(ir.y + br.y + br.height),
+						btnInFrame: Math.round(br.y),
+						contentH: content
+							? Math.round(content.getBoundingClientRect().height)
+							: -1,
+						frameH: Math.round(ir.height),
+						frameY: Math.round(ir.y),
+						frameDocSh: de.scrollHeight,
+						frameDocCh: de.clientHeight,
+						pageSh: document.documentElement.scrollHeight,
+						pageCh: document.documentElement.clientHeight,
+						pageOverflowY: getComputedStyle(document.body)
+							.overflowY,
+						saveCount: saves.length,
+						scroller,
+						viewportH: window.innerHeight,
+					};
+				});
+
+			const before = await measure();
+
+			try {
+				await sidePanel
+					.getByRole('button', {name: 'Save'})
+					.last()
+					.click({timeout: 20000});
+			}
+			catch (error) {
+				throw new Error(
+					'VIEWGEOM before=' +
+						JSON.stringify(before) +
+						' after=' +
+						JSON.stringify(await measure())
+				);
+			}
+		}
 
 		await page.waitForLoadState('networkidle');
 
@@ -1585,7 +1652,74 @@ test(
 			.getByRole('button', {name: 'Save'})
 			.click();
 
-		await sidePanel.getByRole('button', {name: 'Save'}).last().click();
+		{
+			const measure = async () =>
+				page.evaluate(() => {
+					const iframe = document.querySelector('iframe');
+					const ir = iframe.getBoundingClientRect();
+					const doc = iframe.contentDocument;
+					const saves = Array.from(
+						doc.querySelectorAll('button')
+					).filter((b) => (b.textContent || '').trim() === 'Save');
+					const btn = saves[saves.length - 1];
+					const br = btn.getBoundingClientRect();
+					const de = doc.documentElement;
+					const content = doc.querySelector(
+						'.lfr-objects__side-panel-content'
+					);
+					let scroller = 'none';
+					for (let e = btn.parentElement; e; e = e.parentElement) {
+						const s = doc.defaultView.getComputedStyle(e);
+						if (
+							e.scrollHeight > e.clientHeight + 1 &&
+							/auto|scroll/.test(s.overflowY)
+						) {
+							scroller =
+								e.className.slice(0, 28) +
+								' sh=' +
+								e.scrollHeight +
+								' ch=' +
+								e.clientHeight;
+							break;
+						}
+					}
+					return {
+						btnBottomInPage: Math.round(ir.y + br.y + br.height),
+						btnInFrame: Math.round(br.y),
+						contentH: content
+							? Math.round(content.getBoundingClientRect().height)
+							: -1,
+						frameH: Math.round(ir.height),
+						frameY: Math.round(ir.y),
+						frameDocSh: de.scrollHeight,
+						frameDocCh: de.clientHeight,
+						pageSh: document.documentElement.scrollHeight,
+						pageCh: document.documentElement.clientHeight,
+						pageOverflowY: getComputedStyle(document.body)
+							.overflowY,
+						saveCount: saves.length,
+						scroller,
+						viewportH: window.innerHeight,
+					};
+				});
+
+			const before = await measure();
+
+			try {
+				await sidePanel
+					.getByRole('button', {name: 'Save'})
+					.last()
+					.click({timeout: 20000});
+			}
+			catch (error) {
+				throw new Error(
+					'VIEWGEOM before=' +
+						JSON.stringify(before) +
+						' after=' +
+						JSON.stringify(await measure())
+				);
+			}
+		}
 
 		await page.waitForLoadState('networkidle');
 
@@ -1975,7 +2109,74 @@ test(
 			'Approved, Denied, Draft, Expired, Inactive, Incomplete, In Recycle Bin, Scheduled'
 		);
 
-		await sidePanel.getByRole('button', {name: 'Save'}).last().click();
+		{
+			const measure = async () =>
+				page.evaluate(() => {
+					const iframe = document.querySelector('iframe');
+					const ir = iframe.getBoundingClientRect();
+					const doc = iframe.contentDocument;
+					const saves = Array.from(
+						doc.querySelectorAll('button')
+					).filter((b) => (b.textContent || '').trim() === 'Save');
+					const btn = saves[saves.length - 1];
+					const br = btn.getBoundingClientRect();
+					const de = doc.documentElement;
+					const content = doc.querySelector(
+						'.lfr-objects__side-panel-content'
+					);
+					let scroller = 'none';
+					for (let e = btn.parentElement; e; e = e.parentElement) {
+						const s = doc.defaultView.getComputedStyle(e);
+						if (
+							e.scrollHeight > e.clientHeight + 1 &&
+							/auto|scroll/.test(s.overflowY)
+						) {
+							scroller =
+								e.className.slice(0, 28) +
+								' sh=' +
+								e.scrollHeight +
+								' ch=' +
+								e.clientHeight;
+							break;
+						}
+					}
+					return {
+						btnBottomInPage: Math.round(ir.y + br.y + br.height),
+						btnInFrame: Math.round(br.y),
+						contentH: content
+							? Math.round(content.getBoundingClientRect().height)
+							: -1,
+						frameH: Math.round(ir.height),
+						frameY: Math.round(ir.y),
+						frameDocSh: de.scrollHeight,
+						frameDocCh: de.clientHeight,
+						pageSh: document.documentElement.scrollHeight,
+						pageCh: document.documentElement.clientHeight,
+						pageOverflowY: getComputedStyle(document.body)
+							.overflowY,
+						saveCount: saves.length,
+						scroller,
+						viewportH: window.innerHeight,
+					};
+				});
+
+			const before = await measure();
+
+			try {
+				await sidePanel
+					.getByRole('button', {name: 'Save'})
+					.last()
+					.click({timeout: 20000});
+			}
+			catch (error) {
+				throw new Error(
+					'VIEWGEOM before=' +
+						JSON.stringify(before) +
+						' after=' +
+						JSON.stringify(await measure())
+				);
+			}
+		}
 
 		await page.waitForLoadState('networkidle');
 
