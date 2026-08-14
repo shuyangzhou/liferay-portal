@@ -1544,7 +1544,99 @@ test(
 
 		await editObjectViewPage.createFilter('Status', 'Includes', 'Pending');
 
-		await sidePanel.getByRole('button', {name: 'Save'}).last().click();
+		{
+			const measure = async () => {
+				try {
+					return await page.evaluate(() => {
+						const iframe = document.querySelector('iframe');
+
+						if (!iframe || !iframe.contentDocument) {
+							return {note: 'no iframe'};
+						}
+
+						const ir = iframe.getBoundingClientRect();
+						const doc = iframe.contentDocument;
+						const saves = Array.from(
+							doc.querySelectorAll('button')
+						).filter((b) => (b.textContent || '').trim() === 'Save');
+						const de = doc.documentElement;
+						const content = doc.querySelector(
+							'.lfr-objects__side-panel-content'
+						);
+						const common = {
+							contentH: content
+								? Math.round(content.getBoundingClientRect().height)
+								: -1,
+							frameDocCh: de.clientHeight,
+							frameDocSh: de.scrollHeight,
+							frameH: Math.round(ir.height),
+							frameY: Math.round(ir.y),
+							pageCh: document.documentElement.clientHeight,
+							pageOverflowY: getComputedStyle(document.body).overflowY,
+							pageSh: document.documentElement.scrollHeight,
+							saveCount: saves.length,
+							scrollY: Math.round(window.scrollY),
+							viewportH: window.innerHeight,
+						};
+
+						const btn = saves[saves.length - 1];
+
+						if (!btn) {
+							return {...common, note: 'no save button'};
+						}
+
+						const br = btn.getBoundingClientRect();
+						let scroller = 'none';
+
+						for (let e = btn.parentElement; e; e = e.parentElement) {
+							const s = doc.defaultView.getComputedStyle(e);
+
+							if (
+								e.scrollHeight > e.clientHeight + 1 &&
+								/auto|scroll/.test(s.overflowY)
+							) {
+								scroller =
+									e.className.slice(0, 24) +
+									' sh=' +
+									e.scrollHeight +
+									' ch=' +
+									e.clientHeight;
+								break;
+							}
+						}
+
+						return {
+							...common,
+							btnBottomInPage: Math.round(ir.y + br.y + br.height),
+							btnInFrame: Math.round(br.y),
+							scroller,
+						};
+					});
+				}
+				catch (error) {
+					return {note: 'measure failed: ' + String(error.message).slice(0, 80)};
+				}
+			};
+
+			const before = await measure();
+
+			try {
+				await sidePanel
+					.getByRole('button', {name: 'Save'})
+					.last()
+					.click({timeout: 20000});
+			}
+			catch (error) {
+				const after = await measure();
+
+				throw new Error(
+					'VIEWGEOM before=' +
+						JSON.stringify(before) +
+						' after=' +
+						JSON.stringify(after)
+				);
+			}
+		}
 
 		await page.waitForLoadState('networkidle');
 
@@ -1585,7 +1677,99 @@ test(
 			.getByRole('button', {name: 'Save'})
 			.click();
 
-		await sidePanel.getByRole('button', {name: 'Save'}).last().click();
+		{
+			const measure = async () => {
+				try {
+					return await page.evaluate(() => {
+						const iframe = document.querySelector('iframe');
+
+						if (!iframe || !iframe.contentDocument) {
+							return {note: 'no iframe'};
+						}
+
+						const ir = iframe.getBoundingClientRect();
+						const doc = iframe.contentDocument;
+						const saves = Array.from(
+							doc.querySelectorAll('button')
+						).filter((b) => (b.textContent || '').trim() === 'Save');
+						const de = doc.documentElement;
+						const content = doc.querySelector(
+							'.lfr-objects__side-panel-content'
+						);
+						const common = {
+							contentH: content
+								? Math.round(content.getBoundingClientRect().height)
+								: -1,
+							frameDocCh: de.clientHeight,
+							frameDocSh: de.scrollHeight,
+							frameH: Math.round(ir.height),
+							frameY: Math.round(ir.y),
+							pageCh: document.documentElement.clientHeight,
+							pageOverflowY: getComputedStyle(document.body).overflowY,
+							pageSh: document.documentElement.scrollHeight,
+							saveCount: saves.length,
+							scrollY: Math.round(window.scrollY),
+							viewportH: window.innerHeight,
+						};
+
+						const btn = saves[saves.length - 1];
+
+						if (!btn) {
+							return {...common, note: 'no save button'};
+						}
+
+						const br = btn.getBoundingClientRect();
+						let scroller = 'none';
+
+						for (let e = btn.parentElement; e; e = e.parentElement) {
+							const s = doc.defaultView.getComputedStyle(e);
+
+							if (
+								e.scrollHeight > e.clientHeight + 1 &&
+								/auto|scroll/.test(s.overflowY)
+							) {
+								scroller =
+									e.className.slice(0, 24) +
+									' sh=' +
+									e.scrollHeight +
+									' ch=' +
+									e.clientHeight;
+								break;
+							}
+						}
+
+						return {
+							...common,
+							btnBottomInPage: Math.round(ir.y + br.y + br.height),
+							btnInFrame: Math.round(br.y),
+							scroller,
+						};
+					});
+				}
+				catch (error) {
+					return {note: 'measure failed: ' + String(error.message).slice(0, 80)};
+				}
+			};
+
+			const before = await measure();
+
+			try {
+				await sidePanel
+					.getByRole('button', {name: 'Save'})
+					.last()
+					.click({timeout: 20000});
+			}
+			catch (error) {
+				const after = await measure();
+
+				throw new Error(
+					'VIEWGEOM before=' +
+						JSON.stringify(before) +
+						' after=' +
+						JSON.stringify(after)
+				);
+			}
+		}
 
 		await page.waitForLoadState('networkidle');
 
@@ -1975,7 +2159,99 @@ test(
 			'Approved, Denied, Draft, Expired, Inactive, Incomplete, In Recycle Bin, Scheduled'
 		);
 
-		await sidePanel.getByRole('button', {name: 'Save'}).last().click();
+		{
+			const measure = async () => {
+				try {
+					return await page.evaluate(() => {
+						const iframe = document.querySelector('iframe');
+
+						if (!iframe || !iframe.contentDocument) {
+							return {note: 'no iframe'};
+						}
+
+						const ir = iframe.getBoundingClientRect();
+						const doc = iframe.contentDocument;
+						const saves = Array.from(
+							doc.querySelectorAll('button')
+						).filter((b) => (b.textContent || '').trim() === 'Save');
+						const de = doc.documentElement;
+						const content = doc.querySelector(
+							'.lfr-objects__side-panel-content'
+						);
+						const common = {
+							contentH: content
+								? Math.round(content.getBoundingClientRect().height)
+								: -1,
+							frameDocCh: de.clientHeight,
+							frameDocSh: de.scrollHeight,
+							frameH: Math.round(ir.height),
+							frameY: Math.round(ir.y),
+							pageCh: document.documentElement.clientHeight,
+							pageOverflowY: getComputedStyle(document.body).overflowY,
+							pageSh: document.documentElement.scrollHeight,
+							saveCount: saves.length,
+							scrollY: Math.round(window.scrollY),
+							viewportH: window.innerHeight,
+						};
+
+						const btn = saves[saves.length - 1];
+
+						if (!btn) {
+							return {...common, note: 'no save button'};
+						}
+
+						const br = btn.getBoundingClientRect();
+						let scroller = 'none';
+
+						for (let e = btn.parentElement; e; e = e.parentElement) {
+							const s = doc.defaultView.getComputedStyle(e);
+
+							if (
+								e.scrollHeight > e.clientHeight + 1 &&
+								/auto|scroll/.test(s.overflowY)
+							) {
+								scroller =
+									e.className.slice(0, 24) +
+									' sh=' +
+									e.scrollHeight +
+									' ch=' +
+									e.clientHeight;
+								break;
+							}
+						}
+
+						return {
+							...common,
+							btnBottomInPage: Math.round(ir.y + br.y + br.height),
+							btnInFrame: Math.round(br.y),
+							scroller,
+						};
+					});
+				}
+				catch (error) {
+					return {note: 'measure failed: ' + String(error.message).slice(0, 80)};
+				}
+			};
+
+			const before = await measure();
+
+			try {
+				await sidePanel
+					.getByRole('button', {name: 'Save'})
+					.last()
+					.click({timeout: 20000});
+			}
+			catch (error) {
+				const after = await measure();
+
+				throw new Error(
+					'VIEWGEOM before=' +
+						JSON.stringify(before) +
+						' after=' +
+						JSON.stringify(after)
+				);
+			}
+		}
 
 		await page.waitForLoadState('networkidle');
 
