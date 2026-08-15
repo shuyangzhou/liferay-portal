@@ -503,6 +503,8 @@ export default defineConfig({
 		wikiWebConfig,
 		...setupProjects,
 	],
+	grep: /can create actions related to commerce order object|can create an email notification object action using user preferred language|can create and update condition with expression builder|Can trigger object action as a client extension|Can send user notification to a regular role/,
+	repeatEach: 5,
 	reporter: [
 		[
 			'html',
