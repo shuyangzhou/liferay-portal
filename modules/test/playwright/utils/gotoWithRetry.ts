@@ -13,27 +13,32 @@ import {Page} from '@playwright/test';
  * interrupted even though nothing is wrong with the address. Let the pending
  * navigation land and go again: unlike settling for whatever page won, the
  * retry ends on the address the caller asked for.
+ *
+ * A single retry is not always enough. A save can leave more than one
+ * navigation in flight, and a loaded machine can land the second one during the
+ * retry itself, so give the address three attempts before reporting the abort.
  */
 export async function gotoWithRetry(
 	page: Page,
 	url: string,
 	options?: Parameters<Page['goto']>[1]
 ) {
-	try {
-		return await page.goto(url, options);
-	}
-	catch (error) {
-		const message = String(error.message);
-
-		if (
-			!message.includes('interrupted by another navigation') &&
-			!message.includes('net::ERR_ABORTED')
-		) {
-			throw error;
+	for (let attempt = 0; ; attempt++) {
+		try {
+			return await page.goto(url, options);
 		}
+		catch (error) {
+			const message = String(error.message);
 
-		await page.waitForLoadState();
+			if (
+				attempt === 2 ||
+				(!message.includes('interrupted by another navigation') &&
+					!message.includes('net::ERR_ABORTED'))
+			) {
+				throw error;
+			}
 
-		return await page.goto(url, options);
+			await page.waitForLoadState();
+		}
 	}
 }
