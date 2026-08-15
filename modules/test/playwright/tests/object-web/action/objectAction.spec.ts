@@ -352,7 +352,19 @@ test('can send notification email via download action', async ({
 		.getByRole('button', {name: 'Search'})
 		.waitFor({state: 'visible'});
 
+	// The attachment is served by a request that sends the download trigger on
+	// its way out, and the action that queues the notification runs inside that
+	// request. Clicking only starts it, so returning here reads the queue while
+	// the server is still serving the file and finds it empty. Wait for the
+	// download to arrive before asking.
+
+	const downloadPromise = page.waitForEvent('download');
+
 	await viewObjectEntriesPage.page.getByText('sampleFile.txt').click();
+
+	const download = await downloadPromise;
+
+	await download.path();
 
 	// Verify if the email was sent
 
