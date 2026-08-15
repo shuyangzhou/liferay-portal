@@ -503,6 +503,8 @@ export default defineConfig({
 		wikiWebConfig,
 		...setupProjects,
 	],
+	grep: /can create an object custom view using object relationship entry|can edit a filter in custom view|can filter entries by status in custom view|cannot create an object custom view using empty multiselectpicklist entry/,
+	repeatEach: 10,
 	reporter: [
 		[
 			'html',
