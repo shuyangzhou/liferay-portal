@@ -67,7 +67,8 @@ async function importPicklistFromFile(
 	page: Page,
 	listTypeDefinitionPage: ListTypeDefinitionsPage,
 	filePath: string,
-	picklistName: string
+	picklistName: string,
+	{confirmsOverwrite = false}: {confirmsOverwrite?: boolean} = {}
 ) {
 	await listTypeDefinitionPage.goto();
 
@@ -92,7 +93,29 @@ async function importPicklistFromFile(
 
 	await expect(page.getByLabel('External Reference Code')).not.toBeEmpty();
 
-	await page.getByRole('button', {exact: true, name: 'Import'}).click();
+	// Importing submits the form and navigates, and returning while that
+	// navigation is in flight leaves it to abort whatever the caller does next,
+	// which is a goto to this same control panel address. Wait for it here.
+
+	// An import whose external reference code already exists does not navigate
+	// at all: it stops on the Update Existing Picklist confirmation, and the
+	// caller drives it from there. Callers say which of the two they expect,
+	// because the helper cannot tell before clicking.
+
+	if (confirmsOverwrite) {
+		await page.getByRole('button', {exact: true, name: 'Import'}).click();
+
+		await page
+			.getByRole('heading', {name: 'Update Existing Picklist'})
+			.waitFor({state: 'visible'});
+
+		return;
+	}
+
+	await Promise.all([
+		page.waitForNavigation(),
+		page.getByRole('button', {exact: true, name: 'Import'}).click(),
+	]);
 }
 
 test.describe('manage export/import of picklists', () => {
@@ -553,7 +576,8 @@ test.describe('manage export/import of picklists', () => {
 				page,
 				listTypeDefinitionPage,
 				modifiedFilePath,
-				modifiedName
+				modifiedName,
+				{confirmsOverwrite: true}
 			);
 
 			await expect(
