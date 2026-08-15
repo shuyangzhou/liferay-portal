@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {FrameLocator, Locator, Page} from '@playwright/test';
+import {FrameLocator, Locator, Page, expect} from '@playwright/test';
 
 export class EditObjectViewPage {
 	readonly addButton: Locator;
@@ -15,6 +15,7 @@ export class EditObjectViewPage {
 	readonly filtersTab: Locator;
 	readonly markAsDefaultButton: Locator;
 	readonly newFilterButton: Locator;
+	readonly newFilterRequiredError: Locator;
 	readonly saveButton: Locator;
 	readonly saveFilter: Locator;
 	readonly sidePanel: FrameLocator;
@@ -40,6 +41,9 @@ export class EditObjectViewPage {
 		this.newFilterButton = this.sidePanel.getByRole('button', {
 			name: 'New Filter',
 		});
+		this.newFilterRequiredError = this.sidePanel
+			.getByLabel('New Filter')
+			.getByText('Required');
 		this.saveButton = this.sidePanel.getByRole('button', {
 			name: 'Save',
 		});
@@ -78,7 +82,31 @@ export class EditObjectViewPage {
 			await this.filterValue.press('Escape');
 		}
 
+		// The modal's own button group and its Cancel button overlap this Save,
+		// and a modal tall enough to hold every filter value pushes it outside
+		// the viewport, so a real click is intercepted. Dispatch it instead.
+
 		await this.saveFilter.dispatchEvent('click');
+
+		// The modal stays up for a moment after the save, and while it does its
+		// own Save is the last Save button in the side panel, so a caller
+		// reaching for the view's Save binds to this one instead. Wait for the
+		// save to be resolved: an accepted filter closes the modal, a rejected
+		// one keeps it open and reports the field it needs.
+
+		await expect
+			.poll(async () => {
+				if (!(await this.saveFilter.isVisible())) {
+					return 'accepted';
+				}
+
+				if (await this.newFilterRequiredError.isVisible()) {
+					return 'rejected';
+				}
+
+				return 'pending';
+			})
+			.not.toBe('pending');
 	}
 
 	async addDefaultSort(columnName: string, sortOrder: string) {
