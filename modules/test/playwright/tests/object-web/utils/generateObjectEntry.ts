@@ -78,9 +78,22 @@ function generateObjectEntryValue({
 		case 'LongText':
 			return getRandomString();
 		case 'MultiselectPicklist':
+
+			// The two picks are drawn independently, so they collide often on a
+			// short list. Selecting the same entry twice is not a multiselect:
+			// the second selection lands on an option that is already selected,
+			// which the admin theme renders pointer transparent, and the click
+			// never arrives. Offset the second pick so the two always differ.
+
 			return [
 				listTypeEntriesName[listTypeEntriesRandomLength1],
-				listTypeEntriesName[listTypeEntriesRandomLength2],
+				listTypeEntriesName[
+					(listTypeEntriesRandomLength1 +
+						1 +
+						(listTypeEntriesRandomLength2 %
+							(listTypeEntriesName.length - 1))) %
+						listTypeEntriesName.length
+				],
 			];
 		case 'Picklist':
 			return {
