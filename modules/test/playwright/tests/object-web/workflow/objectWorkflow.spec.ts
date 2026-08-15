@@ -428,21 +428,31 @@ test(
 			objectDefinition.label['en_US']
 		);
 
-		await workflowTasksPage.goto();
+		// Each of these pages is rendered by the server for one address, and the
+		// redeploy the activation change triggers outlives the save that
+		// triggers it. A page fetched before the redeploy finishes keeps what it
+		// showed for as long as it is left alone, so ask for it again until it
+		// comes back showing the change.
 
-		await expect(
-			page.getByRole('heading', {
-				name: objectDefinition.label['en_US'],
-			})
-		).toBeHidden();
+		await expect(async () => {
+			await workflowTasksPage.goto();
 
-		await workflowTasksPage.assignedToMyRolesLink.click();
+			await expect(
+				page.getByRole('heading', {
+					name: objectDefinition.label['en_US'],
+				})
+			).toBeHidden({timeout: 1000});
+		}).toPass({timeout: 60000});
 
-		await expect(
-			page.getByRole('heading', {
-				name: objectDefinition.label['en_US'],
-			})
-		).toBeHidden();
+		await expect(async () => {
+			await workflowTasksPage.assignedToMyRolesLink.click();
+
+			await expect(
+				page.getByRole('heading', {
+					name: objectDefinition.label['en_US'],
+				})
+			).toBeHidden({timeout: 1000});
+		}).toPass({timeout: 60000});
 
 		await viewObjectDefinitionsPage.goto();
 
@@ -450,17 +460,21 @@ test(
 			objectDefinition.label['en_US']
 		);
 
-		await workflowTasksPage.goto();
+		await expect(async () => {
+			await workflowTasksPage.goto();
 
-		await expect(
-			page.getByText(objectDefinition.label['en_US']).first()
-		).toBeVisible();
+			await expect(
+				page.getByText(objectDefinition.label['en_US']).first()
+			).toBeVisible({timeout: 1000});
+		}).toPass({timeout: 60000});
 
-		await workflowTasksPage.assignedToMyRolesLink.click();
+		await expect(async () => {
+			await workflowTasksPage.assignedToMyRolesLink.click();
 
-		await expect(
-			page.getByText(objectDefinition.label['en_US']).first()
-		).toBeVisible();
+			await expect(
+				page.getByText(objectDefinition.label['en_US']).first()
+			).toBeVisible({timeout: 1000});
+		}).toPass({timeout: 60000});
 	}
 );
 
