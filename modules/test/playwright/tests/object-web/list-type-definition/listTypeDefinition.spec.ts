@@ -92,7 +92,14 @@ async function importPicklistFromFile(
 
 	await expect(page.getByLabel('External Reference Code')).not.toBeEmpty();
 
-	await page.getByRole('button', {exact: true, name: 'Import'}).click();
+	// Importing submits the form and navigates. Returning while that navigation
+	// is still in flight leaves it to abort whatever the caller does next, which
+	// is a goto to this same control panel address. Wait for it here.
+
+	await Promise.all([
+		page.waitForNavigation(),
+		page.getByRole('button', {exact: true, name: 'Import'}).click(),
+	]);
 }
 
 test.describe('manage export/import of picklists', () => {
