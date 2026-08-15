@@ -503,6 +503,8 @@ export default defineConfig({
 		wikiWebConfig,
 		...setupProjects,
 	],
+	grep: /relates many entries from both objects in a many-to-many relationship/,
+	repeatEach: 10,
 	reporter: [
 		[
 			'html',
