@@ -81,13 +81,24 @@ test.describe('Collection Display', () => {
 			objectDefinition.name
 		);
 
-		await collectionsPage.goto(site.friendlyUrlPath);
+		// Reactivating redeploys the object, and the redeploy outlives the save
+		// it is triggered by: the success message covers the save only. The
+		// collection provider list is rendered by the server for one address, so
+		// a page fetched before the redeploy finishes does not carry the object
+		// and waiting on it never sees it arrive. Ask for the list again until
+		// the object is on it.
 
-		await page.getByRole('link', {name: 'Collection Providers'}).click();
+		await expect(async () => {
+			await collectionsPage.goto(site.friendlyUrlPath);
 
-		await expect(
-			page.getByText(objectDefinition.name).first()
-		).toBeVisible();
+			await page
+				.getByRole('link', {name: 'Collection Providers'})
+				.click();
+
+			await expect(
+				page.getByText(objectDefinition.name).first()
+			).toBeVisible({timeout: 1000});
+		}).toPass({timeout: 60000});
 	});
 
 	test(
