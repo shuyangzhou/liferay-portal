@@ -269,13 +269,21 @@ test(
 			objectDefinition.label['en_US']
 		);
 
-		await workflowPage.goto(site.friendlyUrlPath);
+		// The site workflow page is rendered by the server for one address, and
+		// the redeploy the activation change triggers outlives the save it is
+		// triggered by. A page fetched before the redeploy finishes keeps what
+		// it showed for as long as it is left alone, so ask for it again until
+		// it comes back showing the change.
 
-		await expect(
-			page.getByRole('row', {
-				name: objectDefinition.label['en_US'],
-			})
-		).toBeHidden();
+		await expect(async () => {
+			await workflowPage.goto(site.friendlyUrlPath);
+
+			await expect(
+				page.getByRole('row', {
+					name: objectDefinition.label['en_US'],
+				})
+			).toBeHidden({timeout: 1000});
+		}).toPass({timeout: 60000});
 
 		await viewObjectDefinitionsPage.goto();
 
@@ -283,13 +291,15 @@ test(
 			objectDefinition.label['en_US']
 		);
 
-		await workflowPage.goto(site.friendlyUrlPath);
+		await expect(async () => {
+			await workflowPage.goto(site.friendlyUrlPath);
 
-		await expect(
-			page.getByRole('row', {
-				name: objectDefinition.label['en_US'],
-			})
-		).toBeVisible();
+			await expect(
+				page.getByRole('row', {
+					name: objectDefinition.label['en_US'],
+				})
+			).toBeVisible({timeout: 1000});
+		}).toPass({timeout: 60000});
 	}
 );
 
