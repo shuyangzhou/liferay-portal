@@ -75,7 +75,12 @@ export class EditObjectViewPage {
 				await this.sidePanel.getByLabel(value, {exact: true}).check();
 			}
 
-			await this.filterValue.press('Escape');
+			// Escape here is not private to the value list. The side panel
+			// closes on Escape, guarded only by a modal being open, so once the
+			// New Filter modal goes the panel goes with it and takes the view's
+			// Save button with it. Close the list by clicking the field again.
+
+			await this.filterValue.click();
 		}
 
 		await this.saveFilter.dispatchEvent('click');
