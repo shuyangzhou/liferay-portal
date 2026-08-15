@@ -216,9 +216,20 @@ test(
 
 		await viewObjectDefinitionsPage.changeObjectActivateStatus(label);
 
-		await configurationTabPage.searchAssetType(label);
+		// Deactivating redeploys the object, and the redeploy outlives the save
+		// it is triggered by: the success message covers the save only. The
+		// asset type list is rendered by the server for one address, so a table
+		// fetched before the redeploy finishes keeps the row for as long as the
+		// page is left alone, and waiting on it never sees the change. Ask for
+		// the table again until it comes back without the row.
 
-		await expect(page.getByRole('row', {name: label})).toBeHidden();
+		await expect(async () => {
+			await configurationTabPage.searchAssetType(label);
+
+			await expect(page.getByRole('row', {name: label})).toBeHidden({
+				timeout: 1000,
+			});
+		}).toPass({timeout: 60000});
 
 		await viewObjectDefinitionsPage.goto();
 
