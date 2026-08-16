@@ -216,7 +216,7 @@ export class ObjectFieldsPage {
 				// Click on trigger again here because clickAndExpectToBeVisible
 				// won't click again if the side panel is already open.
 
-				await trigger.click();
+				await trigger.click({timeout: 5000});
 
 				// Check that the side panel is opened after clicking.
 
@@ -229,7 +229,7 @@ export class ObjectFieldsPage {
 
 				await expect(
 					this.iframeLocator.locator('#objectFieldLabelInput')
-				).toHaveValue(fieldLabel);
+				).toHaveValue(fieldLabel, {timeout: 5000});
 			}).toPass();
 
 			await this.page.waitForLoadState('networkidle');
