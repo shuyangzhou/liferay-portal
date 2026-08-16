@@ -356,10 +356,21 @@ test('can send notification email via download action', async ({
 
 	// Verify if the email was sent
 
-	const notificationQueueEntries =
-		await apiHelpers.notification.getNotificationQueueEntriesPage(
-			senderEmail
-		);
+	// Downloading the attachment only starts the action that sends the mail. The
+	// queue entry is written after the download returns, so a single read taken
+	// straight after the click can arrive first and find nothing. Ask again
+	// until the entry is there.
+
+	let notificationQueueEntries;
+
+	await expect(async () => {
+		notificationQueueEntries =
+			await apiHelpers.notification.getNotificationQueueEntriesPage(
+				senderEmail
+			);
+
+		expect(notificationQueueEntries.items.length).toBeTruthy();
+	}).toPass({timeout: 30000});
 
 	const notificationQueueEntriesId = notificationQueueEntries.items.map(
 		(item: any) => item.id
@@ -371,8 +382,6 @@ test('can send notification email via download action', async ({
 			type: 'notificationQueueEntry',
 		});
 	}
-
-	expect(notificationQueueEntries.items.length).toBeTruthy();
 });
 
 test(
