@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {FrameLocator, Locator, Page} from '@playwright/test';
+import {FrameLocator, Locator, Page, expect} from '@playwright/test';
 
 export class EditObjectViewPage {
 	readonly addButton: Locator;
@@ -78,7 +78,16 @@ export class EditObjectViewPage {
 			await this.filterValue.press('Escape');
 		}
 
+		// Dispatching the event runs the handler without waiting for anything, so
+		// this returns while the modal is still on its way out. Callers go on to
+		// press a Save that is matched with last(), and for as long as the modal
+		// is present that match is the modal's own button rather than the one
+		// they mean, so the press waits on a control that is leaving. Wait for
+		// the modal to go.
+
 		await this.saveFilter.dispatchEvent('click');
+
+		await expect(this.sidePanel.getByLabel('New Filter')).toBeHidden();
 	}
 
 	async addDefaultSort(columnName: string, sortOrder: string) {
