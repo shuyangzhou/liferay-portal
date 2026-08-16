@@ -94,12 +94,27 @@ export class ViewObjectDefinitionsPage {
 
 		await this.page.getByRole('switch', {name: 'Activate Object'}).click();
 
+		// The success message renders before the request that carries the new
+		// activate state has been answered, so waiting for the message alone
+		// hands back control while the write is still in flight. A caller that
+		// asks for another address next tears the page down and the write is
+		// cancelled, leaving the object in its old state. Wait for the response.
+
+		const responsePromise = this.page.waitForResponse(
+			(response) =>
+				response.request().method() === 'PUT' &&
+				response.url().includes('object-definitions'),
+			{timeout: 15000}
+		);
+
 		await this.page.getByRole('button', {name: 'Save'}).click();
 
 		await waitForAlert(
 			this.page,
 			`Success:The object was saved successfully.`
 		);
+
+		await responsePromise;
 	}
 
 	async clickEditObjectDefinitionLink(
