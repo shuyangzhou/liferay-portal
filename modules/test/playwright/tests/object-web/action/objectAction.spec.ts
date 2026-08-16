@@ -352,6 +352,36 @@ test('can send notification email via download action', async ({
 		.getByRole('button', {name: 'Search'})
 		.waitFor({state: 'visible'});
 
+	// LPDX-DIAG scaffolding. Records whether clicking the attachment produced a
+	// download at all and what the server answered, so a failure can say
+	// whether the browser ever asked for the file.
+
+	const downloads: string[] = [];
+
+	page.on('download', (download) => {
+		downloads.push(`download ${download.suggestedFilename()}`);
+	});
+
+	page.on('requestfinished', async (request) => {
+		if (!request.url().includes('/documents/')) {
+			return;
+		}
+
+		const response = await request.response();
+
+		downloads.push(
+			`GET documents -> ${response ? response.status() : 'NO RESPONSE'}`
+		);
+	});
+
+	page.on('requestfailed', (request) => {
+		if (request.url().includes('/documents/')) {
+			downloads.push(
+				`GET documents -> FAILED ${request.failure()?.errorText}`
+			);
+		}
+	});
+
 	await viewObjectEntriesPage.page.getByText('sampleFile.txt').click();
 
 	// Verify if the email was sent
@@ -360,6 +390,15 @@ test('can send notification email via download action', async ({
 		await apiHelpers.notification.getNotificationQueueEntriesPage(
 			senderEmail
 		);
+
+	if (!notificationQueueEntries.items.length) {
+		throw new Error(
+			`LPDX-DIAG notificationQueueEmpty senderEmail=${senderEmail}\n` +
+				`  downloads: ${JSON.stringify(downloads)}\n` +
+				`  objectDefinition: ${objectDefinition.externalReferenceCode}\n` +
+				`  url: ${page.url()}`
+		);
+	}
 
 	const notificationQueueEntriesId = notificationQueueEntries.items.map(
 		(item: any) => item.id

@@ -79,7 +79,16 @@ public class ObjectActionDownloadTriggerMessageListener
 				fetchObjectDefinitionByExternalReferenceCode(
 					objectDefinitionExternalReferenceCode, companyId);
 
+		System.out.println(
+			StringBundler.concat(
+				"LPDX-DIAG doReceive erc=",
+				objectDefinitionExternalReferenceCode, " companyId=", companyId,
+				" objectDefinitionFound=", objectDefinition != null));
+
 		if (objectDefinition == null) {
+			System.out.println(
+				"LPDX-DIAG doReceive abort=objectDefinitionNull");
+
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					StringBundler.concat(
@@ -108,6 +117,11 @@ public class ObjectActionDownloadTriggerMessageListener
 			objectDefinition.getObjectDefinitionId());
 
 		if (objectEntry == null) {
+			System.out.println(
+				StringBundler.concat(
+					"LPDX-DIAG doReceive abort=objectEntryNull entryErc=",
+					objectEntryExternalReferenceCode, " groupId=", groupId));
+
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					StringBundler.concat(
@@ -119,6 +133,12 @@ public class ObjectActionDownloadTriggerMessageListener
 
 			return;
 		}
+
+		System.out.println(
+			StringBundler.concat(
+				"LPDX-DIAG doReceive executing className=",
+				objectDefinition.getClassName(), " objectEntryId=",
+				objectEntry.getObjectEntryId()));
 
 		_objectActionEngine.executeObjectActions(
 			objectDefinition.getClassName(), message.getLong("companyId"),

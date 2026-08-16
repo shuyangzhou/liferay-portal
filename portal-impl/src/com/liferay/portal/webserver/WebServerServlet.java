@@ -295,10 +295,18 @@ public class WebServerServlet extends HttpServlet {
 					httpServletRequest, "objectEntryExternalReferenceCode"));
 			message.put("userId", user.getUserId());
 
+			System.out.println(
+				"LPDX-DIAG downloadTriggerSend message=" + message);
+
 			messageBus.sendMessage(
 				DestinationNames.OBJECT_ENTRY_ATTACHMENT_DOWNLOAD, message);
+
+			System.out.println("LPDX-DIAG downloadTriggerSent");
 		}
 		catch (Exception exception) {
+			System.out.println(
+				"LPDX-DIAG downloadTriggerSwallowed " + exception);
+
 			if (_log.isDebugEnabled()) {
 				_log.debug(exception);
 			}
