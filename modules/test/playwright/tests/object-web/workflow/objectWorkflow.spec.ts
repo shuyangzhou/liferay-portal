@@ -208,25 +208,46 @@ test(
 		// two navigations that are torn down and rebuilt while the object
 		// definition redeploys, and neither of them is under test here.
 
-		await configurationTabPage.searchAssetType(label);
+		// Creating the object is answered before the handler that puts it on
+		// this list has been registered, and the list is rendered by the server,
+		// so a page fetched in that window lacks the object and goes on lacking
+		// it however long the assertion waits. Ask for the address again until
+		// the list agrees.
 
-		await expect(page.getByRole('row', {name: label})).toBeVisible();
+		await expect(async () => {
+			await configurationTabPage.searchAssetType(label);
+
+			await expect(page.getByRole('row', {name: label})).toBeVisible({
+				timeout: 5000,
+			});
+		}).toPass();
 
 		await viewObjectDefinitionsPage.goto();
 
 		await viewObjectDefinitionsPage.changeObjectActivateStatus(label);
 
-		await configurationTabPage.searchAssetType(label);
+		// Deactivating is answered on the same terms, before the handler has
+		// been withdrawn, so the same re-asking applies.
 
-		await expect(page.getByRole('row', {name: label})).toBeHidden();
+		await expect(async () => {
+			await configurationTabPage.searchAssetType(label);
+
+			await expect(page.getByRole('row', {name: label})).toBeHidden({
+				timeout: 5000,
+			});
+		}).toPass();
 
 		await viewObjectDefinitionsPage.goto();
 
 		await viewObjectDefinitionsPage.changeObjectActivateStatus(label);
 
-		await configurationTabPage.searchAssetType(label);
+		await expect(async () => {
+			await configurationTabPage.searchAssetType(label);
 
-		await expect(page.getByRole('row', {name: label})).toBeVisible();
+			await expect(page.getByRole('row', {name: label})).toBeVisible({
+				timeout: 5000,
+			});
+		}).toPass();
 	}
 );
 
