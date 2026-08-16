@@ -4554,7 +4554,8 @@ test.describe('Manage object entries through View Object Entries', () => {
 			.getByPlaceholder('Create an expression.')
 			.fill(textFieldName);
 
-		await objectFieldsPage.editFieldSaveButton.click();
+		const {navigation: savedNavigation} =
+			await objectFieldsPage.saveObjectFieldReturningNavigation();
 
 		await waitForAlert(
 			page,
@@ -4570,6 +4571,11 @@ test.describe('Manage object entries through View Object Entries', () => {
 			{[textFieldName]: firstItemName},
 			applicationName
 		);
+
+		// The save's navigation must land before another address is asked for,
+		// or the two collide.
+
+		await savedNavigation;
 
 		await viewObjectEntriesPage.goto(objectDefinition.className);
 
