@@ -503,6 +503,7 @@ export default defineConfig({
 		wikiWebConfig,
 		...setupProjects,
 	],
+	repeatEach: 3,
 	reporter: [
 		[
 			'html',
