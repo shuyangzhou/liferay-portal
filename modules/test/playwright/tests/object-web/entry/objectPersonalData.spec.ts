@@ -93,7 +93,7 @@ test('can anonymize object entries', async ({
 			await usersAndOrganizationsPage.usersTableRowActions(
 				userAccount.alternateName
 			)
-		).click();
+		).click({timeout: 5000});
 
 		await expect(
 			usersAndOrganizationsPage.deletePersonalDataMenuItem
@@ -251,7 +251,7 @@ test('can delete object entries via personal data management', async ({
 			await usersAndOrganizationsPage.usersTableRowActions(
 				userAccount.alternateName
 			)
-		).click();
+		).click({timeout: 5000});
 
 		await expect(
 			usersAndOrganizationsPage.deletePersonalDataMenuItem
@@ -344,7 +344,7 @@ test('can export object entries via personal data management', async ({
 			await usersAndOrganizationsPage.usersTableRowActions(
 				userAccount.alternateName
 			)
-		).click();
+		).click({timeout: 5000});
 
 		await expect(
 			usersAndOrganizationsPage.exportPersonalDataItem
