@@ -242,14 +242,33 @@ test(
 			}
 		});
 
+		// Never let the probe decide the test. A refused or non JSON answer is
+		// itself the reading, so report it instead of throwing on it.
+
 		const readActive = async () => {
-			const response = await page.request.get(
-				`/o/object-admin/v1.0/object-definitions/${objectDefinition.id}`
-			);
+			try {
+				const response = await page.request.get(
+					`/o/object-admin/v1.0/object-definitions/${objectDefinition.id}`
+				);
 
-			const body = await response.json();
+				const text = await response.text();
 
-			return `active=${body.active} status=${JSON.stringify(body.status)}`;
+				if (!text.startsWith('{')) {
+					return `HTTP ${response.status()} nonJSON=${text.slice(
+						0,
+						40
+					)}`;
+				}
+
+				const body = JSON.parse(text);
+
+				return `HTTP ${response.status()} active=${
+					body.active
+				} status=${JSON.stringify(body.status)}`;
+			}
+			catch (error) {
+				return `readFailed=${String(error).slice(0, 80)}`;
+			}
 		};
 
 		const diagnose = async (phase: string, error: unknown) => {
