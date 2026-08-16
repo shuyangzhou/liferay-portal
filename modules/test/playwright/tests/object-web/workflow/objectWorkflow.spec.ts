@@ -216,17 +216,31 @@ test(
 
 		await viewObjectDefinitionsPage.changeObjectActivateStatus(label);
 
-		await configurationTabPage.searchAssetType(label);
+		// Deactivating the object is answered before the handler that puts it on
+		// this list has been withdrawn, and the list is rendered by the server,
+		// so a page fetched in that window shows the object and goes on showing
+		// it however long the assertion waits. Ask for the address again until
+		// the list agrees.
 
-		await expect(page.getByRole('row', {name: label})).toBeHidden();
+		await expect(async () => {
+			await configurationTabPage.searchAssetType(label);
+
+			await expect(page.getByRole('row', {name: label})).toBeHidden({
+				timeout: 5000,
+			});
+		}).toPass();
 
 		await viewObjectDefinitionsPage.goto();
 
 		await viewObjectDefinitionsPage.changeObjectActivateStatus(label);
 
-		await configurationTabPage.searchAssetType(label);
+		await expect(async () => {
+			await configurationTabPage.searchAssetType(label);
 
-		await expect(page.getByRole('row', {name: label})).toBeVisible();
+			await expect(page.getByRole('row', {name: label})).toBeVisible({
+				timeout: 5000,
+			});
+		}).toPass();
 	}
 );
 
