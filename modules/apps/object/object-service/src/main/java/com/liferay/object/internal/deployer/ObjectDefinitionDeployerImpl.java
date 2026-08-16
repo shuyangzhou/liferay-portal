@@ -280,6 +280,13 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 	@Override
 	public synchronized void undeploy(ObjectDefinition objectDefinition) {
+		System.out.println(
+			StringBundler.concat(
+				"LPDX-DIAG undeploy name=", objectDefinition.getName(), " key=",
+				_getServiceRegistrationKey(objectDefinition, null),
+				" registrations=", _serviceRegistrations.size(), " thread=",
+				Thread.currentThread()));
+
 		_unregister(_getServiceRegistrationKey(objectDefinition, null));
 
 		for (String serviceRegistrationKey : _serviceRegistrations.keySet()) {
@@ -530,6 +537,14 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				HashMapDictionaryBuilder.<String, Object>put(
 					"model.class.name", objectDefinition.getClassName()
 				).build()));
+		System.out.println(
+			StringBundler.concat(
+				"LPDX-DIAG registerWorkflowHandler name=",
+				objectDefinition.getName(), " className=",
+				objectDefinition.getClassName(), " active=",
+				objectDefinition.isActive(), " thread=",
+				Thread.currentThread()));
+
 		serviceRegistrations.add(
 			_bundleContext.registerService(
 				WorkflowHandler.class,

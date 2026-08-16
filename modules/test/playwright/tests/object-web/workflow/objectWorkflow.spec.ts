@@ -208,6 +208,60 @@ test(
 		// two navigations that are torn down and rebuilt while the object
 		// definition redeploys, and neither of them is under test here.
 
+		// LPDX-DIAG scaffolding. Records every object definition write the
+		// browser sends and what the server answered, so a failure can say
+		// whether the request left the browser at all, whether the server took
+		// it, and what the record looked like afterwards.
+
+		const writes: string[] = [];
+
+		page.on('requestfinished', async (request) => {
+			if (
+				!request.url().includes('object-admin') ||
+				request.method() === 'GET'
+			) {
+				return;
+			}
+
+			const response = await request.response();
+
+			writes.push(
+				`${request.method()} ${request.url().slice(-60)} -> ${
+					response ? response.status() : 'NO RESPONSE'
+				}`
+			);
+		});
+
+		page.on('requestfailed', (request) => {
+			if (request.url().includes('object-admin')) {
+				writes.push(
+					`${request.method()} ${request.url().slice(-60)} -> FAILED ${
+						request.failure()?.errorText
+					}`
+				);
+			}
+		});
+
+		const readActive = async () => {
+			const response = await page.request.get(
+				`/o/object-admin/v1.0/object-definitions/${objectDefinition.id}`
+			);
+
+			const body = await response.json();
+
+			return `active=${body.active} status=${JSON.stringify(body.status)}`;
+		};
+
+		const diagnose = async (phase: string, error: unknown) => {
+			throw new Error(
+				`LPDX-DIAG ${phase} label=${label} id=${objectDefinition.id}\n` +
+					`  restNow: ${await readActive()}\n` +
+					`  writes: ${JSON.stringify(writes)}\n` +
+					`  url: ${page.url()}\n` +
+					`  original: ${String(error)}`
+			);
+		};
+
 		await configurationTabPage.searchAssetType(label);
 
 		await expect(page.getByRole('row', {name: label})).toBeVisible();
@@ -216,17 +270,35 @@ test(
 
 		await viewObjectDefinitionsPage.changeObjectActivateStatus(label);
 
+		const afterDeactivate = await readActive();
+
 		await configurationTabPage.searchAssetType(label);
 
-		await expect(page.getByRole('row', {name: label})).toBeHidden();
+		try {
+			await expect(page.getByRole('row', {name: label})).toBeHidden();
+		}
+		catch (error) {
+			writes.push(`restAfterDeactivate: ${afterDeactivate}`);
+
+			await diagnose('deactivate', error);
+		}
 
 		await viewObjectDefinitionsPage.goto();
 
 		await viewObjectDefinitionsPage.changeObjectActivateStatus(label);
 
+		const afterReactivate = await readActive();
+
 		await configurationTabPage.searchAssetType(label);
 
-		await expect(page.getByRole('row', {name: label})).toBeVisible();
+		try {
+			await expect(page.getByRole('row', {name: label})).toBeVisible();
+		}
+		catch (error) {
+			writes.push(`restAfterReactivate: ${afterReactivate}`);
+
+			await diagnose('reactivate', error);
+		}
 	}
 );
 

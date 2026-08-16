@@ -2887,8 +2887,22 @@ public class ObjectDefinitionLocalServiceImpl
 			ObjectDefinition.class.getName(),
 			objectDefinition.getObjectDefinitionId(), serviceContext);
 
+		System.out.println(
+			StringBundler.concat(
+				"LPDX-DIAG update name=", objectDefinition.getName(),
+				" objectDefinitionId=",
+				objectDefinition.getObjectDefinitionId(), " oldActive=",
+				oldActive, " active=", active, " approved=",
+				objectDefinition.isApproved(), " status=",
+				objectDefinition.getStatus(), " thread=",
+				Thread.currentThread()));
+
 		if (objectDefinition.isApproved()) {
 			if (!active && oldActive) {
+				System.out.println(
+					"LPDX-DIAG branch=deployInactive name=" +
+						objectDefinition.getName());
+
 				objectDefinitionLocalService.deployInactiveObjectDefinition(
 					objectDefinition);
 			}
@@ -2899,6 +2913,10 @@ public class ObjectDefinitionLocalServiceImpl
 
 					_validateFriendlyURLSeparator(objectDefinition);
 				}
+
+				System.out.println(
+					"LPDX-DIAG branch=deployActive name=" +
+						objectDefinition.getName());
 
 				objectDefinitionLocalService.deployObjectDefinition(
 					objectDefinition);
