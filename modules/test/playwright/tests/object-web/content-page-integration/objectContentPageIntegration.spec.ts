@@ -81,13 +81,23 @@ test.describe('Collection Display', () => {
 			objectDefinition.name
 		);
 
-		await collectionsPage.goto(site.friendlyUrlPath);
+		// Reactivating the object is answered before its collection provider is
+		// registered again, and the providers list is rendered by the server,
+		// so a page fetched in that window lacks the provider and goes on
+		// lacking it however long the assertion waits. Ask for the list again
+		// until it agrees.
 
-		await page.getByRole('link', {name: 'Collection Providers'}).click();
+		await expect(async () => {
+			await collectionsPage.goto(site.friendlyUrlPath);
 
-		await expect(
-			page.getByText(objectDefinition.name).first()
-		).toBeVisible();
+			await page
+				.getByRole('link', {name: 'Collection Providers'})
+				.click({timeout: 5000});
+
+			await expect(
+				page.getByText(objectDefinition.name).first()
+			).toBeVisible({timeout: 5000});
+		}).toPass();
 	});
 
 	test(
