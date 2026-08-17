@@ -2847,7 +2847,8 @@ test.describe('Manage object fields default value properties', () => {
 			});
 
 			await test.step('set default value to false for boolean field and check in object entry', async () => {
-				await modelBuilderDiagramPage.goto({
+				await modelBuilderDiagramPage.gotoWithObjectDefinitionNodes({
+					objectDefinitionNames: [objectName],
 					objectFolderName,
 				});
 
@@ -2876,7 +2877,8 @@ test.describe('Manage object fields default value properties', () => {
 			});
 
 			await test.step('set default value to true for boolean field and check in object entry', async () => {
-				await modelBuilderDiagramPage.goto({
+				await modelBuilderDiagramPage.gotoWithObjectDefinitionNodes({
+					objectDefinitionNames: [objectName],
 					objectFolderName,
 				});
 
@@ -2903,7 +2905,8 @@ test.describe('Manage object fields default value properties', () => {
 			});
 
 			await test.step('untoggle default value for boolean field and check in object entry', async () => {
-				await modelBuilderDiagramPage.goto({
+				await modelBuilderDiagramPage.gotoWithObjectDefinitionNodes({
+					objectDefinitionNames: [objectName],
 					objectFolderName,
 				});
 
