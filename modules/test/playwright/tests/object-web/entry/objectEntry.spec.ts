@@ -6676,7 +6676,29 @@ test.describe('Manage object entries through Workflow', () => {
 		const itemSubject =
 			objectDefinition.label['en_US'] + ': ' + objectEntry.textField;
 
-		await expect(page.getByLabel(itemSubject)).toBeVisible();
+		// The entry reaches this list through the search index. That write is
+		// handed to a background executor and left to the index's own refresh,
+		// so the request that creates the entry is answered before the list can
+		// hold it. The list fetches once per route and never fetches again, so
+		// a page fetched in that window goes on lacking the entry however long
+		// the assertion waits. Ask for the list again until it agrees.
+
+		let reload = false;
+
+		await expect(async () => {
+			if (reload) {
+				await page.reload();
+			}
+
+			reload = true;
+
+			// Five seconds a look, so the loop asks again often instead of
+			// staring out the default before the next ask.
+
+			await expect(page.getByLabel(itemSubject)).toBeVisible({
+				timeout: 5000,
+			});
+		}).toPass();
 
 		await page.locator('.link-text').click();
 
