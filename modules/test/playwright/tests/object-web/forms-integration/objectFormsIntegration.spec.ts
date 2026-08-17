@@ -2089,16 +2089,27 @@ test(
 
 		await formsPage.goTo();
 
-		await page.reload();
+		// Deactivating is answered before the object undeploys, and the forms
+		// list is rendered by the server, so a page fetched in that window
+		// still shows the form as editable and goes on showing it however
+		// long the assertion waits. Ask for the address again until the list
+		// agrees.
 
-		await expect(
-			page.getByRole('cell', {
-				exact: true,
-				name: `This form was created using an inactive object as storage type. 
+		await expect(async () => {
+			await page.reload();
+
+			// Five seconds a look, so the loop asks again often instead of
+			// staring out the default before the next ask.
+
+			await expect(
+				page.getByRole('cell', {
+					exact: true,
+					name: `This form was created using an inactive object as storage type. 
 				Activate "${objectDefinition.name}" object to make it available for 
 				editing. ${formTitle}`,
-			})
-		).toBeVisible();
+				})
+			).toBeVisible({timeout: 5000});
+		}).toPass();
 
 		await viewObjectDefinitionsPage.goto();
 
@@ -2108,16 +2119,24 @@ test(
 
 		await formsPage.goTo();
 
-		await page.reload();
+		// Reactivating is answered on the same terms, before the object is
+		// deployed again, so the same re-asking applies.
 
-		await expect(
-			page.getByRole('cell', {
-				exact: true,
-				name: `This form was created using an inactive object as storage type. 
+		await expect(async () => {
+			await page.reload();
+
+			// Five seconds a look, so the loop asks again often instead of
+			// staring out the default before the next ask.
+
+			await expect(
+				page.getByRole('cell', {
+					exact: true,
+					name: `This form was created using an inactive object as storage type. 
 				Activate "${objectDefinition.name}" object to make it available for 
 				editing. ${formTitle}`,
-			})
-		).toBeHidden();
+				})
+			).toBeHidden({timeout: 5000});
+		}).toPass();
 
 		await page.goto(formSubmissionURL);
 
