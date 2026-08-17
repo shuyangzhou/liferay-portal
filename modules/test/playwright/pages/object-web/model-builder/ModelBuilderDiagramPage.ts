@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
+import {expect} from '@playwright/test';
+
 import {PORTLET_URLS} from '../../../utils/portletUrls';
 
 import type {Locator, Page} from '@playwright/test';
@@ -123,6 +125,36 @@ export class ModelBuilderDiagramPage {
 			}&objectFolderName=${objectFolderName}`,
 			{waitUntil: 'load'}
 		);
+	}
+
+	async gotoWithObjectDefinitionNode({
+		objectDefinitionName,
+		objectFolderName,
+		siteUrl,
+	}: {
+		objectDefinitionName: string;
+		objectFolderName: string;
+		siteUrl?: Site['friendlyUrlPath'];
+	}) {
+
+		// The diagram reads its structure once per page load and has no
+		// failure path, so a load that missed the object never recovers,
+		// however long anything waits on it. Load again until the object's
+		// node is on the canvas.
+
+		await expect(async () => {
+			await this.goto({objectFolderName, siteUrl});
+
+			await expect(
+				this.objectDefinitionNodes.filter({
+					hasText: objectDefinitionName,
+				})
+			).toHaveCount(1);
+
+			// A minute gives the reload rounds their room and still leaves a
+			// third of the test budget for the field work that follows.
+
+		}).toPass({timeout: 60000});
 	}
 
 	async openObjectDefinitionMenu(objectDefinitionLabel: string) {
