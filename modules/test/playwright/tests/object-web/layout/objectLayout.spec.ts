@@ -283,10 +283,8 @@ test.describe('Manage custom layouts through object layout tab', () => {
 			const objectRelationshipAPIClient =
 				await apiHelpers.buildRestClient(ObjectRelationshipAPI);
 
-			const objectRelationshipName1 =
-				'objectRelationshipName' + Math.floor(Math.random() * 99);
-			const objectRelationshipName2 =
-				'objectRelationshipName' + Math.floor(Math.random() * 99);
+			const objectRelationshipName1 = 'objectRelName' + getRandomInt();
+			const objectRelationshipName2 = 'objectRelName' + getRandomInt();
 
 			const {body: objectRelationship1} =
 				await objectRelationshipAPIClient.postObjectDefinitionByExternalReferenceCodeObjectRelationship(
@@ -533,9 +531,7 @@ test.describe('Manage custom layouts through object layout tab', () => {
 					label: {
 						en_US: 'objectRelationshipLabel' + getRandomInt(),
 					},
-					name:
-						'objectRelationshipName' +
-						Math.floor(Math.random() * 99),
+					name: 'objectRelName' + getRandomInt(),
 					objectDefinitionExternalReferenceCode1:
 						objectDefinition.externalReferenceCode,
 					objectDefinitionExternalReferenceCode2:

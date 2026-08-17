@@ -1195,9 +1195,7 @@ test.describe('Manage objectFields through Objects Admin UI', () => {
 					label: {
 						en_US: 'objectRelationshipLabel' + getRandomInt(),
 					},
-					name:
-						'objectRelationshipName' +
-						Math.floor(Math.random() * 99),
+					name: 'objectRelName' + getRandomInt(),
 					objectDefinitionExternalReferenceCode1:
 						objectDefinition1.externalReferenceCode,
 					objectDefinitionExternalReferenceCode2:
@@ -1424,8 +1422,7 @@ test.describe('Manage objectFields through Objects Admin UI', () => {
 			ObjectRelationshipAPI
 		);
 
-		const objectRelationshipName =
-			'objectRelationshipName' + Math.floor(Math.random() * 99);
+		const objectRelationshipName = 'objectRelName' + getRandomInt();
 
 		await objectRelationshipAPIClient.postObjectDefinitionByExternalReferenceCodeObjectRelationship(
 			objectDefinition.externalReferenceCode!,
@@ -1544,8 +1541,7 @@ test.describe('Manage objectFields through Objects Admin UI', () => {
 			ObjectRelationshipAPI
 		);
 
-		const objectRelationship1 =
-			'objectRelationship' + Math.floor(Math.random() * 99);
+		const objectRelationship1 = 'objectRelationship' + getRandomInt();
 
 		await objectRelationshipAPIClient.postObjectDefinitionByExternalReferenceCodeObjectRelationship(
 			objectDefinition.externalReferenceCode!,
@@ -1560,8 +1556,7 @@ test.describe('Manage objectFields through Objects Admin UI', () => {
 			}
 		);
 
-		const objectRelationship2 =
-			'objectRelationship' + Math.floor(Math.random() * 99);
+		const objectRelationship2 = 'objectRelationship' + getRandomInt();
 
 		await objectRelationshipAPIClient.postObjectDefinitionByExternalReferenceCodeObjectRelationship(
 			objectDefinition.externalReferenceCode!,
@@ -2148,9 +2143,7 @@ test.describe('Manage objectFields through Objects Admin UI', () => {
 					label: {
 						en_US: 'objectRelationshipLabel' + getRandomInt(),
 					},
-					name:
-						'objectRelationshipName' +
-						Math.floor(Math.random() * 99),
+					name: 'objectRelName' + getRandomInt(),
 					objectDefinitionExternalReferenceCode1:
 						objectDefinition1.externalReferenceCode,
 					objectDefinitionExternalReferenceCode2:
