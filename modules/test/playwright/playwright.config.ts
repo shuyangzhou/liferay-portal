@@ -266,6 +266,10 @@ export default defineConfig({
 	},
 	forbidOnly: !!process.env.CI,
 	globalTimeout: 60 * 60 * 1000,
+	grep: new RegExp('can relate two entries bidirectionally in a self-referencing|can create multiple object relationships between the same objects|can see related entries on Relationship tab|relationship tab visibility changes according to active state'),
+
+	repeatEach: 8,
+
 	projects: [
 		accessibilityMenuWeb,
 		accountAdminWebConfig,
