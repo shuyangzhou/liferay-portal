@@ -92,7 +92,17 @@ async function importPicklistFromFile(
 
 	await expect(page.getByLabel('External Reference Code')).not.toBeEmpty();
 
+	// Clicking Import fires a reference code check, then the import itself, and
+	// the page reloads once the import commits. Returning at the click leaves
+	// that chain in flight, and the caller's next navigation cancels it, so the
+	// picklist is silently never imported. The reload only ever happens after
+	// the import commits, so waiting for it waits for the whole chain.
+
+	const importNavigation = page.waitForNavigation({waitUntil: 'load'});
+
 	await page.getByRole('button', {exact: true, name: 'Import'}).click();
+
+	await importNavigation;
 }
 
 test.describe('manage export/import of picklists', () => {
