@@ -106,7 +106,7 @@ test.describe('Manage object relationships through Model Builder', () => {
 					partnerObjectDefinition.id
 				);
 
-				expect(
+				await expect(
 					addNewObjectRelationshipModalPage.modalHeader
 				).toBeVisible();
 			});
@@ -119,7 +119,7 @@ test.describe('Manage object relationships through Model Builder', () => {
 					customPostalAddressDefinition.id
 				);
 
-				expect(
+				await expect(
 					addNewObjectRelationshipModalPage.modalHeader
 				).toBeVisible();
 			});
