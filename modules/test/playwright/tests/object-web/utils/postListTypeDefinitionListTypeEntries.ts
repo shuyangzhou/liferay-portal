@@ -41,15 +41,39 @@ export async function postListTypeDefinitionListTypeEntries({
 		}
 	);
 
-	const listTypeEntry = listTypeEntries.map(
-		async (listTypeDefinitionEntry) =>
-			await apiHelpers.listTypeAdmin.postListTypeEntry({
-				key: listTypeDefinitionEntry.en_US,
-				listTypeDefinitionExternalReferenceCode:
-					listTypeDefinition.externalReferenceCode,
-				name_i18n: listTypeDefinitionEntry,
-			})
-	);
+	// Creating the picklist is answered before it is deployed, and an entry
+	// posted in that window is refused with "The service parameter was not
+	// provided by this object". Nothing on the definition is left to wait on,
+	// so ask again until the entry is taken.
+
+	const postListTypeEntry = async (
+		listTypeDefinitionEntry: LocalizedValue<string>
+	) => {
+		for (let attempt = 0; ; attempt++) {
+			try {
+				return await apiHelpers.listTypeAdmin.postListTypeEntry({
+					key: listTypeDefinitionEntry.en_US,
+					listTypeDefinitionExternalReferenceCode:
+						listTypeDefinition.externalReferenceCode,
+					name_i18n: listTypeDefinitionEntry,
+				});
+			}
+			catch (error) {
+				if (
+					attempt >= 9 ||
+					!String(error.message).includes(
+						'The service parameter was not provided by this object'
+					)
+				) {
+					throw error;
+				}
+
+				await new Promise((resolve) => setTimeout(resolve, 500));
+			}
+		}
+	};
+
+	const listTypeEntry = listTypeEntries.map(postListTypeEntry);
 
 	const promiseResolvedListTypeEntries = await Promise.all(listTypeEntry);
 
