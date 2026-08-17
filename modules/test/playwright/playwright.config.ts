@@ -266,6 +266,8 @@ export default defineConfig({
 	},
 	forbidOnly: !!process.env.CI,
 	globalTimeout: 60 * 60 * 1000,
+	repeatEach: 10,
+
 	projects: [
 		accessibilityMenuWeb,
 		accountAdminWebConfig,
