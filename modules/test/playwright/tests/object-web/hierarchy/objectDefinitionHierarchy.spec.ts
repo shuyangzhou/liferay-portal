@@ -1842,7 +1842,11 @@ test.describe('Manage root models elements through Model Builder', () => {
 				type: 'objectDefinition',
 			});
 
-			await modelBuilderDiagramPage.goto({
+			await modelBuilderDiagramPage.gotoWithObjectDefinitionNodes({
+				objectDefinitionNames: [
+					objectDefinition1.label['en_US'],
+					objectDefinition2.label['en_US'],
+				],
 				objectFolderName: objectFolder.name,
 			});
 
