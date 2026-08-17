@@ -41,15 +41,43 @@ export async function postListTypeDefinitionListTypeEntries({
 		}
 	);
 
-	const listTypeEntry = listTypeEntries.map(
-		async (listTypeDefinitionEntry) =>
-			await apiHelpers.listTypeAdmin.postListTypeEntry({
-				key: listTypeDefinitionEntry.en_US,
-				listTypeDefinitionExternalReferenceCode:
-					listTypeDefinition.externalReferenceCode,
-				name_i18n: listTypeDefinitionEntry,
-			})
-	);
+	// A request that rides the JAX-RS whiteboard while an object definition
+	// deploys or undeploys nearby can be refused with Equinox's "The service
+	// parameter was not provided by this object" answered as a 400, and a
+	// refused post commits nothing. Nothing marks the churn window from the
+	// client, so ask again on exactly that answer.
+
+	const postListTypeEntry = async (
+		listTypeDefinitionEntry: LocalizedValue<string>
+	) => {
+		for (let attempt = 0; ; attempt++) {
+			try {
+				return await apiHelpers.listTypeAdmin.postListTypeEntry({
+					key: listTypeDefinitionEntry.en_US,
+					listTypeDefinitionExternalReferenceCode:
+						listTypeDefinition.externalReferenceCode,
+					name_i18n: listTypeDefinitionEntry,
+				});
+			}
+			catch (error) {
+				if (
+					attempt >= 9 ||
+					!String(error.message).includes(
+						'The service parameter was not provided by this object'
+					)
+				) {
+					throw error;
+				}
+
+				// Half a second puts the next ask past the sub-second churn
+				// window observed locally.
+
+				await new Promise((resolve) => setTimeout(resolve, 500));
+			}
+		}
+	};
+
+	const listTypeEntry = listTypeEntries.map(postListTypeEntry);
 
 	const promiseResolvedListTypeEntries = await Promise.all(listTypeEntry);
 
