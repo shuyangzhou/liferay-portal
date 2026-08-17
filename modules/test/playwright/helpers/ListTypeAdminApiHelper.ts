@@ -70,9 +70,35 @@ export class ListTypeAdminApiHelper {
 			},
 		};
 
-		return this.apiHelpers.post(
-			`${this.apiHelpers.baseUrl}${this.basePath}/list-type-definitions`,
-			{data: requestBody}
-		);
+		// A request that rides the JAX-RS whiteboard while an object
+		// definition deploys or undeploys nearby can be refused with
+		// Equinox's "The service parameter was not provided by this object"
+		// answered as a 400, and a refused post commits nothing. Nothing
+		// marks the churn window from the client, so ask again on exactly
+		// that answer.
+
+		for (let attempt = 0; ; attempt++) {
+			try {
+				return await this.apiHelpers.post(
+					`${this.apiHelpers.baseUrl}${this.basePath}/list-type-definitions`,
+					{data: requestBody}
+				);
+			}
+			catch (error) {
+				if (
+					attempt >= 9 ||
+					!String(error.message).includes(
+						'The service parameter was not provided by this object'
+					)
+				) {
+					throw error;
+				}
+
+				// Half a second puts the next ask past the sub-second churn
+				// window observed locally.
+
+				await new Promise((resolve) => setTimeout(resolve, 500));
+			}
+		}
 	}
 }
