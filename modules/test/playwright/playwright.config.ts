@@ -266,6 +266,10 @@ export default defineConfig({
 	},
 	forbidOnly: !!process.env.CI,
 	globalTimeout: 60 * 60 * 1000,
+	grep: new RegExp('can delete object entries via personal data management|can view Asset Title, Asset Type and Item Subject of an entry on metrics page'),
+
+	repeatEach: 8,
+
 	projects: [
 		accessibilityMenuWeb,
 		accountAdminWebConfig,
