@@ -266,6 +266,10 @@ export default defineConfig({
 	},
 	forbidOnly: !!process.env.CI,
 	globalTimeout: 60 * 60 * 1000,
+	grep: new RegExp('relationship tab visibility changes according to active state|can see related entries on Relationship tab'),
+
+	repeatEach: 8,
+
 	projects: [
 		accessibilityMenuWeb,
 		accountAdminWebConfig,
