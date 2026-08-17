@@ -1583,8 +1583,7 @@ test.describe('Object Unique Composite Key Validation', () => {
 		const integerFieldName = 'integerField' + getRandomInt();
 		const objectRelationshipLabel =
 			'objectRelationshipLabel' + getRandomInt();
-		const objectRelationshipName =
-			'objectRelationshipName' + Math.floor(Math.random() * 99);
+		const objectRelationshipName = 'objectRelName' + getRandomInt();
 		const picklistFieldName = 'picklistField' + getRandomInt();
 
 		const objectFieldAPIClient =

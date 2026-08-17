@@ -1594,8 +1594,7 @@ test.describe('Manage object entries through Page Templates', () => {
 
 		const objectRelationshipLabel =
 			'objectRelationshipLabel' + getRandomInt();
-		const objectRelationshipName =
-			'objectRelationshipName' + Math.floor(Math.random() * 99);
+		const objectRelationshipName = 'objectRelName' + getRandomInt();
 
 		const objectRelationshipAPIClient = await apiHelpers.buildRestClient(
 			ObjectRelationshipAPI

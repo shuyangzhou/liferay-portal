@@ -688,9 +688,7 @@ test(
 					label: {
 						en_US: 'objectRelationshipLabel' + getRandomInt(),
 					},
-					name:
-						'objectRelationshipName' +
-						Math.floor(Math.random() * 99),
+					name: 'objectRelName' + getRandomInt(),
 					objectDefinitionExternalReferenceCode1: 'L_ACCOUNT',
 					objectDefinitionExternalReferenceCode2:
 						objectDefinition.externalReferenceCode,
@@ -786,9 +784,7 @@ test(
 					label: {
 						en_US: 'objectRelationshipLabel' + getRandomInt(),
 					},
-					name:
-						'objectRelationshipName' +
-						Math.floor(Math.random() * 99),
+					name: 'objectRelName' + getRandomInt(),
 					objectDefinitionExternalReferenceCode1:
 						objectDefinition1.externalReferenceCode,
 					objectDefinitionExternalReferenceCode2:
@@ -875,7 +871,7 @@ test('can create an object custom view using object relationship entry', async (
 				label: {
 					en_US: 'objectRelationshipLabel' + getRandomInt(),
 				},
-				name: 'objectRelationshipName' + Math.floor(Math.random() * 99),
+				name: 'objectRelName' + getRandomInt(),
 				objectDefinitionExternalReferenceCode1:
 					objectDefinition1.externalReferenceCode,
 				objectDefinitionExternalReferenceCode2:
@@ -1034,9 +1030,7 @@ test(
 					label: {
 						en_US: 'objectRelationshipLabel' + getRandomInt(),
 					},
-					name:
-						'objectRelationshipName' +
-						Math.floor(Math.random() * 99),
+					name: 'objectRelName' + getRandomInt(),
 					objectDefinitionExternalReferenceCode1: 'L_USER',
 					objectDefinitionExternalReferenceCode2:
 						objectDefinition.externalReferenceCode,
@@ -1261,9 +1255,7 @@ test(
 					label: {
 						en_US: 'objectRelationshipLabel' + getRandomInt(),
 					},
-					name:
-						'objectRelationshipName' +
-						Math.floor(Math.random() * 99),
+					name: 'objectRelName' + getRandomInt(),
 					objectDefinitionExternalReferenceCode1: 'L_USER',
 					objectDefinitionExternalReferenceCode2:
 						objectDefinition.externalReferenceCode,
@@ -1628,9 +1620,7 @@ test(
 					label: {
 						en_US: 'objectRelationshipLabel' + getRandomInt(),
 					},
-					name:
-						'objectRelationshipName' +
-						Math.floor(Math.random() * 99),
+					name: 'objectRelName' + getRandomInt(),
 					objectDefinitionExternalReferenceCode1: 'L_USER',
 					objectDefinitionExternalReferenceCode2:
 						objectDefinition.externalReferenceCode,
@@ -2034,9 +2024,7 @@ test(
 					label: {
 						en_US: 'objectRelationshipLabel' + getRandomInt(),
 					},
-					name:
-						'objectRelationshipName' +
-						Math.floor(Math.random() * 99),
+					name: 'objectRelName' + getRandomInt(),
 					objectDefinitionExternalReferenceCode1:
 						objectDefinitionA.externalReferenceCode,
 					objectDefinitionExternalReferenceCode2:

@@ -211,9 +211,7 @@ test.describe('Manage root model elements through View Object Entries', () => {
 						label: {
 							en_US: 'objectRelationshipLabel' + getRandomInt(),
 						},
-						name:
-							'objectRelationshipName' +
-							Math.floor(Math.random() * 99),
+						name: 'objectRelName' + getRandomInt(),
 						objectDefinitionExternalReferenceCode1:
 							objectDefinition1.externalReferenceCode,
 						objectDefinitionExternalReferenceCode2:
@@ -419,9 +417,7 @@ test.describe('Manage root model elements through View Object Entries', () => {
 						label: {
 							en_US: 'objectRelationshipLabel' + getRandomInt(),
 						},
-						name:
-							'objectRelationshipName' +
-							Math.floor(Math.random() * 99),
+						name: 'objectRelName' + getRandomInt(),
 						objectDefinitionExternalReferenceCode1: 'L_ACCOUNT',
 						objectDefinitionExternalReferenceCode2:
 							objectDefinition1.externalReferenceCode,
@@ -447,9 +443,7 @@ test.describe('Manage root model elements through View Object Entries', () => {
 						label: {
 							en_US: 'objectRelationshipLabel' + getRandomInt(),
 						},
-						name:
-							'objectRelationshipName' +
-							Math.floor(Math.random() * 99),
+						name: 'objectRelName' + getRandomInt(),
 						objectDefinitionExternalReferenceCode1:
 							objectDefinition1.externalReferenceCode,
 						objectDefinitionExternalReferenceCode2:
@@ -658,8 +652,7 @@ test.describe('Manage root models elements through Objects Admin', () => {
 
 			const objectRelationshipLabel =
 				'objectRelationshipLabel' + getRandomInt();
-			const objectRelationshipName =
-				'objectRelationshipName' + Math.floor(Math.random() * 99);
+			const objectRelationshipName = 'objectRelName' + getRandomInt();
 
 			const objectRelationshipAPIClient =
 				await apiHelpers.buildRestClient(ObjectRelationshipAPI);
@@ -753,8 +746,7 @@ test.describe('Manage root models elements through Objects Admin', () => {
 
 			const objectRelationshipLabel =
 				'objectRelationshipLabel' + getRandomInt();
-			const objectRelationshipName =
-				'objectRelationshipName' + Math.floor(Math.random() * 99);
+			const objectRelationshipName = 'objectRelName' + getRandomInt();
 
 			const objectRelationshipAPIClient =
 				await apiHelpers.buildRestClient(ObjectRelationshipAPI);
@@ -863,9 +855,7 @@ test.describe('Manage root models elements through Objects Admin', () => {
 						label: {
 							en_US: 'objectRelationshipACLabel' + getRandomInt(),
 						},
-						name:
-							'objectRelationshipACName' +
-							Math.floor(Math.random() * 99),
+						name: 'objectRelACName' + getRandomInt(),
 						objectDefinitionExternalReferenceCode1:
 							objectDefinitionA.externalReferenceCode,
 						objectDefinitionExternalReferenceCode2:
@@ -885,9 +875,7 @@ test.describe('Manage root models elements through Objects Admin', () => {
 						label: {
 							en_US: 'objectRelationshipBCLabel' + getRandomInt(),
 						},
-						name:
-							'objectRelationshipBCName' +
-							Math.floor(Math.random() * 99),
+						name: 'objectRelBCName' + getRandomInt(),
 						objectDefinitionExternalReferenceCode1:
 							objectDefinitionB.externalReferenceCode,
 						objectDefinitionExternalReferenceCode2:
@@ -1020,9 +1008,7 @@ test.describe('Manage root models elements through Objects Admin', () => {
 						label: {
 							en_US: 'objectRelationship',
 						},
-						name:
-							'objectRelationship' +
-							Math.floor(Math.random() * 99),
+						name: 'objectRelationship' + getRandomInt(),
 						objectDefinitionExternalReferenceCode1:
 							parentObjectDefinition.externalReferenceCode,
 						objectDefinitionExternalReferenceCode2:
@@ -1047,9 +1033,7 @@ test.describe('Manage root models elements through Objects Admin', () => {
 						label: {
 							en_US: 'inheritanceObjectRelationship',
 						},
-						name:
-							'articleObjectRelationship' +
-							Math.floor(Math.random() * 99),
+						name: 'articleObjectRel' + getRandomInt(),
 						objectDefinitionExternalReferenceCode1:
 							parentObjectDefinition.externalReferenceCode,
 						objectDefinitionExternalReferenceCode2:
@@ -1430,9 +1414,7 @@ test.describe('Manage root models elements through Objects Admin', () => {
 						label: {
 							en_US: 'objectRelationshipLabel' + getRandomInt(),
 						},
-						name:
-							'objectRelationshipName' +
-							Math.floor(Math.random() * 99),
+						name: 'objectRelName' + getRandomInt(),
 						objectDefinitionExternalReferenceCode1:
 							objectDefinition1.externalReferenceCode,
 						objectDefinitionExternalReferenceCode2:
@@ -1452,9 +1434,7 @@ test.describe('Manage root models elements through Objects Admin', () => {
 						label: {
 							en_US: 'objectRelationshipLabel' + getRandomInt(),
 						},
-						name:
-							'objectRelationshipName' +
-							Math.floor(Math.random() * 99),
+						name: 'objectRelName' + getRandomInt(),
 						objectDefinitionExternalReferenceCode1:
 							objectDefinition3.externalReferenceCode,
 						objectDefinitionExternalReferenceCode2:
@@ -1750,9 +1730,7 @@ test.describe('Manage root models elements through Model Builder', () => {
 					label: {
 						en_US: 'objectRelationshipLabel' + getRandomInt(),
 					},
-					name:
-						'objectRelationshipName' +
-						Math.floor(Math.random() * 99),
+					name: 'objectRelName' + getRandomInt(),
 					objectDefinitionExternalReferenceCode1:
 						objectDefinition1.externalReferenceCode,
 					objectDefinitionExternalReferenceCode2:
@@ -1941,8 +1919,7 @@ test.describe('Manage root models elements through Model Builder', () => {
 
 			const objectRelationshipLabel =
 				'objectRelationshipLabel' + getRandomInt();
-			const objectRelationshipName =
-				'objectRelationshipName' + Math.floor(Math.random() * 99);
+			const objectRelationshipName = 'objectRelName' + getRandomInt();
 
 			const objectRelationshipAPIClient =
 				await apiHelpers.buildRestClient(ObjectRelationshipAPI);
