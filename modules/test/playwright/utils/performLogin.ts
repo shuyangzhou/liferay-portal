@@ -76,11 +76,24 @@ async function performLogin(
 	await page.getByLabel('Password').fill(password);
 	await page.getByLabel('Remember Me').setChecked(rememberMe);
 
-	await page.getByRole('button', {name: 'Sign In'}).last().click();
+	const personalBarLabel = page.getByLabel(`${name} ${surname}`);
 
-	await expect(page.getByLabel(`${name} ${surname}`)).toBeVisible({
-		timeout: 30 * 1000,
-	});
+	// Two buttons on the page carry the name Sign In: the personal bar trigger
+	// and the prompt's own submit, and the prompt is still re-rendering while
+	// Remember Me settles, so an unscoped pick can land on the trigger, which
+	// submits nothing. Scope the submit to the sign in form and ask again if
+	// the prompt is still there.
+
+	await expect(async () => {
+		if (await emailAddressInput.isVisible()) {
+			await page
+				.locator('form.sign-in-form')
+				.getByRole('button', {name: 'Sign In'})
+				.click({timeout: 5000});
+		}
+
+		await expect(personalBarLabel).toBeVisible({timeout: 5000});
+	}).toPass({timeout: 30 * 1000});
 
 	await readAuthToken(page);
 
