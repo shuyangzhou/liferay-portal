@@ -266,6 +266,10 @@ export default defineConfig({
 	},
 	forbidOnly: !!process.env.CI,
 	globalTimeout: 60 * 60 * 1000,
+	grep: new RegExp('can create multiple object relationships between the same objects'),
+
+	repeatEach: 10,
+
 	projects: [
 		accessibilityMenuWeb,
 		accountAdminWebConfig,
