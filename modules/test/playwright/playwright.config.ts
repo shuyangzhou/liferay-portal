@@ -266,6 +266,10 @@ export default defineConfig({
 	},
 	forbidOnly: !!process.env.CI,
 	globalTimeout: 60 * 60 * 1000,
+	grep: new RegExp('can add entry with picklist field imported|can add entry with translation of picklist imported'),
+
+	repeatEach: 10,
+
 	projects: [
 		accessibilityMenuWeb,
 		accountAdminWebConfig,
