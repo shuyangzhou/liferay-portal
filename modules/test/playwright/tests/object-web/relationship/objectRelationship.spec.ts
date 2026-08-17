@@ -695,8 +695,12 @@ test.describe('Manage object relationships through Model Builder', () => {
 		];
 
 		for (const {label, type} of objectRelationshipDetails) {
-			const objectRelationshipName =
-				'objectRelationshipName' + Math.floor(Math.random() * 99);
+
+			// The relationship name has less than thirty one characters to
+			// work with, so a short prefix pays for the ten random digits
+			// that keep two draws from ever colliding.
+
+			const objectRelationshipName = 'objectRelName' + getRandomInt();
 			const objectRelationshipData: Partial<ObjectRelationship> = {
 				label: {
 					en_US: label,
