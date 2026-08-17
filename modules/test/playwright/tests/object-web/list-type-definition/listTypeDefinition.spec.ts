@@ -92,7 +92,26 @@ async function importPicklistFromFile(
 
 	await expect(page.getByLabel('External Reference Code')).not.toBeEmpty();
 
+	// Clicking Import fires a reference code check and then either imports and
+	// reloads the page, or, when the reference code already exists, asks about
+	// overwriting instead. Returning at the click leaves that chain in flight,
+	// and the caller's next navigation cancels it, so the picklist is silently
+	// never imported. Wait for whichever outcome the click reaches: the reload
+	// only ever happens after the import commits, and the overwrite prompt is
+	// the caller's to answer.
+
+	const importNavigation = page
+		.waitForNavigation({waitUntil: 'load'})
+		.catch(() => null);
+
+	const overwritePrompt = page
+		.getByRole('heading', {name: 'Update Existing Picklist'})
+		.waitFor({state: 'visible'})
+		.catch(() => null);
+
 	await page.getByRole('button', {exact: true, name: 'Import'}).click();
+
+	await Promise.race([importNavigation, overwritePrompt]);
 }
 
 test.describe('manage export/import of picklists', () => {
