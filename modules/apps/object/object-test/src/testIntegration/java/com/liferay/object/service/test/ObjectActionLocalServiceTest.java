@@ -171,6 +171,7 @@ import java.io.Serializable;
 
 import java.lang.reflect.Method;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -278,6 +279,16 @@ public class ObjectActionLocalServiceTest {
 			"_objectScriptingExecutor", _originalObjectScriptingExecutor);
 
 		_objectDefinitionLocalService.deleteObjectDefinition(_objectDefinition);
+
+		// The commerce orders must go while the channel's group is still
+		// there: deleting an order item walks to its channel's group, so an
+		// order left to the data guard sweep can see the group deleted first
+		// and that walk logged as an error
+
+		for (CommerceOrder commerceOrder : _commerceOrders) {
+			_commerceOrderLocalService.deleteCommerceOrder(
+				commerceOrder.getCommerceOrderId());
+		}
 	}
 
 	@Test
@@ -336,6 +347,8 @@ public class ObjectActionLocalServiceTest {
 		CommerceOrder commerceOrder = CommerceTestUtil.addB2CCommerceOrder(
 			_user.getUserId(), _commerceChannel.getGroupId(),
 			_commerceCurrency);
+
+		_commerceOrders.add(commerceOrder);
 
 		commerceOrder = CommerceTestUtil.addCheckoutDetailsToCommerceOrder(
 			commerceOrder, _user.getUserId(), true, true);
@@ -1315,6 +1328,8 @@ public class ObjectActionLocalServiceTest {
 			_user.getUserId(), _commerceChannel.getGroupId(),
 			_commerceCurrency);
 
+		_commerceOrders.add(commerceOrder1);
+
 		commerceOrder1 = _commerceOrderEngine.checkoutCommerceOrder(
 			commerceOrder1, _user.getUserId());
 
@@ -1339,6 +1354,8 @@ public class ObjectActionLocalServiceTest {
 					"newCommerceOrder", TestPropsValues.getCompanyId());
 
 		Assert.assertNotNull(commerceOrder2);
+
+		_commerceOrders.add(commerceOrder2);
 
 		Assert.assertEquals(
 			_accountEntry.getAccountEntryId(),
@@ -4198,6 +4215,8 @@ public class ObjectActionLocalServiceTest {
 
 	@Inject
 	private CommerceOrderLocalService _commerceOrderLocalService;
+
+	private final List<CommerceOrder> _commerceOrders = new ArrayList<>();
 
 	@Inject
 	private CommerceSubscriptionEngine _commerceSubscriptionEngine;
