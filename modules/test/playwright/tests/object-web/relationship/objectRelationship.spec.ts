@@ -22,6 +22,7 @@ import {getRandomInt} from '../../../utils/getRandomInt';
 import getRandomString from '../../../utils/getRandomString';
 import {waitForAlert} from '../../../utils/waitForAlert';
 import {generateObjectFields} from '../utils/generateObjectFields';
+import {getFreshObjectRelationshipName} from '../utils/getFreshObjectRelationshipName';
 
 export const test = mergeTests(
 	dataApiHelpersTest,
@@ -162,7 +163,10 @@ test.describe('Manage object relationships through Model Builder', () => {
 			label: {
 				en_US: 'objectRelationshipLabel' + getRandomInt(),
 			},
-			name: 'objectRelationshipName' + Math.floor(Math.random() * 99),
+			name: await getFreshObjectRelationshipName(apiHelpers, [
+				objectDefinition1.externalReferenceCode!,
+				objectDefinition2.externalReferenceCode!,
+			]),
 			objectDefinitionExternalReferenceCode1:
 				objectDefinition1.externalReferenceCode,
 			objectDefinitionExternalReferenceCode2:
@@ -344,8 +348,13 @@ test.describe('Manage object relationships through Model Builder', () => {
 
 		const objectRelationshipLabel =
 			'objectRelationshipLabel' + getRandomInt();
-		const objectRelationshipName =
-			'objectRelationshipName' + Math.floor(Math.random() * 99);
+		const objectRelationshipName = await getFreshObjectRelationshipName(
+			apiHelpers,
+			[
+				objectDefinition1.externalReferenceCode!,
+				objectDefinition2.externalReferenceCode!,
+			]
+		);
 
 		const objectRelationshipData: Partial<ObjectRelationship> = {
 			label: {
@@ -707,8 +716,10 @@ test.describe('Manage object relationships through Model Builder', () => {
 		];
 
 		for (const {label, type} of objectRelationshipDetails) {
-			const objectRelationshipName =
-				'objectRelationshipName' + Math.floor(Math.random() * 99);
+			const objectRelationshipName = await getFreshObjectRelationshipName(
+				apiHelpers,
+				[objectDefinition.externalReferenceCode!]
+			);
 			const objectRelationshipData: Partial<ObjectRelationship> = {
 				label: {
 					en_US: label,
@@ -809,8 +820,13 @@ test.describe('Manage object relationships through Model Builder', () => {
 
 		const objectRelationshipLabel =
 			'objectRelationshipLabel' + getRandomInt();
-		const objectRelationshipName =
-			'objectRelationshipName' + Math.floor(Math.random() * 99);
+		const objectRelationshipName = await getFreshObjectRelationshipName(
+			apiHelpers,
+			[
+				objectDefinition1.externalReferenceCode!,
+				objectDefinition2.externalReferenceCode!,
+			]
+		);
 
 		const objectRelationshipAPIClient = await apiHelpers.buildRestClient(
 			ObjectRelationshipAPI
@@ -927,8 +943,13 @@ test.describe('Manage object relationships through Model Builder', () => {
 
 		const objectRelationshipLabel =
 			'objectRelationshipLabel' + getRandomInt();
-		const objectRelationshipName =
-			'objectRelationshipName' + Math.floor(Math.random() * 99);
+		const objectRelationshipName = await getFreshObjectRelationshipName(
+			apiHelpers,
+			[
+				objectDefinition1.externalReferenceCode!,
+				objectDefinition2.externalReferenceCode!,
+			]
+		);
 
 		const objectRelationshipData: Partial<ObjectRelationship> = {
 			label: {
@@ -1037,9 +1058,10 @@ test.describe('Manage object relationships through Model Builder', () => {
 						label: {
 							en_US: 'objectRelationshipLabel' + getRandomInt(),
 						},
-						name:
-							'objectRelationshipName' +
-							Math.floor(Math.random() * 99),
+						name: await getFreshObjectRelationshipName(apiHelpers, [
+							objectDefinition1.externalReferenceCode!,
+							objectDefinition2.externalReferenceCode!,
+						]),
 						objectDefinitionExternalReferenceCode1:
 							objectDefinition1.externalReferenceCode,
 						objectDefinitionExternalReferenceCode2:
@@ -1127,8 +1149,13 @@ test.describe('Manage object relationships through Model Builder', () => {
 
 			const objectRelationshipLabel =
 				'objectRelationshipLabel' + getRandomInt();
-			const objectRelationshipName =
-				'objectRelationshipName' + Math.floor(Math.random() * 99);
+			const objectRelationshipName = await getFreshObjectRelationshipName(
+				apiHelpers,
+				[
+					objectDefinition1.externalReferenceCode!,
+					objectDefinition2.externalReferenceCode!,
+				]
+			);
 
 			const objectRelationshipAPIClient =
 				await apiHelpers.buildRestClient(ObjectRelationshipAPI);
@@ -1244,8 +1271,13 @@ test.describe('Manage object relationships through Model Builder', () => {
 
 		const objectRelationshipLabel =
 			'objectRelationshipLabel' + getRandomInt();
-		const objectRelationshipName =
-			'objectRelationshipName' + Math.floor(Math.random() * 99);
+		const objectRelationshipName = await getFreshObjectRelationshipName(
+			apiHelpers,
+			[
+				objectDefinition1.externalReferenceCode!,
+				objectDefinition2.externalReferenceCode!,
+			]
+		);
 
 		const objectRelationshipAPIClient = await apiHelpers.buildRestClient(
 			ObjectRelationshipAPI
@@ -1434,7 +1466,14 @@ test.describe('Manage object relationships through Objects Admin UI', () => {
 						'L_ACCOUNT',
 						{
 							label: {en_US: 'Relationship Account'},
-							name: 'relationshipAccount' + getRandomInt(),
+							name: await getFreshObjectRelationshipName(
+								apiHelpers,
+								[
+									'L_ACCOUNT',
+									objectDefinition.externalReferenceCode!,
+								],
+								'relationshipAccount'
+							),
 							objectDefinitionExternalReferenceCode1: 'L_ACCOUNT',
 							objectDefinitionExternalReferenceCode2:
 								objectDefinition.externalReferenceCode,
@@ -1606,7 +1645,10 @@ test.describe('Manage object relationships through Objects Admin UI', () => {
 			label: {
 				en_US: 'objectRelationshipLabel' + getRandomInt(),
 			},
-			name: 'objectRelationshipName' + Math.floor(Math.random() * 99),
+			name: await getFreshObjectRelationshipName(apiHelpers, [
+				'L_ACCOUNT',
+				objectDefinition.externalReferenceCode!,
+			]),
 			objectDefinitionExternalReferenceCode2:
 				objectDefinition.externalReferenceCode,
 			type: 'oneToMany',
@@ -1749,7 +1791,14 @@ test.describe('Manage object relationships through Objects Admin UI', () => {
 			});
 
 			const relationshipLabel = `Relationship${getRandomInt()}`;
-			const relationshipName = `relationship${getRandomInt()}`;
+			const relationshipName = await getFreshObjectRelationshipName(
+				apiHelpers,
+				[
+					objectDefinition1.externalReferenceCode!,
+					objectDefinition2.externalReferenceCode!,
+				],
+				'relationship'
+			);
 
 			await (
 				await apiHelpers.buildRestClient(ObjectRelationshipAPI)
@@ -1818,7 +1867,14 @@ test.describe('Manage object relationships through Objects Admin UI', () => {
 					objectDefinition1.externalReferenceCode,
 					{
 						label: {en_US: relationshipLabel},
-						name: `relationship${getRandomInt()}`,
+						name: await getFreshObjectRelationshipName(
+							apiHelpers,
+							[
+								objectDefinition1.externalReferenceCode!,
+								objectDefinition2.externalReferenceCode!,
+							],
+							'relationship'
+						),
 						objectDefinitionExternalReferenceCode2:
 							objectDefinition2.externalReferenceCode,
 						objectDefinitionId2: objectDefinition2.id,
@@ -1889,7 +1945,14 @@ test.describe('Manage object relationships through Objects Admin UI', () => {
 					objectDefinition1.externalReferenceCode,
 					{
 						label: {en_US: relationshipLabel},
-						name: `viewRelationship${getRandomInt()}`,
+						name: await getFreshObjectRelationshipName(
+							apiHelpers,
+							[
+								objectDefinition1.externalReferenceCode!,
+								objectDefinition2.externalReferenceCode!,
+							],
+							'viewRelationship'
+						),
 						objectDefinitionExternalReferenceCode2:
 							objectDefinition2.externalReferenceCode,
 						objectDefinitionId2: objectDefinition2.id,
@@ -1941,7 +2004,14 @@ test.describe('Manage object relationships through Objects Admin UI', () => {
 				await apiHelpers.buildRestClient(ObjectRelationshipAPI);
 
 			const relationshipLabel = `Relationship${getRandomInt()}`;
-			const relationshipName = `relationship${getRandomInt()}`;
+			const relationshipName = await getFreshObjectRelationshipName(
+				apiHelpers,
+				[
+					objectDefinition1.externalReferenceCode!,
+					objectDefinition2.externalReferenceCode!,
+				],
+				'relationship'
+			);
 
 			const {body: objectRelationship} =
 				await objectRelationshipAPIClient.postObjectDefinitionByExternalReferenceCodeObjectRelationship(
@@ -2045,7 +2115,11 @@ test.describe('Manage object relationships through Objects Admin UI', () => {
 					objectDefinition.externalReferenceCode,
 					{
 						label: {en_US: `Relationship${getRandomInt()}`},
-						name: `relationship${getRandomInt()}`,
+						name: await getFreshObjectRelationshipName(
+							apiHelpers,
+							[objectDefinition.externalReferenceCode!],
+							'relationship'
+						),
 						objectDefinitionExternalReferenceCode1:
 							objectDefinition.externalReferenceCode,
 						objectDefinitionExternalReferenceCode2:
@@ -2248,7 +2322,14 @@ test.describe('Manage object relationships through Objects Admin UI', () => {
 			const objectRelationshipAPIClient =
 				await apiHelpers.buildRestClient(ObjectRelationshipAPI);
 
-			const relationshipName = `relationship${getRandomInt()}`;
+			const relationshipName = await getFreshObjectRelationshipName(
+				apiHelpers,
+				[
+					objectDefinition1.externalReferenceCode!,
+					objectDefinition2.externalReferenceCode!,
+				],
+				'relationship'
+			);
 
 			await objectRelationshipAPIClient.postObjectDefinitionByExternalReferenceCodeObjectRelationship(
 				objectDefinition1.externalReferenceCode,
@@ -2453,7 +2534,14 @@ test.describe('Manage object relationships through Objects Admin UI', () => {
 					objectDefinition1.externalReferenceCode,
 					{
 						label: {en_US: `Relationship${getRandomInt()}`},
-						name: `relationship${getRandomInt()}`,
+						name: await getFreshObjectRelationshipName(
+							apiHelpers,
+							[
+								objectDefinition1.externalReferenceCode!,
+								objectDefinition2.externalReferenceCode!,
+							],
+							'relationship'
+						),
 						objectDefinitionExternalReferenceCode2:
 							objectDefinition2.externalReferenceCode,
 						objectDefinitionId2: objectDefinition2.id,
@@ -2569,7 +2657,14 @@ test.describe('Manage object relationships through Objects Admin UI', () => {
 					objectDefinition1.externalReferenceCode,
 					{
 						label: {en_US: `Relationship${getRandomInt()}`},
-						name: `relationship${getRandomInt()}`,
+						name: await getFreshObjectRelationshipName(
+							apiHelpers,
+							[
+								objectDefinition1.externalReferenceCode!,
+								objectDefinition2.externalReferenceCode!,
+							],
+							'relationship'
+						),
 						objectDefinitionExternalReferenceCode2:
 							objectDefinition2.externalReferenceCode,
 						objectDefinitionId2: objectDefinition2.id,
@@ -2640,7 +2735,14 @@ test.describe('Manage object relationships through Objects Admin UI', () => {
 				const objectRelationshipAPIClient =
 					await apiHelpers.buildRestClient(ObjectRelationshipAPI);
 
-				relationshipName = 'relationship' + getRandomInt();
+				relationshipName = await getFreshObjectRelationshipName(
+					apiHelpers,
+					[
+						objectDefinition1.externalReferenceCode!,
+						objectDefinition2.externalReferenceCode!,
+					],
+					'relationship'
+				);
 
 				await objectRelationshipAPIClient.postObjectDefinitionByExternalReferenceCodeObjectRelationship(
 					objectDefinition1.externalReferenceCode!,
@@ -2764,8 +2866,10 @@ test.describe('Manage object relationships with system objects', () => {
 			const objectRelationshipAPIClient =
 				await apiHelpers.buildRestClient(ObjectRelationshipAPI);
 
-			const objectRelationshipName =
-				'objectRelationshipName' + Math.floor(Math.random() * 99);
+			const objectRelationshipName = await getFreshObjectRelationshipName(
+				apiHelpers,
+				[objectDefinition.externalReferenceCode!, 'L_USER']
+			);
 
 			const {body: objectRelationship} =
 				await objectRelationshipAPIClient.postObjectDefinitionByExternalReferenceCodeObjectRelationship(
@@ -2946,7 +3050,11 @@ test.describe('Manage object relationships with system objects', () => {
 					await apiHelpers.buildRestClient(ObjectRelationshipAPI);
 
 				relationshipLabel = 'Relationship' + getRandomInt();
-				relationshipName = 'relationship' + getRandomInt();
+				relationshipName = await getFreshObjectRelationshipName(
+					apiHelpers,
+					['L_USER', objectDefinition.externalReferenceCode!],
+					'relationship'
+				);
 
 				const {body: objectRelationship} =
 					await objectRelationshipAPIClient.postObjectDefinitionByExternalReferenceCodeObjectRelationship(
@@ -3047,8 +3155,10 @@ test.describe('Manage object relationships with system objects', () => {
 			const objectRelationshipAPIClient =
 				await apiHelpers.buildRestClient(ObjectRelationshipAPI);
 
-			const objectRelationshipName =
-				'objectRelationshipName' + Math.floor(Math.random() * 99);
+			const objectRelationshipName = await getFreshObjectRelationshipName(
+				apiHelpers,
+				[objectDefinition.externalReferenceCode!, 'L_USER']
+			);
 
 			const {body: objectRelationship} =
 				await objectRelationshipAPIClient.postObjectDefinitionByExternalReferenceCodeObjectRelationship(
@@ -3220,7 +3330,11 @@ test.describe('Manage object relationships with system objects', () => {
 					'L_USER',
 					{
 						label: {en_US: relationshipLabel},
-						name: 'relationship' + getRandomInt(),
+						name: await getFreshObjectRelationshipName(
+							apiHelpers,
+							['L_USER', objectDefinition.externalReferenceCode!],
+							'relationship'
+						),
 						objectDefinitionExternalReferenceCode2:
 							objectDefinition.externalReferenceCode,
 						objectDefinitionId2: objectDefinition.id,
@@ -3301,7 +3415,14 @@ test.describe('Manage object relationship entries', () => {
 						objectDefinition1.externalReferenceCode,
 						{
 							label: {en_US: 'Relationship'},
-							name: 'relationship' + getRandomInt(),
+							name: await getFreshObjectRelationshipName(
+								apiHelpers,
+								[
+									objectDefinition1.externalReferenceCode!,
+									objectDefinition2.externalReferenceCode!,
+								],
+								'relationship'
+							),
 							objectDefinitionExternalReferenceCode1:
 								objectDefinition1.externalReferenceCode,
 							objectDefinitionExternalReferenceCode2:
@@ -3494,8 +3615,13 @@ test.describe('Manage object relationship entries', () => {
 			const objectRelationshipAPIClient =
 				await apiHelpers.buildRestClient(ObjectRelationshipAPI);
 
-			const objectRelationshipName =
-				'objectRelationshipName' + Math.floor(Math.random() * 99);
+			const objectRelationshipName = await getFreshObjectRelationshipName(
+				apiHelpers,
+				[
+					objectDefinition1.externalReferenceCode!,
+					objectDefinition2.externalReferenceCode!,
+				]
+			);
 
 			const {body: objectRelationship} =
 				await objectRelationshipAPIClient.postObjectDefinitionByExternalReferenceCodeObjectRelationship(
@@ -3653,8 +3779,10 @@ test.describe('Manage object relationship entries', () => {
 			const objectRelationshipAPIClient =
 				await apiHelpers.buildRestClient(ObjectRelationshipAPI);
 
-			const objectRelationshipName =
-				'objectRelationshipName' + Math.floor(Math.random() * 99);
+			const objectRelationshipName = await getFreshObjectRelationshipName(
+				apiHelpers,
+				[objectDefinition.externalReferenceCode!]
+			);
 
 			const {body: objectRelationship} =
 				await objectRelationshipAPIClient.postObjectDefinitionByExternalReferenceCodeObjectRelationship(
@@ -3830,8 +3958,10 @@ test.describe('Manage object relationship entries', () => {
 			const objectRelationshipAPIClient =
 				await apiHelpers.buildRestClient(ObjectRelationshipAPI);
 
-			const objectRelationshipName =
-				'objectRelationshipName' + Math.floor(Math.random() * 99);
+			const objectRelationshipName = await getFreshObjectRelationshipName(
+				apiHelpers,
+				[objectDefinition.externalReferenceCode!]
+			);
 
 			const {body: objectRelationship} =
 				await objectRelationshipAPIClient.postObjectDefinitionByExternalReferenceCodeObjectRelationship(
@@ -3976,7 +4106,11 @@ test.describe('Manage object relationship entries', () => {
 						objectDefinition.externalReferenceCode,
 						{
 							label: {en_US: 'Relationship'},
-							name: 'relationship' + getRandomInt(),
+							name: await getFreshObjectRelationshipName(
+								apiHelpers,
+								[objectDefinition.externalReferenceCode!],
+								'relationship'
+							),
 							objectDefinitionExternalReferenceCode1:
 								objectDefinition.externalReferenceCode,
 							objectDefinitionExternalReferenceCode2:
@@ -4049,7 +4183,11 @@ test.describe('Manage object relationship entries', () => {
 						objectDefinition.externalReferenceCode,
 						{
 							label: {en_US: 'Relationship'},
-							name: 'relationship' + getRandomInt(),
+							name: await getFreshObjectRelationshipName(
+								apiHelpers,
+								[objectDefinition.externalReferenceCode!],
+								'relationship'
+							),
 							objectDefinitionExternalReferenceCode1:
 								objectDefinition.externalReferenceCode,
 							objectDefinitionExternalReferenceCode2:
@@ -4311,8 +4449,10 @@ test.describe('Manage object relationship entries', () => {
 			const objectRelationshipAPIClient =
 				await apiHelpers.buildRestClient(ObjectRelationshipAPI);
 
-			const objectRelationshipName =
-				'objectRelationshipName' + Math.floor(Math.random() * 99);
+			const objectRelationshipName = await getFreshObjectRelationshipName(
+				apiHelpers,
+				[objectDefinition.externalReferenceCode!]
+			);
 
 			const {body: objectRelationship} =
 				await objectRelationshipAPIClient.postObjectDefinitionByExternalReferenceCodeObjectRelationship(
@@ -4397,7 +4537,14 @@ test.describe('Manage object relationship entries', () => {
 						{
 							deletionType: 'disassociate',
 							label: {en_US: 'Relationship'},
-							name: 'relationship' + getRandomInt(),
+							name: await getFreshObjectRelationshipName(
+								apiHelpers,
+								[
+									objectDefinition1.externalReferenceCode!,
+									objectDefinition2.externalReferenceCode!,
+								],
+								'relationship'
+							),
 							objectDefinitionExternalReferenceCode1:
 								objectDefinition1.externalReferenceCode,
 							objectDefinitionExternalReferenceCode2:
@@ -4557,7 +4704,14 @@ test.describe('Manage object relationship entries', () => {
 						objectDefinition1.externalReferenceCode,
 						{
 							label: {en_US: 'Relationship' + getRandomInt()},
-							name: 'relationship' + getRandomInt(),
+							name: await getFreshObjectRelationshipName(
+								apiHelpers,
+								[
+									objectDefinition1.externalReferenceCode!,
+									objectDefinition2.externalReferenceCode!,
+								],
+								'relationship'
+							),
 							objectDefinitionExternalReferenceCode1:
 								objectDefinition1.externalReferenceCode,
 							objectDefinitionExternalReferenceCode2:
@@ -4807,7 +4961,14 @@ test.describe('Manage object relationship entries', () => {
 					objectDefinition1.externalReferenceCode,
 					{
 						label: {en_US: 'Relationship' + getRandomInt()},
-						name: 'relationship' + getRandomInt(),
+						name: await getFreshObjectRelationshipName(
+							apiHelpers,
+							[
+								objectDefinition1.externalReferenceCode!,
+								objectDefinition2.externalReferenceCode!,
+							],
+							'relationship'
+						),
 						objectDefinitionExternalReferenceCode1:
 							objectDefinition1.externalReferenceCode,
 						objectDefinitionExternalReferenceCode2:
@@ -4915,7 +5076,14 @@ test.describe('Manage object relationship entries', () => {
 					objectDefinition1.externalReferenceCode,
 					{
 						label: {en_US: 'Relationship'},
-						name: 'relationship' + getRandomInt(),
+						name: await getFreshObjectRelationshipName(
+							apiHelpers,
+							[
+								objectDefinition1.externalReferenceCode!,
+								objectDefinition2.externalReferenceCode!,
+							],
+							'relationship'
+						),
 						objectDefinitionExternalReferenceCode1:
 							objectDefinition1.externalReferenceCode,
 						objectDefinitionExternalReferenceCode2:
@@ -5078,7 +5246,14 @@ test.describe('Manage object relationship entries', () => {
 					objectDefinition1.externalReferenceCode,
 					{
 						label: {en_US: 'Relationship'},
-						name: 'relationship' + getRandomInt(),
+						name: await getFreshObjectRelationshipName(
+							apiHelpers,
+							[
+								objectDefinition1.externalReferenceCode!,
+								objectDefinition2.externalReferenceCode!,
+							],
+							'relationship'
+						),
 						objectDefinitionExternalReferenceCode1:
 							objectDefinition1.externalReferenceCode,
 						objectDefinitionExternalReferenceCode2:
@@ -5291,8 +5466,10 @@ test.describe('View relationship hierarchy labels', () => {
 			const objectRelationshipAPIClient =
 				await apiHelpers.buildRestClient(ObjectRelationshipAPI);
 
-			const objectRelationshipName =
-				'objectRelationshipName' + Math.floor(Math.random() * 99);
+			const objectRelationshipName = await getFreshObjectRelationshipName(
+				apiHelpers,
+				[objectDefinition.externalReferenceCode!]
+			);
 
 			const {body: objectRelationship} =
 				await objectRelationshipAPIClient.postObjectDefinitionByExternalReferenceCodeObjectRelationship(
