@@ -123,6 +123,7 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.TestInfo;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DataGuard;
+import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.OrganizationTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -171,6 +172,7 @@ import java.io.Serializable;
 
 import java.lang.reflect.Method;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -276,8 +278,6 @@ public class ObjectActionLocalServiceTest {
 			_objectActionExecutorRegistry.getObjectActionExecutor(
 				0, ObjectActionExecutorConstants.KEY_GROOVY),
 			"_objectScriptingExecutor", _originalObjectScriptingExecutor);
-
-		_objectDefinitionLocalService.deleteObjectDefinition(_objectDefinition);
 	}
 
 	@Test
@@ -336,6 +336,8 @@ public class ObjectActionLocalServiceTest {
 		CommerceOrder commerceOrder = CommerceTestUtil.addB2CCommerceOrder(
 			_user.getUserId(), _commerceChannel.getGroupId(),
 			_commerceCurrency);
+
+		_commerceOrders.add(commerceOrder);
 
 		commerceOrder = CommerceTestUtil.addCheckoutDetailsToCommerceOrder(
 			commerceOrder, _user.getUserId(), true, true);
@@ -1315,6 +1317,8 @@ public class ObjectActionLocalServiceTest {
 			_user.getUserId(), _commerceChannel.getGroupId(),
 			_commerceCurrency);
 
+		_commerceOrders.add(commerceOrder1);
+
 		commerceOrder1 = _commerceOrderEngine.checkoutCommerceOrder(
 			commerceOrder1, _user.getUserId());
 
@@ -1339,6 +1343,8 @@ public class ObjectActionLocalServiceTest {
 					"newCommerceOrder", TestPropsValues.getCompanyId());
 
 		Assert.assertNotNull(commerceOrder2);
+
+		_commerceOrders.add(commerceOrder2);
 
 		Assert.assertEquals(
 			_accountEntry.getAccountEntryId(),
@@ -4183,6 +4189,7 @@ public class ObjectActionLocalServiceTest {
 		_objectActionLocalService.deleteObjectAction(objectAction);
 	}
 
+	@DeleteAfterTestRun
 	private AccountEntry _accountEntry;
 
 	@Inject
@@ -4190,7 +4197,11 @@ public class ObjectActionLocalServiceTest {
 
 	private final Queue<Object[]> _argumentsList =
 		new ConcurrentLinkedQueue<>();
+
+	@DeleteAfterTestRun
 	private CommerceChannel _commerceChannel;
+
+	@DeleteAfterTestRun
 	private CommerceCurrency _commerceCurrency;
 
 	@Inject
@@ -4198,6 +4209,9 @@ public class ObjectActionLocalServiceTest {
 
 	@Inject
 	private CommerceOrderLocalService _commerceOrderLocalService;
+
+	@DeleteAfterTestRun
+	private final List<CommerceOrder> _commerceOrders = new ArrayList<>();
 
 	@Inject
 	private CommerceSubscriptionEngine _commerceSubscriptionEngine;
@@ -4212,6 +4226,7 @@ public class ObjectActionLocalServiceTest {
 	@Inject
 	private CPDefinitionLocalService _cpDefinitionLocalService;
 
+	@DeleteAfterTestRun
 	private Group _group;
 
 	@Inject
@@ -4242,6 +4257,7 @@ public class ObjectActionLocalServiceTest {
 	@Inject
 	private ObjectActionTriggerRegistry _objectActionTriggerRegistry;
 
+	@DeleteAfterTestRun
 	private ObjectDefinition _objectDefinition;
 
 	@Inject
