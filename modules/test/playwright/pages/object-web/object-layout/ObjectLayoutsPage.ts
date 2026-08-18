@@ -261,7 +261,13 @@ export class ObjectLayoutsPage {
 			objectDefinitionLabel
 		);
 
+		// The tab click starts a render navigation. Own it to its landing,
+		// so the method returns with no navigation left in flight for a
+		// later address to collide with.
+
 		await this.layoutsTabItem.click();
+
+		await this.page.waitForURL(/screenNavigationCategoryKey=layouts/);
 	}
 
 	/**
