@@ -191,6 +191,24 @@ test(
 		page,
 		viewObjectDefinitionsPage,
 	}) => {
+		let lpdxDelay = false;
+
+		await page.route(
+			'**/group/control_panel/manage**',
+			async (route) => {
+				if (
+					lpdxDelay &&
+					route.request().resourceType() === 'document'
+				) {
+					console.log('LPDX-HITS 1');
+
+					await new Promise((resolve) => setTimeout(resolve, 1500));
+				}
+
+				await route.continue();
+			}
+		);
+
 		const objectDefinition =
 			await apiHelpers.objectAdmin.postRandomObjectDefinition({
 				status: {code: 0},
@@ -216,6 +234,8 @@ test(
 
 		await viewObjectDefinitionsPage.changeObjectActivateStatus(label);
 
+		lpdxDelay = true;
+
 		await configurationTabPage.searchAssetType(label);
 
 		await expect(page.getByRole('row', {name: label})).toBeHidden();
@@ -240,6 +260,24 @@ test(
 		viewObjectDefinitionsPage,
 		workflowPage,
 	}) => {
+		let lpdxDelay = false;
+
+		await page.route(
+			'**/group/control_panel/manage**',
+			async (route) => {
+				if (
+					lpdxDelay &&
+					route.request().resourceType() === 'document'
+				) {
+					console.log('LPDX-HITS 1');
+
+					await new Promise((resolve) => setTimeout(resolve, 1500));
+				}
+
+				await route.continue();
+			}
+		);
+
 		const objectDefinition =
 			await apiHelpers.objectAdmin.postRandomObjectDefinition({
 				panelCategoryKey: 'site_administration.content',
@@ -257,6 +295,8 @@ test(
 		await viewObjectDefinitionsPage.changeObjectActivateStatus(
 			objectDefinition.label['en_US']
 		);
+
+		lpdxDelay = true;
 
 		await workflowPage.goto(site.friendlyUrlPath);
 
