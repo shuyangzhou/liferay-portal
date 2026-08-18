@@ -11,7 +11,6 @@ import path from 'path';
 import {gotoWithRetry} from '../../utils/gotoWithRetry';
 import {PORTLET_URLS} from '../../utils/portletUrls';
 import {getTempDir} from '../../utils/temp';
-import {waitForAlert} from '../../utils/waitForAlert';
 import {waitForSearchToBeReady} from '../../utils/waitForSearchToBeReady';
 
 export class ViewObjectDefinitionsPage {
