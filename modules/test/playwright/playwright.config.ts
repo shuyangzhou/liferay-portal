@@ -266,6 +266,10 @@ export default defineConfig({
 	},
 	forbidOnly: !!process.env.CI,
 	globalTimeout: 60 * 60 * 1000,
+	grep: new RegExp('Verify that the Object is displayed on the Workflow Process Builder page|disappears from Workflow Site Menu when inactivated'),
+
+	repeatEach: 3,
+
 	projects: [
 		accessibilityMenuWeb,
 		accountAdminWebConfig,
