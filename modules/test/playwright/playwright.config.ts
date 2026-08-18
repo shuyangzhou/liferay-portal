@@ -266,6 +266,10 @@ export default defineConfig({
 	},
 	forbidOnly: !!process.env.CI,
 	globalTimeout: 60 * 60 * 1000,
+	grep: new RegExp('relationship tab visibility changes according to active state|can edit Many-to-Many relationship of Custom Object entries|can view object entry title in the relationship tab for self relationship|can set picklist default value via expression builder|already-related entry is kept on both objects|cannot update an entry on the relationship tab without update permission'),
+
+	repeatEach: 8,
+
 	projects: [
 		accessibilityMenuWeb,
 		accountAdminWebConfig,
