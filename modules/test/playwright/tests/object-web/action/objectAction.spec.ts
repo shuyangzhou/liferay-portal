@@ -82,8 +82,8 @@ test.describe('Manage object actions through object actions tab', () => {
 			);
 		}
 
-		await viewObjectActionsPage.goto(
-			createdObjectDefinition.label['en_US']
+		await viewObjectActionsPage.gotoByObjectDefinitionId(
+			createdObjectDefinition.id
 		);
 
 		await viewObjectActionsPage.openObjectActionSidePanel();
@@ -169,8 +169,8 @@ test.describe('Manage object actions through object actions tab', () => {
 			type: 'notificationTemplate',
 		});
 
-		await viewObjectActionsPage.goto(
-			createdObjectDefinition.label['en_US']
+		await viewObjectActionsPage.gotoByObjectDefinitionId(
+			createdObjectDefinition.id
 		);
 
 		await editObjectActionPage.addNewAction({
@@ -230,8 +230,8 @@ test.describe('Manage object actions through object actions tab', () => {
 			type: 'notificationTemplate',
 		});
 
-		await viewObjectActionsPage.goto(
-			createdObjectDefinition.label['en_US']
+		await viewObjectActionsPage.gotoByObjectDefinitionId(
+			createdObjectDefinition.id
 		);
 
 		await editObjectActionPage.addNewAction({
@@ -460,7 +460,9 @@ test.describe('Object Action CRUD', () => {
 				type: 'objectDefinition',
 			});
 
-			await viewObjectActionsPage.goto(objectDefinition.label['en_US']);
+			await viewObjectActionsPage.gotoByObjectDefinitionId(
+				objectDefinition.id
+			);
 
 			await viewObjectActionsPage.openObjectActionSidePanel();
 
@@ -508,7 +510,9 @@ test.describe('Object Action CRUD', () => {
 
 			apiHelpers.data.push({id: objectAction.id, type: 'objectAction'});
 
-			await viewObjectActionsPage.goto(objectDefinition.label['en_US']);
+			await viewObjectActionsPage.gotoByObjectDefinitionId(
+				objectDefinition.id
+			);
 
 			await page.getByRole('link', {name: 'Action Label'}).click();
 
@@ -548,7 +552,9 @@ test.describe('Object Action CRUD', () => {
 				type: 'objectDefinition',
 			});
 
-			await viewObjectActionsPage.goto(objectDefinition.label['en_US']);
+			await viewObjectActionsPage.gotoByObjectDefinitionId(
+				objectDefinition.id
+			);
 
 			await viewObjectActionsPage.openObjectActionSidePanel();
 
@@ -614,7 +620,9 @@ test.describe('Object Action CRUD', () => {
 				}
 			);
 
-			await viewObjectActionsPage.goto(objectDefinition.label['en_US']);
+			await viewObjectActionsPage.gotoByObjectDefinitionId(
+				objectDefinition.id
+			);
 
 			await expect(
 				page.getByRole('link', {name: 'Action Label'})
@@ -666,7 +674,9 @@ test.describe('Object Action CRUD', () => {
 
 			apiHelpers.data.push({id: objectAction.id, type: 'objectAction'});
 
-			await viewObjectActionsPage.goto(objectDefinition.label['en_US']);
+			await viewObjectActionsPage.gotoByObjectDefinitionId(
+				objectDefinition.id
+			);
 
 			await expect(page.getByRole('cell', {name: 'No'})).toBeVisible();
 
@@ -792,7 +802,9 @@ test.describe('Object Action CRUD', () => {
 
 			apiHelpers.data.push({id: objectAction2.id, type: 'objectAction'});
 
-			await viewObjectActionsPage.goto(objectDefinition.label['en_US']);
+			await viewObjectActionsPage.gotoByObjectDefinitionId(
+				objectDefinition.id
+			);
 
 			await expect(
 				page.getByRole('link', {name: 'Action Label 1'})
@@ -850,7 +862,9 @@ test.describe('Object Action CRUD', () => {
 
 			apiHelpers.data.push({id: objectAction.id, type: 'objectAction'});
 
-			await viewObjectActionsPage.goto(objectDefinition.label['en_US']);
+			await viewObjectActionsPage.gotoByObjectDefinitionId(
+				objectDefinition.id
+			);
 
 			await test.step('Update the action name', async () => {
 				await page.getByRole('link', {name: 'Action Label'}).click();
@@ -905,7 +919,9 @@ test.describe('Object Action Conditions and Triggers', () => {
 				type: 'objectDefinition',
 			});
 
-			await viewObjectActionsPage.goto(objectDefinition.label['en_US']);
+			await viewObjectActionsPage.gotoByObjectDefinitionId(
+				objectDefinition.id
+			);
 
 			await viewObjectActionsPage.openObjectActionSidePanel();
 
@@ -988,7 +1004,9 @@ test.describe('Object Action Conditions and Triggers', () => {
 
 			apiHelpers.data.push({id: objectAction.id, type: 'objectAction'});
 
-			await viewObjectActionsPage.goto(objectDefinition.label['en_US']);
+			await viewObjectActionsPage.gotoByObjectDefinitionId(
+				objectDefinition.id
+			);
 
 			await page.getByRole('link', {name: 'Custom Action'}).click();
 
@@ -1206,7 +1224,9 @@ test.describe('Object Action Conditions and Triggers', () => {
 				applicationName
 			);
 
-			await viewObjectActionsPage.goto(objectDefinition.label['en_US']);
+			await viewObjectActionsPage.gotoByObjectDefinitionId(
+				objectDefinition.id
+			);
 
 			await expect(
 				page.getByRole('link', {name: 'Action Label'})
@@ -1784,7 +1804,9 @@ test.describe('Object Action Required Field Validation', () => {
 				type: 'objectDefinition',
 			});
 
-			await viewObjectActionsPage.goto(objectDefinition.label['en_US']);
+			await viewObjectActionsPage.gotoByObjectDefinitionId(
+				objectDefinition.id
+			);
 
 			await viewObjectActionsPage.openObjectActionSidePanel();
 
@@ -1812,7 +1834,9 @@ test.describe('Object Action Required Field Validation', () => {
 				type: 'objectDefinition',
 			});
 
-			await viewObjectActionsPage.goto(objectDefinition.label['en_US']);
+			await viewObjectActionsPage.gotoByObjectDefinitionId(
+				objectDefinition.id
+			);
 
 			await viewObjectActionsPage.openObjectActionSidePanel();
 
@@ -1860,7 +1884,9 @@ test.describe('Object Action Required Field Validation', () => {
 				type: 'objectDefinition',
 			});
 
-			await viewObjectActionsPage.goto(objectDefinition.label['en_US']);
+			await viewObjectActionsPage.gotoByObjectDefinitionId(
+				objectDefinition.id
+			);
 
 			await viewObjectActionsPage.openObjectActionSidePanel();
 
@@ -1895,7 +1921,9 @@ test.describe('Object Action Required Field Validation', () => {
 				type: 'objectDefinition',
 			});
 
-			await viewObjectActionsPage.goto(objectDefinition.label['en_US']);
+			await viewObjectActionsPage.gotoByObjectDefinitionId(
+				objectDefinition.id
+			);
 
 			await viewObjectActionsPage.openObjectActionSidePanel();
 
@@ -1934,7 +1962,9 @@ test.describe('Object Action Required Field Validation', () => {
 				type: 'objectDefinition',
 			});
 
-			await viewObjectActionsPage.goto(objectDefinition.label['en_US']);
+			await viewObjectActionsPage.gotoByObjectDefinitionId(
+				objectDefinition.id
+			);
 
 			await viewObjectActionsPage.openObjectActionSidePanel();
 
@@ -1984,7 +2014,9 @@ test.describe('Object Action Required Field Validation', () => {
 				type: 'objectDefinition',
 			});
 
-			await viewObjectActionsPage.goto(objectDefinition.label['en_US']);
+			await viewObjectActionsPage.gotoByObjectDefinitionId(
+				objectDefinition.id
+			);
 
 			await viewObjectActionsPage.openObjectActionSidePanel();
 
@@ -2896,8 +2928,8 @@ ObjectEntryLocalServiceUtil.updateObjectEntry(objectEntry.getUserId(), id, 0L, v
 			// execution status reflects 'Success'.
 
 			await expect(async () => {
-				await viewObjectActionsPage.goto(
-					objectDefinition.label!['en_US']
+				await viewObjectActionsPage.gotoByObjectDefinitionId(
+					objectDefinition.id
 				);
 
 				await expect(
