@@ -1062,17 +1062,40 @@ test.describe('Manage object definitions through View Object Definitions', () =>
 			1
 		);
 
+		// Reopen the list. After the confirmation modal's delete the toolbar's
+		// search stops submitting: the text lands in the box and the Enter
+		// produces no request at all, so the list keeps answering for whatever
+		// the previous search asked.
+
+		await viewObjectDefinitionsPage.goto();
+
+		// Each read narrows the list to its own definition. The list is left
+		// holding whatever the last row reach searched for, and a definition
+		// this test never searched for is not on the page it reads.
+
+		await viewObjectDefinitionsPage.searchObjectDefinition(
+			objectDefinition1.label['en_US']
+		);
+
 		await expect(
 			viewObjectDefinitionsPage.frontendDataSetEntries.filter({
 				hasText: objectDefinition1.label['en_US'],
 			})
 		).toBeVisible();
 
+		await viewObjectDefinitionsPage.searchObjectDefinition(
+			objectDefinition2.label['en_US']
+		);
+
 		await expect(
 			viewObjectDefinitionsPage.frontendDataSetEntries.filter({
 				hasText: objectDefinition2.label['en_US'],
 			})
 		).toBeHidden();
+
+		await viewObjectDefinitionsPage.searchObjectDefinition(
+			objectDefinition3.label!['en_US']
+		);
 
 		await expect(
 			viewObjectDefinitionsPage.frontendDataSetEntries.filter({

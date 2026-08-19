@@ -167,6 +167,14 @@ export class ViewObjectDefinitionsPage {
 	}
 
 	async clickObjectDefinitionActionButton(objectDefinitionLabel: string) {
+
+		// Narrow the list before reaching for the row. The table pages at
+		// twenty rows, so on an environment holding more definitions than that
+		// the row is not on the page at all and the reach waits out its whole
+		// timeout. The export path and the edit link path both search first.
+
+		await this.searchObjectDefinition(objectDefinitionLabel);
+
 		await this.page
 			.getByRole('row', {name: objectDefinitionLabel})
 			.getByRole('button')
@@ -316,5 +324,17 @@ export class ViewObjectDefinitionsPage {
 			.getByRole('listitem')
 			.filter({hasText: objectFolderLabel})
 			.click({timeout: options?.timeout});
+	}
+
+	async searchObjectDefinition(objectDefinitionLabel: string) {
+		await this.searchInput.fill(objectDefinitionLabel);
+
+		await waitForSearchToBeReady(this.page);
+
+		// Press the input, not the page. A modal closing after the fill hands
+		// focus back to whatever opened it, and a page level key then never
+		// reaches the search form, so the list is never asked again.
+
+		await this.searchInput.press('Enter');
 	}
 }
