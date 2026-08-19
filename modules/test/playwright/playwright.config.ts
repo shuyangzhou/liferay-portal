@@ -541,5 +541,19 @@ export default defineConfig({
 		screenshot: 'only-on-failure',
 		trace: 'retain-on-failure',
 	},
+
+	// The portal resolves learn resources over HTTP, and with
+	// learn.resources.mode=dev it asks this port. Serve the repository's own
+	// copies so a test that clicks a learn link finds one: the portal swallows
+	// a failed fetch into an empty resource set, and the link is then not
+	// rendered at all. The runner starts and stops the server itself, so no
+	// node binary is needed on the environment's own path.
+
+	webServer: {
+		command:
+			'node env/learnResourcesServer.js ../../../learn-resources/data 3062',
+		port: 3062,
+		reuseExistingServer: true,
+	},
 	workers: 1,
 });
