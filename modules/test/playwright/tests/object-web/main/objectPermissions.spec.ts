@@ -60,11 +60,24 @@ async function createUserWithPermissions(apiHelpers, rolePermissions) {
 async function grantPermissionsToUserRole(page, checked: boolean) {
 	const permissionIframe = page.frameLocator('iframe[title="Permissions"]');
 
+	// The dialog pages its role list at twenty rows in alphabetical order, so
+	// on an environment holding more roles than that the User row sits on a
+	// later page and its checkbox is not in the document at all. Narrow the
+	// list with the dialog's own search first. Filling the search also waits
+	// for the dialog to be there, which is what the checkbox's own actionability
+	// wait below then covers for the filtered render.
+
+	const searchInput = permissionIframe.locator(
+		'[name$="PortletConfigurationPortlet_keywords"]'
+	);
+
+	await searchInput.fill('User');
+
+	await searchInput.press('Enter');
+
 	const permissionsCheckbox = permissionIframe.locator(
 		'#user_ACTION_PERMISSIONS'
 	);
-
-	await page.waitForTimeout(500);
 
 	await permissionsCheckbox.check({trial: true});
 
