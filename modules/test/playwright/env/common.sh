@@ -619,6 +619,14 @@ function start_client_extension_spring_boot_application {
 
 		echo "${portal_url_scheme}" > ${LIFERAY_HOME}/routes/default/dxp/com.liferay.lxc.dxp.server.protocol
 
+		# Finish the Gradle bootstrap before the readiness wait below starts
+		# timing the application. A cold wrapper cache downloads a Gradle
+		# distribution and starts a daemon on the first invocation, which the
+		# wait cannot tell apart from a slow application and which alone can
+		# outlast the whole budget.
+
+		$(get_gradlew) classes -Pliferay.workspace.home.dir=${LIFERAY_HOME}
+
 		$(get_gradlew) bootRun -Pliferay.workspace.home.dir=${LIFERAY_HOME} &
 
 		local sleep_duration=60
