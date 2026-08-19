@@ -13,6 +13,12 @@ import {PORTLET_URLS} from '../../utils/portletUrls';
 import {getTempDir} from '../../utils/temp';
 import {waitForSearchToBeReady} from '../../utils/waitForSearchToBeReady';
 
+// The data set's own config parameter, namespaced by the portlet that holds the
+// object definitions table and by the id that table is registered under.
+
+const OBJECT_DEFINITIONS_FDS_CONFIG =
+	'com_liferay_object_web_internal_object_definitions_portlet_ObjectDefinitionsPortlet-objectDefinitions_fdsConfig';
+
 export class ViewObjectDefinitionsPage {
 	readonly actionsButton: Locator;
 	readonly addObjectFolderButton: Locator;
@@ -246,9 +252,17 @@ export class ViewObjectDefinitionsPage {
 	};
 
 	async goto(siteUrl?: Site['friendlyUrlPath']) {
+
+		// Ask for a page big enough to hold every definition. The data set
+		// pages at twenty by default, so on an environment holding more than
+		// that a row targeted by name is not in the document at all and every
+		// reach for it waits out its timeout. Widening the page is what the
+		// data set's own delta means, and unlike searching for the row it hides
+		// nothing: a later assertion that a row is absent still means absent.
+
 		await gotoWithRetry(
 			this.page,
-			`/group${siteUrl || '/guest'}${PORTLET_URLS.objects}`,
+			`/group${siteUrl || '/guest'}${PORTLET_URLS.objects}&${OBJECT_DEFINITIONS_FDS_CONFIG}=(delta:200)`,
 			{waitUntil: 'load'}
 		);
 	}
