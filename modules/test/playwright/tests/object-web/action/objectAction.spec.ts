@@ -353,7 +353,7 @@ test('can send notification email via download action', async ({
 		.waitFor({state: 'visible'});
 
 	// The queue entry is written inside the download request, before its
-	// first response byte, so a finished download means the entry is there.
+	// first response byte, so a finished download means the entry is written.
 	// A bare click resolves on dispatch with the request still in flight, so
 	// own the download to its end before reading the queue.
 
@@ -367,16 +367,26 @@ test('can send notification email via download action', async ({
 
 	// Verify if the email was sent
 
-	const notificationQueueEntries =
-		await apiHelpers.notification.getNotificationQueueEntriesPage(
-			senderEmail
+	// The queue is read through the search index, and the index write is left
+	// to the index's own refresh, so the entry can be written and committed
+	// while the index still answers empty. Nothing the browser or the request
+	// hands back marks that refresh, so ask the index again until it holds the
+	// entry.
+
+	let notificationQueueEntriesId: string[] = [];
+
+	await expect(async () => {
+		const notificationQueueEntries =
+			await apiHelpers.notification.getNotificationQueueEntriesPage(
+				senderEmail
+			);
+
+		expect(notificationQueueEntries.items.length).toBeTruthy();
+
+		notificationQueueEntriesId = notificationQueueEntries.items.map(
+			(item: any) => item.id
 		);
-
-	expect(notificationQueueEntries.items.length).toBeTruthy();
-
-	const notificationQueueEntriesId = notificationQueueEntries.items.map(
-		(item: any) => item.id
-	);
+	}).toPass();
 
 	for (const notificationQueueEntryId of notificationQueueEntriesId) {
 		apiHelpers.data.push({
