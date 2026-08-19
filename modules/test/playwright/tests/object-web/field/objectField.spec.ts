@@ -2528,6 +2528,13 @@ test.describe('Create Object Fields', () => {
 
 		await page.getByRole('button', {name: 'Cancel'}).click();
 
+		// The modal restores focus to the Add Object Field button when its fade
+		// finishes, which takes the focus back off the search box and sends the
+		// Enter below to that button instead of the search. Let the close land
+		// before typing.
+
+		await expect(objectFieldsPage.objectFieldLabelInput).toBeHidden();
+
 		await page
 			.getByRole('search')
 			.getByRole('searchbox', {name: 'Search'})
