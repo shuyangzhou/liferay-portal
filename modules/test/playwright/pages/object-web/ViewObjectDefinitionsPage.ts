@@ -167,10 +167,29 @@ export class ViewObjectDefinitionsPage {
 	}
 
 	async clickObjectDefinitionActionButton(objectDefinitionLabel: string) {
-		await this.page
+		const actionsButton = this.page
 			.getByRole('row', {name: objectDefinitionLabel})
-			.getByRole('button')
-			.click();
+			.getByRole('button');
+
+		// The table pages at twenty rows, so on an environment holding more
+		// definitions than that the row is not on the page at all and this
+		// reach waits out the test's whole budget. Reach first anyway, so an
+		// environment that shows the row keeps the request sequence it had, and
+		// narrow only when the reach comes up empty. Fifteen seconds is the
+		// list's own load and render budget, several times what it takes here,
+		// and it leaves the rest of the test's ninety for the reach that
+		// follows the search.
+
+		try {
+			await actionsButton.click({timeout: 15000});
+
+			return;
+		}
+		catch (exception) {
+			await this.searchObjectDefinition(objectDefinitionLabel);
+		}
+
+		await actionsButton.click();
 	}
 
 	async createObjectFolder(objectFolderLabel: string): Promise<ObjectFolder> {
@@ -316,5 +335,36 @@ export class ViewObjectDefinitionsPage {
 			.getByRole('listitem')
 			.filter({hasText: objectFolderLabel})
 			.click({timeout: options?.timeout});
+	}
+
+	async searchObjectDefinition(objectDefinitionLabel: string) {
+
+		// The data set keeps its search term in the address and re-seeds the
+		// term from there whenever it remounts, and a delete remounts it, so a
+		// term typed into a remounting input can be replaced by the one the
+		// address still holds. Register the wait for the list answered for THIS
+		// term before typing, so the term that lost is a loud failure here
+		// instead of a row reach that waits out the test.
+
+		const objectDefinitionsResponsePromise = this.page.waitForResponse(
+			(response) => {
+				const url = response.url();
+
+				return (
+					url.includes('/o/object-admin/v1.0/object-definitions') &&
+					url.includes(
+						'search=' + encodeURIComponent(objectDefinitionLabel)
+					) &&
+					response.request().method() === 'GET'
+				);
+			},
+			{timeout: 15000}
+		);
+
+		await this.searchInput.fill(objectDefinitionLabel);
+
+		await this.searchInput.press('Enter');
+
+		await objectDefinitionsResponsePromise;
 	}
 }
