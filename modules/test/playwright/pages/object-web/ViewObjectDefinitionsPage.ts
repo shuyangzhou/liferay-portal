@@ -167,6 +167,18 @@ export class ViewObjectDefinitionsPage {
 	}
 
 	async clickObjectDefinitionActionButton(objectDefinitionLabel: string) {
+
+		// Narrow the list before reaching for the row. The table pages at
+		// twenty rows, so on an environment holding more definitions than that
+		// the row is not on the page at all and the reach waits out its whole
+		// timeout. The export path and the edit link path both search first.
+
+		await this.searchInput.fill(objectDefinitionLabel);
+
+		await waitForSearchToBeReady(this.page);
+
+		await this.page.keyboard.press('Enter');
+
 		await this.page
 			.getByRole('row', {name: objectDefinitionLabel})
 			.getByRole('button')
