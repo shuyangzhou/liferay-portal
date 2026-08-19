@@ -5424,16 +5424,21 @@ test.describe('View relationship hierarchy labels', () => {
 				objectDefinition1.label['en_US']
 			);
 
-			const objectRelationship =
-				await addNewObjectRelationshipModalPage.objectRelationshipFormPage.saveButton
-					.click()
-					.then(async () => {
-						const response = await page.waitForResponse(
-							'**/object-relationships'
-						);
+			// The save is what posts the relationship, so the wait for that
+			// answer is registered before the click. Registered after, inside
+			// a then, it can miss the answer entirely and then wait out the
+			// whole budget for a post that will not happen again.
 
-						return response.json();
-					});
+			const objectRelationshipResponsePromise = page.waitForResponse(
+				'**/object-relationships'
+			);
+
+			await addNewObjectRelationshipModalPage.objectRelationshipFormPage.saveButton.click();
+
+			const objectRelationshipResponse =
+				await objectRelationshipResponsePromise;
+
+			const objectRelationship = await objectRelationshipResponse.json();
 
 			if (objectRelationship?.id) {
 				apiHelpers.data.push({
