@@ -93,6 +93,8 @@ function combine_properties_files {
 function default_set_up {
 	update_portal_ext_properties
 
+	start_learn_resources_server
+
 	start_default_app_server
 
 	deploy_parent_project_osgi_modules
@@ -114,6 +116,8 @@ function default_set_up {
 
 function default_tear_down {
 	stop_default_app_server
+
+	stop_learn_resources_server
 }
 
 function delete_property {
@@ -520,6 +524,12 @@ function prepare_additional_bundles {
 function set_variables {
 	local playwright_env_dir=$(dirname ${BASH_SOURCE[0]})
 
+	_LEARN_RESOURCES_SERVER_PID_FILE=/tmp/learn-resources-server.pid
+
+	# The port is the one learn.resources.mode=dev asks, set in LearnMessageUtil.
+
+	_LEARN_RESOURCES_SERVER_PORT=3062
+
 	_PLAYWRIGHT_BASE_DIR=$(get_absolute_dir ${playwright_env_dir}/../..)
 	_PORTAL_PROJECT_DIR=$(get_absolute_dir ${playwright_env_dir}/../../../../..)
 }
@@ -652,6 +662,59 @@ function start_client_extension_spring_boot_application {
 	else
 		echo "The directory ${client_extension_dir} does not exist."
 	fi
+}
+
+function start_learn_resources_server {
+
+	# The portal resolves learn resources over HTTP, and with
+	# learn.resources.mode=dev it asks this port. Serve the repository's own
+	# copies so a test that clicks a learn link finds one: the portal swallows a
+	# failed fetch into an empty resource set and caches it for four hours, and
+	# the link is then not rendered at all.
+
+	local learn_resources_dir=${_PORTAL_PROJECT_DIR}/learn-resources/data
+
+	if [[ ! -d ${learn_resources_dir} ]]
+	then
+		echo "Unable to find ${learn_resources_dir}."
+
+		exit 1
+	fi
+
+	node "${_PORTAL_PROJECT_DIR}/modules/test/playwright/env/learnResourcesServer.js" "${learn_resources_dir}" ${_LEARN_RESOURCES_SERVER_PORT} &
+
+	echo ${!} > ${_LEARN_RESOURCES_SERVER_PID_FILE}
+
+	local sleep_duration=30
+	local sleep_interval=1
+	local total_duration=0
+
+	while ! curl --fail --output /dev/null --silent "http://localhost:${_LEARN_RESOURCES_SERVER_PORT}/object-web.json"
+	do
+		if [ ${total_duration} -ge ${sleep_duration} ]
+		then
+			echo "Unable to start the learn resources server."
+
+			exit 1
+		fi
+
+		sleep ${sleep_interval}
+
+		total_duration=$((total_duration + sleep_interval))
+	done
+
+	echo "Started the learn resources server on port ${_LEARN_RESOURCES_SERVER_PORT}."
+}
+
+function stop_learn_resources_server {
+	if [[ ! -f ${_LEARN_RESOURCES_SERVER_PID_FILE} ]]
+	then
+		return 0
+	fi
+
+	kill $(cat ${_LEARN_RESOURCES_SERVER_PID_FILE}) 2>/dev/null
+
+	rm -f ${_LEARN_RESOURCES_SERVER_PID_FILE}
 }
 
 function start_default_app_server {
