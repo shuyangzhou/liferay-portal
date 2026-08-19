@@ -342,6 +342,14 @@ test.describe('Manage object definitions through Model Builder', () => {
 		'can publish multiple object definitions',
 		{tag: '@LPD-16778'},
 		async ({apiHelpers, modelBuilderDiagramPage, page}) => {
+
+			// The publish dialog's Select All spans the whole folder, so the
+			// test owns a folder: in a shared one, any draft another test
+			// leaked joins the selection and changes every count below.
+
+			const objectFolder =
+				await apiHelpers.objectAdmin.postRandomObjectFolder();
+
 			await test.step('Create five draft object definitions with fields', async () => {
 				for (let i = 0; i < 5; i++) {
 					const objectDefinition =
@@ -350,6 +358,8 @@ test.describe('Manage object definitions through Model Builder', () => {
 								objectFields: generateObjectFields({
 									objectFieldBusinessTypes: ['Text'],
 								}),
+								objectFolderExternalReferenceCode:
+									objectFolder.externalReferenceCode,
 								status: {code: 2},
 							}
 						);
@@ -359,11 +369,16 @@ test.describe('Manage object definitions through Model Builder', () => {
 						type: 'objectDefinition',
 					});
 				}
+
+				apiHelpers.data.push({
+					id: objectFolder.id,
+					type: 'objectFolder',
+				});
 			});
 
 			await test.step('Go to model builder and click to publish all definitions at once', async () => {
 				await modelBuilderDiagramPage.goto({
-					objectFolderName: 'Default',
+					objectFolderName: objectFolder.name,
 				});
 
 				await page.getByRole('button', {name: 'Publish'}).click();
@@ -474,6 +489,14 @@ test.describe('Manage object definitions through Model Builder', () => {
 		'cannot publish an invalid definition',
 		{tag: '@LPD-16778'},
 		async ({apiHelpers, modelBuilderDiagramPage, page}) => {
+
+			// The publish dialog's Select All spans the whole folder, so the
+			// test owns a folder: in a shared one, any draft another test
+			// leaked joins the selection and changes every count below.
+
+			const objectFolder =
+				await apiHelpers.objectAdmin.postRandomObjectFolder();
+
 			const objectFields = generateObjectFields({
 				objectFieldBusinessTypes: ['Text'],
 			});
@@ -481,6 +504,8 @@ test.describe('Manage object definitions through Model Builder', () => {
 			const objectDefinitionWithField =
 				await apiHelpers.objectAdmin.postRandomObjectDefinition({
 					objectFields,
+					objectFolderExternalReferenceCode:
+						objectFolder.externalReferenceCode,
 					status: {code: 2},
 				});
 
@@ -492,6 +517,8 @@ test.describe('Manage object definitions through Model Builder', () => {
 			const objectDefinitionWithoutField =
 				await apiHelpers.objectAdmin.postRandomObjectDefinition({
 					objectFields: [],
+					objectFolderExternalReferenceCode:
+						objectFolder.externalReferenceCode,
 					status: {code: 2},
 				});
 
@@ -500,9 +527,14 @@ test.describe('Manage object definitions through Model Builder', () => {
 				type: 'objectDefinition',
 			});
 
+			apiHelpers.data.push({
+				id: objectFolder.id,
+				type: 'objectFolder',
+			});
+
 			await test.step('Attempt to publish all definitions', async () => {
 				await modelBuilderDiagramPage.goto({
-					objectFolderName: 'Default',
+					objectFolderName: objectFolder.name,
 				});
 
 				await page.getByRole('button', {name: 'Publish'}).click();
