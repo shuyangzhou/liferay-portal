@@ -9,7 +9,6 @@ import com.liferay.osgi.util.configuration.ConfigurationFactoryUtil;
 import com.liferay.osgi.util.service.OSGiServiceUtil;
 import com.liferay.petra.function.UnsafeBiConsumer;
 import com.liferay.petra.function.UnsafeRunnable;
-import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -20,6 +19,7 @@ import com.liferay.portal.kernel.util.Validator;
 import java.util.Dictionary;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.junit.Assert;
 
@@ -30,6 +30,7 @@ import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
+import org.osgi.service.cm.ConfigurationEvent;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ConfigurationListener;
 import org.osgi.service.cm.ManagedService;
@@ -264,12 +265,16 @@ public class ConfigurationTestUtil {
 		throws Exception {
 
 		CountDownLatch eventCountDownLatch = new CountDownLatch(1);
-		CountDownLatch updateCountDownLatch = new CountDownLatch(2);
+		CountDownLatch updateCountDownLatch = new CountDownLatch(1);
 
 		String markerPID = ConfigurationTestUtil.class.getName();
+		String markerValue = String.valueOf(_markerCounter.incrementAndGet());
 
 		ConfigurationListener configurationListener = configurationEvent -> {
-			if (markerPID.equals(configurationEvent.getPid())) {
+			if (markerPID.equals(configurationEvent.getPid()) &&
+				(configurationEvent.getType() ==
+					ConfigurationEvent.CM_UPDATED)) {
+
 				eventCountDownLatch.countDown();
 			}
 		};
@@ -280,14 +285,11 @@ public class ConfigurationTestUtil {
 					ConfigurationListener.class, configurationListener, null);
 
 		ManagedService managedService = properties -> {
-			try {
-				eventCountDownLatch.await(1, TimeUnit.MINUTES);
-			}
-			catch (InterruptedException interruptedException) {
-				ReflectionUtil.throwException(interruptedException);
-			}
+			if ((properties != null) &&
+				markerValue.equals(properties.get(_MARKER_KEY))) {
 
-			updateCountDownLatch.countDown();
+				updateCountDownLatch.countDown();
+			}
 		};
 
 		ServiceRegistration<ManagedService> managedServiceServiceRegistration =
@@ -310,11 +312,24 @@ public class ConfigurationTestUtil {
 				configurationAdmin -> configurationAdmin.getConfiguration(
 					markerPID, StringPool.QUESTION));
 
-			markerConfiguration.update();
+			// The marker carries a value of its own, so its event and its
+			// delivery identify this call, and both arriving prove the change
+			// made above them has been dispatched and delivered
 
-			markerConfiguration.delete();
+			markerConfiguration.update(
+				HashMapDictionaryBuilder.<String, Object>put(
+					_MARKER_KEY, markerValue
+				).build());
+
+			eventCountDownLatch.await(1, TimeUnit.MINUTES);
 
 			updateCountDownLatch.await(1, TimeUnit.MINUTES);
+
+			// Delete the marker only once its update has been delivered, so
+			// that no delete of this PID is in flight while Configuration
+			// Admin is still reading it
+
+			markerConfiguration.delete();
 		}
 		finally {
 			configurationListenerServiceRegistration.unregister();
@@ -323,7 +338,10 @@ public class ConfigurationTestUtil {
 		}
 	}
 
+	private static final String _MARKER_KEY = "markerValue";
+
 	private static final BundleContext _bundleContext;
+	private static final AtomicLong _markerCounter = new AtomicLong();
 
 	static {
 		Bundle bundle = FrameworkUtil.getBundle(ConfigurationTestUtil.class);
