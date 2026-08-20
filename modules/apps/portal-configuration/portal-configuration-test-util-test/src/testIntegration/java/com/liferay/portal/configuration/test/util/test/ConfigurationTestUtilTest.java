@@ -8,13 +8,22 @@ package com.liferay.portal.configuration.test.util.test;
 import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.kernel.util.MapUtil;
 
+import java.util.ArrayList;
 import java.util.Dictionary;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.Configuration;
+import org.osgi.service.cm.ManagedService;
 
 /**
  * @author Drew Brokke
@@ -39,6 +48,52 @@ public class ConfigurationTestUtilTest
 		ConfigurationTestUtil.deleteConfiguration(configuration);
 
 		Assert.assertFalse(testConfigurationExists());
+	}
+
+	@Test
+	public void testMarkerConfigurationOutlivesItsOwnUpdate() throws Exception {
+		Bundle bundle = FrameworkUtil.getBundle(
+			ConfigurationTestUtilTest.class);
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		List<Dictionary<String, ?>> deliveries = new ArrayList<>();
+
+		ManagedService managedService = properties -> {
+			if (properties != null) {
+				deliveries.add(properties);
+			}
+		};
+
+		ServiceRegistration<ManagedService> serviceRegistration =
+			bundleContext.registerService(
+				ManagedService.class, managedService,
+				MapUtil.singletonDictionary(
+					Constants.SERVICE_PID,
+					ConfigurationTestUtil.class.getName()));
+
+		try {
+			for (int i = 0; i < 10; i++) {
+				ConfigurationTestUtil.saveConfiguration(
+					configurationPid,
+					HashMapDictionaryBuilder.<String, Object>put(
+						_TEST_KEY, RandomTestUtil.randomString()
+					).build());
+
+				ConfigurationTestUtil.deleteConfiguration(configurationPid);
+			}
+		}
+		finally {
+			serviceRegistration.unregister();
+		}
+
+		// Every configuration change above rides a marker configuration whose
+		// own update has to be delivered before that marker is deleted. A
+		// missing delivery means the marker was deleted while Configuration
+		// Admin was still reading it, which loses the update and can fail it
+		// outright with a logged error.
+
+		Assert.assertEquals(deliveries.toString(), 20, deliveries.size());
 	}
 
 	@Test
