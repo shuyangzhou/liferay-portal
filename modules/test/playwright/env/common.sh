@@ -609,15 +609,39 @@ function start_client_extension_spring_boot_application {
 
 		cd ${client_extension_dir}
 
-		local portal_url_hostname=$(echo ${LIFERAY_PORTAL_URL} | awk -F:// '{print $2}')
+		# The portal's Kubernetes agent owns the home's routes directory and
+		# rewrites its files from the company virtual host, which does not
+		# resolve the portal from here. The application reads the files once
+		# at boot through paths the workspace plugin derives from the home
+		# directory, so boot it against a private home whose routes only this
+		# script writes, and only after the portal's JWKS endpoint answers at
+		# the routed address.
 
-		echo "${portal_url_hostname}" > ${LIFERAY_HOME}/routes/default/dxp/com.liferay.lxc.dxp.domains
-		echo "${portal_url_hostname}" > ${LIFERAY_HOME}/routes/default/dxp/com.liferay.lxc.dxp.main.domain
-		echo "${portal_url_hostname}" > ${LIFERAY_HOME}/routes/default/dxp/com.liferay.lxc.dxp.mainDomain
+		local routes_home=$(mktemp -d)
 
-		local portal_url_scheme=$(echo ${LIFERAY_PORTAL_URL} | awk -F:// '{print $1}')
+		write_client_extension_dxp_routes "${routes_home}"
 
-		echo "${portal_url_scheme}" > ${LIFERAY_HOME}/routes/default/dxp/com.liferay.lxc.dxp.server.protocol
+		if [[ -d ${LIFERAY_HOME}/routes/default/$(basename ${client_extension_dir}) ]]
+		then
+			cp -R ${LIFERAY_HOME}/routes/default/$(basename ${client_extension_dir}) ${routes_home}/routes/default/
+		fi
+
+		local jwks_sleep_duration=60
+		local jwks_sleep_interval=5
+		local jwks_total_duration=0
+
+		while ! curl --fail --output /dev/null --silent "$(cat ${routes_home}/routes/default/dxp/com.liferay.lxc.dxp.server.protocol)://$(cat ${routes_home}/routes/default/dxp/com.liferay.lxc.dxp.mainDomain)/o/oauth2/jwks"
+		do
+			if [ ${jwks_total_duration} -ge ${jwks_sleep_duration} ]; then
+				echo "The portal's JWKS endpoint does not answer at the routed address."
+
+				exit 1
+			fi
+
+			sleep ${jwks_sleep_interval}
+
+			jwks_total_duration=$((jwks_total_duration + jwks_sleep_interval))
+		done
 
 		# Finish the Gradle bootstrap before the readiness wait below starts
 		# timing the application. A cold wrapper cache downloads a Gradle
@@ -625,9 +649,9 @@ function start_client_extension_spring_boot_application {
 		# wait cannot tell apart from a slow application and which alone can
 		# outlast the whole budget.
 
-		$(get_gradlew) classes -Pliferay.workspace.home.dir=${LIFERAY_HOME}
+		$(get_gradlew) classes -Pliferay.workspace.home.dir=${routes_home}
 
-		$(get_gradlew) bootRun -Pliferay.workspace.home.dir=${LIFERAY_HOME} &
+		$(get_gradlew) bootRun -Pliferay.workspace.home.dir=${routes_home} &
 
 		local sleep_duration=60
 		local sleep_interval=5
@@ -819,6 +843,22 @@ function wait_for_portal_log_inactivity {
 	done
 
 	echo "No portal activity detected in ${sleep_interval}s."
+}
+
+function write_client_extension_dxp_routes {
+	local routes_dir=${1}/routes/default/dxp
+
+	mkdir -p ${routes_dir}
+
+	local portal_url_hostname=$(echo ${LIFERAY_PORTAL_URL} | awk -F:// '{print $2}')
+
+	echo "${portal_url_hostname}" > ${routes_dir}/com.liferay.lxc.dxp.domains
+	echo "${portal_url_hostname}" > ${routes_dir}/com.liferay.lxc.dxp.main.domain
+	echo "${portal_url_hostname}" > ${routes_dir}/com.liferay.lxc.dxp.mainDomain
+
+	local portal_url_scheme=$(echo ${LIFERAY_PORTAL_URL} | awk -F:// '{print $1}')
+
+	echo "${portal_url_scheme}" > ${routes_dir}/com.liferay.lxc.dxp.server.protocol
 }
 
 main "${@}"
