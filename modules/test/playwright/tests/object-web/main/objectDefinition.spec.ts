@@ -1062,23 +1062,35 @@ test.describe('Manage object definitions through View Object Definitions', () =>
 			1
 		);
 
+		// Read each definition through its own search. The list is left holding
+		// whatever the last row reach searched for, and it drops its rows while
+		// it fetches, so reading a row locator on whatever the page happens to
+		// show says nothing: the two deleted definitions would read as absent
+		// even if the deletes had not worked. Searching answers for one
+		// definition at a time, and the deleted ones are read as the list's own
+		// empty state, which only the searched-for answer can produce.
+
+		await viewObjectDefinitionsPage.searchObjectDefinition(
+			objectDefinition1.label['en_US']
+		);
+
 		await expect(
 			viewObjectDefinitionsPage.frontendDataSetEntries.filter({
 				hasText: objectDefinition1.label['en_US'],
 			})
 		).toBeVisible();
 
-		await expect(
-			viewObjectDefinitionsPage.frontendDataSetEntries.filter({
-				hasText: objectDefinition2.label['en_US'],
-			})
-		).toBeHidden();
+		await viewObjectDefinitionsPage.searchObjectDefinition(
+			objectDefinition2.label['en_US']
+		);
 
-		await expect(
-			viewObjectDefinitionsPage.frontendDataSetEntries.filter({
-				hasText: objectDefinition3.label!['en_US'],
-			})
-		).toBeHidden();
+		await expect(page.getByText('No Results Found')).toBeVisible();
+
+		await viewObjectDefinitionsPage.searchObjectDefinition(
+			objectDefinition3.label!['en_US']
+		);
+
+		await expect(page.getByText('No Results Found')).toBeVisible();
 	});
 
 	test('can restrict a previously created object', async ({
