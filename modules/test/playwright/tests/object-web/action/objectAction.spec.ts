@@ -352,8 +352,6 @@ test('can send notification email via download action', async ({
 		.getByRole('button', {name: 'Search'})
 		.waitFor({state: 'visible'});
 
-	// The queue entry is written inside the download request, before its
-	// first response byte, so a finished download means the entry is there.
 	// A bare click resolves on dispatch with the request still in flight, so
 	// own the download to its end before reading the queue.
 
@@ -367,12 +365,20 @@ test('can send notification email via download action', async ({
 
 	// Verify if the email was sent
 
-	const notificationQueueEntries =
-		await apiHelpers.notification.getNotificationQueueEntriesPage(
-			senderEmail
-		);
+	// The download's trigger is sent after the file has been served, so a
+	// finished download does not mean the notification has been queued. Ask for
+	// the queue again until it holds the entry.
 
-	expect(notificationQueueEntries.items.length).toBeTruthy();
+	let notificationQueueEntries: any = null;
+
+	await expect(async () => {
+		notificationQueueEntries =
+			await apiHelpers.notification.getNotificationQueueEntriesPage(
+				senderEmail
+			);
+
+		expect(notificationQueueEntries.items.length).toBeTruthy();
+	}).toPass();
 
 	const notificationQueueEntriesId = notificationQueueEntries.items.map(
 		(item: any) => item.id
