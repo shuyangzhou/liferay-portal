@@ -6667,6 +6667,15 @@ test.describe('Manage object entries through Workflow', () => {
 			applicationName
 		);
 
+		// A pending item exists only if the entry entered the workflow, and the
+		// workflow instance is created inside the request that creates the
+		// entry, so the answer to that request already says whether it did. An
+		// entry created before the assignment above is in effect comes back
+		// approved and never reaches this list at all, which looks exactly like
+		// a list that will not fill. Read it here so that half names itself.
+
+		expect(objectEntry.status.label).toBe('pending');
+
 		await globalMenuPage.goToApplications('Metrics');
 
 		await metricsPage.chooseProcess(assetType);
