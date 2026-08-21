@@ -31,6 +31,10 @@ import {miniumSetUp} from '../../commerce/utils/commerce';
 import {mockedObjectFields} from '../dependencies/objectMockedFields';
 import {generateObjectFields} from '../utils/generateObjectFields';
 
+// ObjectActionConstants.STATUS_SUCCESS
+
+const OBJECT_ACTION_STATUS_SUCCESS = 1;
+
 export const test = mergeTests(
 	dataApiHelpersTest,
 	editObjectDefinitionPagesTest,
@@ -303,22 +307,23 @@ test('can send notification email via download action', async ({
 	const objectActionAPIClient =
 		await apiHelpers.buildRestClient(ObjectActionAPI);
 
-	await objectActionAPIClient.postObjectDefinitionByExternalReferenceCodeObjectAction(
-		objectDefinition.externalReferenceCode,
-		{
-			active: true,
-			label: {
-				en_US: 'downloadAttachmentArchive',
-			},
-			name: 'downloadAttachmentArchive',
-			objectActionExecutorKey: 'notification',
-			objectActionTriggerKey: 'onAfterAttachmentDownload',
-			parameters: {
-				notificationTemplateId: notificationTemplate.id,
-				type: 'email',
-			},
-		}
-	);
+	const {body: objectAction} =
+		await objectActionAPIClient.postObjectDefinitionByExternalReferenceCodeObjectAction(
+			objectDefinition.externalReferenceCode,
+			{
+				active: true,
+				label: {
+					en_US: 'downloadAttachmentArchive',
+				},
+				name: 'downloadAttachmentArchive',
+				objectActionExecutorKey: 'notification',
+				objectActionTriggerKey: 'onAfterAttachmentDownload',
+				parameters: {
+					notificationTemplateId: notificationTemplate.id,
+					type: 'email',
+				},
+			}
+		);
 
 	// Create an object entry
 
@@ -352,8 +357,6 @@ test('can send notification email via download action', async ({
 		.getByRole('button', {name: 'Search'})
 		.waitFor({state: 'visible'});
 
-	// The queue entry is written inside the download request, before its
-	// first response byte, so a finished download means the entry is there.
 	// A bare click resolves on dispatch with the request still in flight, so
 	// own the download to its end before reading the queue.
 
@@ -365,22 +368,40 @@ test('can send notification email via download action', async ({
 
 	await expect(download.failure()).resolves.toBeNull();
 
+	// The download's own request serves the file before it sends the trigger
+	// that runs the action, so a finished download says nothing about the
+	// action. Wait for the action's own status instead: the engine writes it
+	// once the executor has run, and that read is answered from the database
+	// rather than the search index.
+
+	await expect(async () => {
+		const {body: executedObjectAction} =
+			await objectActionAPIClient.getObjectAction(objectAction.id);
+
+		expect(executedObjectAction.status.code).toBe(
+			OBJECT_ACTION_STATUS_SUCCESS
+		);
+	}).toPass({timeout: 30000});
+
 	// Verify if the email was sent
+
+	// The template's subject carries a value unique to this run and the entry
+	// carries it verbatim, so search for that. Searching for the sender
+	// address matches every entry whose address shares its host, which lets
+	// another run's entry answer for this one.
 
 	const notificationQueueEntries =
 		await apiHelpers.notification.getNotificationQueueEntriesPage(
-			senderEmail
+			notificationTemplate.subject.en_US
 		);
 
 	expect(notificationQueueEntries.items.length).toBeTruthy();
 
-	const notificationQueueEntriesId = notificationQueueEntries.items.map(
-		(item: any) => item.id
-	);
+	for (const item of notificationQueueEntries.items) {
+		expect(item.fromName).toBe(senderEmail);
 
-	for (const notificationQueueEntryId of notificationQueueEntriesId) {
 		apiHelpers.data.push({
-			id: notificationQueueEntryId,
+			id: item.id,
 			type: 'notificationQueueEntry',
 		});
 	}
