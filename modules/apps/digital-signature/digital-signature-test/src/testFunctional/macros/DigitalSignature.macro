@@ -482,10 +482,14 @@ definition {
 	}
 
 	@summary = "Default summary"
-	macro viewMoreRecipient() {
-		WaitForElementPresent(locator1 = "DigitalSignatureListView#DIGITAL_SIGNATURE_RECIPIENTS_BADGE");
+	macro viewMoreRecipient(envelopeName = null) {
+		WaitForElementPresent(
+			envelopeName = ${envelopeName},
+			locator1 = "DigitalSignatureListView#DIGITAL_SIGNATURE_ENVELOPE_RECIPIENTS_BADGE");
 
-		AssertElementPresent(locator1 = "DigitalSignatureListView#DIGITAL_SIGNATURE_RECIPIENTS_BADGE");
+		AssertElementPresent(
+			envelopeName = ${envelopeName},
+			locator1 = "DigitalSignatureListView#DIGITAL_SIGNATURE_ENVELOPE_RECIPIENTS_BADGE");
 	}
 
 	@summary = "Default summary"
