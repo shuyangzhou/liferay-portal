@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
+import JsonURL from '@jsonurl/jsonurl';
 import {ObjectFolder} from '@liferay/object-admin-rest-client-js';
 import {Locator, Page, Response, expect} from '@playwright/test';
 import {readFile} from 'fs/promises';
@@ -12,6 +13,31 @@ import {gotoWithRetry} from '../../utils/gotoWithRetry';
 import {PORTLET_URLS} from '../../utils/portletUrls';
 import {getTempDir} from '../../utils/temp';
 import {waitForSearchToBeReady} from '../../utils/waitForSearchToBeReady';
+
+// The data set reads its own configuration out of this parameter, search term
+// included, so a caller can ask the list for one definition by address.
+
+const OBJECT_DEFINITIONS_FDS_CONFIG_PARAM =
+	'com_liferay_object_web_internal_object_definitions_portlet_' +
+	'ObjectDefinitionsPortlet-objectDefinitions_fdsConfig';
+
+const getObjectDefinitionsURL = (
+	siteUrl?: Site['friendlyUrlPath'],
+	objectDefinitionLabel?: string
+) => {
+	const url = `/group${siteUrl || '/guest'}${PORTLET_URLS.objects}`;
+
+	if (!objectDefinitionLabel) {
+		return url;
+	}
+
+	// The portlet address already carries its own query string.
+
+	return `${url}&${OBJECT_DEFINITIONS_FDS_CONFIG_PARAM}=${JsonURL.stringify(
+		{q: objectDefinitionLabel},
+		{AQF: true}
+	)}`;
+};
 
 export class ViewObjectDefinitionsPage {
 	readonly actionsButton: Locator;
@@ -167,6 +193,14 @@ export class ViewObjectDefinitionsPage {
 	}
 
 	async clickObjectDefinitionActionButton(objectDefinitionLabel: string) {
+
+		// The table pages at twenty rows and asks for them in no particular
+		// order, so which definitions the first page holds is not something a
+		// caller can predict. Ask the list for this one, so the row is on the
+		// page whatever the environment holds.
+
+		await this.searchObjectDefinition(objectDefinitionLabel);
+
 		await this.page
 			.getByRole('row', {name: objectDefinitionLabel})
 			.getByRole('button')
@@ -246,11 +280,9 @@ export class ViewObjectDefinitionsPage {
 	};
 
 	async goto(siteUrl?: Site['friendlyUrlPath']) {
-		await gotoWithRetry(
-			this.page,
-			`/group${siteUrl || '/guest'}${PORTLET_URLS.objects}`,
-			{waitUntil: 'load'}
-		);
+		await gotoWithRetry(this.page, getObjectDefinitionsURL(siteUrl), {
+			waitUntil: 'load',
+		});
 	}
 
 	async importObjectDefinition(
@@ -316,5 +348,24 @@ export class ViewObjectDefinitionsPage {
 			.getByRole('listitem')
 			.filter({hasText: objectFolderLabel})
 			.click({timeout: options?.timeout});
+	}
+
+	async searchObjectDefinition(
+		objectDefinitionLabel: string,
+		siteUrl?: Site['friendlyUrlPath']
+	) {
+
+		// The box holds its text in state the data set re-seeds from the
+		// address, and the Enter submits that state rather than what the box
+		// shows, so a term typed before the data set has settled is discarded
+		// and the request goes out for the term the address named, or for
+		// nothing at all when the address named none. Ask through the address,
+		// which is where the term is read from either way.
+
+		await gotoWithRetry(
+			this.page,
+			getObjectDefinitionsURL(siteUrl, objectDefinitionLabel),
+			{waitUntil: 'load'}
+		);
 	}
 }
