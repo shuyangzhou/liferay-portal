@@ -36,7 +36,7 @@ const test = mergeTests(
 	pageEditorPagesTest
 );
 
-test.beforeEach(async ({instanceSettingsPage, page}) => {
+test.beforeEach(async ({apiHelpers, instanceSettingsPage, page}) => {
 	test.skip(
 		!salesforceConfig.salesforceLoginURL ||
 			!salesforceConfig.salesforceConsumerKey ||
@@ -74,6 +74,30 @@ test.beforeEach(async ({instanceSettingsPage, page}) => {
 
 		await instanceSettingsPage.saveAndWaitForAlert();
 	});
+
+	// The external reference code has to match the Salesforce object, so it
+	// cannot be randomized. A run that stops before its own cleanup therefore
+	// leaves a definition holding the only code this test can use, and every
+	// later run is refused. Take it back.
+
+	const objectDefinitionAPIClient =
+		await apiHelpers.buildRestClient(ObjectDefinitionAPI);
+
+	try {
+		const {body: objectDefinition} =
+			await objectDefinitionAPIClient.getObjectDefinitionByExternalReferenceCode(
+				_EXTERNAL_REFERENCE_CODE
+			);
+
+		await objectDefinitionAPIClient.deleteObjectDefinition(
+			objectDefinition.id!
+		);
+	}
+	catch (error) {
+
+		// No definition holds the code, so there is nothing to take back.
+
+	}
 });
 
 test('Assert CRUD with created custom object using Salesforce storage type', async ({
@@ -98,7 +122,7 @@ test('Assert CRUD with created custom object using Salesforce storage type', asy
 	const {body: objectDefinition} =
 		await objectDefinitionAPIClient.postObjectDefinition({
 			active: true,
-			externalReferenceCode: 'Playwright_Test__c',
+			externalReferenceCode: _EXTERNAL_REFERENCE_CODE,
 			label: {en_US: 'Playwright Test'},
 			name: 'PlaywrightTest',
 			objectFields,
@@ -153,6 +177,8 @@ test('Assert CRUD with created custom object using Salesforce storage type', asy
 	});
 
 	await test.step('Read Object Entry', async () => {
+		await viewObjectEntriesPage.searchObjectEntry(objectFieldValue);
+
 		await expect(
 			page.getByRole('cell', {exact: true, name: objectFieldValue})
 		).toBeVisible();
@@ -174,6 +200,8 @@ test('Assert CRUD with created custom object using Salesforce storage type', asy
 		await viewObjectEntriesPage.saveObjectEntryButton.click();
 		await expect(viewObjectEntriesPage.successMessage).toBeVisible();
 		await viewObjectEntriesPage.backButton.click();
+
+		await viewObjectEntriesPage.searchObjectEntry(objectFieldUpdatedValue);
 
 		await expect(
 			page.getByRole('cell', {exact: true, name: objectFieldUpdatedValue})
@@ -220,7 +248,7 @@ test('Assert CRUD with created custom object using Salesforce storage type in fo
 	const {body: objectDefinition} =
 		await objectDefinitionAPIClient.postObjectDefinition({
 			active: true,
-			externalReferenceCode: 'Playwright_Test__c',
+			externalReferenceCode: _EXTERNAL_REFERENCE_CODE,
 			label: {en_US: 'Playwright Test'},
 			name: 'PlaywrightTest',
 			objectFields,
@@ -295,6 +323,8 @@ test('Assert CRUD with created custom object using Salesforce storage type in fo
 	await test.step('Read Object Entry in object admin', async () => {
 		await viewObjectEntriesPage.goto(objectDefinition.className);
 
+		await viewObjectEntriesPage.searchObjectEntry(entryValue);
+
 		await expect(
 			page.getByRole('cell', {exact: true, name: entryValue})
 		).toBeVisible();
@@ -317,3 +347,5 @@ test('Assert CRUD with created custom object using Salesforce storage type in fo
 		});
 	});
 });
+
+const _EXTERNAL_REFERENCE_CODE = 'Playwright_Test__c';

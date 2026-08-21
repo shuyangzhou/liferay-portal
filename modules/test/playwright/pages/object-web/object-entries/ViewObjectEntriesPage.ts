@@ -17,6 +17,7 @@ import {
 } from '../../../tests/object-web/utils/generateObjectEntry';
 import {gotoWithRetry} from '../../../utils/gotoWithRetry';
 import {PORTLET_URLS} from '../../../utils/portletUrls';
+import {waitForSearchToBeReady} from '../../../utils/waitForSearchToBeReady';
 
 export class ViewObjectEntriesPage {
 	readonly backButton: Locator;
@@ -57,6 +58,7 @@ export class ViewObjectEntriesPage {
 	readonly searchBar: Locator;
 	readonly searchButton: Locator;
 	readonly searchContainer: Locator;
+	readonly searchInput: Locator;
 	readonly selectAllPage: Locator;
 	readonly selectFileButton: Locator;
 	readonly selectFileButtonArabic: Locator;
@@ -74,6 +76,9 @@ export class ViewObjectEntriesPage {
 			name: 'Cancel',
 		});
 		this.dateTimeInput = page.getByPlaceholder('__/__/____ __:__ _');
+		this.searchInput = page
+			.getByTestId('managementToolbar')
+			.getByRole('searchbox', {name: 'Search'});
 		this.deleteAllConfirmationModal = page
 			.getByRole('dialog', {name: 'Delete All Entries'})
 			.getByRole('button', {name: 'Delete'});
@@ -257,6 +262,20 @@ export class ViewObjectEntriesPage {
 		await this.page
 			.getByLabel(objectFieldLabel, {exact: true})
 			.fill(objectFieldValue);
+	}
+
+	async searchObjectEntry(objectFieldValue: string) {
+
+		// Narrow the list before reaching for a row. Entries of a Salesforce
+		// backed object live in Salesforce and outlive the object definition,
+		// so the table's first page fills with rows this run did not create and
+		// the row it wants is not on the page at all.
+
+		await this.searchInput.fill(objectFieldValue);
+
+		await waitForSearchToBeReady(this.page);
+
+		await this.page.keyboard.press('Enter');
 	}
 
 	async goto(
