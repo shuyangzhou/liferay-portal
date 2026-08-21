@@ -6736,6 +6736,26 @@ test.describe('Manage object entries through Workflow', () => {
 			applicationName
 		);
 
+		// A pending item exists only if the entry has a workflow instance behind
+		// it. The status the create answers with says only that a workflow
+		// definition link was found: WorkflowHandlerRegistryUtil fixes that
+		// status before it registers the commit callback that starts the
+		// instance, and TransactionCallbackUtil logs and swallows anything that
+		// callback throws. So read the instance itself, and fail here rather
+		// than at a list that would look the same either way. Fifteen seconds is
+		// the configured expect timeout, and the callback runs on this request's
+		// own thread as it commits.
+
+		await expect(async () => {
+			const workflowTask =
+				await apiHelpers.headlessAdminWorkflow.getWorkflowTaskByAsset(
+					objectDefinition.className,
+					String(objectEntry.id)
+				);
+
+			expect(workflowTask).not.toBeNull();
+		}).toPass({timeout: 15000});
+
 		await globalMenuPage.goToApplications('Metrics');
 
 		await metricsPage.chooseProcess(assetType);
