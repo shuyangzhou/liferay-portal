@@ -157,7 +157,25 @@ public class PortletTracker
 			_portletLocalService.getPortletById(portletId);
 
 		if (portletModel != null) {
-			_log.error("Portlet id " + portletId + " is already in use");
+
+			// Name both sides. The incoming registration and the portlet
+			// already holding the ID can come from different bundles or
+			// different companies, and which it is decides whether this is a
+			// duplicate registration or two owners claiming one ID
+
+			Bundle bundle = serviceReference.getBundle();
+
+			PortletApp portletApp = portletModel.getPortletApp();
+
+			_log.error(
+				StringBundler.concat(
+					"Portlet id ", portletId, " requested by bundle ",
+					bundle.getSymbolicName(), " for company ",
+					serviceReference.getProperty("com.liferay.portlet.company"),
+					" is already in use by ",
+					(portletApp == null) ? "an unknown portlet application" :
+						portletApp.getServletContextName(),
+					" with company ", portletModel.getCompanyId()));
 
 			_bundleContext.ungetService(serviceReference);
 
