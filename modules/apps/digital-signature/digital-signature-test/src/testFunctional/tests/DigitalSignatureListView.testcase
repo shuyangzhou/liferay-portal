@@ -150,7 +150,7 @@ definition {
 		task ("Then the date the digital signature was created is shown") {
 			Refresh();
 
-			DigitalSignature.viewCreateDate();
+			DigitalSignature.viewCreateDate(envelopeName = "Poshi Test CanViewCorrectDate");
 
 			DigitalSignature.deleteEnvelope(envelopeName = "Poshi Test CanViewCorrectDate");
 
