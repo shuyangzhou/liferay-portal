@@ -30,6 +30,7 @@ import {
 	performUserSwitch,
 	userData,
 } from '../../../utils/performLogin';
+import {waitForFDS} from '../../../utils/waitFor';
 import {waitForAlert} from '../../../utils/waitForAlert';
 import getFormContainerDefinition from '../../layout-content-page-editor-web/main/utils/getFormContainerDefinition';
 import getFragmentDefinition from '../../layout-content-page-editor-web/main/utils/getFragmentDefinition';
@@ -1062,23 +1063,35 @@ test.describe('Manage object definitions through View Object Definitions', () =>
 			1
 		);
 
+		// Read each definition through its own search. The list is left holding
+		// whatever the last row reach asked for, and it drops its rows while it
+		// fetches, so a row locator read against whatever the page happens to
+		// show says nothing: the deleted definitions would read as absent even
+		// if neither delete had worked. A search answers for one definition at a
+		// time, and the deleted ones are read as the data set's own empty state,
+		// which only an answer for that term produces.
+
+		await viewObjectDefinitionsPage.searchObjectDefinition(
+			objectDefinition1.label['en_US']
+		);
+
 		await expect(
 			viewObjectDefinitionsPage.frontendDataSetEntries.filter({
 				hasText: objectDefinition1.label['en_US'],
 			})
 		).toBeVisible();
 
-		await expect(
-			viewObjectDefinitionsPage.frontendDataSetEntries.filter({
-				hasText: objectDefinition2.label['en_US'],
-			})
-		).toBeHidden();
+		await viewObjectDefinitionsPage.searchObjectDefinition(
+			objectDefinition2.label['en_US']
+		);
 
-		await expect(
-			viewObjectDefinitionsPage.frontendDataSetEntries.filter({
-				hasText: objectDefinition3.label!['en_US'],
-			})
-		).toBeHidden();
+		await waitForFDS({empty: true, page});
+
+		await viewObjectDefinitionsPage.searchObjectDefinition(
+			objectDefinition3.label!['en_US']
+		);
+
+		await waitForFDS({empty: true, page});
 	});
 
 	test('can restrict a previously created object', async ({
