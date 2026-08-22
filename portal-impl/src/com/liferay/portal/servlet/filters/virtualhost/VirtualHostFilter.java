@@ -227,10 +227,10 @@ public class VirtualHostFilter extends BasePortalFilter {
 					String forwardURL = originalFriendlyURL;
 
 					if (offset > 0) {
-						String prefix = originalFriendlyURL.substring(
+						String pathPrefix = originalFriendlyURL.substring(
 							0, offset);
 
-						forwardURL = prefix.concat(i18nLanguageId);
+						forwardURL = pathPrefix.concat(i18nLanguageId);
 					}
 					else {
 						forwardURL = i18nLanguageId;
