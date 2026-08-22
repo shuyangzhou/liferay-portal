@@ -8,11 +8,14 @@ package com.liferay.object.internal.action.trigger.messaging;
 import com.liferay.object.action.engine.ObjectActionEngine;
 import com.liferay.object.constants.ObjectActionTriggerConstants;
 import com.liferay.object.constants.ObjectDefinitionConstants;
+import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.entry.util.ObjectEntryPayloadUtil;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
+import com.liferay.object.model.ObjectField;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
+import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.log.Log;
@@ -27,8 +30,13 @@ import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
+
+import java.io.Serializable;
+
+import java.util.Map;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -120,6 +128,19 @@ public class ObjectActionDownloadTriggerMessageListener
 			return;
 		}
 
+		long fileEntryId = message.getLong("fileEntryId");
+
+		if (!_hasAttachment(fileEntryId, objectDefinition, objectEntry)) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					StringBundler.concat(
+						"Object entry ", objectEntry.getObjectEntryId(),
+						" has no attachment holding file entry ", fileEntryId));
+			}
+
+			return;
+		}
+
 		_objectActionEngine.executeObjectActions(
 			objectDefinition.getClassName(), message.getLong("companyId"),
 			ObjectActionTriggerConstants.KEY_ON_AFTER_ATTACHMENT_DOWNLOAD,
@@ -129,6 +150,42 @@ public class ObjectActionDownloadTriggerMessageListener
 				objectDefinition, objectEntry, null, null,
 				_userLocalService.getUser(message.getLong("userId"))),
 			message.getLong("userId"));
+	}
+
+	private boolean _hasAttachment(
+		long fileEntryId, ObjectDefinition objectDefinition,
+		ObjectEntry objectEntry) {
+
+		Map<String, Serializable> values = objectEntry.getValues();
+
+		for (ObjectField objectField :
+				_objectFieldLocalService.getObjectFieldsByBusinessType(
+					objectDefinition.getObjectDefinitionId(),
+					ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT)) {
+
+			if (fileEntryId == GetterUtil.getLong(
+					values.get(objectField.getName()))) {
+
+				return true;
+			}
+
+			// A localized field keeps its per locale values in a map of its
+			// own and stores only the default locale's value under the plain
+			// field name
+
+			Serializable serializable = values.get(
+				objectField.getI18nObjectFieldName());
+
+			if (serializable instanceof Map<?, ?> localizedValues) {
+				for (Object localizedValue : localizedValues.values()) {
+					if (fileEntryId == GetterUtil.getLong(localizedValue)) {
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -154,6 +211,9 @@ public class ObjectActionDownloadTriggerMessageListener
 
 	@Reference
 	private ObjectEntryLocalService _objectEntryLocalService;
+
+	@Reference
+	private ObjectFieldLocalService _objectFieldLocalService;
 
 	private ServiceRegistration<Destination> _serviceRegistration;
 
