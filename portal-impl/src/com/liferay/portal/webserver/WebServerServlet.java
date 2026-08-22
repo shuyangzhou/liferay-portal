@@ -79,6 +79,7 @@ import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
+import com.liferay.portal.kernel.servlet.HttpMethods;
 import com.liferay.portal.kernel.servlet.InactiveRequestHandler;
 import com.liferay.portal.kernel.servlet.PortalSessionThreadLocal;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
@@ -1249,8 +1250,10 @@ public class WebServerServlet extends HttpServlet {
 		// Everything that could refuse this download has already refused it
 		// and only the transfer is left, so the download is granted here
 
-		_sendObjectEntryAttachmentDownloadMessage(
-			fileEntry, httpServletRequest, user);
+		if (_isObjectEntryAttachmentDownload(contentType, httpServletRequest)) {
+			_sendObjectEntryAttachmentDownloadMessage(
+				fileEntry, httpServletRequest, user);
+		}
 
 		if (isSupportsRangeHeader(contentType)) {
 			ServletResponseUtil.sendFileWithRangeHeader(
@@ -1928,6 +1931,37 @@ public class WebServerServlet extends HttpServlet {
 	private boolean _isBrowserExecutableContentType(String contentType) {
 		return _browserExecutableContentTypes.contains(
 			StringUtil.toLowerCase(contentType));
+	}
+
+	private boolean _isObjectEntryAttachmentDownload(
+		String contentType, HttpServletRequest httpServletRequest) {
+
+		if (!StringUtil.equals(
+				httpServletRequest.getMethod(), HttpMethods.GET)) {
+
+			return false;
+		}
+
+		// A range capable content type is written through
+		// sendFileWithRangeHeader, which writes the whole file only when the
+		// request carries no range. Every other content type is written in
+		// full whether or not the request carries a range.
+
+		if (isSupportsRangeHeader(contentType) &&
+			(httpServletRequest.getHeader(HttpHeaders.RANGE) != null)) {
+
+			return false;
+		}
+
+		// Read the request parameter rather than the local variable, which is
+		// forced on for content a browser would otherwise execute
+
+		if (!ParamUtil.getBoolean(httpServletRequest, "download")) {
+			return false;
+		}
+
+		return StringUtil.equals(
+			_getActionId(httpServletRequest), ActionKeys.DOWNLOAD);
 	}
 
 	private boolean _processCompanyInactiveRequest(

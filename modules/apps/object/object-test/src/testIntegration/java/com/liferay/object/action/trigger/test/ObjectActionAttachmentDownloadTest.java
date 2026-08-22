@@ -27,6 +27,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -175,6 +176,26 @@ public class ObjectActionAttachmentDownloadTest extends BaseWebServerTestCase {
 	}
 
 	@Test
+	public void testRunsOnRangeRequestForWholeFile() throws Exception {
+		ObjectEntry objectEntry = _addObjectEntry();
+
+		// A range is honored only for the content types that declare support
+		// for it, and this attachment is not one of them, so the whole file is
+		// written and the download is a download
+
+		MockHttpServletResponse mockHttpServletResponse = _service(
+			"GET", _getFileEntry(objectEntry),
+			objectEntry.getExternalReferenceCode(),
+			HashMapBuilder.put(
+				HttpHeaders.RANGE, "bytes=0-3"
+			).build());
+
+		Assert.assertEquals(200, mockHttpServletResponse.getStatus());
+
+		Assert.assertEquals(1, _executionCount.get());
+	}
+
+	@Test
 	public void testSkipsAnotherObjectEntrysAttachment() throws Exception {
 		ObjectEntry objectEntry1 = _addObjectEntry();
 		ObjectEntry objectEntry2 = _addObjectEntry();
@@ -185,6 +206,19 @@ public class ObjectActionAttachmentDownloadTest extends BaseWebServerTestCase {
 
 		MockHttpServletResponse mockHttpServletResponse = _download(
 			fileEntry, objectEntry2.getExternalReferenceCode());
+
+		Assert.assertEquals(200, mockHttpServletResponse.getStatus());
+
+		Assert.assertEquals(0, _executionCount.get());
+	}
+
+	@Test
+	public void testSkipsHeadRequest() throws Exception {
+		ObjectEntry objectEntry = _addObjectEntry();
+
+		MockHttpServletResponse mockHttpServletResponse = _service(
+			"HEAD", _getFileEntry(objectEntry),
+			objectEntry.getExternalReferenceCode(), Collections.emptyMap());
 
 		Assert.assertEquals(200, mockHttpServletResponse.getStatus());
 
@@ -327,6 +361,31 @@ public class ObjectActionAttachmentDownloadTest extends BaseWebServerTestCase {
 
 			},
 			null);
+	}
+
+	private MockHttpServletResponse _service(
+			String method, FileEntry fileEntry,
+			String objectEntryExternalReferenceCode,
+			Map<String, String> headers)
+		throws Exception {
+
+		String path = StringBundler.concat(
+			StringPool.SLASH, fileEntry.getGroupId(), StringPool.SLASH,
+			fileEntry.getFolderId(), StringPool.SLASH, fileEntry.getFileName(),
+			StringPool.SLASH, fileEntry.getUuid());
+
+		return service(
+			method, path, headers,
+			HashMapBuilder.put(
+				"download", "true"
+			).put(
+				"objectDefinitionExternalReferenceCode",
+				_objectDefinition.getExternalReferenceCode()
+			).put(
+				"objectEntryExternalReferenceCode",
+				objectEntryExternalReferenceCode
+			).build(),
+			TestPropsValues.getUser(), null);
 	}
 
 	private static final String _KEY = "test-attachment-download";
