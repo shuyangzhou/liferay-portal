@@ -2045,7 +2045,9 @@ test.describe('Manage object definitions through View Object Definitions', () =>
 		await test.step('Navigate to Object Admin and update the object label', async () => {
 			await editObjectDetailsPage.goto(objectDefinition.label['en_US']);
 
-			await editObjectDetailsPage.goToDetailsTab();
+			// The edit screen already opens on the details tab, so re-entering
+			// it only remounts the form and lets the second mount's own read
+			// land over whatever was typed in between.
 
 			await editObjectDetailsPage.waitForDetailsFormLoaded();
 

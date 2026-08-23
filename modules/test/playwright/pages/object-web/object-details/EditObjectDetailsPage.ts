@@ -102,9 +102,24 @@ export class EditObjectDetailsPage {
 	}
 
 	async goToDetailsTab() {
+
+		// The tab is a full navigation that remounts the details form, and the
+		// form's mount fetch replaces every field, so the arriving fetch is
+		// the only signal that the form is safe to type into. Arm it before
+		// the click: a promise created first cannot be satisfied by the
+		// outgoing render's fetch.
+
+		const objectDefinitionResponsePromise = this.page.waitForResponse(
+			(response) =>
+				response.request().method() === 'GET' &&
+				/\/o\/object-admin\/v1\.0\/object-definitions\/by-external-reference-code\/[^/?]+$/.test(
+					response.url()
+				)
+		);
+
 		await this.detailsTabItem.click();
 
-		await this.page.waitForLoadState('networkidle');
+		await objectDefinitionResponsePromise;
 	}
 
 	async waitForDetailsFormLoaded() {
@@ -117,7 +132,25 @@ export class EditObjectDetailsPage {
 	}
 
 	async saveObjectDefinition() {
+
+		// A submit the client blocks renders an inline field error and never
+		// an alert, so the update the click asks for is the only outcome a
+		// caller can wait on without staring out its budget at an alert that
+		// cannot come.
+
+		const objectDefinitionResponsePromise = this.page.waitForResponse(
+			(response) =>
+				response.request().method() === 'PUT' &&
+				response
+					.url()
+					.includes(
+						'/o/object-admin/v1.0/object-definitions/by-external-reference-code/'
+					)
+		);
+
 		await this.saveButton.click();
+
+		await objectDefinitionResponsePromise;
 	}
 
 	async selectEntryTitleField(fieldName: string) {
