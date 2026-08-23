@@ -199,7 +199,19 @@ test('assert that the user is able to use the ERC field in Sort, on the Custom V
 		entry2
 	);
 
-	await page.getByTitle('Sortable Column').dblclick();
+	const columnHeader = page.locator('th.cell-externalReferenceCode');
+
+	await viewObjectEntriesPage.sortColumn(
+		columnHeader,
+		'externalReferenceCode',
+		'asc'
+	);
+
+	await viewObjectEntriesPage.sortColumn(
+		columnHeader,
+		'externalReferenceCode',
+		'desc'
+	);
 
 	await expect(page.locator('.cell-externalReferenceCode').nth(1)).toHaveText(
 		entry2
@@ -2553,10 +2565,21 @@ test(
 			'Entry C',
 		]);
 
-		await page
-			.getByRole('columnheader', {name: 'textField'})
-			.getByRole('button')
-			.dblclick();
+		const columnHeader = page.getByRole('columnheader', {
+			name: 'textField',
+		});
+
+		await viewObjectEntriesPage.sortColumn(
+			columnHeader,
+			'textField',
+			'asc'
+		);
+
+		await viewObjectEntriesPage.sortColumn(
+			columnHeader,
+			'textField',
+			'desc'
+		);
 
 		const descendingCells = page.getByRole('cell');
 

@@ -302,6 +302,38 @@ export class ViewObjectEntriesPage {
 			.click();
 	}
 
+	async sortColumn(
+		columnHeader: Locator,
+		columnName: string,
+		sortDirection: 'asc' | 'desc'
+	) {
+
+		// The sort header commits its own state on click, but the rows only
+		// change when the entries request for that sort answers. Clicking
+		// twice in one gesture leaves two answers in flight and the last one
+		// to arrive wins, so each click waits for its own answer and for the
+		// header to carry the order just answered, which is what stops the
+		// next click from reading state the first one has not committed yet.
+
+		const entriesResponsePromise = this.page.waitForResponse(
+			(response) =>
+				response.ok() &&
+				response.request().method() === 'GET' &&
+				response.url().includes(`sort=${columnName}%3A${sortDirection}`)
+		);
+
+		const columnHeaderButton = columnHeader.getByRole('button');
+
+		await columnHeaderButton.click();
+
+		await entriesResponsePromise;
+
+		await expect(columnHeader).toHaveAttribute(
+			'aria-sort',
+			sortDirection === 'asc' ? 'ascending' : 'descending'
+		);
+	}
+
 	async selectDropdownItem(fieldName: string, optionName: string) {
 		await this.page.getByLabel(fieldName).click();
 		await this.page
