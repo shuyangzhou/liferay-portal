@@ -72,7 +72,18 @@ test('Can preview entry information on My Workflow Tasks', async ({
 		applicationName
 	);
 
-	await workflowTasksPage.goToAssignedToMyRoles();
+	// The workflow's own work lands after the entry POST is answered, and
+	// this list is rendered by the server, so a page fetched in that window
+	// carries no task and goes on carrying none however long a click waits.
+	// Ask for the address again until the list agrees.
+
+	await expect(async () => {
+		await workflowTasksPage.goToAssignedToMyRoles();
+
+		await expect(
+			page.getByRole('link', {name: objectDefinition.label['en_US']})
+		).toBeVisible({timeout: 5000});
+	}).toPass();
 
 	await workflowTaskDetailsPage.selectAsset(objectDefinition.label['en_US']);
 
@@ -121,7 +132,18 @@ test('Can view entry information through View button on My Workflow Tasks', asyn
 		applicationName
 	);
 
-	await workflowTasksPage.goToAssignedToMyRoles();
+	// The workflow's own work lands after the entry POST is answered, and
+	// this list is rendered by the server, so a page fetched in that window
+	// carries no task and goes on carrying none however long a click waits.
+	// Ask for the address again until the list agrees.
+
+	await expect(async () => {
+		await workflowTasksPage.goToAssignedToMyRoles();
+
+		await expect(
+			page.getByRole('link', {name: objectDefinition.label['en_US']})
+		).toBeVisible({timeout: 5000});
+	}).toPass();
 
 	await workflowTaskDetailsPage.selectAsset(objectDefinition.label['en_US']);
 

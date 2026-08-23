@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {FrameLocator, Locator, Page} from '@playwright/test';
+import {FrameLocator, Locator, Page, expect} from '@playwright/test';
 
 import {waitForAlert} from '../../utils/waitForAlert';
 import {WorkflowTasksPage} from './WorkflowTasksPage';
@@ -95,7 +95,14 @@ export class WorkflowTaskDetailsPage {
 
 	async selectAsset(assetTitle: string) {
 		const assetLink = this.page.getByRole('link', {name: assetTitle});
-		await assetLink.click({force: true});
+
+		// The tasks list arrives through a single page application screen
+		// swap, which can attach the link hidden and replace it while it
+		// settles. A forced click skips exactly the waits that survive that:
+		// let the click wait for the link to be visible, stable and hittable,
+		// re-resolving it if the swap replaces the node.
+
+		await assetLink.click();
 	}
 
 	async selectAssignee(assignee: string) {
