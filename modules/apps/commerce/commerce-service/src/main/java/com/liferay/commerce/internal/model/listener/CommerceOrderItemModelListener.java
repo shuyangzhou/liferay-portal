@@ -16,7 +16,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.ModelListener;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
@@ -41,6 +43,13 @@ public class CommerceOrderItemModelListener
 	public void onAfterRemove(CommerceOrderItem commerceOrderItem) {
 		try {
 			if (CommerceOrderThreadLocal.isDeleteInProcess()) {
+				return;
+			}
+
+			Group group = _groupLocalService.fetchGroup(
+				commerceOrderItem.getGroupId());
+
+			if (group == null) {
 				return;
 			}
 
@@ -232,5 +241,8 @@ public class CommerceOrderItemModelListener
 
 	@Reference
 	private CommerceOrderLocalService _commerceOrderLocalService;
+
+	@Reference
+	private GroupLocalService _groupLocalService;
 
 }
