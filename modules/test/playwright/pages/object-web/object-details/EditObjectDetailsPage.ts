@@ -112,7 +112,21 @@ export class EditObjectDetailsPage {
 	}
 
 	async saveObjectDefinition() {
+		const responsePromise = this.page.waitForResponse(
+			(response) =>
+				response.request().method() === 'PUT' &&
+				response
+					.url()
+					.includes('/o/object-admin/v1.0/object-definitions')
+		);
+
 		await this.saveButton.click();
+
+		const response = await responsePromise;
+
+		if (response.ok()) {
+			await this.page.waitForEvent('load');
+		}
 	}
 
 	async selectEntryTitleField(fieldName: string) {
