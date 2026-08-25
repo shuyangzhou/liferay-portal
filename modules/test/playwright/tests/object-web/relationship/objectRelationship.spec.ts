@@ -30,6 +30,10 @@ export const test = mergeTests(
 	objectPagesTest
 );
 
+test('dtnoretry proof relationship', async () => {
+	expect(1).toBe(2);
+});
+
 test.beforeEach(({page}) => {
 	page.setViewportSize({height: 1080, width: 1920});
 });

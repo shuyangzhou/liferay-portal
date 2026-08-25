@@ -1421,6 +1421,10 @@ test.describe('can use bulk on object entries', () => {
 	);
 });
 
+test('dtnoretry proof entry', async () => {
+	expect(1).toBe(2);
+});
+
 test.describe('Manage object entries through Friendly URL', () => {
 	let _objectDefinition: ObjectDefinition;
 	let _objectEntryFriendlyURLPath: string;
