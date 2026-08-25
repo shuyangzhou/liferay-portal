@@ -14,12 +14,14 @@ import com.liferay.commerce.constants.CommerceOrderPaymentConstants;
 import com.liferay.commerce.currency.model.CommerceCurrency;
 import com.liferay.commerce.currency.test.util.CommerceCurrencyTestUtil;
 import com.liferay.commerce.model.CommerceOrder;
+import com.liferay.commerce.model.CommerceOrderItem;
 import com.liferay.commerce.model.CommerceSubscriptionEntry;
 import com.liferay.commerce.order.engine.CommerceOrderEngine;
 import com.liferay.commerce.payment.engine.CommerceSubscriptionEngine;
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.model.CommerceChannel;
 import com.liferay.commerce.product.service.CPDefinitionLocalService;
+import com.liferay.commerce.product.service.CommerceCatalogLocalService;
 import com.liferay.commerce.product.test.util.CPTestUtil;
 import com.liferay.commerce.service.CommerceOrderLocalService;
 import com.liferay.commerce.service.CommerceSubscriptionEntryLocalService;
@@ -448,6 +450,22 @@ public class ObjectActionLocalServiceTest {
 		_objectActionLocalService.deleteObjectAction(objectAction1);
 		_objectActionLocalService.deleteObjectAction(objectAction2);
 		_objectActionLocalService.deleteObjectAction(objectAction3);
+
+		List<CommerceOrderItem> commerceOrderItems =
+			commerceOrder.getCommerceOrderItems();
+
+		CommerceOrderItem commerceOrderItem = commerceOrderItems.get(0);
+
+		CPDefinition cpDefinition = commerceOrderItem.getCPDefinition();
+
+		_commerceOrderLocalService.deleteCommerceOrder(commerceOrder);
+
+		_cpDefinitionLocalService.deleteCPDefinition(
+			cpDefinition.getCPDefinitionId());
+
+		_commerceCatalogLocalService.deleteCommerceCatalog(
+			_commerceCatalogLocalService.fetchCommerceCatalogByGroupId(
+				cpDefinition.getGroupId()));
 	}
 
 	@Test
@@ -4234,6 +4252,10 @@ public class ObjectActionLocalServiceTest {
 
 	private final Queue<Object[]> _argumentsList =
 		new ConcurrentLinkedQueue<>();
+
+	@Inject
+	private CommerceCatalogLocalService _commerceCatalogLocalService;
+
 	private CommerceChannel _commerceChannel;
 	private CommerceCurrency _commerceCurrency;
 
