@@ -378,6 +378,8 @@ public class ObjectFieldLocalServiceImpl
 
 			objectFieldPersistence.remove(objectField);
 
+			objectDefinition.setObjectFieldBag(null);
+
 			indexer.delete(objectField);
 
 			if (objectDefinition.isApproved() &&
@@ -1266,6 +1268,8 @@ public class ObjectFieldLocalServiceImpl
 
 			objectField = objectFieldPersistence.remove(objectField);
 
+			objectDefinition.setObjectFieldBag(null);
+
 			_objectFieldSettingLocalService.deleteObjectFieldObjectFieldSetting(
 				objectField);
 
@@ -1360,6 +1364,8 @@ public class ObjectFieldLocalServiceImpl
 		}
 
 		objectField = objectFieldPersistence.remove(objectField);
+
+		objectDefinition.setObjectFieldBag(null);
 
 		if (objectDefinition.getAccountEntryRestrictedObjectFieldId() ==
 				objectField.getObjectFieldId()) {
