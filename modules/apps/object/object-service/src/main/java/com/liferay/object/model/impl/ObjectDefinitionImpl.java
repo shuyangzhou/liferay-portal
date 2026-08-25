@@ -102,6 +102,11 @@ public class ObjectDefinitionImpl extends ObjectDefinitionBaseImpl {
 
 	@Override
 	public ObjectFieldBag getObjectFieldBag() {
+		System.err.println(
+			"DTPROBE fieldBag defId=" + getObjectDefinitionId() +
+				" identity=" + System.identityHashCode(this) + " memo=" +
+					(_objectFieldBag != null));
+
 		if (_objectFieldBag == null) {
 			setObjectFieldBag(
 				new ObjectFieldBag(

@@ -54,6 +54,12 @@ public class BufferedIndexerInvocationHandler implements InvocationHandler {
 			(indexerRequestBuffer == null) ||
 			!BufferableThreadLocal.isEnabled()) {
 
+			System.err.println(
+				"DTPROBE inline method=" + method.getName() + " annotation=" +
+					(annotation != null) + " buffer=" +
+						(indexerRequestBuffer != null) + " bufferable=" +
+							BufferableThreadLocal.isEnabled());
+
 			return method.invoke(_indexer, args);
 		}
 
@@ -91,6 +97,10 @@ public class BufferedIndexerInvocationHandler implements InvocationHandler {
 
 		if (args[0] instanceof ClassedModel) {
 			if (StrictObjectReindexThreadLocal.isStrictObjectReindex()) {
+				System.err.println(
+					"DTPROBE strict-buffered " + args[0].getClass() + " pk=" +
+						((ClassedModel)args[0]).getPrimaryKeyObj());
+
 				MethodKey methodKey = new MethodKey(
 					Indexer.class, method.getName(), Object.class);
 

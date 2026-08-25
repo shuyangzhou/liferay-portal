@@ -1251,6 +1251,13 @@ public class ObjectEntryLocalServiceImpl
 
 		ObjectFieldBag objectFieldBag = objectDefinition.getObjectFieldBag();
 
+		System.err.println(
+			"DTPROBE getIndexedValues pk=" + objectEntry.getObjectEntryId() +
+				" defIdentity=" + System.identityHashCode(objectDefinition) +
+					" indexedFields=" +
+						objectFieldBag.getIndexedObjectFields(
+						).size());
+
 		List<ObjectField> indexedObjectFields =
 			objectFieldBag.getIndexedObjectFields();
 
@@ -6412,6 +6419,9 @@ public class ObjectEntryLocalServiceImpl
 	}
 
 	private void _reindex(ObjectEntry objectEntry) throws PortalException {
+		System.err.println(
+			"DTPROBE _reindex pk=" + objectEntry.getObjectEntryId());
+
 		ObjectDefinition objectDefinition =
 			_objectDefinitionPersistence.findByPrimaryKey(
 				objectEntry.getObjectDefinitionId());

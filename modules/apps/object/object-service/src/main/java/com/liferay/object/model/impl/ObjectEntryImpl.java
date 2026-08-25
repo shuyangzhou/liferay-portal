@@ -73,6 +73,10 @@ public class ObjectEntryImpl extends ObjectEntryBaseImpl {
 
 	@Override
 	public Map<String, Serializable> getIndexedValues() {
+		System.err.println(
+			"DTPROBE build pk=" + getObjectEntryId() + " memoPopulated=" +
+				(_objectDefinition != null));
+
 		if (_indexedValues == null) {
 			if (_log.isDebugEnabled()) {
 				_log.debug("Get values for object entry " + getObjectEntryId());
