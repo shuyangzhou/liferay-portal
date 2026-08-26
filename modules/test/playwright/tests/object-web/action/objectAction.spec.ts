@@ -1773,15 +1773,13 @@ test.describe('Object Action Cross-Object Behavior', () => {
 
 			apiHelpers.data.push({id: productGroup.id, type: 'objectEntry'});
 
-			await expect(async () => {
-				const updatedGroup =
-					await apiHelpers.objectEntry.getObjectEntryById(
-						'headless-commerce-admin-catalog/v1.0/product-groups',
-						String(productGroup.id)
-					);
+			const updatedGroup =
+				await apiHelpers.objectEntry.getObjectEntryById(
+					'headless-commerce-admin-catalog/v1.0/product-groups',
+					String(productGroup.id)
+				);
 
-				expect(updatedGroup.title?.en_US).toBe(updatedTitle);
-			}).toPass();
+			expect(updatedGroup.title?.en_US).toBe(updatedTitle);
 		}
 	);
 });
@@ -2734,21 +2732,15 @@ ObjectEntryLocalServiceUtil.updateObjectEntry(objectEntry.getUserId(), id, 0L, v
 				applicationName
 			);
 
-			// The Groovy executor runs asynchronously after the entry is
-			// committed, so poll until the action's effect (updated
-			// customObjectFieldActionTest) is visible.
-
-			await expect(async () => {
-				const updatedEntry =
-					await apiHelpers.objectEntry.getObjectEntryById(
-						applicationName,
-						String(entry.id)
-					);
-
-				expect(updatedEntry.customObjectFieldActionTest).toBe(
-					'Action Test Works'
+			const updatedEntry =
+				await apiHelpers.objectEntry.getObjectEntryById(
+					applicationName,
+					String(entry.id)
 				);
-			}).toPass();
+
+			expect(updatedEntry.customObjectFieldActionTest).toBe(
+				'Action Test Works'
+			);
 		}
 	);
 
@@ -2837,21 +2829,15 @@ ObjectEntryLocalServiceUtil.updateObjectEntry(objectEntry.getUserId(), id, 0L, v
 				Number(entry.id)
 			);
 
-			// The Groovy executor runs asynchronously after the entry is committed,
-			// so poll until the action's effect (updated customObjectFieldActionTest)
-			// is visible.
-
-			await expect(async () => {
-				const updatedEntry =
-					await apiHelpers.objectEntry.getObjectEntryById(
-						applicationName,
-						String(entry.id)
-					);
-
-				expect(updatedEntry.customObjectFieldActionTest).toBe(
-					'Action Test Works'
+			const updatedEntry =
+				await apiHelpers.objectEntry.getObjectEntryById(
+					applicationName,
+					String(entry.id)
 				);
-			}).toPass();
+
+			expect(updatedEntry.customObjectFieldActionTest).toBe(
+				'Action Test Works'
+			);
 		}
 	);
 
@@ -2913,19 +2899,13 @@ ObjectEntryLocalServiceUtil.updateObjectEntry(objectEntry.getUserId(), id, 0L, v
 				applicationName
 			);
 
-			// The Groovy executor runs asynchronously after the entry is
-			// committed, so poll the actions page until the action's last
-			// execution status reflects 'Success'.
+			await viewObjectActionsPage.gotoByObjectDefinitionId(
+				objectDefinition.id
+			);
 
-			await expect(async () => {
-				await viewObjectActionsPage.gotoByObjectDefinitionId(
-					objectDefinition.id
-				);
-
-				await expect(
-					viewObjectActionsPage.lastExecutionCell.nth(1)
-				).toContainText('Success');
-			}).toPass();
+			await expect(
+				viewObjectActionsPage.lastExecutionCell.nth(1)
+			).toContainText('Success');
 		}
 	);
 });
