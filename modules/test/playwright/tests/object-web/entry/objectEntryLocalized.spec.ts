@@ -765,6 +765,10 @@ test.describe('Localized object entries are saved correctly', () => {
 			0
 		);
 
+		const englishSaveNavigation = page.waitForNavigation({
+			waitUntil: 'load',
+		});
+
 		await viewObjectEntriesPage.saveObjectEntryButton.click();
 
 		const itemLocators = formFieldsPage.getMultipleSelectItemsLocators(
@@ -784,10 +788,10 @@ test.describe('Localized object entries are saved correctly', () => {
 
 		await expectFinalEnglishState();
 
+		await englishSaveNavigation;
+
 		// after navigating to catalan for the first time
 		// expect catalan items to be a copy of the default language
-
-		await page.waitForTimeout(2000);
 
 		await page.getByRole('button', {name: 'en-us'}).first().click();
 
@@ -836,9 +840,13 @@ test.describe('Localized object entries are saved correctly', () => {
 
 		// save, navigate back to entry and expect final states to be persisted
 
+		const catalanSaveNavigation = page.waitForNavigation({
+			waitUntil: 'load',
+		});
+
 		await viewObjectEntriesPage.saveObjectEntryButton.click();
 
-		await page.waitForTimeout(2000);
+		await catalanSaveNavigation;
 
 		await viewObjectEntriesPage.backButton.click();
 
@@ -1113,9 +1121,11 @@ test.describe('Localized object entries are saved correctly', () => {
 			}
 		}
 
+		const saveNavigation = page.waitForNavigation({waitUntil: 'load'});
+
 		await viewObjectEntriesPage.saveObjectEntryButton.click();
 
-		await page.waitForTimeout(1000);
+		await saveNavigation;
 
 		await viewObjectEntriesPage.backButton.click();
 
