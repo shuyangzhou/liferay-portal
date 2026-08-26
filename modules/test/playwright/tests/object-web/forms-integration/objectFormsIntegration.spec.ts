@@ -1001,7 +1001,9 @@ test(
 
 		await formBuilderSidePanelPage.selectObjectField(fieldLabel);
 
-		await page.waitForTimeout(1000);
+		await expect(formBuilderSidePanelPage.objectFieldSelect).toHaveText(
+			fieldLabel
+		);
 
 		await formBuilderPage.clickPublishFormButton();
 
