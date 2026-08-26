@@ -1292,9 +1292,9 @@ test.describe('Object Groovy Validation', () => {
 			'Groovy'
 		);
 
-		await expect(async () => {
-			await page.reload({timeout: 15000});
-		}).toPass({timeout: 60000});
+		await expect(
+			page.getByRole('link', {name: 'Custom Validation'})
+		).toBeVisible();
 
 		await expect(page.getByRole('cell', {name: 'No'})).toBeVisible();
 	});
