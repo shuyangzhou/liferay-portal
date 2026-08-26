@@ -22,6 +22,7 @@ import {siteSettingsPagesTest} from '../../../fixtures/siteSettingsPagesTest';
 import {ListTypeDefinitionsPage} from '../../../pages/object-web/list-type/ListTypeDefinitionsPage';
 import {getRandomInt} from '../../../utils/getRandomInt';
 import {getTempDir} from '../../../utils/temp';
+import {waitForFDS} from '../../../utils/waitFor';
 import {waitForAlert} from '../../../utils/waitForAlert';
 import {generateObjectFields} from '../utils/generateObjectFields';
 import {postListTypeDefinitionListTypeEntries} from '../utils/postListTypeDefinitionListTypeEntries';
@@ -857,7 +858,11 @@ test.describe('manage picklists inside the picklists portlet', () => {
 
 		await listTypeDefinitionPage.goto();
 
-		await page.waitForTimeout(500);
+		await waitForFDS({page});
+
+		const searchResponse = page.waitForResponse((response) =>
+			response.url().includes(`search=${listTypeDefinition1.name}`)
+		);
 
 		await page
 			.getByTestId('managementToolbar')
@@ -865,6 +870,8 @@ test.describe('manage picklists inside the picklists portlet', () => {
 			.fill(listTypeDefinition1.name);
 
 		await page.keyboard.press('Enter');
+
+		await searchResponse;
 
 		await expect(
 			page.getByRole('link', {name: listTypeDefinition1.name})
@@ -909,7 +916,13 @@ test.describe('manage picklists inside the picklists portlet', () => {
 
 		await page.getByRole('link', {name: listTypeDefinition.name}).click();
 
-		await page.waitForTimeout(500);
+		await expect(
+			listTypeDefinitionPage.getPicklistItemLinkLocator(itemName1)
+		).toBeVisible();
+
+		const searchResponse = page.waitForResponse((response) =>
+			response.url().includes(`search=${itemName1}`)
+		);
 
 		await listTypeDefinitionPage.frameLocator
 			.getByTestId('managementToolbar')
@@ -917,6 +930,8 @@ test.describe('manage picklists inside the picklists portlet', () => {
 			.fill(itemName1);
 
 		await page.keyboard.press('Enter');
+
+		await searchResponse;
 
 		await expect(
 			listTypeDefinitionPage.getPicklistItemLinkLocator(itemName1)
@@ -1101,9 +1116,13 @@ test.describe('manage picklists inside the picklists portlet', () => {
 	}) => {
 		await listTypeDefinitionPage.goto();
 
+		await waitForFDS({page});
+
 		const nonExistentName = 'NonExistentPicklist' + getRandomInt();
 
-		await page.waitForTimeout(500);
+		const searchResponse = page.waitForResponse((response) =>
+			response.url().includes(`search=${nonExistentName}`)
+		);
 
 		await page
 			.getByTestId('managementToolbar')
@@ -1111,6 +1130,8 @@ test.describe('manage picklists inside the picklists portlet', () => {
 			.fill(nonExistentName);
 
 		await page.keyboard.press('Enter');
+
+		await searchResponse;
 
 		await expect(page.getByText('No Results Found')).toBeVisible();
 	});
