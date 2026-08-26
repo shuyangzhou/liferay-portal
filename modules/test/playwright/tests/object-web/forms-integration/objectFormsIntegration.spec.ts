@@ -153,7 +153,7 @@ test(
 
 		await formBuilderSidePanelPage.selectObjectField('textField');
 
-		await page.waitForTimeout(1000);
+		await apiHelpers.dynamicDataMapping.waitForDDMEvaluate(page);
 
 		await formBuilderPage.clickPublishFormButton();
 
@@ -230,7 +230,7 @@ test(
 
 		await formBuilderSidePanelPage.selectObjectField(fieldLabel1);
 
-		await page.waitForTimeout(1000);
+		await apiHelpers.dynamicDataMapping.waitForDDMEvaluate(page);
 
 		await formBuilderSidePanelPage.clickBackButton();
 
@@ -240,7 +240,7 @@ test(
 
 		await formBuilderSidePanelPage.selectObjectField(fieldLabel2);
 
-		await page.waitForTimeout(1000);
+		await apiHelpers.dynamicDataMapping.waitForDDMEvaluate(page);
 
 		await expect(
 			page.getByLabel('Fields Group', {exact: true})
@@ -332,7 +332,7 @@ test(
 
 		await formBuilderSidePanelPage.selectObjectField(fieldLabel);
 
-		await page.waitForTimeout(1000);
+		await apiHelpers.dynamicDataMapping.waitForDDMEvaluate(page);
 
 		await formBuilderPage.clickPublishFormButton();
 
@@ -410,7 +410,7 @@ test(
 
 		await formBuilderSidePanelPage.selectObjectField(fieldLabel);
 
-		await page.waitForTimeout(1000);
+		await apiHelpers.dynamicDataMapping.waitForDDMEvaluate(page);
 
 		await formBuilderPage.clickPublishFormButton();
 
@@ -496,7 +496,7 @@ test(
 
 		await formBuilderSidePanelPage.selectObjectField(fieldLabel);
 
-		await page.waitForTimeout(1000);
+		await apiHelpers.dynamicDataMapping.waitForDDMEvaluate(page);
 
 		await formBuilderPage.clickPublishFormButton();
 
@@ -576,7 +576,7 @@ test(
 
 		await formBuilderSidePanelPage.selectObjectField(fieldLabel);
 
-		await page.waitForTimeout(1000);
+		await apiHelpers.dynamicDataMapping.waitForDDMEvaluate(page);
 
 		await formBuilderPage.clickPublishFormButton();
 
@@ -658,7 +658,7 @@ test(
 
 		await formBuilderSidePanelPage.selectObjectField(fieldLabel);
 
-		await page.waitForTimeout(1000);
+		await apiHelpers.dynamicDataMapping.waitForDDMEvaluate(page);
 
 		await formBuilderPage.clickPublishFormButton();
 
@@ -738,7 +738,7 @@ test(
 
 		await formBuilderSidePanelPage.selectObjectField(fieldLabel);
 
-		await page.waitForTimeout(1000);
+		await apiHelpers.dynamicDataMapping.waitForDDMEvaluate(page);
 
 		await formBuilderPage.clickPublishFormButton();
 
@@ -834,7 +834,7 @@ test(
 
 		await formBuilderSidePanelPage.selectObjectField(fieldLabel);
 
-		await page.waitForTimeout(1000);
+		await apiHelpers.dynamicDataMapping.waitForDDMEvaluate(page);
 
 		await formBuilderPage.clickPublishFormButton();
 
@@ -921,7 +921,7 @@ test(
 
 		await formBuilderSidePanelPage.selectObjectField(fieldLabel);
 
-		await page.waitForTimeout(1000);
+		await apiHelpers.dynamicDataMapping.waitForDDMEvaluate(page);
 
 		await formBuilderPage.clickPublishFormButton();
 
@@ -1081,7 +1081,7 @@ test(
 
 		await formBuilderSidePanelPage.selectObjectField('textField');
 
-		await page.waitForTimeout(1000);
+		await apiHelpers.dynamicDataMapping.waitForDDMEvaluate(page);
 
 		await formBuilderPage.clickPublishFormButton();
 
@@ -1238,7 +1238,7 @@ test(
 					'Entry'
 				);
 
-				await page.waitForTimeout(1000);
+				await apiHelpers.dynamicDataMapping.waitForDDMEvaluate(page);
 			});
 
 			await test.step('add a text field configured with autocomplete from Data Provider', async () => {
@@ -1276,7 +1276,7 @@ test(
 					formBuilderFieldSettingsSidePanelPage.outputParameterSelect
 				).toHaveText('Entry');
 
-				await page.waitForTimeout(1000);
+				await apiHelpers.dynamicDataMapping.waitForDDMEvaluate(page);
 			});
 
 			await test.step('Publish the form, navigate to it and assert entry value is available as an option', async () => {
@@ -1386,7 +1386,7 @@ test(
 
 		await formBuilderSidePanelPage.selectObjectField(fieldLabel);
 
-		await page.waitForTimeout(1000);
+		await apiHelpers.dynamicDataMapping.waitForDDMEvaluate(page);
 
 		await formBuilderPage.clickPublishFormButton();
 
@@ -1469,7 +1469,7 @@ test(
 
 		await formBuilderSidePanelPage.selectObjectField('textField');
 
-		await page.waitForTimeout(1000);
+		await apiHelpers.dynamicDataMapping.waitForDDMEvaluate(page);
 
 		await formBuilderPage.clickPublishFormButton();
 
@@ -1543,7 +1543,7 @@ test(
 
 		await formBuilderSidePanelPage.selectObjectField(fieldLabel);
 
-		await page.waitForTimeout(1000);
+		await apiHelpers.dynamicDataMapping.waitForDDMEvaluate(page);
 
 		await formBuilderPage.clickPublishFormButton();
 
@@ -1813,7 +1813,7 @@ test(
 
 		await formBuilderSidePanelPage.selectObjectField('textField');
 
-		await page.waitForTimeout(1000);
+		await apiHelpers.dynamicDataMapping.waitForDDMEvaluate(page);
 
 		await formBuilderPage.clickSaveButton();
 
@@ -1934,7 +1934,7 @@ test(
 
 		await formBuilderSidePanelPage.selectObjectField('textField');
 
-		await page.waitForTimeout(1000);
+		await apiHelpers.dynamicDataMapping.waitForDDMEvaluate(page);
 
 		await formBuilderPage.clickPublishFormButton();
 
@@ -2073,7 +2073,7 @@ test(
 
 		await formBuilderSidePanelPage.selectObjectField('textField');
 
-		await page.waitForTimeout(1000);
+		await apiHelpers.dynamicDataMapping.waitForDDMEvaluate(page);
 
 		await formBuilderSidePanelPage.clickBackButton();
 
