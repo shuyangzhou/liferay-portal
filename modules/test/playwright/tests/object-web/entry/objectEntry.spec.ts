@@ -3151,9 +3151,17 @@ test.describe('Manage object entries through View Object Entries', () => {
 
 		await expect(viewObjectEntriesPage.searchButton).toBeEnabled();
 
+		const relatedModelNavigation = page.waitForNavigation({
+			waitUntil: 'load',
+		});
+
 		await viewObjectEntriesPage.frameSelect.getByText('Entry A').click();
 
-		await page.waitForTimeout(2000);
+		await relatedModelNavigation;
+
+		await expect(
+			page.getByRole('row').filter({hasText: 'Entry A'}).first()
+		).toBeVisible();
 
 		await page.getByRole('link', {name: 'Field Tab'}).click();
 
@@ -3173,9 +3181,13 @@ test.describe('Manage object entries through View Object Entries', () => {
 
 		await viewObjectEntriesPage.frontendDatasetActions.click();
 
+		const disassociateNavigation = page.waitForNavigation({
+			waitUntil: 'load',
+		});
+
 		await viewObjectEntriesPage.frontendDatasetDeleteAction.click();
 
-		await page.waitForTimeout(2000);
+		await disassociateNavigation;
 
 		await page.getByRole('link', {name: 'Field Tab'}).click();
 
