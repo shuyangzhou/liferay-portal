@@ -64,7 +64,9 @@ async function grantPermissionsToUserRole(page, checked: boolean) {
 		'#user_ACTION_PERMISSIONS'
 	);
 
-	await page.waitForTimeout(500);
+	await expect(
+		permissionIframe.getByRole('button', {name: 'Save'})
+	).toBeVisible();
 
 	await permissionsCheckbox.check({trial: true});
 
