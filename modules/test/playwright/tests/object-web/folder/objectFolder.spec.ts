@@ -143,7 +143,6 @@ test.describe('manage object definitions through model builder', () => {
 		apiHelpers,
 		modelBuilderDiagramPage,
 		modelBuilderLeftSidebarPage,
-		page,
 	}) => {
 		const objectFolders: ObjectFolder[] = await Promise.all(
 			Array.apply(null, Array(3)).map(async () => {
@@ -185,7 +184,9 @@ test.describe('manage object definitions through model builder', () => {
 				)
 			).toBeVisible();
 
-			await page.waitForTimeout(1000);
+			await expect(
+				modelBuilderLeftSidebarPage.otherObjectFolders
+			).toBeVisible();
 		}
 	});
 });
