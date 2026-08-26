@@ -1428,7 +1428,11 @@ test(
 			dataTransfer,
 		});
 
-		await page.waitForTimeout(100);
+		await expect(columns).toContainText([
+			'Create Date',
+			'Modified Date',
+			'Author',
+		]);
 
 		await targetRow.dispatchEvent('drop', {
 			clientX: endX,
