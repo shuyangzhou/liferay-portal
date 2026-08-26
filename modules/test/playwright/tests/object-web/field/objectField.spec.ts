@@ -1095,7 +1095,9 @@ test.describe('Manage objectFields through Objects Admin UI', () => {
 
 		await page.getByRole('button', {name: 'Done'}).click();
 
-		await page.waitForTimeout(500);
+		await expect(
+			page.locator('.lfr-objects__expression-builder-modal')
+		).toBeHidden();
 
 		await objectFieldsPage.editFieldSaveButton.click();
 
