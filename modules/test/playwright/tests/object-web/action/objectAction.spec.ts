@@ -2629,23 +2629,16 @@ test(
 			applicationName
 		);
 
-		// The notification action runs asynchronously after the entry is
-		// committed, so poll until the queue is populated.
+		const notificationQueueEntries =
+			await apiHelpers.notification.getNotificationQueueEntriesPage(
+				notificationTemplate.subject.en_US
+			);
 
-		let notificationQueueEntries: {items: {id: number}[]};
+		expect(notificationQueueEntries.items.length).toBeGreaterThan(0);
 
-		await expect(async () => {
-			notificationQueueEntries =
-				await apiHelpers.notification.getNotificationQueueEntriesPage(
-					senderEmail
-				);
+		for (const item of notificationQueueEntries.items) {
+			expect(item.fromName).toBe(senderEmail);
 
-			expect(notificationQueueEntries.items.length).toBeGreaterThan(0);
-		}).toPass();
-
-		// Register the queue entries for teardown cleanup.
-
-		for (const item of notificationQueueEntries!.items) {
 			apiHelpers.data.push({
 				id: item.id,
 				type: 'notificationQueueEntry',
@@ -3259,25 +3252,16 @@ test.describe('Object Action with oldValue Function', () => {
 				applicationName
 			);
 
-			// The notification action runs asynchronously after the entry is
-			// committed, so poll until the queue is populated.
-
-			let notificationQueueEntries: {items: {id: number}[]};
-
-			await expect(async () => {
-				notificationQueueEntries =
-					await apiHelpers.notification.getNotificationQueueEntriesPage(
-						senderEmail
-					);
-
-				expect(notificationQueueEntries.items.length).toBeGreaterThan(
-					0
+			const notificationQueueEntries =
+				await apiHelpers.notification.getNotificationQueueEntriesPage(
+					notificationTemplate.subject.en_US
 				);
-			}).toPass();
 
-			// Register the queue entries for teardown cleanup.
+			expect(notificationQueueEntries.items.length).toBeGreaterThan(0);
 
-			for (const item of notificationQueueEntries!.items) {
+			for (const item of notificationQueueEntries.items) {
+				expect(item.fromName).toBe(senderEmail);
+
 				apiHelpers.data.push({
 					id: item.id,
 					type: 'notificationQueueEntry',
@@ -3363,25 +3347,16 @@ test.describe('Object Action with oldValue Function', () => {
 				String(entry.id)
 			);
 
-			// The notification action runs asynchronously after the entry is
-			// committed, so poll until the queue is populated.
-
-			let notificationQueueEntries: {items: {id: number}[]};
-
-			await expect(async () => {
-				notificationQueueEntries =
-					await apiHelpers.notification.getNotificationQueueEntriesPage(
-						senderEmail
-					);
-
-				expect(notificationQueueEntries.items.length).toBeGreaterThan(
-					0
+			const notificationQueueEntries =
+				await apiHelpers.notification.getNotificationQueueEntriesPage(
+					notificationTemplate.subject.en_US
 				);
-			}).toPass();
 
-			// Register the queue entries for teardown cleanup.
+			expect(notificationQueueEntries.items.length).toBeGreaterThan(0);
 
-			for (const item of notificationQueueEntries!.items) {
+			for (const item of notificationQueueEntries.items) {
+				expect(item.fromName).toBe(senderEmail);
+
 				apiHelpers.data.push({
 					id: item.id,
 					type: 'notificationQueueEntry',
@@ -3468,25 +3443,16 @@ test.describe('Object Action with oldValue Function', () => {
 				Number(entry.id)
 			);
 
-			// The notification action runs asynchronously after the entry is
-			// committed, so poll until the queue is populated.
-
-			let notificationQueueEntries: {items: {id: number}[]};
-
-			await expect(async () => {
-				notificationQueueEntries =
-					await apiHelpers.notification.getNotificationQueueEntriesPage(
-						senderEmail
-					);
-
-				expect(notificationQueueEntries.items.length).toBeGreaterThan(
-					0
+			const notificationQueueEntries =
+				await apiHelpers.notification.getNotificationQueueEntriesPage(
+					notificationTemplate.subject.en_US
 				);
-			}).toPass();
 
-			// Register the queue entries for teardown cleanup.
+			expect(notificationQueueEntries.items.length).toBeGreaterThan(0);
 
-			for (const item of notificationQueueEntries!.items) {
+			for (const item of notificationQueueEntries.items) {
+				expect(item.fromName).toBe(senderEmail);
+
 				apiHelpers.data.push({
 					id: item.id,
 					type: 'notificationQueueEntry',
@@ -3542,25 +3508,16 @@ test.describe('Object Action with oldValue Function', () => {
 				{name: `${accountName} Edited`}
 			);
 
-			// The notification action runs asynchronously after the entry is
-			// committed, so poll until the queue is populated.
-
-			let notificationQueueEntries: {items: {id: number}[]};
-
-			await expect(async () => {
-				notificationQueueEntries =
-					await apiHelpers.notification.getNotificationQueueEntriesPage(
-						senderEmail
-					);
-
-				expect(notificationQueueEntries.items.length).toBeGreaterThan(
-					0
+			const notificationQueueEntries =
+				await apiHelpers.notification.getNotificationQueueEntriesPage(
+					notificationTemplate.subject.en_US
 				);
-			}).toPass();
 
-			// Register the queue entries for teardown cleanup.
+			expect(notificationQueueEntries.items.length).toBeGreaterThan(0);
 
-			for (const item of notificationQueueEntries!.items) {
+			for (const item of notificationQueueEntries.items) {
+				expect(item.fromName).toBe(senderEmail);
+
 				apiHelpers.data.push({
 					id: item.id,
 					type: 'notificationQueueEntry',
@@ -3615,25 +3572,16 @@ test.describe('Object Action with oldValue Function', () => {
 				givenName: `edit${givenName}`,
 			});
 
-			// The notification action runs asynchronously after the entry is
-			// committed, so poll until the queue is populated.
-
-			let notificationQueueEntries: {items: {id: number}[]};
-
-			await expect(async () => {
-				notificationQueueEntries =
-					await apiHelpers.notification.getNotificationQueueEntriesPage(
-						senderEmail
-					);
-
-				expect(notificationQueueEntries.items.length).toBeGreaterThan(
-					0
+			const notificationQueueEntries =
+				await apiHelpers.notification.getNotificationQueueEntriesPage(
+					notificationTemplate.subject.en_US
 				);
-			}).toPass();
 
-			// Register the queue entries for teardown cleanup.
+			expect(notificationQueueEntries.items.length).toBeGreaterThan(0);
 
-			for (const item of notificationQueueEntries!.items) {
+			for (const item of notificationQueueEntries.items) {
+				expect(item.fromName).toBe(senderEmail);
+
 				apiHelpers.data.push({
 					id: item.id,
 					type: 'notificationQueueEntry',
