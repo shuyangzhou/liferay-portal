@@ -383,7 +383,9 @@ cmsTest.describe('Manage attachment ObjectField download permission', () => {
 					'#guest_ACTION_DOWNLOAD_' + objectField.name.toUpperCase()
 				);
 
-				await page.waitForTimeout(500);
+				await expect(
+					iframeLocator.getByRole('button', {name: 'Save'})
+				).toBeVisible();
 
 				await objectFieldActionCheckbox.check();
 
