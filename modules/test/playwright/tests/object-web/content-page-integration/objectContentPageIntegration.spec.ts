@@ -305,24 +305,25 @@ test.describe('Collection Display', () => {
 					'.lfr-layout-structure-item-collection'
 				);
 
-				await expect(async () => {
-					const searchInput = page.getByPlaceholder('Search', {
-						exact: true,
-					});
+				const searchInput = page.getByPlaceholder('Search', {
+					exact: true,
+				});
 
-					await searchInput.fill(entryValueA, {timeout: 1000});
-					await searchInput.press('Enter', {timeout: 1000});
+				await searchInput.fill(entryValueA);
 
-					await page.waitForURL(/keywords/, {timeout: 3000});
+				const filterNavigation = page.waitForURL(/keywords/);
 
-					await expect(
-						collectionTable.getByText(entryValueA)
-					).toBeVisible({timeout: 3000});
+				await searchInput.press('Enter');
 
-					await expect(
-						collectionTable.getByText(entryValueB)
-					).not.toBeVisible({timeout: 3000});
-				}).toPass();
+				await filterNavigation;
+
+				await expect(
+					collectionTable.getByText(entryValueA)
+				).toBeVisible();
+
+				await expect(
+					collectionTable.getByText(entryValueB)
+				).not.toBeVisible();
 			});
 		}
 	);
