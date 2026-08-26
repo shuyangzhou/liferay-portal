@@ -1216,15 +1216,11 @@ cmsTest.describe('Manage object entries schedule properties', () => {
 
 			await viewObjectEntriesPage.schedulePublicationButton.click();
 
-			// Wait a second before doing the assertion to simulate the time needed for the request to happen
-
-			await page.waitForTimeout(1000);
-
-			expect(requestWasMade).toBe(false);
-
 			await expect(
 				page.getByText('This field is required')
 			).toBeVisible();
+
+			expect(requestWasMade).toBe(false);
 
 			await viewObjectEntriesPage.schedulePublicationCloseButton.click();
 		}
