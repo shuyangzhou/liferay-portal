@@ -89,17 +89,18 @@ test('can anonymize object entries', async ({
 		dialog.accept().catch(() => {});
 	});
 
-	await expect(async () => {
-		await (
-			await usersAndOrganizationsPage.usersTableRowActions(
-				userAccount.alternateName
-			)
-		).click();
+	await expect(
+		usersAndOrganizationsPage.usersTableCell(userAccount.alternateName)
+	).toBeVisible();
 
-		await expect(
-			usersAndOrganizationsPage.deletePersonalDataMenuItem
-		).toBeVisible({timeout: 500});
-	}).toPass({timeout: 5000});
+	const showActionsButton =
+		await usersAndOrganizationsPage.usersTableRowActions(
+			userAccount.alternateName
+		);
+
+	await expect(showActionsButton).toHaveAttribute('aria-expanded', 'false');
+
+	await showActionsButton.click();
 
 	await usersAndOrganizationsPage.deletePersonalDataMenuItem.click();
 
@@ -249,17 +250,18 @@ test('can delete object entries via personal data management', async ({
 		dialog.accept().catch(() => {});
 	});
 
-	await expect(async () => {
-		await (
-			await usersAndOrganizationsPage.usersTableRowActions(
-				userAccount.alternateName
-			)
-		).click();
+	await expect(
+		usersAndOrganizationsPage.usersTableCell(userAccount.alternateName)
+	).toBeVisible();
 
-		await expect(
-			usersAndOrganizationsPage.deletePersonalDataMenuItem
-		).toBeVisible({timeout: 500});
-	}).toPass({timeout: 5000});
+	const showActionsButton =
+		await usersAndOrganizationsPage.usersTableRowActions(
+			userAccount.alternateName
+		);
+
+	await expect(showActionsButton).toHaveAttribute('aria-expanded', 'false');
+
+	await showActionsButton.click();
 
 	await usersAndOrganizationsPage.deletePersonalDataMenuItem.click();
 
@@ -344,17 +346,18 @@ test('can export object entries via personal data management', async ({
 
 	await usersAndOrganizationsPage.goToUsers(false);
 
-	await expect(async () => {
-		await (
-			await usersAndOrganizationsPage.usersTableRowActions(
-				userAccount.alternateName
-			)
-		).click();
+	await expect(
+		usersAndOrganizationsPage.usersTableCell(userAccount.alternateName)
+	).toBeVisible();
 
-		await expect(
-			usersAndOrganizationsPage.exportPersonalDataItem
-		).toBeVisible({timeout: 500});
-	}).toPass({timeout: 5000});
+	const showActionsButton =
+		await usersAndOrganizationsPage.usersTableRowActions(
+			userAccount.alternateName
+		);
+
+	await expect(showActionsButton).toHaveAttribute('aria-expanded', 'false');
+
+	await showActionsButton.click();
 
 	await usersAndOrganizationsPage.exportPersonalDataItem.click();
 
