@@ -1377,15 +1377,23 @@ test.describe('Manage objectFields through Objects Admin UI', () => {
 			});
 		}
 
+		const objectFieldsPageSize40 = page.waitForResponse(
+			(response) =>
+				response
+					.url()
+					.includes(
+						`/object-definitions/${objectDefinition1.id}/object-fields`
+					) && response.url().includes('pageSize=40')
+		);
+
 		await page.getByLabel('Items Per Page').click();
 		await page.getByRole('option', {name: '40 Items'}).click();
 
-		while (
-			(await page.locator('tbody > tr').all()).length !==
+		await objectFieldsPageSize40;
+
+		await expect(page.locator('tbody > tr')).toHaveCount(
 			objectDefinition1.objectFields.length + objectFieldsMock.length
-		) {
-			await page.waitForTimeout(1000);
-		}
+		);
 
 		const objectFieldTableRows = await page.locator('tbody > tr').all();
 
