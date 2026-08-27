@@ -6,6 +6,7 @@
 package com.liferay.portal.service.impl;
 
 import com.liferay.petra.function.transform.TransformUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.cache.CacheRegistryItem;
 import com.liferay.portal.kernel.change.tracking.CTAware;
 import com.liferay.portal.kernel.exception.NoSuchClassNameException;
@@ -51,6 +52,8 @@ public class ClassNameLocalServiceImpl
 
 			className = classNamePersistence.update(className);
 
+			_cnpool("ROWINS", className);
+
 			ClassName newClassName = className;
 
 			// The pool has no transaction awareness, so a created row must
@@ -90,6 +93,8 @@ public class ClassNameLocalServiceImpl
 
 	@Override
 	public ClassName deleteClassName(ClassName className) {
+		_cnpool("ROWDEL", className);
+
 		ClassName removedClassName = classNamePersistence.remove(className);
 
 		ClassNamePool.remove(className);
@@ -244,6 +249,35 @@ public class ClassNameLocalServiceImpl
 		ClassNamePool.invalidate();
 	}
 
+	private static void _cnpool(String op, ClassName className) {
+		if (className == null) {
+			return;
+		}
+
+		StringBundler sb = new StringBundler();
+
+		sb.append("CNPOOL ");
+		sb.append(op);
+		sb.append(" value=");
+		sb.append(className.getValue());
+		sb.append(" id=");
+		sb.append(className.getClassNameId());
+
+		Thread thread = Thread.currentThread();
+
+		sb.append(" thread=");
+		sb.append(thread.getName());
+
+		StackTraceElement[] stackTraceElements = thread.getStackTrace();
+
+		for (int i = 2; (i < stackTraceElements.length) && (i < 12); i++) {
+			sb.append(" <- ");
+			sb.append(stackTraceElements[i]);
+		}
+
+		_log.info(sb.toString());
+	}
+
 	private static long _getCompanyId() {
 		if (PropsValues.DATABASE_PARTITION_ENABLED) {
 			return CompanyThreadLocal.getNonsystemCompanyId();
@@ -263,6 +297,8 @@ public class ClassNameLocalServiceImpl
 			if (className == null) {
 				return;
 			}
+
+			_cnpool("ADD", className);
 
 			Map<String, Long> classNameIds = _getMap(_classNameIdsMap);
 
@@ -304,6 +340,8 @@ public class ClassNameLocalServiceImpl
 		}
 
 		public static void remove(ClassName className) {
+			_cnpool("REMOVE", className);
+
 			Long companyId = _getCompanyId();
 
 			Map<String, Long> classNameIds = _classNameIdsMap.get(companyId);
