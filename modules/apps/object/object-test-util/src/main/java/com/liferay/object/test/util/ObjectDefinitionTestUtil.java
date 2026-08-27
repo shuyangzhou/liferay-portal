@@ -13,9 +13,11 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.service.ObjectDefinitionLocalServiceUtil;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.WorkflowDefinitionLink;
 import com.liferay.portal.kernel.portlet.constants.FriendlyURLResolverConstants;
 import com.liferay.portal.kernel.security.RandomUtil;
+import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -183,7 +185,17 @@ public class ObjectDefinitionTestUtil {
 					fetchObjectDefinitionByClassName(
 						TestPropsValues.getCompanyId(), className);
 
-			if (objectDefinition == null) {
+			if (objectDefinition != null) {
+				continue;
+			}
+
+			// Free also means the class name layer has no binding for the
+			// name, pooled or persisted
+
+			ClassName classNameModel = ClassNameLocalServiceUtil.fetchClassName(
+				className);
+
+			if (classNameModel.getClassNameId() == 0) {
 				return className;
 			}
 		}
