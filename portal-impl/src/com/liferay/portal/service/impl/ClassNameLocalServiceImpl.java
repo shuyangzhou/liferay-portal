@@ -277,7 +277,7 @@ public class ClassNameLocalServiceImpl
 
 		StackTraceElement[] stackTraceElements = thread.getStackTrace();
 
-		for (int i = 2; (i < stackTraceElements.length) && (i < 12); i++) {
+		for (int i = 2; (i < stackTraceElements.length) && (i < 45); i++) {
 			sb.append(" <- ");
 			sb.append(stackTraceElements[i]);
 		}
