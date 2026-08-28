@@ -122,6 +122,7 @@
 		<Logger level="ERROR" name="com.liferay.portal.security.permission.AdvancedPermissionChecker" />
 		<Logger level="WARN" name="com.liferay.portal.security.permission.ResourceActionsImpl" />
 		<Logger level="WARN" name="com.liferay.portal.security.pwd.RegExpToolkit" />
+		<Logger level="INFO" name="com.liferay.portal.service.impl.ClassNameLocalServiceImpl" />
 		<Logger level="ERROR" name="com.liferay.portal.service.impl.LayoutLocalServiceImpl" />
 		<Logger level="INFO" name="com.liferay.portal.service.impl.PortalLocalServiceImpl" />
 		<Logger level="INFO" name="com.liferay.portal.service.impl.PortalServiceImpl" />

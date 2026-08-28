@@ -6,6 +6,7 @@
 package com.liferay.portal.service.impl;
 
 import com.liferay.petra.function.transform.TransformUtil;
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.cache.CacheRegistryItem;
 import com.liferay.portal.kernel.change.tracking.CTAware;
@@ -254,12 +255,18 @@ public class ClassNameLocalServiceImpl
 			return;
 		}
 
+		String value = className.getValue();
+
+		if ((value == null) || (value.indexOf(CharPool.POUND) == -1)) {
+			return;
+		}
+
 		StringBundler sb = new StringBundler();
 
 		sb.append("CNPOOL ");
 		sb.append(op);
 		sb.append(" value=");
-		sb.append(className.getValue());
+		sb.append(value);
 		sb.append(" id=");
 		sb.append(className.getClassNameId());
 
