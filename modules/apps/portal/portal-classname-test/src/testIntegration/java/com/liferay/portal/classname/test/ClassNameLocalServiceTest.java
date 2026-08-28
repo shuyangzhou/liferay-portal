@@ -13,6 +13,9 @@ import com.liferay.portal.kernel.security.auth.CompanyInheritableThreadLocalCall
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.TransactionConfig;
+import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -43,6 +46,86 @@ public class ClassNameLocalServiceTest {
 	@Rule
 	public static final LiferayIntegrationTestRule liferayIntegrationTestRule =
 		new LiferayIntegrationTestRule();
+
+	@Test
+	public void testConcurrentDeleteClassName() throws Exception {
+
+		// Hold a delete open inside its transaction, resolve the same value on
+		// another thread while the row is still committed for that thread, then
+		// let the delete commit. The resolution republishes the row it read
+		// into the pool, so once the delete commits the pool must not still
+		// answer with the deleted class name ID.
+
+		String value =
+			ClassNameLocalServiceTest.class.getName() + "#ConcurrentDelete";
+
+		ClassName className = _classNameLocalService.getClassName(value);
+
+		long deletedClassNameId = className.getClassNameId();
+
+		CountDownLatch deletedCountDownLatch = new CountDownLatch(1);
+		CountDownLatch resumeCountDownLatch = new CountDownLatch(1);
+
+		FutureTask<Void> futureTask = new FutureTask<>(
+			new CompanyInheritableThreadLocalCallable<>(
+				() -> {
+					try {
+						return TransactionInvokerUtil.invoke(
+							_transactionConfig,
+							() -> {
+								_classNameLocalService.deleteClassName(
+									className);
+
+								deletedCountDownLatch.countDown();
+
+								resumeCountDownLatch.await();
+
+								return null;
+							});
+					}
+					catch (Throwable throwable) {
+						return ReflectionUtil.throwException(throwable);
+					}
+				}));
+
+		Thread thread = new Thread(
+			futureTask, "Class Name Local Service Delete Test");
+
+		thread.start();
+
+		try {
+			deletedCountDownLatch.await();
+
+			_classNameLocalService.getClassNameId(value);
+
+			resumeCountDownLatch.countDown();
+
+			futureTask.get();
+
+			long classNameId = _classNameLocalService.getClassNameId(value);
+
+			Assert.assertNotEquals(
+				"The class name pool answers with the deleted class name ID",
+				deletedClassNameId, classNameId);
+
+			ClassName persistedClassName = _classNameLocalService.getClassName(
+				classNameId);
+
+			Assert.assertEquals(value, persistedClassName.getValue());
+		}
+		finally {
+			resumeCountDownLatch.countDown();
+
+			ClassName leftoverClassName = _classNameLocalService.fetchClassName(
+				value);
+
+			if (leftoverClassName.getClassNameId() > 0) {
+				_classNameLocalService.deleteClassName(leftoverClassName);
+			}
+
+			_classNameLocalService.invalidate();
+		}
+	}
 
 	@Test
 	public void testConcurrentGetClassName() throws Exception {
@@ -166,6 +249,10 @@ public class ClassNameLocalServiceTest {
 			}
 		}
 	}
+
+	private static final TransactionConfig _transactionConfig =
+		TransactionConfig.Factory.create(
+			Propagation.REQUIRED, new Class<?>[] {Exception.class});
 
 	@Inject
 	private ClassNameLocalService _classNameLocalService;
