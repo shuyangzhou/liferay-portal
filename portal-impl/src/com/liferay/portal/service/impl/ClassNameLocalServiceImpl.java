@@ -94,6 +94,19 @@ public class ClassNameLocalServiceImpl
 
 		ClassNamePool.remove(className);
 
+		// The pool has no transaction awareness, so a removed row must also
+		// evict after its transaction commits. Every read path publishes what
+		// it reads, and until the commit the row still reads as present on
+		// other threads, so a resolution landing in that window repools the
+		// removed row and the pool then serves an ID that has no backing row.
+
+		TransactionCallbackUtil.registerCommitCallback(
+			() -> {
+				ClassNamePool.remove(className);
+
+				return null;
+			});
+
 		return removedClassName;
 	}
 
