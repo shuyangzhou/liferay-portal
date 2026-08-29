@@ -99,12 +99,27 @@ export class EditObjectDetailsPage {
 		await this.viewObjectDefinitionsPage.clickEditObjectDefinitionLink(
 			objectDefinitionLabel
 		);
+
+		await expect(this.detailsTabItem).toHaveAttribute(
+			'aria-current',
+			'page'
+		);
 	}
 
 	async goToDetailsTab() {
+		const ariaCurrent =
+			await this.detailsTabItem.getAttribute('aria-current');
+
+		if (ariaCurrent === 'page') {
+			return;
+		}
+
 		await this.detailsTabItem.click();
 
-		await this.page.waitForLoadState('networkidle');
+		await expect(this.detailsTabItem).toHaveAttribute(
+			'aria-current',
+			'page'
+		);
 	}
 
 	async waitForDetailsFormLoaded() {
