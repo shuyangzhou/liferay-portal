@@ -217,6 +217,13 @@ public class DBUpgrader {
 				StringBundler.concat(
 					"\n", result, " Liferay upgrade process in ",
 					getUpgradeTime() / Time.SECOND, " seconds"));
+
+			try {
+				InitUtil.shutdown();
+			}
+			catch (Exception exception) {
+				_log.error(exception);
+			}
 		}
 
 		System.out.println("Exiting DBUpgrader#main(String[]).");
