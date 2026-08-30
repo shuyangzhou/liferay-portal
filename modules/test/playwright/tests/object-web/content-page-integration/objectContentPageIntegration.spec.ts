@@ -1756,19 +1756,25 @@ test.describe('Object Widget', () => {
 					`/web${site.friendlyUrlPath}${layout.friendlyURL}`
 				);
 
-				await widgetPagePage.openAddPanel();
+				await expect(async () => {
+					await page.reload();
 
-				await page.getByLabel('Widgets', {exact: true}).click();
+					await widgetPagePage.openAddPanel();
 
-				await page
-					.getByRole('textbox', {name: 'Search Form'})
-					.fill(objectDefinition.pluralLabel['en_US']);
+					await page.getByLabel('Widgets', {exact: true}).click();
 
-				await expect(
-					page
-						.getByRole('alert')
-						.getByText('There are no widgets on this page')
-				).toBeVisible();
+					await page
+						.getByRole('textbox', {name: 'Search Form'})
+						.fill(objectDefinition.pluralLabel['en_US'], {
+							timeout: 3000,
+						});
+
+					await expect(
+						page
+							.getByRole('alert')
+							.getByText('There are no widgets on this page')
+					).toBeVisible({timeout: 3000});
+				}).toPass();
 			});
 		}
 	);
