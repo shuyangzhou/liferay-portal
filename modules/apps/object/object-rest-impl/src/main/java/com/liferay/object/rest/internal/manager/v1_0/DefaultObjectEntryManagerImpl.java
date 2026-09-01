@@ -2323,14 +2323,6 @@ public class DefaultObjectEntryManagerImpl
 		return null;
 	}
 
-	private String _getDateString(Date date) {
-		if (date == null) {
-			return StringPool.BLANK;
-		}
-
-		return DateUtil.getDate(date, "yyyy-MM-dd HH:mm", LocaleUtil.US);
-	}
-
 	private int _getEndPosition(Pagination pagination) {
 		if (pagination != null) {
 			return pagination.getEndPosition();
@@ -3752,11 +3744,11 @@ public class DefaultObjectEntryManagerImpl
 		Map<String, Object> properties = HashMapBuilder.<String, Object>putAll(
 			objectEntry.getProperties()
 		).put(
-			"displayDate", _getDateString(objectEntry.getDisplayDate())
+			"displayDate", objectEntry.getDisplayDate()
 		).put(
-			"expirationDate", _getDateString(objectEntry.getExpirationDate())
+			"expirationDate", objectEntry.getExpirationDate()
 		).put(
-			"reviewDate", _getDateString(objectEntry.getReviewDate())
+			"reviewDate", objectEntry.getReviewDate()
 		).build();
 
 		List<Long> relationshipObjectFieldIds = TransformUtil.transform(

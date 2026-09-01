@@ -9753,10 +9753,15 @@ public class ObjectEntryResourceTest {
 		ObjectDefinition objectDefinition = _publishLocalizedObjectDefinition(
 			_OBJECT_FIELD_NAME_1);
 
-		Date displayDate = new Date();
+		long minuteStartTime =
+			(System.currentTimeMillis() / Time.MINUTE) * Time.MINUTE;
+
+		Date displayDate = new Date(
+			minuteStartTime - Time.MINUTE + (37 * Time.SECOND));
 		Date expirationDate = new Date(
-			System.currentTimeMillis() + Time.MINUTE);
-		Date reviewDate = new Date();
+			minuteStartTime + Time.MINUTE + (37 * Time.SECOND));
+		Date reviewDate = new Date(
+			minuteStartTime - Time.MINUTE + (37 * Time.SECOND));
 
 		ObjectEntry objectEntry = ObjectEntryTestUtil.addObjectEntry(
 			objectDefinition,
@@ -22140,7 +22145,7 @@ public class ObjectEntryResourceTest {
 	private String _toDateString(Date date) {
 		Instant instant = date.toInstant();
 
-		return String.valueOf(instant.truncatedTo(ChronoUnit.MINUTES));
+		return String.valueOf(instant.truncatedTo(ChronoUnit.SECONDS));
 	}
 
 	private JSONObject _toEmbeddedTaxonomyCategoryJSONObject(
