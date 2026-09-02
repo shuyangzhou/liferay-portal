@@ -5,7 +5,6 @@
 
 import '@testing-library/jest-dom';
 import {fireEvent, render, screen, waitFor} from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import SelectObjectDefinition from '../../components/ObjectRelationship/SelectObjectDefinition';
@@ -65,8 +64,8 @@ function getRequestedURL(index: number) {
 	return (global.fetch as jest.Mock).mock.calls[index][0];
 }
 
-async function openMenu() {
-	await userEvent.click(
+function openMenu() {
+	fireEvent.focus(
 		screen.getByPlaceholderText('search-for-an-object-definition')
 	);
 }
@@ -93,6 +92,7 @@ describe('SelectObjectDefinition', () => {
 	});
 
 	beforeEach(() => {
+		jest.useFakeTimers();
 		jest.clearAllMocks();
 
 		(Liferay.Language.get as jest.Mock).mockImplementation((key: string) =>
@@ -103,6 +103,8 @@ describe('SelectObjectDefinition', () => {
 	});
 
 	afterEach(() => {
+		jest.useRealTimers();
+
 		(Liferay.Language.get as jest.Mock).mockImplementation(
 			originalLanguageGet
 		);
@@ -121,7 +123,7 @@ describe('SelectObjectDefinition', () => {
 			totalCount: 2,
 		});
 
-		await openMenu();
+		openMenu();
 
 		await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(2));
 
@@ -142,7 +144,7 @@ describe('SelectObjectDefinition', () => {
 
 		await waitFor(() => expect(global.fetch).toHaveBeenCalled());
 
-		await openMenu();
+		openMenu();
 
 		expect(
 			await screen.findByText('Showing 1 of 1 Items')
@@ -158,7 +160,7 @@ describe('SelectObjectDefinition', () => {
 
 		await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(1));
 
-		await openMenu();
+		openMenu();
 
 		expect(global.fetch).toHaveBeenCalledTimes(1);
 	});
@@ -170,7 +172,7 @@ describe('SelectObjectDefinition', () => {
 
 		await waitFor(() => expect(global.fetch).toHaveBeenCalled());
 
-		await openMenu();
+		openMenu();
 
 		expect(
 			await screen.findByText('Showing 1 of 1 Items')
@@ -184,7 +186,7 @@ describe('SelectObjectDefinition', () => {
 
 		await waitFor(() => expect(global.fetch).toHaveBeenCalled());
 
-		await openMenu();
+		openMenu();
 
 		expect(
 			await screen.findByText(/Showing \d+ of 200 Items/)
@@ -236,7 +238,7 @@ describe('SelectObjectDefinition', () => {
 			totalCount: 2,
 		});
 
-		await openMenu();
+		openMenu();
 
 		await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(2));
 
@@ -265,9 +267,9 @@ describe('SelectObjectDefinition', () => {
 			totalCount: 1,
 		});
 
-		await userEvent.type(
+		fireEvent.change(
 			screen.getByPlaceholderText('search-for-an-object-definition'),
-			'Alpha'
+			{target: {value: 'Alpha'}}
 		);
 
 		expect(
