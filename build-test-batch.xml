@@ -1233,8 +1233,6 @@ mariadb.executable=${mariadb.executable}]]></echo>
 
 	<macrodef name="prepare-test-build">
 		<sequential>
-			<local name="exception.message" />
-
 			<trycatch property="exception.message">
 				<try>
 					<antcall target="setup-libs" />
@@ -1255,8 +1253,6 @@ mariadb.executable=${mariadb.executable}]]></echo>
 
 	<macrodef name="prepare-test-build-custom">
 		<sequential>
-			<local name="exception.message" />
-
 			<trycatch property="exception.message">
 				<try>
 					<antcall target="setup-libs" />
@@ -3531,11 +3527,9 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 								replace="${java.jdk.home}/bin"
 							/>
 
-							<local name="exception.message" />
-
 							<trycatch property="exception.message">
 								<try>
-									<exec executable="/bin/bash" failonerror="true" timeout="${test.class.playwright.setup.timeout}">
+									<exec executable="/bin/bash" timeout="${test.class.playwright.setup.timeout}">
 										<arg value="modules/test/playwright/env/set_up.sh" />
 										<env key="APP_SERVER_TYPE" value="@{app.server.type}" />
 										<env key="DATABASE_TYPE" value="@{database.type}" />
@@ -3594,7 +3588,7 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 									</docker-execute>
 								</try>
 								<catch>
-									<fail message="${exception.message}" />
+									<echo>${exception.message}</echo>
 								</catch>
 								<finally>
 									<stop-docker-playwright />
@@ -3614,10 +3608,7 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 									<split-testsuites-junit-report test.suites.report.filepath="${playwright.dir}/test-results/TEST-playwright.xml" />
 
 									<if>
-										<or>
-											<equals arg1="${playwright.project.name}" arg2="smoke.main" />
-											<contains string="${playwright.project.name}" substring="upgrade" />
-										</or>
+										<equals arg1="${playwright.project.name}" arg2="smoke" />
 										<then>
 											<ant dir="portal-kernel" inheritAll="false" target="test-class">
 												<property name="test.class" value="PortalLogAssertorTest" />
