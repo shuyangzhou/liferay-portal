@@ -76,6 +76,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.mass.delete.MassDeleteCacheThreadLocal;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
@@ -321,9 +323,30 @@ public class ObjectDefinitionResourceImpl
 					contextAcceptLanguage.getPreferredLocale());
 			},
 			sorts,
-			document -> _toObjectDefinition(
-				_objectDefinitionService.getObjectDefinition(
-					GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)))));
+			document -> {
+				long objectDefinitionId = GetterUtil.getLong(
+					document.get(Field.ENTRY_CLASS_PK));
+
+				com.liferay.object.model.ObjectDefinition
+					serviceBuilderObjectDefinition =
+						_objectDefinitionLocalService.fetchObjectDefinition(
+							objectDefinitionId);
+
+				if (serviceBuilderObjectDefinition == null) {
+					Indexer<com.liferay.object.model.ObjectDefinition> indexer =
+						IndexerRegistryUtil.nullSafeGetIndexer(
+							com.liferay.object.model.ObjectDefinition.class);
+
+					indexer.delete(
+						contextCompany.getCompanyId(), document.get(Field.UID));
+
+					return null;
+				}
+
+				return _toObjectDefinition(
+					_objectDefinitionService.getObjectDefinition(
+						objectDefinitionId));
+			});
 	}
 
 	@Override
