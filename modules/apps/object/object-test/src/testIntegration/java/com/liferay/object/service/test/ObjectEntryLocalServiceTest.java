@@ -10368,7 +10368,7 @@ public class ObjectEntryLocalServiceTest {
 				"displayDate",
 				new java.sql.Date(
 					System.currentTimeMillis() +
-						TimeUnit.MILLISECOND.toMillis(1000))
+						TimeUnit.MILLISECOND.toMillis(1))
 			).putAll(
 				requiredValues
 			).build(),
