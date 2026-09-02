@@ -315,8 +315,11 @@ public class ObjectEntrySitemapURLProviderTest {
 		for (Element rootElement : rootElements) {
 			String objectEntryLocalizedURL = rootElement.elementText("loc");
 
-			Assert.assertNotNull(objectEntryLocalizedURL);
+			Assert.assertNotNull(rootElement.asXML(), objectEntryLocalizedURL);
 			Assert.assertTrue(
+				StringBundler.concat(
+					objectEntryLocalizedURL, " does not end with ",
+					objectEntryFriendlyURL),
 				objectEntryLocalizedURL.endsWith(objectEntryFriendlyURL));
 		}
 	}
