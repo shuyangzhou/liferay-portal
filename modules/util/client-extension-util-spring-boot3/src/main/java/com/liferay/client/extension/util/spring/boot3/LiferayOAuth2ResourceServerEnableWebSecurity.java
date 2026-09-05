@@ -99,7 +99,12 @@ public class LiferayOAuth2ResourceServerEnableWebSecurity {
 				externalReferenceCode + ".oauth2.user.agent.client.id");
 
 			if (_log.isInfoEnabled()) {
-				_log.info("Client ID " + clientId);
+				String clientIdLogMessage = _getClientIdLogMessage(
+					clientId, externalReferenceCode);
+
+				if (clientIdLogMessage != null) {
+					_log.info(clientIdLogMessage);
+				}
 			}
 
 			clientIds.put(externalReferenceCode, clientId);
@@ -133,6 +138,32 @@ public class LiferayOAuth2ResourceServerEnableWebSecurity {
 		).oauth2ResourceServer(
 			OAuth2ResourceServerConfigurer::jwt
 		).build();
+	}
+
+	private String _getClientIdLogMessage(
+		String clientId, String externalReferenceCode) {
+
+		if (clientId != null) {
+			return new StringBuilder(
+			).append(
+				"Using user agent client ID "
+			).append(
+				clientId
+			).append(
+				" for external reference code "
+			).append(
+				externalReferenceCode
+			).toString();
+		}
+
+		if (clientId != _environment.getProperty(
+				externalReferenceCode + ".oauth2.headless.server.client.id")) {
+
+			return null;
+		}
+
+		return "Unable to get user agent client ID for external reference " +
+			"code " + externalReferenceCode;
 	}
 
 	private static final Log _log = LogFactory.getLog(

@@ -44,7 +44,6 @@ import com.liferay.portal.kernel.exception.NoSuchVirtualHostException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.RequiredCompanyException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.instance.lifecycle.PortalInstanceLifecycleManager;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -374,8 +373,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			long companyId, String name, String virtualHostname, String webId)
 		throws PortalException {
 
-		FeatureFlagManagerUtil.checkEnabled("LPD-11342");
-
 		if (!PropsValues.DATABASE_PARTITION_ENABLED) {
 			throw new UnsupportedOperationException(
 				"Database partitioning must be enabled");
@@ -450,10 +447,15 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 				return _registerDBPartitionCompany(dbPartitionCompany);
 			}
-			catch (Throwable throwable) {
-				_removeDBPartition(companyId, true);
+			catch (Throwable throwable1) {
+				try {
+					_removeDBPartition(companyId, true);
+				}
+				catch (Throwable throwable2) {
+					throwable1.addSuppressed(throwable2);
+				}
 
-				throw new PortalException(throwable);
+				throw new PortalException(throwable1);
 			}
 		}
 	}
@@ -584,8 +586,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			String virtualHostname, String webId)
 		throws PortalException {
 
-		FeatureFlagManagerUtil.checkEnabled("LPD-11342");
-
 		if (!PropsValues.DATABASE_PARTITION_ENABLED) {
 			throw new UnsupportedOperationException(
 				"Database partitioning must be enabled");
@@ -668,10 +668,15 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 				return _registerDBPartitionCompany(dbPartitionCompany);
 			}
-			catch (Throwable throwable) {
-				_removeDBPartition(companyId, false);
+			catch (Throwable throwable1) {
+				try {
+					_removeDBPartition(companyId, false);
+				}
+				catch (Throwable throwable2) {
+					throwable1.addSuppressed(throwable2);
+				}
 
-				throw new PortalException(throwable);
+				throw new PortalException(throwable1);
 			}
 		}
 	}
@@ -742,8 +747,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 	@Override
 	public Company exportCompany(long companyId) throws PortalException {
-		FeatureFlagManagerUtil.checkEnabled("LPD-11342");
-
 		if (companyId == PortalInstancePool.getDefaultCompanyId()) {
 			throw new RequiredCompanyException(
 				"Select another default company before exporting company " +
@@ -760,6 +763,9 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			}
 
 			DBPartitionUtil.exportDBPartition(companyId);
+		}
+		catch (IllegalArgumentException illegalArgumentException) {
+			throw illegalArgumentException;
 		}
 		catch (Throwable throwable) {
 			throw new PortalException(throwable);

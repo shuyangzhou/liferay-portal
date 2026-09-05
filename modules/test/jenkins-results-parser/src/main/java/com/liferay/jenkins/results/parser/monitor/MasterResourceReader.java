@@ -18,6 +18,8 @@ import java.util.Map;
  */
 public class MasterResourceReader {
 
+	public static final int RETRIES_SIZE_MAX = 1;
+
 	public static void clearInstances() {
 		synchronized (_masterResourceReaders) {
 			_masterResourceReaders.clear();
@@ -60,8 +62,9 @@ public class MasterResourceReader {
 			if (_prometheusScrape == null) {
 				_prometheusScrape = new PrometheusScrape(
 					JenkinsResultsParserUtil.toString(
-						_getURL("/prometheus"), false, 1, null, null,
-						_SECONDS_RETRY_PERIOD, timeoutMillis, null, false));
+						_getURL("/prometheus"), false, RETRIES_SIZE_MAX, null,
+						null, _SECONDS_RETRY_PERIOD, timeoutMillis, null,
+						false));
 			}
 
 			return _prometheusScrape;

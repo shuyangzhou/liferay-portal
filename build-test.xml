@@ -7716,7 +7716,7 @@ log.sanitizer.enabled=false</echo>
 					</then>
 				</elseif>
 				<else>
-					<var name="app.server.tomcat.version" value="10.1.57" />
+					<var name="app.server.tomcat.version" value="10.1.59" />
 				</else>
 			</if>
 
@@ -13147,18 +13147,6 @@ upgrade.database.auto.run=true</echo>
 		</if>
 
 		<if>
-			<or>
-				<equals arg1="${database.partition.copy}" arg2="true" />
-				<equals arg1="${database.partition.export.and.import}" arg2="true" />
-			</or>
-
-			<then>
-				<echo append="true" file="portal-impl/src/portal-ext.properties">
-feature.flag.LPD-11342=true</echo>
-			</then>
-		</if>
-
-		<if>
 			<equals arg1="${database.partition.enabled}" arg2="true" />
 			<then>
 				<echo append="true" file="portal-impl/src/portal-ext.properties">
@@ -15126,22 +15114,6 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 			<param name="test.build.dsr.license.url" value="${test.dsr.license.url}" />
 			<param name="test.build.license.xml.zip.url" value="${test.license.xml.url}" />
 		</antcall>
-
-		<if>
-			<equals arg1="${downgrade.from.original.bundle}" arg2="true" />
-			<then>
-				<delete dir="${test.release.bundle.parent.dir}/bundles/data" />
-
-				<move
-					file="${test.release.bundle.parent.dir}/bundles-original/data"
-					tofile="${test.release.bundle.parent.dir}/bundles/data"
-				/>
-
-				<delete dir="${test.release.bundle.parent.dir}/bundles/data/elasticsearch8" />
-
-				<delete dir="${test.release.bundle.parent.dir}/bundles-original" />
-			</then>
-		</if>
 
 		<get-test-app-server-lib-portal-dir />
 

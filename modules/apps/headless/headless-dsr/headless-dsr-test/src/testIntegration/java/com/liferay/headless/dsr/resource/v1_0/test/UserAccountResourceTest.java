@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -49,6 +50,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.Inject;
+import com.liferay.site.dsr.site.initializer.constants.DSRRoleConstants;
 import com.liferay.site.dsr.site.initializer.constants.DSRTicketConstants;
 import com.liferay.site.dsr.site.initializer.test.util.DSRTestUtil;
 
@@ -107,32 +109,10 @@ public class UserAccountResourceTest extends BaseUserAccountResourceTestCase {
 		_objectEntry = _objectEntryLocalService.getObjectEntry(
 			_objectEntry.getObjectEntryId());
 
-		long groupId = _getGroupId(_objectEntry);
-
 		String password = RandomTestUtil.randomString();
 
-		User user = UserTestUtil.addUser(
-			TestPropsValues.getCompanyId(), TestPropsValues.getUserId(),
-			password, RandomTestUtil.randomString() + "@liferay.com",
-			RandomTestUtil.randomString(), LocaleUtil.getDefault(),
-			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
-			new long[] {groupId}, ServiceContextTestUtil.getServiceContext());
-
-		Role role = _roleLocalService.getRole(
-			_objectEntry.getCompanyId(), RoleConstants.SITE_MEMBER);
-
-		_userGroupRoleLocalService.addUserGroupRoles(
-			new long[] {user.getUserId()}, groupId, role.getRoleId());
-
-		_userAccountSiteMemberResource = UserAccountResource.builder(
-		).authentication(
-			user.getEmailAddress(), password
-		).endpoint(
-			testCompany.getVirtualHostname(),
-			PortalUtil.getPortalServerPort(false), "http"
-		).locale(
-			LocaleUtil.getDefault()
-		).build();
+		_siteMemberUserAccountResource = _getUserAccountResource(
+			password, _addUser(password, RoleConstants.SITE_MEMBER));
 	}
 
 	@Override
@@ -140,6 +120,7 @@ public class UserAccountResourceTest extends BaseUserAccountResourceTestCase {
 	public void testDeleteRoomUserAccount() throws Exception {
 		super.testDeleteRoomUserAccount();
 
+		_testDeleteRoomUserAccountWithContentContributor();
 		_testDeleteRoomUserAccountWithMembershipExpirationDate();
 	}
 
@@ -154,53 +135,9 @@ public class UserAccountResourceTest extends BaseUserAccountResourceTestCase {
 	@Override
 	@Test
 	public void testPatchRoomUserAccount() throws Exception {
-		UserAccount postUserAccount = testPostRoomUserAccount_addUserAccount(
-			randomUserAccount());
-
-		UserAccount patchUserAccount = userAccountResource.patchRoomUserAccount(
-			_objectEntry.getObjectEntryId(), postUserAccount.getId(),
-			new UserAccount() {
-				{
-					membershipExpirationDate = new Date(
-						((System.currentTimeMillis() + Time.DAY) / 1000) *
-							1000);
-					roleKey = RoleConstants.SITE_ADMINISTRATOR;
-				}
-			});
-
-		Assert.assertEquals(postUserAccount.getId(), patchUserAccount.getId());
-		Assert.assertNotNull(patchUserAccount.getMembershipExpirationDate());
-		Assert.assertEquals(
-			RoleConstants.SITE_ADMINISTRATOR, patchUserAccount.getRoleKey());
-
-		patchUserAccount = userAccountResource.patchRoomUserAccount(
-			_objectEntry.getObjectEntryId(), postUserAccount.getId(),
-			new UserAccount() {
-				{
-					roleKey = RoleConstants.SITE_ADMINISTRATOR;
-				}
-			});
-
-		Assert.assertNull(patchUserAccount.getMembershipExpirationDate());
-
-		try {
-			userAccountResource.patchRoomUserAccount(
-				_objectEntry.getObjectEntryId(), postUserAccount.getId(),
-				new UserAccount() {
-					{
-						membershipExpirationDate = new Date(
-							System.currentTimeMillis() - Time.DAY);
-					}
-				});
-
-			Assert.fail();
-		}
-		catch (Problem.ProblemException problemException) {
-			Problem problem = problemException.getProblem();
-
-			Assert.assertEquals(
-				"Expiration date must be a future date.", problem.getTitle());
-		}
+		_testPatchRoomUserAccount();
+		_testPatchRoomUserAccountWithContentContributor();
+		_testPatchRoomUserAccountWithoutRoleKey();
 	}
 
 	@Override
@@ -240,6 +177,25 @@ public class UserAccountResourceTest extends BaseUserAccountResourceTestCase {
 		return _objectEntry.getObjectEntryId();
 	}
 
+	private User _addUser(String password, String roleName) throws Exception {
+		long groupId = _getGroupId(_objectEntry);
+
+		User user = UserTestUtil.addUser(
+			TestPropsValues.getCompanyId(), TestPropsValues.getUserId(),
+			password, RandomTestUtil.randomString() + "@liferay.com",
+			RandomTestUtil.randomString(), LocaleUtil.getDefault(),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			new long[] {groupId}, ServiceContextTestUtil.getServiceContext());
+
+		Role role = _roleLocalService.getRole(
+			_objectEntry.getCompanyId(), roleName);
+
+		_userGroupRoleLocalService.addUserGroupRoles(
+			new long[] {user.getUserId()}, groupId, role.getRoleId());
+
+		return user;
+	}
+
 	private Ticket _fetchExpireMembershipTicket(long userId) throws Exception {
 		for (Ticket ticket :
 				_ticketLocalService.getTickets(
@@ -265,11 +221,71 @@ public class UserAccountResourceTest extends BaseUserAccountResourceTestCase {
 		return group.getGroupId();
 	}
 
+	private UserAccountResource _getUserAccountResource(
+			String password, User user)
+		throws Exception {
+
+		return UserAccountResource.builder(
+		).authentication(
+			user.getEmailAddress(), password
+		).endpoint(
+			testCompany.getVirtualHostname(),
+			PortalUtil.getPortalServerPort(false), "http"
+		).locale(
+			LocaleUtil.getDefault()
+		).build();
+	}
+
+	private void _testDeleteRoomUserAccountWithContentContributor()
+		throws Exception {
+
+		String password = RandomTestUtil.randomString();
+
+		User user = _addUser(
+			password, DSRRoleConstants.NAME_DSR_CONTENT_CONTRIBUTOR);
+
+		UserAccountResource userAccountResource = _getUserAccountResource(
+			password, user);
+
+		try {
+			userAccountResource.deleteRoomUserAccount(
+				_objectEntry.getObjectEntryId(), user.getUserId());
+
+			Assert.fail();
+		}
+		catch (Problem.ProblemException problemException) {
+			Assert.assertNotNull(problemException);
+		}
+
+		user = _addUser(
+			RandomTestUtil.randomString(),
+			DSRRoleConstants.NAME_DSR_ROOM_COLLABORATOR);
+
+		try {
+			userAccountResource.deleteRoomUserAccount(
+				_objectEntry.getObjectEntryId(), user.getUserId());
+
+			Assert.fail();
+		}
+		catch (Problem.ProblemException problemException) {
+			Assert.assertNotNull(problemException);
+		}
+
+		user = _addUser(
+			RandomTestUtil.randomString(), RoleConstants.SITE_MEMBER);
+
+		userAccountResource.deleteRoomUserAccount(
+			_objectEntry.getObjectEntryId(), user.getUserId());
+
+		Assert.assertFalse(
+			_groupLocalService.hasUserGroup(
+				user.getUserId(), _getGroupId(_objectEntry)));
+	}
+
 	private void _testDeleteRoomUserAccountWithMembershipExpirationDate()
 		throws Exception {
 
-		Date expirationDate = new Date(
-			((System.currentTimeMillis() + Time.DAY) / 1000) * 1000);
+		Date expirationDate = DateUtil.getTomorrowDate();
 		User user = UserTestUtil.addUser();
 
 		userAccountResource.postRoomUserAccount(
@@ -290,8 +306,7 @@ public class UserAccountResourceTest extends BaseUserAccountResourceTestCase {
 	private void _testGetRoomUserAccountsPageWithMembershipExpirationDate()
 		throws Exception {
 
-		Date expirationDate = new Date(
-			((System.currentTimeMillis() + Time.DAY) / 1000) * 1000);
+		Date expirationDate = DateUtil.getTomorrowDate();
 		User user = UserTestUtil.addUser();
 
 		userAccountResource.postRoomUserAccount(
@@ -314,6 +329,153 @@ public class UserAccountResourceTest extends BaseUserAccountResourceTestCase {
 					Objects.equals(
 						userAccount.getMembershipExpirationDate(),
 						expirationDate)));
+	}
+
+	private void _testPatchRoomUserAccount() throws Exception {
+		UserAccount postUserAccount = testPostRoomUserAccount_addUserAccount(
+			randomUserAccount());
+
+		UserAccount patchUserAccount = userAccountResource.patchRoomUserAccount(
+			_objectEntry.getObjectEntryId(), postUserAccount.getId(),
+			new UserAccount() {
+				{
+					membershipExpirationDate = DateUtil.getTomorrowDate();
+					roleKey = RoleConstants.SITE_ADMINISTRATOR;
+				}
+			});
+
+		Assert.assertEquals(postUserAccount.getId(), patchUserAccount.getId());
+		Assert.assertNotNull(patchUserAccount.getMembershipExpirationDate());
+		Assert.assertEquals(
+			RoleConstants.SITE_ADMINISTRATOR, patchUserAccount.getRoleKey());
+
+		patchUserAccount = userAccountResource.patchRoomUserAccount(
+			_objectEntry.getObjectEntryId(), postUserAccount.getId(),
+			new UserAccount() {
+				{
+					roleKey = RoleConstants.SITE_ADMINISTRATOR;
+				}
+			});
+
+		Assert.assertNull(patchUserAccount.getMembershipExpirationDate());
+
+		try {
+			userAccountResource.patchRoomUserAccount(
+				_objectEntry.getObjectEntryId(), postUserAccount.getId(),
+				new UserAccount() {
+					{
+						membershipExpirationDate = new Date(
+							System.currentTimeMillis() - Time.DAY);
+					}
+				});
+
+			Assert.fail();
+		}
+		catch (Problem.ProblemException problemException) {
+			Problem problem = problemException.getProblem();
+
+			Assert.assertEquals(
+				"Expiration date must be a future date.", problem.getTitle());
+		}
+	}
+
+	private void _testPatchRoomUserAccountWithContentContributor()
+		throws Exception {
+
+		String password = RandomTestUtil.randomString();
+
+		User user = _addUser(
+			password, DSRRoleConstants.NAME_DSR_CONTENT_CONTRIBUTOR);
+
+		UserAccountResource userAccountResource = _getUserAccountResource(
+			password, user);
+
+		Date expirationDate = DateUtil.getTomorrowDate();
+
+		try {
+			userAccountResource.patchRoomUserAccount(
+				_objectEntry.getObjectEntryId(), user.getUserId(),
+				new UserAccount() {
+					{
+						membershipExpirationDate = expirationDate;
+					}
+				});
+
+			Assert.fail();
+		}
+		catch (Problem.ProblemException problemException) {
+			Assert.assertNotNull(problemException);
+		}
+
+		try {
+			userAccountResource.patchRoomUserAccount(
+				_objectEntry.getObjectEntryId(), user.getUserId(),
+				new UserAccount() {
+					{
+						roleKey = RoleConstants.SITE_MEMBER;
+					}
+				});
+
+			Assert.fail();
+		}
+		catch (Problem.ProblemException problemException) {
+			Assert.assertNotNull(problemException);
+		}
+
+		user = _addUser(
+			RandomTestUtil.randomString(),
+			DSRRoleConstants.NAME_DSR_ROOM_COLLABORATOR);
+
+		try {
+			userAccountResource.patchRoomUserAccount(
+				_objectEntry.getObjectEntryId(), user.getUserId(),
+				new UserAccount() {
+					{
+						membershipExpirationDate = expirationDate;
+					}
+				});
+
+			Assert.fail();
+		}
+		catch (Problem.ProblemException problemException) {
+			Assert.assertNotNull(problemException);
+		}
+
+		user = _addUser(
+			RandomTestUtil.randomString(), RoleConstants.SITE_MEMBER);
+
+		UserAccount userAccount = userAccountResource.patchRoomUserAccount(
+			_objectEntry.getObjectEntryId(), user.getUserId(),
+			new UserAccount() {
+				{
+					membershipExpirationDate = expirationDate;
+				}
+			});
+
+		Assert.assertEquals(
+			expirationDate, userAccount.getMembershipExpirationDate());
+	}
+
+	private void _testPatchRoomUserAccountWithoutRoleKey() throws Exception {
+		User user = _addUser(
+			RandomTestUtil.randomString(),
+			DSRRoleConstants.NAME_DSR_CONTENT_CONTRIBUTOR);
+
+		Date expirationDate = DateUtil.getTomorrowDate();
+
+		UserAccount userAccount = userAccountResource.patchRoomUserAccount(
+			_objectEntry.getObjectEntryId(), user.getUserId(),
+			new UserAccount() {
+				{
+					membershipExpirationDate = expirationDate;
+				}
+			});
+
+		Assert.assertEquals(
+			expirationDate, userAccount.getMembershipExpirationDate());
+		Assert.assertEquals(
+			DSRRoleConstants.NAME_DSR_CONTENT_CONTRIBUTOR,
+			userAccount.getRoleKey());
 	}
 
 	private void _testPostRoomUserAccount() throws Exception {
@@ -435,7 +597,7 @@ public class UserAccountResourceTest extends BaseUserAccountResourceTestCase {
 
 	private void _testPostRoomUserAccountSiteMember() throws Exception {
 		try {
-			_userAccountSiteMemberResource.postRoomUserAccount(
+			_siteMemberUserAccountResource.postRoomUserAccount(
 				testGetRoomUserAccountsPage_getRoomId(), randomUserAccount());
 			Assert.fail();
 		}
@@ -484,8 +646,7 @@ public class UserAccountResourceTest extends BaseUserAccountResourceTestCase {
 	private void _testPostRoomUserAccountWithMembershipExpirationDate()
 		throws Exception {
 
-		Date expirationDate = new Date(
-			((System.currentTimeMillis() + Time.DAY) / 1000) * 1000);
+		Date expirationDate = DateUtil.getTomorrowDate();
 		User user = UserTestUtil.addUser();
 
 		UserAccount postUserAccount = userAccountResource.postRoomUserAccount(
@@ -554,10 +715,10 @@ public class UserAccountResourceTest extends BaseUserAccountResourceTestCase {
 	@Inject
 	private RoleLocalService _roleLocalService;
 
+	private UserAccountResource _siteMemberUserAccountResource;
+
 	@Inject
 	private TicketLocalService _ticketLocalService;
-
-	private UserAccountResource _userAccountSiteMemberResource;
 
 	@Inject
 	private UserGroupRoleLocalService _userGroupRoleLocalService;

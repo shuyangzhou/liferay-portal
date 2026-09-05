@@ -724,6 +724,14 @@ public class ObjectEntryLocalServiceUtil {
 			userId, objectDefinitionId, primaryKey, values);
 	}
 
+	public static void loadValues(
+			com.liferay.object.model.ObjectDefinition objectDefinition,
+			List<ObjectEntry> objectEntries)
+		throws PortalException {
+
+		getService().loadValues(objectDefinition, objectEntries);
+	}
+
 	public static void moveObjectEntriesToTrash(
 			long userId,
 			com.liferay.object.model.ObjectEntryFolder objectEntryFolder,
@@ -903,4 +911,4 @@ public class ObjectEntryLocalServiceUtil {
 			ObjectEntryLocalServiceUtil.class, ObjectEntryLocalService.class);
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:846990680
+// LIFERAY-SERVICE-BUILDER-HASH:27924124

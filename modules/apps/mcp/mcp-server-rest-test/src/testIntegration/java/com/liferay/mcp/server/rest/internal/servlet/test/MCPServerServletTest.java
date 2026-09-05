@@ -15,7 +15,6 @@ import com.liferay.oauth.client.persistence.service.OAuthClientASLocalMetadataLo
 import com.liferay.oauth.client.persistence.service.OAuthClientPRLocalMetadataLocalService;
 import com.liferay.oauth2.provider.model.OAuth2Authorization;
 import com.liferay.oauth2.provider.service.OAuth2AuthorizationLocalService;
-import com.liferay.object.constants.ObjectEntryFolderConstants;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.service.ObjectDefinitionLocalService;
@@ -176,6 +175,7 @@ public class MCPServerServletTest {
 						"Bearer " + _getAccessToken())) {
 
 				_testServiceWithDataMasks(authorization);
+				_testServiceWithInactiveProfile(authorization);
 				_testServiceWithModifiedProfile(authorization);
 				_testServiceWithNoContentResponse(authorization);
 				_testServiceWithProfile(authorization);
@@ -203,24 +203,8 @@ public class MCPServerServletTest {
 	private ObjectEntry _addObjectEntry(String name, String... tools)
 		throws Exception {
 
-		ObjectDefinition objectDefinition =
-			_objectDefinitionLocalService.
-				fetchObjectDefinitionByExternalReferenceCode(
-					"L_MCP_SERVER_PROFILE", TestPropsValues.getCompanyId());
-
-		return _objectEntryLocalService.addObjectEntry(
-			0, TestPropsValues.getUserId(),
-			objectDefinition.getObjectDefinitionId(),
-			ObjectEntryFolderConstants.PARENT_OBJECT_ENTRY_FOLDER_ID_DEFAULT,
-			null,
-			HashMapBuilder.<String, Serializable>put(
-				"description", RandomTestUtil.randomString()
-			).put(
-				"name", name
-			).put(
-				"tools", StringUtil.merge(tools, "\n")
-			).build(),
-			ServiceContextTestUtil.getServiceContext());
+		return MCPServerTestUtil.addMCPServerProfileObjectEntry(
+			RandomTestUtil.randomString(), name, tools);
 	}
 
 	private void _assertInvalidTokenChallenge(
@@ -618,6 +602,21 @@ public class MCPServerServletTest {
 		return options.getResponse();
 	}
 
+	private int _getResponseCode(String authorization, String profileName)
+		throws Exception {
+
+		Http.Options options = new Http.Options();
+
+		options.addHeader("Authorization", authorization);
+		options.setLocation(_getMCPURL() + StringPool.SLASH + profileName);
+
+		_http.URLtoString(options);
+
+		Http.Response response = options.getResponse();
+
+		return response.getResponseCode();
+	}
+
 	private void _testServiceWithDataMasks(String authorization)
 		throws Exception {
 
@@ -676,14 +675,37 @@ public class MCPServerServletTest {
 		mcpSyncClient.closeGracefully();
 	}
 
+	private void _testServiceWithInactiveProfile(String authorization)
+		throws Exception {
+
+		String name = RandomTestUtil.randomString();
+
+		ObjectEntry objectEntry = _addObjectEntry(
+			name, "mcp-server-profiles getMCPServerProfilesPage");
+
+		Assert.assertEquals(200, _getResponseCode(authorization, name));
+
+		_updateMCPServerProfileStatus(objectEntry, "inactive");
+
+		Assert.assertEquals(404, _getResponseCode(authorization, name));
+
+		_updateMCPServerProfileStatus(objectEntry, "active");
+
+		Assert.assertEquals(200, _getResponseCode(authorization, name));
+	}
+
 	private void _testServiceWithModifiedProfile(String authorization)
 		throws Exception {
 
 		String name = RandomTestUtil.randomString();
 
 		ObjectEntry objectEntry = _addObjectEntry(
-			name, "mcp-server-profiles getMCPServerProfilesPage",
-			"mcp-server-profiles postMCPServerProfile");
+			name, "mcp-server-profiles getMCPServerProfilesPage");
+
+		ObjectEntry mcpServerProfileToolObjectEntry =
+			MCPServerTestUtil.addMCPServerProfileToolObjectEntry(
+				objectEntry.getExternalReferenceCode(), "postMCPServerProfile",
+				"mcp-server-profiles");
 
 		McpSyncClient mcpSyncClient = _getMcpSyncClient(authorization, name);
 
@@ -704,17 +726,8 @@ public class MCPServerServletTest {
 
 		mcpSyncClient.closeGracefully();
 
-		_objectEntryLocalService.updateObjectEntry(
-			TestPropsValues.getUserId(), objectEntry.getObjectEntryId(),
-			ObjectEntryFolderConstants.PARENT_OBJECT_ENTRY_FOLDER_ID_DEFAULT,
-			HashMapBuilder.<String, Serializable>put(
-				"description", RandomTestUtil.randomString()
-			).put(
-				"name", name
-			).put(
-				"tools", "mcp-server-profiles getMCPServerProfilesPage"
-			).build(),
-			ServiceContextTestUtil.getServiceContext());
+		_objectEntryLocalService.deleteObjectEntry(
+			mcpServerProfileToolObjectEntry.getObjectEntryId());
 
 		mcpSyncClient = _getMcpSyncClient(authorization, name);
 
@@ -931,9 +944,6 @@ public class MCPServerServletTest {
 							"description", RandomTestUtil.randomString()
 						).put(
 							"name", entryName
-						).put(
-							"tools",
-							"mcp-server-profiles getMCPServerProfilesPage"
 						).build()
 					).build()
 				).put(
@@ -1054,8 +1064,6 @@ public class MCPServerServletTest {
 						"description", RandomTestUtil.randomString()
 					).put(
 						"name", entryName
-					).put(
-						"tools", "mcp-server-profiles getMCPServerProfilesPage"
 					).build()
 				).build()));
 
@@ -1097,6 +1105,21 @@ public class MCPServerServletTest {
 			));
 
 		mcpSyncClient.closeGracefully();
+	}
+
+	private void _updateMCPServerProfileStatus(
+			ObjectEntry objectEntry, String profileStatus)
+		throws Exception {
+
+		_objectEntryLocalService.updateObjectEntry(
+			TestPropsValues.getUserId(), objectEntry.getObjectEntryId(),
+			objectEntry.getObjectEntryFolderId(),
+			HashMapBuilder.<String, Serializable>putAll(
+				objectEntry.getValues()
+			).put(
+				"profileStatus", profileStatus
+			).build(),
+			ServiceContextTestUtil.getServiceContext());
 	}
 
 	private static final String _TEST_EMAIL_ADDRESS = "example@example.com";

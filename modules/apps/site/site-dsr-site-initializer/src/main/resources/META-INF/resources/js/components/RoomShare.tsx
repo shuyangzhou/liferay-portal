@@ -46,7 +46,12 @@ const ASSIGNABLE_ROLE_KEYS_BY_ROLE_KEY: Record<string, string[]> = {
 	'DSR Room Collaborator': ['DSR Content Contributor', 'Site Member'],
 };
 const EXPIRATION_WARNING_DAYS = 7;
-const OWNER_ROLE_KEY = 'Site Owner';
+const MANAGEABLE_ROLE_KEYS: Record<string, string[]> = {
+	'DSR Content Contributor': ['Site Member'],
+	'DSR Room Collaborator': ['DSR Content Contributor', 'Site Member'],
+};
+const SITE_MEMBER_ROLE_KEY = 'Site Member';
+const SITE_OWNER_ROLE_KEY = 'Site Owner';
 
 function getDateInputValue(membershipExpirationDate?: string): string {
 	if (!membershipExpirationDate) {
@@ -157,7 +162,7 @@ function RoomShare({
 	const [expirationDatePickerExpanded, setExpirationDatePickerExpanded] =
 		useState(false);
 	const [loading, setLoading] = useState(false);
-	const [roleKey, setRoleKey] = useState('Site Member');
+	const [roleKey, setRoleKey] = useState(SITE_MEMBER_ROLE_KEY);
 	const [users, setUsers] = useState<IUserAccount[]>([]);
 	const currentUserId = Number(Liferay.ThemeDisplay.getUserId());
 	const minExpirationDate = getDateInputValue(new Date().toISOString());
@@ -167,7 +172,7 @@ function RoomShare({
 	)?.roleKey;
 
 	const canManageAllRoles =
-		canAssignAllRoles || currentUserRoleKey === OWNER_ROLE_KEY;
+		canAssignAllRoles || currentUserRoleKey === SITE_OWNER_ROLE_KEY;
 
 	const assignableRoleKeys = canManageAllRoles
 		? DSR_SITE_ROLES.map((role) => role.key)
@@ -177,41 +182,47 @@ function RoomShare({
 		assignableRoleKeys.includes(role.key)
 	);
 
-	const loadUsers = useCallback(async () => {
-		setLoading(true);
+	const manageableRoleKeys =
+		MANAGEABLE_ROLE_KEYS[currentUserRoleKey ?? ''] ?? [];
 
-		try {
-			const [usersList, invitedMembersList] = await Promise.all([
-				RoomService.getRoomUserAccounts(roomId),
-				RoomService.getRoomInvitedMembers(roomId),
-			]);
+	const loadUsers = useCallback(
+		async (showErrorMessage = true) => {
+			setLoading(true);
 
-			setUsers([
-				...usersList,
-				...invitedMembersList.map((invitedMember) => ({
-					emailAddress: invitedMember.emailAddress,
-					id: invitedMember.id,
-					isInvitedMember: true,
-					membershipExpirationDate:
-						invitedMember.membershipExpirationDate,
-					name: '',
-					ownerId: invitedMember.ownerId,
-					roleKey: invitedMember.roleKey,
-				})),
-			]);
-		}
-		catch (error) {
-			const errorMessage = (error as Error).message;
+			try {
+				const [usersList, invitedMembersList] = await Promise.all([
+					RoomService.getRoomUserAccounts(roomId),
+					RoomService.getRoomInvitedMembers(roomId),
+				]);
 
-			openToast({
-				message: errorMessage,
-				type: 'danger',
-			});
-		}
-		finally {
-			setLoading(false);
-		}
-	}, [roomId]);
+				setUsers([
+					...usersList,
+					...invitedMembersList.map((invitedMember) => ({
+						emailAddress: invitedMember.emailAddress,
+						id: invitedMember.id,
+						isInvitedMember: true,
+						membershipExpirationDate:
+							invitedMember.membershipExpirationDate,
+						name: '',
+						ownerId: invitedMember.ownerId,
+						roleKey: invitedMember.roleKey,
+					})),
+				]);
+			}
+			catch (error) {
+				if (showErrorMessage) {
+					openToast({
+						message: (error as Error).message,
+						type: 'danger',
+					});
+				}
+			}
+			finally {
+				setLoading(false);
+			}
+		},
+		[roomId]
+	);
 
 	const handleInvite = useCallback(async () => {
 		if (!emailAddresses.length) {
@@ -267,7 +278,7 @@ function RoomShare({
 
 			setEmailAddresses([]);
 			setExpirationDate('');
-			setRoleKey('Site Member');
+			setRoleKey(SITE_MEMBER_ROLE_KEY);
 
 			openToast({
 				message:
@@ -279,7 +290,7 @@ function RoomShare({
 				type: 'success',
 			});
 
-			await loadUsers();
+			await loadUsers(false);
 		}
 		catch (error) {
 			openToast({
@@ -311,7 +322,7 @@ function RoomShare({
 					type: 'success',
 				});
 
-				loadUsers();
+				loadUsers(false);
 			}
 			catch (error) {
 				openToast({
@@ -382,7 +393,7 @@ function RoomShare({
 					type: 'success',
 				});
 
-				await loadUsers();
+				await loadUsers(false);
 			}
 			catch (error) {
 				openToast({
@@ -402,7 +413,7 @@ function RoomShare({
 	}, [loadUsers]);
 
 	const canEditMember = (user: IUserAccount): boolean => {
-		if (readOnly || user.roleKey === OWNER_ROLE_KEY) {
+		if (readOnly || user.roleKey === SITE_OWNER_ROLE_KEY) {
 			return false;
 		}
 
@@ -413,7 +424,13 @@ function RoomShare({
 			return true;
 		}
 
-		return assignableRoles.some((role) => role.key === user.roleKey);
+		if (user.id === currentUserId) {
+			return false;
+		}
+
+		return manageableRoleKeys.includes(
+			user.roleKey ?? SITE_MEMBER_ROLE_KEY
+		);
 	};
 
 	const renderContent = () => {
@@ -605,7 +622,7 @@ function RoomShare({
 								</div>
 
 								<div className="align-items-center d-flex">
-									{user.roleKey === OWNER_ROLE_KEY ? (
+									{user.roleKey === SITE_OWNER_ROLE_KEY ? (
 										<span className="text-secondary">
 											{Liferay.Language.get('owner')}
 										</span>
@@ -753,6 +770,7 @@ function RoomShare({
 													trigger={
 														<ClayButton
 															className="text-secondary"
+															data-testid={`memberRoleKeyButton_${user.id}`}
 															disabled={loading}
 															displayType="unstyled"
 														>

@@ -49,7 +49,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LoggerTestUtil;
-import com.liferay.portal.test.rule.FeatureFlag;
 import com.liferay.portal.test.rule.Inject;
 
 import java.sql.Connection;
@@ -170,7 +169,6 @@ public class PortalInstanceResourceTest
 		_testPostPortalInstanceWithoutOmniadminPermission();
 	}
 
-	@FeatureFlag("LPD-11342")
 	@Override
 	@Test
 	public void testPostPortalInstanceCopy() throws Exception {
@@ -193,7 +191,6 @@ public class PortalInstanceResourceTest
 		_testPostPortalInstanceCopyWithoutOmniadminPermission();
 	}
 
-	@FeatureFlag("LPD-11342")
 	@Override
 	@Test
 	public void testPostPortalInstanceExport() throws Exception {
@@ -206,7 +203,6 @@ public class PortalInstanceResourceTest
 		_testPostPortalInstanceExportWithoutOmniadminPermission();
 	}
 
-	@FeatureFlag("LPD-11342")
 	@Override
 	@Test
 	public void testPostPortalInstanceImport() throws Exception {
@@ -498,8 +494,7 @@ public class PortalInstanceResourceTest
 
 		String sql =
 			"drop schema if exists " +
-				DBPartitionUtil.DATABASE_EXPORTED_PARTITION_SCHEMA_NAME_PREFIX +
-					companyId;
+				DBPartitionUtil.getExportedPartitionName(companyId);
 
 		if (db.getDBType() == DBType.POSTGRESQL) {
 			sql = sql + " cascade";
@@ -524,9 +519,8 @@ public class PortalInstanceResourceTest
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				StringBundler.concat(
 					"select configurationId from ",
-					DBPartitionUtil.
-						DATABASE_EXPORTED_PARTITION_SCHEMA_NAME_PREFIX,
-					companyId, ".Configuration_"));
+					DBPartitionUtil.getExportedPartitionName(companyId),
+					".Configuration_"));
 
 			ResultSet resultSet = preparedStatement.executeQuery()) {
 
@@ -899,9 +893,7 @@ public class PortalInstanceResourceTest
 						_portalInstance.getPortalInstanceId());
 
 				Assert.assertEquals(
-					DBPartitionUtil.
-						DATABASE_EXPORTED_PARTITION_SCHEMA_NAME_PREFIX +
-							companyId,
+					DBPartitionUtil.getExportedPartitionName(companyId),
 					portalInstanceExport.getExportedPartitionName());
 				Assert.assertEquals(
 					Long.valueOf(companyId),
@@ -914,44 +906,71 @@ public class PortalInstanceResourceTest
 			return;
 		}
 
-		Configuration company1Configuration = _createScopedConfiguration(
-			HashMapDictionaryBuilder.<String, Object>put(
-				ExtendedObjectClassDefinition.Scope.COMPANY.getPropertyKey(),
-				companyId
-			).build());
-
-		Configuration company2Configuration = _createScopedConfiguration(
-			HashMapDictionaryBuilder.<String, Object>put(
-				ExtendedObjectClassDefinition.Scope.COMPANY.getPropertyKey(),
-				RandomTestUtil.randomLong()
-			).build());
-
-		Group group = _groupLocalService.getCompanyGroup(companyId);
-
-		Configuration groupConfiguration = _createScopedConfiguration(
-			HashMapDictionaryBuilder.<String, Object>put(
-				ExtendedObjectClassDefinition.Scope.COMPANY.getPropertyKey(),
-				companyId
-			).put(
-				ExtendedObjectClassDefinition.Scope.GROUP.getPropertyKey(),
-				group.getGroupId()
-			).build());
-
-		Configuration portletInstanceConfiguration = _createScopedConfiguration(
-			HashMapDictionaryBuilder.<String, Object>put(
-				ExtendedObjectClassDefinition.Scope.PORTLET_INSTANCE.
-					getPropertyKey(),
-				RandomTestUtil.randomString()
-			).build());
+		List<Configuration> configurations = new ArrayList<>();
 
 		try {
+			Configuration company1Configuration = _createScopedConfiguration(
+				HashMapDictionaryBuilder.<String, Object>put(
+					ExtendedObjectClassDefinition.Scope.COMPANY.
+						getPropertyKey(),
+					companyId
+				).build());
+
+			configurations.add(company1Configuration);
+
+			Configuration company2Configuration = _createScopedConfiguration(
+				HashMapDictionaryBuilder.<String, Object>put(
+					ExtendedObjectClassDefinition.Scope.COMPANY.
+						getPropertyKey(),
+					RandomTestUtil.randomLong()
+				).build());
+
+			configurations.add(company2Configuration);
+
+			Group group = _groupLocalService.getCompanyGroup(companyId);
+
+			Configuration groupConfiguration = _createScopedConfiguration(
+				HashMapDictionaryBuilder.<String, Object>put(
+					ExtendedObjectClassDefinition.Scope.COMPANY.
+						getPropertyKey(),
+					companyId
+				).put(
+					ExtendedObjectClassDefinition.Scope.GROUP.getPropertyKey(),
+					group.getGroupId()
+				).build());
+
+			configurations.add(groupConfiguration);
+
+			Configuration nonexistentGroupConfiguration =
+				_createScopedConfiguration(
+					HashMapDictionaryBuilder.<String, Object>put(
+						ExtendedObjectClassDefinition.Scope.COMPANY.
+							getPropertyKey(),
+						companyId
+					).put(
+						ExtendedObjectClassDefinition.Scope.GROUP.
+							getPropertyKey(),
+						RandomTestUtil.randomLong()
+					).build());
+
+			configurations.add(nonexistentGroupConfiguration);
+
+			Configuration portletInstanceConfiguration =
+				_createScopedConfiguration(
+					HashMapDictionaryBuilder.<String, Object>put(
+						ExtendedObjectClassDefinition.Scope.PORTLET_INSTANCE.
+							getPropertyKey(),
+						RandomTestUtil.randomString()
+					).build());
+
+			configurations.add(portletInstanceConfiguration);
+
 			PortalInstanceExport portalInstanceExport =
 				portalInstanceResource.postPortalInstanceExport(
 					_portalInstance.getPortalInstanceId());
 
 			Assert.assertEquals(
-				DBPartitionUtil.DATABASE_EXPORTED_PARTITION_SCHEMA_NAME_PREFIX +
-					companyId,
+				DBPartitionUtil.getExportedPartitionName(companyId),
 				portalInstanceExport.getExportedPartitionName());
 			Assert.assertEquals(
 				Long.valueOf(companyId),
@@ -969,14 +988,16 @@ public class PortalInstanceResourceTest
 					portletInstanceConfiguration.getPid()));
 			Assert.assertFalse(
 				configurationIds.contains(company2Configuration.getPid()));
+			Assert.assertFalse(
+				configurationIds.contains(
+					nonexistentGroupConfiguration.getPid()));
 		}
 		finally {
-			company1Configuration.delete();
-			company2Configuration.delete();
-			groupConfiguration.delete();
-			portletInstanceConfiguration.delete();
-
 			_dropExportedSchema(companyId);
+
+			for (Configuration configuration : configurations) {
+				configuration.delete();
+			}
 		}
 	}
 
@@ -1026,8 +1047,7 @@ public class PortalInstanceResourceTest
 		PortalInstanceImport portalInstanceImport = new PortalInstanceImport();
 
 		portalInstanceImport.setSchemaName(
-			DBPartitionUtil.DATABASE_EXPORTED_PARTITION_SCHEMA_NAME_PREFIX +
-				companyId);
+			DBPartitionUtil.getExportedPartitionName(companyId));
 		portalInstanceImport.setVirtualHost(
 			randomId + "." +
 				StringUtil.toLowerCase(RandomTestUtil.randomString(3)));
@@ -1085,9 +1105,8 @@ public class PortalInstanceResourceTest
 	private void _testPostPortalInstanceImportNonexistentDBPartition()
 		throws Exception {
 
-		String schemaName =
-			DBPartitionUtil.DATABASE_EXPORTED_PARTITION_SCHEMA_NAME_PREFIX +
-				RandomTestUtil.randomLong();
+		String schemaName = DBPartitionUtil.getExportedPartitionName(
+			RandomTestUtil.randomLong());
 
 		PortalInstanceImport portalInstanceImport = new PortalInstanceImport();
 
@@ -1134,8 +1153,7 @@ public class PortalInstanceResourceTest
 		PortalInstanceImport portalInstanceImport = new PortalInstanceImport();
 
 		portalInstanceImport.setSchemaName(
-			DBPartitionUtil.DATABASE_EXPORTED_PARTITION_SCHEMA_NAME_PREFIX +
-				companyId);
+			DBPartitionUtil.getExportedPartitionName(companyId));
 		portalInstanceImport.setVirtualHost(virtualHost);
 		portalInstanceImport.setWebId(randomId);
 
@@ -1164,8 +1182,8 @@ public class PortalInstanceResourceTest
 		PortalInstanceImport portalInstanceImport = new PortalInstanceImport();
 
 		portalInstanceImport.setSchemaName(
-			DBPartitionUtil.DATABASE_EXPORTED_PARTITION_SCHEMA_NAME_PREFIX +
-				RandomTestUtil.randomLong());
+			DBPartitionUtil.getExportedPartitionName(
+				RandomTestUtil.randomLong()));
 
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				_CLASS_NAME_PORTAL_INSTANCE_RESOURCE_IMPL,
