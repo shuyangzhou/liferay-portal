@@ -826,7 +826,8 @@ public class DefaultObjectEntryManagerImpl
 		boolean preferApproved = GetterUtil.getBoolean(
 			dtoConverterContext.getAttribute("preferApproved"));
 
-		List<ObjectEntry> objectEntries = null;
+		List<com.liferay.object.model.ObjectEntry> serviceBuilderObjectEntries =
+			null;
 		int objectEntriesCount = 0;
 
 		Long finderGroupId = _getFinderGroupId(
@@ -834,31 +835,36 @@ public class DefaultObjectEntryManagerImpl
 			sorts);
 
 		if (finderGroupId == null) {
-			objectEntries = TransformUtil.transform(
+			serviceBuilderObjectEntries = TransformUtil.transform(
 				objectEntryLocalService.getPrimaryKeys(
 					groupIds, companyId, dtoConverterContext.getUserId(),
 					objectDefinition.getObjectDefinitionId(), predicate,
 					preferApproved, search, start, end, sorts),
-				primaryKey -> _getObjectEntry(
-					dtoConverterContext, objectDefinition, primaryKey));
+				primaryKey -> _objectEntryService.getObjectEntry(primaryKey));
 			objectEntriesCount = objectEntryLocalService.getValuesListCount(
 				groupIds, companyId, dtoConverterContext.getUserId(),
 				objectDefinition.getObjectDefinitionId(), predicate,
 				preferApproved, search);
 		}
 		else {
-			objectEntries = TransformUtil.transform(
+			serviceBuilderObjectEntries =
 				_objectEntryService.getObjectEntriesNotInStatus(
 					finderGroupId, objectDefinition.getObjectDefinitionId(),
-					WorkflowConstants.STATUS_IN_TRASH, start, end),
-				serviceBuilderObjectEntry -> _getObjectEntry(
-					dtoConverterContext, objectDefinition,
-					serviceBuilderObjectEntry));
+					WorkflowConstants.STATUS_IN_TRASH, start, end);
 			objectEntriesCount =
 				_objectEntryService.getObjectEntriesNotInStatusCount(
 					finderGroupId, objectDefinition.getObjectDefinitionId(),
 					WorkflowConstants.STATUS_IN_TRASH);
 		}
+
+		objectEntryLocalService.loadValues(
+			objectDefinition, serviceBuilderObjectEntries);
+
+		List<ObjectEntry> objectEntries = TransformUtil.transform(
+			serviceBuilderObjectEntries,
+			serviceBuilderObjectEntry -> _getObjectEntry(
+				dtoConverterContext, objectDefinition,
+				serviceBuilderObjectEntry));
 
 		return Page.of(
 			HashMapBuilder.put(
@@ -2518,26 +2524,6 @@ public class DefaultObjectEntryManagerImpl
 				return false;
 			},
 			value);
-	}
-
-	private ObjectEntry _getObjectEntry(
-			DTOConverterContext dtoConverterContext,
-			ObjectDefinition objectDefinition, long objectEntryId)
-		throws Exception {
-
-		com.liferay.object.model.ObjectEntry serviceBuilderObjectEntry =
-			_objectEntryService.getObjectEntry(objectEntryId);
-
-		_checkApprovedObjectEntry(
-			GetterUtil.getBoolean(
-				dtoConverterContext.getAttribute("preferApproved")),
-			serviceBuilderObjectEntry);
-		_checkObjectEntryObjectDefinitionId(
-			objectDefinition, serviceBuilderObjectEntry);
-
-		return _toObjectEntry(
-			dtoConverterContext, objectDefinition, serviceBuilderObjectEntry,
-			null);
 	}
 
 	private ObjectEntry _getObjectEntry(
