@@ -351,6 +351,34 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 	}
 
 	@Override
+	public List<ObjectEntry> getObjectEntriesNotInStatus(
+			long groupId, long objectDefinitionId, int status, int start,
+			int end)
+		throws PortalException {
+
+		List<ObjectEntry> objectEntries =
+			objectEntryPersistence.findByG_ODI_NotS(
+				groupId, objectDefinitionId, status, start, end);
+
+		if (!ObjectEntryThreadLocal.isSkipObjectEntryResourcePermission()) {
+			for (ObjectEntry objectEntry : objectEntries) {
+				_checkPermission(
+					ActionKeys.VIEW, objectDefinitionId, objectEntry);
+			}
+		}
+
+		return objectEntries;
+	}
+
+	@Override
+	public int getObjectEntriesNotInStatusCount(
+		long groupId, long objectDefinitionId, int status) {
+
+		return objectEntryPersistence.countByG_ODI_NotS(
+			groupId, objectDefinitionId, status);
+	}
+
+	@Override
 	public ObjectEntry getObjectEntry(long objectEntryId)
 		throws PortalException {
 
