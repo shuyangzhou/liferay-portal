@@ -3170,36 +3170,6 @@ public class ObjectEntryLocalServiceImpl
 						NAME_OBJECT_RELATIONSHIP_ERC_OBJECT_FIELD_NAME,
 					objectField);
 
-			if (objectDefinition.isUnmodifiableSystemObject()) {
-				SystemObjectDefinitionManager systemObjectDefinitionManager =
-					_systemObjectDefinitionManagerRegistry.
-						getSystemObjectDefinitionManager(
-							objectDefinition.getName());
-
-				for (Map<String, Serializable> values : valuesCollection) {
-					long primaryKey = GetterUtil.getLong(
-						values.get(objectField.getName()));
-
-					if (primaryKey == 0) {
-						continue;
-					}
-
-					try {
-						values.put(
-							objectRelationshipERCObjectFieldName,
-							systemObjectDefinitionManager.
-								getBaseModelExternalReferenceCode(primaryKey));
-					}
-					catch (PortalException portalException) {
-						if (_log.isDebugEnabled()) {
-							_log.debug(portalException);
-						}
-					}
-				}
-
-				continue;
-			}
-
 			Set<Serializable> primaryKeys = new HashSet<>();
 
 			for (Map<String, Serializable> values : valuesCollection) {
@@ -3212,6 +3182,30 @@ public class ObjectEntryLocalServiceImpl
 			}
 
 			if (primaryKeys.isEmpty()) {
+				continue;
+			}
+
+			if (objectDefinition.isUnmodifiableSystemObject()) {
+				SystemObjectDefinitionManager systemObjectDefinitionManager =
+					_systemObjectDefinitionManagerRegistry.
+						getSystemObjectDefinitionManager(
+							objectDefinition.getName());
+
+				Map<Serializable, String> externalReferenceCodes =
+					systemObjectDefinitionManager.
+						getBaseModelExternalReferenceCodes(primaryKeys);
+
+				for (Map<String, Serializable> values : valuesCollection) {
+					String externalReferenceCode = externalReferenceCodes.get(
+						GetterUtil.getLong(values.get(objectField.getName())));
+
+					if (externalReferenceCode != null) {
+						values.put(
+							objectRelationshipERCObjectFieldName,
+							externalReferenceCode);
+					}
+				}
+
 				continue;
 			}
 
