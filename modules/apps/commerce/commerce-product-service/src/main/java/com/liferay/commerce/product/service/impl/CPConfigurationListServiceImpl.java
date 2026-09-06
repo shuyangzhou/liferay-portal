@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
@@ -198,6 +199,29 @@ public class CPConfigurationListServiceImpl
 			groupId, true, null);
 	}
 
+	@Override
+	public CPConfigurationList getOrAddEmptyCPConfigurationList(
+			String externalReferenceCode, long groupId)
+		throws PortalException {
+
+		PermissionChecker permissionChecker = getPermissionChecker();
+
+		CPConfigurationList cpConfigurationList =
+			cpConfigurationListService.
+				fetchCPConfigurationListByExternalReferenceCode(
+					externalReferenceCode, permissionChecker.getCompanyId());
+
+		if (cpConfigurationList != null) {
+			return cpConfigurationList;
+		}
+
+		_checkCommerceCatalog(groupId, ActionKeys.UPDATE);
+
+		return cpConfigurationListLocalService.getOrAddEmptyCPConfigurationList(
+			externalReferenceCode, permissionChecker.getCompanyId(),
+			permissionChecker.getUserId(), groupId);
+	}
+
 	@Indexable(type = IndexableType.REINDEX)
 	public CPConfigurationList updateCPConfigurationList(
 			String externalReferenceCode, long cpConfigurationListId,
@@ -219,6 +243,23 @@ public class CPConfigurationListServiceImpl
 			displayDateHour, displayDateMinute, expirationDateMonth,
 			expirationDateDay, expirationDateYear, expirationDateHour,
 			expirationDateMinute, neverExpire, serviceContext);
+	}
+
+	@Indexable(type = IndexableType.REINDEX)
+	@Override
+	public CPConfigurationList updateExternalReferenceCode(
+			long cpConfigurationListId, String externalReferenceCode)
+		throws PortalException {
+
+		CPConfigurationList cpConfigurationList =
+			cpConfigurationListPersistence.findByPrimaryKey(
+				cpConfigurationListId);
+
+		_checkCommerceCatalog(
+			cpConfigurationList.getGroupId(), ActionKeys.UPDATE);
+
+		return cpConfigurationListLocalService.updateExternalReferenceCode(
+			cpConfigurationListId, externalReferenceCode);
 	}
 
 	private void _checkCommerceCatalog(long groupId, String actionId)

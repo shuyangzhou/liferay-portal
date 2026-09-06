@@ -56,6 +56,15 @@ public class CPTaxCategoryServiceWrapper
 	}
 
 	@Override
+	public CPTaxCategory fetchCPTaxCategoryByExternalReferenceCode(
+			String externalReferenceCode, long companyId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _cpTaxCategoryService.fetchCPTaxCategoryByExternalReferenceCode(
+			externalReferenceCode, companyId);
+	}
+
+	@Override
 	public java.util.List<CPTaxCategory> findCPTaxCategoriesByCompanyId(
 			long companyId, String keyword, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -94,6 +103,24 @@ public class CPTaxCategoryServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _cpTaxCategoryService.getCPTaxCategory(cpTaxCategoryId);
+	}
+
+	@Override
+	public CPTaxCategory getCPTaxCategoryByExternalReferenceCode(
+			String externalReferenceCode, long companyId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _cpTaxCategoryService.getCPTaxCategoryByExternalReferenceCode(
+			externalReferenceCode, companyId);
+	}
+
+	@Override
+	public CPTaxCategory getOrAddEmptyCPTaxCategory(
+			String externalReferenceCode)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _cpTaxCategoryService.getOrAddEmptyCPTaxCategory(
+			externalReferenceCode);
 	}
 
 	/**
@@ -141,4 +168,4 @@ public class CPTaxCategoryServiceWrapper
 	private CPTaxCategoryService _cpTaxCategoryService;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1918910179
+// LIFERAY-SERVICE-BUILDER-HASH:1987741531

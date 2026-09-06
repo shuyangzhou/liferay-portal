@@ -197,6 +197,7 @@ interface ITopAssetsBaseCardProps {
 	dataSourceFn: (variables: any) => Promise<{items: ITopAsset[]}> | undefined;
 	dataSourceParams: object;
 	routeQueries: {[key: string]: any};
+	showViewAll?: boolean;
 	skipRequest?: boolean;
 }
 
@@ -205,6 +206,7 @@ const TopAssetsBaseCard: React.FC<ITopAssetsBaseCardProps> = ({
 	dataSourceFn,
 	dataSourceParams,
 	routeQueries,
+	showViewAll = true,
 	skipRequest,
 }) => (
 	<BaseCard
@@ -219,6 +221,7 @@ const TopAssetsBaseCard: React.FC<ITopAssetsBaseCardProps> = ({
 				dataSourceParams={dataSourceParams}
 				rangeSelectors={rangeSelectors}
 				routeQueries={routeQueries}
+				showViewAll={showViewAll}
 				skipRequest={skipRequest}
 			/>
 		)}
@@ -235,6 +238,7 @@ const TopAssetsWithData: React.FC<ITopAssetsWithDataProps> = ({
 	dataSourceParams,
 	rangeSelectors,
 	routeQueries,
+	showViewAll,
 	skipRequest,
 }) => {
 	const history = useHistoryAdapter();
@@ -288,6 +292,18 @@ const TopAssetsWithData: React.FC<ITopAssetsWithDataProps> = ({
 
 	const isLoading = loading && !skipRequest;
 
+	/**
+	 * `.top-assets` zeroes the table's bottom margin so that the footer alone
+	 * separates the last row from the card edge. Without a footer the pane has
+	 * to carry that spacing, or the table collides with the bottom border. The
+	 * `pb-4` matches the table's own suppressed margin, which is what the Top
+	 * Pages and Top Asset Categories cards fall back on.
+	 */
+
+	const showFooter = !!showViewAll && assets.length > 0;
+
+	const tabContentClassName = showFooter ? 'pb-0' : 'pb-4';
+
 	const tabContent = (
 		<TopAssetsTabContent
 			assets={assets}
@@ -308,15 +324,15 @@ const TopAssetsWithData: React.FC<ITopAssetsWithDataProps> = ({
 			</ClayTabs>
 
 			<ClayTabs.Content activeIndex={activeTab} fade>
-				<ClayTabs.TabPane className="pb-0">
+				<ClayTabs.TabPane className={tabContentClassName}>
 					{tabContent}
 				</ClayTabs.TabPane>
-				<ClayTabs.TabPane className="pb-0">
+				<ClayTabs.TabPane className={tabContentClassName}>
 					{tabContent}
 				</ClayTabs.TabPane>
 			</ClayTabs.Content>
 
-			{assets.length > 0 && (
+			{showFooter && (
 				<div className="d-flex p-3">
 					<ClayButton
 						borderless

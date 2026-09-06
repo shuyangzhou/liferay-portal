@@ -5,13 +5,25 @@
 
 package com.liferay.data.cleanup.internal.verify.test;
 
+import com.liferay.object.model.ObjectDefinition;
+import com.liferay.object.service.ObjectDefinitionLocalServiceUtil;
+import com.liferay.object.test.util.ObjectDefinitionTestUtil;
+import com.liferay.petra.function.UnsafeBiConsumer;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeRunnable;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.model.ClassName;
+import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.module.util.BundleUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
+import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
+import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.util.SetUtil;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.lpkg.deployer.LPKGDeployer;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LoggerTestUtil;
@@ -24,7 +36,10 @@ import java.lang.reflect.Method;
 import java.sql.Connection;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -71,6 +86,32 @@ public abstract class BasePostUpgradeDataCleanupProcessTestCase {
 
 		com.liferay.osgi.util.BundleUtil.refreshBundles(
 			bundleContext, Collections.singletonList(bundle));
+
+		_waitForRegistries();
+	}
+
+	protected void startBundle(Bundle bundle) throws Exception {
+		bundle.start();
+
+		_waitForRegistries();
+	}
+
+	protected Bundle stopBundle(BundleContext bundleContext, String bundleName)
+		throws Exception {
+
+		for (Bundle bundle : bundleContext.getBundles()) {
+			if (Objects.equals(bundle.getSymbolicName(), bundleName) &&
+				(bundle.getState() == Bundle.ACTIVE)) {
+
+				_snapshotRegistries();
+
+				bundle.stop();
+
+				return bundle;
+			}
+		}
+
+		return null;
 	}
 
 	protected void test(
@@ -114,6 +155,57 @@ public abstract class BasePostUpgradeDataCleanupProcessTestCase {
 		}
 	}
 
+	protected void testObjectDefinition(
+			UnsafeBiConsumer<LogCapture, ObjectDefinition, Exception>
+				assertUnsafeBiConsumer)
+		throws Exception {
+
+		testObjectDefinition(assertUnsafeBiConsumer, null);
+	}
+
+	protected void testObjectDefinition(
+			UnsafeBiConsumer<LogCapture, ObjectDefinition, Exception>
+				assertUnsafeBiConsumer,
+			UnsafeConsumer<ObjectDefinition, Exception>
+				initializeDataUnsafeConsumer)
+		throws Exception {
+
+		AtomicReference<ObjectDefinition> objectDefinitionAtomicReference =
+			new AtomicReference<>();
+
+		test(
+			logCapture -> assertUnsafeBiConsumer.accept(
+				logCapture, objectDefinitionAtomicReference.get()),
+			() -> {
+				ObjectDefinition objectDefinition =
+					objectDefinitionAtomicReference.get();
+
+				if (objectDefinition == null) {
+					return;
+				}
+
+				ObjectDefinitionLocalServiceUtil.deleteObjectDefinition(
+					objectDefinition);
+
+				ClassName className = ClassNameLocalServiceUtil.fetchClassName(
+					objectDefinition.getClassName());
+
+				if (className != null) {
+					ClassNameLocalServiceUtil.deleteClassName(className);
+				}
+			},
+			() -> {
+				ObjectDefinition objectDefinition =
+					ObjectDefinitionTestUtil.publishObjectDefinition();
+
+				objectDefinitionAtomicReference.set(objectDefinition);
+
+				if (initializeDataUnsafeConsumer != null) {
+					initializeDataUnsafeConsumer.accept(objectDefinition);
+				}
+			});
+	}
+
 	protected Bundle uninstallBundle(
 			BundleContext bundleContext, String bundleName)
 		throws Exception {
@@ -121,6 +213,8 @@ public abstract class BasePostUpgradeDataCleanupProcessTestCase {
 		for (Bundle bundle : bundleContext.getBundles()) {
 			if (Objects.equals(bundle.getSymbolicName(), bundleName) &&
 				(bundle.getState() == Bundle.ACTIVE)) {
+
+				_snapshotRegistries();
 
 				bundle.uninstall();
 
@@ -136,6 +230,16 @@ public abstract class BasePostUpgradeDataCleanupProcessTestCase {
 
 	protected static Connection connection;
 	protected static DBInspector dbInspector;
+
+	private Set<String> _getPortletIds() {
+		Set<String> portletIds = new HashSet<>();
+
+		for (Portlet portlet : PortletLocalServiceUtil.getPortlets()) {
+			portletIds.add(portlet.getPortletId());
+		}
+
+		return portletIds;
+	}
 
 	private void _runPostUpgradeDataCleanUpVerifyProcess() throws Exception {
 		Bundle bundle = BundleUtil.getBundle(
@@ -157,7 +261,50 @@ public abstract class BasePostUpgradeDataCleanupProcessTestCase {
 		method.invoke(object);
 	}
 
+	private void _snapshotRegistries() {
+		_modelNames = new HashSet<>(ResourceActionsUtil.getModelNames());
+		_portletIds = _getPortletIds();
+		_portletNames = new HashSet<>(ResourceActionsUtil.getPortletNames());
+	}
+
+	private void _waitForRegistries() throws Exception {
+		long startTime = System.currentTimeMillis();
+
+		while (true) {
+			Set<String> missingModelNames = SetUtil.asymmetricDifference(
+				_modelNames, ResourceActionsUtil.getModelNames());
+			Set<String> missingPortletIds = SetUtil.asymmetricDifference(
+				_portletIds, _getPortletIds());
+			Set<String> missingPortletNames = SetUtil.asymmetricDifference(
+				_portletNames, ResourceActionsUtil.getPortletNames());
+
+			if (missingModelNames.isEmpty() && missingPortletIds.isEmpty() &&
+				missingPortletNames.isEmpty()) {
+
+				return;
+			}
+
+			if ((System.currentTimeMillis() - startTime) > _TIMEOUT) {
+				throw new IllegalStateException(
+					StringBundler.concat(
+						"Unable to repopulate the resource action and portlet ",
+						"registries within ", _TIMEOUT / Time.SECOND,
+						" seconds: missing model names ", missingModelNames,
+						", missing portlet IDs ", missingPortletIds,
+						", and missing portlet names ", missingPortletNames));
+			}
+
+			Thread.sleep(500);
+		}
+	}
+
+	private static final long _TIMEOUT = Time.MINUTE * 5;
+
 	@Inject
 	private LPKGDeployer _lpkgDeployer;
+
+	private Set<String> _modelNames = Collections.emptySet();
+	private Set<String> _portletIds = Collections.emptySet();
+	private Set<String> _portletNames = Collections.emptySet();
 
 }

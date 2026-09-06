@@ -4,16 +4,13 @@ jobs:
         uses: ./.github/workflows/ci-publish-workspace.yaml
         with:
             workspace-artifact-id-suffix: evergreen
-            workspace-includes: .claude/**,.cursor/**,.gemini/**,.windsurf/**,.workspace-rules/**
+            workspace-includes: .agents/**,.claude/**
             workspace-name: liferay-sample-workspace
 on:
     push:
         branches:
             -   master
         paths:
+            -   workspaces/liferay-sample-workspace/.agents/**
             -   workspaces/liferay-sample-workspace/.claude/**
-            -   workspaces/liferay-sample-workspace/.cursor/**
-            -   workspaces/liferay-sample-workspace/.gemini/**
-            -   workspaces/liferay-sample-workspace/.windsurf/**
-            -   workspaces/liferay-sample-workspace/.workspace-rules/**
     workflow_dispatch:

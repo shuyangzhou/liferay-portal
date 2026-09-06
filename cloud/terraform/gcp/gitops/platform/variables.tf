@@ -29,6 +29,10 @@ variable "external_secrets_namespace" {
 	default="external-secrets-system"
 	type=string
 }
+variable "gateway_namespace" {
+	default="envoy-gateway-system"
+	type=string
+}
 variable "keda_enabled" {
 	default=false
 	type=bool
@@ -39,6 +43,15 @@ variable "keda_helm_chart_version" {
 variable "keda_namespace" {
 	default="keda-system"
 	type=string
+}
+variable "observability_config" {
+	default={}
+	type=object(
+		{
+			enabled=optional(bool, false)
+			namespace=optional(string, "observability")
+		}
+	)
 }
 variable "project_id" {
 	type=string

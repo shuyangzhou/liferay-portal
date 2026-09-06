@@ -25,8 +25,13 @@ import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -71,7 +76,7 @@ public class FileEntryContentDashboardItemFactory
 			_ddmFieldLocalService, _dlDisplayContextProvider,
 			_dlFileEntryMetadataLocalService, _dlURLHelper, fileEntry,
 			_groupLocalService.fetchGroup(fileEntry.getGroupId()), _language,
-			_portal);
+			_getLatestApprovedFileVersion(fileEntry), _portal);
 	}
 
 	@Override
@@ -85,6 +90,17 @@ public class FileEntryContentDashboardItemFactory
 
 	@Reference
 	protected InfoItemServiceRegistry infoItemServiceRegistry;
+
+	private FileVersion _getLatestApprovedFileVersion(FileEntry fileEntry) {
+		List<FileVersion> approvedFileVersions = fileEntry.getFileVersions(
+			WorkflowConstants.STATUS_APPROVED, 0, 1);
+
+		if (ListUtil.isEmpty(approvedFileVersions)) {
+			return null;
+		}
+
+		return approvedFileVersions.get(0);
+	}
 
 	@Reference
 	private AssetEntryLocalService _assetEntryLocalService;

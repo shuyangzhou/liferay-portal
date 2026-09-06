@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {expect, mergeTests} from '@playwright/test';
+import {Page, expect, mergeTests} from '@playwright/test';
 
 import {dataApiHelpersTest} from '../../../fixtures/dataApiHelpersTest';
 import {featureFlagsTest} from '../../../fixtures/featureFlagsTest';
@@ -34,7 +34,11 @@ const DATA_MASKS_API = 'data-masks';
 
 const PROFILE_DATA_MASKS_API = 'mcp/server-profile-data-masks';
 
+const PROFILE_TOOLS_API = 'mcp/server-profile-tools';
+
 const PROFILES_API = 'mcp/server-profiles';
+
+const TOOL_SET_NAME = 'mcp-server-v1.0';
 
 function profileName() {
 	return `pwprofile-${getRandomString()}`;
@@ -48,7 +52,6 @@ async function createProfile(
 		{
 			description: `Created by Playwright ${name}`,
 			name,
-			tools: 'mcp-server-v1.0 getToolSetsPage',
 		},
 		PROFILES_API
 	);
@@ -60,6 +63,55 @@ async function createProfile(
 	});
 
 	return profile;
+}
+
+async function trackUIProfileForCleanup(
+	apiHelpers: DataApiHelpers,
+	page: Page
+): Promise<ObjectEntry> {
+	await page.waitForURL(/profileERC=/);
+
+	const url = new URL(page.url());
+
+	const profileERC =
+		[...url.searchParams.entries()].find(([key]) =>
+			key.endsWith('_profileERC')
+		)?.[1] ?? '';
+
+	const profile = await apiHelpers.get(
+		`${apiHelpers.baseUrl}${PROFILES_API}/by-external-reference-code/${profileERC}`
+	);
+
+	apiHelpers.data.push({
+		applicationName: PROFILES_API,
+		id: profile.id,
+		type: 'objectEntry',
+	});
+
+	return profile;
+}
+
+async function createProfileTool(
+	apiHelpers: DataApiHelpers,
+	profileERC: string,
+	toolName: string
+): Promise<ObjectEntry> {
+	const profileTool = await apiHelpers.objectEntry.postObjectEntry(
+		{
+			r_mcpServerProfileToTools_l_mcpServerProfileERC: profileERC,
+			toolName,
+			toolSetName: TOOL_SET_NAME,
+		},
+		PROFILE_TOOLS_API
+	);
+
+	apiHelpers.data.push({
+		applicationName: PROFILE_TOOLS_API,
+		id: profileTool.id,
+		type: 'objectEntry',
+	});
+
+	return profileTool;
 }
 
 const test = baseTest.extend<{
@@ -291,7 +343,7 @@ test.describe('Profiles - Detail (Create / Edit)', () => {
 	test(
 		'Creates a profile from the New Profile button',
 		{tag: '@LPD-99230'},
-		async ({apiHelpers, profilesPage}) => {
+		async ({apiHelpers, page, profilesPage}) => {
 			const name = profileName();
 
 			await profilesPage.goto();
@@ -301,23 +353,17 @@ test.describe('Profiles - Detail (Create / Edit)', () => {
 
 			await profilesPage.nameInput.fill(name);
 			await profilesPage.descriptionInput.fill('Created from the UI');
-			await profilesPage.toolsInput.fill(
-				'mcp-server-v1.0 getToolSetsPage'
-			);
 			await profilesPage.saveButton.click();
+
+			const profile = await trackUIProfileForCleanup(apiHelpers, page);
 
 			// The form stays in place after the first save
 
-			await expect(profilesPage.page).toHaveURL(/profileId=/);
+			await expect(page).toHaveURL(/profileERC=/);
 			await expect(profilesPage.formHeading).toHaveText('Edit Profile');
 			await expect(profilesPage.dataMasksTabLink).toBeVisible();
 
-			const response = await apiHelpers.get(
-				`${apiHelpers.baseUrl}${PROFILES_API}?search=${name}&pageSize=5`
-			);
-			expect(response.items[0]?.tools).toBe(
-				'mcp-server-v1.0 getToolSetsPage'
-			);
+			expect(profile.name).toBe(name);
 
 			await profilesPage.goto();
 			await profilesPage.search(name);
@@ -327,7 +373,7 @@ test.describe('Profiles - Detail (Create / Edit)', () => {
 	);
 
 	test(
-		'Shows a required-field error on Title, Description, and Tools',
+		'Shows a required-field error on Title and Description',
 		{tag: '@LPD-99230'},
 		async ({profilesPage}) => {
 			await profilesPage.goto();
@@ -341,9 +387,6 @@ test.describe('Profiles - Detail (Create / Edit)', () => {
 			await expect(
 				profilesPage.descriptionInput
 			).toHaveAccessibleDescription(/This field is required\./);
-			await expect(profilesPage.toolsInput).toHaveAccessibleDescription(
-				/This field is required\./
-			);
 		}
 	);
 
@@ -379,7 +422,7 @@ test.describe('Profiles - Detail (Create / Edit)', () => {
 			await profilesPage.search(name);
 			await profilesPage.clickAction(name, 'Edit');
 
-			await profilesPage.toolsInput.fill('mcp-server-v1.0 editedTool');
+			await profilesPage.descriptionInput.fill('Edited by Playwright');
 			await profilesPage.saveButton.click();
 
 			await expect(profilesPage.row(name)).toBeVisible();
@@ -387,7 +430,7 @@ test.describe('Profiles - Detail (Create / Edit)', () => {
 			const response = await apiHelpers.get(
 				`${apiHelpers.baseUrl}${PROFILES_API}?search=${name}&pageSize=5`
 			);
-			expect(response.items[0]?.tools).toBe('mcp-server-v1.0 editedTool');
+			expect(response.items[0]?.description).toBe('Edited by Playwright');
 		}
 	);
 
@@ -402,7 +445,7 @@ test.describe('Profiles - Detail (Create / Edit)', () => {
 
 			await profilesPage.cancelButton.click();
 
-			await profilesPage.table.waitFor({state: 'visible'});
+			await profilesPage.table.waitFor();
 			await expect(profilesPage.newProfileButton).toBeVisible();
 		}
 	);
@@ -412,7 +455,7 @@ test.describe('Profiles - Data Masks tab', () => {
 	test(
 		'Disables the Data Masks tab until the profile is saved',
 		{tag: '@LPD-99230'},
-		async ({profilesPage}) => {
+		async ({apiHelpers, page, profilesPage}) => {
 			await profilesPage.goto();
 			await profilesPage.newProfileButton.click();
 
@@ -422,10 +465,9 @@ test.describe('Profiles - Data Masks tab', () => {
 
 			await profilesPage.nameInput.fill(profileName());
 			await profilesPage.descriptionInput.fill('Created from the UI');
-			await profilesPage.toolsInput.fill(
-				'mcp-server-v1.0 getToolSetsPage'
-			);
 			await profilesPage.saveButton.click();
+
+			await trackUIProfileForCleanup(apiHelpers, page);
 
 			await expect(profilesPage.dataMasksTabLink).toBeVisible();
 		}
@@ -465,7 +507,7 @@ test.describe('Profiles - Data Masks tab', () => {
 			await profilesPage.search(name);
 			await profilesPage.clickAction(name, 'Edit');
 			await profilesPage.dataMasksTabLink.click();
-			await profilesPage.masksRows.first().waitFor({state: 'visible'});
+			await profilesPage.masksRows.first().waitFor();
 
 			await profilesPage.addMasksButton.click();
 
@@ -492,7 +534,7 @@ test.describe('Profiles - Data Masks tab', () => {
 			await profilesPage.search(name);
 			await profilesPage.clickAction(name, 'Edit');
 			await profilesPage.dataMasksTabLink.click();
-			await profilesPage.masksRows.first().waitFor({state: 'visible'});
+			await profilesPage.masksRows.first().waitFor();
 
 			const rowsBefore = await profilesPage.masksRows.count();
 
@@ -524,11 +566,9 @@ test.describe('Profiles - Data Masks tab', () => {
 			await profilesPage.search(name);
 			await profilesPage.clickAction(name, 'Edit');
 			await profilesPage.dataMasksTabLink.click();
-			await profilesPage.masksRows.first().waitFor({state: 'visible'});
+			await profilesPage.masksRows.first().waitFor();
 
 			await profilesPage.addMasksButton.click();
-
-			// Checking the Custom group cascades to every custom mask
 
 			await profilesPage.maskCheckbox('Custom').check();
 
@@ -565,7 +605,7 @@ test.describe('Profiles - Data Masks tab', () => {
 			await profilesPage.search(name);
 			await profilesPage.clickAction(name, 'Edit');
 			await profilesPage.dataMasksTabLink.click();
-			await profilesPage.masksRows.first().waitFor({state: 'visible'});
+			await profilesPage.masksRows.first().waitFor();
 
 			const rowsBefore = await profilesPage.masksRows.count();
 			const firstRowName = await profilesPage.masksRows
@@ -612,7 +652,7 @@ test.describe('Profiles - Data Masks tab', () => {
 			await profilesPage.search(name);
 			await profilesPage.clickAction(name, 'Edit');
 			await profilesPage.dataMasksTabLink.click();
-			await profilesPage.masksRows.first().waitFor({state: 'visible'});
+			await profilesPage.masksRows.first().waitFor();
 
 			const rowsBefore = await profilesPage.masksRows.count();
 
@@ -662,7 +702,7 @@ test.describe('Profiles - Data Masks tab', () => {
 			await profilesPage.search(name);
 			await profilesPage.clickAction(name, 'Edit');
 			await profilesPage.dataMasksTabLink.click();
-			await profilesPage.masksRows.first().waitFor({state: 'visible'});
+			await profilesPage.masksRows.first().waitFor();
 
 			// Pick up the first row with the keyboard handle and move it down
 
@@ -684,6 +724,321 @@ test.describe('Profiles - Data Masks tab', () => {
 					...maskExternalReferenceCodes.slice(2),
 				]);
 			}).toPass({timeout: 15000});
+		}
+	);
+});
+
+test.describe('Profiles - Tools tab', () => {
+	test(
+		'Disables the Tools tab until the profile is saved',
+		{tag: '@LPD-103214'},
+		async ({apiHelpers, page, profilesPage}) => {
+			const name = profileName();
+
+			await profilesPage.goto();
+			await profilesPage.newProfileButton.click();
+
+			await expect(profilesPage.nameInput).toBeVisible();
+			await expect(profilesPage.toolsTabButton).toBeDisabled();
+
+			await profilesPage.nameInput.fill(name);
+			await profilesPage.descriptionInput.fill('Created from the UI');
+			await profilesPage.saveButton.click();
+
+			await trackUIProfileForCleanup(apiHelpers, page);
+
+			await expect(profilesPage.toolsTabLink).toBeVisible();
+		}
+	);
+
+	test(
+		'Shows the tools already assigned to the profile',
+		{tag: '@LPD-103214'},
+		async ({apiHelpers, profilesPage}) => {
+			const name = profileName();
+			const profile = await createProfile(apiHelpers, name);
+			await createProfileTool(
+				apiHelpers,
+				profile.externalReferenceCode,
+				'getToolSetsPage'
+			);
+
+			await profilesPage.gotoToolsTab(name);
+
+			await expect(profilesPage.row('getToolSetsPage')).toBeVisible();
+			await expect(profilesPage.row('getToolSetsPage')).toContainText(
+				TOOL_SET_NAME
+			);
+			await expect(profilesPage.rows).toHaveCount(1);
+		}
+	);
+
+	test(
+		'Adds a tool to the profile from the Add Tools modal',
+		{tag: '@LPD-103214'},
+		async ({apiHelpers, profilesPage}) => {
+			const name = profileName();
+			const profile = await createProfile(apiHelpers, name);
+
+			await profilesPage.gotoToolsTab(name);
+
+			await profilesPage.openAddToolsModal();
+
+			await profilesPage.toolSetExpander(TOOL_SET_NAME).click();
+
+			await profilesPage.toolCheckbox('getToolSetsPage').check();
+			await profilesPage.addToolsSubmitButton.click();
+
+			await expect(profilesPage.dialog).toBeHidden();
+			await expect(profilesPage.row('getToolSetsPage')).toBeVisible();
+
+			const response = await apiHelpers.get(
+				`${apiHelpers.baseUrl}${PROFILE_TOOLS_API}?filter=${encodeURIComponent(
+					`r_mcpServerProfileToTools_l_mcpServerProfileERC eq '${profile.externalReferenceCode}'`
+				)}&pageSize=5`
+			);
+
+			if (response.items[0]?.id) {
+				apiHelpers.data.push({
+					applicationName: PROFILE_TOOLS_API,
+					id: response.items[0].id,
+					type: 'objectEntry',
+				});
+			}
+
+			expect(response.items[0]?.toolName).toBe('getToolSetsPage');
+			expect(response.items[0]?.toolSetName).toBe(TOOL_SET_NAME);
+		}
+	);
+
+	test(
+		'Keeps the table unchanged when cancelling the Add Tools modal',
+		{tag: '@LPD-103214'},
+		async ({apiHelpers, profilesPage}) => {
+			const name = profileName();
+			const profile = await createProfile(apiHelpers, name);
+			await createProfileTool(
+				apiHelpers,
+				profile.externalReferenceCode,
+				'getToolSetsPage'
+			);
+
+			await profilesPage.gotoToolsTab(name);
+
+			await profilesPage.openAddToolsModal();
+
+			await profilesPage.toolSetExpander(TOOL_SET_NAME).click();
+
+			await profilesPage
+				.toolCheckbox('postToolSetToolSetNameToolInvoke')
+				.check();
+			await profilesPage.dialog
+				.getByRole('button', {name: 'Cancel'})
+				.click();
+
+			await expect(profilesPage.dialog).toBeHidden();
+			await expect(
+				profilesPage.row('postToolSetToolSetNameToolInvoke')
+			).toBeHidden();
+			await expect(profilesPage.rows).toHaveCount(1);
+		}
+	);
+
+	test(
+		'Shows the tools the profile carries as assigned and untouchable',
+		{tag: '@LPD-103214'},
+		async ({apiHelpers, profilesPage}) => {
+			const name = profileName();
+			const profile = await createProfile(apiHelpers, name);
+			await createProfileTool(
+				apiHelpers,
+				profile.externalReferenceCode,
+				'getToolSetsPage'
+			);
+
+			await profilesPage.gotoToolsTab(name);
+
+			await profilesPage.openAddToolsModal();
+
+			// A tool set with assigned tools starts indeterminate and
+			// disabled until its tools are loaded
+
+			await expect(
+				profilesPage.toolSetCheckbox(TOOL_SET_NAME)
+			).toBeDisabled();
+			await expect(
+				profilesPage.toolSetCheckbox(TOOL_SET_NAME)
+			).toHaveJSProperty('indeterminate', true);
+
+			await profilesPage.toolSetExpander(TOOL_SET_NAME).click();
+
+			await expect(
+				profilesPage.toolSetCheckbox(TOOL_SET_NAME)
+			).toBeEnabled();
+			await expect(
+				profilesPage.toolSetCheckbox(TOOL_SET_NAME)
+			).toHaveJSProperty('indeterminate', true);
+
+			await expect(
+				profilesPage.toolTreeItem('getToolSetsPage')
+			).toBeVisible();
+
+			await expect(
+				profilesPage.toolCheckbox('getToolSetsPage')
+			).toBeChecked();
+			await expect(
+				profilesPage.toolCheckbox('getToolSetsPage')
+			).toBeDisabled();
+
+			await expect(
+				profilesPage.toolCheckbox('postToolSetToolSetNameToolInvoke')
+			).not.toBeChecked();
+			await expect(
+				profilesPage.toolCheckbox('postToolSetToolSetNameToolInvoke')
+			).toBeEnabled();
+
+			// The assigned tools do not count as a pending selection
+
+			await expect(profilesPage.addToolsSubmitButton).toBeDisabled();
+		}
+	);
+
+	test(
+		'Selects every eligible tool when checking a collapsed tool set',
+		{tag: '@LPD-103214'},
+		async ({apiHelpers, profilesPage}) => {
+			const name = profileName();
+			await createProfile(apiHelpers, name);
+
+			await profilesPage.gotoToolsTab(name);
+
+			await profilesPage.openAddToolsModal();
+
+			await profilesPage.toolSetTreeItem(TOOL_SET_NAME).waitFor();
+
+			await profilesPage.toolSetCheckbox(TOOL_SET_NAME).check();
+
+			await expect(profilesPage.dialog.getByRole('status')).toContainText(
+				/[1-9]\d*\s+Items? Selected/
+			);
+
+			// The selection does not expand the set
+
+			await expect(
+				profilesPage.toolTreeItem('getToolSetsPage')
+			).toBeHidden();
+
+			await profilesPage.toolSetExpander(TOOL_SET_NAME).click();
+
+			await expect(
+				profilesPage.toolCheckbox('getToolSetsPage')
+			).toBeChecked();
+		}
+	);
+
+	test(
+		'Deselects every tool with the Deselect All action',
+		{tag: '@LPD-103214'},
+		async ({apiHelpers, profilesPage}) => {
+			const name = profileName();
+			await createProfile(apiHelpers, name);
+
+			await profilesPage.gotoToolsTab(name);
+
+			await profilesPage.openAddToolsModal();
+
+			await profilesPage.toolSetExpander(TOOL_SET_NAME).click();
+			await profilesPage.toolTreeItem('getToolSetsPage').waitFor();
+
+			await profilesPage.toolSetCheckbox(TOOL_SET_NAME).check();
+
+			await expect(profilesPage.dialog.getByRole('status')).toContainText(
+				/[1-9]\d*\s+Items? Selected/
+			);
+
+			await profilesPage.deselectAllButton.click();
+
+			await expect(profilesPage.dialog.getByRole('status')).toHaveText(
+				'0 Items Selected'
+			);
+			await expect(profilesPage.addToolsSubmitButton).toBeDisabled();
+		}
+	);
+
+	test(
+		'Removes a tool from the profile after confirming',
+		{tag: '@LPD-103214'},
+		async ({apiHelpers, profilesPage}) => {
+			const name = profileName();
+			const profile = await createProfile(apiHelpers, name);
+			await createProfileTool(
+				apiHelpers,
+				profile.externalReferenceCode,
+				'getToolSetsPage'
+			);
+
+			await profilesPage.gotoToolsTab(name);
+
+			await profilesPage.removeToolButton('getToolSetsPage').click();
+
+			await profilesPage.dialog
+				.getByRole('button', {exact: true, name: 'Remove'})
+				.click();
+
+			await expect(profilesPage.row('getToolSetsPage')).toBeHidden();
+		}
+	);
+
+	test(
+		'Keeps the tool when the removal is cancelled',
+		{tag: '@LPD-103214'},
+		async ({apiHelpers, profilesPage}) => {
+			const name = profileName();
+			const profile = await createProfile(apiHelpers, name);
+			await createProfileTool(
+				apiHelpers,
+				profile.externalReferenceCode,
+				'getToolSetsPage'
+			);
+
+			await profilesPage.gotoToolsTab(name);
+
+			await profilesPage.removeToolButton('getToolSetsPage').click();
+
+			await profilesPage.dialog
+				.getByRole('button', {name: 'Cancel'})
+				.click();
+
+			await expect(profilesPage.dialog).toBeHidden();
+			await expect(profilesPage.row('getToolSetsPage')).toBeVisible();
+		}
+	);
+
+	test(
+		'Searches the tools table by tool name',
+		{tag: '@LPD-103214'},
+		async ({apiHelpers, profilesPage}) => {
+			const name = profileName();
+			const profile = await createProfile(apiHelpers, name);
+			await createProfileTool(
+				apiHelpers,
+				profile.externalReferenceCode,
+				'getToolSetsPage'
+			);
+			await createProfileTool(
+				apiHelpers,
+				profile.externalReferenceCode,
+				'postToolSetToolSetNameToolInvoke'
+			);
+
+			await profilesPage.gotoToolsTab(name);
+
+			await expect(profilesPage.rows).toHaveCount(2);
+
+			await profilesPage.search('getToolSetsPage');
+
+			await expect(profilesPage.row('getToolSetsPage')).toBeVisible();
+			await expect(profilesPage.rows).toHaveCount(1);
 		}
 	);
 });

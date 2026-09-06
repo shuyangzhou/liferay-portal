@@ -39,11 +39,6 @@ public abstract class BaseWorkspaceGitRepository
 
 	@Override
 	public void fetchGitHubDevBranch() {
-		if (isSnapshot()) {
-			System.out.println(
-				"Using git archive, unable to fetch from GitHub dev");
-		}
-
 		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
 
 		List<GitRemote> gitHubDevGitRemotes =
@@ -179,9 +174,7 @@ public abstract class BaseWorkspaceGitRepository
 
 	@Override
 	public GitWorkingDirectory getGitWorkingDirectory() {
-		if (_isGitArchiveEnabled() && isSnapshot() &&
-			!_isDotGitDirArchiveRequired()) {
-
+		if (_isGitArchiveOnly()) {
 			throw new RuntimeException(
 				"Using Git archive, unable to get Git working directory");
 		}
@@ -467,7 +460,7 @@ public abstract class BaseWorkspaceGitRepository
 
 	@Override
 	public void synchronizeToGitHubDev() {
-		if (isSnapshot()) {
+		if (_isGitArchiveOnly()) {
 			throw new RuntimeException(
 				"Using Git archive, unable to synchronize to GitHub dev");
 		}
@@ -477,9 +470,15 @@ public abstract class BaseWorkspaceGitRepository
 
 	@Override
 	public void tearDown() {
-		if (isSnapshot()) {
+		if (_isGitArchiveEnabled() && isSnapshot()) {
 			_deleteGitRepository();
 
+			return;
+		}
+
+		File dotGitFolder = new File(getDirectory(), ".git");
+
+		if (!dotGitFolder.exists()) {
 			return;
 		}
 
@@ -894,18 +893,39 @@ public abstract class BaseWorkspaceGitRepository
 	protected void validateSHAInRemoteGitRef(
 		String branchName, RemoteGitRef remoteGitRef, String sha) {
 
+		LocalGitBranch localGitBranch = null;
 		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
 
-		LocalGitBranch localGitBranch = gitWorkingDirectory.fetch(remoteGitRef);
+		if (remoteGitRef != null) {
+			localGitBranch = gitWorkingDirectory.fetch(remoteGitRef);
+		}
 
-		if ((localGitBranch == null) ||
-			!gitWorkingDirectory.refContainsSHA(localGitBranch, sha)) {
+		if (localGitBranch == null) {
+			if (gitWorkingDirectory.localSHAExists(sha)) {
+				System.out.println(
+					JenkinsResultsParserUtil.combine(
+						"Unable to find branch \"", branchName,
+						"\" on the remote, continuing with SHA ", sha,
+						" from the local Git repository"));
+
+				return;
+			}
 
 			throw new RuntimeException(
 				JenkinsResultsParserUtil.combine(
-					"SHA ", sha, " was not found in branch \"", branchName,
-					"\" on ", remoteGitRef.getRemoteURL()));
+					"Unable to find branch \"", branchName,
+					"\" on the remote and SHA ", sha,
+					" was not found in the local Git repository"));
 		}
+
+		if (gitWorkingDirectory.refContainsSHA(localGitBranch, sha)) {
+			return;
+		}
+
+		throw new RuntimeException(
+			JenkinsResultsParserUtil.combine(
+				"SHA ", sha, " was not found in branch \"", branchName,
+				"\" on ", remoteGitRef.getRemoteURL()));
 	}
 
 	private File _archiveDotGitDir() {
@@ -915,7 +935,7 @@ public abstract class BaseWorkspaceGitRepository
 
 		sb.setLength(0);
 
-		sb.append("rm -rf ");
+		sb.append("rm -fr ");
 
 		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
 
@@ -1061,7 +1081,7 @@ public abstract class BaseWorkspaceGitRepository
 
 		sb.setLength(0);
 
-		sb.append("rm -rf ");
+		sb.append("rm -fr ");
 		sb.append(clonedWorkingDirectory);
 
 		commands.add(sb.toString());
@@ -1128,11 +1148,10 @@ public abstract class BaseWorkspaceGitRepository
 		String senderBranchSHA = getSenderBranchSHA();
 
 		if (!gitWorkingDirectory.localSHAExists(senderBranchSHA)) {
-			gitWorkingDirectory.fetch(_getSenderRemoteGitRef());
+			validateSHAInRemoteGitRef(
+				getSenderBranchName(), _getSenderRemoteGitRef(),
+				senderBranchSHA);
 		}
-
-		validateSHAInRemoteGitRef(
-			getSenderBranchName(), _getSenderRemoteGitRef(), senderBranchSHA);
 
 		gitWorkingDirectory.createLocalGitBranch(
 			_getSenderBranchHeadName(), true, senderBranchSHA);
@@ -1201,12 +1220,11 @@ public abstract class BaseWorkspaceGitRepository
 			}
 
 			if (!gitWorkingDirectory.localSHAExists(senderBranchSHA)) {
-				gitWorkingDirectory.fetch(_getSenderRemoteGitRef());
+				validateSHAInRemoteGitRef(
+					getSenderBranchName(), _getSenderRemoteGitRef(),
+					senderBranchSHA);
 			}
 		}
-
-		validateSHAInRemoteGitRef(
-			getSenderBranchName(), _getSenderRemoteGitRef(), senderBranchSHA);
 
 		gitWorkingDirectory.createLocalGitBranch(
 			_getSenderBranchHeadName(), true, senderBranchSHA);
@@ -1222,7 +1240,7 @@ public abstract class BaseWorkspaceGitRepository
 
 		try {
 			Process process = JenkinsResultsParserUtil.executeBashCommands(
-				"rm -rf " + getDirectory());
+				"rm -fr " + getDirectory());
 
 			JenkinsResultsParserUtil.readInputStream(process.getInputStream());
 
@@ -1258,7 +1276,7 @@ public abstract class BaseWorkspaceGitRepository
 				JenkinsResultsParserUtil.combine(
 					"tar -xzf ", archiveFile.getCanonicalPath(), " -C ",
 					baseGitRepositoryDir.getCanonicalPath()),
-				"rm -rf " + archiveFile.getCanonicalPath());
+				"rm -fr " + archiveFile.getCanonicalPath());
 
 			if (process.exitValue() != 0) {
 				String errorText = JenkinsResultsParserUtil.readInputStream(
@@ -1359,7 +1377,8 @@ public abstract class BaseWorkspaceGitRepository
 		_senderRemoteGitRef = GitUtil.getRemoteGitRef(
 			JenkinsResultsParserUtil.combine(
 				"https://github.com/", getSenderBranchUsername(), "/",
-				getName(), "/tree/", getSenderBranchName()));
+				getName(), "/tree/", getSenderBranchName()),
+			false);
 
 		return _senderRemoteGitRef;
 	}
@@ -1437,6 +1456,16 @@ public abstract class BaseWorkspaceGitRepository
 		catch (IOException ioException) {
 			return true;
 		}
+	}
+
+	private boolean _isGitArchiveOnly() {
+		if (_isGitArchiveEnabled() && isSnapshot() &&
+			!_isDotGitDirArchiveRequired()) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private boolean _isPullRequest() {

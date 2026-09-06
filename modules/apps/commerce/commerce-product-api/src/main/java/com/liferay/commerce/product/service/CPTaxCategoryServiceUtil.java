@@ -55,6 +55,14 @@ public class CPTaxCategoryServiceUtil {
 		getService().deleteCPTaxCategory(cpTaxCategoryId);
 	}
 
+	public static CPTaxCategory fetchCPTaxCategoryByExternalReferenceCode(
+			String externalReferenceCode, long companyId)
+		throws PortalException {
+
+		return getService().fetchCPTaxCategoryByExternalReferenceCode(
+			externalReferenceCode, companyId);
+	}
+
 	public static List<CPTaxCategory> findCPTaxCategoriesByCompanyId(
 			long companyId, String keyword, int start, int end)
 		throws PortalException {
@@ -88,6 +96,21 @@ public class CPTaxCategoryServiceUtil {
 		throws PortalException {
 
 		return getService().getCPTaxCategory(cpTaxCategoryId);
+	}
+
+	public static CPTaxCategory getCPTaxCategoryByExternalReferenceCode(
+			String externalReferenceCode, long companyId)
+		throws PortalException {
+
+		return getService().getCPTaxCategoryByExternalReferenceCode(
+			externalReferenceCode, companyId);
+	}
+
+	public static CPTaxCategory getOrAddEmptyCPTaxCategory(
+			String externalReferenceCode)
+		throws PortalException {
+
+		return getService().getOrAddEmptyCPTaxCategory(externalReferenceCode);
 	}
 
 	/**
@@ -128,4 +151,4 @@ public class CPTaxCategoryServiceUtil {
 			CPTaxCategoryServiceUtil.class, CPTaxCategoryService.class);
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1234698510
+// LIFERAY-SERVICE-BUILDER-HASH:1303738131

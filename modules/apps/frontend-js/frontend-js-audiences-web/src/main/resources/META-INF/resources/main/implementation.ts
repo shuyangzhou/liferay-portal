@@ -3,140 +3,151 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
+import {Cache} from './cache';
 import {Detection} from './detection';
 import {log} from './log';
-import {store} from './store';
+import {TimeoutError} from './timeout_error';
+import {formatError, indent, waitForAbort} from './util';
 
-import type {AudienceId, AudiencesDefinition, Handler} from './index';
+import type {
+	AudienceId,
+	AudiencesDefinition,
+	Handler,
+	RunDetectionOptions,
+} from './index';
 
-interface HandlersMap {
-	[audienceId: AudienceId]: Handler[];
-}
+// Global state variables for Audiences module
 
-const handlers: HandlersMap = {};
-
-let priorities: Map<AudienceId, number> = new Map();
+const audiencePriorities: Map<AudienceId, number> = new Map();
+const detectedAudiences = new Set<AudienceId>();
+const handlers: Map<AudienceId, Handler[]> = new Map();
 
 export function clear(): void {
-	store.clear();
+	audiencePriorities.clear();
+	detectedAudiences.clear();
 }
 
 export function clearHandlers(): void {
-	for (const audienceId of Object.keys(handlers)) {
-		delete handlers[audienceId];
-	}
+	handlers.clear();
 }
 
 export function get(): Set<AudienceId> {
-	return store.getAudienceIds();
+	return new Set(detectedAudiences);
 }
 
 export function getPriority(audienceId: AudienceId): number {
-	const priority = priorities.get(audienceId);
-
-	return priority === undefined ? Infinity : priority;
+	return audiencePriorities.get(audienceId) ?? Infinity;
 }
 
 export async function runDetection(
-	audiencesDefinitionURL: string
+	audiencesDefinitionURL: string,
+	options?: RunDetectionOptions
 ): Promise<void> {
-	let response;
-
 	try {
 
-		// eslint-disable-next-line @liferay/portal/no-global-fetch
-		response = await fetch(audiencesDefinitionURL);
+		// Clear global state
+
+		clear();
+
+		// Start the timeout
+
+		const signal = createRunDetectionTimeoutAbortSignal(options?.timeout);
+
+		// Start retrieving external dependencies eagerly
+
+		const cache = new Cache(signal);
+
+		// Download audiences definition and update priorities
+
+		const audiencesDefinition = await downloadAudiencesDefinition(
+			audiencesDefinitionURL,
+			signal
+		);
+
+		for (let i = 0; i < audiencesDefinition.audiences.length; i++) {
+			audiencePriorities.set(audiencesDefinition.audiences[i].id, i);
+		}
+
+		// Run the detection and update detected audiences
+
+		const detection = new Detection(audiencesDefinition);
+
+		const matches: AudienceId[] = [];
+
+		try {
+			await detection.run(cache, signal, matches);
+		}
+		catch (error: any) {
+			if (error instanceof TimeoutError) {
+				log(
+					`Detection timeout of ${options?.timeout} milliseconds reached`
+				);
+			}
+			else {
+				throw error;
+			}
+		}
+
+		for (const match of matches) {
+			detectedAudiences.add(match);
+		}
 	}
-	catch (error) {
-		throw new Error(
-			`Unable to fetch '${audiencesDefinitionURL}': ${getErrorMessage(error)}`
+	catch (error: any) {
+		log(
+			`Audiences detection failed with error:\n${indent(2, true, formatError(error))}`
 		);
 	}
-
-	if (!response.ok) {
-		throw new Error(
-			`Request to fetch ${audiencesDefinitionURL} returned an error: ` +
-				`${response.status} ${response.statusText}`
-		);
-	}
-
-	let audiencesDefinition: AudiencesDefinition;
-
-	try {
-		audiencesDefinition = await response.json();
-	}
-	catch (error) {
-		throw new Error(
-			`Unable to parse '${audiencesDefinitionURL}': ${getErrorMessage(error)}`
-		);
-	}
-
-	priorities = new Map(
-		audiencesDefinition.audiences.map((audience, index) => [
-			audience.id,
-			index,
-		])
-	);
-
-	const detection = new Detection(audiencesDefinition);
-
-	let matches;
-
-	try {
-		matches = await detection.run();
-	}
-	catch (error) {
-		throw new Error(
-			`There was an error running audiences detection: ${getErrorMessage(error)}`
-		);
-	}
-
-	const audienceIds = store.getAudienceIds();
-
-	for (const match of matches) {
-		audienceIds.add(match);
-	}
-
-	store.setAudienceIds(audienceIds);
 }
 
 export function on(audienceId: AudienceId, handler: Handler): void {
-	log(
-		`Adding handler '${handler.name ?? 'anonymous'}' for audience '${audienceId}'`
-	);
+	const handlerName = handler.name ? handler.name : '<anonymous>';
 
-	if (!handlers[audienceId]) {
-		handlers[audienceId] = [];
+	log(`Adding handler '${handlerName}' for audience '${audienceId}'`);
+
+	let audienceHandlers = handlers.get(audienceId);
+
+	if (!audienceHandlers) {
+		audienceHandlers = [];
+		handlers.set(audienceId, audienceHandlers);
 	}
 
-	handlers[audienceId].push(handler);
+	audienceHandlers.push(handler);
 }
 
 export async function runHandlers(): Promise<void> {
-	const audienceIds = get();
+	try {
+		const audienceIds = get();
 
-	for (const audienceId of audienceIds) {
-		if (!handlers[audienceId]) {
-			continue;
-		}
+		await Promise.allSettled(
+			[...audienceIds]
+				.filter((audienceId) => handlers.has(audienceId))
+				.map(async (audienceId) => {
+					await Promise.allSettled(
 
-		for (const handler of handlers[audienceId]) {
-			const handlerName = handler.name ?? 'anonymous';
+						// @ts-ignore
 
-			log(
-				`Running handler '${handlerName}' for audience '${audienceId}'`
-			);
+						handlers.get(audienceId).map(async (handler) => {
+							const handlerName = handler.name ?? 'anonymous';
 
-			try {
-				await handler();
-			}
-			catch (error) {
-				log(
-					`Unable to run handler '${handlerName}' of audience ` +
-						`'${audienceId}': ${getErrorMessage(error)}`
-				);
-			}
-		}
+							log(
+								`Running handler '${handlerName}' for audience '${audienceId}'`
+							);
+
+							try {
+								await handler();
+							}
+							catch (error: any) {
+								log(
+									`Handler '${handlerName}' of audience '${audienceId}' failed with error:\n${formatError(error)}`
+								);
+							}
+						})
+					);
+				})
+		);
+	}
+	finally {
+		clearHandlers();
 	}
 }
 
@@ -144,10 +155,40 @@ export function setLogEnabled(enabled: boolean) {
 	log.enabled = enabled;
 }
 
-function getErrorMessage(error: unknown): string {
-	if (error instanceof Error) {
-		return error.message;
+function createRunDetectionTimeoutAbortSignal(timeout?: number): AbortSignal {
+	const abortController = new AbortController();
+
+	if (timeout) {
+		setTimeout(() => abortController.abort(), timeout);
 	}
 
-	return String(error);
+	return abortController.signal;
+}
+
+/**
+ * @throws TimeoutError if download timed out
+ * @throws Error if anything (e.g: download or parsing) went wrong
+ */
+async function downloadAudiencesDefinition(
+	audiencesDefinitionURL: string,
+	signal: AbortSignal
+): Promise<AudiencesDefinition> {
+	const response: void | Response = await Promise.race([
+		waitForAbort(signal),
+
+		// eslint-disable-next-line @liferay/portal/no-global-fetch
+		fetch(audiencesDefinitionURL, {signal}),
+	]);
+
+	if (!response) {
+		throw new TimeoutError('Download of audiences definition');
+	}
+
+	if (!response.ok) {
+		throw new Error(
+			`Server returned: ${response.status} ${response.statusText}`
+		);
+	}
+
+	return await response.json();
 }

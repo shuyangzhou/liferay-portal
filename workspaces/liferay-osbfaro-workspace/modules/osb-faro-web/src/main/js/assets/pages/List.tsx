@@ -330,7 +330,7 @@ const List = () => {
 					label: ASSET_OBJECT_TYPE_LANG_MAP[value],
 					value,
 				})),
-				label: Liferay.Language.get('object-type'),
+				label: Liferay.Language.get('asset-structure-type'),
 				multiple: false,
 				...(objectType && {
 					preloadedData: {
@@ -411,17 +411,8 @@ const List = () => {
 
 			<BasePage.SubHeader fluid>
 				<div className="d-flex justify-content-end w-100">
-					<div className="mr-1">
-						<DownloadStaticCSVReport
-							disabled={false}
-							getFDSQuery={() => fdsQueryRef.current}
-							rangeSelectors={rangeSelectors}
-							type={CSVType.Asset}
-							typeLang={Liferay.Language.get('assets')}
-						/>
-					</div>
-
 					<DropdownRangeKey
+						bordered
 						legacy={false}
 						onRangeSelectorChange={(rangeSelectors) => {
 							history.push(
@@ -441,6 +432,17 @@ const List = () => {
 							setRangeSelectors(rangeSelectors);
 						}}
 						rangeSelectors={rangeSelectors}
+					/>
+
+					<span className="align-self-stretch border-left mx-3" />
+
+					<DownloadStaticCSVReport
+						bordered
+						disabled={false}
+						getFDSQuery={() => fdsQueryRef.current}
+						rangeSelectors={rangeSelectors}
+						type={CSVType.Asset}
+						typeLang={Liferay.Language.get('assets')}
 					/>
 				</div>
 			</BasePage.SubHeader>
