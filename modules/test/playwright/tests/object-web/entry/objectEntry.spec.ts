@@ -3718,11 +3718,9 @@ test.describe('Manage object entries through View Object Entries', () => {
 
 			await expect(viewObjectEntriesPage.successMessage).toBeVisible();
 
-			expect(
-				(
-					await page.getByPlaceholder('Search').inputValue()
-				).toLowerCase()
-			).toBe(userAccount.givenName.toLowerCase());
+			await expect(page.getByPlaceholder('Search')).toHaveValue(
+				new RegExp(`^${userAccount.givenName}$`, 'i')
+			);
 		}
 	);
 
@@ -3818,11 +3816,9 @@ test.describe('Manage object entries through View Object Entries', () => {
 					viewObjectEntriesPage.successMessage
 				).toBeVisible();
 
-				expect(
-					(
-						await page.getByPlaceholder('Search').inputValue()
-					).toLowerCase()
-				).toBe(userAccount.givenName.toLowerCase());
+				await expect(page.getByPlaceholder('Search')).toHaveValue(
+					new RegExp(`^${userAccount.givenName}$`, 'i')
+				);
 			}
 		}
 	);
@@ -6917,6 +6913,8 @@ test.describe('Manage object entries through Workflow', () => {
 			);
 
 			await usersAndOrganizationsPage.saveTimeZoneButton.click();
+
+			await waitForAlert(page);
 
 			// Check if the time has changed
 

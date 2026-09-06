@@ -374,6 +374,28 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 			"Unable to find a plugins Git working directory");
 	}
 
+	public File getPortalPrivateDir() {
+		String portalPrivateDirPath = JenkinsResultsParserUtil.getProperty(
+			getTestProperties(), "liferay.portal.private.dir");
+
+		if (JenkinsResultsParserUtil.isNullOrEmpty(portalPrivateDirPath)) {
+			return null;
+		}
+
+		File portalPrivateDir = new File(portalPrivateDirPath);
+
+		if (!portalPrivateDir.isAbsolute()) {
+			portalPrivateDir = new File(
+				getWorkingDirectory(), portalPrivateDirPath);
+		}
+
+		if (!portalPrivateDir.exists()) {
+			return null;
+		}
+
+		return JenkinsResultsParserUtil.getCanonicalFile(portalPrivateDir);
+	}
+
 	public Properties getReleaseProperties() {
 		if (_releaseProperties != null) {
 			return _releaseProperties;
@@ -663,7 +685,7 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 	}
 
 	private static final String[] _BINARIES_CACHE_EXCLUDE_REGEXES = {
-		"\\.gradle/", "\\.yarn/", "modules/\\.tsc/", "node_modules_cache/"
+		"\\.gradle/", "\\.yarn/", "modules/\\.tsc/", "node_modules_cache"
 	};
 
 	private static final Pattern _esBuildFileNamePattern = Pattern.compile(

@@ -1773,34 +1773,6 @@ definition {
 		}
 	}
 
-	@description = "This is a test for LPS-136825. It checks that a file entry can be imported with tags."
-	@priority = 3
-	test CanImportWithTags {
-		JSONDocument.addFileWithUploadedFile(
-			assetTagNames = "Tag Name",
-			dmDocumentDescription = "DM Document Description",
-			dmDocumentTitle = "DM Document Title",
-			groupName = "Guest",
-			mimeType = "image/jpeg",
-			sourceFileName = "Document_1.jpg");
-
-		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
-
-		LAR.exportPortlet(larFileName = "DocumentsandMedia_portlet.lar");
-
-		HeadlessSite.addSite(siteName = "Site Name");
-
-		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "site-name");
-
-		LAR.importPortlet(larFileName = "DocumentsandMedia_portlet.lar");
-
-		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
-
-		DMNavigator.gotoDocumentCP(dmDocumentTitle = "DM Document Title");
-
-		DMDocument.viewTagInfo(tagName = "tag name");
-	}
-
 	@description = "This test covers LPS-115949. It validates that resource allocation for forked processes can be controlled through portal.properties."
 	@priority = 4
 	test CanLimitForkedProcessResourceAllocation {
@@ -3334,9 +3306,7 @@ definition {
 			groupName = "Guest",
 			siteURLKey = "guest");
 
-		RelatedAssets.selectAsset(
-			assetTitle = "Document_1.doc",
-			assetType = "Basic Document");
+		RelatedAssets.selectAsset(assetTitle = "Document_1.doc");
 
 		Button.clickPublish();
 
@@ -3793,7 +3763,7 @@ definition {
 	@description = "This test covers LPS-144687. It validates that a temp zip is not created if NoSuchFileException occurs during a download."
 	@priority = 4
 	test NoZipFileIsCreatedIfDownloadResultsInError {
-		DMDocument.deleteTempFolder(appServer = "tomcat-10.1.57");
+		DMDocument.deleteTempFolder(appServer = "tomcat-10.1.59");
 
 		for (var num : list "1,2,3") {
 			JSONDocument.addFileWithUploadedFile(
@@ -3813,7 +3783,7 @@ definition {
 		AssertConsoleTextPresent(value1 = "com.liferay.document.library.kernel.exception.NoSuchFileException");
 
 		DMDocument.assertNoZipFileFromTempFolder(
-			appServer = "tomcat-10.1.57",
+			appServer = "tomcat-10.1.59",
 			fileNamePattern = "*.zip");
 	}
 

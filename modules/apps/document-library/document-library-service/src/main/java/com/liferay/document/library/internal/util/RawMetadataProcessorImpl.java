@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
-import com.liferay.portal.kernel.metadata.RawMetadataProcessorUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.search.Indexer;
@@ -124,8 +123,9 @@ public class RawMetadataProcessorImpl
 				return;
 			}
 
-			rawMetadataMap = RawMetadataProcessorUtil.getRawMetadataMap(
-				fileVersion.getMimeType(), inputStream);
+			rawMetadataMap = DDMFormUtil.getDDMFormValuesMap(
+				_rawMetadataProcessor.getRawMetadata(
+					fileVersion.getMimeType(), inputStream));
 		}
 		catch (IOException ioException) {
 			if (_log.isWarnEnabled()) {
@@ -218,5 +218,9 @@ public class RawMetadataProcessorImpl
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private com.liferay.portal.kernel.metadata.RawMetadataProcessor
+		_rawMetadataProcessor;
 
 }

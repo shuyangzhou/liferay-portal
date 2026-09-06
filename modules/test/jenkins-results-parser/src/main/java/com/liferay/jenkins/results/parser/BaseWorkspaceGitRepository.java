@@ -39,11 +39,6 @@ public abstract class BaseWorkspaceGitRepository
 
 	@Override
 	public void fetchGitHubDevBranch() {
-		if (isSnapshot()) {
-			System.out.println(
-				"Using git archive, unable to fetch from GitHub dev");
-		}
-
 		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
 
 		List<GitRemote> gitHubDevGitRemotes =
@@ -179,9 +174,7 @@ public abstract class BaseWorkspaceGitRepository
 
 	@Override
 	public GitWorkingDirectory getGitWorkingDirectory() {
-		if (_isGitArchiveEnabled() && isSnapshot() &&
-			!_isDotGitDirArchiveRequired()) {
-
+		if (_isGitArchiveOnly()) {
 			throw new RuntimeException(
 				"Using Git archive, unable to get Git working directory");
 		}
@@ -467,7 +460,7 @@ public abstract class BaseWorkspaceGitRepository
 
 	@Override
 	public void synchronizeToGitHubDev() {
-		if (isSnapshot()) {
+		if (_isGitArchiveOnly()) {
 			throw new RuntimeException(
 				"Using Git archive, unable to synchronize to GitHub dev");
 		}
@@ -477,9 +470,15 @@ public abstract class BaseWorkspaceGitRepository
 
 	@Override
 	public void tearDown() {
-		if (isSnapshot()) {
+		if (_isGitArchiveEnabled() && isSnapshot()) {
 			_deleteGitRepository();
 
+			return;
+		}
+
+		File dotGitFolder = new File(getDirectory(), ".git");
+
+		if (!dotGitFolder.exists()) {
 			return;
 		}
 
@@ -915,7 +914,7 @@ public abstract class BaseWorkspaceGitRepository
 
 		sb.setLength(0);
 
-		sb.append("rm -rf ");
+		sb.append("rm -fr ");
 
 		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
 
@@ -1061,7 +1060,7 @@ public abstract class BaseWorkspaceGitRepository
 
 		sb.setLength(0);
 
-		sb.append("rm -rf ");
+		sb.append("rm -fr ");
 		sb.append(clonedWorkingDirectory);
 
 		commands.add(sb.toString());
@@ -1222,7 +1221,7 @@ public abstract class BaseWorkspaceGitRepository
 
 		try {
 			Process process = JenkinsResultsParserUtil.executeBashCommands(
-				"rm -rf " + getDirectory());
+				"rm -fr " + getDirectory());
 
 			JenkinsResultsParserUtil.readInputStream(process.getInputStream());
 
@@ -1258,7 +1257,7 @@ public abstract class BaseWorkspaceGitRepository
 				JenkinsResultsParserUtil.combine(
 					"tar -xzf ", archiveFile.getCanonicalPath(), " -C ",
 					baseGitRepositoryDir.getCanonicalPath()),
-				"rm -rf " + archiveFile.getCanonicalPath());
+				"rm -fr " + archiveFile.getCanonicalPath());
 
 			if (process.exitValue() != 0) {
 				String errorText = JenkinsResultsParserUtil.readInputStream(
@@ -1437,6 +1436,16 @@ public abstract class BaseWorkspaceGitRepository
 		catch (IOException ioException) {
 			return true;
 		}
+	}
+
+	private boolean _isGitArchiveOnly() {
+		if (_isGitArchiveEnabled() && isSnapshot() &&
+			!_isDotGitDirArchiveRequired()) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private boolean _isPullRequest() {

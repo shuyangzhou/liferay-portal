@@ -75,7 +75,6 @@ import com.liferay.portal.service.impl.ClassNameLocalServiceImpl;
 import com.liferay.portal.service.impl.CompanyLocalServiceImpl;
 import com.liferay.portal.service.impl.ResourceActionLocalServiceImpl;
 import com.liferay.portal.spring.aop.AopInvocationHandler;
-import com.liferay.portal.test.rule.FeatureFlag;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -350,7 +349,6 @@ public class CompanyLocalServiceDBPartitionTest
 		}
 	}
 
-	@FeatureFlag("LPD-11342")
 	@Test
 	public void testAddDBPartitionCompany() throws Exception {
 		Company company = CompanyTestUtil.addCompany();
@@ -384,7 +382,7 @@ public class CompanyLocalServiceDBPartitionTest
 				Assert.assertTrue(
 					dbPartitionDB.existsPartition(
 						connection,
-						CompanyLocalServiceTestUtil.getExportedPartitionName(
+						DBPartitionUtil.getExportedPartitionName(
 							company.getCompanyId())));
 			}
 
@@ -413,7 +411,7 @@ public class CompanyLocalServiceDBPartitionTest
 		finally {
 			db.runSQL(
 				dbPartitionDB.getDropPartitionSQL(
-					CompanyLocalServiceTestUtil.getExportedPartitionName(
+					DBPartitionUtil.getExportedPartitionName(
 						company.getCompanyId())));
 
 			if (ArrayUtil.contains(
@@ -428,7 +426,6 @@ public class CompanyLocalServiceDBPartitionTest
 		}
 	}
 
-	@FeatureFlag("LPD-11342")
 	@Test
 	public void testAddDBPartitionCompanyWhenCompanyLocalServiceFails()
 		throws Exception {
@@ -458,7 +455,7 @@ public class CompanyLocalServiceDBPartitionTest
 
 				CompanyLocalServiceTestUtil.checkStandaloneDBPartitionTables(
 					connection, dbPartitionDB,
-					CompanyLocalServiceTestUtil.getExportedPartitionName(
+					DBPartitionUtil.getExportedPartitionName(
 						company.getCompanyId()),
 					"Company", "VirtualHost");
 			}
@@ -466,7 +463,7 @@ public class CompanyLocalServiceDBPartitionTest
 		finally {
 			db.runSQL(
 				dbPartitionDB.getDropPartitionSQL(
-					CompanyLocalServiceTestUtil.getExportedPartitionName(
+					DBPartitionUtil.getExportedPartitionName(
 						company.getCompanyId())));
 
 			if (ArrayUtil.contains(
@@ -481,7 +478,6 @@ public class CompanyLocalServiceDBPartitionTest
 		}
 	}
 
-	@FeatureFlag("LPD-11342")
 	@Test
 	public void testAddDBPartitionCompanyWhenDBPartitionUtilFails()
 		throws Exception {
@@ -524,7 +520,7 @@ public class CompanyLocalServiceDBPartitionTest
 
 				CompanyLocalServiceTestUtil.checkStandaloneDBPartitionTables(
 					connection, dbPartitionDB,
-					CompanyLocalServiceTestUtil.getExportedPartitionName(
+					DBPartitionUtil.getExportedPartitionName(
 						company.getCompanyId()),
 					"Company", "VirtualHost");
 			}
@@ -532,7 +528,7 @@ public class CompanyLocalServiceDBPartitionTest
 		finally {
 			db.runSQL(
 				dbPartitionDB.getDropPartitionSQL(
-					CompanyLocalServiceTestUtil.getExportedPartitionName(
+					DBPartitionUtil.getExportedPartitionName(
 						company.getCompanyId())));
 
 			if (ArrayUtil.contains(
@@ -547,26 +543,6 @@ public class CompanyLocalServiceDBPartitionTest
 		}
 	}
 
-	@Test
-	public void testAddDBPartitionCompanyWithoutFF() {
-		try {
-			_companyLocalService.addDBPartitionCompany(
-				PortalInstancePool.getDefaultCompanyId(),
-				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
-				RandomTestUtil.randomString());
-
-			Assert.fail();
-		}
-		catch (Exception exception) {
-			Assert.assertTrue(
-				exception instanceof UnsupportedOperationException);
-
-			Assert.assertEquals(
-				"Feature flag LPD-11342 is disabled", exception.getMessage());
-		}
-	}
-
-	@FeatureFlag("LPD-11342")
 	@Test
 	public void testCopyDBPartitionCompany() throws Exception {
 		long rulesCount = _getRulesCount(defaultPartitionName);
@@ -695,7 +671,6 @@ public class CompanyLocalServiceDBPartitionTest
 		}
 	}
 
-	@FeatureFlag("LPD-11342")
 	@Test
 	public void testCopyDBPartitionCompanyWhenCompanyLocalServiceFails()
 		throws Exception {
@@ -730,7 +705,6 @@ public class CompanyLocalServiceDBPartitionTest
 		}
 	}
 
-	@FeatureFlag("LPD-11342")
 	@Test
 	public void testCopyDBPartitionCompanyWhenDBPartitionUtilFails()
 		throws Exception {
@@ -783,25 +757,6 @@ public class CompanyLocalServiceDBPartitionTest
 		}
 		finally {
 			companyLocalService.deleteCompany(company);
-		}
-	}
-
-	@Test
-	public void testCopyDBPartitionCompanyWithoutFF() {
-		try {
-			_companyLocalService.copyDBPartitionCompany(
-				PortalInstancePool.getDefaultCompanyId(),
-				RandomTestUtil.nextLong(), RandomTestUtil.randomString(),
-				RandomTestUtil.randomString(), RandomTestUtil.randomString());
-
-			Assert.fail();
-		}
-		catch (Exception exception) {
-			Assert.assertTrue(
-				exception instanceof UnsupportedOperationException);
-
-			Assert.assertEquals(
-				"Feature flag LPD-11342 is disabled", exception.getMessage());
 		}
 	}
 

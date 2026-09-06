@@ -5,6 +5,7 @@
 
 package com.liferay.asset.list.web.internal.util;
 
+import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
 import com.liferay.list.type.service.ListTypeEntryLocalServiceUtil;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.model.ObjectDefinition;
@@ -20,6 +21,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.util.List;
@@ -90,92 +92,48 @@ public class AssetListTypePropertiesUtil {
 				companyId, PortalUtil.getClassName(classNameId));
 	}
 
+	private static JSONObject _getCommonFieldJSONObject(
+		String labelKey, Locale locale, String name, String type) {
+
+		return JSONUtil.put(
+			"label", LanguageUtil.get(locale, labelKey)
+		).put(
+			"name", name
+		).put(
+			"sortable",
+			ArrayUtil.contains(AssetEntryQuery.ORDER_BY_COLUMNS, name) ||
+			name.equals(Field.MODIFIED_DATE)
+		).put(
+			"type", type
+		);
+	}
+
 	private static JSONArray _getCommonFieldsItemsJSONArray(Locale locale) {
 		return JSONUtil.putAll(
-			JSONUtil.put(
-				"label", LanguageUtil.get(locale, "author-name")
-			).put(
-				"name", Field.USER_NAME
-			).put(
-				"type", "text"
-			),
-			JSONUtil.put(
-				"label", LanguageUtil.get(locale, "created-date")
-			).put(
-				"name", Field.CREATE_DATE
-			).put(
-				"type", "date"
-			),
-			JSONUtil.put(
-				"label", LanguageUtil.get(locale, "display-date")
-			).put(
-				"name", Field.DISPLAY_DATE
-			).put(
-				"type", "date"
-			),
-			JSONUtil.put(
-				"label", LanguageUtil.get(locale, "expiration-date")
-			).put(
-				"name", Field.EXPIRATION_DATE
-			).put(
-				"type", "date"
-			),
-			JSONUtil.put(
-				"label", LanguageUtil.get(locale, "external-reference-code")
-			).put(
-				"name", "externalReferenceCode"
-			).put(
-				"type", "text"
-			),
-			JSONUtil.put(
-				"label", LanguageUtil.get(locale, "modified-date")
-			).put(
-				"name", Field.MODIFIED_DATE
-			).put(
-				"type", "date"
-			),
-			JSONUtil.put(
-				"label", LanguageUtil.get(locale, "priority")
-			).put(
-				"name", Field.PRIORITY
-			).put(
-				"type", "decimal"
-			),
-			JSONUtil.put(
-				"label", LanguageUtil.get(locale, "publish-date")
-			).put(
-				"name", Field.PUBLISH_DATE
-			).put(
-				"type", "date"
-			),
-			JSONUtil.put(
-				"label", LanguageUtil.get(locale, "review-date")
-			).put(
-				"name", Field.REVIEW_DATE
-			).put(
-				"type", "date"
-			),
-			JSONUtil.put(
-				"label", LanguageUtil.get(locale, "status")
-			).put(
-				"name", Field.STATUS
-			).put(
-				"type", "integer"
-			),
-			JSONUtil.put(
-				"label", LanguageUtil.get(locale, "title")
-			).put(
-				"name", Field.TITLE
-			).put(
-				"type", "text"
-			),
-			JSONUtil.put(
-				"label", LanguageUtil.get(locale, "view-count")
-			).put(
-				"name", "viewCount"
-			).put(
-				"type", "integer"
-			));
+			_getCommonFieldJSONObject(
+				"author-name", locale, Field.USER_NAME, "text"),
+			_getCommonFieldJSONObject(
+				"created-date", locale, Field.CREATE_DATE, "date"),
+			_getCommonFieldJSONObject(
+				"display-date", locale, Field.DISPLAY_DATE, "date"),
+			_getCommonFieldJSONObject(
+				"expiration-date", locale, Field.EXPIRATION_DATE, "date"),
+			_getCommonFieldJSONObject(
+				"external-reference-code", locale, "externalReferenceCode",
+				"text"),
+			_getCommonFieldJSONObject(
+				"modified-date", locale, Field.MODIFIED_DATE, "date"),
+			_getCommonFieldJSONObject(
+				"priority", locale, Field.PRIORITY, "decimal"),
+			_getCommonFieldJSONObject(
+				"publish-date", locale, Field.PUBLISH_DATE, "date"),
+			_getCommonFieldJSONObject(
+				"review-date", locale, Field.REVIEW_DATE, "date"),
+			_getCommonFieldJSONObject(
+				"status", locale, Field.STATUS, "integer"),
+			_getCommonFieldJSONObject("title", locale, Field.TITLE, "text"),
+			_getCommonFieldJSONObject(
+				"view-count", locale, "viewCount", "integer"));
 	}
 
 	private static JSONArray _getItemsJSONArray(
@@ -191,25 +149,13 @@ public class AssetListTypePropertiesUtil {
 					return null;
 				}
 
-				return _toPropertyJSONObject(
+				return _getPropertyJSONObject(
 					classNameId, classTypeId, locale, objectField, type);
 			},
 			_log);
 	}
 
-	private static boolean _isSortable(String businessType) {
-		if (businessType.equals(ObjectFieldConstants.BUSINESS_TYPE_LONG_TEXT) ||
-			businessType.equals(
-				ObjectFieldConstants.BUSINESS_TYPE_MULTISELECT_PICKLIST) ||
-			businessType.equals(ObjectFieldConstants.BUSINESS_TYPE_RICH_TEXT)) {
-
-			return false;
-		}
-
-		return true;
-	}
-
-	private static JSONObject _toPropertyJSONObject(
+	private static JSONObject _getPropertyJSONObject(
 		long classNameId, long classTypeId, Locale locale,
 		ObjectField objectField, String type) {
 
@@ -245,6 +191,18 @@ public class AssetListTypePropertiesUtil {
 		).put(
 			"type", type
 		);
+	}
+
+	private static boolean _isSortable(String businessType) {
+		if (businessType.equals(ObjectFieldConstants.BUSINESS_TYPE_LONG_TEXT) ||
+			businessType.equals(
+				ObjectFieldConstants.BUSINESS_TYPE_MULTISELECT_PICKLIST) ||
+			businessType.equals(ObjectFieldConstants.BUSINESS_TYPE_RICH_TEXT)) {
+
+			return false;
+		}
+
+		return true;
 	}
 
 	private static String _toType(String businessType) {

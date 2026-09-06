@@ -6,6 +6,7 @@
 package com.liferay.jenkins.results.parser;
 
 import java.io.File;
+import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -231,6 +232,15 @@ public class BaseWorkspaceGitRepositoryTest
 	}
 
 	@Test
+	public void testTearDown() throws Exception {
+		_testTearDown(false, false, false);
+		_testTearDown(false, true, true);
+		_testTearDown(true, false, true);
+		_testTearDown(true, true, false);
+		_testTearDown(true, true, true);
+	}
+
+	@Test
 	public void testUploadGitArchives() throws Exception {
 		String jobName = "downstream-job";
 
@@ -371,6 +381,12 @@ public class BaseWorkspaceGitRepositoryTest
 		DefaultWorkspaceGitRepository defaultWorkspaceGitRepository =
 			_newDefaultWorkspaceGitRepository();
 
+		Mockito.doReturn(
+			gitArchiveAvailable
+		).when(
+			defaultWorkspaceGitRepository
+		).isGitArchivesAvailable();
+
 		Mockito.doNothing(
 		).when(
 			defaultWorkspaceGitRepository
@@ -380,12 +396,6 @@ public class BaseWorkspaceGitRepositoryTest
 		).when(
 			defaultWorkspaceGitRepository
 		).updateBuildDatabase();
-
-		Mockito.doReturn(
-			gitArchiveAvailable
-		).when(
-			defaultWorkspaceGitRepository
-		).isGitArchivesAvailable();
 
 		defaultWorkspaceGitRepository.setSnapshot(snapshot);
 
@@ -759,16 +769,16 @@ public class BaseWorkspaceGitRepositoryTest
 			defaultWorkspaceGitRepository
 		).initializeGitWorkingDirectory();
 
-		Mockito.doNothing(
-		).when(
-			defaultWorkspaceGitRepository
-		).promoteGitArchive();
-
 		Mockito.doReturn(
 			snapshot
 		).when(
 			defaultWorkspaceGitRepository
 		).isSnapshot();
+
+		Mockito.doNothing(
+		).when(
+			defaultWorkspaceGitRepository
+		).promoteGitArchive();
 
 		defaultWorkspaceGitRepository.prepareGitWorkingDirectory();
 
@@ -825,6 +835,100 @@ public class BaseWorkspaceGitRepositoryTest
 		_setUpEnvironment(jobName, null);
 
 		_testPrepareGitWorkingDirectory(gitArchiveEnabled, true);
+	}
+
+	private void _testTearDown(
+			boolean dotGitFolderExists, boolean gitArchiveEnabled,
+			boolean snapshot)
+		throws Exception {
+
+		_setUpEnvironment(RandomTestUtil.randomString(), null);
+
+		Properties buildProperties = new Properties();
+
+		buildProperties.setProperty(
+			"git.archive.enabled", String.valueOf(gitArchiveEnabled));
+
+		JenkinsResultsParserUtil.setBuildProperties(buildProperties);
+
+		Shell shell = mockShell();
+
+		setShellCommandOutput("rm -fr", shell, "");
+
+		GitWorkingDirectory gitWorkingDirectory = Mockito.mock(
+			GitWorkingDirectory.class);
+
+		Mockito.doReturn(
+			Mockito.mock(LocalGitBranch.class)
+		).when(
+			gitWorkingDirectory
+		).getUpstreamLocalGitBranch();
+
+		DefaultWorkspaceGitRepository defaultWorkspaceGitRepository =
+			_newDefaultWorkspaceGitRepository();
+
+		ReflectionTestUtil.setFieldValue(
+			defaultWorkspaceGitRepository, "_gitWorkingDirectory",
+			gitWorkingDirectory);
+
+		IOException ioException = new IOException();
+
+		Mockito.doThrow(
+			ioException
+		).when(
+			defaultWorkspaceGitRepository
+		).prepareGitWorkingDirectory();
+
+		defaultWorkspaceGitRepository.setSnapshot(snapshot);
+
+		if (dotGitFolderExists) {
+			File dotGitFolder = new File(
+				defaultWorkspaceGitRepository.getDirectory(), ".git");
+
+			dotGitFolder.mkdir();
+		}
+
+		try {
+			defaultWorkspaceGitRepository.setUp();
+
+			Assert.fail("Expected RuntimeException");
+		}
+		catch (RuntimeException runtimeException) {
+			testSame(ioException, runtimeException.getCause());
+		}
+
+		Assert.assertFalse(defaultWorkspaceGitRepository.isSetUp());
+
+		defaultWorkspaceGitRepository.tearDown();
+
+		if (gitArchiveEnabled && snapshot) {
+			Mockito.verify(
+				shell
+			).doExecute(
+				Mockito.argThat(
+					executionRequest -> hasCommand(
+						executionRequest, "rm -fr",
+						String.valueOf(
+							defaultWorkspaceGitRepository.getDirectory())))
+			);
+
+			return;
+		}
+
+		VerificationMode verificationMode = _getVerificationMode(
+			dotGitFolderExists);
+
+		Mockito.verify(
+			gitWorkingDirectory, verificationMode
+		).clean();
+
+		Mockito.verify(
+			gitWorkingDirectory, verificationMode
+		).cleanTempBranches();
+
+		Mockito.verify(
+			gitWorkingDirectory, verificationMode
+		).deleteLockFiles();
 	}
 
 	private void _testValidateSHAInRemoteGitRef(

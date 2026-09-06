@@ -67,7 +67,7 @@ portletDisplay.setURLBack(String.valueOf(renderResponse.createRenderURL()));
 								elementClasses="py-3"
 								title='<%= LanguageUtil.get(request, "account-info") %>'
 							>
-								<p class="mb-0"><%= String.valueOf(commerceReturnContentDisplayContext.getAccountEntryName()) %></p>
+								<p class="mb-0"><%= HtmlUtil.escape(commerceReturnContentDisplayContext.getAccountEntryName()) %></p>
 								<p class="mb-0">#<%= (commerceReturn == null) ? StringPool.BLANK : String.valueOf(commerceReturn.getAccountId()) %></p>
 							</commerce-ui:info-box>
 
@@ -75,7 +75,7 @@ portletDisplay.setURLBack(String.valueOf(renderResponse.createRenderURL()));
 								elementClasses="py-3"
 								title='<%= LanguageUtil.get(request, "shipping-address") %>'
 							>
-								<p class="mb-0"><%= commerceReturnContentDisplayContext.getShippingAddress() %></p>
+								<p class="mb-0"><%= HtmlUtil.escape(commerceReturnContentDisplayContext.getShippingAddress()) %></p>
 							</commerce-ui:info-box>
 						</div>
 
@@ -98,7 +98,7 @@ portletDisplay.setURLBack(String.valueOf(renderResponse.createRenderURL()));
 								elementClasses="py-3"
 								title='<%= LanguageUtil.get(request, "payment-method") %>'
 							>
-								<p class="mb-0"><%= commerceReturnContentDisplayContext.getPaymentMethod() %></p>
+								<p class="mb-0"><%= HtmlUtil.escape(commerceReturnContentDisplayContext.getPaymentMethod()) %></p>
 							</commerce-ui:info-box>
 						</div>
 

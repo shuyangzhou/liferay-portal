@@ -9,13 +9,12 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
-import com.liferay.friendly.url.configuration.FriendlyURLSeparatorCompanyConfiguration;
+import com.liferay.friendly.url.configuration.manager.FriendlyURLSeparatorConfigurationManager;
 import com.liferay.info.item.ERCInfoItemIdentifier;
 import com.liferay.info.item.InfoItemReference;
 import com.liferay.layout.display.page.LayoutDisplayPageObjectProvider;
 import com.liferay.layout.display.page.LayoutDisplayPageProvider;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.configuration.test.util.CompanyConfigurationTemporarySwapper;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -31,7 +30,6 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
@@ -161,25 +159,29 @@ public class FileEntryLayoutDisplayPageProviderTest {
 	public void testGetURLSeparatorWithConfiguredURLSeparator()
 		throws Exception {
 
+		long companyId = _group.getCompanyId();
+
+		String friendlyURLSeparatorsJSON = String.valueOf(
+			_friendlyURLSeparatorConfigurationManager.
+				getFriendlyURLSeparatorsJSONObject(companyId));
+
 		String fileEntryFriendlyURLSeparator = "/file-test1/";
 
-		try (CompanyConfigurationTemporarySwapper
-				companyConfigurationTemporarySwapper =
-					new CompanyConfigurationTemporarySwapper(
-						_group.getCompanyId(),
-						FriendlyURLSeparatorCompanyConfiguration.class.
-							getName(),
-						HashMapDictionaryBuilder.<String, Object>put(
-							"friendlyURLSeparatorsJSON",
-							JSONUtil.put(
-								DLFileEntry.class.getName(),
-								fileEntryFriendlyURLSeparator)
-						).build())) {
+		_friendlyURLSeparatorConfigurationManager.
+			updateFriendlyURLSeparatorCompanyConfiguration(
+				companyId,
+				String.valueOf(
+					JSONUtil.put(
+						DLFileEntry.class.getName(),
+						fileEntryFriendlyURLSeparator)));
 
-			Assert.assertEquals(
-				fileEntryFriendlyURLSeparator,
-				_layoutDisplayPageProvider.getURLSeparator());
-		}
+		Assert.assertEquals(
+			fileEntryFriendlyURLSeparator,
+			_layoutDisplayPageProvider.getURLSeparator());
+
+		_friendlyURLSeparatorConfigurationManager.
+			updateFriendlyURLSeparatorCompanyConfiguration(
+				companyId, friendlyURLSeparatorsJSON);
 	}
 
 	@Inject
@@ -189,6 +191,10 @@ public class FileEntryLayoutDisplayPageProviderTest {
 	private DLAppLocalService _dlAppLocalService;
 
 	private FileEntry _fileEntry;
+
+	@Inject
+	private FriendlyURLSeparatorConfigurationManager
+		_friendlyURLSeparatorConfigurationManager;
 
 	@DeleteAfterTestRun
 	private Group _group;

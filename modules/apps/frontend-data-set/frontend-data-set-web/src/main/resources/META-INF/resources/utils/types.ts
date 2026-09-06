@@ -321,6 +321,7 @@ export type ILoadDataArgs = {
 	odataFiltersStrings?: Array<string>;
 	page?: number;
 	searchParam?: string;
+	signal?: AbortSignal;
 	sorts?: TSort[];
 };
 
@@ -385,6 +386,7 @@ export interface IFrontendDataSetProps {
 		initialPageNumber?: number;
 	};
 	portletId?: string;
+	searchAsYouType?: boolean;
 	selectedItems?: any[];
 	selectedItemsKey?: string | undefined;
 	selectionType?: 'single' | 'multiple';

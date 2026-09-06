@@ -36,10 +36,8 @@ public class JobHealthMonitor extends BaseMonitor {
 
 		_buildDurationMaximumSeconds = getLongValue(
 			"threshold", 0, "build.duration.maximum", thresholds);
-		_overdueGraceSeconds = getLongValue(
-			"threshold",
-			Math.max(_SECONDS_OVERDUE_GRACE_MINIMUM, _cadenceSeconds / 4),
-			"overdue.grace", thresholds);
+		_overdueGraceSeconds = getOverdueGraceSeconds(
+			_cadenceSeconds, thresholds);
 	}
 
 	@Override
@@ -172,8 +170,8 @@ public class JobHealthMonitor extends BaseMonitor {
 				_jobURL, "/api/json?tree=",
 				"lastBuild[building,number,timestamp],",
 				"lastCompletedBuild[number,result,timestamp]"),
-			false, 1, null, null, _SECONDS_RETRY_PERIOD,
-			getAttemptTimeoutMillis(), null);
+			false, _RETRIES_SIZE_MAX, null, null, _SECONDS_RETRY_PERIOD,
+			getAttemptTimeoutMillis(_RETRIES_SIZE_MAX), null);
 	}
 
 	private String _getJobURL(String masterName) {
@@ -263,7 +261,7 @@ public class JobHealthMonitor extends BaseMonitor {
 			MonitorResult.Status.getMostSevere(statuses), currentTimeMillis);
 	}
 
-	private static final long _SECONDS_OVERDUE_GRACE_MINIMUM = 30 * 60;
+	private static final int _RETRIES_SIZE_MAX = 1;
 
 	private static final int _SECONDS_RETRY_PERIOD = 1;
 

@@ -117,6 +117,14 @@ public class ExportProcessResourceTest
 
 	@Override
 	@Test
+	public void testGetExportProcess() throws Exception {
+		super.testGetExportProcess();
+
+		_testGetExportProcessErrorMessageWhenStatusMessageIsNotJSON();
+	}
+
+	@Override
+	@Test
 	@TestInfo("LPS-88498")
 	public void testGetExportProcessContent() throws Exception {
 		ObjectDefinition objectDefinition = _publishObjectDefinition(
@@ -686,7 +694,7 @@ public class ExportProcessResourceTest
 							new RequestPortletDataHandler() {
 								{
 									name =
-										"PORTLET_DATA_" + _LAYOUT_SET_LAYOUTS;
+										"PORTLET_DATA_" + _PORTLET_ID;
 
 									setRequestPortletDataHandlerControls(
 										new RequestPortletDataHandlerControl[] {
@@ -832,6 +840,30 @@ public class ExportProcessResourceTest
 		return objectDefinition;
 	}
 
+	@TestInfo("LPD-102315")
+	private void _testGetExportProcessErrorMessageWhenStatusMessageIsNotJSON()
+		throws Exception {
+
+		ExportProcess exportProcess = _addExportProcess(
+			testGroup.getGroupId(), RandomTestUtil.randomString(),
+			BackgroundTaskExecutorNames.LAYOUT_EXPORT_BACKGROUND_TASK_EXECUTOR);
+
+		_backgroundTaskLocalService.amendBackgroundTask(
+			exportProcess.getId(), null, null,
+			BackgroundTaskConstants.STATUS_FAILED, _STATUS_MESSAGE,
+			null);
+
+		ExportProcess failedExportProcess =
+			exportProcessResource.getExportProcess(exportProcess.getId());
+
+		String errorMessage = failedExportProcess.getErrorMessage();
+
+		Assert.assertNotEquals(_STATUS_MESSAGE, errorMessage);
+		Assert.assertFalse(errorMessage, errorMessage.contains(".java:"));
+		Assert.assertFalse(errorMessage, errorMessage.contains("\tat "));
+		Assert.assertFalse(errorMessage, errorMessage.contains("java.lang."));
+	}
+
 	@TestInfo("LPD-90359")
 	private void _testPostExportProcessWithDateRange(
 			long groupId, ObjectDefinition objectDefinition,
@@ -923,7 +955,7 @@ public class ExportProcessResourceTest
 					new RequestPortletDataHandler[] {
 						new RequestPortletDataHandler() {
 							{
-								name = "PORTLET_DATA_" + _LAYOUT_SET_LAYOUTS;
+								name = "PORTLET_DATA_" + _PORTLET_ID;
 
 								setRequestPortletDataHandlerControls(
 									new RequestPortletDataHandlerControl[] {
@@ -1059,8 +1091,13 @@ public class ExportProcessResourceTest
 		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 	}
 
-	private static final String _LAYOUT_SET_LAYOUTS =
+	private static final String _PORTLET_ID =
 		"com_liferay_layout_admin_web_portlet_LayoutSetLayoutsPortlet";
+
+	private static final String _STATUS_MESSAGE =
+		"java.lang.NullPointerException\n\tat com.liferay.exportimport." +
+			"internal.controller.LayoutExportController.doExport(" +
+				"LayoutExportController.java:412)";
 
 	@Inject
 	private BackgroundTaskLocalService _backgroundTaskLocalService;

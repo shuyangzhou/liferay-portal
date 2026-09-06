@@ -42,6 +42,16 @@ import java.util.regex.Pattern;
  */
 public class FIPSModeValidator {
 
+	public static Provider fetchProvider() {
+		Provider[] providers = Security.getProviders();
+
+		if (ArrayUtil.isEmpty(providers)) {
+			return null;
+		}
+
+		return providers[0];
+	}
+
 	public static String[] getAllowedTLSCipherSuites(String[] tlsCipherSuites) {
 		if (!PropsValues.FIPS_ENABLED) {
 			return tlsCipherSuites;
@@ -107,6 +117,15 @@ public class FIPSModeValidator {
 			throw new SecurityException(
 				"AES key must be 128, 192, or 256 bits");
 		}
+	}
+
+	public static void validateSessionTimeout(int sessionTimeout) {
+		if (!PropsValues.FIPS_ENABLED || (sessionTimeout <= 720)) {
+			return;
+		}
+
+		throw new SecurityException(
+			"Session timeout must not be greater than 12 hours in FIPS mode");
 	}
 
 	public static void validateURL(String url) {
@@ -329,10 +348,10 @@ public class FIPSModeValidator {
 		validateAlgorithm(
 			PropsUtil.get(PropsKeys.COMPANY_ENCRYPTION_ALGORITHM));
 		validateAlgorithm(PropsValues.TUNNELING_SERVLET_ENCRYPTION_ALGORITHM);
-
 		_validatePasswordsEncryptionAlgorithm(
 			PropsUtil.get(PropsKeys.PASSWORDS_ENCRYPTION_ALGORITHM));
 		_validatePlaintextSecrets();
+		validateSessionTimeout(PropsValues.SESSION_TIMEOUT);
 	}
 
 	private static void _validateProviders(Provider[] providers) {
