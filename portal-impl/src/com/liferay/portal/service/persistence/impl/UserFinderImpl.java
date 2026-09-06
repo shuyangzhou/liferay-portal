@@ -17,6 +17,7 @@ import com.liferay.portal.kernel.dao.orm.WildcardMode;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.model.OrganizationConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
@@ -1377,7 +1378,15 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 			else if (value instanceof Long[]) {
 				Long[] organizationIds = (Long[])value;
 
-				if (organizationIds.length > 1) {
+				if ((organizationIds.length == 1) &&
+					(organizationIds[0] ==
+						OrganizationConstants.ANY_ORGANIZATION_ID)) {
+
+					join = StringUtil.removeSubstring(
+						CustomSQLUtil.get(JOIN_BY_USERS_ORGS),
+						"WHERE Users_Orgs.organizationId = ?");
+				}
+				else if (organizationIds.length > 1) {
 					StringBundler sb = new StringBundler(
 						(organizationIds.length * 2) + 1);
 

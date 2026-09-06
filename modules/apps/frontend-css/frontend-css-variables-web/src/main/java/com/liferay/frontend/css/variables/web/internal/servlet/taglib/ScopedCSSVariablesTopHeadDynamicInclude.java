@@ -10,10 +10,13 @@ import com.liferay.frontend.css.variables.ScopedCSSVariablesProvider;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceComparator;
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.content.security.policy.ContentSecurityPolicyNonceProviderUtil;
 import com.liferay.portal.kernel.servlet.taglib.BaseDynamicInclude;
 import com.liferay.portal.kernel.servlet.taglib.DynamicInclude;
+import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -110,9 +113,11 @@ public class ScopedCSSVariablesTopHeadDynamicInclude
 
 			for (Map.Entry<String, String> entry : cssVariables.entrySet()) {
 				printWriter.print("\t\t--");
-				printWriter.print(entry.getKey());
+				printWriter.print(HtmlUtil.escapeCSS(entry.getKey()));
 				printWriter.print(": ");
-				printWriter.print(entry.getValue());
+				printWriter.print(
+					StringUtil.replace(
+						entry.getValue(), CharPool.LESS_THAN, "\\3c "));
 				printWriter.print(";\n");
 			}
 

@@ -22,41 +22,42 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.test.util.ObjectDefinitionTestUtil;
+import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.transform.TransformUtil;
-import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.CompanyConfigurationTemporarySwapper;
 import com.liferay.portal.kernel.lock.LockManager;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
+import com.liferay.portal.kernel.scheduler.SchedulerJobConfiguration;
 import com.liferay.portal.kernel.scheduler.StorageType;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.kernel.util.TimeZoneUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 import com.liferay.site.constants.SitemapConstants;
 import com.liferay.site.manager.SitemapManager;
+import com.liferay.site.model.SiteSitemapRegenerationEntry;
+import com.liferay.site.service.SiteSitemapRegenerationEntryLocalService;
 import com.liferay.site.storage.helper.SitemapStorageHelper;
 
 import java.io.Serializable;
 
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -76,6 +77,7 @@ import org.junit.runner.RunWith;
  * @author Cheryl Tang
  */
 @RunWith(Arquillian.class)
+@Sync
 public class SitemapRegenerationSchedulerTest {
 
 	@ClassRule
@@ -108,6 +110,8 @@ public class SitemapRegenerationSchedulerTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_deleteSiteSitemapRegenerationEntries();
+
 		_group = GroupTestUtil.addGroup();
 	}
 
@@ -115,8 +119,66 @@ public class SitemapRegenerationSchedulerTest {
 	public void tearDown() throws Exception {
 		_deleteRegenerateSitemapScheduledJobs();
 
+		_deleteSiteSitemapRegenerationEntries();
+
 		_sitemapStorageHelper.deleteSitemaps(
 			TestPropsValues.getCompanyId(), _group.getGroupId());
+	}
+
+	@Test
+	public void testDrainDiscardsEntriesWithDeletedGroups() throws Exception {
+		long companyId = TestPropsValues.getCompanyId();
+
+		_siteSitemapRegenerationEntryLocalService.
+			addSiteSitemapRegenerationEntry(
+				SitemapConstants.ASSET_TYPE_KEY_PAGES, companyId,
+				RandomTestUtil.randomLong());
+
+		UnsafeConsumer<Long, Exception> unsafeConsumer =
+			_schedulerJobConfiguration.getCompanyJobExecutorUnsafeConsumer();
+
+		unsafeConsumer.accept(companyId);
+
+		List<SiteSitemapRegenerationEntry> siteSitemapRegenerationEntries =
+			_siteSitemapRegenerationEntryLocalService.
+				getSiteSitemapRegenerationEntries(companyId);
+
+		Assert.assertTrue(
+			siteSitemapRegenerationEntries.toString(),
+			siteSitemapRegenerationEntries.isEmpty());
+
+		Assert.assertFalse(
+			_sitemapStorageHelper.hasSitemapFile(
+				companyId, _group.getGroupId()));
+	}
+
+	@Test
+	public void testDrainRegeneratesQueuedEntries() throws Exception {
+		LayoutTestUtil.addTypePortletLayout(_group);
+
+		long companyId = TestPropsValues.getCompanyId();
+
+		_siteSitemapRegenerationEntryLocalService.
+			addSiteSitemapRegenerationEntry(
+				SitemapConstants.ASSET_TYPE_KEY_PAGES, companyId,
+				_group.getGroupId());
+
+		UnsafeConsumer<Long, Exception> unsafeConsumer =
+			_schedulerJobConfiguration.getCompanyJobExecutorUnsafeConsumer();
+
+		unsafeConsumer.accept(companyId);
+
+		List<SiteSitemapRegenerationEntry> siteSitemapRegenerationEntries =
+			_siteSitemapRegenerationEntryLocalService.
+				getSiteSitemapRegenerationEntries(companyId);
+
+		Assert.assertTrue(
+			siteSitemapRegenerationEntries.toString(),
+			siteSitemapRegenerationEntries.isEmpty());
+
+		Assert.assertTrue(
+			_sitemapStorageHelper.hasSitemapFile(
+				companyId, _group.getGroupId()));
 	}
 
 	@Test
@@ -165,6 +227,24 @@ public class SitemapRegenerationSchedulerTest {
 		_deleteRegenerateSitemapScheduledJobs();
 
 		Assert.assertNull(
+			_sitemapManager.getNextRegenerateSitemapDate(
+				TestPropsValues.getCompanyId()));
+	}
+
+	@Test
+	public void testGetNextRegenerateSitemapDateWithPendingEntries()
+		throws Exception {
+
+		Assert.assertNull(
+			_sitemapManager.getNextRegenerateSitemapDate(
+				TestPropsValues.getCompanyId()));
+
+		_siteSitemapRegenerationEntryLocalService.
+			addSiteSitemapRegenerationEntry(
+				RandomTestUtil.randomString(), TestPropsValues.getCompanyId(),
+				RandomTestUtil.randomLong());
+
+		Assert.assertNotNull(
 			_sitemapManager.getNextRegenerateSitemapDate(
 				TestPropsValues.getCompanyId()));
 	}
@@ -227,81 +307,6 @@ public class SitemapRegenerationSchedulerTest {
 	}
 
 	@Test
-	public void testScheduleRegenerateSitemapDebouncesDuplicateRequests()
-		throws Exception {
-
-		_sitemapManager.scheduleRegenerateSitemap(
-			SitemapConstants.ASSET_TYPE_KEY_WEB_CONTENT,
-			TestPropsValues.getCompanyId(), _group.getGroupId(), null);
-		_sitemapManager.scheduleRegenerateSitemap(
-			SitemapConstants.ASSET_TYPE_KEY_WEB_CONTENT,
-			TestPropsValues.getCompanyId(), _group.getGroupId(), null);
-
-		List<SchedulerResponse> schedulerResponses =
-			_getRegenerateSitemapSchedulerResponses(
-				SitemapConstants.ASSET_TYPE_KEY_WEB_CONTENT);
-
-		Assert.assertEquals(
-			schedulerResponses.toString(), 1, schedulerResponses.size());
-	}
-
-	@Test
-	public void testScheduleRegenerateSitemapDelayHourly() throws Exception {
-		try (CompanyConfigurationTemporarySwapper
-				companyConfigurationTemporarySwapper =
-					_getRegenerationCompanyConfigurationTemporarySwapper(
-						RandomTestUtil.randomInt(0, 23),
-						RandomTestUtil.randomInt(0, 59), StringPool.BLANK,
-						SitemapConstants.REGENERATION_FREQUENCY_HOURLY)) {
-
-			Date startDate = _scheduleRegenerateSitemapAndGetStartDate();
-
-			Calendar calendar = _getRoundedUTCCalendar(startDate);
-
-			Assert.assertEquals(0, calendar.get(Calendar.MINUTE));
-
-			long currentTime = System.currentTimeMillis();
-
-			Assert.assertTrue(
-				startDate.toString(), startDate.getTime() > currentTime);
-			Assert.assertTrue(
-				startDate.toString(),
-				startDate.getTime() <= (currentTime + Time.HOUR));
-		}
-	}
-
-	@Test
-	public void testScheduleRegenerateSitemapDelayWeekly() throws Exception {
-		int dayOfWeek = RandomTestUtil.randomInt(
-			Calendar.SUNDAY, Calendar.SATURDAY);
-		int hour = RandomTestUtil.randomInt(0, 23);
-		int minute = RandomTestUtil.randomInt(0, 59);
-
-		try (CompanyConfigurationTemporarySwapper
-				companyConfigurationTemporarySwapper =
-					_getRegenerationCompanyConfigurationTemporarySwapper(
-						hour, minute, String.valueOf(dayOfWeek),
-						SitemapConstants.REGENERATION_FREQUENCY_WEEKLY)) {
-
-			Date startDate = _scheduleRegenerateSitemapAndGetStartDate();
-
-			Calendar calendar = _getRoundedUTCCalendar(startDate);
-
-			Assert.assertEquals(dayOfWeek, calendar.get(Calendar.DAY_OF_WEEK));
-			Assert.assertEquals(hour, calendar.get(Calendar.HOUR_OF_DAY));
-			Assert.assertEquals(minute, calendar.get(Calendar.MINUTE));
-
-			long currentTime = System.currentTimeMillis();
-
-			Assert.assertTrue(
-				startDate.toString(), startDate.getTime() > currentTime);
-			Assert.assertTrue(
-				startDate.toString(),
-				startDate.getTime() <= (currentTime + (7 * Time.DAY)));
-		}
-	}
-
-	@Test
 	public void testScheduleRegenerateSitemapWithAddAssetCategory()
 		throws Exception {
 
@@ -311,7 +316,7 @@ public class SitemapRegenerationSchedulerTest {
 		AssetTestUtil.addCategory(
 			_group.getGroupId(), assetVocabulary.getVocabularyId());
 
-		_assertRegenerateSitemapScheduledJob(
+		_assertSiteSitemapRegenerationEntry(
 			SitemapConstants.ASSET_TYPE_KEY_CATEGORIES);
 	}
 
@@ -323,7 +328,7 @@ public class SitemapRegenerationSchedulerTest {
 			_group.getGroupId(),
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID);
 
-		_assertRegenerateSitemapScheduledJob(
+		_assertSiteSitemapRegenerationEntry(
 			SitemapConstants.ASSET_TYPE_KEY_WEB_CONTENT);
 	}
 
@@ -331,8 +336,32 @@ public class SitemapRegenerationSchedulerTest {
 	public void testScheduleRegenerateSitemapWithAddLayout() throws Exception {
 		LayoutTestUtil.addTypePortletLayout(_group);
 
-		_assertRegenerateSitemapScheduledJob(
+		_assertSiteSitemapRegenerationEntry(
 			SitemapConstants.ASSET_TYPE_KEY_PAGES);
+	}
+
+	@Test
+	public void testScheduleRegenerateSitemapWithAddLayoutCachedGenerationDisabled()
+		throws Exception {
+
+		try (CompanyConfigurationTemporarySwapper
+				companyConfigurationTemporarySwapper =
+					new CompanyConfigurationTemporarySwapper(
+						TestPropsValues.getCompanyId(),
+						_PID_SITEMAP_COMPANY_CONFIGURATION,
+						MapUtil.<String, Object>singletonDictionary(
+							"cachedGenerationEnabled", false))) {
+
+			LayoutTestUtil.addTypePortletLayout(_group);
+
+			List<SiteSitemapRegenerationEntry> siteSitemapRegenerationEntries =
+				_getSiteSitemapRegenerationEntries(
+					SitemapConstants.ASSET_TYPE_KEY_PAGES, _group.getGroupId());
+
+			Assert.assertTrue(
+				siteSitemapRegenerationEntries.toString(),
+				siteSitemapRegenerationEntries.isEmpty());
+		}
 	}
 
 	@Test
@@ -346,8 +375,8 @@ public class SitemapRegenerationSchedulerTest {
 
 			_addObjectEntry(0);
 
-			_assertRegenerateSitemapScheduledJob(
-				SitemapConstants.ASSET_TYPE_KEY_OBJECT_ENTRIES);
+			_assertSiteSitemapRegenerationEntry(
+				SitemapConstants.ASSET_TYPE_KEY_OBJECT_ENTRIES, 0);
 		}
 	}
 
@@ -418,11 +447,11 @@ public class SitemapRegenerationSchedulerTest {
 		AssetCategory assetCategory = AssetTestUtil.addCategory(
 			_group.getGroupId(), assetVocabulary.getVocabularyId());
 
-		_deleteRegenerateSitemapScheduledJobs();
+		_deleteSiteSitemapRegenerationEntries();
 
 		_assetCategoryLocalService.deleteCategory(assetCategory);
 
-		_assertRegenerateSitemapScheduledJob(
+		_assertSiteSitemapRegenerationEntry(
 			SitemapConstants.ASSET_TYPE_KEY_CATEGORIES);
 	}
 
@@ -434,11 +463,11 @@ public class SitemapRegenerationSchedulerTest {
 			_group.getGroupId(),
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID);
 
-		_deleteRegenerateSitemapScheduledJobs();
+		_deleteSiteSitemapRegenerationEntries();
 
 		_journalArticleLocalService.deleteArticle(journalArticle);
 
-		_assertRegenerateSitemapScheduledJob(
+		_assertSiteSitemapRegenerationEntry(
 			SitemapConstants.ASSET_TYPE_KEY_WEB_CONTENT);
 	}
 
@@ -448,11 +477,11 @@ public class SitemapRegenerationSchedulerTest {
 
 		Layout layout = LayoutTestUtil.addTypePortletLayout(_group);
 
-		_deleteRegenerateSitemapScheduledJobs();
+		_deleteSiteSitemapRegenerationEntries();
 
 		_layoutLocalService.deleteLayout(layout);
 
-		_assertRegenerateSitemapScheduledJob(
+		_assertSiteSitemapRegenerationEntry(
 			SitemapConstants.ASSET_TYPE_KEY_PAGES);
 	}
 
@@ -467,11 +496,11 @@ public class SitemapRegenerationSchedulerTest {
 					_getObjectEntryCompanyConfigurationTemporarySwapper(
 						ObjectDefinitionConstants.SCOPE_SITE)) {
 
-			_deleteRegenerateSitemapScheduledJobs();
+			_deleteSiteSitemapRegenerationEntries();
 
 			_objectEntryLocalService.deleteObjectEntry(objectEntry);
 
-			_assertRegenerateSitemapScheduledJob(
+			_assertSiteSitemapRegenerationEntry(
 				SitemapConstants.ASSET_TYPE_KEY_OBJECT_ENTRIES);
 		}
 	}
@@ -486,11 +515,11 @@ public class SitemapRegenerationSchedulerTest {
 		AssetCategory assetCategory = AssetTestUtil.addCategory(
 			_group.getGroupId(), assetVocabulary.getVocabularyId());
 
-		_deleteRegenerateSitemapScheduledJobs();
+		_deleteSiteSitemapRegenerationEntries();
 
 		_assetCategoryLocalService.updateAssetCategory(assetCategory);
 
-		_assertRegenerateSitemapScheduledJob(
+		_assertSiteSitemapRegenerationEntry(
 			SitemapConstants.ASSET_TYPE_KEY_CATEGORIES);
 	}
 
@@ -502,11 +531,11 @@ public class SitemapRegenerationSchedulerTest {
 			_group.getGroupId(),
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID);
 
-		_deleteRegenerateSitemapScheduledJobs();
+		_deleteSiteSitemapRegenerationEntries();
 
 		JournalTestUtil.updateArticle(journalArticle);
 
-		_assertRegenerateSitemapScheduledJob(
+		_assertSiteSitemapRegenerationEntry(
 			SitemapConstants.ASSET_TYPE_KEY_WEB_CONTENT);
 	}
 
@@ -516,11 +545,11 @@ public class SitemapRegenerationSchedulerTest {
 
 		Layout layout = LayoutTestUtil.addTypePortletLayout(_group);
 
-		_deleteRegenerateSitemapScheduledJobs();
+		_deleteSiteSitemapRegenerationEntries();
 
 		_layoutLocalService.updateLayout(layout);
 
-		_assertRegenerateSitemapScheduledJob(
+		_assertSiteSitemapRegenerationEntry(
 			SitemapConstants.ASSET_TYPE_KEY_PAGES);
 	}
 
@@ -535,7 +564,7 @@ public class SitemapRegenerationSchedulerTest {
 					_getObjectEntryCompanyConfigurationTemporarySwapper(
 						ObjectDefinitionConstants.SCOPE_SITE)) {
 
-			_deleteRegenerateSitemapScheduledJobs();
+			_deleteSiteSitemapRegenerationEntries();
 
 			_objectEntryLocalService.updateObjectEntry(
 				TestPropsValues.getUserId(), objectEntry.getObjectEntryId(),
@@ -545,7 +574,7 @@ public class SitemapRegenerationSchedulerTest {
 				ServiceContextTestUtil.getServiceContext(
 					_group.getGroupId(), TestPropsValues.getUserId()));
 
-			_assertRegenerateSitemapScheduledJob(
+			_assertSiteSitemapRegenerationEntry(
 				SitemapConstants.ASSET_TYPE_KEY_OBJECT_ENTRIES);
 		}
 	}
@@ -571,19 +600,33 @@ public class SitemapRegenerationSchedulerTest {
 				_group.getGroupId(), TestPropsValues.getUserId()));
 	}
 
-	private void _assertRegenerateSitemapScheduledJob(String assetTypeKey)
+	private void _assertSiteSitemapRegenerationEntry(String assetTypeKey)
 		throws Exception {
 
-		List<SchedulerResponse> schedulerResponses =
-			_getRegenerateSitemapSchedulerResponses(assetTypeKey);
+		_assertSiteSitemapRegenerationEntry(assetTypeKey, _group.getGroupId());
+	}
+
+	private void _assertSiteSitemapRegenerationEntry(
+			String assetTypeKey, long groupId)
+		throws Exception {
+
+		List<SiteSitemapRegenerationEntry> siteSitemapRegenerationEntries =
+			_getSiteSitemapRegenerationEntries(assetTypeKey, groupId);
 
 		Assert.assertEquals(
-			schedulerResponses.toString(), 1, schedulerResponses.size());
+			siteSitemapRegenerationEntries.toString(), 1,
+			siteSitemapRegenerationEntries.size());
 	}
 
 	private void _deleteRegenerateSitemapScheduledJobs() throws Exception {
 		_sitemapManager.deleteRegenerateSitemapScheduledJobs(
 			TestPropsValues.getCompanyId());
+	}
+
+	private void _deleteSiteSitemapRegenerationEntries() throws Exception {
+		_siteSitemapRegenerationEntryLocalService.
+			deleteSiteSitemapRegenerationEntries(
+				TestPropsValues.getCompanyId());
 	}
 
 	private Date _getNextFireDate(String assetTypeKey) throws Exception {
@@ -657,43 +700,26 @@ public class SitemapRegenerationSchedulerTest {
 			});
 	}
 
-	private CompanyConfigurationTemporarySwapper
-			_getRegenerationCompanyConfigurationTemporarySwapper(
-				int hour, int minute, String xmlSitemapRegenerationDayOfWeek,
-				String xmlSitemapRegenerationFrequency)
+	private List<SiteSitemapRegenerationEntry>
+			_getSiteSitemapRegenerationEntries(
+				String assetTypeKey, long groupId)
 		throws Exception {
 
-		return new CompanyConfigurationTemporarySwapper(
-			TestPropsValues.getCompanyId(), _PID_SITEMAP_COMPANY_CONFIGURATION,
-			HashMapDictionaryBuilder.<String, Object>put(
-				"cachedGenerationEnabled", true
-			).put(
-				"xmlSitemapIndexEnabled", true
-			).put(
-				"xmlSitemapIndexMode", SitemapConstants.INDEX_MODE_ASSET_TYPE
-			).put(
-				"xmlSitemapRegenerationDayOfWeek",
-				xmlSitemapRegenerationDayOfWeek
-			).put(
-				"xmlSitemapRegenerationFrequency",
-				xmlSitemapRegenerationFrequency
-			).put(
-				"xmlSitemapRegenerationTime",
-				StringBundler.concat(hour, StringPool.COLON, minute)
-			).put(
-				"xmlSitemapRegenerationTimeZoneId", StringPool.UTC
-			).build());
-	}
+		return TransformUtil.transform(
+			_siteSitemapRegenerationEntryLocalService.
+				getSiteSitemapRegenerationEntries(
+					TestPropsValues.getCompanyId()),
+			siteSitemapRegenerationEntry -> {
+				if ((siteSitemapRegenerationEntry.getGroupId() != groupId) ||
+					!Objects.equals(
+						siteSitemapRegenerationEntry.getAssetTypeKey(),
+						assetTypeKey)) {
 
-	private Calendar _getRoundedUTCCalendar(Date date) {
-		Calendar calendar = CalendarFactoryUtil.getCalendar(
-			TimeZoneUtil.getTimeZone(StringPool.UTC));
+					return null;
+				}
 
-		long roundedTime = Math.round((double)date.getTime() / Time.MINUTE);
-
-		calendar.setTimeInMillis(roundedTime * Time.MINUTE);
-
-		return calendar;
+				return siteSitemapRegenerationEntry;
+			});
 	}
 
 	private ObjectDefinition _publishObjectDefinition(String scope)
@@ -735,21 +761,6 @@ public class SitemapRegenerationSchedulerTest {
 		return objectDefinition;
 	}
 
-	private Date _scheduleRegenerateSitemapAndGetStartDate() throws Exception {
-		_sitemapManager.scheduleRegenerateSitemap(
-			SitemapConstants.ASSET_TYPE_KEY_WEB_CONTENT,
-			TestPropsValues.getCompanyId(), _group.getGroupId(), null);
-
-		List<SchedulerResponse> schedulerResponses =
-			_getRegenerateSitemapSchedulerResponses(
-				SitemapConstants.ASSET_TYPE_KEY_WEB_CONTENT);
-
-		Assert.assertEquals(
-			schedulerResponses.toString(), 1, schedulerResponses.size());
-
-		return _schedulerEngineHelper.getStartDate(schedulerResponses.get(0));
-	}
-
 	private static final String _CLASS_NAME_SITEMAP_MANAGER_IMPL =
 		"com.liferay.site.internal.manager.SitemapManagerImpl";
 
@@ -783,6 +794,11 @@ public class SitemapRegenerationSchedulerTest {
 	@Inject
 	private SchedulerEngineHelper _schedulerEngineHelper;
 
+	@Inject(
+		filter = "component.name=com.liferay.site.internal.scheduler.XMLSitemapRegenerationSchedulerJobConfiguration"
+	)
+	private SchedulerJobConfiguration _schedulerJobConfiguration;
+
 	@Inject
 	private SitemapManager _sitemapManager;
 
@@ -791,5 +807,9 @@ public class SitemapRegenerationSchedulerTest {
 
 	@DeleteAfterTestRun
 	private ObjectDefinition _siteObjectDefinition;
+
+	@Inject
+	private SiteSitemapRegenerationEntryLocalService
+		_siteSitemapRegenerationEntryLocalService;
 
 }

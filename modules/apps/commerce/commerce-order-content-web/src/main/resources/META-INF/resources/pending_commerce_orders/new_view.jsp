@@ -142,7 +142,7 @@ boolean hasPermission = commerceOrderContentDisplayContext.hasModelPermission(co
 								</span>
 							</c:when>
 							<c:otherwise>
-								<p class="mb-0"><%= accountEntry.getName() %></p>
+								<p class="mb-0"><%= HtmlUtil.escape(accountEntry.getName()) %></p>
 								<p class="mb-0">#<%= accountEntry.getAccountEntryId() %></p>
 							</c:otherwise>
 						</c:choose>
@@ -236,23 +236,23 @@ boolean hasPermission = commerceOrderContentDisplayContext.hasModelPermission(co
 								</c:when>
 								<c:otherwise>
 									<p class="mb-0">
-										<%= billingCommerceAddress.getStreet1() %>
+										<%= HtmlUtil.escape(billingCommerceAddress.getStreet1()) %>
 									</p>
 
 									<c:if test="<%= !Validator.isBlank(billingCommerceAddress.getStreet2()) %>">
 										<p class="mb-0">
-											<%= billingCommerceAddress.getStreet2() %>
+											<%= HtmlUtil.escape(billingCommerceAddress.getStreet2()) %>
 										</p>
 									</c:if>
 
-									<c:if test="<%= !Validator.isBlank(billingCommerceAddress.getStreet2()) %>">
+									<c:if test="<%= !Validator.isBlank(billingCommerceAddress.getStreet3()) %>">
 										<p class="mb-0">
-											<%= billingCommerceAddress.getStreet3() %>
+											<%= HtmlUtil.escape(billingCommerceAddress.getStreet3()) %>
 										</p>
 									</c:if>
 
 									<p class="mb-0">
-										<%= commerceOrderContentDisplayContext.getDescriptiveAddress(billingCommerceAddress) %>
+										<%= HtmlUtil.escape(commerceOrderContentDisplayContext.getDescriptiveAddress(billingCommerceAddress)) %>
 									</p>
 								</c:otherwise>
 							</c:choose>
@@ -305,23 +305,23 @@ boolean hasPermission = commerceOrderContentDisplayContext.hasModelPermission(co
 							</c:when>
 							<c:otherwise>
 								<p class="mb-0">
-									<%= shippingCommerceAddress.getStreet1() %>
+									<%= HtmlUtil.escape(shippingCommerceAddress.getStreet1()) %>
 								</p>
 
 								<c:if test="<%= !Validator.isBlank(shippingCommerceAddress.getStreet2()) %>">
 									<p class="mb-0">
-										<%= shippingCommerceAddress.getStreet2() %>
+										<%= HtmlUtil.escape(shippingCommerceAddress.getStreet2()) %>
 									</p>
 								</c:if>
 
 								<c:if test="<%= !Validator.isBlank(shippingCommerceAddress.getStreet3()) %>">
 									<p class="mb-0">
-										<%= shippingCommerceAddress.getStreet3() %>
+										<%= HtmlUtil.escape(shippingCommerceAddress.getStreet3()) %>
 									</p>
 								</c:if>
 
 								<p class="mb-0">
-									<%= commerceOrderContentDisplayContext.getDescriptiveAddress(shippingCommerceAddress) %>
+									<%= HtmlUtil.escape(commerceOrderContentDisplayContext.getDescriptiveAddress(shippingCommerceAddress)) %>
 								</p>
 							</c:otherwise>
 						</c:choose>

@@ -131,6 +131,7 @@ const AIAssistantHost: React.FC = () => {
 	);
 
 	const chat = useAIChat({
+		chatbotExternalReferenceCode: command?.chatbotExternalReferenceCode,
 		context: activeCommand?.context,
 		enableFreeFormCategorization:
 			activeCommand?.enableFreeFormCategorization,
@@ -138,6 +139,7 @@ const AIAssistantHost: React.FC = () => {
 		initialMessage: activeCommand?.initialMessage,
 		instructionDefinitionScope:
 			activeCommand?.instructionDefinitionScope ?? '',
+		onAction: activeCommand?.onAction,
 		onCloseRequested: handleClose,
 		onOpenRequested: () => setOpenedByEvent(true),
 		triggerRef: anchorRef as React.RefObject<HTMLButtonElement | null>,

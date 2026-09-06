@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
@@ -45,6 +46,55 @@ public class JSUnitModulesBatchTestClassGroup
 		String batchName, PortalTestClassJob portalTestClassJob) {
 
 		super(batchName, portalTestClassJob);
+	}
+
+	protected List<File> getBaseModuleDirs() throws IOException {
+		return new ArrayList<>(
+			portalGitWorkingDirectory.getModuleDirsList(
+				getExcludesPathMatchers(), getIncludesPathMatchers()));
+	}
+
+	protected List<PathMatcher> getExcludesPathMatchers() {
+		return getPathMatchers(getExcludesJobProperties());
+	}
+
+	protected String getTestClassMethodName(File jsUnitFile) {
+		return JenkinsResultsParserUtil.getPathRelativeTo(
+			jsUnitFile, portalGitWorkingDirectory.getWorkingDirectory());
+	}
+
+	protected boolean isModulesProjectDir(File projectDir) {
+		File buildGradleFile = new File(projectDir, "build.gradle");
+		File packageJSONFile = new File(projectDir, "package.json");
+
+		if (buildGradleFile.exists() && packageJSONFile.exists()) {
+			return true;
+		}
+
+		return false;
+	}
+
+	protected boolean isSkippedProjectDir(File projectDir) {
+		String projectDirPath = projectDir.getAbsolutePath();
+
+		if (projectDirPath.contains("modules") &&
+			!(projectDirPath.contains("modules/apps") ||
+			  projectDirPath.contains("modules/dxp"))) {
+
+			return true;
+		}
+
+		if (_isTestGitrepoJSUnit()) {
+			return false;
+		}
+
+		File gitrepoFile = new File(projectDir, ".gitrepo");
+
+		if (gitrepoFile.exists() && !projectDirPath.contains("osb-faro")) {
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
@@ -83,16 +133,6 @@ public class JSUnitModulesBatchTestClassGroup
 
 	@Override
 	protected void setTestClasses() throws IOException {
-		List<File> moduleDirs = new ArrayList<>();
-
-		PortalGitWorkingDirectory portalGitWorkingDirectory =
-			getPortalGitWorkingDirectory();
-
-		moduleDirs.addAll(
-			portalGitWorkingDirectory.getModuleDirsList(
-				getPathMatchers(getExcludesJobProperties()),
-				getIncludesPathMatchers()));
-
 		List<String> excludedTestMethodNames = new ArrayList<>();
 
 		for (JobProperty excludesJobProperty : getExcludesJobProperties()) {
@@ -112,8 +152,11 @@ public class JSUnitModulesBatchTestClassGroup
 			}
 		}
 
-		for (File moduleDir : moduleDirs) {
-			List<File> moduleTestDirs = _getModulesProjectDirs(moduleDir);
+		PortalGitWorkingDirectory portalGitWorkingDirectory =
+			getPortalGitWorkingDirectory();
+
+		for (File baseModuleDir : getBaseModuleDirs()) {
+			List<File> moduleTestDirs = _getModulesProjectDirs(baseModuleDir);
 
 			for (File moduleTestDir : moduleTestDirs) {
 				String moduleTestDirPath =
@@ -131,14 +174,10 @@ public class JSUnitModulesBatchTestClassGroup
 						continue;
 					}
 
-					String testClassMethodName =
-						JenkinsResultsParserUtil.getPathRelativeTo(
-							jsUnitFile,
-							portalGitWorkingDirectory.getWorkingDirectory());
-
 					testClass.addTestClassMethod(
 						TestClassFactory.newTestClassMethod(
-							false, testClassMethodName, testClass));
+							false, getTestClassMethodName(jsUnitFile),
+							testClass));
 				}
 
 				if (!testClass.hasTestClassMethods()) {
@@ -179,8 +218,6 @@ public class JSUnitModulesBatchTestClassGroup
 
 		List<File> modulesProjectDirs = new ArrayList<>();
 
-		boolean testGitrepoJSUnit = _isTestGitrepoJSUnit();
-
 		Files.walkFileTree(
 			portalModulesBaseDir.toPath(),
 			new SimpleFileVisitor<Path>() {
@@ -194,37 +231,16 @@ public class JSUnitModulesBatchTestClassGroup
 					File currentDirectory =
 						JenkinsResultsParserUtil.getCanonicalFile(file);
 
-					String currentDirectoryPath =
-						currentDirectory.getAbsolutePath();
-
-					if (currentDirectoryPath.contains("modules") &&
-						!(currentDirectoryPath.contains("modules/apps") ||
-						  currentDirectoryPath.contains("modules/dxp"))) {
-
+					if (isSkippedProjectDir(currentDirectory)) {
 						return FileVisitResult.SKIP_SUBTREE;
 					}
 
-					if (!testGitrepoJSUnit) {
-						File gitrepoFile = new File(
-							currentDirectory, ".gitrepo");
-
-						if (gitrepoFile.exists() &&
-							!currentDirectoryPath.contains("osb-faro")) {
-
-							return FileVisitResult.SKIP_SUBTREE;
-						}
-					}
-
-					File buildGradleFile = new File(
-						currentDirectory, "build.gradle");
-					File packageJSONFile = new File(
-						currentDirectory, "package.json");
-
-					if (!buildGradleFile.exists() ||
-						!packageJSONFile.exists()) {
-
+					if (!isModulesProjectDir(currentDirectory)) {
 						return FileVisitResult.CONTINUE;
 					}
+
+					File packageJSONFile = new File(
+						currentDirectory, "package.json");
 
 					try {
 						JSONObject packageJSONObject = new JSONObject(
@@ -256,6 +272,10 @@ public class JSUnitModulesBatchTestClassGroup
 	}
 
 	private boolean _isTestGitrepoJSUnit() {
+		if (_testGitrepoJSUnit != null) {
+			return _testGitrepoJSUnit;
+		}
+
 		JobProperty jobProperty = getJobProperty("test.gitrepo.js.unit");
 
 		String jobPropertyValue = jobProperty.getValue();
@@ -265,10 +285,15 @@ public class JSUnitModulesBatchTestClassGroup
 
 			recordJobProperty(jobProperty);
 
-			return true;
+			_testGitrepoJSUnit = true;
+		}
+		else {
+			_testGitrepoJSUnit = false;
 		}
 
-		return false;
+		return _testGitrepoJSUnit;
 	}
+
+	private Boolean _testGitrepoJSUnit;
 
 }

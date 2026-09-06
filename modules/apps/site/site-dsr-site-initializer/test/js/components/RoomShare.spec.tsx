@@ -987,4 +987,192 @@ describe('RoomShare', () => {
 			document.querySelector('[data-testid="roleKeyItem_viewer"]')
 		).toBeInTheDocument();
 	});
+
+	it('does not allow a content contributor to edit their own or a peer expiration date', async () => {
+		jest.spyOn(Liferay.ThemeDisplay, 'getUserId').mockReturnValue('2');
+
+		(RoomService.getRoomUserAccounts as jest.Mock).mockResolvedValue([
+			...mockUsers,
+			{
+				emailAddress: 'sam.doe@liferay.com',
+				id: 4,
+				name: 'Sam Doe',
+				roleKey: 'DSR Content Contributor',
+			},
+		]);
+
+		const {container} = renderComponent({
+			roomId: 10,
+		});
+
+		await waitFor(() => {
+			expect(screen.getByText('Sam Doe')).toBeInTheDocument();
+		});
+
+		expect(
+			container.querySelector('[data-testid="editExpiration_2"]')
+		).toBeNull();
+		expect(
+			container.querySelector('[data-testid="editExpiration_3"]')
+		).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-testid="editExpiration_4"]')
+		).toBeNull();
+	});
+
+	it('allows a content contributor to edit a viewer without an explicit role', async () => {
+		jest.spyOn(Liferay.ThemeDisplay, 'getUserId').mockReturnValue('2');
+
+		(RoomService.getRoomUserAccounts as jest.Mock).mockResolvedValue([
+			...mockUsers.slice(0, 2),
+			{
+				emailAddress: 'win.doe@liferay.com',
+				id: 3,
+				name: 'Win Doe',
+			},
+		]);
+
+		const {container} = renderComponent({
+			roomId: 10,
+		});
+
+		await waitFor(() => {
+			expect(screen.getByText('Win Doe')).toBeInTheDocument();
+		});
+
+		expect(
+			container.querySelector('[data-testid="editExpiration_3"]')
+		).toBeInTheDocument();
+	});
+
+	it('allows a room collaborator to edit a content contributor but not themselves', async () => {
+		jest.spyOn(Liferay.ThemeDisplay, 'getUserId').mockReturnValue('4');
+
+		(RoomService.getRoomUserAccounts as jest.Mock).mockResolvedValue([
+			...mockUsers,
+			{
+				emailAddress: 'sam.doe@liferay.com',
+				id: 4,
+				name: 'Sam Doe',
+				roleKey: 'DSR Room Collaborator',
+			},
+		]);
+
+		const {container} = renderComponent({
+			roomId: 10,
+		});
+
+		await waitFor(() => {
+			expect(screen.getByText('Sam Doe')).toBeInTheDocument();
+		});
+
+		expect(
+			container.querySelector('[data-testid="editExpiration_2"]')
+		).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-testid="editExpiration_3"]')
+		).toBeInTheDocument();
+		expect(
+			container.querySelector('[data-testid="editExpiration_4"]')
+		).toBeNull();
+	});
+
+	it('shows the content contributor and viewer roles when the current user is a content contributor', async () => {
+		jest.spyOn(Liferay.ThemeDisplay, 'getUserId').mockReturnValue('2');
+
+		const {container} = renderComponent({
+			roomId: 10,
+		});
+
+		await waitFor(() => {
+			expect(screen.getByText('Ran Doe')).toBeInTheDocument();
+		});
+
+		const roleKeyButton = container.querySelector(
+			'[data-testid="roleKeyButton"]'
+		) as HTMLButtonElement;
+		await userEvent.click(roleKeyButton);
+
+		await waitFor(() => {
+			expect(
+				document.querySelector(
+					'[data-testid="roleKeyItem_content-contributor"]'
+				)
+			).toBeInTheDocument();
+		});
+
+		expect(
+			document.querySelector('[data-testid="roleKeyItem_viewer"]')
+		).toBeInTheDocument();
+		expect(
+			document.querySelector(
+				'[data-testid="roleKeyItem_room-collaborator"]'
+			)
+		).toBeNull();
+	});
+
+	it('does not allow a content contributor to change their own role', async () => {
+		jest.spyOn(Liferay.ThemeDisplay, 'getUserId').mockReturnValue('2');
+
+		const {container} = renderComponent({
+			roomId: 10,
+		});
+
+		await waitFor(() => {
+			expect(screen.getByText('Ran Doe')).toBeInTheDocument();
+		});
+
+		expect(
+			container.querySelector('[data-testid="memberRoleKeyButton_2"]')
+		).toBeNull();
+		expect(
+			container.querySelector('[data-testid="memberRoleKeyButton_3"]')
+		).toBeInTheDocument();
+	});
+
+	it('does not show an error message when the reload after an update fails', async () => {
+		(RoomService.updateRoomUserAccount as jest.Mock).mockResolvedValue({});
+
+		(RoomService.getRoomUserAccounts as jest.Mock)
+			.mockResolvedValueOnce(mockUsers)
+			.mockRejectedValue(new Error('Forbidden'));
+
+		renderComponent({
+			canAssignAllRoles: true,
+			roomId: 10,
+		});
+
+		await waitFor(() => {
+			expect(screen.getByText('Win Doe')).toBeInTheDocument();
+		});
+
+		const userRow = screen.getByText('Win Doe').closest('.user-row');
+		const dropdownButton = userRow?.querySelector(
+			'.dropdown-toggle'
+		) as HTMLElement;
+
+		await userEvent.click(dropdownButton);
+
+		await waitFor(() => {
+			expect(document.querySelector('.dropdown-menu.show')).toBeTruthy();
+		});
+
+		const openDropdownMenu = document.querySelector('.dropdown-menu.show');
+		const contributorMenuItem = Array.from(
+			openDropdownMenu?.querySelectorAll('.dropdown-item') ?? []
+		).find((item) =>
+			item.textContent?.includes('content-contributor')
+		) as HTMLElement;
+
+		await userEvent.click(contributorMenuItem);
+
+		await waitFor(() => {
+			expect(mockOpenToast).toHaveBeenCalledWith({
+				message: 'your-request-completed-successfully',
+				type: 'success',
+			});
+		});
+
+		expect(mockOpenToast).toHaveBeenCalledTimes(1);
+	});
 });

@@ -14,6 +14,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.model.OrganizationConstants;
 import com.liferay.portal.kernel.model.Team;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
@@ -332,6 +333,19 @@ public class UserFinderTest {
 	@Test
 	public void testFindByKeywordsOrganizationUsers() throws Exception {
 		List<User> users = _userFinder.findByKeywords(
+			TestPropsValues.getCompanyId(), null,
+			WorkflowConstants.STATUS_APPROVED,
+			LinkedHashMapBuilder.<String, Object>put(
+				"usersOrgs",
+				new Long[] {OrganizationConstants.ANY_ORGANIZATION_ID}
+			).build(),
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
+		Assert.assertTrue(users.toString(), users.contains(_organizationUser1));
+		Assert.assertTrue(users.toString(), users.contains(_organizationUser2));
+		Assert.assertEquals(users.toString(), 2, users.size());
+
+		users = _userFinder.findByKeywords(
 			TestPropsValues.getCompanyId(), null,
 			WorkflowConstants.STATUS_APPROVED,
 			LinkedHashMapBuilder.<String, Object>put(

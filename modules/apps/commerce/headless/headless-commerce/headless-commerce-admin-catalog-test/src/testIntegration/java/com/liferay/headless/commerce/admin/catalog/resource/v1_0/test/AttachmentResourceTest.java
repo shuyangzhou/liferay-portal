@@ -459,11 +459,13 @@ public class AttachmentResourceTest extends BaseAttachmentResourceTestCase {
 
 		String base64EncodedContent = Base64.encode(
 			RandomTestUtil.randomBytes());
+		String productExternalReferenceCode =
+			_cProduct.getExternalReferenceCode();
 
 		Attachment postAttachment =
 			attachmentResource.
 				postProductByExternalReferenceCodeAttachmentByBase64(
-					_cProduct.getExternalReferenceCode(),
+					productExternalReferenceCode,
 					new AttachmentBase64() {
 						{
 							attachment = base64EncodedContent;
@@ -488,7 +490,7 @@ public class AttachmentResourceTest extends BaseAttachmentResourceTestCase {
 
 		Page<Attachment> attachmentsPage =
 			attachmentResource.getProductByExternalReferenceCodeAttachmentsPage(
-				_cProduct.getExternalReferenceCode(), Pagination.of(1, 10));
+				productExternalReferenceCode, Pagination.of(1, 10));
 
 		String getBase64EncodedContent = null;
 

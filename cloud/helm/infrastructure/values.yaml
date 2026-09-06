@@ -1,5 +1,11 @@
 backup:
+    dayOfWeek: Sunday
     enabled: false
+    frequency: Daily
+    retentionDays: 30
+    timeOfDay: 05:00
+    timeZone: UTC
+    vaultTags: {}
 clusterSecretStoreName: ""
 cmk:
     enabled: false
@@ -22,6 +28,7 @@ gateway:
 license:
     externalSecretKey: ""
     externalSecretProperty: license.xml
+    targetSecretName: ""
 orphanOnDelete: false
 overlayAccess:
     enabled: false
