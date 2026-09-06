@@ -44,8 +44,19 @@ public class CommerceCatalogModelListenerTest {
 
 	@Test
 	public void testOnAfterCreate() throws Exception {
-		_testOnAfterCreate(_LocaleUtil.SPAIN);
+		_testOnAfterCreate(LocaleUtil.SPAIN);
 		_testOnAfterCreate(LocaleUtil.US);
+	}
+
+	private String _getCommercePriceListName(
+		CommerceCatalog commerceCatalog, String type) {
+
+		CommercePriceList commercePriceList =
+			_commercePriceListLocalService.
+				fetchCatalogBaseCommercePriceListByType(
+					commerceCatalog.getGroupId(), type);
+
+		return commercePriceList.getName();
 	}
 
 	private void _testOnAfterCreate(Locale locale) throws Exception {
@@ -70,17 +81,6 @@ public class CommerceCatalogModelListenerTest {
 			_language.format(locale, "x-base-promotion", name, false),
 			_getCommercePriceListName(
 				commerceCatalog, CommercePriceListConstants.TYPE_PROMOTION));
-	}
-
-	private String _getCommercePriceListName(
-		CommerceCatalog commerceCatalog, String type) {
-
-		CommercePriceList commercePriceList =
-			_commercePriceListLocalService.
-				fetchCatalogBaseCommercePriceListByType(
-					commerceCatalog.getGroupId(), type);
-
-		return commercePriceList.getName();
 	}
 
 	@Inject
