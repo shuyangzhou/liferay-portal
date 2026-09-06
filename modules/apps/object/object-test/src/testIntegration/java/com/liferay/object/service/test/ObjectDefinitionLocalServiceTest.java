@@ -33,6 +33,8 @@ import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.constants.ObjectFieldSettingConstants;
 import com.liferay.object.constants.ObjectFolderConstants;
 import com.liferay.object.constants.ObjectRelationshipConstants;
+import com.liferay.object.constants.ObjectValidationRuleConstants;
+import com.liferay.object.constants.ObjectValidationRuleSettingConstants;
 import com.liferay.object.definition.setting.builder.ObjectDefinitionSettingBuilder;
 import com.liferay.object.definition.util.ObjectDefinitionValidationThreadLocal;
 import com.liferay.object.exception.DuplicateObjectDefinitionExternalReferenceCodeException;
@@ -89,6 +91,7 @@ import com.liferay.object.model.ObjectEntryVersionTable;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectFolder;
 import com.liferay.object.model.ObjectRelationship;
+import com.liferay.object.model.ObjectValidationRule;
 import com.liferay.object.related.models.test.util.ObjectEntryTestUtil;
 import com.liferay.object.service.ObjectActionLocalService;
 import com.liferay.object.service.ObjectActionLocalServiceUtil;
@@ -100,6 +103,7 @@ import com.liferay.object.service.ObjectEntryVersionLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectFolderLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
+import com.liferay.object.service.ObjectValidationRuleLocalService;
 import com.liferay.object.system.BaseSystemObjectDefinitionManager;
 import com.liferay.object.system.JaxRsApplicationDescriptor;
 import com.liferay.object.test.util.ObjectDefinitionTestUtil;
@@ -108,6 +112,7 @@ import com.liferay.object.test.util.TreeTestUtil;
 import com.liferay.object.tree.Node;
 import com.liferay.object.tree.ObjectDefinitionTreeFactory;
 import com.liferay.object.tree.Tree;
+import com.liferay.object.validation.rule.setting.builder.ObjectValidationRuleSettingBuilder;
 import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.lang.SafeCloseable;
@@ -151,6 +156,7 @@ import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.CompanyLocalService;
+import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
@@ -813,6 +819,59 @@ public class ObjectDefinitionLocalServiceTest {
 			_objectDefinitionLocalService,
 			new String[] {"C_A", "C_AA", "C_AAA", "C_AAB", "C_AB"},
 			_objectEntryLocalService, _objectRelationshipLocalService);
+	}
+
+	@Test
+	public void testAddCustomObjectDefinitionWithRegisteredPortletId()
+		throws Exception {
+
+		ObjectDefinition objectDefinition1 =
+			ObjectDefinitionTestUtil.publishObjectDefinition();
+
+		String className = objectDefinition1.getClassName();
+
+		String portletId = objectDefinition1.getPortletId();
+
+		com.liferay.portal.kernel.model.Portlet portlet =
+			_portletLocalService.getPortletById(portletId);
+
+		Assert.assertNotNull(portletId, portlet);
+
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			objectDefinition1.getObjectDefinitionId());
+
+		Assert.assertNull(
+			portletId, _portletLocalService.getPortletById(portletId));
+
+		_portletLocalService.deployRemotePortlet(
+			new long[0], portlet, new String[0], false, false);
+
+		Assert.assertNotNull(
+			portletId, _portletLocalService.getPortletById(portletId));
+
+		ObjectDefinition objectDefinition2 = _addCustomObjectDefinition(
+			className, ObjectDefinitionTestUtil.getRandomName());
+
+		Assert.assertNotEquals(className, objectDefinition2.getClassName());
+
+		objectDefinition2 =
+			_objectDefinitionLocalService.publishCustomObjectDefinition(
+				TestPropsValues.getUserId(),
+				objectDefinition2.getObjectDefinitionId());
+
+		String publishedPortletId = objectDefinition2.getPortletId();
+
+		Assert.assertNotNull(
+			publishedPortletId,
+			_portletLocalService.getPortletById(publishedPortletId));
+
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			objectDefinition2.getObjectDefinitionId());
+
+		_portletLocalService.destroyPortlet(portlet);
+
+		Assert.assertNull(
+			portletId, _portletLocalService.getPortletById(portletId));
 	}
 
 	@Test
@@ -2768,6 +2827,95 @@ public class ObjectDefinitionLocalServiceTest {
 	}
 
 	@Test
+	public void testDeleteObjectDefinitionWithCompositeKeyObjectValidationRule()
+		throws Exception {
+
+		// Delete the child object definition
+
+		ObjectDefinition parentObjectDefinition =
+			ObjectDefinitionTestUtil.publishObjectDefinition();
+
+		String objectFieldName = StringUtil.randomId();
+
+		ObjectDefinition childObjectDefinition =
+			ObjectDefinitionTestUtil.publishObjectDefinition(
+				Collections.singletonList(
+					ObjectFieldUtil.createObjectField(
+						ObjectFieldConstants.BUSINESS_TYPE_TEXT,
+						ObjectFieldConstants.DB_TYPE_STRING,
+						RandomTestUtil.randomString(), objectFieldName)));
+
+		ObjectRelationship objectRelationship =
+			ObjectRelationshipTestUtil.addObjectRelationship(
+				_objectRelationshipLocalService, parentObjectDefinition,
+				childObjectDefinition);
+
+		ObjectField objectField = _objectFieldLocalService.getObjectField(
+			childObjectDefinition.getObjectDefinitionId(), objectFieldName);
+
+		ObjectValidationRule objectValidationRule =
+			_addCompositeKeyObjectValidationRule(
+				childObjectDefinition, objectField.getObjectFieldId(),
+				objectRelationship.getObjectFieldId2());
+
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			childObjectDefinition);
+
+		Assert.assertNull(
+			_objectDefinitionLocalService.fetchObjectDefinition(
+				childObjectDefinition.getObjectDefinitionId()));
+
+		Assert.assertNull(
+			_objectValidationRuleLocalService.fetchObjectValidationRule(
+				objectValidationRule.getObjectValidationRuleId()));
+
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			parentObjectDefinition);
+
+		// Delete the parent object definition
+
+		parentObjectDefinition =
+			ObjectDefinitionTestUtil.publishObjectDefinition();
+
+		objectFieldName = StringUtil.randomId();
+
+		childObjectDefinition =
+			ObjectDefinitionTestUtil.publishObjectDefinition(
+				Collections.singletonList(
+					ObjectFieldUtil.createObjectField(
+						ObjectFieldConstants.BUSINESS_TYPE_TEXT,
+						ObjectFieldConstants.DB_TYPE_STRING,
+						RandomTestUtil.randomString(), objectFieldName)));
+
+		objectRelationship = ObjectRelationshipTestUtil.addObjectRelationship(
+			_objectRelationshipLocalService, parentObjectDefinition,
+			childObjectDefinition);
+
+		objectField = _objectFieldLocalService.getObjectField(
+			childObjectDefinition.getObjectDefinitionId(), objectFieldName);
+
+		objectValidationRule = _addCompositeKeyObjectValidationRule(
+			childObjectDefinition, objectField.getObjectFieldId(),
+			objectRelationship.getObjectFieldId2());
+
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			parentObjectDefinition);
+
+		Assert.assertNull(
+			_objectDefinitionLocalService.fetchObjectDefinition(
+				parentObjectDefinition.getObjectDefinitionId()));
+		Assert.assertNotNull(
+			_objectDefinitionLocalService.fetchObjectDefinition(
+				childObjectDefinition.getObjectDefinitionId()));
+		Assert.assertNull(
+			_objectValidationRuleLocalService.fetchObjectValidationRule(
+				objectValidationRule.getObjectValidationRuleId()));
+
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			childObjectDefinition);
+	}
+
+	@Test
 	public void testDeleteObjectDefinitionWithObjectEntries() throws Exception {
 		String objectFieldName = StringUtil.randomId();
 
@@ -2874,6 +3022,50 @@ public class ObjectDefinitionLocalServiceTest {
 		Assert.assertNull(
 			_objectRelationshipLocalService.fetchObjectRelationship(
 				objectRelationship.getObjectRelationshipId()));
+	}
+
+	@Test
+	public void testDeleteObjectDefinitionWithRolledBackPublish()
+		throws Exception {
+
+		ObjectDefinition objectDefinition = _addCustomObjectDefinition(
+			ObjectDefinitionTestUtil.getRandomName());
+
+		objectDefinition =
+			_objectDefinitionLocalService.publishCustomObjectDefinition(
+				TestPropsValues.getUserId(),
+				objectDefinition.getObjectDefinitionId());
+
+		String portletId = objectDefinition.getPortletId();
+
+		Assert.assertNotNull(
+			portletId, _portletLocalService.getPortletById(portletId));
+
+		objectDefinition.setStatus(WorkflowConstants.STATUS_DRAFT);
+
+		objectDefinition = _objectDefinitionLocalService.updateObjectDefinition(
+			objectDefinition);
+
+		Assert.assertFalse(objectDefinition.isApproved());
+
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
+
+		Assert.assertNull(
+			_objectDefinitionLocalService.fetchObjectDefinition(
+				objectDefinition.getObjectDefinitionId()));
+
+		Assert.assertNull(
+			portletId, _portletLocalService.getPortletById(portletId));
+
+		String dbTableName = objectDefinition.getDBTableName();
+
+		Assert.assertFalse(dbTableName, _hasTable(dbTableName));
+
+		String extensionDBTableName =
+			objectDefinition.getExtensionDBTableName();
+
+		Assert.assertFalse(
+			extensionDBTableName, _hasTable(extensionDBTableName));
 	}
 
 	@Test
@@ -3255,6 +3447,11 @@ public class ObjectDefinitionLocalServiceTest {
 			Assert.assertEquals(
 				WorkflowConstants.STATUS_EMPTY, objectDefinition.getStatus());
 
+			Assert.assertNull(
+				_ploEntryLocalService.fetchPLOEntry(
+					companyId, "model.resource.",
+					objectDefinition.getDefaultLanguageId()));
+
 			List<ExportImportReportEntry> exportImportReportEntries =
 				_exportImportReportEntryLocalService.
 					getExportImportReportEntries(
@@ -3321,6 +3518,12 @@ public class ObjectDefinitionLocalServiceTest {
 			Assert.assertEquals(
 				WorkflowConstants.STATUS_APPROVED,
 				objectDefinition.getStatus());
+
+			Assert.assertNotNull(
+				_ploEntryLocalService.fetchPLOEntry(
+					companyId,
+					"model.resource." + objectDefinition.getClassName(),
+					objectDefinition.getDefaultLanguageId()));
 		}
 		finally {
 			if (objectDefinition != null) {
@@ -4542,6 +4745,36 @@ public class ObjectDefinitionLocalServiceTest {
 		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 	}
 
+	private ObjectValidationRule _addCompositeKeyObjectValidationRule(
+			ObjectDefinition objectDefinition, long objectFieldId1,
+			long objectFieldId2)
+		throws Exception {
+
+		return _objectValidationRuleLocalService.addObjectValidationRule(
+			StringPool.BLANK, TestPropsValues.getUserId(),
+			objectDefinition.getObjectDefinitionId(), true,
+			ObjectValidationRuleConstants.ENGINE_TYPE_COMPOSITE_KEY,
+			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+			ObjectValidationRuleConstants.OUTPUT_TYPE_FULL_VALIDATION,
+			StringPool.BLANK, false,
+			Arrays.asList(
+				new ObjectValidationRuleSettingBuilder(
+				).name(
+					ObjectValidationRuleSettingConstants.
+						NAME_COMPOSITE_KEY_OBJECT_FIELD_ID
+				).value(
+					String.valueOf(objectFieldId1)
+				).build(),
+				new ObjectValidationRuleSettingBuilder(
+				).name(
+					ObjectValidationRuleSettingConstants.
+						NAME_COMPOSITE_KEY_OBJECT_FIELD_ID
+				).value(
+					String.valueOf(objectFieldId2)
+				).build()));
+	}
+
 	private ObjectDefinition _addCustomObjectDefinition(String name)
 		throws Exception {
 
@@ -5064,8 +5297,12 @@ public class ObjectDefinitionLocalServiceTest {
 					modifiable, ObjectDefinitionConstants.SCOPE_COMPANY,
 					system);
 
-			_assertLabelAndPluralLabel(
-				objectDefinition, externalReferenceCode, externalReferenceCode);
+			Assert.assertEquals(
+				LocalizedMapUtil.getLocalizedMap(externalReferenceCode),
+				objectDefinition.getLabelMap());
+			Assert.assertEquals(
+				LocalizedMapUtil.getLocalizedMap(externalReferenceCode),
+				objectDefinition.getPluralLabelMap());
 
 			Assert.assertEquals(
 				externalReferenceCode,
@@ -5836,10 +6073,16 @@ public class ObjectDefinitionLocalServiceTest {
 	private ObjectRelationshipLocalService _objectRelationshipLocalService;
 
 	@Inject
+	private ObjectValidationRuleLocalService _objectValidationRuleLocalService;
+
+	@Inject
 	private PanelAppRegistry _panelAppRegistry;
 
 	@Inject
 	private PLOEntryLocalService _ploEntryLocalService;
+
+	@Inject
+	private PortletLocalService _portletLocalService;
 
 	@Inject
 	private ResourceActionLocalService _resourceActionLocalService;

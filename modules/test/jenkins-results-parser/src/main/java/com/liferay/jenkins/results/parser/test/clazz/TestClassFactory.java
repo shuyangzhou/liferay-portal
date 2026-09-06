@@ -22,6 +22,8 @@ import com.liferay.jenkins.results.parser.test.clazz.group.SemVerModulesBatchTes
 import com.liferay.jenkins.results.parser.test.clazz.group.ServiceBuilderModulesBatchTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.TCKJunitBatchTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.WorkspacesCompileBatchTestClassGroup;
+import com.liferay.jenkins.results.parser.test.clazz.group.WorkspacesJSUnitModulesBatchTestClassGroup;
+import com.liferay.jenkins.results.parser.test.clazz.group.WorkspacesModulesJUnitBatchTestClassGroup;
 
 import java.io.File;
 
@@ -106,6 +108,14 @@ public class TestClassFactory {
 		if (batchTestClassGroup instanceof JUnitBatchTestClassGroup) {
 			if (batchTestClassGroup instanceof
 					ModulesJUnitBatchTestClassGroup) {
+
+				if (batchTestClassGroup instanceof
+						WorkspacesModulesJUnitBatchTestClassGroup) {
+
+					return new WorkspacesModulesJUnitTestClass(
+						batchTestClassGroup, testClassFile,
+						testClassMethodNames);
+				}
 
 				return new ModulesJUnitTestClass(
 					batchTestClassGroup, testClassFile, testClassMethodNames);
@@ -222,6 +232,18 @@ public class TestClassFactory {
 			else if (batchTestClassGroup instanceof
 						JSUnitModulesBatchTestClassGroup) {
 
+				if (batchTestClassGroup instanceof
+						WorkspacesJSUnitModulesBatchTestClassGroup) {
+
+					if (jsonObject != null) {
+						return new WorkspacesJSUnitModulesTestClass(
+							batchTestClassGroup, jsonObject);
+					}
+
+					return new WorkspacesJSUnitModulesTestClass(
+						batchTestClassGroup, testClassFile);
+				}
+
 				if (jsonObject != null) {
 					return new JSUnitModulesTestClass(
 						batchTestClassGroup, jsonObject);
@@ -243,13 +265,29 @@ public class TestClassFactory {
 					return modulesJUnitTestClass;
 				}
 
-				if (jsonObject != null) {
-					modulesJUnitTestClass = new ModulesJUnitTestClass(
-						batchTestClassGroup, jsonObject);
+				if (batchTestClassGroup instanceof
+						WorkspacesModulesJUnitBatchTestClassGroup) {
+
+					if (jsonObject != null) {
+						modulesJUnitTestClass =
+							new WorkspacesModulesJUnitTestClass(
+								batchTestClassGroup, jsonObject);
+					}
+					else {
+						modulesJUnitTestClass =
+							new WorkspacesModulesJUnitTestClass(
+								batchTestClassGroup, testClassFile);
+					}
 				}
 				else {
-					modulesJUnitTestClass = new ModulesJUnitTestClass(
-						batchTestClassGroup, testClassFile);
+					if (jsonObject != null) {
+						modulesJUnitTestClass = new ModulesJUnitTestClass(
+							batchTestClassGroup, jsonObject);
+					}
+					else {
+						modulesJUnitTestClass = new ModulesJUnitTestClass(
+							batchTestClassGroup, testClassFile);
+					}
 				}
 
 				_modulesJUnitTestClasses.put(

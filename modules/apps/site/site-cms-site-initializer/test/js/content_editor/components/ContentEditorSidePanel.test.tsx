@@ -31,12 +31,13 @@ jest.mock(
 	'../../../../src/main/resources/META-INF/resources/js/common/services/CategorizationSuggestionService'
 );
 
-const renderComponent = ({isSubscribed = false} = {}) => {
+const renderComponent = ({cmpEnabled = true, isSubscribed = false} = {}) => {
 	return render(
 		<ContentEditorSidePanel
 			addCommentURL="addCommentURL"
 			assetLibraryId="123"
 			assetType={30982}
+			cmpEnabled={cmpEnabled}
 			cmsGroupId="21000"
 			comments={[]}
 			contentAPIURL="contentAPIURL"
@@ -84,7 +85,6 @@ describe('ContentEditorSidePanel', () => {
 		(global as any).Liferay.on = () => {};
 		(global as any).Liferay.fire = () => {};
 		(global as any).Liferay.detach = () => {};
-		(global as any).Liferay.FeatureFlags = {};
 	});
 
 	it('calls the subscribe request', async () => {
@@ -184,14 +184,6 @@ describe('ContentEditorSidePanel', () => {
 			expect(screen.queryByText('general')).not.toBeInTheDocument();
 			expect(panelButton).toHaveFocus();
 		});
-	});
-
-	it('does not render the Projects panel when the CMP feature flag is disabled', () => {
-		(global as any).Liferay.FeatureFlags = {};
-
-		renderComponent();
-
-		expect(screen.queryByTitle('projects')).not.toBeInTheDocument();
 	});
 
 	it('fetches the entry once and dispatches a categorize event per action in order', async () => {
@@ -359,17 +351,21 @@ describe('ContentEditorSidePanel', () => {
 	it('renders ContentEditorSidePanel', () => {
 		renderComponent();
 
-		['general', 'comments', 'schedule[noun]', 'categorization'].forEach(
-			(name) => expect(screen.getByTitle(name)).toBeInTheDocument()
+		[
+			'general',
+			'comments',
+			'schedule[noun]',
+			'categorization',
+			'projects',
+		].forEach((name) =>
+			expect(screen.getByTitle(name)).toBeInTheDocument()
 		);
 	});
 
-	it('renders the Projects panel when the CMP feature flag is enabled', () => {
-		(global as any).Liferay.FeatureFlags = {'LPD-58677': true};
+	it('renders no Projects panel when CMP is disabled', () => {
+		renderComponent({cmpEnabled: false});
 
-		renderComponent();
-
-		expect(screen.getByTitle('projects')).toBeInTheDocument();
+		expect(screen.queryByTitle('projects')).not.toBeInTheDocument();
 	});
 
 	it('renders the hidden inputs with initial values', async () => {

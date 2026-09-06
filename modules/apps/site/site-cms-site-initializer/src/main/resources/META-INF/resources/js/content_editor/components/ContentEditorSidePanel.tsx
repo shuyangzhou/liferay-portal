@@ -33,6 +33,7 @@ type Props = {
 	addCommentURL: string;
 	assetLibraryId: string;
 	assetType: number;
+	cmpEnabled?: boolean;
 	cmpProjectLinkObjectDefinitionId?: number | null;
 	cmpProjectObjectDefinitionId?: number | null;
 	cmpProjectViewURL?: string;
@@ -333,10 +334,10 @@ function SidePanel(props: SidePanelProps) {
 
 	const items = useMemo(
 		() =>
-			Liferay.FeatureFlags['LPD-58677']
+			props.cmpEnabled
 				? [...DEFAULT_ITEMS, PROJECTS_ITEM]
 				: DEFAULT_ITEMS,
-		[]
+		[props.cmpEnabled]
 	);
 
 	const showErrorInPanel = useCallback((panelId: React.Key) => {

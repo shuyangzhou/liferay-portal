@@ -96,14 +96,16 @@ public class BuildFactory {
 						 jobVariant.startsWith(
 							 "rest-builder-and-service-builder") ||
 						 jobVariant.startsWith("semantic-versioning") ||
-						 jobVariant.startsWith("service-builder")) {
+						 jobVariant.startsWith("service-builder") ||
+						 jobVariant.startsWith("workspaces-js-unit")) {
 
 					return new JUnitDownstreamBuild(
 						buildURL, cachedDownstreamBuildReport,
 						(TopLevelBuild)parentBuild);
 				}
 				else if (jobVariant.startsWith("modules-integration") ||
-						 jobVariant.startsWith("modules-unit")) {
+						 jobVariant.startsWith("modules-unit") ||
+						 jobVariant.startsWith("workspaces-unit")) {
 
 					return new ModulesJUnitDownstreamBuild(
 						buildURL, cachedDownstreamBuildReport,

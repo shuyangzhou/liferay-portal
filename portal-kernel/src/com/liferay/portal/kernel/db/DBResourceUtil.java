@@ -59,6 +59,42 @@ public class DBResourceUtil {
 		_cacheEnabled = true;
 	}
 
+	public static Map<String, String>
+			getHistoricalServiceComponentTablesServletContextNames(
+				Connection connection)
+		throws Exception {
+
+		Map<String, String>
+			historicalServiceComponentTablesServletContextNames = new TreeMap<>(
+				String.CASE_INSENSITIVE_ORDER);
+
+		Map<String, String> tablesServletContextNames =
+			getTablesServletContextNames();
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
+				_SQL_HISTORICAL_SERVICE_COMPONENT);
+
+			ResultSet resultSet = preparedStatement.executeQuery()) {
+
+			while (resultSet.next()) {
+				String buildNamespace = resultSet.getString(1);
+
+				for (String tableName :
+						parseCreateTableSQL(resultSet.getString(2))) {
+
+					if (tablesServletContextNames.containsKey(tableName)) {
+						continue;
+					}
+
+					historicalServiceComponentTablesServletContextNames.put(
+						tableName, buildNamespace);
+				}
+			}
+		}
+
+		return historicalServiceComponentTablesServletContextNames;
+	}
+
 	public static Set<String> getLiferayTableNames(Connection connection)
 		throws Exception {
 
@@ -209,6 +245,37 @@ public class DBResourceUtil {
 			connection,
 			"buildNamespace = '" +
 				ReleaseConstants.DEFAULT_SERVLET_CONTEXT_NAME + "'");
+	}
+
+	public static Map<String, String> getTablesServletContextNames() {
+		Map<String, String> tablesServletContextNames = new TreeMap<>(
+			String.CASE_INSENSITIVE_ORDER);
+
+		for (String portalTableName : getPortalTableNames()) {
+			tablesServletContextNames.put(
+				portalTableName, ReleaseConstants.DEFAULT_SERVLET_CONTEXT_NAME);
+		}
+
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+		for (Bundle bundle : bundleContext.getBundles()) {
+			String symbolicName = bundle.getSymbolicName();
+
+			if (!symbolicName.startsWith("com.liferay") ||
+				(!BundleUtil.isLiferayRequireSchemaVersionBundle(bundle) &&
+				 !BundleUtil.isLiferayServiceBundle(bundle))) {
+
+				continue;
+			}
+
+			for (String tableName :
+					parseCreateTableSQL(getModuleTablesSQL(bundle))) {
+
+				tablesServletContextNames.put(tableName, symbolicName);
+			}
+		}
+
+		return tablesServletContextNames;
 	}
 
 	public static Set<String> parseCreateTableSQL(String createTableSQL) {
@@ -393,6 +460,13 @@ public class DBResourceUtil {
 			return null;
 		}
 	}
+
+	private static final String _SQL_HISTORICAL_SERVICE_COMPONENT =
+		StringBundler.concat(
+			"select buildNamespace, data_ from ServiceComponent where ",
+			"buildNamespace like 'com.liferay%' or buildNamespace = '",
+			ReleaseConstants.DEFAULT_SERVLET_CONTEXT_NAME,
+			"' order by serviceComponentId");
 
 	private static final String _SQL_SERVICE_COMPONENT = StringBundler.concat(
 		"select data_ from ServiceComponent where buildNumber = (select ",

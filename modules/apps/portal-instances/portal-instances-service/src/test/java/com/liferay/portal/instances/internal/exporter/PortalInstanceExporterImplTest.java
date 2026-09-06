@@ -58,6 +58,10 @@ public class PortalInstanceExporterImplTest {
 			Collections.emptyMap()
 		);
 
+		_dbPartitionUtilMockedStatic.when(
+			() -> DBPartitionUtil.getExportedPartitionName(_COMPANY_ID_1)
+		).thenCallRealMethod();
+
 		ReflectionTestUtil.setFieldValue(
 			_portalInstanceExporterImpl, "_companyService", _companyService);
 		ReflectionTestUtil.setFieldValue(
@@ -76,8 +80,7 @@ public class PortalInstanceExporterImplTest {
 			_portalInstanceExporterImpl.exportPortalInstance(_COMPANY_ID_1);
 
 		Assert.assertEquals(
-			DBPartitionUtil.DATABASE_EXPORTED_PARTITION_SCHEMA_NAME_PREFIX +
-				_COMPANY_ID_1,
+			DBPartitionUtil.getExportedPartitionName(_COMPANY_ID_1),
 			exportedPartitionName);
 
 		Mockito.verify(
@@ -137,6 +140,10 @@ public class PortalInstanceExporterImplTest {
 				_COMPANY_ID_1));
 
 		_assertNoConfigurationExported();
+
+		_dbPartitionUtilMockedStatic.verify(
+			() -> DBPartitionUtil.removeExportedPartition(_COMPANY_ID_1),
+			Mockito.never());
 	}
 
 	@Test
@@ -159,6 +166,9 @@ public class PortalInstanceExporterImplTest {
 			SQLException.class,
 			() -> _portalInstanceExporterImpl.exportPortalInstance(
 				_COMPANY_ID_1));
+
+		_dbPartitionUtilMockedStatic.verify(
+			() -> DBPartitionUtil.removeExportedPartition(_COMPANY_ID_1));
 	}
 
 	@Test

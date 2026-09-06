@@ -42,6 +42,16 @@ import java.util.regex.Pattern;
  */
 public class FIPSModeValidator {
 
+	public static Provider fetchProvider() {
+		Provider[] providers = Security.getProviders();
+
+		if (ArrayUtil.isEmpty(providers)) {
+			return null;
+		}
+
+		return providers[0];
+	}
+
 	public static String[] getAllowedTLSCipherSuites(String[] tlsCipherSuites) {
 		if (!PropsValues.FIPS_ENABLED) {
 			return tlsCipherSuites;

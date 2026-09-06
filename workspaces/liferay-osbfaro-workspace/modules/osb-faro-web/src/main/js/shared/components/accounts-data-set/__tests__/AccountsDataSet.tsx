@@ -6,6 +6,7 @@ import {IViewField} from '../utils';
 import {LifecycleStages} from 'contacts/pages/account/utils/constants';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {useRequest} from 'shared/hooks/useRequest';
+import {warmFrontendDataSet} from 'test/warm-frontend-data-set';
 
 const DEFAULT_STAGE_ITEMS = [
 	{id: '9990', stageType: LifecycleStages.AWARE},
@@ -96,6 +97,10 @@ const mockStages = (items: typeof DEFAULT_STAGE_ITEMS | undefined) => {
 	});
 };
 
+const mockStagesLoading = () => {
+	mockedUseRequest.mockReturnValue({data: undefined, loading: true});
+};
+
 type FakeFilter = {
 	apiURL?: string;
 	id: string;
@@ -160,6 +165,8 @@ jest.mock('@liferay/frontend-data-set-web', () => ({
 		return <div data-testid="fds-component" id={id} />;
 	},
 }));
+
+beforeAll(warmFrontendDataSet);
 
 describe('AccountsDataSet', () => {
 	beforeEach(() => {
@@ -524,6 +531,47 @@ describe('AccountsDataSet', () => {
 		);
 
 		expect(mountCount).toBe(2);
+	});
+
+	it('should mount the FrontendDataSet only once, once the lifecycle stages have arrived', () => {
+		mockStagesLoading();
+
+		const {rerender} = render(
+			<AccountsDataSet
+				accountLifecycleId="al-1"
+				apiURL="fake-url"
+				channelId="123"
+				groupId="23"
+			/>
+		);
+
+		expect(screen.queryByTestId('fds-component')).toBeNull();
+		expect(mountCount).toBe(0);
+
+		mockStages(DEFAULT_STAGE_ITEMS);
+
+		rerender(
+			<AccountsDataSet
+				accountLifecycleId="al-1"
+				apiURL="fake-url"
+				channelId="123"
+				groupId="23"
+			/>
+		);
+
+		expect(screen.getByTestId('fds-component')).toBeInTheDocument();
+		expect(mountCount).toBe(1);
+	});
+
+	it('should mount the FrontendDataSet right away when accountLifecycleId is not provided, since the stages request is skipped', () => {
+		mockStagesLoading();
+
+		render(
+			<AccountsDataSet apiURL="fake-url" channelId="123" groupId="23" />
+		);
+
+		expect(screen.getByTestId('fds-component')).toBeInTheDocument();
+		expect(mountCount).toBe(1);
 	});
 
 	describe('when fieldCatalog is not provided', () => {

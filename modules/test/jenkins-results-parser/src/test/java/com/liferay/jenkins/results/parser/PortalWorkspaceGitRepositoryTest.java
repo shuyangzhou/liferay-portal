@@ -7,6 +7,10 @@ package com.liferay.jenkins.results.parser;
 
 import java.io.File;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,6 +68,12 @@ public class PortalWorkspaceGitRepositoryTest
 	}
 
 	@Test
+	public void testSetUp() throws Exception {
+		_testSetUp(false);
+		_testSetUp(true);
+	}
+
+	@Test
 	public void testSetUpAdditionalCaches() throws Exception {
 		Properties buildProperties = new Properties();
 
@@ -88,6 +98,73 @@ public class PortalWorkspaceGitRepositoryTest
 		_testSetUpAdditionalCaches(true, "suite-0", null);
 		_testSetUpAdditionalCaches(true, null, "job");
 		_testSetUpAdditionalCaches(true, null, "job-0");
+	}
+
+	@Test
+	public void testSetUpWorkspaceYarnMirrors() throws Exception {
+		PortalWorkspaceGitRepository portalWorkspaceGitRepository =
+			_newPortalWorkspaceGitRepository();
+
+		portalWorkspaceGitRepository.setUpWorkspaceYarnMirrors();
+
+		File workspacesDirectory = new File(
+			portalWorkspaceGitRepository.getDirectory(), "workspaces");
+
+		Assert.assertFalse(workspacesDirectory.exists());
+
+		File gradleDirectory = new File(workspacesDirectory, ".gradle");
+
+		gradleDirectory.mkdirs();
+
+		File workspaceDirectory1 = _createWorkspace(workspacesDirectory);
+		File workspaceDirectory2 = _createWorkspace(workspacesDirectory);
+
+		portalWorkspaceGitRepository.setUpWorkspaceYarnMirrors();
+
+		Assert.assertEquals(
+			Paths.get("..", "node_modules_cache"),
+			Files.readSymbolicLink(
+				_getNodeModulesCachePath(workspaceDirectory1)));
+		Assert.assertEquals(
+			Paths.get("..", "node_modules_cache"),
+			Files.readSymbolicLink(
+				_getNodeModulesCachePath(workspaceDirectory2)));
+
+		Assert.assertFalse(
+			Files.exists(_getNodeModulesCachePath(gradleDirectory)));
+		Assert.assertTrue(
+			Files.isDirectory(_getNodeModulesCachePath(workspacesDirectory)));
+	}
+
+	@Test
+	public void testSetUpYarn() throws Exception {
+		_testSetUpYarn(false);
+		_testSetUpYarn(true);
+	}
+
+	@Test
+	public void testSetUpYarnCache() throws Exception {
+		_testSetUpYarnCache(false, false);
+		_testSetUpYarnCache(false, true);
+		_testSetUpYarnCache(true, false);
+		_testSetUpYarnCache(true, true);
+	}
+
+	private File _createWorkspace(File workspacesDirectory) throws Exception {
+		File workspaceDirectory = new File(
+			workspacesDirectory, RandomTestUtil.randomString());
+
+		workspaceDirectory.mkdirs();
+
+		File yarnRCFile = new File(workspaceDirectory, ".yarnrc");
+
+		yarnRCFile.createNewFile();
+
+		return workspaceDirectory;
+	}
+
+	private Path _getNodeModulesCachePath(File directory) {
+		return Paths.get(directory.getPath(), "node_modules_cache");
 	}
 
 	private PortalWorkspaceGitRepository _newPortalWorkspaceGitRepository()
@@ -162,6 +239,70 @@ public class PortalWorkspaceGitRepositoryTest
 				"test.released.release.bundle.version"));
 	}
 
+	private void _testSetUp(boolean snapshot) throws Exception {
+		mockEnvironment(
+			Collections.singletonMap("MASTER_NETWORK_NAME", "aws-network"));
+
+		Properties buildProperties = new Properties();
+
+		buildProperties.setProperty("binaries.cache.enabled", "true");
+		buildProperties.setProperty("yarn.cache.enabled", "true");
+
+		JenkinsResultsParserUtil.setBuildProperties(buildProperties);
+
+		PortalWorkspaceGitRepository portalWorkspaceGitRepository =
+			_newPortalWorkspaceGitRepository();
+
+		Mockito.doNothing(
+		).when(
+			portalWorkspaceGitRepository
+		).downloadYarnCache();
+
+		Mockito.doReturn(
+			true
+		).when(
+			portalWorkspaceGitRepository
+		).isYarnCacheAvailable();
+
+		Mockito.doNothing(
+		).when(
+			portalWorkspaceGitRepository
+		).prepareGitWorkingDirectory();
+
+		Mockito.doNothing(
+		).when(
+			portalWorkspaceGitRepository
+		).setUpBinariesCache();
+
+		Mockito.doNothing(
+		).when(
+			portalWorkspaceGitRepository
+		).touchYarnCache();
+
+		Mockito.doNothing(
+		).when(
+			portalWorkspaceGitRepository
+		).uploadGitArchives();
+
+		portalWorkspaceGitRepository.setSnapshot(snapshot);
+
+		portalWorkspaceGitRepository.setUp();
+
+		Assert.assertTrue(portalWorkspaceGitRepository.isSetUp());
+
+		Mockito.verify(
+			portalWorkspaceGitRepository, Mockito.times(1)
+		).downloadYarnCache();
+
+		Mockito.verify(
+			portalWorkspaceGitRepository, Mockito.times(1)
+		).setUpBinariesCache();
+
+		Mockito.verify(
+			portalWorkspaceGitRepository, Mockito.times(1)
+		).touchYarnCache();
+	}
+
 	private void _testSetUpAdditionalCaches(
 			boolean binariesCacheEnabled, String ciTestSuite, String jobName)
 		throws Exception {
@@ -188,6 +329,11 @@ public class PortalWorkspaceGitRepositoryTest
 			portalWorkspaceGitRepository
 		).setUpBinariesCache();
 
+		Mockito.doNothing(
+		).when(
+			portalWorkspaceGitRepository
+		).setUpWorkspaceYarnMirrors();
+
 		portalWorkspaceGitRepository.setUpAdditionalCaches();
 
 		if (binariesCacheEnabled) {
@@ -195,12 +341,114 @@ public class PortalWorkspaceGitRepositoryTest
 				portalWorkspaceGitRepository, Mockito.times(1)
 			).setUpBinariesCache();
 
+			Mockito.verify(
+				portalWorkspaceGitRepository, Mockito.times(1)
+			).setUpWorkspaceYarnMirrors();
+
 			return;
 		}
 
 		Mockito.verify(
 			portalWorkspaceGitRepository, Mockito.never()
 		).setUpBinariesCache();
+
+		Mockito.verify(
+			portalWorkspaceGitRepository, Mockito.never()
+		).setUpWorkspaceYarnMirrors();
+	}
+
+	private void _testSetUpYarn(boolean yarnInstalled) throws Exception {
+		PortalWorkspaceGitRepository portalWorkspaceGitRepository =
+			_newPortalWorkspaceGitRepository();
+
+		PortalGitWorkingDirectory portalGitWorkingDirectory = Mockito.mock(
+			PortalGitWorkingDirectory.class);
+
+		Mockito.doReturn(
+			portalGitWorkingDirectory
+		).when(
+			portalWorkspaceGitRepository
+		).getGitWorkingDirectory();
+
+		if (yarnInstalled) {
+			File nodeModulesDirectory = new File(
+				portalWorkspaceGitRepository.getDirectory(),
+				"modules/node_modules");
+
+			nodeModulesDirectory.mkdirs();
+
+			File yarnIntegrityFile = new File(
+				nodeModulesDirectory, ".yarn-integrity");
+
+			yarnIntegrityFile.createNewFile();
+		}
+
+		portalWorkspaceGitRepository.setUpYarn();
+
+		Mockito.verify(
+			portalGitWorkingDirectory, getVerificationMode(!yarnInstalled)
+		).setUpYarn();
+	}
+
+	private void _testSetUpYarnCache(
+			boolean snapshot, boolean yarnCacheAvailable)
+		throws Exception {
+
+		mockEnvironment(
+			Collections.singletonMap("MASTER_NETWORK_NAME", "aws-network"));
+
+		PortalWorkspaceGitRepository portalWorkspaceGitRepository =
+			_newPortalWorkspaceGitRepository();
+
+		Mockito.doNothing(
+		).when(
+			portalWorkspaceGitRepository
+		).downloadYarnCache();
+
+		Mockito.doReturn(
+			yarnCacheAvailable
+		).when(
+			portalWorkspaceGitRepository
+		).isYarnCacheAvailable();
+
+		Mockito.doNothing(
+		).when(
+			portalWorkspaceGitRepository
+		).setUpYarn();
+
+		Mockito.doNothing(
+		).when(
+			portalWorkspaceGitRepository
+		).touchYarnCache();
+
+		Mockito.doNothing(
+		).when(
+			portalWorkspaceGitRepository
+		).uploadYarnCache();
+
+		portalWorkspaceGitRepository.setSnapshot(snapshot);
+
+		portalWorkspaceGitRepository.setUpYarnCache();
+
+		Mockito.verify(
+			portalWorkspaceGitRepository,
+			getVerificationMode(yarnCacheAvailable)
+		).downloadYarnCache();
+
+		Mockito.verify(
+			portalWorkspaceGitRepository,
+			getVerificationMode(!yarnCacheAvailable)
+		).setUpYarn();
+
+		Mockito.verify(
+			portalWorkspaceGitRepository,
+			getVerificationMode(yarnCacheAvailable)
+		).touchYarnCache();
+
+		Mockito.verify(
+			portalWorkspaceGitRepository,
+			getVerificationMode(!yarnCacheAvailable)
+		).uploadYarnCache();
 	}
 
 }

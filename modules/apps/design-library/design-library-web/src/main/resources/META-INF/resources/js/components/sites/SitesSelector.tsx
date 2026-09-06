@@ -5,7 +5,7 @@
 
 import ClayButton from '@clayui/button';
 import {ItemSelector} from '@liferay/frontend-js-item-selector-web';
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 
 import {Site} from '../../types';
 
@@ -13,32 +13,28 @@ export default function SitesSelector({
 	connectSite,
 	connectedSites,
 }: {
-	connectSite: ({
-		setDisableConnectButton,
-		setSite,
-		site,
-	}: {
-		setDisableConnectButton: React.Dispatch<React.SetStateAction<boolean>>;
-		setSite: React.Dispatch<React.SetStateAction<Site | undefined>>;
-		site?: Site;
-	}) => Promise<void>;
+	connectSite: ({site}: {site?: Site}) => Promise<void>;
 	connectedSites: Site[];
 }) {
 	const [site, setSite] = useState<Site>();
-	const [disableConnectButton, setDisableConnectButton] =
-		useState<boolean>(true);
 
-	const controlConnectSiteButton = (
-		selectedSite: Site,
-		connectedSites: Site[]
-	) => {
-		const alreadyConnected = connectedSites.some(
-			(connectedSite) =>
-				connectedSite.externalReferenceCode ===
-				selectedSite.externalReferenceCode
+	const apiURL = useMemo(() => {
+		const url = new URL(
+			'/o/headless-admin-site/v1.0/sites',
+			location.origin
 		);
-		setDisableConnectButton(alreadyConnected);
-	};
+
+		url.searchParams.set('active', 'true');
+
+		connectedSites.forEach((connectedSite) =>
+			url.searchParams.append(
+				'excludedExternalReferenceCodes',
+				connectedSite.externalReferenceCode
+			)
+		);
+
+		return url.toString();
+	}, [connectedSites]);
 
 	return (
 		<div className="p-4">
@@ -48,23 +44,15 @@ export default function SitesSelector({
 						{Liferay.Language.get('site')}
 					</label>
 
-					<ItemSelector
-						apiURL={`${location.origin}/o/headless-admin-site/v1.0/sites?active=true`}
+					<ItemSelector<Site>
+						apiURL={apiURL}
 						id="siteSelector"
 						items={site ? [site] : []}
-						onItemsChange={(items: Site[]) => {
-							if (items.length) {
-								const item = items[0];
-								controlConnectSiteButton(item, connectedSites);
-								setSite(item);
-							}
-							else {
-								setSite(undefined);
-							}
-						}}
+						key={apiURL}
+						onItemsChange={([item]) => setSite(item)}
 						placeholder={Liferay.Language.get('select-a-site')}
 					>
-						{(item: Site) => (
+						{(item) => (
 							<ItemSelector.Item
 								key={item.id}
 								textValue={Liferay.Util.escapeHTML(
@@ -79,14 +67,12 @@ export default function SitesSelector({
 
 				<div className="autofit-col">
 					<ClayButton
-						disabled={disableConnectButton}
-						onClick={() =>
-							connectSite({
-								setDisableConnectButton,
-								setSite,
-								site,
-							})
-						}
+						disabled={!site}
+						onClick={async () => {
+							await connectSite({site});
+
+							setSite(undefined);
+						}}
 					>
 						{Liferay.Language.get('connect')}
 					</ClayButton>

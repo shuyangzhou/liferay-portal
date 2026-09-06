@@ -26,11 +26,14 @@ public class TestReportFactory {
 		if (batchName.startsWith("integration") ||
 			batchName.startsWith("modules-integration") ||
 			batchName.startsWith("modules-unit") ||
-			batchName.startsWith("unit")) {
+			batchName.startsWith("unit") ||
+			batchName.startsWith("workspaces-unit")) {
 
 			return new JUnitTestReport(downstreamBuildReport, jsonObject);
 		}
-		else if (batchName.startsWith("js-unit")) {
+		else if (batchName.startsWith("js-unit") ||
+				 batchName.startsWith("workspaces-js-unit")) {
+
 			return new JSUnitTestReport(downstreamBuildReport, jsonObject);
 		}
 		else if (batchName.startsWith("modules-compile") ||

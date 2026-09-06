@@ -33,7 +33,7 @@ spec:
             tenantId: {{ $env.tenantId }}
         autoGeneratePassword: true
         autoGrowEnabled: true
-        backupRetentionDays: 7
+        backupRetentionDays: {{ $backupRetentionDays }}
         {{- if $cmkEnabled }}
         customerManagedKey:
             keyVaultKeyId: {{ $cmkKeyVaultKeyId }}

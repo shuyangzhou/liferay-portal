@@ -119,7 +119,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -1026,6 +1025,10 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 	 */
 	@Override
 	public List<Role> getRoles(long companyId, int[] types) {
+		if (ArrayUtil.isEmpty(types)) {
+			return Collections.emptyList();
+		}
+
 		return rolePersistence.findByC_T(companyId, types);
 	}
 
@@ -1948,12 +1951,6 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 	public Role updateExternalReferenceCode(
 			Role role, String externalReferenceCode)
 		throws PortalException {
-
-		if (Objects.equals(
-				role.getExternalReferenceCode(), externalReferenceCode)) {
-
-			return role;
-		}
 
 		role.setExternalReferenceCode(externalReferenceCode);
 

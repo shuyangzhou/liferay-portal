@@ -2004,6 +2004,12 @@
 		},
 		{
 			"properties": {
+				"detectionTimeout": {
+					"default": 0,
+					"description": "Define the time, in milliseconds, after which the detection of audiences is stopped and the variations (for the audiences that matched before the timeout) are immediately applied to the page. Set it to 0 to disable the timeout and wait until every audience has been detected.",
+					"title": "Detection Timeout",
+					"type": "number"
+				},
 				"enableLog": {
 					"default": false,
 					"description": "If this is checked, the frontend audiences infrastructure will print informational messages to the browser console.",
@@ -3158,14 +3164,6 @@
 					"type": "boolean"
 				},
 				"patcherLiferayPortalRepository": {
-					"default": "",
-					"type": "string"
-				},
-				"patcherPubsubProjectId": {
-					"default": "",
-					"type": "string"
-				},
-				"patcherPubsubSubscriptionId": {
 					"default": "",
 					"type": "string"
 				},
@@ -4956,26 +4954,6 @@
 				"xmlSitemapIndexMode": {
 					"default": "page-layout",
 					"title": "XML Sitemap Index Mode",
-					"type": "string"
-				},
-				"xmlSitemapRegenerationDayOfWeek": {
-					"default": "1",
-					"title": "XML Sitemap Regeneration Day of Week",
-					"type": "string"
-				},
-				"xmlSitemapRegenerationFrequency": {
-					"default": "daily",
-					"title": "XML Sitemap Regeneration Frequency",
-					"type": "string"
-				},
-				"xmlSitemapRegenerationTime": {
-					"default": "00:00",
-					"title": "XML Sitemap Regeneration Time",
-					"type": "string"
-				},
-				"xmlSitemapRegenerationTimeZoneId": {
-					"default": "",
-					"title": "XML Sitemap Regeneration Time Zone ID",
 					"type": "string"
 				}
 			},

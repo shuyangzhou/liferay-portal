@@ -26,6 +26,8 @@ import {
 	publishDefinitionRequest,
 	saveDefinitionRequest,
 } from '../../../util/fetchUtil';
+import getInvalidVariables from '../../../util/getInvalidVariables';
+import lang from '../../../util/lang';
 import {isObjectEmpty} from '../../../util/utils';
 import {GroovyScriptWarningModal} from './GroovyScriptWarningModal';
 
@@ -120,6 +122,8 @@ export default function UpperToolbar({
 
 	const getXMLContent = () => {
 		if (!sourceView) {
+			const nodes = elements.filter(isNode);
+
 			const xmlDefinition = serializeDefinition(
 				xmlNamespace,
 				{
@@ -127,12 +131,13 @@ export default function UpperToolbar({
 					name: definitionName,
 					version: workflowDefinitionVersions.length,
 				},
-				elements.filter(isNode),
+				nodes,
 				elements.filter(isEdge)
 			);
 
 			return (
 				XMLUtil.validateDefinition(xmlDefinition) && {
+					elements: nodes,
 					metadata: {
 						description: definitionDescription,
 						name: definitionName,
@@ -152,13 +157,19 @@ export default function UpperToolbar({
 					encodeURIComponent(xmlDefinition)
 				);
 
+				const deserializedElements = deserializeUtil.getElements();
+
 				const metadata = deserializeUtil.getMetadata();
 
 				setDefinitionName(metadata.name);
 				setDefinitionDescription(metadata.description);
-				setElements(deserializeUtil.getElements());
+				setElements(deserializedElements);
 
-				return {metadata, xmlDefinition};
+				return {
+					elements: deserializedElements,
+					metadata,
+					xmlDefinition,
+				};
 			}
 		}
 
@@ -214,31 +225,14 @@ export default function UpperToolbar({
 			return;
 		}
 
-		const {
-			metadata: {name, version},
-			xmlDefinition,
-		} = validXMLDefinition;
+		const invalidVariables = getInvalidVariables(
+			validXMLDefinition.elements,
+			selectedLanguageId ? selectedLanguageId : defaultLanguageId
+		);
 
-		const publishedOrSavedDefinitionResponse =
-			await saveOrPublishDefinitionRequest(
-				{
-					active,
-					content: xmlDefinition,
-					name,
-					title: definitionTitle,
-					title_i18n: definitionTitleTranslations,
-					version,
-				},
-				groupExternalReferenceCode ? groupExternalReferenceCode : {},
-				scope ? scope : {}
-			);
-
-		const publishedOrSavedDefinitionResponseJSON =
-			await publishedOrSavedDefinitionResponse.json();
-
-		if (!publishedOrSavedDefinitionResponse.ok) {
+		if (invalidVariables) {
 			setAlert(
-				publishedOrSavedDefinitionResponseJSON.title,
+				lang.sub(invalidVariables.message, [invalidVariables.label]),
 				'danger',
 				true
 			);
@@ -246,42 +240,91 @@ export default function UpperToolbar({
 			return;
 		}
 
-		if (!allowScriptContentToBeExecutedOrIncluded) {
-			setHadGroovyOrJavaScriptBefore(false);
+		const {
+			metadata: {name, version},
+			xmlDefinition,
+		} = validXMLDefinition;
+
+		try {
+			const publishedOrSavedDefinitionResponse =
+				await saveOrPublishDefinitionRequest(
+					{
+						active,
+						content: xmlDefinition,
+						name,
+						title: definitionTitle,
+						title_i18n: definitionTitleTranslations,
+						version,
+					},
+					groupExternalReferenceCode
+						? groupExternalReferenceCode
+						: {},
+					scope ? scope : {}
+				);
+
+			const publishedOrSavedDefinitionResponseJSON =
+				await publishedOrSavedDefinitionResponse.json();
+
+			if (!publishedOrSavedDefinitionResponse.ok) {
+				setAlert(
+					publishedOrSavedDefinitionResponseJSON.title
+						? publishedOrSavedDefinitionResponseJSON.title
+						: Liferay.Language.get('an-unexpected-error-occurred'),
+					'danger',
+					true
+				);
+
+				return;
+			}
+
+			if (!allowScriptContentToBeExecutedOrIncluded) {
+				setHadGroovyOrJavaScriptBefore(false);
+			}
+
+			setDefinitionName(publishedOrSavedDefinitionResponseJSON.name);
+
+			setWorkflowDefinitionVersions((prevValues) => [
+				{
+					creatorName:
+						publishedOrSavedDefinitionResponseJSON.creator?.name,
+					dateCreated:
+						publishedOrSavedDefinitionResponseJSON.dateModified,
+					version: String(
+						parseInt(
+							publishedOrSavedDefinitionResponseJSON.version,
+							10
+						)
+					),
+				},
+				...prevValues,
+			]);
+
+			if (publishedOrSavedDefinitionResponseJSON.version === '1') {
+				localStorage.setItem(
+					localStorageKeyName,
+					true,
+					localStorage.TYPES.FUNCTIONAL
+				);
+
+				redirectToSavedDefinition(
+					publishedOrSavedDefinitionResponseJSON.name,
+					publishedOrSavedDefinitionResponseJSON.version
+				);
+
+				return;
+			}
+
+			setAlert(successAlertMessage, 'success', true);
 		}
+		catch (error) {
+			console.error(error);
 
-		setDefinitionName(publishedOrSavedDefinitionResponseJSON.name);
-
-		setWorkflowDefinitionVersions((prevValues) => [
-			{
-				creatorName:
-					publishedOrSavedDefinitionResponseJSON.creator?.name,
-				dateCreated:
-					publishedOrSavedDefinitionResponseJSON.dateModified,
-				version: String(
-					parseInt(publishedOrSavedDefinitionResponseJSON.version, 10)
-				),
-			},
-			...prevValues,
-		]);
-
-		if (publishedOrSavedDefinitionResponseJSON.version === '1') {
-			localStorage.setItem(
-				localStorageKeyName,
-				true,
-				localStorage.TYPES.FUNCTIONAL
+			setAlert(
+				Liferay.Language.get('an-unexpected-error-occurred'),
+				'danger',
+				true
 			);
-			redirectToSavedDefinition(
-				publishedOrSavedDefinitionResponseJSON.name,
-				publishedOrSavedDefinitionResponseJSON.version
-			);
-
-			return;
 		}
-
-		setAlert(successAlertMessage, 'success', true);
-
-		return;
 	};
 
 	const publishDefinition = async () => {
