@@ -18,7 +18,7 @@ definition {
 	macro goToRemoteAppsPortlet() {
 		if (IsElementNotPresent(locator1 = "ClientExtension#REMOTE_APPS_HEADER")) {
 			ApplicationsMenu.gotoPortlet(
-				category = "Custom Apps",
+				category = "Developer and Integration",
 				panel = "Applications",
 				portlet = "Client Extensions");
 		}

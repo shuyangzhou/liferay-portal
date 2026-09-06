@@ -34,7 +34,6 @@ const mockLiferayLanguageGet = jest.fn((key: string) => {
 });
 
 (global as any).Liferay = {
-	FeatureFlags: {},
 	Language: {
 		get: mockLiferayLanguageGet,
 	},
@@ -167,23 +166,17 @@ describe('MultipleScopesRenderer', () => {
 	});
 
 	it('does not render projects when itemData has no projects', () => {
-		(global as any).Liferay.FeatureFlags = {
-			'LPD-58677': true,
-		};
-
 		const itemData = {
 			assetLibraries: [{id: -1, name: ''}],
 		} as MultipleScopesRendererProps['itemData'];
 
-		render(<MultipleScopesRenderer itemData={itemData} />);
+		render(<MultipleScopesRenderer cmpEnabled itemData={itemData} />);
 
 		expect(screen.getByText('all-spaces')).toBeInTheDocument();
 		expect(screen.queryByText('all-projects')).not.toBeInTheDocument();
-
-		(global as any).Liferay.FeatureFlags = {};
 	});
 
-	it('does not render projects when the feature flag is disabled', () => {
+	it('does not render projects when CMP is disabled', () => {
 		const itemData = {
 			assetLibraries: [{id: -1, name: ''}],
 			projects: [{id: -1, name: ''}],
@@ -195,17 +188,9 @@ describe('MultipleScopesRenderer', () => {
 		expect(screen.queryByText('all-projects')).not.toBeInTheDocument();
 	});
 
-	describe('When itemData has projects and the feature flag is enabled', () => {
+	describe('When itemData has projects and CMP is enabled', () => {
 		beforeEach(() => {
-			(global as any).Liferay.FeatureFlags = {
-				'LPD-58677': true,
-			};
-
 			mockGetSpaceWithCache();
-		});
-
-		afterEach(() => {
-			(global as any).Liferay.FeatureFlags = {};
 		});
 
 		it('renders both "All Spaces" and "All Projects" badges', async () => {
@@ -214,7 +199,7 @@ describe('MultipleScopesRenderer', () => {
 				projects: [{id: -1, name: ''}],
 			} as MultipleScopesRendererProps['itemData'];
 
-			render(<MultipleScopesRenderer itemData={itemData} />);
+			render(<MultipleScopesRenderer cmpEnabled itemData={itemData} />);
 
 			await waitFor(() => {
 				expect(screen.getByText('all-spaces')).toBeInTheDocument();
@@ -233,7 +218,7 @@ describe('MultipleScopesRenderer', () => {
 				],
 			} as MultipleScopesRendererProps['itemData'];
 
-			render(<MultipleScopesRenderer itemData={itemData} />);
+			render(<MultipleScopesRenderer cmpEnabled itemData={itemData} />);
 
 			await waitFor(() => {
 				expect(screen.getByText('Project 1')).toBeInTheDocument();
@@ -257,7 +242,7 @@ describe('MultipleScopesRenderer', () => {
 				projects: [{id: -1, name: ''}],
 			} as MultipleScopesRendererProps['itemData'];
 
-			render(<MultipleScopesRenderer itemData={itemData} />);
+			render(<MultipleScopesRenderer cmpEnabled itemData={itemData} />);
 
 			await waitFor(() => {
 				expect(screen.getByText('Space 1')).toBeInTheDocument();
@@ -285,7 +270,7 @@ describe('MultipleScopesRenderer', () => {
 				],
 			} as MultipleScopesRendererProps['itemData'];
 
-			render(<MultipleScopesRenderer itemData={itemData} />);
+			render(<MultipleScopesRenderer cmpEnabled itemData={itemData} />);
 
 			await waitFor(() => {
 				expect(screen.getByText('Space 1')).toBeInTheDocument();

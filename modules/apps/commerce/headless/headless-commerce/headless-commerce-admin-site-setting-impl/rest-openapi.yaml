@@ -452,7 +452,7 @@ components:
             type: object
 info:
     description:
-        "Back-office administration of Liferay Commerce site-setting entities: warehouse definitions, tax categories, measurement units, and availability estimates. All four entities are company-scoped on the server, although warehouse, tax category, and availability estimate paths still accept a Liferay site identifier (`groupId`) as a compatibility wire field. Used by store-launch wizards and admin dashboards. Primary entities: AvailabilityEstimate (restock-time windows shown on out-of-stock items), TaxCategory (groupings for tax treatment), Warehouse (warehouse definition; stock levels and per-account/group/channel scoping live in the admin-inventory API), and MeasurementUnit (units of measure used by SKUs and shipping rules). Unimplemented endpoints: the list (GET) and create (POST) operations under /commerceAdminSiteSetting/<groupId>/taxCategory and /commerceAdminSiteSetting/<groupId>/warehouse, and the replace (PUT) operations on the TaxCategory and Warehouse by-id paths, are not implemented and reject every request with a 400 Bad Request without invoking the underlying service; to persist tax categories or warehouse records, drive the back-end services directly or use the sibling admin APIs. AvailabilityEstimate is fully implemented, including addressing by external reference code (`/availabilityEstimate/by-externalReferenceCode/<externalReferenceCode>`, where PUT is upsert). Common workflows: Set up measurement units -- (1) POST /measurement-units (or PUT /measurement-units/by-key/<key>) to create each unit, setting primary=true for the base unit of each type (Dimensions, Weight, Unit); (2) GET /measurement-units/by-type/<measurementUnitType> to confirm the units of a given type before enabling a channel. -- Manage warehouse definitions -- this API only fetches single records (GET /warehouse/<id>) and deletes (DELETE /warehouse/<id>) warehouse definitions; the list (GET), create (POST), and replace (PUT) operations here are not implemented and reject every request with a 400 Bad Request, so per-SKU stock, replenishment, and account/group/channel scoping are administered through the admin-inventory API. A Java client JAR is available for use with the group ID 'com.liferay', artifact ID 'com.liferay.headless.commerce.admin.site.setting.client', and version '4.0.43'."
+        "Back-office administration of Liferay Commerce site-setting entities: warehouse definitions, tax categories, measurement units, and availability estimates. All four entities are company-scoped on the server, although warehouse, tax category, and availability estimate paths still accept a Liferay site identifier (`groupId`) as a compatibility wire field. Used by store-launch wizards and admin dashboards. Primary entities: AvailabilityEstimate (restock-time windows shown on out-of-stock items), TaxCategory (groupings for tax treatment), Warehouse (warehouse definition; stock levels and per-account/group/channel scoping live in the admin-inventory API), and MeasurementUnit (units of measure used by SKUs and shipping rules). Unimplemented endpoints: the list (GET) and create (POST) operations under /commerceAdminSiteSetting/<groupId>/taxCategory and /commerceAdminSiteSetting/<groupId>/warehouse, and the replace (PUT) operations on the TaxCategory and Warehouse by-id paths, are not implemented and reject every request with a 400 Bad Request without invoking the underlying service; to persist tax categories or warehouse records, drive the back-end services directly or use the sibling admin APIs. AvailabilityEstimate is fully implemented, including addressing by external reference code (`/availabilityEstimate/by-externalReferenceCode/<externalReferenceCode>`, where PUT is upsert). Common workflows: Set up measurement units -- (1) POST /measurement-units (or PUT /measurement-units/by-key/<key>) to create each unit, setting primary=true for the base unit of each type (Dimensions, Weight, Unit); (2) GET /measurement-units/by-type/<measurementUnitType> to confirm the units of a given type before enabling a channel. -- Manage warehouse definitions -- this API only fetches single records (GET /warehouse/<id>) and deletes (DELETE /warehouse/<id>) warehouse definitions; the list (GET), create (POST), and replace (PUT) operations here are not implemented and reject every request with a 400 Bad Request, so per-SKU stock, replenishment, and account/group/channel scoping are administered through the admin-inventory API. A Java client JAR is available for use with the group ID 'com.liferay', artifact ID 'com.liferay.headless.commerce.admin.site.setting.client', and version '4.0.44'."
     license:
         name: Apache 2.0
         url: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -705,7 +705,7 @@ paths:
     /availabilityEstimate/{id}:
         delete:
             description:
-                Deletes the availability estimate identified by id. Returns 404 when no estimate matches the id.
+                Deletes the availability estimate identified by ID. Returns 404 when no estimate matches the ID.
             operationId: deleteAvailabilityEstimate
             parameters:
                 -   $ref: "#/components/parameters/idPathParam"
@@ -738,7 +738,7 @@ paths:
                 -   AvailabilityEstimate
         get:
             description:
-                Fetches the availability estimate identified by id. Returns 404 when no estimate matches the id.
+                Fetches the availability estimate identified by ID. Returns 404 when no estimate matches the ID.
             operationId: getAvailabilityEstimate
             parameters:
                 -   $ref: "#/components/parameters/idPathParam"
@@ -801,7 +801,7 @@ paths:
                 -   AvailabilityEstimate
         put:
             description:
-                Replaces the availability estimate identified by id with the request body. Returns 404 when no estimate matches the id, and 400 when the supplied external reference code is already taken by another estimate in the company.
+                Replaces the availability estimate identified by ID with the request body. Returns 404 when no estimate matches the ID, and 400 when the supplied external reference code is already taken by another estimate in the company.
             operationId: putAvailabilityEstimate
             parameters:
                 -   $ref: "#/components/parameters/idPathParam"
@@ -1895,7 +1895,7 @@ paths:
     /measurement-units/{id}:
         delete:
             description:
-                Deletes the measurement unit identified by id. Returns 404 when no unit matches the id.
+                Deletes the measurement unit identified by ID. Returns 404 when no unit matches the ID.
             operationId: deleteMeasurementUnit
             parameters:
                 -   $ref: "#/components/parameters/idPathParam"
@@ -1929,7 +1929,7 @@ paths:
                 -   MeasurementUnit
         get:
             description:
-                Fetches the measurement unit identified by id. Returns 404 when no unit matches the id.
+                Fetches the measurement unit identified by ID. Returns 404 when no unit matches the ID.
             operationId: getMeasurementUnit
             parameters:
                 -   $ref: "#/components/parameters/idPathParam"
@@ -1992,7 +1992,7 @@ paths:
                 -   MeasurementUnit
         patch:
             description:
-                Partially updates the measurement unit identified by id, applying JSON Merge Patch semantics (only fields present in the body are modified). Returns 409 when the supplied external reference code or `key` is already taken in the company, and 422 when the type is not one of the known types.
+                Partially updates the measurement unit identified by ID, applying JSON Merge Patch semantics (only fields present in the body are modified). Returns 409 when the supplied external reference code or `key` is already taken in the company, and 422 when the type is not one of the known types.
             operationId: patchMeasurementUnit
             parameters:
                 -   $ref: "#/components/parameters/idPathParam"
@@ -2075,7 +2075,7 @@ paths:
     /taxCategory/{id}:
         delete:
             description:
-                Deletes the tax category identified by id. Returns 404 when no tax category matches the id.
+                Deletes the tax category identified by ID. Returns 404 when no tax category matches the ID.
             operationId: deleteTaxCategory
             parameters:
                 -   $ref: "#/components/parameters/idPathParam"
@@ -2108,7 +2108,7 @@ paths:
                 -   TaxCategory
         get:
             description:
-                Fetches the tax category identified by id. Returns 404 when no tax category matches the id.
+                Fetches the tax category identified by ID. Returns 404 when no tax category matches the ID.
             operationId: getTaxCategory
             parameters:
                 -   $ref: "#/components/parameters/idPathParam"
@@ -2171,7 +2171,7 @@ paths:
                 -   TaxCategory
         put:
             description:
-                Unimplemented endpoint for replacing the tax category identified by id. Every request is rejected with a 400 Bad Request without reaching the underlying service, and the addressed record is left unchanged.
+                Unimplemented endpoint for replacing the tax category identified by ID. Every request is rejected with a 400 Bad Request without reaching the underlying service, and the addressed record is left unchanged.
             operationId: putTaxCategory
             parameters:
                 -   $ref: "#/components/parameters/idPathParam"
@@ -2224,7 +2224,7 @@ paths:
     /warehouse/{id}:
         delete:
             description:
-                Deletes the warehouse definition identified by id. Returns 404 when no warehouse matches the id. Side effects -- stock levels held in the inventory administration API are not removed.
+                Deletes the warehouse definition identified by ID. Returns 404 when no warehouse matches the ID. Side effects -- stock levels held in the inventory administration API are not removed.
             operationId: deleteWarehouse
             parameters:
                 -   $ref: "#/components/parameters/idPathParam"
@@ -2257,7 +2257,7 @@ paths:
                 -   Warehouse
         get:
             description:
-                Fetches the warehouse definition identified by id. Returns 404 when no warehouse matches the id.
+                Fetches the warehouse definition identified by ID. Returns 404 when no warehouse matches the ID.
             operationId: getWarehouse
             parameters:
                 -   $ref: "#/components/parameters/idPathParam"
@@ -2320,7 +2320,7 @@ paths:
                 -   Warehouse
         put:
             description:
-                Unimplemented endpoint for replacing the warehouse definition identified by id. Every request is rejected with a 400 Bad Request without reaching the underlying service, and the addressed record is left unchanged. For warehouse writes that persist, use the inventory administration API.
+                Unimplemented endpoint for replacing the warehouse definition identified by ID. Every request is rejected with a 400 Bad Request without reaching the underlying service, and the addressed record is left unchanged. For warehouse writes that persist, use the inventory administration API.
             operationId: putWarehouse
             parameters:
                 -   $ref: "#/components/parameters/idPathParam"

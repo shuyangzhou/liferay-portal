@@ -130,6 +130,8 @@ public class FrontendJSAudiencesWebTopHeadDynamicInclude
 		printWriter.print(BootstrapJavaScriptUtil.getHash());
 		printWriter.print(").js?audiencesDefinitionHash=");
 		printWriter.print(audiencesDefinition.getHash());
+		printWriter.print("&detectionTimeout=");
+		printWriter.print(frontendJSAudiencesConfiguration.detectionTimeout());
 		printWriter.print("&enableLog=");
 		printWriter.print(frontendJSAudiencesConfiguration.enableLog());
 		printWriter.print("\" type=\"module\"></script>");

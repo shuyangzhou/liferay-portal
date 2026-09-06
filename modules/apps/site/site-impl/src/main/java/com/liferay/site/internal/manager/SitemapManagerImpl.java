@@ -81,8 +81,10 @@ import com.liferay.redirect.provider.RedirectProvider;
 import com.liferay.site.configuration.manager.SitemapConfigurationManager;
 import com.liferay.site.constants.SitemapConstants;
 import com.liferay.site.internal.constants.SitemapDestinationNames;
+import com.liferay.site.internal.scheduler.XMLSitemapRegenerationSchedulerJobConfiguration;
 import com.liferay.site.manager.SitemapManager;
 import com.liferay.site.provider.SitemapURLProvider;
+import com.liferay.site.service.SiteSitemapRegenerationEntryLocalService;
 import com.liferay.site.storage.helper.SitemapStorageHelper;
 
 import jakarta.servlet.RequestDispatcher;
@@ -310,6 +312,25 @@ public class SitemapManagerImpl implements SitemapManager {
 
 		Date nextRegenerateSitemapDate = null;
 
+		int siteSitemapRegenerationEntriesCount =
+			_siteSitemapRegenerationEntryLocalService.
+				getSiteSitemapRegenerationEntriesCount(companyId);
+
+		if (siteSitemapRegenerationEntriesCount > 0) {
+			Class<?> clazz =
+				XMLSitemapRegenerationSchedulerJobConfiguration.class;
+
+			SchedulerResponse schedulerResponse =
+				_schedulerEngineHelper.getScheduledJob(
+					clazz.getName(), clazz.getName(),
+					StorageType.MEMORY_CLUSTERED);
+
+			if (schedulerResponse != null) {
+				nextRegenerateSitemapDate =
+					_schedulerEngineHelper.getNextFireDate(schedulerResponse);
+			}
+		}
+
 		for (SchedulerResponse schedulerResponse :
 				_getRegenerateSitemapSchedulerResponses(companyId)) {
 
@@ -473,35 +494,33 @@ public class SitemapManagerImpl implements SitemapManager {
 		SitemapURLProvider sitemapURLProvider = _serviceTrackerMap.getService(
 			assetTypeClassNameId);
 
-		if ((sitemapURLProvider == null) ||
-			!sitemapURLProvider.isInclude(companyId, groupId)) {
-
+		if (sitemapURLProvider == null) {
 			return;
 		}
 
-		Lock lock = _lockRegenerateSitemap(assetTypeKey, companyId, groupId);
+		if (groupId != 0) {
+			Group group = _groupLocalService.fetchGroup(groupId);
 
-		if ((lock == null) || !lock.isNew()) {
-			return;
-		}
+			if (group == null) {
+				return;
+			}
 
-		try {
-			ThemeDisplay themeDisplay = _createThemeDisplay(companyId, groupId);
+			if (!group.isCompany()) {
+				_regenerateGroupSitemap(
+					assetTypeClassNameId, assetTypeKey, companyId, groupId,
+					sitemapURLProvider);
 
-			_regenerateAssetTypeSitemap(
-				assetTypeClassNameId, groupId, themeDisplay);
-
-			_getIndexSitemap(groupId, false, themeDisplay);
-
-			if (_sitemapConfigurationManager.isCachedGenerationCompanyEnabled(
-					companyId)) {
-
-				_sitemapStorageHelper.storeLastRegenerateSitemapDateFile(
-					companyId);
+				return;
 			}
 		}
-		finally {
-			_unlockRegenerateSitemap(assetTypeKey, companyId, groupId);
+
+		for (Group group :
+				_groupLocalService.getGroups(
+					companyId, GroupConstants.ANY_PARENT_GROUP_ID, true)) {
+
+			_regenerateGroupSitemap(
+				assetTypeClassNameId, assetTypeKey, companyId,
+				group.getGroupId(), sitemapURLProvider);
 		}
 	}
 
@@ -518,20 +537,12 @@ public class SitemapManagerImpl implements SitemapManager {
 				return;
 			}
 
-			boolean force = false;
-
-			if (startDate != null) {
-				force = true;
-			}
+			boolean force = true;
 
 			if (startDate == null) {
-				long xmlSitemapRegenerationDelay =
-					_sitemapConfigurationManager.getXMLSitemapRegenerationDelay(
-						companyId);
+				force = false;
 
-				startDate = new Date(
-					System.currentTimeMillis() +
-						(xmlSitemapRegenerationDelay * Time.SECOND));
+				startDate = new Date();
 			}
 
 			Group group = _groupLocalService.fetchGroup(groupId);
@@ -823,6 +834,20 @@ public class SitemapManagerImpl implements SitemapManager {
 		themeDisplay.setUser(_userLocalService.getGuestUser(companyId));
 
 		return themeDisplay;
+	}
+
+	private void _deleteAssetTypeSitemapsFromPage(
+			String assetTypeKey, long companyId, long groupId, int page)
+		throws PortalException {
+
+		while (_sitemapStorageHelper.hasSitemapFile(
+					companyId, groupId, assetTypeKey, page)) {
+
+			_sitemapStorageHelper.deleteSitemap(
+				companyId, groupId, assetTypeKey, page);
+
+			page++;
+		}
 	}
 
 	private void _generateAssetTypeSitemap(
@@ -1362,20 +1387,61 @@ public class SitemapManagerImpl implements SitemapManager {
 
 		String assetTypeKey = _assetTypeKeys.get(assetTypeClassNameId);
 
+		int[] pages = {0};
+
+		_generateAssetTypeSitemap(
+			assetTypeClassNameId, groupId, themeDisplay,
+			(page, xml) -> {
+				pages[0] = page;
+
+				_sitemapStorageHelper.storeSitemapFile(
+					companyId, groupId, assetTypeKey, page, xml);
+			});
+
 		try {
-			_sitemapStorageHelper.deleteSitemaps(
-				companyId, groupId, assetTypeKey);
+			_deleteAssetTypeSitemapsFromPage(
+				assetTypeKey, companyId, groupId, pages[0] + 1);
 		}
 		catch (Exception exception) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(exception);
 			}
 		}
+	}
 
-		_generateAssetTypeSitemap(
-			assetTypeClassNameId, groupId, themeDisplay,
-			(page, xml) -> _sitemapStorageHelper.storeSitemapFile(
-				companyId, groupId, assetTypeKey, page, xml));
+	private void _regenerateGroupSitemap(
+			long assetTypeClassNameId, String assetTypeKey, long companyId,
+			long groupId, SitemapURLProvider sitemapURLProvider)
+		throws PortalException {
+
+		if (!sitemapURLProvider.isInclude(companyId, groupId)) {
+			return;
+		}
+
+		Lock lock = _lockRegenerateSitemap(assetTypeKey, companyId, groupId);
+
+		if ((lock == null) || !lock.isNew()) {
+			return;
+		}
+
+		try {
+			ThemeDisplay themeDisplay = _createThemeDisplay(companyId, groupId);
+
+			_regenerateAssetTypeSitemap(
+				assetTypeClassNameId, groupId, themeDisplay);
+
+			_getIndexSitemap(groupId, false, themeDisplay);
+
+			if (_sitemapConfigurationManager.isCachedGenerationCompanyEnabled(
+					companyId)) {
+
+				_sitemapStorageHelper.storeLastRegenerateSitemapDateFile(
+					companyId);
+			}
+		}
+		finally {
+			_unlockRegenerateSitemap(assetTypeKey, companyId, groupId);
+		}
 	}
 
 	private void _removeAttribute(Element element, String name) {
@@ -1702,6 +1768,10 @@ public class SitemapManagerImpl implements SitemapManager {
 
 	@Reference
 	private SitemapStorageHelper _sitemapStorageHelper;
+
+	@Reference
+	private SiteSitemapRegenerationEntryLocalService
+		_siteSitemapRegenerationEntryLocalService;
 
 	@Reference
 	private TriggerFactory _triggerFactory;

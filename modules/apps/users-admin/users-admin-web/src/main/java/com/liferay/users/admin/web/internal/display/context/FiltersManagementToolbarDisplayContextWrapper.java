@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.users.admin.management.toolbar.FilterContributor;
+import com.liferay.users.admin.web.internal.util.UsersAdminPortletURLUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -78,7 +79,9 @@ public class FiltersManagementToolbarDisplayContextWrapper
 
 					dropdownGroupItem.setDropdownItems(
 						getDropdownItems(
-							entriesMap, getPortletURL(),
+							entriesMap,
+							UsersAdminPortletURLUtil.removeSelectionParameters(
+								getPortletURL()),
 							filterContributor.getParameter(),
 							_getCurrentValue(
 								httpServletRequest, filterContributor)));
@@ -113,7 +116,7 @@ public class FiltersManagementToolbarDisplayContextWrapper
 								filterContributor.getParameter(), (String)null
 							).buildString());
 
-						labelItem.setCloseable(true);
+						labelItem.setDismissible(true);
 						labelItem.setLabel(
 							String.format(
 								"%s: %s",
@@ -133,9 +136,10 @@ public class FiltersManagementToolbarDisplayContextWrapper
 		HttpServletRequest httpServletRequest,
 		FilterContributor filterContributor) {
 
-		return ParamUtil.getString(
-			httpServletRequest, filterContributor.getParameter(),
-			filterContributor.getDefaultValue());
+		return filterContributor.getCurrentValue(
+			ParamUtil.getString(
+				httpServletRequest, filterContributor.getParameter(),
+				filterContributor.getDefaultValue()));
 	}
 
 	private final FilterContributor[] _filterContributors;

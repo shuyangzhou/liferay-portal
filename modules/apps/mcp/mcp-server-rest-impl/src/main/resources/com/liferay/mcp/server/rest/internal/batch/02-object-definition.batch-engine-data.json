@@ -61,20 +61,45 @@
 					"type": "String"
 				},
 				{
-					"DBType": "Clob",
-					"businessType": "LongText",
-					"defaultValue": "null",
+					"DBType": "String",
+					"businessType": "Picklist",
+					"defaultValue": "inactive",
 					"indexed": true,
 					"indexedAsKeyword": false,
-					"indexedLanguageId": "en_US",
 					"label": {
-						"en_US": "Tools"
+						"en_US": "Status"
 					},
-					"name": "tools",
+					"listTypeDefinitionExternalReferenceCode": "L_MCP_STATUS",
+					"name": "profileStatus",
 					"required": true,
 					"state": false,
 					"system": true,
 					"type": "String"
+				}
+			],
+			"objectRelationships": [
+				{
+					"deletionType": "cascade",
+					"externalReferenceCode": "L_MCP_SERVER_PROFILE_TO_L_MCP_SERVER_PROFILE_TOOL",
+					"label": {
+						"en_US": "MCP Server Profile to MCP Server Profile Tools"
+					},
+					"name": "mcpServerProfileToTools",
+					"objectDefinitionExternalReferenceCode1": "L_MCP_SERVER_PROFILE",
+					"objectDefinitionExternalReferenceCode2": "L_MCP_SERVER_PROFILE_TOOL",
+					"objectDefinitionName2": "MCPServerProfileTool",
+					"objectDefinitionSystem2": true,
+					"objectField": {
+						"label": {
+							"en_US": "MCP Server Profile to MCP Server Profile Tools"
+						},
+						"required": true
+					},
+					"parameterObjectFieldId": 0,
+					"parameterObjectFieldName": "",
+					"reverse": false,
+					"system": true,
+					"type": "oneToMany"
 				}
 			],
 			"panelCategoryKey": "control_panel.object",

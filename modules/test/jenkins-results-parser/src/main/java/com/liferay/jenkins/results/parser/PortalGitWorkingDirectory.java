@@ -98,7 +98,35 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 		}
 
 		_jsUnitFiles = new ArrayList<>(
-			findFiles(null, "describe\\( -- '*.js' '*.jsx' '*.ts' '*.tsx'"));
+			findFiles(null, _FILE_CONTENT_SNIPPET_JS_UNIT));
+
+		File portalPrivateDir = getPortalPrivateDir();
+
+		if (portalPrivateDir != null) {
+			String standardOut = null;
+
+			try {
+				Process process = JenkinsResultsParserUtil.executeBashCommands(
+					false, portalPrivateDir, 60 * 1000,
+					"git grep " + _FILE_CONTENT_SNIPPET_JS_UNIT);
+
+				standardOut = JenkinsResultsParserUtil.readInputStream(
+					process.getInputStream());
+			}
+			catch (IOException | TimeoutException exception) {
+				throw new GitWorkingDirectoryRuntimeException(
+					this, "Unable to run: git grep in " + portalPrivateDir,
+					exception);
+			}
+
+			Matcher matcher = _jsUnitFilePathPattern.matcher(standardOut);
+
+			while (matcher.find()) {
+				String filePath = matcher.group("filePath");
+
+				_jsUnitFiles.add(new File(portalPrivateDir, filePath));
+			}
+		}
 
 		return _jsUnitFiles;
 	}
@@ -374,6 +402,28 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 			"Unable to find a plugins Git working directory");
 	}
 
+	public File getPortalPrivateDir() {
+		String portalPrivateDirPath = JenkinsResultsParserUtil.getProperty(
+			getTestProperties(), "liferay.portal.private.dir");
+
+		if (JenkinsResultsParserUtil.isNullOrEmpty(portalPrivateDirPath)) {
+			return null;
+		}
+
+		File portalPrivateDir = new File(portalPrivateDirPath);
+
+		if (!portalPrivateDir.isAbsolute()) {
+			portalPrivateDir = new File(
+				getWorkingDirectory(), portalPrivateDirPath);
+		}
+
+		if (!portalPrivateDir.exists()) {
+			return null;
+		}
+
+		return JenkinsResultsParserUtil.getCanonicalFile(portalPrivateDir);
+	}
+
 	public Properties getReleaseProperties() {
 		if (_releaseProperties != null) {
 			return _releaseProperties;
@@ -426,7 +476,8 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 				properties.put(
 					propertyName,
 					JenkinsResultsParserUtil.getBuildProperty(
-						"portal.build.properties[" + propertyName + "]"));
+						"portal.build.properties[" + propertyName + "]",
+						getUpstreamBranchName()));
 			}
 
 			JenkinsResultsParserUtil.writePropertiesFile(
@@ -663,11 +714,16 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 	}
 
 	private static final String[] _BINARIES_CACHE_EXCLUDE_REGEXES = {
-		"\\.gradle/", "\\.yarn/", "modules/\\.tsc/", "node_modules_cache/"
+		"\\.gradle/", "\\.yarn/", "modules/\\.tsc/", "node_modules_cache"
 	};
+
+	private static final String _FILE_CONTENT_SNIPPET_JS_UNIT =
+		"describe\\( -- '*.js' '*.jsx' '*.ts' '*.tsx'";
 
 	private static final Pattern _esBuildFileNamePattern = Pattern.compile(
 		"@esbuild-(linux-.*?)-.*");
+	private static final Pattern _jsUnitFilePathPattern = Pattern.compile(
+		"(?<filePath>[^:]+):.+");
 
 	private Properties _appServerProperties;
 	private List<File> _jsUnitFiles;

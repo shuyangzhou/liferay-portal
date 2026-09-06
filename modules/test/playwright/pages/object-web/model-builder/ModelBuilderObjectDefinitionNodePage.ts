@@ -21,6 +21,7 @@ export class ModelBuilderObjectDefinitionNodePage {
 	readonly modalDeleteObjectDefinitionConfirmationButton: Locator;
 	readonly modalDeleteObjectDefinitionTextField: Locator;
 	readonly modalEditObjectDefinitionExternalReferenceCodeInput: Locator;
+	readonly modelBuilderDiagramAreaLoading: Locator;
 	readonly newObjectFieldSaveButton: Locator;
 	readonly newObjectRelationshipSaveButton: Locator;
 	readonly objectFieldBusinessTypeSelect: Locator;
@@ -64,6 +65,9 @@ export class ModelBuilderObjectDefinitionNodePage {
 			page.getByLabel('External Reference Code' + 'Mandatory');
 		this.modalDeleteObjectDefinitionTextField = page.getByPlaceholder(
 			'Confirm Object Definition Name'
+		);
+		this.modelBuilderDiagramAreaLoading = page.locator(
+			'.lfr-objects__model-builder-diagram-area-loading'
 		);
 		this.newObjectFieldSaveButton = page
 			.getByLabel('New Field')
@@ -196,13 +200,26 @@ export class ModelBuilderObjectDefinitionNodePage {
 		return objectRelationship;
 	}
 
+	async deleteDraftObjectDefinition() {
+		const reloadedResponse = this._waitForModelBuilderReload();
+
+		await this.deleteObjectDefinitionOption.click();
+
+		await reloadedResponse;
+	}
+
 	async deleteObjectDefinition(objectDefinitionName: string) {
 		await this.deleteObjectDefinitionOption.click();
 		await this.modalDeleteObjectDefinitionTextField.click();
 		await this.modalDeleteObjectDefinitionTextField.fill(
 			objectDefinitionName
 		);
+
+		const reloadedResponse = this._waitForModelBuilderReload();
+
 		await this.modalDeleteObjectDefinitionConfirmationButton.click();
+
+		await reloadedResponse;
 	}
 
 	async fillObjectFieldLabelInput(objectFieldLabel: string) {
@@ -243,5 +260,17 @@ export class ModelBuilderObjectDefinitionNodePage {
 				name: String(objectFieldBusinessType),
 			})
 			.click();
+	}
+
+	private async _waitForModelBuilderReload() {
+		await this.page.waitForResponse(
+			(response) =>
+				response.request().method() === 'GET' &&
+				response
+					.url()
+					.includes('/o/object-admin/v1.0/object-folders?pageSize=-1')
+		);
+
+		await this.modelBuilderDiagramAreaLoading.waitFor({state: 'hidden'});
 	}
 }

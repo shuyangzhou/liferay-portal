@@ -514,6 +514,21 @@ public class CPConfigurationListLocalServiceImpl
 		return cpConfigurationListPersistence.update(cpConfigurationList);
 	}
 
+	@Indexable(type = IndexableType.REINDEX)
+	@Override
+	public CPConfigurationList updateExternalReferenceCode(
+			long cpConfigurationListId, String externalReferenceCode)
+		throws PortalException {
+
+		CPConfigurationList cpConfigurationList =
+			cpConfigurationListPersistence.findByPrimaryKey(
+				cpConfigurationListId);
+
+		cpConfigurationList.setExternalReferenceCode(externalReferenceCode);
+
+		return cpConfigurationListPersistence.update(cpConfigurationList);
+	}
+
 	private GroupByStep _getGroupByStep(
 		long companyId, long groupId, Long accountEntryId,
 		long[] accountGroupIds, Long commerceChannelId,

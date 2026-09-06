@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.test.rule.FeatureFlag;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import org.junit.Before;
@@ -67,79 +66,88 @@ public class CMPObjectEntryModelDocumentContributorTest {
 		}
 	}
 
-	@FeatureFlag("LPD-58677")
 	@Test
 	public void testContributeWithObjectEntryFolder() {
-		ObjectEntryFolder objectEntryFolder = Mockito.mock(
-			ObjectEntryFolder.class);
+		try (MockedStatic<LicenseManagerUtil> licenseManagerUtilMockedStatic =
+				Mockito.mockStatic(LicenseManagerUtil.class)) {
 
-		long childObjectEntryFolderId = RandomTestUtil.randomLong();
-		long parentObjectEntryFolderId = RandomTestUtil.randomLong();
-		long rootObjectEntryFolderId = RandomTestUtil.randomLong();
+			licenseManagerUtilMockedStatic.when(
+				() -> LicenseManagerUtil.isAppEnabled(App.CMP)
+			).thenReturn(
+				true
+			);
 
-		Mockito.when(
-			objectEntryFolder.getTreePath()
-		).thenReturn(
-			StringBundler.concat(
-				StringPool.SLASH, rootObjectEntryFolderId, StringPool.SLASH,
-				parentObjectEntryFolderId, StringPool.SLASH,
-				childObjectEntryFolderId, StringPool.SLASH)
-		);
+			ObjectEntryFolder objectEntryFolder = Mockito.mock(
+				ObjectEntryFolder.class);
 
-		Mockito.when(
-			_objectEntryFolderLocalService.fetchObjectEntryFolder(
-				childObjectEntryFolderId)
-		).thenReturn(
-			objectEntryFolder
-		);
+			long childObjectEntryFolderId = RandomTestUtil.randomLong();
+			long parentObjectEntryFolderId = RandomTestUtil.randomLong();
+			long rootObjectEntryFolderId = RandomTestUtil.randomLong();
 
-		ObjectEntry objectEntry = Mockito.mock(ObjectEntry.class);
+			Mockito.when(
+				objectEntryFolder.getTreePath()
+			).thenReturn(
+				StringBundler.concat(
+					StringPool.SLASH, rootObjectEntryFolderId, StringPool.SLASH,
+					parentObjectEntryFolderId, StringPool.SLASH,
+					childObjectEntryFolderId, StringPool.SLASH)
+			);
 
-		Mockito.when(
-			objectEntry.getObjectEntryFolderId()
-		).thenReturn(
-			childObjectEntryFolderId
-		);
+			Mockito.when(
+				_objectEntryFolderLocalService.fetchObjectEntryFolder(
+					childObjectEntryFolderId)
+			).thenReturn(
+				objectEntryFolder
+			);
 
-		_cmpObjectEntryModelDocumentContributor.contribute(
-			Mockito.mock(Document.class), objectEntry);
+			ObjectEntry objectEntry = Mockito.mock(ObjectEntry.class);
 
-		Mockito.verify(
-			_objectEntryFolderLocalService
-		).fetchObjectEntryFolder(
-			rootObjectEntryFolderId
-		);
+			Mockito.when(
+				objectEntry.getObjectEntryFolderId()
+			).thenReturn(
+				childObjectEntryFolderId
+			);
 
-		Mockito.reset(_objectEntryFolderLocalService);
+			_cmpObjectEntryModelDocumentContributor.contribute(
+				Mockito.mock(Document.class), objectEntry);
 
-		Mockito.when(
-			objectEntryFolder.getTreePath()
-		).thenReturn(
-			StringBundler.concat(
-				StringPool.SLASH, rootObjectEntryFolderId, StringPool.SLASH)
-		);
+			Mockito.verify(
+				_objectEntryFolderLocalService
+			).fetchObjectEntryFolder(
+				rootObjectEntryFolderId
+			);
 
-		Mockito.when(
-			_objectEntryFolderLocalService.fetchObjectEntryFolder(
-				rootObjectEntryFolderId)
-		).thenReturn(
-			objectEntryFolder
-		);
+			Mockito.reset(_objectEntryFolderLocalService);
 
-		Mockito.when(
-			objectEntry.getObjectEntryFolderId()
-		).thenReturn(
-			rootObjectEntryFolderId
-		);
+			Mockito.when(
+				objectEntryFolder.getTreePath()
+			).thenReturn(
+				StringBundler.concat(
+					StringPool.SLASH, rootObjectEntryFolderId, StringPool.SLASH)
+			);
 
-		_cmpObjectEntryModelDocumentContributor.contribute(
-			Mockito.mock(Document.class), objectEntry);
+			Mockito.when(
+				_objectEntryFolderLocalService.fetchObjectEntryFolder(
+					rootObjectEntryFolderId)
+			).thenReturn(
+				objectEntryFolder
+			);
 
-		Mockito.verify(
-			_objectEntryFolderLocalService
-		).fetchObjectEntryFolder(
-			rootObjectEntryFolderId
-		);
+			Mockito.when(
+				objectEntry.getObjectEntryFolderId()
+			).thenReturn(
+				rootObjectEntryFolderId
+			);
+
+			_cmpObjectEntryModelDocumentContributor.contribute(
+				Mockito.mock(Document.class), objectEntry);
+
+			Mockito.verify(
+				_objectEntryFolderLocalService
+			).fetchObjectEntryFolder(
+				rootObjectEntryFolderId
+			);
+		}
 	}
 
 	private CMPObjectEntryModelDocumentContributor
