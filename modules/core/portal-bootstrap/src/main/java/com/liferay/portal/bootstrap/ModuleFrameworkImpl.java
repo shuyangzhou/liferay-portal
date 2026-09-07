@@ -208,7 +208,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 	@Override
 	public void initFramework() throws Exception {
 		if (PropsValues.FIPS_ENABLED) {
-			FIPSApplicationStateMachineUtil.selfTest(
+			FIPSApplicationStateMachineUtil.preOperationalSelfTest(
 				FIPSModeValidator::validate);
 		}
 
@@ -355,6 +355,10 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		if (Boolean.parseBoolean(System.getenv("LIFERAY_CLEAN_OSGI_STATE"))) {
 			_cleanOSGiStateFolder();
+		}
+
+		if (PropsValues.FIPS_ENABLED) {
+			FIPSApplicationStateMachineUtil.powerOff("Portal");
 		}
 	}
 

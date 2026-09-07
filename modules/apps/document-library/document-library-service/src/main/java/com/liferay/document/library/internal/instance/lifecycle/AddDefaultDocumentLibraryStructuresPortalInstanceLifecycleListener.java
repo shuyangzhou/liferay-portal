@@ -18,7 +18,6 @@ import com.liferay.osgi.util.configuration.ConfigurationPersistenceUtil;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener;
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
-import com.liferay.portal.kernel.metadata.RawMetadataProcessorUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
@@ -102,8 +101,7 @@ public class AddDefaultDocumentLibraryStructuresPortalInstanceLifecycleListener
 				locale, name
 			).build();
 
-			DDMForm ddmForm = DDMFormUtil.buildDDMForm(
-				RawMetadataProcessorUtil.getFieldNames(), locale);
+			DDMForm ddmForm = DDMFormUtil.buildDDMForm(locale);
 
 			DDMFormLayout ddmFormLayout = _ddm.getDefaultDDMFormLayout(ddmForm);
 

@@ -53,7 +53,7 @@ customEnvFrom: {}
 customInitContainers:
     x-license-sync:
         -   containerTemplate: |
-                {{- if .license.enabled }}
+                {{- if .licensing.enabled }}
                 -   command:
                         -   bash
                         -   /liferay-init-scripts/deploy-sync.sh
@@ -61,7 +61,7 @@ customInitContainers:
                         -   name: LIFERAY_SYNC_DEST
                             value: /opt/liferay/deploy/license.xml
                         -   name: LIFERAY_SYNC_INTERVAL
-                            value: {{ .license.syncInterval | quote }}
+                            value: {{ .licensing.syncInterval | quote }}
                         -   name: LIFERAY_SYNC_MARKER
                             value: /opt/liferay/.liferay-license-sync.sha
                         -   name: LIFERAY_SYNC_SOURCE
@@ -79,7 +79,7 @@ customInitContainers:
                             type: RuntimeDefault
                     volumeMounts:
                         -   mountPath: /liferay-init-scripts/deploy-sync.sh
-                            name: {{ .license.initScriptsVolumeName }}
+                            name: {{ .licensing.initScriptsVolumeName }}
                             subPath: deploy-sync.sh
                         -   mountPath: /secret
                             name: liferay-license
@@ -151,6 +151,13 @@ customInitContainers:
                                 mkdir --parents /temp/liferay/glowroot
 
                                 cp --force --recursive --verbose /opt/liferay/glowroot/* /temp/liferay/glowroot
+                            fi
+
+                            if [ ! -d /temp/osgi/marketplace ] || [ -z "$(ls --almost-all /temp/osgi/marketplace)" ]
+                            then
+                                mkdir --parents /temp/osgi/marketplace
+
+                                cp --force --recursive --verbose /opt/liferay/osgi/marketplace/. /temp/osgi/marketplace
                             fi
 
                             if [ ! -f /temp/tomcat/conf/server.xml ]
@@ -361,17 +368,19 @@ image:
     repository: liferay/dxp
     tag: 2026.q1.8-lts
 initContainers: []
-license:
+licensing:
     activationCodeSecretKey: activationCode
     activationCodeSecretName: ""
     enabled: false
     initScriptsVolumeName: liferay-init-scripts-default
-    secretName: ""
-    syncInterval: 60
-licensing:
-    enabled: false
     offline: false
     offlineActivationBundle: ""
+    onlineActivationWorkflow:
+        clusterRoleName: online-activation-cluster-role
+        enabled: true
+        serviceAccountName: online-activation-service-account
+    secretName: ""
+    syncInterval: 60
 livenessProbe:
     failureThreshold: 3
     httpGet:
@@ -517,6 +526,9 @@ volumeMounts:
     -   mountPath: /opt/liferay/osgi/configs
         name: liferay-persistent-volume
         subPath: osgi/configs
+    -   mountPath: /opt/liferay/osgi/marketplace
+        name: liferay-persistent-volume
+        subPath: osgi/marketplace
     -   mountPath: /opt/liferay/osgi/modules
         name: liferay-persistent-volume
         subPath: osgi/modules

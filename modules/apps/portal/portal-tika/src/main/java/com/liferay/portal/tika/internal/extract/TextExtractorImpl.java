@@ -34,6 +34,7 @@ import java.util.logging.Logger;
 import org.apache.tika.Tika;
 import org.apache.tika.detect.Detector;
 import org.apache.tika.exception.TikaException;
+import org.apache.tika.exception.WriteLimitReachedException;
 import org.apache.tika.extractor.EmbeddedDocumentExtractor;
 import org.apache.tika.extractor.ParsingEmbeddedDocumentExtractor;
 import org.apache.tika.metadata.Metadata;
@@ -163,6 +164,11 @@ public class TextExtractorImpl implements TextExtractor {
 							boolean outputHtml)
 						throws IOException, SAXException {
 
+						if (!inputStream.markSupported()) {
+							inputStream = new UnsyncBufferedInputStream(
+								inputStream);
+						}
+
 						MediaType mediaType = detector.detect(
 							inputStream, new Metadata());
 
@@ -184,7 +190,7 @@ public class TextExtractorImpl implements TextExtractor {
 				metadata, parseContext);
 		}
 		catch (SAXException saxException) {
-			if (!writeOutContentHandler.isWriteLimitReached(saxException)) {
+			if (!WriteLimitReachedException.isWriteLimitReached(saxException)) {
 				throw new TikaException(
 					saxException.getMessage(), saxException);
 			}
@@ -215,11 +221,7 @@ public class TextExtractorImpl implements TextExtractor {
 			}
 
 			Logger logger = Logger.getLogger(
-				"org.apache.tika.parser.SQLite3Parser");
-
-			logger.setLevel(Level.SEVERE);
-
-			logger = Logger.getLogger("org.apache.tika.parsers.PDFParser");
+				"org.apache.tika.parsers.PDFParser");
 
 			logger.setLevel(Level.SEVERE);
 

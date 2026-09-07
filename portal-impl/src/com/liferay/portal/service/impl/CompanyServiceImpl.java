@@ -8,6 +8,7 @@ package com.liferay.portal.service.impl;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.db.partition.util.DBPartitionUtil;
+import com.liferay.portal.kernel.audit.AuditException;
 import com.liferay.portal.kernel.audit.AuditMessage;
 import com.liferay.portal.kernel.audit.AuditRouterUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -15,6 +16,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.EmailAddress;
@@ -153,17 +156,24 @@ public class CompanyServiceImpl extends CompanyServiceBaseImpl {
 		if (AuditRouterUtil.isDeployed()) {
 			long userId = getUserId();
 
-			AuditRouterUtil.route(
-				new AuditMessage(
-					0, company.getCompanyId(), userId,
-					PortalUtil.getUserName(userId, StringPool.BLANK), null,
-					JSONUtil.put(
-						"virtualHostname", company.getVirtualHostname()
-					).put(
-						"webId", company.getWebId()
-					),
-					Company.class.getName(),
-					String.valueOf(company.getCompanyId()), "ADD", null));
+			try {
+				AuditRouterUtil.route(
+					new AuditMessage(
+						0, company.getCompanyId(), userId,
+						PortalUtil.getUserName(userId, StringPool.BLANK), null,
+						JSONUtil.put(
+							"virtualHostname", company.getVirtualHostname()
+						).put(
+							"webId", company.getWebId()
+						),
+						Company.class.getName(),
+						String.valueOf(company.getCompanyId()), "ADD", null));
+			}
+			catch (AuditException auditException) {
+				if (_log.isWarnEnabled()) {
+					_log.warn("Unable to route audit message", auditException);
+				}
+			}
 		}
 
 		return company;
@@ -188,17 +198,24 @@ public class CompanyServiceImpl extends CompanyServiceBaseImpl {
 		if (AuditRouterUtil.isDeployed()) {
 			long userId = getUserId();
 
-			AuditRouterUtil.route(
-				new AuditMessage(
-					0, company.getCompanyId(), userId,
-					PortalUtil.getUserName(userId, StringPool.BLANK), null,
-					JSONUtil.put(
-						"virtualHostname", company.getVirtualHostname()
-					).put(
-						"webId", company.getWebId()
-					),
-					Company.class.getName(),
-					String.valueOf(company.getCompanyId()), "COPY", null));
+			try {
+				AuditRouterUtil.route(
+					new AuditMessage(
+						0, company.getCompanyId(), userId,
+						PortalUtil.getUserName(userId, StringPool.BLANK), null,
+						JSONUtil.put(
+							"virtualHostname", company.getVirtualHostname()
+						).put(
+							"webId", company.getWebId()
+						),
+						Company.class.getName(),
+						String.valueOf(company.getCompanyId()), "COPY", null));
+			}
+			catch (AuditException auditException) {
+				if (_log.isWarnEnabled()) {
+					_log.warn("Unable to route audit message", auditException);
+				}
+			}
 		}
 
 		return company;
@@ -246,17 +263,25 @@ public class CompanyServiceImpl extends CompanyServiceBaseImpl {
 		if (AuditRouterUtil.isDeployed()) {
 			long userId = getUserId();
 
-			AuditRouterUtil.route(
-				new AuditMessage(
-					0, company.getCompanyId(), userId,
-					PortalUtil.getUserName(userId, StringPool.BLANK), null,
-					JSONUtil.put(
-						"virtualHostname", company.getVirtualHostname()
-					).put(
-						"webId", company.getWebId()
-					),
-					Company.class.getName(),
-					String.valueOf(company.getCompanyId()), "EXPORT", null));
+			try {
+				AuditRouterUtil.route(
+					new AuditMessage(
+						0, company.getCompanyId(), userId,
+						PortalUtil.getUserName(userId, StringPool.BLANK), null,
+						JSONUtil.put(
+							"virtualHostname", company.getVirtualHostname()
+						).put(
+							"webId", company.getWebId()
+						),
+						Company.class.getName(),
+						String.valueOf(company.getCompanyId()), "EXPORT",
+						null));
+			}
+			catch (AuditException auditException) {
+				if (_log.isWarnEnabled()) {
+					_log.warn("Unable to route audit message", auditException);
+				}
+			}
 		}
 
 		return company;
@@ -616,6 +641,9 @@ public class CompanyServiceImpl extends CompanyServiceBaseImpl {
 			companyId, authType, autoLogin, sendPassword, strangers,
 			strangersWithMx, strangersVerify, siteLogo);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		CompanyServiceImpl.class);
 
 	@BeanReference(type = RoleLocalService.class)
 	private RoleLocalService _roleLocalService;

@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.metadata.RawMetadataProcessorUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -147,7 +146,6 @@ public class DLServiceVerifyProcess extends VerifyProcess {
 
 				if (ddmStructure != null) {
 					DDMForm ddmForm = DDMFormUtil.buildDDMForm(
-						RawMetadataProcessorUtil.getFieldNames(),
 						_portal.getSiteDefaultLocale(group.getGroupId()));
 
 					String definition = _serializeJSONDDMForm(ddmForm);

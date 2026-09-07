@@ -3,9 +3,10 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {UAParser} from 'ua-parser-js';
-
+import {Cache} from '../cache';
 import {log} from '../log';
+import {TimeoutError} from '../timeout_error';
+import {formatError, indent, waitForAbort} from '../util';
 import {getBrowserName} from './attributes/browser_name';
 import {getBrowserVersion} from './attributes/browser_version';
 import {getCookies} from './attributes/cookies';
@@ -18,7 +19,7 @@ import {getLocalHour} from './attributes/local_hour';
 import {getPathname} from './attributes/pathname';
 import {getReferrer} from './attributes/referrer';
 import {getRequestParameters} from './attributes/request_parameters';
-import {getSegment} from './attributes/segment';
+import {getSegments} from './attributes/segments';
 import {getTimezone} from './attributes/timezone';
 import {getUrl} from './attributes/url';
 import {getUserAgent} from './attributes/user_agent';
@@ -48,55 +49,151 @@ interface OperatorImpl {
 }
 
 export class Detection {
-	private _audiencesDefinition: AudiencesDefinition;
-	private _acSegments: Set<string> | undefined;
-	private _uaParser: UAParser;
+	private readonly _audiencesDefinition: AudiencesDefinition;
 
 	constructor(audiencesDefinition: AudiencesDefinition) {
 		check(audiencesDefinition);
 
 		this._audiencesDefinition = audiencesDefinition;
-		this._uaParser = new UAParser(navigator.userAgent);
 	}
 
-	async run(): Promise<AudienceId[]> {
-		const matches = [];
+	/**
+	 * Run a detection over the definitions given in the constructor.
+	 *
+	 * Note that if timeout occurs, the `matches` parameter will contain only
+	 * the audiences that were detected before the timeout.
+	 *
+	 * @param cache
+	 * @param signal
+	 * @param matches output parameter to hold detected audiences
+	 * @throws TimeoutError on timeout
+	 * @throws Error if anything fails
+	 */
+	async run(
+		cache: Cache,
+		signal: AbortSignal,
+		matches: AudienceId[]
+	): Promise<void> {
+		await Promise.race([
+			waitForAbort(signal),
+			this._matchAudiences(cache, signal, matches),
+		]);
 
-		for (const audience of this._audiencesDefinition.audiences) {
-			const {conjunction, id, rules} = audience;
+		if (signal.aborted) {
+			throw new TimeoutError('Detection of audiences');
+		}
+	}
 
-			log(`Checking rules for audience '${id}'...`);
+	/**
+	 * Match audiences in parallel.
+	 *
+	 * Note that if timeout occurs, the `matches` parameter will contain only
+	 * the audiences that were detected before the timeout.
+	 *
+	 * Never rejects, just logs errors.
+	 *
+	 * @param matches output parameter to hold detected audiences
+	 * @private
+	 */
+	private async _matchAudiences(
+		cache: Cache,
+		signal: AbortSignal,
+		matches: AudienceId[]
+	): Promise<void> {
+		const promises = this._audiencesDefinition.audiences.map(
+			async (audience) => {
+				const {conjunction, id, rules} = audience;
 
-			let matched;
+				log(`Checking rules for audience '${id}'...`);
 
-			try {
-				matched = await this._evaluateGroup(conjunction, rules);
+				try {
+					const matched = await this._evaluateGroup(
+						cache,
+						signal,
+						conjunction,
+						rules
+					);
+
+					if (matched) {
+						log(`Audience '${id}' is matched`);
+
+						matches.push(id);
+					}
+				}
+				catch (error: any) {
+					log(
+						`Audience '${id}' is not matched because its evaluation failed with error:\n${indent(2, true, formatError(error))}`
+					);
+				}
 			}
-			catch (error: any) {
-				log(
-					`Unable to evaluate the rules of audience '${id}', so ` +
-						`the audience is not matched: ${error.message || error}`
-				);
+		);
 
-				continue;
-			}
+		await Promise.allSettled(promises);
+	}
 
-			if (matched) {
-				log(`Matched audience: ${id}`);
+	private async _evaluateGroup(
+		cache: Cache,
+		signal: AbortSignal,
+		conjunction: Conjunction,
+		rules: Rule[]
+	): Promise<boolean> {
+		const results = await Promise.all(
+			rules.map((rule) => this._evaluateRule(cache, signal, rule))
+		);
 
-				matches.push(id);
-			}
+		return conjunction === 'AND'
+			? results.every(Boolean)
+			: results.some(Boolean);
+	}
+
+	private async _evaluateRule(
+		cache: Cache,
+		signal: AbortSignal,
+		rule: Rule
+	): Promise<boolean> {
+		if ('conjunction' in rule) {
+			return this._evaluateGroup(
+				cache,
+				signal,
+				rule.conjunction,
+				rule.rules
+			);
 		}
 
-		return matches;
+		const ruleDescription = `('${rule.attribute}' ${rule.operator} '${rule.value}')`;
+
+		try {
+			const operator = this._getOperator(rule.operator);
+
+			const attribute = await this._getAttribute(rule.attribute, cache);
+
+			if (signal.aborted) {
+				throw new TimeoutError('Rule evaluation');
+			}
+
+			const result = operator(attribute, rule.value);
+
+			log(`Rule ${ruleDescription} evaluates to ${result}`);
+
+			return result;
+		}
+		catch (error: any) {
+			throw new Error(
+				`An error was thrown when evaluating rule ${ruleDescription}`,
+				{cause: error}
+			);
+		}
 	}
 
-	private async _getAttribute(attr: Attribute): Promise<AttributeValue> {
+	private async _getAttribute(
+		attr: Attribute,
+		cache: Cache
+	): Promise<AttributeValue> {
 		if (attr === 'browser_name') {
-			return getBrowserName(this._uaParser);
+			return getBrowserName(cache);
 		}
 		else if (attr === 'browser_version') {
-			return getBrowserVersion(this._uaParser);
+			return getBrowserVersion(cache);
 		}
 		else if (attr === 'cookies') {
 			return getCookies();
@@ -105,7 +202,7 @@ export class Detection {
 			return getCustom(attr.slice(7));
 		}
 		else if (attr === 'device_type') {
-			return getDeviceType(this._uaParser);
+			return getDeviceType(cache);
 		}
 		else if (attr === 'hostname') {
 			return getHostname();
@@ -128,8 +225,8 @@ export class Detection {
 		else if (attr === 'request_parameters') {
 			return getRequestParameters();
 		}
-		else if (attr === 'segment') {
-			return getSegment();
+		else if (attr === 'segments') {
+			return getSegments(cache);
 		}
 		else if (attr === 'timezone') {
 			return getTimezone();
@@ -142,44 +239,6 @@ export class Detection {
 		}
 		else {
 			throw new Error(`Unsupported attribute: ${attr}`);
-		}
-	}
-
-	private async _evaluateGroup(
-		conjunction: Conjunction,
-		rules: Rule[]
-	): Promise<boolean> {
-		const results = await Promise.all(
-			rules.map((rule) => this._evaluateRule(rule))
-		);
-
-		return conjunction === 'AND'
-			? results.every(Boolean)
-			: results.some(Boolean);
-	}
-
-	private async _evaluateRule(rule: Rule): Promise<boolean> {
-		if ('conjunction' in rule) {
-			return this._evaluateGroup(rule.conjunction, rule.rules);
-		}
-
-		const ruleDescription = `('${rule.attribute}' ${rule.operator} '${rule.value}')`;
-
-		try {
-			const operator = this._getOperator(rule.operator);
-			const attribute = await this._getAttribute(rule.attribute);
-
-			const result = operator(attribute, rule.value);
-
-			log(`Evaluation of rule ${ruleDescription}: ${result}`);
-
-			return result;
-		}
-		catch (error: any) {
-			throw new Error(
-				`An error was thrown when evaluating rule ${ruleDescription}: ` +
-					(error.message || error)
-			);
 		}
 	}
 

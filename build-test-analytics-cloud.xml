@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project basedir="." name="portal-test-analytics-cloud" xmlns:antelope="antlib:ise.antelope.tasks">
+<project basedir="." name="portal-test-analytics-cloud" xmlns:antelope="antlib:ise.antelope.tasks" xmlns:if="ant:if">
 	<import file="build-test.xml" />
 
 	<macrodef name="build-analytics-cloud-asah-images">
@@ -28,6 +28,8 @@
 							</execute>
 						</then>
 						<else>
+							<download-gradle-wrapper-binary workspace.dir="${analytics.cloud.asah.dir}" />
+
 							<pull-docker-image-dependencies
 								analytics.cloud.image.names.excludes="${analytics.cloud.asah.image.names.excludes}"
 								analytics.cloud.repository.dir="${analytics.cloud.asah.dir}"
@@ -143,7 +145,7 @@
 							</execute>
 						</then>
 						<else>
-							<download-gradle-wrapper-binary workspace.dir="${analytics.cloud.asah.dir}" />
+							<download-gradle-wrapper-binary workspace.dir="${analytics.cloud.faro.dir}" />
 
 							<pull-docker-image-dependencies
 								analytics.cloud.image.names.excludes="${analytics.cloud.faro.image.names.excludes}"
@@ -608,9 +610,11 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 
 					<exec dir="@{dir}" executable="/bin/bash" failonerror="true" resultproperty="@{resultproperty}" timeout="@{timeout}">
 						<arg value="@{dir}/${tstamp.execute}.sh" />
+						<env if:set="env.JENKINS_HOME" key="GRADLE_USER_HOME" value="${project.dir}/workspaces/.gradle" />
 						<env key="JAVA_HOME" value="${java.jdk.home}" />
 						<env key="JAVA_OPTS" value="${java.jdk.opts}" />
 						<env key="PATH" value="${execute.path}" />
+						<env if:set="env.JENKINS_HOME" key="YARN_YARN_OFFLINE_MIRROR_PRUNING" value="false" />
 					</exec>
 				</try>
 				<catch>

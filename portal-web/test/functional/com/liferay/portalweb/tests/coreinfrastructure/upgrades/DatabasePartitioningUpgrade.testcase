@@ -137,7 +137,7 @@ definition {
 	test ExportAndAddDBPartitionWithUpgradedDB {
 		property app.server.bundles.size = "1";
 		property cluster.enabled = "true";
-		property custom.properties = "feature.flag.LPD-11342=true${line.separator}virtual.hosts.valid.hosts=localhost,127.0.0.1,www.able.com,www.baker.com";
+		property custom.properties = "virtual.hosts.valid.hosts=localhost,127.0.0.1,www.able.com,www.baker.com";
 		property data.archive.type = "data-archive-portal-partition";
 		property portal.version = "7.4.13.u33";
 		property test.assert.warning.exceptions = "false";
@@ -159,9 +159,8 @@ definition {
 		}
 
 		task ("Export www.able.com and www.baker.com partitions and shutdown the server") {
-			DBPartition.exportDBPartition(partitionCompanyId = 42638);
-
-			DBPartition.exportDBPartition(partitionCompanyId = 44913);
+			var companyId1 = DBPartition.exportDBPartition(portalInstanceId = "www.able.com");
+			var companyId2 = DBPartition.exportDBPartition(portalInstanceId = "www.baker.com");
 
 			Clustering.shutdownSpecificServer(nodePort = 8080);
 
@@ -184,21 +183,21 @@ definition {
 			var databaseType = PropsUtil.get("database.type");
 
 			if (${databaseType} == "mysql") {
-				SQL.executeSQLStatement(sqlStatement = "drop schema if exists lpartition_42638;");
+				SQL.executeSQLStatement(sqlStatement = "drop schema if exists lpartition_${companyId1};");
 
-				SQL.executeSQLStatement(sqlStatement = "drop schema if exists lpartition_44913;");
+				SQL.executeSQLStatement(sqlStatement = "drop schema if exists lpartition_${companyId2};");
 			}
 			else if (${databaseType} == "postgresql") {
-				SQL.executeSQLStatement(sqlStatement = "drop schema if exists lpartition_42638 cascade;");
+				SQL.executeSQLStatement(sqlStatement = "drop schema if exists lpartition_${companyId1} cascade;");
 
-				SQL.executeSQLStatement(sqlStatement = "drop schema if exists lpartition_44913 cascade;");
+				SQL.executeSQLStatement(sqlStatement = "drop schema if exists lpartition_${companyId2} cascade;");
 			}
 		}
 
 		task ("Add previously exported partitions into new database") {
-			DBPartition.importDBPartition(partitionCompanyId = 42638);
+			DBPartition.importDBPartition(partitionCompanyId = ${companyId1});
 
-			DBPartition.importDBPartition(partitionCompanyId = 44913);
+			DBPartition.importDBPartition(partitionCompanyId = ${companyId2});
 		}
 
 		task ("Ensure that portal main functionalities work correctly") {
