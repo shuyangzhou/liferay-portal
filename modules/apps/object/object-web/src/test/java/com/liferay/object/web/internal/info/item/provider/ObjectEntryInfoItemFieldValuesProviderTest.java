@@ -14,6 +14,7 @@ import com.liferay.info.item.InfoItemFieldValues;
 import com.liferay.info.item.field.reader.InfoItemFieldReaderFieldSetProvider;
 import com.liferay.layout.page.template.info.item.provider.DisplayPageInfoItemFieldSetProvider;
 import com.liferay.list.type.service.ListTypeEntryLocalService;
+import com.liferay.object.field.business.type.ObjectFieldBusinessTypeRegistry;
 import com.liferay.object.info.field.converter.ObjectFieldInfoFieldConverter;
 import com.liferay.object.info.item.ObjectEntryInfoItemFields;
 import com.liferay.object.model.ObjectDefinition;
@@ -122,7 +123,9 @@ public class ObjectEntryInfoItemFieldValuesProviderTest {
 				Mockito.mock(ObjectFieldInfoFieldConverter.class),
 				Mockito.mock(ObjectEntryLocalService.class),
 				Mockito.mock(ObjectEntryManagerRegistry.class),
-				Mockito.mock(ObjectEntryService.class), objectFieldLocalService,
+				Mockito.mock(ObjectEntryService.class),
+				Mockito.mock(ObjectFieldBusinessTypeRegistry.class),
+				objectFieldLocalService,
 				Mockito.mock(ObjectRelatedModelsProviderRegistry.class),
 				Mockito.mock(ObjectRelationshipLocalService.class),
 				Mockito.mock(ObjectScopeProviderRegistry.class),

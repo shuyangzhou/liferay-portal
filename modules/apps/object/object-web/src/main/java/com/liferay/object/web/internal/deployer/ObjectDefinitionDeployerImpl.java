@@ -65,6 +65,7 @@ import com.liferay.object.definition.util.ObjectDefinitionUtil;
 import com.liferay.object.deployer.ObjectDefinitionDeployer;
 import com.liferay.object.display.context.ObjectEntryDisplayContextFactory;
 import com.liferay.object.field.attachment.AttachmentManager;
+import com.liferay.object.field.business.type.ObjectFieldBusinessTypeRegistry;
 import com.liferay.object.field.filter.parser.ObjectFieldFilterContributorRegistry;
 import com.liferay.object.info.field.converter.ObjectFieldInfoFieldConverter;
 import com.liferay.object.model.ObjectDefinition;
@@ -366,7 +367,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					objectDefinition, _objectDefinitionLocalService,
 					objectFieldInfoFieldConverter, _objectEntryLocalService,
 					_objectEntryManagerRegistry, _objectEntryService,
-					_objectFieldLocalService,
+					_objectFieldBusinessTypeRegistry, _objectFieldLocalService,
 					_objectRelatedModelsProviderRegistry,
 					_objectRelationshipLocalService,
 					_objectScopeProviderRegistry, _portal,
@@ -891,6 +892,9 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 	@Reference
 	private ObjectEntryService _objectEntryService;
+
+	@Reference
+	private ObjectFieldBusinessTypeRegistry _objectFieldBusinessTypeRegistry;
 
 	private ObjectFieldFDSFilterFactoryRegistry
 		_objectFieldFDSFilterFactoryRegistry;

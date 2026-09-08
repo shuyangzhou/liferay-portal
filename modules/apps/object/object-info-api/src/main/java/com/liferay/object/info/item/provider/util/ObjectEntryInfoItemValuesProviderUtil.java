@@ -26,6 +26,8 @@ import com.liferay.object.constants.ObjectActionTriggerConstants;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.constants.ObjectFieldSettingConstants;
 import com.liferay.object.constants.ObjectRelationshipConstants;
+import com.liferay.object.field.business.type.ObjectFieldBusinessType;
+import com.liferay.object.field.business.type.ObjectFieldBusinessTypeRegistry;
 import com.liferay.object.field.setting.util.ObjectFieldSettingUtil;
 import com.liferay.object.field.util.ObjectFieldUtil;
 import com.liferay.object.info.field.converter.ObjectFieldInfoFieldConverter;
@@ -67,6 +69,8 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.io.Serializable;
+
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -74,7 +78,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -122,6 +126,7 @@ public class ObjectEntryInfoItemValuesProviderUtil {
 			ObjectEntryLocalService objectEntryLocalService,
 			ObjectEntryManagerRegistry objectEntryManagerRegistry,
 			ObjectEntryService objectEntryService,
+			ObjectFieldBusinessTypeRegistry objectFieldBusinessTypeRegistry,
 			ObjectFieldInfoFieldConverter objectFieldInfoFieldConverter,
 			ObjectFieldLocalService objectFieldLocalService,
 			List<ObjectField> objectFields,
@@ -149,7 +154,7 @@ public class ObjectEntryInfoItemValuesProviderUtil {
 				defaultLanguageId, dlAppLocalService, dlURLHelper,
 				infoFieldValues, listTypeEntryLocalService, objectDefinition,
 				objectEntryLocalService, objectEntryService, objectField,
-				objectFieldInfoFieldConverter,
+				objectFieldBusinessTypeRegistry, objectFieldInfoFieldConverter,
 				ObjectField.class.getSimpleName(),
 				objectRelationshipLocalService, serviceBuilderObjectEntry,
 				themeDisplay, value);
@@ -174,18 +179,35 @@ public class ObjectEntryInfoItemValuesProviderUtil {
 					objectEntryLocalService, objectField,
 					serviceBuilderObjectEntry, values);
 
-			ObjectEntry objectEntry = ObjectEntryInfoItemUtil.getObjectEntry(
-				parentObjectDefinition, objectEntryManagerRegistry,
-				objectScopeProviderRegistry, serviceBuilderRelatedObjectEntry,
-				themeDisplay);
-
-			Map<String, Object> properties = new HashMap<>();
+			Map<String, Object> properties = Collections.emptyMap();
 			String relatedObjectEntryDefaultLanguageId = defaultLanguageId;
 
-			if (objectEntry != null) {
-				properties = objectEntry.getProperties();
-				relatedObjectEntryDefaultLanguageId =
-					objectEntry.getDefaultLanguageId();
+			if (parentObjectDefinition.isDefaultStorageType()) {
+				if ((serviceBuilderRelatedObjectEntry != null) &&
+					ObjectEntryInfoItemUtil.hasViewPermission(
+						parentObjectDefinition,
+						serviceBuilderRelatedObjectEntry)) {
+
+					properties =
+						(Map<String, Object>)
+							(Map<String, ?>)
+								serviceBuilderRelatedObjectEntry.getValues();
+					relatedObjectEntryDefaultLanguageId =
+						serviceBuilderRelatedObjectEntry.getDefaultLanguageId();
+				}
+			}
+			else {
+				ObjectEntry objectEntry =
+					ObjectEntryInfoItemUtil.getObjectEntry(
+						parentObjectDefinition, objectEntryManagerRegistry,
+						objectScopeProviderRegistry,
+						serviceBuilderRelatedObjectEntry, themeDisplay);
+
+				if (objectEntry != null) {
+					properties = objectEntry.getProperties();
+					relatedObjectEntryDefaultLanguageId =
+						objectEntry.getDefaultLanguageId();
+				}
 			}
 
 			for (ObjectField relatedObjectField :
@@ -212,6 +234,7 @@ public class ObjectEntryInfoItemValuesProviderUtil {
 					dlURLHelper, infoFieldValues, listTypeEntryLocalService,
 					parentObjectDefinition, objectEntryLocalService,
 					objectEntryService, relatedObjectField,
+					objectFieldBusinessTypeRegistry,
 					objectFieldInfoFieldConverter, namespace,
 					objectRelationshipLocalService,
 					serviceBuilderRelatedObjectEntry, themeDisplay, value);
@@ -223,7 +246,7 @@ public class ObjectEntryInfoItemValuesProviderUtil {
 								isEnableFriendlyURLCustomization(),
 							objectRelationship.getName(), namespace),
 						() -> {
-							if (objectEntry == null) {
+							if (serviceBuilderRelatedObjectEntry == null) {
 								return null;
 							}
 
@@ -325,6 +348,7 @@ public class ObjectEntryInfoItemValuesProviderUtil {
 			ObjectDefinition objectDefinition,
 			ObjectEntryLocalService objectEntryLocalService,
 			ObjectEntryService objectEntryService, ObjectField objectField,
+			ObjectFieldBusinessTypeRegistry objectFieldBusinessTypeRegistry,
 			ObjectFieldInfoFieldConverter objectFieldInfoFieldConverter,
 			String objectFieldNamespace,
 			ObjectRelationshipLocalService objectRelationshipLocalService,
@@ -359,31 +383,33 @@ public class ObjectEntryInfoItemValuesProviderUtil {
 				defaultLocale = LocaleUtil.fromLanguageId(defaultLanguageId);
 			}
 
-			infoFieldValue = InfoLocalizedValue.builder(
-			).defaultLocale(
-				defaultLocale
-			).value(
-				consumer -> {
-					for (Map.Entry<String, Object> entry : map.entrySet()) {
-						Locale curLocale = LocaleUtil.fromLanguageId(
-							entry.getKey());
+			InfoLocalizedValue.Builder<Object> builder =
+				InfoLocalizedValue.builder();
 
-						consumer.accept(
-							curLocale,
-							_parseValue(
-								listTypeEntryLocalService, curLocale,
-								objectEntryLocalService, objectField,
-								objectRelationshipLocalService, themeDisplay,
-								entry.getValue()));
-					}
-				}
-			).build();
+			builder.defaultLocale(defaultLocale);
+
+			for (Map.Entry<String, Object> entry : map.entrySet()) {
+				Locale curLocale = LocaleUtil.fromLanguageId(entry.getKey());
+
+				builder.value(
+					curLocale,
+					_parseValue(
+						listTypeEntryLocalService, curLocale, objectDefinition,
+						objectEntryLocalService, objectField,
+						objectFieldBusinessTypeRegistry,
+						objectRelationshipLocalService,
+						serviceBuilderObjectEntry, themeDisplay,
+						entry.getValue()));
+			}
+
+			infoFieldValue = builder.build();
 		}
 		else {
 			infoFieldValue = _parseValue(
-				listTypeEntryLocalService, locale, objectEntryLocalService,
-				objectField, objectRelationshipLocalService, themeDisplay,
-				value);
+				listTypeEntryLocalService, locale, objectDefinition,
+				objectEntryLocalService, objectField,
+				objectFieldBusinessTypeRegistry, objectRelationshipLocalService,
+				serviceBuilderObjectEntry, themeDisplay, value);
 		}
 
 		if (infoFieldValue == null) {
@@ -714,21 +740,49 @@ public class ObjectEntryInfoItemValuesProviderUtil {
 	}
 
 	private static Object _parseValue(
-		ListTypeEntryLocalService listTypeEntryLocalService, Locale locale,
-		ObjectEntryLocalService objectEntryLocalService,
-		ObjectField objectField,
-		ObjectRelationshipLocalService objectRelationshipLocalService,
-		ThemeDisplay themeDisplay, Object value) {
+			ListTypeEntryLocalService listTypeEntryLocalService, Locale locale,
+			ObjectDefinition objectDefinition,
+			ObjectEntryLocalService objectEntryLocalService,
+			ObjectField objectField,
+			ObjectFieldBusinessTypeRegistry objectFieldBusinessTypeRegistry,
+			ObjectRelationshipLocalService objectRelationshipLocalService,
+			com.liferay.object.model.ObjectEntry serviceBuilderObjectEntry,
+			ThemeDisplay themeDisplay, Object value)
+		throws Exception {
 
 		if (value == null) {
 			return null;
 		}
 
 		if (objectField.compareBusinessType(
+				ObjectFieldConstants.BUSINESS_TYPE_ASSIGNEE) ||
+			objectField.compareBusinessType(
+				ObjectFieldConstants.BUSINESS_TYPE_DATE) ||
+			objectField.compareBusinessType(
+				ObjectFieldConstants.BUSINESS_TYPE_DATE_TIME)) {
+
+			ObjectFieldBusinessType objectFieldBusinessType =
+				objectFieldBusinessTypeRegistry.getObjectFieldBusinessType(
+					objectField.getBusinessType());
+
+			value = objectFieldBusinessType.getDTOValue(
+				null, objectDefinition, serviceBuilderObjectEntry, objectField,
+				(Serializable)value);
+
+			if (value == null) {
+				return null;
+			}
+		}
+
+		if (objectField.compareBusinessType(
 				ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT)) {
 
-			if (value instanceof Long) {
-				return value;
+			if (value instanceof Long fileEntryId) {
+				if (fileEntryId.longValue() == 0) {
+					return null;
+				}
+
+				return fileEntryId;
 			}
 
 			com.liferay.object.rest.dto.v1_0.FileEntry dtoFileEntry =

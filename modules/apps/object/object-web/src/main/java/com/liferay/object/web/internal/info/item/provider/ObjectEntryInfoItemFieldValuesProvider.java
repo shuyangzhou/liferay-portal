@@ -24,6 +24,7 @@ import com.liferay.info.type.WebImage;
 import com.liferay.layout.page.template.info.item.provider.DisplayPageInfoItemFieldSetProvider;
 import com.liferay.list.type.service.ListTypeEntryLocalService;
 import com.liferay.object.constants.ObjectRelationshipConstants;
+import com.liferay.object.field.business.type.ObjectFieldBusinessTypeRegistry;
 import com.liferay.object.info.field.converter.ObjectFieldInfoFieldConverter;
 import com.liferay.object.info.item.ObjectEntryInfoItemFields;
 import com.liferay.object.info.item.provider.util.ObjectEntryInfoItemValuesProviderUtil;
@@ -92,6 +93,7 @@ public class ObjectEntryInfoItemFieldValuesProvider
 		ObjectEntryLocalService objectEntryLocalService,
 		ObjectEntryManagerRegistry objectEntryManagerRegistry,
 		ObjectEntryService objectEntryService,
+		ObjectFieldBusinessTypeRegistry objectFieldBusinessTypeRegistry,
 		ObjectFieldLocalService objectFieldLocalService,
 		ObjectRelatedModelsProviderRegistry objectRelatedModelsProviderRegistry,
 		ObjectRelationshipLocalService objectRelationshipLocalService,
@@ -116,6 +118,7 @@ public class ObjectEntryInfoItemFieldValuesProvider
 		_objectEntryLocalService = objectEntryLocalService;
 		_objectEntryManagerRegistry = objectEntryManagerRegistry;
 		_objectEntryService = objectEntryService;
+		_objectFieldBusinessTypeRegistry = objectFieldBusinessTypeRegistry;
 		_objectFieldLocalService = objectFieldLocalService;
 		_objectRelatedModelsProviderRegistry =
 			objectRelatedModelsProviderRegistry;
@@ -284,8 +287,8 @@ public class ObjectEntryInfoItemFieldValuesProvider
 				_listTypeEntryLocalService, _objectActionLocalService,
 				_objectDefinition, _objectDefinitionLocalService,
 				_objectEntryLocalService, _objectEntryManagerRegistry,
-				_objectEntryService, _objectFieldInfoFieldConverter,
-				_objectFieldLocalService,
+				_objectEntryService, _objectFieldBusinessTypeRegistry,
+				_objectFieldInfoFieldConverter, _objectFieldLocalService,
 				_objectFieldLocalService.getObjectFields(
 					objectEntry.getObjectDefinitionId()),
 				_objectRelationshipLocalService, _objectScopeProviderRegistry,
@@ -402,8 +405,8 @@ public class ObjectEntryInfoItemFieldValuesProvider
 				_listTypeEntryLocalService, _objectActionLocalService,
 				_objectDefinition, _objectDefinitionLocalService,
 				_objectEntryLocalService, _objectEntryManagerRegistry,
-				_objectEntryService, _objectFieldInfoFieldConverter,
-				_objectFieldLocalService,
+				_objectEntryService, _objectFieldBusinessTypeRegistry,
+				_objectFieldInfoFieldConverter, _objectFieldLocalService,
 				_objectFieldLocalService.getObjectFields(
 					serviceBuilderObjectEntry.getObjectDefinitionId()),
 				_objectRelationshipLocalService, _objectScopeProviderRegistry,
@@ -505,6 +508,8 @@ public class ObjectEntryInfoItemFieldValuesProvider
 	private final ObjectEntryLocalService _objectEntryLocalService;
 	private final ObjectEntryManagerRegistry _objectEntryManagerRegistry;
 	private final ObjectEntryService _objectEntryService;
+	private final ObjectFieldBusinessTypeRegistry
+		_objectFieldBusinessTypeRegistry;
 	private final ObjectFieldInfoFieldConverter _objectFieldInfoFieldConverter;
 	private final ObjectFieldLocalService _objectFieldLocalService;
 	private final ObjectRelatedModelsProviderRegistry

@@ -25,6 +25,7 @@ import com.liferay.notification.handler.NotificationHandler;
 import com.liferay.notification.term.evaluator.NotificationTermEvaluator;
 import com.liferay.object.configuration.ObjectConfiguration;
 import com.liferay.object.definition.util.ObjectDefinitionUtil;
+import com.liferay.object.field.business.type.ObjectFieldBusinessTypeRegistry;
 import com.liferay.object.info.field.converter.ObjectFieldInfoFieldConverter;
 import com.liferay.object.internal.item.selector.SystemObjectEntryItemSelectorView;
 import com.liferay.object.internal.notification.handler.ObjectDefinitionNotificationHandler;
@@ -274,8 +275,9 @@ public class SystemObjectDefinitionManagerPortalInstanceLifecycleListener
 					_listTypeEntryLocalService, _objectActionLocalService,
 					objectDefinition, _objectDefinitionLocalService,
 					_objectEntryLocalService, _objectEntryManagerRegistry,
-					_objectEntryService, objectFieldInfoFieldConverter,
-					_objectFieldLocalService, _objectRelationshipLocalService,
+					_objectEntryService, _objectFieldBusinessTypeRegistry,
+					objectFieldInfoFieldConverter, _objectFieldLocalService,
+					_objectRelationshipLocalService,
 					_objectScopeProviderRegistry, _portal,
 					systemObjectDefinitionManager,
 					_templateInfoItemFieldSetProvider),
@@ -460,6 +462,9 @@ public class SystemObjectDefinitionManagerPortalInstanceLifecycleListener
 
 	@Reference
 	private ObjectEntryService _objectEntryService;
+
+	@Reference
+	private ObjectFieldBusinessTypeRegistry _objectFieldBusinessTypeRegistry;
 
 	@Reference
 	private ObjectFieldLocalService _objectFieldLocalService;
