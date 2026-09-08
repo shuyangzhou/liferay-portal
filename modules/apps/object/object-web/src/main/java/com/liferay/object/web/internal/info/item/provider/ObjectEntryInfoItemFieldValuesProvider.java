@@ -68,7 +68,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -269,17 +268,6 @@ public class ObjectEntryInfoItemFieldValuesProvider
 			}
 		}
 
-		ThemeDisplay themeDisplay = ObjectEntryInfoItemUtil.getThemeDisplay();
-
-		Map<String, Object> properties = new HashMap<>();
-
-		com.liferay.object.rest.dto.v1_0.ObjectEntry dtoObjectEntry =
-			_getObjectEntry(_objectDefinition, objectEntry, themeDisplay);
-
-		if (dtoObjectEntry != null) {
-			properties = dtoObjectEntry.getProperties();
-		}
-
 		objectEntryFieldValues.addAll(
 			ObjectEntryInfoItemValuesProviderUtil.getInfoFieldValues(
 				objectEntry.getDefaultLanguageId(), _dlAppLocalService,
@@ -292,7 +280,8 @@ public class ObjectEntryInfoItemFieldValuesProvider
 				_objectFieldLocalService.getObjectFields(
 					objectEntry.getObjectDefinitionId()),
 				_objectRelationshipLocalService, _objectScopeProviderRegistry,
-				_portal, objectEntry, themeDisplay, properties));
+				_portal, objectEntry, ObjectEntryInfoItemUtil.getThemeDisplay(),
+				_getValues(objectEntry)));
 
 		objectEntryFieldValues.add(
 			new InfoFieldValue<>(
@@ -467,6 +456,27 @@ public class ObjectEntryInfoItemFieldValuesProvider
 		}
 
 		return null;
+	}
+
+	private Map<String, Object> _getValues(ObjectEntry objectEntry)
+		throws Exception {
+
+		if (objectEntry instanceof ProxyObjectEntry proxyObjectEntry) {
+			com.liferay.object.rest.dto.v1_0.ObjectEntry dtoObjectEntry =
+				proxyObjectEntry.getDTOObjectEntry();
+
+			if (dtoObjectEntry != null) {
+				return dtoObjectEntry.getProperties();
+			}
+		}
+
+		if (!ObjectEntryInfoItemUtil.hasViewPermission(
+				_objectDefinition, objectEntry)) {
+
+			return Collections.emptyMap();
+		}
+
+		return (Map<String, Object>)(Map<String, ?>)objectEntry.getValues();
 	}
 
 	private WebImage _getWebImage(long userId) throws Exception {
