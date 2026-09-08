@@ -170,19 +170,9 @@ public class ObjectEntryInfoItemValuesProviderUtil {
 					objectRelationship.getObjectDefinitionId1());
 
 			com.liferay.object.model.ObjectEntry
-				serviceBuilderRelatedObjectEntry =
-					serviceBuilderObjectEntry.getRelatedObjectEntry(
-						objectField.getName());
-
-			if (serviceBuilderRelatedObjectEntry == null) {
-				long objectEntryId = GetterUtil.getLong(
-					values.get(objectField.getName()));
-
-				if (objectEntryId != 0) {
-					serviceBuilderRelatedObjectEntry =
-						objectEntryLocalService.fetchObjectEntry(objectEntryId);
-				}
-			}
+				serviceBuilderRelatedObjectEntry = _getRelatedObjectEntry(
+					objectEntryLocalService, objectField,
+					serviceBuilderObjectEntry, values);
 
 			ObjectEntry objectEntry = ObjectEntryInfoItemUtil.getObjectEntry(
 				parentObjectDefinition, objectEntryManagerRegistry,
@@ -697,6 +687,30 @@ public class ObjectEntryInfoItemValuesProviderUtil {
 			).values(
 				listTypeEntry.getNameMap()
 			).build());
+	}
+
+	private static com.liferay.object.model.ObjectEntry _getRelatedObjectEntry(
+		ObjectEntryLocalService objectEntryLocalService,
+		ObjectField objectField,
+		com.liferay.object.model.ObjectEntry serviceBuilderObjectEntry,
+		Map<String, Object> values) {
+
+		com.liferay.object.model.ObjectEntry serviceBuilderRelatedObjectEntry =
+			serviceBuilderObjectEntry.getRelatedObjectEntry(
+				objectField.getName());
+
+		if (serviceBuilderRelatedObjectEntry != null) {
+			return serviceBuilderRelatedObjectEntry;
+		}
+
+		long objectEntryId = GetterUtil.getLong(
+			values.get(objectField.getName()));
+
+		if (objectEntryId == 0) {
+			return null;
+		}
+
+		return objectEntryLocalService.fetchObjectEntry(objectEntryId);
 	}
 
 	private static Object _parseValue(
