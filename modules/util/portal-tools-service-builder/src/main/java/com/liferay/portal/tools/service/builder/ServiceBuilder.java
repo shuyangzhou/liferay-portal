@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.StringUtil_IW;
 import com.liferay.portal.kernel.util.TextFormatter;
@@ -7406,7 +7407,7 @@ public class ServiceBuilder {
 					finderElement.attributeValue(
 						"skip-db-index-optimization-and-finder-generation"),
 					false) &&
-				entityName.equals("ResourcePermission")) {
+				_indexOnlyFinderEntityNames.contains(entityName)) {
 
 				indexOnlyEntityFinders.add(entityFinder);
 			}
@@ -8829,6 +8830,8 @@ public class ServiceBuilder {
 	private static String _gitSearchStartDirName = "";
 	private static final List<String> _highCardinalityColumnNames =
 		Arrays.asList("externalReferenceCode", "uuid_");
+	private static final Set<String> _indexOnlyFinderEntityNames =
+		SetUtil.fromArray("ObjectEntry", "ResourcePermission");
 	private static final ClassLoader _negativeCachingClassLoader;
 	private static final Pattern _setterPattern = Pattern.compile(
 		"public void set.*" + Pattern.quote("("));
