@@ -329,6 +329,12 @@
 			<finder-column name="companyId" />
 			<finder-column name="objectDefinitionId" />
 		</finder>
+		<finder name="ODI_G_HOEI_S" return-type="Collection" skip-db-index-optimization-and-finder-generation="true">
+			<finder-column name="objectDefinitionId" />
+			<finder-column name="groupId" />
+			<finder-column name="headObjectEntryId" />
+			<finder-column name="status" />
+		</finder>
 	</entity>
 	<entity local-service="true" name="ObjectEntryFolder" remote-service="true" uuid="true">
 
