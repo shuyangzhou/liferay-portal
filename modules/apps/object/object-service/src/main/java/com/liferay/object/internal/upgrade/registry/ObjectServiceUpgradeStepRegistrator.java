@@ -779,6 +779,8 @@ public class ObjectServiceUpgradeStepRegistrator
 					"' where panelCategoryKey in ('",
 					StringUtil.merge(_REMOVED_PANEL_CATEGORY_KEYS, "', '"),
 					"')")));
+
+		registry.register("13.7.0", "13.8.0", new DummyUpgradeStep());
 	}
 
 	private static final String[] _REMOVED_PANEL_CATEGORY_KEYS = {
