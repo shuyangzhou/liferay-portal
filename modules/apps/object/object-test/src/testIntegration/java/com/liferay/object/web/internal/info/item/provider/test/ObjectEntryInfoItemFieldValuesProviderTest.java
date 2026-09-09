@@ -19,6 +19,7 @@ import com.liferay.info.item.InfoItemFieldValues;
 import com.liferay.info.item.InfoItemReference;
 import com.liferay.info.item.InfoItemServiceRegistry;
 import com.liferay.info.item.provider.InfoItemFieldValuesProvider;
+import com.liferay.info.localized.InfoLocalizedValue;
 import com.liferay.info.type.KeyLocalizedLabelPair;
 import com.liferay.info.type.WebImage;
 import com.liferay.layout.test.util.LayoutTestUtil;
@@ -180,6 +181,18 @@ public class ObjectEntryInfoItemFieldValuesProviderTest {
 				Collections.emptyList()
 			).state(
 				false
+			).build(),
+			new PicklistObjectFieldBuilder(
+			).labelMap(
+				RandomTestUtil.randomLocaleStringMap()
+			).listTypeDefinitionId(
+				_listTypeDefinition.getListTypeDefinitionId()
+			).name(
+				"unsetPicklistObjectFieldName"
+			).objectFieldSettings(
+				Collections.emptyList()
+			).state(
+				false
 			).build());
 
 		_childObjectDefinition =
@@ -291,6 +304,11 @@ public class ObjectEntryInfoItemFieldValuesProviderTest {
 			fileEntry, localDateTime, objectAction, objectEntry,
 			parentTextObjectFieldNameValue,
 			_getThemeDisplay(RandomTestUtil.randomString(), "UTC"));
+		_testObjectEntryInfoItemFieldValuesProvider(
+			fileEntry, localDateTime, objectAction,
+			_objectEntryLocalService.getObjectEntry(
+				objectEntry.getObjectEntryId()),
+			parentTextObjectFieldNameValue, null);
 	}
 
 	@Test
@@ -364,6 +382,23 @@ public class ObjectEntryInfoItemFieldValuesProviderTest {
 
 			Assert.assertNotNull(
 				downloadURLInfoFieldValue.getValue(LocaleUtil.US));
+
+			infoItemFieldValues =
+				infoItemFieldValuesProvider.getInfoItemFieldValues(
+					_objectEntryLocalService.getObjectEntry(
+						objectEntry.getObjectEntryId()));
+
+			InfoFieldValue<Object> fileNameInfoFieldValue =
+				infoItemFieldValues.getInfoFieldValue(
+					objectField.getObjectFieldId() + "#fileName");
+
+			InfoLocalizedValue<?> infoLocalizedValue =
+				(InfoLocalizedValue<?>)fileNameInfoFieldValue.getValue();
+
+			Assert.assertEquals(
+				String.valueOf(infoLocalizedValue.getAvailableLocales()),
+				Collections.singleton(LocaleUtil.US),
+				infoLocalizedValue.getAvailableLocales());
 		}
 		finally {
 			ServiceContextThreadLocal.popServiceContext();
@@ -881,6 +916,14 @@ public class ObjectEntryInfoItemFieldValuesProviderTest {
 				Assert.assertEquals(
 					_listTypeEntryKey, keyLocalizedLabelPair.getKey());
 			}
+
+			InfoFieldValue<Object> unsetPicklistObjectFieldNameInfoFieldValue =
+				infoItemFieldValues.getInfoFieldValue(
+					"unsetPicklistObjectFieldName");
+
+			Assert.assertEquals(
+				StringPool.BLANK,
+				unsetPicklistObjectFieldNameInfoFieldValue.getValue());
 		}
 		finally {
 			ServiceContextThreadLocal.popServiceContext();
