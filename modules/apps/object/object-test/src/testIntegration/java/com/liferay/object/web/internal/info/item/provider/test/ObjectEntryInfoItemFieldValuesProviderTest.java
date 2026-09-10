@@ -528,6 +528,8 @@ public class ObjectEntryInfoItemFieldValuesProviderTest {
 	public void testObjectEntryInfoItemFieldValuesProviderWithObjectRelationship()
 		throws Exception {
 
+		// Publish a parent and a child object definition with a text field each
+
 		ObjectDefinition parentObjectDefinition = _addObjectDefinition(
 			new TextObjectFieldBuilder(
 			).labelMap(
@@ -554,6 +556,8 @@ public class ObjectEntryInfoItemFieldValuesProviderTest {
 				TestPropsValues.getUserId(),
 				childObjectDefinition.getObjectDefinitionId());
 
+		// Relate the child definition to the parent definition one to many
+
 		ObjectRelationship objectRelationship =
 			_objectRelationshipLocalService.addObjectRelationship(
 				null, TestPropsValues.getUserId(),
@@ -563,6 +567,8 @@ public class ObjectEntryInfoItemFieldValuesProviderTest {
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				"oneToManyRelationshipName", false,
 				ObjectRelationshipConstants.TYPE_ONE_TO_MANY, null);
+
+		// Add a parent entry and a child entry that points to it
 
 		ObjectEntry parentObjectEntry = _objectEntryLocalService.addObjectEntry(
 			_group.getGroupId(), TestPropsValues.getUserId(),
@@ -590,6 +596,9 @@ public class ObjectEntryInfoItemFieldValuesProviderTest {
 			).build(),
 			ServiceContextTestUtil.getServiceContext());
 
+		// Load the parent entry again, give that instance a title the database
+		// does not have, and let the child row carry it as its related entry
+
 		ObjectEntry relatedObjectEntry =
 			_objectEntryLocalService.getObjectEntry(
 				parentObjectEntry.getObjectEntryId());
@@ -607,6 +616,9 @@ public class ObjectEntryInfoItemFieldValuesProviderTest {
 			"r_oneToManyRelationshipName_" +
 				parentObjectDefinition.getPKObjectFieldName(),
 			relatedObjectEntry);
+
+		// The row renders the related entry it carries, not a fresh fetch, so
+		// the parent title is the one set on the carried instance
 
 		_pushServiceContext(_getThemeDisplay(StringPool.BLANK, "UTC"));
 
@@ -631,6 +643,9 @@ public class ObjectEntryInfoItemFieldValuesProviderTest {
 			parentTitleValue, parentTitleInfoFieldValue.getValue());
 
 		ServiceContextThreadLocal.popServiceContext();
+
+		// Clear the relationship's edge so it can be deleted, then delete it
+		// and both definitions
 
 		objectRelationship =
 			_objectRelationshipLocalService.updateObjectRelationship(
