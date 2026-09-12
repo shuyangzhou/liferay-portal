@@ -562,7 +562,7 @@ public class ObjectEntryLocalServiceImpl
 		}
 
 		_addFriendlyURLEntry(
-			objectDefinition, objectEntry, serviceContext, values);
+			objectDefinition, objectEntry, true, serviceContext, values);
 
 		try (SafeCloseable safeCloseable =
 				ObjectEntryThreadLocal.setObjectEntryFolderIdWithSafeCloseable(
@@ -2801,7 +2801,8 @@ public class ObjectEntryLocalServiceImpl
 
 	private void _addFriendlyURLEntry(
 			ObjectDefinition objectDefinition, ObjectEntry objectEntry,
-			ServiceContext serviceContext, Map<String, Serializable> values)
+			boolean newObjectEntry, ServiceContext serviceContext,
+			Map<String, Serializable> values)
 		throws PortalException {
 
 		if (ObjectDefinitionUtil.isDefaultFriendlyURLSeparator(
@@ -2867,8 +2868,11 @@ public class ObjectEntryLocalServiceImpl
 				).build()));
 
 		_friendlyURLEntryLocalService.addFriendlyURLEntry(
-			groupId, classNameId, objectEntry.getObjectEntryId(),
-			objectEntry.getDefaultLanguageId(), urlTitleMap, serviceContext);
+			groupId, classNameId,
+			FriendlyURLEntryConstants.
+				FRIENDLY_URL_ENTRY_PARENT_CLASS_PK_DEFAULT,
+			objectEntry.getObjectEntryId(), objectEntry.getDefaultLanguageId(),
+			urlTitleMap, newObjectEntry, serviceContext);
 	}
 
 	private JoinStep _addInnerJoinON(
@@ -7700,7 +7704,7 @@ public class ObjectEntryLocalServiceImpl
 				objectDefinition, objectEntry, originalObjectEntry, values)) {
 
 			_addFriendlyURLEntry(
-				objectDefinition, objectEntry, serviceContext, values);
+				objectDefinition, objectEntry, false, serviceContext, values);
 		}
 
 		_addOrUpdateComments(
