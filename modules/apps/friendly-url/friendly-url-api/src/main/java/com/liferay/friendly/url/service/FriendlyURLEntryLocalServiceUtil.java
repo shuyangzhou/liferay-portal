@@ -95,6 +95,16 @@ public class FriendlyURLEntryLocalServiceUtil {
 			groupId, classNameId, classPK, urlTitle, serviceContext);
 	}
 
+	public static com.liferay.friendly.url.model.FriendlyURLEntryLocalization
+			addFriendlyURLEntryLocalization(
+				FriendlyURLEntry friendlyURLEntry, String languageId,
+				String urlTitle)
+		throws PortalException {
+
+		return getService().addFriendlyURLEntryLocalization(
+			friendlyURLEntry, languageId, urlTitle);
+	}
+
 	/**
 	 * Creates a new friendly url entry with the primary key. Does not add the friendly url entry to the database.
 	 *
@@ -541,18 +551,17 @@ public class FriendlyURLEntryLocalServiceUtil {
 
 	public static String getUniqueUrlTitle(
 		long groupId, long classNameId, long parentClassPK, long classPK,
-		String urlTitle, String languageId) {
+		String urlTitle) {
 
 		return getService().getUniqueUrlTitle(
-			groupId, classNameId, parentClassPK, classPK, urlTitle, languageId);
+			groupId, classNameId, parentClassPK, classPK, urlTitle);
 	}
 
 	public static String getUniqueUrlTitle(
-		long groupId, long classNameId, long classPK, String urlTitle,
-		String languageId) {
+		long groupId, long classNameId, long classPK, String urlTitle) {
 
 		return getService().getUniqueUrlTitle(
-			groupId, classNameId, classPK, urlTitle, languageId);
+			groupId, classNameId, classPK, urlTitle);
 	}
 
 	public static Map<String, String> getUniqueUrlTitleMap(
@@ -724,4 +733,4 @@ public class FriendlyURLEntryLocalServiceUtil {
 			FriendlyURLEntryLocalService.class);
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1252061885
+// LIFERAY-SERVICE-BUILDER-HASH:-1769455778

@@ -53,6 +53,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -135,7 +136,7 @@ public class FriendlyURLEntryLocalServiceImpl
 		friendlyURLEntry = friendlyURLEntryPersistence.update(friendlyURLEntry);
 
 		_updateFriendlyURLEntryLocalizations(
-			friendlyURLEntry, classNameId, parentClassPK,
+			friendlyURLEntry, classNameId, parentClassPK, true,
 			_merge(urlTitleMap, existingUrlTitleMap));
 
 		// Asset
@@ -452,7 +453,7 @@ public class FriendlyURLEntryLocalServiceImpl
 	@Override
 	public String getUniqueUrlTitle(
 		long groupId, long classNameId, long parentClassPK, long classPK,
-		String urlTitle, String languageId) {
+		String urlTitle) {
 
 		if (urlTitle.startsWith(StringPool.SLASH)) {
 			urlTitle = urlTitle.replaceAll("^/+", StringPool.SLASH);
@@ -488,14 +489,13 @@ public class FriendlyURLEntryLocalServiceImpl
 
 	@Override
 	public String getUniqueUrlTitle(
-		long groupId, long classNameId, long classPK, String urlTitle,
-		String languageId) {
+		long groupId, long classNameId, long classPK, String urlTitle) {
 
 		return getUniqueUrlTitle(
 			groupId, classNameId,
 			FriendlyURLEntryConstants.
 				FRIENDLY_URL_ENTRY_PARENT_CLASS_PK_DEFAULT,
-			classPK, urlTitle, languageId);
+			classPK, urlTitle);
 	}
 
 	@Override
@@ -513,7 +513,7 @@ public class FriendlyURLEntryLocalServiceImpl
 					languageId,
 					friendlyURLEntryLocalService.getUniqueUrlTitle(
 						groupId, classNameId, parentClassPK, classPK,
-						entry.getValue(), languageId));
+						entry.getValue()));
 			}
 		}
 
@@ -569,7 +569,7 @@ public class FriendlyURLEntryLocalServiceImpl
 		friendlyURLEntry = friendlyURLEntryPersistence.update(friendlyURLEntry);
 
 		_updateFriendlyURLEntryLocalizations(
-			friendlyURLEntry, classNameId, parentClassPK, urlTitleMap);
+			friendlyURLEntry, classNameId, parentClassPK, false, urlTitleMap);
 
 		// Asset
 
@@ -679,7 +679,7 @@ public class FriendlyURLEntryLocalServiceImpl
 		}
 
 		FriendlyURLEntryLocalization existingFriendlyURLEntryLocalization =
-			friendlyURLEntryLocalizationPersistence.fetchByG_C_P_L_U(
+			_fetchFriendlyURLEntryLocalization(
 				groupId, classNameId, parentClassPK, languageId,
 				normalizedUrlTitle);
 
@@ -807,6 +807,24 @@ public class FriendlyURLEntryLocalServiceImpl
 
 		return friendlyURLEntryPersistence.fetchByPrimaryKey(
 			friendlyURLEntryLocalization.getFriendlyURLEntryId());
+	}
+
+	private FriendlyURLEntryLocalization _fetchFriendlyURLEntryLocalization(
+		long groupId, long classNameId, long parentClassPK, String languageId,
+		String urlTitle) {
+
+		for (FriendlyURLEntryLocalization friendlyURLEntryLocalization :
+				friendlyURLEntryLocalizationPersistence.findByG_C_P_U(
+					groupId, classNameId, parentClassPK, urlTitle)) {
+
+			if (Objects.equals(
+					languageId, friendlyURLEntryLocalization.getLanguageId())) {
+
+				return friendlyURLEntryLocalization;
+			}
+		}
+
+		return null;
 	}
 
 	private String _getURLEncodedSubstring(
@@ -947,7 +965,8 @@ public class FriendlyURLEntryLocalServiceImpl
 
 	private void _updateFriendlyURLEntryLocalizations(
 			FriendlyURLEntry friendlyURLEntry, long classNameId,
-			long parentClassPK, Map<String, String> urlTitleMap)
+			long parentClassPK, boolean newFriendlyURLEntry,
+			Map<String, String> urlTitleMap)
 		throws PortalException {
 
 		urlTitleMap = _sortUrlTitleMap(
@@ -962,11 +981,9 @@ public class FriendlyURLEntryLocalServiceImpl
 			if (Validator.isNotNull(normalizedUrlTitle)) {
 				FriendlyURLEntryLocalization
 					existingFriendlyURLEntryLocalization =
-						friendlyURLEntryLocalizationPersistence.
-							fetchByG_C_P_L_U(
-								friendlyURLEntry.getGroupId(), classNameId,
-								parentClassPK, entry.getKey(),
-								normalizedUrlTitle);
+						_fetchFriendlyURLEntryLocalization(
+							friendlyURLEntry.getGroupId(), classNameId,
+							parentClassPK, entry.getKey(), normalizedUrlTitle);
 
 				if (existingFriendlyURLEntryLocalization != null) {
 					String existingUrlTitle =
@@ -980,6 +997,10 @@ public class FriendlyURLEntryLocalServiceImpl
 						updateFriendlyURLLocalization(
 							existingFriendlyURLEntryLocalization);
 					}
+				}
+				else if (newFriendlyURLEntry) {
+					addFriendlyURLEntryLocalization(
+						friendlyURLEntry, entry.getKey(), normalizedUrlTitle);
 				}
 				else {
 					updateFriendlyURLEntryLocalization(
