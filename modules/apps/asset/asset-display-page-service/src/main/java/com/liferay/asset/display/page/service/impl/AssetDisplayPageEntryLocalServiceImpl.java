@@ -161,6 +161,13 @@ public class AssetDisplayPageEntryLocalServiceImpl
 	public AssetDisplayPageEntry fetchAssetDisplayPageEntry(
 		long groupId, long classNameId, long classPK) {
 
+		int assetDisplayPageEntriesCount =
+			assetDisplayPageEntryPersistence.countByG_CN(groupId, classNameId);
+
+		if (assetDisplayPageEntriesCount == 0) {
+			return null;
+		}
+
 		return assetDisplayPageEntryPersistence.fetchByG_C_C(
 			groupId, classNameId, classPK);
 	}
