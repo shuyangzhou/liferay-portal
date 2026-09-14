@@ -45,9 +45,7 @@ public class SiteInitializerUtil {
 			long companyId, SiteInitializer siteInitializer)
 		throws PortalException {
 
-		for (String externalReferenceCode :
-				_EXTERNAL_REFERENCE_CODES) {
-
+		for (String externalReferenceCode : _EXTERNAL_REFERENCE_CODES) {
 			ObjectDefinition objectDefinition =
 				ObjectDefinitionLocalServiceUtil.
 					fetchObjectDefinitionByExternalReferenceCode(
