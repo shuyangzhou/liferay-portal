@@ -83,6 +83,21 @@ public abstract class BaseObjectEntryObjectRelatedModelsPredicateProviderImpl
 			objectDefinition.getExtensionDBTableName());
 	}
 
+	protected Predicate getExtensionLeftJoinPredicate(
+		DynamicObjectDefinitionTable dynamicObjectDefinitionTable,
+		DynamicObjectDefinitionTable extensionDynamicObjectDefinitionTable) {
+
+		if (!extensionDynamicObjectDefinitionTable.hasObjectFieldColumns()) {
+			return null;
+		}
+
+		Column<DynamicObjectDefinitionTable, Long> primaryKeyColumn =
+			dynamicObjectDefinitionTable.getPrimaryKeyColumn();
+
+		return primaryKeyColumn.eq(
+			extensionDynamicObjectDefinitionTable.getPrimaryKeyColumn());
+	}
+
 	protected <T extends BaseTable<T>> Column<?, ?> getPKObjectFieldColumn(
 		BaseTable<T> baseTable, String pkObjectFieldDBColumnName) {
 
