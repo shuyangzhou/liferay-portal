@@ -662,7 +662,8 @@ public class ObjectEntryLocalServiceImpl
 				primaryKey, existingValues, true, values);
 
 			_updateTable(
-				dynamicObjectDefinitionTable, primaryKey, true, values);
+				dynamicObjectDefinitionTable, new HashMap<>(), primaryKey, true,
+				values);
 		}
 		else {
 			_validateValues(
@@ -1964,7 +1965,8 @@ public class ObjectEntryLocalServiceImpl
 				new ServiceContext(), null, userId, null, values);
 
 			_updateTable(
-				dynamicObjectDefinitionTable, primaryKey, true, values);
+				dynamicObjectDefinitionTable, new HashMap<>(), primaryKey, true,
+				values);
 		}
 		else {
 			_validateValues(
@@ -7645,11 +7647,11 @@ public class ObjectEntryLocalServiceImpl
 		_updateTable(
 			DynamicObjectDefinitionTableUtil.getDynamicObjectDefinitionTable(
 				false, objectDefinition, _objectFieldLocalService),
-			objectEntryId, partialUpdate, values);
+			new HashMap<>(), objectEntryId, partialUpdate, values);
 		_updateTable(
 			DynamicObjectDefinitionTableUtil.getDynamicObjectDefinitionTable(
 				true, objectDefinition, _objectFieldLocalService),
-			objectEntryId, partialUpdate, values);
+			new HashMap<>(), objectEntryId, partialUpdate, values);
 
 		objectEntry = objectEntryPersistence.findByPrimaryKey(objectEntryId);
 
@@ -7839,10 +7841,10 @@ public class ObjectEntryLocalServiceImpl
 		}
 	}
 
-	private void _updateTable(
+	private boolean _updateTable(
 			DynamicObjectDefinitionTable dynamicObjectDefinitionTable,
-			long objectEntryId, boolean partialUpdate,
-			Map<String, Serializable> values)
+			Map<String, Serializable> insertedValues, long objectEntryId,
+			boolean partialUpdate, Map<String, Serializable> values)
 		throws PortalException {
 
 		List<String> columnNames = new ArrayList<>();
@@ -7857,7 +7859,17 @@ public class ObjectEntryLocalServiceImpl
 		List<ObjectField> objectFields =
 			dynamicObjectDefinitionTable.getObjectFields();
 
+		boolean staticValues = true;
+
 		for (ObjectField objectField : objectFields) {
+			if (objectField.compareBusinessType(
+					ObjectFieldConstants.BUSINESS_TYPE_AGGREGATION) ||
+				objectField.compareBusinessType(
+					ObjectFieldConstants.BUSINESS_TYPE_FORMULA)) {
+
+				staticValues = false;
+			}
+
 			if (!objectField.hasUpdateValues() || objectField.isLocalized()) {
 				continue;
 			}
@@ -7899,15 +7911,13 @@ public class ObjectEntryLocalServiceImpl
 						objectEntryId);
 			}
 
-			return;
+			return staticValues;
 		}
 
 		Column<DynamicObjectDefinitionTable, Long> primaryKeyColumn =
 			dynamicObjectDefinitionTable.getPrimaryKeyColumn();
 
 		columnNames.add(primaryKeyColumn.getName());
-
-		Map<String, Serializable> insertedValues = new HashMap<>();
 
 		sb.append(" where ");
 		sb.append(primaryKeyColumn.getName());
@@ -7960,6 +7970,8 @@ public class ObjectEntryLocalServiceImpl
 		catch (Exception exception) {
 			throw new SystemException(exception);
 		}
+
+		return staticValues;
 	}
 
 	private void _validateAutoIncrementValue(
