@@ -4735,10 +4735,7 @@ public class ObjectEntryLocalServiceImpl
 		List<Column<DynamicObjectDefinitionTable, ?>> selectColumns =
 			new ArrayList<>(dynamicObjectDefinitionTable.getColumns());
 
-		Collection<Column<DynamicObjectDefinitionTable, ?>> extensionColumns =
-			extensionDynamicObjectDefinitionTable.getColumns();
-
-		if (extensionColumns.size() > 1) {
+		if (extensionDynamicObjectDefinitionTable.hasObjectFieldColumns()) {
 			innerJoinPredicate =
 				dynamicObjectDefinitionTable.getPrimaryKeyColumn(
 				).eq(
@@ -4749,7 +4746,7 @@ public class ObjectEntryLocalServiceImpl
 				extensionDynamicObjectDefinitionTable.getPrimaryKeyColumn();
 
 			for (Column<DynamicObjectDefinitionTable, ?> column :
-					extensionColumns) {
+					extensionDynamicObjectDefinitionTable.getColumns()) {
 
 				if (column == pkColumn) {
 					continue;

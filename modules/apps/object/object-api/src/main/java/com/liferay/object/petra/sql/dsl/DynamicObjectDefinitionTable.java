@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.sql.Types;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -131,6 +132,17 @@ public class DynamicObjectDefinitionTable
 
 	public String getPrimaryKeyColumnName() {
 		return _primaryKeyColumnName;
+	}
+
+	public boolean hasObjectFieldColumns() {
+		Collection<Column<DynamicObjectDefinitionTable, ?>> columns =
+			getColumns();
+
+		if (columns.size() > 1) {
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
