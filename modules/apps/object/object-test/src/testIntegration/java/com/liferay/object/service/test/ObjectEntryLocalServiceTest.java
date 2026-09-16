@@ -2181,6 +2181,10 @@ public class ObjectEntryLocalServiceTest {
 						"listTypeEntryKeyRequired", "listTypeEntryKey1"
 					).build());
 
+				Map<String, Serializable> values = objectEntry.getValues();
+
+				Assert.assertEquals("test", values.get("encrypted"));
+
 				_assertCount(1);
 
 				Assert.assertEquals(
@@ -4082,6 +4086,66 @@ public class ObjectEntryLocalServiceTest {
 				objectDefinition1.getName(), objectDefinition2.getName()
 			},
 			_objectEntryLocalService, _objectRelationshipLocalService);
+	}
+
+	@Test
+	public void testAddObjectEntryWithValuesMatchingSelect() throws Exception {
+		ObjectField objectField = ObjectFieldUtil.createObjectField(
+			ObjectFieldConstants.BUSINESS_TYPE_TEXT,
+			ObjectFieldConstants.DB_TYPE_STRING, "Localized Text",
+			"localizedText");
+
+		objectField.setLocalized(true);
+
+		ObjectDefinition objectDefinition = _publishCustomObjectDefinition(
+			Arrays.asList(
+				objectField,
+				ObjectFieldUtil.createObjectField(
+					ObjectFieldConstants.BUSINESS_TYPE_LONG_TEXT,
+					ObjectFieldConstants.DB_TYPE_CLOB, "Long Text", "longText"),
+				ObjectFieldUtil.createObjectField(
+					ObjectFieldConstants.BUSINESS_TYPE_TEXT,
+					ObjectFieldConstants.DB_TYPE_STRING, "Text", "text")));
+
+		try {
+			ObjectEntry objectEntry = _objectEntryLocalService.addObjectEntry(
+				0, TestPropsValues.getUserId(),
+				objectDefinition.getObjectDefinitionId(),
+				ObjectEntryFolderConstants.
+					PARENT_OBJECT_ENTRY_FOLDER_ID_DEFAULT,
+				LocaleUtil.toLanguageId(LocaleUtil.SPAIN),
+				HashMapBuilder.<String, Serializable>put(
+					"localizedText_i18n",
+					(Serializable)HashMapBuilder.<String, Serializable>put(
+						LocaleUtil.toLanguageId(LocaleUtil.BRAZIL),
+						StringPool.BLANK
+					).put(
+						LocaleUtil.toLanguageId(LocaleUtil.SPAIN), "Habil"
+					).put(
+						LocaleUtil.toLanguageId(LocaleUtil.US), "Able"
+					).build()
+				).put(
+					"longText", "  Baker  "
+				).build(),
+				ServiceContextTestUtil.getServiceContext());
+
+			Map<String, Serializable> values = objectEntry.getValues();
+
+			Assert.assertEquals("Habil", values.get("localizedText"));
+			Assert.assertEquals(
+				HashMapBuilder.<String, Serializable>put(
+					LocaleUtil.toLanguageId(LocaleUtil.SPAIN), "Habil"
+				).put(
+					LocaleUtil.toLanguageId(LocaleUtil.US), "Able"
+				).build(),
+				values.get("localizedText_i18n"));
+			Assert.assertEquals("Baker", values.get("longText"));
+			Assert.assertEquals(StringPool.BLANK, values.get("text"));
+		}
+		finally {
+			_objectDefinitionLocalService.deleteObjectDefinition(
+				objectDefinition);
+		}
 	}
 
 	@Test
@@ -8472,6 +8536,77 @@ public class ObjectEntryLocalServiceTest {
 
 		Assert.assertNotNull(
 			_dlFileEntryLocalService.fetchDLFileEntry(fileEntryId2));
+	}
+
+	@Test
+	public void testUpdateObjectEntryWithCompositeKeyObjectValidationRule()
+		throws Exception {
+
+		ObjectField emailAddressRequiredObjectField =
+			_objectFieldLocalService.fetchObjectField(
+				_objectDefinition.getObjectDefinitionId(),
+				"emailAddressRequired");
+		ObjectField listTypeEntryKeyObjectField =
+			_objectFieldLocalService.fetchObjectField(
+				_objectDefinition.getObjectDefinitionId(), "listTypeEntryKey");
+
+		ObjectValidationRule objectValidationRule = _addObjectValidationRule(
+			ObjectValidationRuleConstants.ENGINE_TYPE_COMPOSITE_KEY,
+			LocalizedMapUtil.getLocalizedMap(
+				"Composite key field values must be unique"),
+			ObjectValidationRuleConstants.OUTPUT_TYPE_FULL_VALIDATION,
+			StringPool.BLANK,
+			Arrays.asList(
+				new ObjectValidationRuleSettingBuilder(
+				).name(
+					ObjectValidationRuleSettingConstants.
+						NAME_COMPOSITE_KEY_OBJECT_FIELD_ID
+				).value(
+					String.valueOf(
+						emailAddressRequiredObjectField.getObjectFieldId())
+				).build(),
+				new ObjectValidationRuleSettingBuilder(
+				).name(
+					ObjectValidationRuleSettingConstants.
+						NAME_COMPOSITE_KEY_OBJECT_FIELD_ID
+				).value(
+					String.valueOf(
+						listTypeEntryKeyObjectField.getObjectFieldId())
+				).build()));
+
+		_addObjectEntry(
+			HashMapBuilder.<String, Serializable>put(
+				"emailAddressRequired", "bob@liferay.com"
+			).put(
+				"listTypeEntryKeyRequired", "listTypeEntryKey1"
+			).build());
+
+		ObjectEntry objectEntry = _addObjectEntry(
+			HashMapBuilder.<String, Serializable>put(
+				"emailAddressRequired", "james@liferay.com"
+			).put(
+				"listTypeEntryKeyRequired", "listTypeEntryKey1"
+			).build());
+
+		_clearValidatedObjectEntryIds();
+
+		try {
+			_objectEntryLocalService.updateObjectEntry(
+				TestPropsValues.getUserId(), objectEntry.getObjectEntryId(),
+				objectEntry.getObjectEntryFolderId(),
+				HashMapBuilder.<String, Serializable>put(
+					"emailAddressRequired", "bob@liferay.com"
+				).put(
+					"listTypeEntryKeyRequired", "listTypeEntryKey1"
+				).build(),
+				ServiceContextTestUtil.getServiceContext());
+
+			Assert.fail();
+		}
+		catch (ModelListenerException modelListenerException) {
+			_assertFailureObjectValidationRule(
+				modelListenerException, objectValidationRule);
+		}
 	}
 
 	@Test
