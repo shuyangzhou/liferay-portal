@@ -1087,6 +1087,17 @@ public class ObjectFieldLocalServiceImpl
 					ObjectFieldConstants.BUSINESS_TYPE_PICKLIST) &&
 				objectField.isState()) {
 
+				if (!objectDefinition.isUnmodifiableSystemObject() &&
+					Objects.equals(
+						dbTableName,
+						objectDefinition.getExtensionDBTableName())) {
+
+					runSQL(
+						DynamicObjectDefinitionTableUtil.
+							getInsertMissingExtensionTableRowsSQL(
+								objectDefinition));
+				}
+
 				runSQL(
 					DynamicObjectDefinitionTableUtil.getUpdateDefaultValueSQL(
 						dbColumnName, dbType, defaultValue, dbTableName));

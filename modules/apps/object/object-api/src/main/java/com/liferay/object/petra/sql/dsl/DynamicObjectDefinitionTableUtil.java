@@ -106,6 +106,32 @@ public class DynamicObjectDefinitionTableUtil {
 			dbTableName);
 	}
 
+	public static String getInsertMissingExtensionTableRowsSQL(
+		ObjectDefinition objectDefinition) {
+
+		String dbTableName = objectDefinition.getDBTableName();
+		String extensionDBTableName =
+			objectDefinition.getExtensionDBTableName();
+		String pkObjectFieldDBColumnName =
+			objectDefinition.getPKObjectFieldDBColumnName();
+
+		String sql = StringBundler.concat(
+			"insert into ", extensionDBTableName, " (",
+			pkObjectFieldDBColumnName, ") select ", dbTableName,
+			StringPool.PERIOD, pkObjectFieldDBColumnName, " from ", dbTableName,
+			" left join ", extensionDBTableName, " on ", extensionDBTableName,
+			StringPool.PERIOD, pkObjectFieldDBColumnName, " = ", dbTableName,
+			StringPool.PERIOD, pkObjectFieldDBColumnName, " where ",
+			extensionDBTableName, StringPool.PERIOD, pkObjectFieldDBColumnName,
+			" is null");
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("SQL: " + sql);
+		}
+
+		return sql;
+	}
+
 	public static Class<?> getJavaClass(String dbType) {
 		return _javaClasses.get(dbType);
 	}
