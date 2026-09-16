@@ -1524,16 +1524,22 @@ public class ObjectRelationshipLocalServiceImpl
 			return 0;
 		}
 
+		Predicate leftJoinPredicate = null;
+
+		if (extensionDynamicObjectDefinitionTable.hasObjectFieldColumns()) {
+			leftJoinPredicate =
+				extensionDynamicObjectDefinitionTable.getPrimaryKeyColumn(
+				).eq(
+					dynamicObjectDefinitionTable.getPrimaryKeyColumn()
+				);
+		}
+
 		DSLQuery dslQuery = DSLQueryFactoryUtil.countDistinct(
 			ObjectEntryTable.INSTANCE.objectEntryId
 		).from(
 			dynamicObjectDefinitionTable
-		).innerJoinON(
-			extensionDynamicObjectDefinitionTable,
-			extensionDynamicObjectDefinitionTable.getPrimaryKeyColumn(
-			).eq(
-				dynamicObjectDefinitionTable.getPrimaryKeyColumn()
-			)
+		).leftJoinOn(
+			extensionDynamicObjectDefinitionTable, leftJoinPredicate
 		).innerJoinON(
 			ObjectEntryTable.INSTANCE,
 			ObjectEntryTable.INSTANCE.objectEntryId.eq(
