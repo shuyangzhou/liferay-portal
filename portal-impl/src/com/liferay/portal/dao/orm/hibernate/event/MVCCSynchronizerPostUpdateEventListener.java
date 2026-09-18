@@ -6,7 +6,9 @@
 package com.liferay.portal.dao.orm.hibernate.event;
 
 import com.liferay.petra.lang.SafeCloseable;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.cache.PortalCache;
+import com.liferay.portal.kernel.cache.transactional.TransactionalPortalCacheUtil;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -73,13 +75,29 @@ public class MVCCSynchronizerPostUpdateEventListener
 					return;
 				}
 
-				Serializable entityCacheResult = portalCache.get(primaryKeyObj);
+				boolean[] uncommittedBufferMissMarker = {false};
 
-				if (entityCacheResult instanceof MVCCModel) {
-					MVCCModel entityCacheMVCCModel =
-						(MVCCModel)entityCacheResult;
+				Serializable entityCacheResult =
+					TransactionalPortalCacheUtil.get(
+						portalCache, primaryKeyObj,
+						uncommittedBufferMissMarker);
 
-					entityCacheMVCCModel.setMvccVersion(mvccVersion);
+				if ((entityCacheResult instanceof
+						MVCCModel entityCacheMVCCModel) &&
+					(mvccVersion > entityCacheMVCCModel.getMvccVersion())) {
+
+					if (uncommittedBufferMissMarker[0]) {
+						entityCacheMVCCModel = ReflectionUtil.clone(
+							entityCacheMVCCModel);
+
+						entityCacheMVCCModel.setMvccVersion(mvccVersion);
+
+						portalCache.put(
+							primaryKeyObj, (Serializable)entityCacheMVCCModel);
+					}
+					else {
+						entityCacheMVCCModel.setMvccVersion(mvccVersion);
+					}
 				}
 			}
 		}
