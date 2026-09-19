@@ -270,7 +270,7 @@ public class FinderCacheImpl
 			else if ((objects.size() > _valueObjectFinderCacheListThreshold) &&
 					 (_valueObjectFinderCacheListThreshold > 0)) {
 
-				_removeResult(finderPath, args);
+				_removeResult(finderPath, args, true);
 
 				return;
 			}
@@ -359,11 +359,13 @@ public class FinderCacheImpl
 			_removeResult(
 				finderPath,
 				argumentsResolver.getArguments(
-					finderPath, baseModel, false, false));
+					finderPath, baseModel, false, false),
+				false);
 			_removeResult(
 				finderPath,
 				argumentsResolver.getArguments(
-					finderPath, baseModel, true, true));
+					finderPath, baseModel, true, true),
+				false);
 		}
 	}
 
@@ -420,7 +422,7 @@ public class FinderCacheImpl
 			return;
 		}
 
-		_removeResult(finderPath, args);
+		_removeResult(finderPath, args, true);
 	}
 
 	public void updateByEntityCache(String className, BaseModel<?> baseModel) {
@@ -457,17 +459,20 @@ public class FinderCacheImpl
 				_removeResult(
 					finderPath,
 					argumentsResolver.getArguments(
-						finderPath, baseModel, false, false));
+						finderPath, baseModel, false, false),
+					false);
 			}
 			else {
 				_removeResult(
 					finderPath,
 					argumentsResolver.getArguments(
-						finderPath, baseModel, true, false));
+						finderPath, baseModel, true, false),
+					false);
 				_removeResult(
 					finderPath,
 					argumentsResolver.getArguments(
-						finderPath, baseModel, true, true));
+						finderPath, baseModel, true, true),
+					false);
 			}
 		}
 	}
@@ -779,14 +784,16 @@ public class FinderCacheImpl
 		return ThreadLocalFilterThreadLocal.isFilterInvoked();
 	}
 
-	private void _removeResult(FinderPath finderPath, Object[] args) {
+	private void _removeResult(
+		FinderPath finderPath, Object[] args, boolean checkLocalCache) {
+
 		if (args == null) {
 			return;
 		}
 
 		Serializable cacheKey = _encodeCacheKey(finderPath, args);
 
-		if (_isLocalCacheEnabled()) {
+		if (checkLocalCache && _isLocalCacheEnabled()) {
 			Map<LocalCacheKey, Serializable> localCache = _localCache.get();
 
 			localCache.remove(
