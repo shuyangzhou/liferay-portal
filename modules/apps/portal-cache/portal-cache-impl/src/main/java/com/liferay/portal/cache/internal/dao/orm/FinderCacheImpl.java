@@ -356,11 +356,11 @@ public class FinderCacheImpl
 			argumentsResolverHolder.getArgumentsResolver();
 
 		for (FinderPath finderPath : _getFinderPaths(className)) {
-			removeResult(
+			_removeResult(
 				finderPath,
 				argumentsResolver.getArguments(
 					finderPath, baseModel, false, false));
-			removeResult(
+			_removeResult(
 				finderPath,
 				argumentsResolver.getArguments(
 					finderPath, baseModel, true, true));
