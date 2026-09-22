@@ -255,7 +255,7 @@ public class FinderCacheCountTest {
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				"org.hibernate.SQL", LoggerTestUtil.DEBUG)) {
 
-			Assert.assertEquals(expectedCount, intSupplier.getAsInt());
+			Assert.assertEquals(expectedCount, _getCount(intSupplier));
 
 			List<LogEntry> logEntries = logCapture.getLogEntries();
 
@@ -269,7 +269,7 @@ public class FinderCacheCountTest {
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				"org.hibernate.SQL", LoggerTestUtil.DEBUG)) {
 
-			Assert.assertEquals(expectedCount, intSupplier.getAsInt());
+			Assert.assertEquals(expectedCount, _getCount(intSupplier));
 
 			List<LogEntry> logEntries = logCapture.getLogEntries();
 
@@ -315,6 +315,16 @@ public class FinderCacheCountTest {
 		return _phonePersistence.update(phone);
 	}
 
+	private int _getCount(IntSupplier intSupplier) {
+		try {
+			return TransactionInvokerUtil.invoke(
+				_supportsTransactionConfig, intSupplier::getAsInt);
+		}
+		catch (Throwable throwable) {
+			throw new RuntimeException(throwable);
+		}
+	}
+
 	private void _removeContact(Contact contact) throws Throwable {
 		TransactionInvokerUtil.invoke(
 			_transactionConfig, () -> _contactPersistence.remove(contact));
@@ -337,6 +347,9 @@ public class FinderCacheCountTest {
 			});
 	}
 
+	private static final TransactionConfig _supportsTransactionConfig =
+		TransactionConfig.Factory.create(
+			Propagation.SUPPORTS, new Class<?>[] {Exception.class});
 	private static final TransactionConfig _transactionConfig =
 		TransactionConfig.Factory.create(
 			Propagation.REQUIRES_NEW, new Class<?>[] {Exception.class});
