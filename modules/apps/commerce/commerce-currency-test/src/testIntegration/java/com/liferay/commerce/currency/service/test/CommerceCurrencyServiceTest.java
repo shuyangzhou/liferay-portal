@@ -53,7 +53,7 @@ public class CommerceCurrencyServiceTest {
 	@Test
 	public void testGetCommerceCurrencies() throws Exception {
 		_commerceCurrency = _commerceCurrencyService.addCommerceCurrency(
-			null, RandomTestUtil.randomString(3),
+			null, RandomTestUtil.randomString(),
 			RandomTestUtil.randomLocaleStringMap(),
 			RandomTestUtil.randomString(3), BigDecimal.ONE,
 			LocalizationUtil.getLocalizationMap(

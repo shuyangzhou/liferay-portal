@@ -55,9 +55,42 @@ public class CTAwarePortalCache
 	@Override
 	public Serializable get(Serializable key) {
 		PortalCache<Serializable, Serializable> portalCache =
-			_getCTPortalCache();
+			getCTPortalCache();
 
 		return portalCache.get(key);
+	}
+
+	public PortalCache<Serializable, Serializable> getCTPortalCache() {
+		long ctCollectionId = CTCollectionThreadLocal.getCTCollectionId();
+
+		if (ctCollectionId ==
+				CTCollectionThreadLocal.CT_COLLECTION_ID_PRODUCTION) {
+
+			return _productionPortalCache;
+		}
+
+		PortalCache<Serializable, Serializable> ctPortalCache =
+			_ctPortalCaches.get(ctCollectionId);
+
+		if (ctPortalCache != null) {
+			return ctPortalCache;
+		}
+
+		ctPortalCache =
+			(PortalCache<Serializable, Serializable>)
+				_multiVMPool.getPortalCache(
+					_portalCacheName + _CHANGE_TRACKING_POSTFIX +
+						ctCollectionId,
+					_mvcc, _sharded);
+
+		PortalCache<Serializable, Serializable> previousCTPortalCache =
+			_ctPortalCaches.putIfAbsent(ctCollectionId, ctPortalCache);
+
+		if (previousCTPortalCache != null) {
+			return previousCTPortalCache;
+		}
+
+		return ctPortalCache;
 	}
 
 	@Override
@@ -99,7 +132,7 @@ public class CTAwarePortalCache
 	@Override
 	public void put(Serializable key, Serializable value, int timeToLive) {
 		PortalCache<Serializable, Serializable> portalCache =
-			_getCTPortalCache();
+			getCTPortalCache();
 
 		portalCache.put(key, value, timeToLive);
 	}
@@ -122,23 +155,19 @@ public class CTAwarePortalCache
 	@Override
 	public void remove(Serializable key) {
 		PortalCache<Serializable, Serializable> portalCache =
-			_getCTPortalCache();
+			getCTPortalCache();
 
 		portalCache.remove(key);
 
 		if (CTCollectionThreadLocal.isProductionMode()) {
-			for (PortalCache<Serializable, Serializable> ctPortalCache :
-					_ctPortalCaches.values()) {
-
-				ctPortalCache.remove(key);
-			}
+			removeFromCTPortalCaches(key);
 		}
 	}
 
 	@Override
 	public void removeAll() {
 		PortalCache<Serializable, Serializable> portalCache =
-			_getCTPortalCache();
+			getCTPortalCache();
 
 		portalCache.removeAll();
 
@@ -148,6 +177,14 @@ public class CTAwarePortalCache
 
 				ctPortalCache.removeAll();
 			}
+		}
+	}
+
+	public void removeFromCTPortalCaches(Serializable key) {
+		for (PortalCache<Serializable, Serializable> ctPortalCache :
+				_ctPortalCaches.values()) {
+
+			ctPortalCache.remove(key);
 		}
 	}
 
@@ -161,39 +198,6 @@ public class CTAwarePortalCache
 	@Override
 	public void unregisterPortalCacheListeners() {
 		throw new UnsupportedOperationException();
-	}
-
-	private PortalCache<Serializable, Serializable> _getCTPortalCache() {
-		long ctCollectionId = CTCollectionThreadLocal.getCTCollectionId();
-
-		if (ctCollectionId ==
-				CTCollectionThreadLocal.CT_COLLECTION_ID_PRODUCTION) {
-
-			return _productionPortalCache;
-		}
-
-		PortalCache<Serializable, Serializable> ctPortalCache =
-			_ctPortalCaches.get(ctCollectionId);
-
-		if (ctPortalCache != null) {
-			return ctPortalCache;
-		}
-
-		ctPortalCache =
-			(PortalCache<Serializable, Serializable>)
-				_multiVMPool.getPortalCache(
-					_portalCacheName + _CHANGE_TRACKING_POSTFIX +
-						ctCollectionId,
-					_mvcc, _sharded);
-
-		PortalCache<Serializable, Serializable> previousCTPortalCache =
-			_ctPortalCaches.putIfAbsent(ctCollectionId, ctPortalCache);
-
-		if (previousCTPortalCache != null) {
-			return previousCTPortalCache;
-		}
-
-		return ctPortalCache;
 	}
 
 	private static final String _CHANGE_TRACKING_POSTFIX = ".CT#";

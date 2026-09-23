@@ -14,9 +14,11 @@ import com.liferay.commerce.product.service.CPSpecificationOptionService;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.ProductSpecification;
 import com.liferay.headless.commerce.core.util.LanguageUtils;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.lazy.referencing.LazyReferencingThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 /**
  * @author Alessio Antonio Rendina
@@ -119,23 +121,36 @@ public class ProductSpecificationUtil {
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		CPOptionCategory cpOptionCategory =
-			cpOptionCategoryService.
-				fetchCPOptionCategoryByExternalReferenceCode(
-					GetterUtil.getString(
-						productSpecification.
-							getOptionCategoryExternalReferenceCode()),
-					serviceContext.getCompanyId());
+		String externalReferenceCode = GetterUtil.getString(
+			productSpecification.getOptionCategoryExternalReferenceCode());
 
-		if (cpOptionCategory != null) {
-			return cpOptionCategory.getCPOptionCategoryId();
+		if (Validator.isNull(externalReferenceCode)) {
+			CPOptionCategory cpOptionCategory =
+				cpOptionCategoryService.fetchCPOptionCategory(
+					GetterUtil.getLong(
+						productSpecification.getOptionCategoryId()));
+
+			if (cpOptionCategory != null) {
+				return cpOptionCategory.getCPOptionCategoryId();
+			}
 		}
+		else {
+			CPOptionCategory cpOptionCategory =
+				cpOptionCategoryService.
+					fetchCPOptionCategoryByExternalReferenceCode(
+						externalReferenceCode, serviceContext.getCompanyId());
 
-		cpOptionCategory = cpOptionCategoryService.fetchCPOptionCategory(
-			GetterUtil.getLong(productSpecification.getOptionCategoryId()));
+			if (cpOptionCategory != null) {
+				return cpOptionCategory.getCPOptionCategoryId();
+			}
 
-		if (cpOptionCategory != null) {
-			return cpOptionCategory.getCPOptionCategoryId();
+			if (LazyReferencingThreadLocal.isEnabled()) {
+				cpOptionCategory =
+					cpOptionCategoryService.getOrAddEmptyCPOptionCategory(
+						externalReferenceCode);
+
+				return cpOptionCategory.getCPOptionCategoryId();
+			}
 		}
 
 		if (cpSpecificationOption == null) {

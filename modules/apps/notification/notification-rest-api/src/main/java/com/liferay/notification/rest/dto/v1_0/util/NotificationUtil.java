@@ -23,11 +23,15 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * @author Feliphe Marinho
@@ -127,13 +131,14 @@ public class NotificationUtil {
 			serviceBuilderNotificationTemplate =
 				NotificationTemplateLocalServiceUtil.createNotificationTemplate(
 					0L);
+
+			serviceBuilderNotificationTemplate.setUserId(user.getUserId());
+			serviceBuilderNotificationTemplate.setUserName(user.getFullName());
 		}
 
 		serviceBuilderNotificationTemplate.setExternalReferenceCode(
 			notificationTemplate.getExternalReferenceCode());
 		serviceBuilderNotificationTemplate.setCompanyId(user.getCompanyId());
-		serviceBuilderNotificationTemplate.setUserId(user.getUserId());
-		serviceBuilderNotificationTemplate.setUserName(user.getFullName());
 
 		long objectDefinitionId = GetterUtil.getLong(
 			notificationTemplate.getObjectDefinitionId());
@@ -165,8 +170,18 @@ public class NotificationUtil {
 			notificationTemplate.getDescription());
 		serviceBuilderNotificationTemplate.setEditorType(
 			GetterUtil.getString(notificationTemplate.getEditorTypeAsString()));
-		serviceBuilderNotificationTemplate.setName(
+
+		Map<Locale, String> nameMap = LocalizedMapUtil.populateLocalizedMap(
+			LocaleUtil.toLanguageId(LocaleUtil.getSiteDefault()),
+			notificationTemplate.getName_i18n(),
 			notificationTemplate.getName());
+
+		LocalizedMapUtil.validateI18n(
+			notificationTemplateId == 0, LocaleUtil.getSiteDefault(),
+			"Notification template", nameMap, new HashSet<>());
+
+		serviceBuilderNotificationTemplate.setNameMap(nameMap);
+
 		serviceBuilderNotificationTemplate.setRecipientType(
 			notificationTemplate.getRecipientType());
 		serviceBuilderNotificationTemplate.setSubjectMap(

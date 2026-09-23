@@ -59,7 +59,7 @@ public class CPMeasurementUnitServiceTest {
 
 		_cpMeasurementUnit = _cpMeasurementUnitService.addCPMeasurementUnit(
 			null, RandomTestUtil.randomLocaleStringMap(),
-			RandomTestUtil.randomString(3), RandomTestUtil.nextDouble(), true,
+			RandomTestUtil.randomString(), RandomTestUtil.nextDouble(), true,
 			RandomTestUtil.nextDouble(), RandomTestUtil.nextInt(),
 			_serviceContext);
 		_role = _roleLocalService.addRole(
@@ -79,7 +79,7 @@ public class CPMeasurementUnitServiceTest {
 
 			_cpMeasurementUnitService.addCPMeasurementUnit(
 				null, RandomTestUtil.randomLocaleStringMap(),
-				RandomTestUtil.randomString(3), RandomTestUtil.nextDouble(),
+				RandomTestUtil.randomString(), RandomTestUtil.nextDouble(),
 				RandomTestUtil.randomBoolean(), RandomTestUtil.nextDouble(),
 				RandomTestUtil.nextInt(), _serviceContext);
 
@@ -102,7 +102,7 @@ public class CPMeasurementUnitServiceTest {
 
 			_cpMeasurementUnitService.addCPMeasurementUnit(
 				null, RandomTestUtil.randomLocaleStringMap(),
-				RandomTestUtil.randomString(3), RandomTestUtil.nextDouble(),
+				RandomTestUtil.randomString(), RandomTestUtil.nextDouble(),
 				RandomTestUtil.randomBoolean(), RandomTestUtil.nextDouble(),
 				RandomTestUtil.nextInt(), _serviceContext);
 		}
@@ -527,7 +527,7 @@ public class CPMeasurementUnitServiceTest {
 			_cpMeasurementUnitService.updateCPMeasurementUnit(
 				RandomTestUtil.randomString(),
 				_cpMeasurementUnit.getCPMeasurementUnitId(),
-				_cpMeasurementUnit.getNameMap(), RandomTestUtil.randomString(3),
+				_cpMeasurementUnit.getNameMap(), RandomTestUtil.randomString(),
 				_cpMeasurementUnit.getRate(), _cpMeasurementUnit.isPrimary(),
 				RandomTestUtil.nextDouble(), RandomTestUtil.nextInt(),
 				_serviceContext);

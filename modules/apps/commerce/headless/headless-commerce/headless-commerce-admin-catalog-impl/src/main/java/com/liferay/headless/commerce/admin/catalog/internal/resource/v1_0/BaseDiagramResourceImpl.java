@@ -142,7 +142,7 @@ public abstract class BaseDiagramResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'PATCH' 'http://localhost:8080/o/headless-commerce-admin-catalog/v1.0/diagrams/{diagramId}' -d $'{"attachmentBase64": ___, "color": ___, "id": ___, "imageId": ___, "radius": ___, "type": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'PATCH' 'http://localhost:8080/o/headless-commerce-admin-catalog/v1.0/diagrams/{diagramId}' -d $'{"attachmentBase64": ___, "color": ___, "id": ___, "imageExternalReferenceCode": ___, "imageId": ___, "radius": ___, "type": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
 	@io.swagger.v3.oas.annotations.Operation(
 		description = "Partially updates the diagram setting identified by diagramId. Returns 404 when `diagramId` is not found. Side effects -- Updates the diagram's image attachment and may replace the linked DL file entry."
@@ -178,7 +178,7 @@ public abstract class BaseDiagramResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/headless-commerce-admin-catalog/v1.0/products/by-externalReferenceCode/{externalReferenceCode}/diagrams' -d $'{"attachmentBase64": ___, "color": ___, "id": ___, "imageId": ___, "radius": ___, "type": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/headless-commerce-admin-catalog/v1.0/products/by-externalReferenceCode/{externalReferenceCode}/diagrams' -d $'{"attachmentBase64": ___, "color": ___, "id": ___, "imageExternalReferenceCode": ___, "imageId": ___, "radius": ___, "type": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
 	@io.swagger.v3.oas.annotations.Operation(
 		description = "Creates a diagram setting under the product identified by external reference code. Returns 404 when the product external reference code is not found. Side effects -- Creates the diagram setting and links an attachment as the diagram image."
@@ -216,7 +216,7 @@ public abstract class BaseDiagramResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/headless-commerce-admin-catalog/v1.0/products/{id}/diagrams' -d $'{"attachmentBase64": ___, "color": ___, "id": ___, "imageId": ___, "radius": ___, "type": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/headless-commerce-admin-catalog/v1.0/products/{id}/diagrams' -d $'{"attachmentBase64": ___, "color": ___, "id": ___, "imageExternalReferenceCode": ___, "imageId": ___, "radius": ___, "type": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
 	@io.swagger.v3.oas.annotations.Operation(
 		description = "Creates a diagram setting under the product identified by product ID. Returns 404 when the product ID is not found. Side effects -- Creates the diagram setting and links an attachment as the diagram image."
@@ -1011,4 +1011,4 @@ public abstract class BaseDiagramResourceImpl
 		LogFactoryUtil.getLog(BaseDiagramResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:1321602405
+// LIFERAY-REST-BUILDER-HASH:-933319550

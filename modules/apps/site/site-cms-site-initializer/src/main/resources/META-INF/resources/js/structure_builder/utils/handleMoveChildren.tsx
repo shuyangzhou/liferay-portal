@@ -15,13 +15,14 @@ import getLocalizedValue from '../../common/utils/getLocalizedValue';
 import {Action, State} from '../contexts/StateContext';
 import {Group, Structure, StructureChild} from '../types/Structure';
 import {Uuid} from '../types/Uuid';
-import exceedsMaxNesting, {MAX_NESTING} from './exceedsMaxNesting';
+import exceedsMaxNesting, {getMaxNesting} from './exceedsMaxNesting';
 import findAvailableFieldName from './findAvailableFieldName';
 import findChild from './findChild';
 import getUndeletableChildren, {
 	UndeletableReason,
 } from './getUndeletableChildren';
 import isReferenced from './isReferenced';
+import isRelationship from './isRelationship';
 
 export default async function handleMoveChildren({
 	deletedChildren,
@@ -39,6 +40,23 @@ export default async function handleMoveChildren({
 	uuids: Uuid[];
 }) {
 	if (
+		Liferay.FeatureFlags['LPD-96666'] &&
+		targetUuid !== structure.uuid &&
+		uuids.some((uuid) =>
+			isRelationship(findChild({root: structure, uuid})!)
+		)
+	) {
+		openToast({
+			message: Liferay.Language.get(
+				'repeatable-groups-and-referenced-structures-can-only-be-placed-at-the-first-level'
+			),
+			type: 'danger',
+		});
+
+		return;
+	}
+
+	if (
 		exceedsMaxNesting({
 			items: uuids.map((uuid) => findChild({root: structure, uuid})!),
 			structure,
@@ -50,7 +68,7 @@ export default async function handleMoveChildren({
 				Liferay.Language.get(
 					'groups-cannot-be-nested-more-than-x-levels-deep'
 				),
-				MAX_NESTING
+				getMaxNesting()
 			),
 			type: 'danger',
 		});

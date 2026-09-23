@@ -10,16 +10,20 @@ import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.LayoutRevisionTable;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.model.impl.LayoutRevisionImpl;
 import com.liferay.portal.model.impl.LayoutRevisionModelImpl;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiPredicate;
 
 /**
  * The arguments resolver class for retrieving value from LayoutRevision.
  *
  * @author Brian Wing Shun Chan
+ * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
  * @generated
  */
 @OSGiBeanProperties(
@@ -49,6 +53,15 @@ public class LayoutRevisionModelArgumentsResolver implements ArgumentsResolver {
 		LayoutRevisionModelImpl layoutRevisionModelImpl =
 			(LayoutRevisionModelImpl)baseModel;
 
+		BiPredicate<LayoutRevisionModelImpl, Boolean> wherePredicate =
+			_wherePredicates.get(finderPath.getFinderName());
+
+		if ((wherePredicate != null) &&
+			!wherePredicate.test(layoutRevisionModelImpl, original)) {
+
+			return null;
+		}
+
 		long columnBitmask = layoutRevisionModelImpl.getColumnBitmask();
 
 		if (!checkColumn || (columnBitmask == 0)) {
@@ -64,6 +77,13 @@ public class LayoutRevisionModelArgumentsResolver implements ArgumentsResolver {
 			for (String columnName : columnNames) {
 				finderPathColumnBitmask |=
 					layoutRevisionModelImpl.getColumnBitmask(columnName);
+			}
+
+			Long whereColumnBitmask = _whereColumnBitmasks.get(
+				finderPath.getFinderName());
+
+			if (whereColumnBitmask != null) {
+				finderPathColumnBitmask |= whereColumnBitmask;
 			}
 
 			if (finderPath.isBaseModelResult() &&
@@ -93,6 +113,17 @@ public class LayoutRevisionModelArgumentsResolver implements ArgumentsResolver {
 	@Override
 	public String getTableName() {
 		return LayoutRevisionTable.INSTANCE.getTableName();
+	}
+
+	private static Object _getColumnValue(
+		LayoutRevisionModelImpl layoutRevisionModelImpl, String columnName,
+		boolean original) {
+
+		if (original) {
+			return layoutRevisionModelImpl.getColumnOriginalValue(columnName);
+		}
+
+		return layoutRevisionModelImpl.getColumnValue(columnName);
 	}
 
 	private static Object[] _getValue(
@@ -136,5 +167,24 @@ public class LayoutRevisionModelArgumentsResolver implements ArgumentsResolver {
 		_ORDER_BY_COLUMNS_BITMASK = orderByColumnsBitmask;
 	}
 
+	private static final Map<String, Long> _whereColumnBitmasks =
+		new HashMap<>();
+	private static final Map
+		<String, BiPredicate<LayoutRevisionModelImpl, Boolean>>
+			_wherePredicates = new HashMap<>();
+
+	static {
+		long whereColumnBitmask = LayoutRevisionModelImpl.getColumnBitmask(
+			"status");
+		BiPredicate<LayoutRevisionModelImpl, Boolean> wherePredicate =
+			(layoutRevisionModelImpl, original) ->
+				GetterUtil.getInteger(
+					_getColumnValue(
+						layoutRevisionModelImpl, "status", original)) != 5;
+
+		_whereColumnBitmasks.put("L_L_P", whereColumnBitmask);
+		_wherePredicates.put("L_L_P", wherePredicate);
+	}
+
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1908423116
+// LIFERAY-SERVICE-BUILDER-HASH:773021728

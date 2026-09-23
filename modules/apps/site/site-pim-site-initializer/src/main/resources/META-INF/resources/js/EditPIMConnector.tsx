@@ -5,10 +5,11 @@
 
 import ClayButton from '@clayui/button';
 import ClayForm, {
-	ClayCheckbox,
 	ClayInput,
 	ClaySelectWithOption,
+	ClayToggle,
 } from '@clayui/form';
+import ClayPanel from '@clayui/panel';
 import {RequiredMark, Toolbar} from '@liferay/site-cms-site-initializer';
 import {fetch, navigate, sub} from 'frontend-js-web';
 import React, {useEffect, useState} from 'react';
@@ -20,7 +21,6 @@ interface IPIMConnector {
 
 interface IPIMConnectorData {
 	active: boolean;
-	apiSchema: string;
 	key: string;
 	name: string;
 }
@@ -45,7 +45,6 @@ export default function EditPIMConnector({
 	const isNew = Number(objectEntryId) === 0;
 
 	const [active, setActive] = useState(Boolean(pimConnector?.active));
-	const [apiSchema, setApiSchema] = useState(pimConnector?.apiSchema || '');
 	const [key, setKey] = useState(pimConnector?.key || '');
 	const [name, setName] = useState(pimConnector?.name || '');
 
@@ -64,7 +63,6 @@ export default function EditPIMConnector({
 				{
 					body: JSON.stringify({
 						active,
-						apiSchema,
 						key,
 						name,
 					}),
@@ -124,77 +122,79 @@ export default function EditPIMConnector({
 				</Toolbar.Item>
 			</Toolbar>
 
-			<div className="container-fluid container-fluid-max-xl mt-4">
+			<div className="container-fluid container-fluid-max-md p-0 p-md-4">
 				<ClayForm id="pimConnectorForm" onSubmit={handleSubmit}>
-					<ClayForm.Group>
-						<label htmlFor="pimConnectorName">
-							{Liferay.Language.get('name')}
+					<ClayPanel
+						aria-label="basic-info"
+						className="mb-4"
+						collapsable={false}
+						displayType="secondary"
+						role="group"
+					>
+						<div className="c-gap-4 d-flex flex-column p-4">
+							<h2 className="mb-0 py-2 text-6 text-dark">
+								{Liferay.Language.get('basic-info')}
+							</h2>
 
-							<RequiredMark />
-						</label>
+							<ClayForm.Group className="mb-0">
+								<label htmlFor="pimConnectorName">
+									{Liferay.Language.get('name')}
 
-						<ClayInput
-							id="pimConnectorName"
-							onChange={(event) => setName(event.target.value)}
-							required
-							type="text"
-							value={name}
-						/>
-					</ClayForm.Group>
+									<RequiredMark />
+								</label>
 
-					<ClayForm.Group>
-						<label htmlFor="pimConnectorKey">
-							{Liferay.Language.get('connector')}
+								<ClayInput
+									id="pimConnectorName"
+									onChange={(event) =>
+										setName(event.target.value)
+									}
+									required
+									type="text"
+									value={name}
+								/>
+							</ClayForm.Group>
 
-							<RequiredMark />
-						</label>
+							<ClayForm.Group className="mb-0">
+								<label htmlFor="pimConnectorKey">
+									{Liferay.Language.get('connector')}
 
-						<ClaySelectWithOption
-							id="pimConnectorKey"
-							onChange={(event) => setKey(event.target.value)}
-							options={[
-								{
-									disabled: true,
-									label: Liferay.Language.get(
-										'select-a-connector'
-									),
-									value: '',
-								},
-								...pimConnectors.map((pimConnector) => ({
-									label: pimConnector.name,
-									value: pimConnector.key,
-								})),
-							]}
-							required
-							value={key}
-						/>
-					</ClayForm.Group>
+									<RequiredMark />
+								</label>
 
-					<ClayForm.Group>
-						<label htmlFor="pimConnectorAPISchema">
-							{Liferay.Language.get('api-schema')}
-						</label>
+								<ClaySelectWithOption
+									id="pimConnectorKey"
+									onChange={(event) =>
+										setKey(event.target.value)
+									}
+									options={[
+										{
+											disabled: true,
+											label: Liferay.Language.get(
+												'select-a-connector'
+											),
+											value: '',
+										},
+										...pimConnectors.map(
+											(pimConnector) => ({
+												label: pimConnector.name,
+												value: pimConnector.key,
+											})
+										),
+									]}
+									required
+									value={key}
+								/>
+							</ClayForm.Group>
 
-						<textarea
-							className="form-control"
-							id="pimConnectorAPISchema"
-							onChange={(event) =>
-								setApiSchema(event.target.value)
-							}
-							rows={12}
-							value={apiSchema}
-						/>
-					</ClayForm.Group>
-
-					<ClayForm.Group>
-						<ClayCheckbox
-							checked={active}
-							label={Liferay.Language.get('active')}
-							onChange={() =>
-								setActive((previousActive) => !previousActive)
-							}
-						/>
-					</ClayForm.Group>
+							<ClayForm.Group className="mb-0">
+								<ClayToggle
+									label={Liferay.Language.get('active')}
+									onToggle={setActive}
+									toggled={active}
+								/>
+							</ClayForm.Group>
+						</div>
+					</ClayPanel>
 				</ClayForm>
 			</div>
 		</>

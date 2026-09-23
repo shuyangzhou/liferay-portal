@@ -4,8 +4,15 @@
  */
 
 import ConnectorNameRenderer from './cell_renderers/ConnectorNameRenderer';
+import ConnectorStatusRenderer from './cell_renderers/ConnectorStatusRenderer';
 
-export default function propsTransformer({...props}: {[key: string]: any}) {
+export default function propsTransformer({
+	itemsActions,
+	...props
+}: {
+	itemsActions?: any[];
+	[key: string]: any;
+}) {
 	return {
 		...props,
 		customRenderers: {
@@ -15,8 +22,18 @@ export default function propsTransformer({...props}: {[key: string]: any}) {
 					name: 'nameTableCellRenderer',
 					type: 'internal',
 				},
+				{
+					component: ConnectorStatusRenderer,
+					name: 'statusTableCellRenderer',
+					type: 'internal',
+				},
 			],
 		},
 		hideManagementBarInEmptyState: true,
+		itemsActions: itemsActions?.map((action) =>
+			action?.data?.id === 'delete'
+				? {...action, className: 'text-danger'}
+				: action
+		),
 	};
 }

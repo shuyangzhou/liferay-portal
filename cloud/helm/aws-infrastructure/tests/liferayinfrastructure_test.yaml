@@ -6,6 +6,12 @@ templates:
     -   templates/liferayinfrastructure.yaml
 tests:
     -   asserts:
+            -   isEmpty:
+                    path: spec.backup.vaultTags
+            -   isEmpty:
+                    path: spec.storage.tags
+        it: Defaults the storage tags and backup vault tags to empty maps
+    -   asserts:
             -   equal:
                     path: metadata.name
                     value: my-release
@@ -27,6 +33,26 @@ tests:
             enabled: false
     -   asserts:
             -   equal:
+                    path: spec.backup.enabled
+                    value: true
+            -   equal:
+                    path: spec.backup.rules[0].ruleName
+                    value: daily-backups
+            -   notExists:
+                    path: spec.backup.restore
+        it: Omits the restore sanitization scripts from the spec
+        set:
+            backup.enabled: true
+            backup.restore.sanitizationScripts.x-010-fix-urls: UPDATE Foo SET url = 'https://a.example.com';
+    -   asserts:
+            -   equal:
+                    path: spec.backup.region
+                    value: eu-west-1
+        it: Propagates the backup region into the spec
+        set:
+            backup.region: eu-west-1
+    -   asserts:
+            -   equal:
                     path: spec.commonTags.EnvironmentId
                     value: env-123
             -   equal:
@@ -42,18 +68,6 @@ tests:
             region: us-east-1
     -   asserts:
             -   equal:
-                    path: spec.search.elasticsearch.enabled
-                    value: false
-        it: Reflects the disabled Elasticsearch search engine by default
-    -   asserts:
-            -   equal:
-                    path: spec.search.elasticsearch.enabled
-                    value: true
-        it: Reflects the enabled Elasticsearch search engine when toggled on
-        set:
-            search.elasticsearch.enabled: true
-    -   asserts:
-            -   equal:
                     path: spec.backup.vaultTags.spend_area
                     value: storage
             -   equal:
@@ -64,8 +78,14 @@ tests:
             backup.vaultTags.spend_area: storage
             storage.tags.resource_type: backup
     -   asserts:
-            -   isEmpty:
-                    path: spec.backup.vaultTags
-            -   isEmpty:
-                    path: spec.storage.tags
-        it: Defaults the storage tags and backup vault tags to empty maps
+            -   equal:
+                    path: spec.search.elasticsearch.enabled
+                    value: false
+        it: Reflects the disabled Elasticsearch search engine by default
+    -   asserts:
+            -   equal:
+                    path: spec.search.elasticsearch.enabled
+                    value: true
+        it: Reflects the enabled Elasticsearch search engine when toggled on
+        set:
+            search.elasticsearch.enabled: true

@@ -13,6 +13,7 @@ import {loginTest} from '../../../fixtures/loginTest';
 import {pageEditorPagesTest} from '../../../fixtures/pageEditorPagesTest';
 import {searchPageTest} from '../../../fixtures/searchPageTest';
 import getRandomString from '../../../utils/getRandomString';
+import getBasicWebContentStructureId from '../../../utils/structured-content/getBasicWebContentStructureId';
 
 export const test = mergeTests(
 	isolatedLayoutTest({type: 'portlet'}),
@@ -82,6 +83,136 @@ test.describe('Category Facet', () => {
 			}
 		});
 	});
+
+	test(
+		'Filters by a vocabulary selected from an asset library',
+		{tag: '@LPD-104381'},
+		async ({apiHelpers, layout, page, searchPage}) => {
+			const assetLibraryName = getRandomString();
+			const categoryNames = [getRandomString(), getRandomString()];
+			const keyword = getRandomString();
+			const vocabularyNames = [getRandomString(), getRandomString()];
+
+			await test.step('Create an asset library with two vocabularies connected to the site', async () => {
+				const company =
+					await apiHelpers.jsonWebServicesCompany.getCompanyByWebId(
+						'liferay.com'
+					);
+
+				const guestGroup =
+					await apiHelpers.jsonWebServicesGroup.getGroupByKey(
+						company.companyId,
+						'Guest'
+					);
+
+				const assetLibrary =
+					await apiHelpers.headlessAssetLibrary.createAssetLibrary({
+						name: assetLibraryName,
+					});
+
+				await apiHelpers.headlessAssetLibrary.connectSite(
+					assetLibrary.externalReferenceCode,
+					guestGroup.externalReferenceCode
+				);
+
+				const categoryIds: number[] = [];
+
+				for (const [
+					index,
+					vocabularyName,
+				] of vocabularyNames.entries()) {
+					const vocabulary =
+						await apiHelpers.headlessAdminTaxonomy.postAssetLibraryTaxonomyVocabulary(
+							{
+								assetLibraryId: assetLibrary.siteId,
+								name: vocabularyName,
+							}
+						);
+
+					const category =
+						await apiHelpers.headlessAdminTaxonomy.postTaxonomyVocabularyTaxonomyCategory(
+							{
+								name: categoryNames[index],
+								vocabularyId: vocabulary.id,
+							}
+						);
+
+					categoryIds.push(category.id);
+				}
+
+				await apiHelpers.headlessDelivery.postStructuredContent({
+					categoryIds,
+					contentFields: [
+						{
+							contentFieldValue: {data: keyword},
+							name: 'content',
+						},
+					],
+					contentStructureId:
+						await getBasicWebContentStructureId(apiHelpers),
+					datePublished: null,
+					siteId: layout.groupId,
+					title: keyword,
+				});
+			});
+
+			await test.step('Add search portlets to the page', async () => {
+				await page.goto('/web/guest' + layout.friendlyURL);
+
+				await searchPage.addPortlet('Search Bar', 'Search');
+				await searchPage.addPortlet('Category Facet', 'Search');
+				await searchPage.addPortlet('Search Results', 'Search');
+			});
+
+			await test.step('Select the first asset library vocabulary in the configuration', async () => {
+				await searchPage.openSearchPortletConfiguration(
+					'Category Facet'
+				);
+
+				await searchPage.modalIFrame
+					.getByLabel('Select Vocabularies')
+					.click();
+
+				const assetLibraryTreeItem = searchPage.modalIFrame.getByRole(
+					'treeitem',
+					{name: assetLibraryName}
+				);
+
+				await assetLibraryTreeItem
+					.locator('.component-expander')
+					.click();
+
+				await searchPage.modalIFrame
+					.getByRole('treeitem', {name: vocabularyNames[0]})
+					.getByRole('checkbox')
+					.check();
+
+				await searchPage.savePortletConfiguration();
+			});
+
+			await test.step('Assert only the selected vocabulary category is listed', async () => {
+				await searchPage.searchKeywordInMainContent(keyword);
+
+				await expect(searchPage.searchResultsTotalLabel).toHaveText(
+					`1 Result for ${keyword}`
+				);
+
+				await expect(
+					await searchPage.getSearchFacetCheckbox(
+						categoryNames[0],
+						'Category'
+					)
+				).toBeVisible();
+
+				await expect(
+					await searchPage.getSearchFacetCheckbox(
+						categoryNames[1],
+						'Category'
+					)
+				).toBeHidden();
+			});
+		}
+	);
 });
 
 test.describe('Selection Persistence', () => {
@@ -335,6 +466,84 @@ test.describe('Custom Facet', () => {
 			await page.waitForTimeout(500);
 
 			expect(warningOccurred).toBe(false);
+		});
+	});
+
+	test('Resets pagination when a term is selected @LPD-106149', async ({
+		apiHelpers,
+		page,
+		searchPage,
+		site,
+	}) => {
+		let siteLayout: Layout;
+
+		const keyword = `Test Blog ${getRandomString()}`;
+		const tag = `tag_${getRandomString()}`;
+
+		await test.step('Create enough blog postings to fill two pages', async () => {
+			for (let count = 0; count < 21; count++) {
+				await apiHelpers.headlessDelivery.postBlog(site.id, {
+					headline: `${keyword} ${count}`,
+				});
+			}
+
+			await apiHelpers.headlessDelivery.postBlog(site.id, {
+				headline: `${keyword} tagged`,
+				keywords: [tag],
+			});
+		});
+
+		await test.step('Add search widgets to a page of the site', async () => {
+			siteLayout = await apiHelpers.jsonWebServicesLayout.addLayout({
+				groupId: site.id,
+				options: {type: 'portlet'},
+				title: getRandomString(),
+			});
+
+			await page.goto(
+				`/web${site.friendlyUrlPath}${siteLayout.friendlyURL}`
+			);
+
+			await searchPage.addPortlet('Search Bar', 'Search');
+			await searchPage.addPortlet('Custom Facet', 'Search');
+			await searchPage.addPortlet('Search Results', 'Search');
+		});
+
+		await test.step('Aggregate the custom facet by tag', async () => {
+			await searchPage.openSearchPortletConfiguration('Custom Facet');
+
+			await searchPage.fillPortletConfigurationsInput([
+				{
+					label: 'Aggregation Field Required',
+					value: 'assetTagNames.raw',
+				},
+			]);
+
+			await searchPage.savePortletConfiguration();
+		});
+
+		await test.step('Search and navigate to the second page of results', async () => {
+			await searchPage.searchKeywordInMainContent(keyword);
+
+			await expect(searchPage.searchResultsTotalLabel).toHaveText(
+				new RegExp(`Results for ${keyword}`)
+			);
+
+			await searchPage.selectPaginationPageNumber(2);
+		});
+
+		await test.step('Select the tag term and expect its single result', async () => {
+			const tagTerm = page
+				.locator('.portlet-custom-facet')
+				.getByRole('checkbox', {name: new RegExp(tag)});
+
+			await searchPage.selectSearchFacetCheckbox(tagTerm);
+
+			expect(new URL(page.url()).searchParams.has('start')).toBe(false);
+
+			await expect(
+				searchPage.searchResults.getByText(`${keyword} tagged`)
+			).toBeVisible();
 		});
 	});
 });

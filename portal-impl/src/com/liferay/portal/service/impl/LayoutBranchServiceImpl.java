@@ -7,6 +7,7 @@ package com.liferay.portal.service.impl;
 
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.model.LayoutBranch;
 import com.liferay.portal.kernel.model.LayoutRevision;
 import com.liferay.portal.kernel.model.LayoutSetBranch;
@@ -22,7 +23,9 @@ import com.liferay.portal.service.base.LayoutBranchServiceBaseImpl;
 /**
  * @author Brian Wing Shun Chan
  * @author Julio Camarero
+ * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
  */
+@Deprecated
 public class LayoutBranchServiceImpl extends LayoutBranchServiceBaseImpl {
 
 	@Override
@@ -30,6 +33,9 @@ public class LayoutBranchServiceImpl extends LayoutBranchServiceBaseImpl {
 			long layoutRevisionId, String name, String description,
 			boolean master, ServiceContext serviceContext)
 		throws PortalException {
+
+		FeatureFlagManagerUtil.checkEnabled(
+			serviceContext.getCompanyId(), "LPD-105778");
 
 		PermissionChecker permissionChecker = getPermissionChecker();
 

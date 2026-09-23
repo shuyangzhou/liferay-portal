@@ -65,7 +65,7 @@ public class CommerceCurrencyLocalServiceTest {
 			() -> {
 				CommerceCurrency commerceCurrency =
 					_commerceCurrencyLocalService.addCommerceCurrency(
-						null, _user.getUserId(), RandomTestUtil.randomString(3),
+						null, _user.getUserId(), RandomTestUtil.randomString(),
 						RandomTestUtil.randomLocaleStringMap(),
 						RandomTestUtil.randomString(3), BigDecimal.ONE,
 						LocalizationUtil.getLocalizationMap(
@@ -84,7 +84,7 @@ public class CommerceCurrencyLocalServiceTest {
 		AssertUtils.assertFailure(
 			CommerceCurrencyRateException.class, null,
 			() -> _commerceCurrencyLocalService.addCommerceCurrency(
-				null, _user.getUserId(), RandomTestUtil.randomString(3),
+				null, _user.getUserId(), RandomTestUtil.randomString(),
 				RandomTestUtil.randomLocaleStringMap(),
 				RandomTestUtil.randomString(3), BigDecimal.ZERO,
 				LocalizationUtil.getLocalizationMap(
@@ -94,7 +94,7 @@ public class CommerceCurrencyLocalServiceTest {
 
 	@Test
 	public void testGetOrAddEmptyCommerceCurrency() throws Exception {
-		String code = RandomTestUtil.randomString(3);
+		String code = RandomTestUtil.randomString();
 		String externalReferenceCode = RandomTestUtil.randomString();
 
 		try {
@@ -165,7 +165,7 @@ public class CommerceCurrencyLocalServiceTest {
 			() -> {
 				CommerceCurrency commerceCurrency =
 					_commerceCurrencyLocalService.addCommerceCurrency(
-						null, _user.getUserId(), RandomTestUtil.randomString(3),
+						null, _user.getUserId(), RandomTestUtil.randomString(),
 						RandomTestUtil.randomLocaleStringMap(),
 						RandomTestUtil.randomString(3), BigDecimal.ONE,
 						LocalizationUtil.getLocalizationMap(

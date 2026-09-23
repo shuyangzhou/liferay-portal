@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.test.TestInfo;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -119,6 +120,34 @@ public class AudiencesDefinitionProviderTest {
 		Assert.assertEquals(
 			objectMapper.readTree(expectedContentJSONObject.toString()),
 			objectMapper.readTree(content));
+	}
+
+	@FeatureFlags(featureFlags = @FeatureFlag(value = "LPD-85746"))
+	@Test
+	@TestInfo("LPD-105965")
+	public void testGetAudiencesDefinitionAfterGroupRemoval() throws Exception {
+		AudiencesEntry audiencesEntry =
+			_audiencesEntryLocalService.addAudiencesEntry(
+				RandomTestUtil.randomString(), TestPropsValues.getUserId(),
+				_getCriteriaJSON(_REGISTERED_CUSTOM_ATTRIBUTE),
+				RandomTestUtil.randomString(), null);
+
+		Group group = GroupTestUtil.addGroup();
+
+		_addAudiencesEntryGroupRel(audiencesEntry, group);
+
+		audiencesEntry = _audiencesEntryLocalService.updateAudiencesEntry(
+			audiencesEntry);
+
+		JSONObject jsonObject = _getAudienceJSONObject(audiencesEntry);
+
+		Assert.assertTrue(jsonObject.toString(), jsonObject.has("scope"));
+
+		_groupLocalService.deleteGroup(group);
+
+		jsonObject = _getAudienceJSONObject(audiencesEntry);
+
+		Assert.assertFalse(jsonObject.toString(), jsonObject.has("scope"));
 	}
 
 	@FeatureFlags(featureFlags = @FeatureFlag(value = "LPD-85746"))
@@ -251,5 +280,8 @@ public class AudiencesDefinitionProviderTest {
 
 	@Inject
 	private CounterLocalService _counterLocalService;
+
+	@Inject
+	private GroupLocalService _groupLocalService;
 
 }

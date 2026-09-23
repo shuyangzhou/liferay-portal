@@ -13,7 +13,7 @@ To use the plugin, include it in your build script:
 ```gradle
 buildscript {
 	dependencies {
-		classpath group: "com.liferay", name: "com.liferay.gradle.plugins.source.formatter", version: "5.3.71"
+		classpath group: "com.liferay", name: "com.liferay.gradle.plugins.source.formatter", version: "5.3.73"
 	}
 
 	repositories {
@@ -126,21 +126,23 @@ manually adding a dependency to the `sourceFormatter` configuration:
 
 ```gradle
 dependencies {
-	sourceFormatter group: "com.liferay", name: "com.liferay.source.formatter", version: "1.0.1629"
+	sourceFormatter group: "com.liferay", name: "com.liferay.source.formatter", version: "1.0.1631"
 }
 ```
 
 ### System Properties
 
 It is possible to set the default values of the `fileExtensions`, `fileNames`,
-`formatCurrentBranch`, `formatLatestAuthor`, and `formatLocalChanges`
-properties for a `FormatSourceTask` task via system properties:
+`formatCurrentBranch`, `formatLatestAuthor`, `formatLocalChanges`, and
+`gitWorkingBranchName` properties for a `FormatSourceTask` task via system
+properties:
 
 - `-D${task.name}.file.extensions=java,xml`
 - `-D${task.name}.file.names=README.md,src/main/resources/hello.txt`
 - `-D${task.name}.format.current.branch=true`
 - `-D${task.name}.format.latest.author=true`
 - `-D${task.name}.format.local.changes=true`
+- `-D${task.name}.git.working.branch.name=master-private`
 
 For example, run the following Bash command to format only the unstaged files in
 the project:

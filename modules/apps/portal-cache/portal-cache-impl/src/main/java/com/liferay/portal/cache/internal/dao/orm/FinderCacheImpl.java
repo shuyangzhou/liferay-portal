@@ -11,6 +11,8 @@ import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.cache.PortalCacheWrapper;
+import com.liferay.portal.cache.TransactionalPortalCache;
 import com.liferay.portal.kernel.cache.CacheRegistryItem;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.cache.MultiVMPool;
@@ -20,6 +22,7 @@ import com.liferay.portal.kernel.cache.PortalCacheManager;
 import com.liferay.portal.kernel.cache.PortalCacheManagerListener;
 import com.liferay.portal.kernel.cache.key.CacheKeyGenerator;
 import com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil;
+import com.liferay.portal.kernel.cache.transactional.TransactionalPortalCacheUtil;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
@@ -28,12 +31,14 @@ import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
+import com.liferay.portal.kernel.dao.orm.ModelRemovalThreadLocal;
 import com.liferay.portal.kernel.db.partition.DBPartition;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.change.tracking.CTModel;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LRUMap;
 import com.liferay.portal.kernel.util.MethodHandler;
@@ -58,6 +63,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -167,6 +174,35 @@ public class FinderCacheImpl
 
 			cacheValue = portalCache.get(cacheKey);
 
+			if (cacheValue instanceof CountValue countValue) {
+				long count = countValue.get();
+
+				CountKey countKey = CountKey.create(portalCache, cacheKey);
+
+				if (countKey != null) {
+					_flushPendingDelete(
+						finderPath.getCacheName(), basePersistence);
+
+					long pendingCount = _getPendingCount(countKey);
+
+					if (pendingCount != 0) {
+						return count + pendingCount;
+					}
+				}
+
+				cacheValue = count;
+			}
+			else if ((cacheValue == null) && !finderPath.isBaseModelResult() &&
+					 TransactionalPortalCacheUtil.isEnabled()) {
+
+				// Buffer a remove of the missed key so that the transactional
+				// portal cache creates the region's buffer inside this
+				// transaction, and captures its marker, before the count query
+				// runs
+
+				portalCache.remove(cacheKey);
+			}
+
 			if ((cacheValue != null) && (localCache != null)) {
 				localCache.put(localCacheKey, cacheValue);
 			}
@@ -270,7 +306,7 @@ public class FinderCacheImpl
 			else if ((objects.size() > _valueObjectFinderCacheListThreshold) &&
 					 (_valueObjectFinderCacheListThreshold > 0)) {
 
-				_removeResult(finderPath, args);
+				_removeResult(finderPath, args, true);
 
 				return;
 			}
@@ -331,8 +367,23 @@ public class FinderCacheImpl
 				cacheValue);
 		}
 
+		PortalCache<Serializable, Serializable> portalCache = _getPortalCache(
+			cacheName);
+
+		if (result instanceof Long count) {
+			CountKey countKey = CountKey.create(portalCache, cacheKey);
+
+			if (countKey != null) {
+				TransactionalPortalCacheUtil.put(
+					_countAdjustmentPortalCache, countKey, 0L,
+					PortalCache.DEFAULT_TIME_TO_LIVE, true);
+			}
+
+			cacheValue = new CountValue(count);
+		}
+
 		PortalCacheHelperUtil.putWithoutReplicator(
-			_getPortalCache(finderPath.getCacheName()), cacheKey, cacheValue);
+			portalCache, cacheKey, cacheValue);
 	}
 
 	public void removeByEntityCache(String className, BaseModel<?> baseModel) {
@@ -355,15 +406,34 @@ public class FinderCacheImpl
 		ArgumentsResolver argumentsResolver =
 			argumentsResolverHolder.getArgumentsResolver();
 
+		boolean removing = ModelRemovalThreadLocal.isRemoving(baseModel);
+
+		if (removing && TransactionalPortalCacheUtil.isEnabled()) {
+			TransactionalPortalCacheUtil.put(
+				_pendingDeletePortalCache, className, Boolean.TRUE,
+				PortalCache.DEFAULT_TIME_TO_LIVE, true);
+		}
+
 		for (FinderPath finderPath : _getFinderPaths(className)) {
-			removeResult(
-				finderPath,
-				argumentsResolver.getArguments(
-					finderPath, baseModel, false, false));
-			removeResult(
-				finderPath,
-				argumentsResolver.getArguments(
-					finderPath, baseModel, true, true));
+			if (finderPath.isBaseModelResult() || !removing) {
+				_removeResult(
+					finderPath,
+					argumentsResolver.getArguments(
+						finderPath, baseModel, false, false),
+					false);
+				_removeResult(
+					finderPath,
+					argumentsResolver.getArguments(
+						finderPath, baseModel, true, true),
+					false);
+			}
+			else {
+				_adjustResult(
+					finderPath,
+					_getRemovedArguments(
+						argumentsResolver, finderPath, baseModel),
+					false);
+			}
 		}
 	}
 
@@ -420,7 +490,7 @@ public class FinderCacheImpl
 			return;
 		}
 
-		_removeResult(finderPath, args);
+		_removeResult(finderPath, args, true);
 	}
 
 	public void updateByEntityCache(String className, BaseModel<?> baseModel) {
@@ -453,21 +523,45 @@ public class FinderCacheImpl
 			argumentsResolverHolder.getArgumentsResolver();
 
 		for (FinderPath finderPath : finderPaths) {
-			if (baseModel.isNew()) {
-				_removeResult(
+			if (finderPath.isBaseModelResult()) {
+				if (baseModel.isNew()) {
+					_removeResult(
+						finderPath,
+						argumentsResolver.getArguments(
+							finderPath, baseModel, false, false),
+						false);
+				}
+				else {
+					_removeResult(
+						finderPath,
+						argumentsResolver.getArguments(
+							finderPath, baseModel, true, false),
+						false);
+					_removeResult(
+						finderPath,
+						argumentsResolver.getArguments(
+							finderPath, baseModel, true, true),
+						false);
+				}
+			}
+			else if (baseModel.isNew()) {
+				_adjustResult(
 					finderPath,
 					argumentsResolver.getArguments(
-						finderPath, baseModel, false, false));
+						finderPath, baseModel, false, false),
+					true);
 			}
 			else {
-				_removeResult(
+				_adjustResult(
 					finderPath,
 					argumentsResolver.getArguments(
-						finderPath, baseModel, true, false));
-				_removeResult(
+						finderPath, baseModel, true, false),
+					true);
+				_adjustResult(
 					finderPath,
 					argumentsResolver.getArguments(
-						finderPath, baseModel, true, true));
+						finderPath, baseModel, true, true),
+					false);
 			}
 		}
 	}
@@ -475,6 +569,10 @@ public class FinderCacheImpl
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
+
+		_valueObjectFinderCacheCountTimeToLive = GetterUtil.getInteger(
+			PropsUtil.get(
+				PropsKeys.VALUE_OBJECT_FINDER_CACHE_COUNT_TIME_TO_LIVE));
 
 		_valueObjectFinderCacheEnabled = GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_ENABLED));
@@ -551,6 +649,73 @@ public class FinderCacheImpl
 		_serviceRegistration.unregister();
 	}
 
+	private void _adjustResult(
+		FinderPath finderPath, Object[] args, boolean increment) {
+
+		if (args == null) {
+			return;
+		}
+
+		PortalCache<Serializable, Serializable> portalCache = _getPortalCache(
+			finderPath.getCacheName());
+
+		Serializable cacheKey = _encodeCacheKey(finderPath, args);
+
+		CountKey countKey = CountKey.create(portalCache, cacheKey);
+
+		if (countKey == null) {
+			portalCache.remove(cacheKey);
+
+			return;
+		}
+
+		boolean[] uncommittedBufferMissMarker = new boolean[1];
+
+		Serializable cacheValue = TransactionalPortalCacheUtil.get(
+			countKey._portalCache, cacheKey, uncommittedBufferMissMarker);
+
+		if (cacheValue instanceof CountValue countValue) {
+			if (uncommittedBufferMissMarker[0]) {
+				long pendingCount = _getPendingCount(countKey);
+
+				if (increment) {
+					pendingCount++;
+				}
+				else {
+					pendingCount--;
+				}
+
+				TransactionalPortalCacheUtil.put(
+					_countAdjustmentPortalCache, countKey, pendingCount,
+					PortalCache.DEFAULT_TIME_TO_LIVE, true);
+			}
+			else {
+				if (increment) {
+					countValue.add(1);
+				}
+				else {
+					countValue.add(-1);
+				}
+
+				_expireCountValue(countKey, countValue);
+			}
+		}
+		else {
+
+			// Buffer a remove of the absent key so that this transaction's
+			// commit removes the region's marker, and a reader that captured
+			// the marker before this write drops the count it is rebuilding
+
+			countKey._portalCache.remove(cacheKey);
+		}
+
+		if ((portalCache instanceof CTAwarePortalCache ctAwarePortalCache) &&
+			CTCollectionThreadLocal.isProductionMode()) {
+
+			ctAwarePortalCache.removeFromCTPortalCaches(cacheKey);
+		}
+	}
+
 	private void _clearCache(String cacheName) {
 		PortalCache<?, ?> portalCache = _getPortalCache(cacheName);
 
@@ -603,6 +768,35 @@ public class FinderCacheImpl
 			});
 	}
 
+	private void _expireCountValue(CountKey countKey, CountValue countValue) {
+		if ((_valueObjectFinderCacheCountTimeToLive <= 0) ||
+			!countValue.markAdjusted()) {
+
+			return;
+		}
+
+		PortalCacheHelperUtil.putWithoutReplicator(
+			countKey._portalCache, countKey._cacheKey, countValue,
+			_valueObjectFinderCacheCountTimeToLive);
+	}
+
+	private void _flushPendingDelete(
+		String cacheName, BasePersistence<?> basePersistence) {
+
+		if (!Boolean.TRUE.equals(
+				TransactionalPortalCacheUtil.get(
+					_pendingDeletePortalCache, cacheName))) {
+
+			return;
+		}
+
+		basePersistence.flush();
+
+		TransactionalPortalCacheUtil.put(
+			_pendingDeletePortalCache, cacheName, Boolean.FALSE,
+			PortalCache.DEFAULT_TIME_TO_LIVE, true);
+	}
+
 	private CacheKeyGenerator _getCacheKeyGenerator(boolean baseModel) {
 		if (baseModel) {
 			CacheKeyGenerator cacheKeyGenerator = _baseModelCacheKeyGenerator;
@@ -645,6 +839,17 @@ public class FinderCacheImpl
 		}
 
 		return finderPaths.values();
+	}
+
+	private long _getPendingCount(CountKey countKey) {
+		Long pendingCount = TransactionalPortalCacheUtil.get(
+			_countAdjustmentPortalCache, countKey);
+
+		if (pendingCount == null) {
+			return 0;
+		}
+
+		return pendingCount;
 	}
 
 	private PortalCache<Serializable, Serializable> _getPortalCache(
@@ -769,6 +974,31 @@ public class FinderCacheImpl
 		return portalCache;
 	}
 
+	private Object[] _getRemovedArguments(
+		ArgumentsResolver argumentsResolver, FinderPath finderPath,
+		BaseModel<?> baseModel) {
+
+		Object[] arguments = argumentsResolver.getArguments(
+			finderPath, baseModel, true, true);
+
+		if (arguments != null) {
+			return arguments;
+		}
+
+		arguments = argumentsResolver.getArguments(
+			finderPath, baseModel, false, false);
+
+		if (arguments != null) {
+			return arguments;
+		}
+
+		if (ArrayUtil.isEmpty(finderPath.getColumnNames())) {
+			return new Object[0];
+		}
+
+		return null;
+	}
+
 	private boolean _isLocalCacheEnabled() {
 		if ((_localCache == null) ||
 			!CTCollectionThreadLocal.isProductionMode()) {
@@ -779,14 +1009,16 @@ public class FinderCacheImpl
 		return ThreadLocalFilterThreadLocal.isFilterInvoked();
 	}
 
-	private void _removeResult(FinderPath finderPath, Object[] args) {
+	private void _removeResult(
+		FinderPath finderPath, Object[] args, boolean checkLocalCache) {
+
 		if (args == null) {
 			return;
 		}
 
 		Serializable cacheKey = _encodeCacheKey(finderPath, args);
 
-		if (_isLocalCacheEnabled()) {
+		if (checkLocalCache && _isLocalCacheEnabled()) {
 			Map<LocalCacheKey, Serializable> localCache = _localCache.get();
 
 			localCache.remove(
@@ -817,6 +1049,34 @@ public class FinderCacheImpl
 	@Reference
 	private ClusterExecutor _clusterExecutor;
 
+	private final PortalCache<Serializable, Long> _countAdjustmentPortalCache =
+		new PortalCacheWrapper<Serializable, Long>(null) {
+
+			@Override
+			public boolean isSharded() {
+				return false;
+			}
+
+			@Override
+			public void put(Serializable key, Long value, int timeToLive) {
+				if (value == 0) {
+					return;
+				}
+
+				CountKey countKey = (CountKey)key;
+
+				Serializable cacheValue = countKey._portalCache.get(
+					countKey._cacheKey);
+
+				if (cacheValue instanceof CountValue countValue) {
+					countValue.add(value);
+
+					_expireCountValue(countKey, countValue);
+				}
+			}
+
+		};
+
 	private final Map<String, Set<String>> _dslQueryCacheNamesMap =
 		new ConcurrentHashMap<>();
 	private final Map<String, Map<String, FinderPath>> _finderPathsMap =
@@ -826,13 +1086,105 @@ public class FinderCacheImpl
 	@Reference
 	private MultiVMPool _multiVMPool;
 
+	private final PortalCache<Serializable, Boolean> _pendingDeletePortalCache =
+		new PortalCacheWrapper<Serializable, Boolean>(null) {
+
+			@Override
+			public boolean isSharded() {
+				return false;
+			}
+
+			@Override
+			public void put(Serializable key, Boolean value, int timeToLive) {
+			}
+
+		};
+
 	private final ConcurrentMap<String, PortalCache<Serializable, Serializable>>
 		_portalCaches = new ConcurrentHashMap<>();
 	private ServiceRegistration<CacheRegistryItem> _serviceRegistration;
 	private ServiceTrackerMap<String, ArgumentsResolverHolder>
 		_serviceTrackerMap;
+	private int _valueObjectFinderCacheCountTimeToLive;
 	private boolean _valueObjectFinderCacheEnabled;
 	private int _valueObjectFinderCacheListThreshold;
+
+	private static class CountKey implements Serializable {
+
+		public static CountKey create(
+			PortalCache<Serializable, Serializable> portalCache,
+			Serializable cacheKey) {
+
+			if (!TransactionalPortalCacheUtil.isEnabled()) {
+				return null;
+			}
+
+			if (portalCache instanceof CTAwarePortalCache ctAwarePortalCache) {
+				portalCache = ctAwarePortalCache.getCTPortalCache();
+			}
+
+			if (portalCache instanceof TransactionalPortalCache) {
+				return new CountKey(portalCache, cacheKey);
+			}
+
+			return null;
+		}
+
+		@Override
+		public boolean equals(Object object) {
+			CountKey countKey = (CountKey)object;
+
+			if ((_portalCache == countKey._portalCache) &&
+				_cacheKey.equals(countKey._cacheKey)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			return HashUtil.hash(
+				System.identityHashCode(_portalCache), _cacheKey.hashCode());
+		}
+
+		private CountKey(
+			PortalCache<Serializable, Serializable> portalCache,
+			Serializable cacheKey) {
+
+			_portalCache = portalCache;
+			_cacheKey = cacheKey;
+		}
+
+		private final Serializable _cacheKey;
+		private final transient PortalCache<Serializable, Serializable>
+			_portalCache;
+
+	}
+
+	private static class CountValue implements Serializable {
+
+		public void add(long delta) {
+			_atomicLong.addAndGet(delta);
+		}
+
+		public long get() {
+			return _atomicLong.get();
+		}
+
+		public boolean markAdjusted() {
+			return _adjusted.compareAndSet(false, true);
+		}
+
+		private CountValue(long count) {
+			_atomicLong = new AtomicLong(count);
+		}
+
+		private final AtomicBoolean _adjusted = new AtomicBoolean();
+		private final AtomicLong _atomicLong;
+
+	}
 
 	private static class LocalCacheKey {
 

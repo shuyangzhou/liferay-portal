@@ -141,7 +141,7 @@ describe('MainSearch', () => {
 		expect(onSearch).toHaveBeenCalledWith({query: 'abc'});
 	});
 
-	it('drops the pending search when the input is cleared', async () => {
+	it('searches for the empty query when the input is cleared', async () => {
 		const input = renderMainSearch({searchAsYouType: true});
 
 		await user.type(input, 'abc');
@@ -150,7 +150,31 @@ describe('MainSearch', () => {
 		elapse(DEBOUNCE_DELAY);
 
 		expect(onClear).toHaveBeenCalled();
-		expect(onSearch).not.toHaveBeenCalled();
+		expect(onSearch).toHaveBeenCalledTimes(1);
+		expect(onSearch).toHaveBeenCalledWith({query: ''});
+	});
+
+	it('does not search when the input is cleared and search as you type is disabled', async () => {
+		const input = renderMainSearch();
+
+		await user.type(input, 'abc{Enter}');
+		await user.clear(input);
+
+		elapse(DEBOUNCE_DELAY);
+
+		expect(onSearch).toHaveBeenCalledTimes(1);
+		expect(onSearch).toHaveBeenCalledWith({query: 'abc'});
+	});
+
+	it('searches for the empty query on Enter when the input is cleared', async () => {
+		const input = renderMainSearch();
+
+		await user.type(input, 'abc{Enter}');
+		await user.clear(input);
+		await user.type(input, '{Enter}');
+
+		expect(onSearch).toHaveBeenCalledTimes(2);
+		expect(onSearch).toHaveBeenLastCalledWith({query: ''});
 	});
 
 	it('searches on every keystroke when the items are filtered client side', async () => {
@@ -160,6 +184,11 @@ describe('MainSearch', () => {
 
 		expect(onSearch).toHaveBeenCalledTimes(2);
 		expect(onSearch).toHaveBeenLastCalledWith({query: 'ab'});
+
+		await user.clear(input);
+
+		expect(onSearch).toHaveBeenCalledTimes(3);
+		expect(onSearch).toHaveBeenLastCalledWith({query: ''});
 	});
 
 	it('searches client side items on Enter when search as you type is disabled', async () => {
@@ -241,6 +270,39 @@ describe('MainSearch', () => {
 			expect(input).toHaveValue('nike');
 			expect(onSearch).toHaveBeenCalledWith({query: 'nike'});
 			expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+		});
+
+		it('fills the input and searches for the clicked query when search as you type is enabled', async () => {
+			storeQueries(['nike']);
+
+			const input = renderMainSearch({
+				searchAsYouType: true,
+				searchSuggestionsEnabled: true,
+			});
+
+			await user.click(input);
+			await user.click(screen.getByRole('menuitem', {name: 'nike'}));
+
+			expect(input).toHaveValue('nike');
+			expect(onSearch).toHaveBeenCalledTimes(1);
+			expect(onSearch).toHaveBeenCalledWith({query: 'nike'});
+		});
+
+		it('drops the query being typed when a suggestion is clicked', async () => {
+			storeQueries(['nike']);
+
+			const input = renderMainSearch({
+				searchAsYouType: true,
+				searchSuggestionsEnabled: true,
+			});
+
+			await user.type(input, 'ni');
+			await user.click(screen.getByRole('menuitem', {name: 'nike'}));
+
+			elapse(DEBOUNCE_DELAY);
+
+			expect(onSearch).toHaveBeenCalledTimes(1);
+			expect(onSearch).toHaveBeenCalledWith({query: 'nike'});
 		});
 
 		it('opens the list again when the already focused input is clicked', async () => {

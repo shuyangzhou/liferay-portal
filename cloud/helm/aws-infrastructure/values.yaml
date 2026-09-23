@@ -1,5 +1,8 @@
 backup:
     enabled: false
+    region: ""
+    restore:
+        sanitizationScripts: {}
     rules:
         -   retentionDays: 30
             ruleName: daily-backups

@@ -15,10 +15,13 @@ import {EditorSidebar} from './chrome/EditorSidebar';
 import {ShortcutsDialog} from './chrome/ShortcutsDialog';
 import {
 	EditorInstanceProvider,
+	EditorRootProvider,
 	nextEditorInstancePrefix,
 } from './chrome/instance';
 import {EditorConfig, resolveConfig} from './editorConfig';
 import {useEditorHistory} from './hooks/useEditorHistory';
+import {useOverlayClipboard} from './hooks/useOverlayClipboard';
+import {useOverlaySelection} from './hooks/useOverlaySelection';
 import {useSaveController} from './hooks/useSaveController';
 import {anchoredScroll} from './imaging/geometry';
 import {LoadedImage} from './imaging/loadImage';
@@ -87,7 +90,8 @@ function Editor({
 		enabled.crop.enabled ||
 		!!enabled.adjustments.length ||
 		!!enabled.filters.length ||
-		!!enabled.frames.length;
+		!!enabled.frames.length ||
+		!!enabled.annotate.length;
 
 	const announce = useAnnouncer();
 
@@ -102,6 +106,24 @@ function Editor({
 		);
 
 	const state = history.present;
+
+	const {
+		layerProportional,
+		multiSelectedIds,
+		selectOverlay,
+		selectedOverlayId,
+		setLayerProportional,
+		setSelectedOverlayId,
+		toggleMultiSelect,
+	} = useOverlaySelection(announce);
+
+	const {copyOverlay, pasteOverlay} = useOverlayClipboard(
+		state,
+		dispatch,
+		setSelectedOverlayId,
+		announce,
+		() => editorRef.current ?? document
+	);
 
 	const {handleSave, saveError, saving} = useSaveController(
 		image,
@@ -183,6 +205,38 @@ function Editor({
 	}, []);
 
 	useEffect(() => setCropFramed(false), [state.crop]);
+
+	const sidebarRef = useRef<HTMLElement>(null);
+
+	const previousOverlayCountRef = useRef(0);
+
+	useEffect(() => {
+		const first =
+			previousOverlayCountRef.current === 0 && !!state.overlays.length;
+
+		previousOverlayCountRef.current = state.overlays.length;
+
+		if (!first) {
+			return;
+		}
+
+		const frame = requestAnimationFrame(() => {
+			const sidebar = sidebarRef.current;
+			const annotateTitle = document.getElementById(
+				`${instancePrefix}annotate-panel-title`
+			);
+
+			if (!sidebar || !annotateTitle) {
+				return;
+			}
+
+			sidebar.scrollTop +=
+				annotateTitle.getBoundingClientRect().top -
+				sidebar.getBoundingClientRect().top;
+		});
+
+		return () => cancelAnimationFrame(frame);
+	}, [state.overlays.length, instancePrefix]);
 
 	useEffect(() => {
 		if (autoFitRef.current && workspaceRef.current) {
@@ -381,90 +435,108 @@ function Editor({
 
 	return (
 		<EditorInstanceProvider value={instancePrefix}>
-			<div
-				className="image-editor"
-				onKeyDown={handleUndoShortcut}
-				ref={editorRef}
-			>
-				<div className="editor-main">
-					<Workspace
-						aspectLocked={aspectLocked}
-						dispatch={dispatch}
-						image={image}
-						onAnnounce={announce}
-						onCenterCrop={centerCrop}
-						onWorkspacePointerLeave={handleWorkspacePointerLeave}
-						onWorkspacePointerMove={handleWorkspacePointerMove}
-						onWorkspaceScroll={() => {
-							if (programmaticScrollRef.current) {
-								programmaticScrollRef.current = false;
-							}
-							else {
-								setCropFramed(false);
-							}
-						}}
-						onZoom={zoomBy}
-						onZoomActual={zoomToActual}
-						onZoomFit={zoomToFit}
-						showCrop={enabled.crop.enabled}
-						showRecenter={!cropFramed}
-						state={state}
-						workspaceRef={handleWorkspaceRef}
-						zoom={zoom}
-					/>
-
-					{hasSidebar && (
-						<EditorSidebar
+			<EditorRootProvider value={editorRef}>
+				<div
+					className="image-editor"
+					onKeyDown={handleUndoShortcut}
+					ref={editorRef}
+				>
+					<div className="editor-main">
+						<Workspace
 							aspectLocked={aspectLocked}
 							dispatch={dispatch}
-							frames={enabled.frames}
 							image={image}
+							multiSelectedIds={multiSelectedIds}
 							onAnnounce={announce}
-							onAspectLockedChange={setAspectLocked}
-							presets={enabled.filters}
+							onCenterCrop={centerCrop}
+							onCopyOverlay={copyOverlay}
+							onMultiSelectToggle={toggleMultiSelect}
+							onPasteOverlay={pasteOverlay}
+							onSelectOverlay={selectOverlay}
+							onWorkspacePointerLeave={
+								handleWorkspacePointerLeave
+							}
+							onWorkspacePointerMove={handleWorkspacePointerMove}
+							onWorkspaceScroll={() => {
+								if (programmaticScrollRef.current) {
+									programmaticScrollRef.current = false;
+								}
+								else {
+									setCropFramed(false);
+								}
+							}}
+							onZoom={zoomBy}
+							onZoomActual={zoomToActual}
+							onZoomFit={zoomToFit}
+							proportional={layerProportional}
+							selectedOverlayId={selectedOverlayId}
 							showCrop={enabled.crop.enabled}
-							showStraighten={enabled.crop.straighten}
-							sliders={enabled.adjustments}
+							showRecenter={!cropFramed}
 							state={state}
+							workspaceRef={handleWorkspaceRef}
+							zoom={zoom}
 						/>
-					)}
-				</div>
 
-				{saveError && (
-					<div
-						className="alert alert-danger editor-save-error"
-						role="alert"
-					>
-						{Liferay.Language.get(
-							'unable-to-save-the-image-please-try-again'
+						{hasSidebar && (
+							<EditorSidebar
+								aspectLocked={aspectLocked}
+								dispatch={dispatch}
+								frames={enabled.frames}
+								image={image}
+								multiSelectedIds={multiSelectedIds}
+								onAnnounce={announce}
+								onAspectLockedChange={setAspectLocked}
+								onProportionalChange={setLayerProportional}
+								onSelectOverlay={selectOverlay}
+								presets={enabled.filters}
+								proportional={layerProportional}
+								selectedOverlayId={selectedOverlayId}
+								showCrop={enabled.crop.enabled}
+								showStraighten={enabled.crop.straighten}
+								sidebarRef={sidebarRef}
+								sliders={enabled.adjustments}
+								state={state}
+								tools={enabled.annotate}
+							/>
 						)}
 					</div>
-				)}
 
-				<BottomBar
-					canRedo={!!redoLabel(history)}
-					canUndo={!!undoLabel(history)}
-					dispatch={dispatch}
-					onAnnounce={announce}
-					onCancel={onClose}
-					onRedo={redo}
-					onSave={handleSave}
-					onShowShortcuts={() => setShortcutsOpen(true)}
-					onUndo={undo}
-					onZoom={zoomBy}
-					onZoomFit={zoomToFit}
-					ratio={state.ratio}
-					ratios={enabled.crop.ratios}
-					saving={saving}
-					showRotate={enabled.crop.rotate}
-					zoom={zoom}
+					{saveError && (
+						<div
+							className="alert alert-danger editor-save-error"
+							role="alert"
+						>
+							{Liferay.Language.get(
+								'unable-to-save-the-image-please-try-again'
+							)}
+						</div>
+					)}
+
+					<BottomBar
+						canRedo={!!redoLabel(history)}
+						canUndo={!!undoLabel(history)}
+						dispatch={dispatch}
+						onAnnounce={announce}
+						onCancel={onClose}
+						onRedo={redo}
+						onSave={handleSave}
+						onShowShortcuts={() => setShortcutsOpen(true)}
+						onUndo={undo}
+						onZoom={zoomBy}
+						onZoomFit={zoomToFit}
+						ratio={state.ratio}
+						ratios={enabled.crop.ratios}
+						saving={saving}
+						showRotate={enabled.crop.rotate}
+						zoom={zoom}
+					/>
+				</div>
+
+				<ShortcutsDialog
+					onOpenChange={setShortcutsOpen}
+					open={shortcutsOpen}
 				/>
-			</div>
-
-			<ShortcutsDialog
-				onOpenChange={setShortcutsOpen}
-				open={shortcutsOpen}
-			/>
+			</EditorRootProvider>
 		</EditorInstanceProvider>
 	);
 }

@@ -995,9 +995,14 @@ components:
                     format: int64
                     minimum: 0
                     type: integer
+                imageExternalReferenceCode:
+                    description:
+                        External reference code of the attachment that holds the diagram image. Preferred over `imageId` on import, because it survives a transfer between instances; the identifier is only consulted when this is omitted.
+                    example: exampleERC
+                    type: string
                 imageId:
                     description:
-                        Identifier of the attachment that holds the diagram image. Populated from the uploaded `attachmentBase64`; can also be set explicitly to point at an existing diagram-type attachment.
+                        Identifier of the attachment that holds the diagram image. Populated from the uploaded `attachmentBase64`; can also be set explicitly to point at an existing diagram-type attachment. Only consulted when `imageExternalReferenceCode` is omitted.
                     example: 33132
                     format: int64
                     minimum: 0
@@ -1095,6 +1100,11 @@ components:
                         hu_HU: Product Name HU
                     readOnly: true
                     type: object
+                entryProductType:
+                    description:
+                        Product type of the child product named by `entryProductExternalReferenceCode`. The type cannot be defaulted because it cannot be changed after a product is created, so it must travel with the reference whenever the child product is imported after its parent.
+                    example: simple
+                    type: string
                 id:
                     description:
                         Primary key of the bundle membership entry; read-only.
@@ -1296,6 +1306,11 @@ components:
                         hu_HU: Product Name HU
                     readOnly: true
                     type: object
+                productType:
+                    description:
+                        Product type of the referenced product named by `productExternalReferenceCode`. The type cannot be defaulted because it cannot be changed after a product is created, so it must travel with the reference whenever the referenced product is imported after the parent product.
+                    example: simple
+                    type: string
                 quantity:
                     description:
                         Quantity of the mapped product or SKU implied by selecting this pin.
@@ -1634,6 +1649,16 @@ components:
                     description:
                         Embedded parent catalog reference; read-only.
                     readOnly: true
+                catalogCurrencyCode:
+                    description:
+                        ISO 4217 code of the default currency of the parent catalog. A catalog cannot exist without a currency, so the currency must travel with the catalog reference whenever the product is imported before the catalog.
+                    example: USD
+                    type: string
+                catalogCurrencyExternalReferenceCode:
+                    description:
+                        External reference code of the default currency of the parent catalog; resolved after `catalogCurrencyCode` and used to create the currency when neither identifier matches an existing one.
+                    example: AB-34098-789-N
+                    type: string
                 catalogExternalReferenceCode:
                     description:
                         External reference code of the parent catalog; used on create when `catalogId` is not supplied to look up the catalog within the company; the request is rejected when neither resolves.
@@ -1810,6 +1835,12 @@ components:
                     type: array
                 productConfiguration:
                     $ref: "#/components/schemas/ProductConfiguration"
+                productGroups:
+                    description:
+                        Product groups the product belongs to. Each entry carries the external reference code of the product group, so the membership survives a transfer between instances.
+                    items:
+                        $ref: "#/components/schemas/ProductProductGroup"
+                    type: array
                 productId:
                     description:
                         Identifier of the parent product envelope; stable across product revisions; read-only; filterable and sortable via the OData query parameter.
@@ -2537,6 +2568,21 @@ components:
             description:
                 Membership entry that links a product to a product group; admin catalog write view used to add or remove products from a product group.
             properties:
+                catalogCurrencyCode:
+                    description:
+                        ISO 4217 code of the default currency of the catalog hosting the linked product. A catalog cannot exist without a currency, so the currency must travel with the catalog reference whenever the membership is imported before the catalog.
+                    example: USD
+                    type: string
+                catalogCurrencyExternalReferenceCode:
+                    description:
+                        External reference code of the default currency of the catalog hosting the linked product; resolved after `catalogCurrencyCode` and used to create the currency when neither identifier matches an existing one.
+                    example: AB-34098-789-N
+                    type: string
+                catalogExternalReferenceCode:
+                    description:
+                        External reference code of the catalog hosting the linked product. A product group belongs to no catalog, so the catalog must travel with the reference to give the product a home whenever it is imported after the product group.
+                    example: exampleERC
+                    type: string
                 id:
                     description:
                         Primary key of the membership row.
@@ -2573,6 +2619,11 @@ components:
                         Display name of the linked product in the requested locale; read-only.
                     example: Hand Saw
                     readOnly: true
+                    type: string
+                productType:
+                    description:
+                        Product type of the linked product named by `productExternalReferenceCode`. The type cannot be defaulted because it cannot be changed after a product is created, so it must travel with the reference whenever the product is imported after the product group.
+                    example: simple
                     type: string
                 sku:
                     description:
@@ -2782,6 +2833,36 @@ components:
             required:
                 -   key
                 -   name
+            type: object
+        ProductProductGroup:
+            description:
+                Association between a product and a product group; admin catalog write view used to manage which product groups a product belongs to. The product group itself is addressed by its external reference code.
+            properties:
+                externalReferenceCode:
+                    description:
+                        External reference code of the product group; the key the import resolves the membership by.
+                    example: AB-34098-789-N
+                    type: string
+                id:
+                    description:
+                        Primary key of the row that links the product to the product group.
+                    example: 31130
+                    format: int64
+                    minimum: 0
+                    type: integer
+                productGroupId:
+                    description:
+                        Identifier of the product group; consulted only when the external reference code is omitted.
+                    example: 31130
+                    format: int64
+                    minimum: 0
+                    type: integer
+                title:
+                    description:
+                        Title of the product group. Read-only; populated from the linked product group.
+                    example: Title
+                    readOnly: true
+                    type: string
             type: object
         ProductShippingConfiguration:
             description:
@@ -3222,6 +3303,11 @@ components:
                     format: int64
                     minimum: 0
                     type: integer
+                productType:
+                    description:
+                        Product type of the target product named by `productExternalReferenceCode`. The type cannot be defaulted because it cannot be changed after a product is created, so it must travel with the reference whenever the target product is imported after its source.
+                    example: simple
+                    type: string
                 type:
                     description:
                         Link type token; required on create; also accepted as a query parameter to filter the related-products listing.
@@ -18422,6 +18508,63 @@ paths:
             summary: Gets a list of channel related to a product.
             tags:
                 -   ProductChannel
+    /products/{id}/product-groups:
+        get:
+            description:
+                Lists the product groups the product identified by product ID belongs to. Validation -- Returns empty page when product ID not found (no exception).
+            operationId: getProductIdProductGroupsPage
+            parameters:
+                -   $ref: "#/components/parameters/idPathParam"
+                -   $ref: "#/components/parameters/pageQueryParam"
+                -   $ref: "#/components/parameters/pageSizeQueryParam"
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/ProductProductGroup"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/ProductProductGroup"
+                                type: array
+                    description:
+                        Successful operation
+                401:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                    description:
+                        Authentication information is missing or invalid
+                404:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                    description:
+                        The specified resource was not found
+                500:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                    description:
+                        Unexpected error
+            summary: Gets a list of product groups related to a product.
+            tags:
+                -   ProductProductGroup
     /products/{id}/product-virtual-settings:
         get:
             description:

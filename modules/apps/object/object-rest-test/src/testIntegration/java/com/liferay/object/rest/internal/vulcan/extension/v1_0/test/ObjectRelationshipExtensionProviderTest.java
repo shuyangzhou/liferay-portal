@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -48,6 +49,7 @@ import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 
 import java.io.Serializable;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -83,26 +85,9 @@ public class ObjectRelationshipExtensionProviderTest {
 
 		_objectEntry = _addObjectEntry(_OBJECT_FIELD_VALUE);
 
-		_userSystemObjectDefinitionManager =
-			_systemObjectDefinitionManagerRegistry.
-				getSystemObjectDefinitionManager("User");
-
-		ObjectDefinition userSystemObjectDefinition =
-			_objectDefinitionLocalService.fetchSystemObjectDefinition(
-				TestPropsValues.getCompanyId(),
-				_userSystemObjectDefinitionManager.getName());
-
 		_user = TestPropsValues.getUser();
 
-		_objectRelationship =
-			ObjectRelationshipLocalServiceUtil.addObjectRelationship(
-				null, _user.getUserId(),
-				_objectDefinition.getObjectDefinitionId(),
-				userSystemObjectDefinition.getObjectDefinitionId(), 0,
-				ObjectRelationshipConstants.DELETION_TYPE_PREVENT, false,
-				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				StringUtil.randomId(), false,
-				ObjectRelationshipConstants.TYPE_MANY_TO_MANY, null);
+		_objectRelationship = _addObjectRelationship(_objectDefinition);
 
 		ObjectRelationshipLocalServiceUtil.
 			addObjectRelationshipMappingTableValues(
@@ -167,6 +152,84 @@ public class ObjectRelationshipExtensionProviderTest {
 				TestPropsValues.getCompanyId(), UserAccount.class.getName()));
 	}
 
+	@Test
+	public void testSetExtendedProperties() throws Exception {
+
+		// Partial update
+
+		String objectFieldName1 = "x" + RandomTestUtil.randomString();
+		String objectFieldName2 = "x" + RandomTestUtil.randomString();
+
+		ObjectDefinition objectDefinition = _publishObjectDefinition(
+			Arrays.asList(
+				ObjectFieldUtil.createObjectField(
+					"Text", "String", true, true, null,
+					RandomTestUtil.randomString(), objectFieldName1, false),
+				ObjectFieldUtil.createObjectField(
+					"Text", "String", true, true, null,
+					RandomTestUtil.randomString(), objectFieldName2, false)));
+
+		ObjectRelationship objectRelationship = _addObjectRelationship(
+			objectDefinition);
+
+		String objectFieldValue1 = RandomTestUtil.randomString();
+
+		ObjectEntry objectEntry1 = _addRelatedObjectEntry(
+			objectDefinition, objectRelationship,
+			HashMapBuilder.<String, Serializable>put(
+				objectFieldName1, objectFieldValue1
+			).put(
+				objectFieldName2, RandomTestUtil.randomString()
+			).build());
+
+		String objectFieldValue2 = RandomTestUtil.randomString();
+
+		_setExtendedProperties(
+			HashMapBuilder.<String, Object>put(
+				objectFieldName2, objectFieldValue2
+			).put(
+				"externalReferenceCode", objectEntry1.getExternalReferenceCode()
+			).build(),
+			objectRelationship, true);
+
+		Map<String, Serializable> values =
+			ObjectEntryLocalServiceUtil.getValues(
+				objectEntry1.getObjectEntryId());
+
+		Assert.assertEquals(objectFieldValue1, values.get(objectFieldName1));
+		Assert.assertEquals(objectFieldValue2, values.get(objectFieldName2));
+
+		// Update
+
+		ObjectEntry objectEntry2 = _addRelatedObjectEntry(
+			objectDefinition, objectRelationship,
+			HashMapBuilder.<String, Serializable>put(
+				objectFieldName1, objectFieldValue1
+			).put(
+				objectFieldName2, RandomTestUtil.randomString()
+			).build());
+
+		_setExtendedProperties(
+			HashMapBuilder.<String, Object>put(
+				objectFieldName2, objectFieldValue2
+			).put(
+				"externalReferenceCode", objectEntry2.getExternalReferenceCode()
+			).build(),
+			objectRelationship, false);
+
+		values = ObjectEntryLocalServiceUtil.getValues(
+			objectEntry2.getObjectEntryId());
+
+		Assert.assertTrue(Validator.isNull(values.get(objectFieldName1)));
+		Assert.assertEquals(objectFieldValue2, values.get(objectFieldName2));
+
+		ObjectRelationshipLocalServiceUtil.deleteObjectRelationship(
+			objectRelationship);
+
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			objectDefinition.getObjectDefinitionId());
+	}
+
 	private ObjectEntry _addObjectEntry(String objectFieldValue)
 		throws Exception {
 
@@ -179,6 +242,53 @@ public class ObjectRelationshipExtensionProviderTest {
 				_OBJECT_FIELD_NAME, objectFieldValue
 			).build(),
 			ServiceContextTestUtil.getServiceContext());
+	}
+
+	private ObjectRelationship _addObjectRelationship(
+			ObjectDefinition objectDefinition)
+		throws Exception {
+
+		SystemObjectDefinitionManager systemObjectDefinitionManager =
+			_systemObjectDefinitionManagerRegistry.
+				getSystemObjectDefinitionManager("User");
+
+		ObjectDefinition userSystemObjectDefinition =
+			_objectDefinitionLocalService.fetchSystemObjectDefinition(
+				TestPropsValues.getCompanyId(),
+				systemObjectDefinitionManager.getName());
+
+		return ObjectRelationshipLocalServiceUtil.addObjectRelationship(
+			null, TestPropsValues.getUserId(),
+			objectDefinition.getObjectDefinitionId(),
+			userSystemObjectDefinition.getObjectDefinitionId(), 0,
+			ObjectRelationshipConstants.DELETION_TYPE_PREVENT, false,
+			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+			StringUtil.randomId(), false,
+			ObjectRelationshipConstants.TYPE_MANY_TO_MANY, null);
+	}
+
+	private ObjectEntry _addRelatedObjectEntry(
+			ObjectDefinition objectDefinition,
+			ObjectRelationship objectRelationship,
+			Map<String, Serializable> values)
+		throws Exception {
+
+		ObjectEntry objectEntry =
+			ObjectEntryLocalServiceUtil.addOrUpdateObjectEntry(
+				RandomTestUtil.randomString(), 0, TestPropsValues.getUserId(),
+				objectDefinition.getObjectDefinitionId(),
+				ObjectEntryFolderConstants.
+					PARENT_OBJECT_ENTRY_FOLDER_ID_DEFAULT,
+				values, ServiceContextTestUtil.getServiceContext());
+
+		ObjectRelationshipLocalServiceUtil.
+			addObjectRelationshipMappingTableValues(
+				TestPropsValues.getUserId(),
+				objectRelationship.getObjectRelationshipId(),
+				objectEntry.getPrimaryKey(), _user.getUserId(),
+				ServiceContextTestUtil.getServiceContext());
+
+		return objectEntry;
 	}
 
 	private NestedFieldsContext _getNestedFieldsContext(
@@ -195,8 +305,8 @@ public class ObjectRelationshipExtensionProviderTest {
 
 		ObjectDefinition objectDefinition =
 			_objectDefinitionLocalService.addCustomObjectDefinition(
-				null, TestPropsValues.getUserId(), 0, null, true, false, true,
-				false, true, false, false, false, false, null,
+				null, TestPropsValues.getUserId(), 0, null, null, true, false,
+				true, false, true, false, false, false, false, null,
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				ObjectDefinitionTestUtil.getRandomName(), null, null,
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
@@ -208,6 +318,27 @@ public class ObjectRelationshipExtensionProviderTest {
 		return _objectDefinitionLocalService.publishCustomObjectDefinition(
 			TestPropsValues.getUserId(),
 			objectDefinition.getObjectDefinitionId());
+	}
+
+	private void _setExtendedProperties(
+			Map<String, Object> nestedObjectEntryProperties,
+			ObjectRelationship objectRelationship, boolean partialUpdate)
+		throws Exception {
+
+		_extensionProvider.setExtendedProperties(
+			TestPropsValues.getCompanyId(), TestPropsValues.getUserId(),
+			UserAccount.class.getName(),
+			new UserAccount() {
+				{
+					id = _user.getUserId();
+				}
+			},
+			HashMapBuilder.<String, Serializable>put(
+				objectRelationship.getName(),
+				(Serializable)Collections.singletonList(
+					nestedObjectEntryProperties)
+			).build(),
+			partialUpdate);
 	}
 
 	private void _testGetExtendedPropertiesWithCommerceProduct()
@@ -370,6 +501,5 @@ public class ObjectRelationshipExtensionProviderTest {
 		_systemObjectDefinitionManagerRegistry;
 
 	private User _user;
-	private SystemObjectDefinitionManager _userSystemObjectDefinitionManager;
 
 }

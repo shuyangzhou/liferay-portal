@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -51,7 +52,9 @@ import com.liferay.site.cms.site.initializer.util.RoleUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -269,6 +272,41 @@ public class ObjectDefinitionServiceTest {
 	}
 
 	@Test
+	public void testGetObjectDefinitions() throws Exception {
+		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
+				_user)) {
+
+			ObjectDefinition customObjectDefinition =
+				_addCustomObjectDefinition(_adminUser);
+
+			List<ObjectDefinition> objectDefinitions =
+				_objectDefinitionService.getObjectDefinitions(0, 100);
+
+			Assert.assertTrue(ListUtil.isNotEmpty(objectDefinitions));
+
+			for (ObjectDefinition objectDefinition : objectDefinitions) {
+				Assert.assertNotEquals(
+					customObjectDefinition.getObjectDefinitionId(),
+					objectDefinition.getObjectDefinitionId());
+			}
+		}
+	}
+
+	@Test
+	public void testGetObjectDefinitionsCount() throws Exception {
+		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
+				_user)) {
+
+			int count = _objectDefinitionService.getObjectDefinitionsCount();
+
+			_addCustomObjectDefinition(_adminUser);
+
+			Assert.assertEquals(
+				count, _objectDefinitionService.getObjectDefinitionsCount());
+		}
+	}
+
+	@Test
 	public void testPublishCustomObjectDefinition() throws Exception {
 
 		// Can publish custom object definition with permission
@@ -448,8 +486,8 @@ public class ObjectDefinitionServiceTest {
 
 			ObjectDefinition objectDefinition =
 				_objectDefinitionService.addCustomObjectDefinition(
-					null, objectFolderId, null, true, false, true, false, true,
-					false, false, false, false, null,
+					null, objectFolderId, null, null, true, false, true, false,
+					true, false, false, false, false, null,
 					RandomTestUtil.randomLocaleStringMap(),
 					ObjectDefinitionTestUtil.getRandomName(), null, null,
 					RandomTestUtil.randomLocaleStringMap(), true, scope,
@@ -527,7 +565,7 @@ public class ObjectDefinitionServiceTest {
 
 			_objectDefinitionService.addSystemObjectDefinition(
 				RandomTestUtil.randomString(), user.getUserId(), objectFolderId,
-				ObjectDefinitionTestUtil.getUniqueRandomClassName(), true,
+				ObjectDefinitionTestUtil.getUniqueRandomClassName(), null, true,
 				false, true, false, true, false, false, false, false, false,
 				null, RandomTestUtil.randomLocaleStringMap(),
 				ObjectDefinitionTestUtil.
@@ -590,8 +628,8 @@ public class ObjectDefinitionServiceTest {
 			_objectDefinitionService.updateCustomObjectDefinition(
 				null, objectDefinition.getObjectDefinitionId(), 0, 0,
 				objectFolderId, 0, false, objectDefinition.isActive(), null,
-				true, false, true, false, true, false, false, false, false,
-				false, null, RandomTestUtil.randomLocaleStringMap(),
+				null, true, false, true, false, true, false, false, false,
+				false, false, null, RandomTestUtil.randomLocaleStringMap(),
 				ObjectDefinitionTestUtil.getRandomName(), null, null, false,
 				RandomTestUtil.randomLocaleStringMap(),
 				objectDefinition.getScope(), objectDefinition.getStatus(),

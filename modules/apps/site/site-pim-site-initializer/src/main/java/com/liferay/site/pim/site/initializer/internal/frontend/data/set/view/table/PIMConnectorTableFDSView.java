@@ -6,7 +6,6 @@
 package com.liferay.site.pim.site.initializer.internal.frontend.data.set.view.table;
 
 import com.liferay.frontend.data.set.view.FDSView;
-import com.liferay.frontend.data.set.view.table.BaseTableFDSView;
 import com.liferay.frontend.data.set.view.table.FDSTableSchema;
 import com.liferay.frontend.data.set.view.table.FDSTableSchemaBuilder;
 import com.liferay.frontend.data.set.view.table.FDSTableSchemaBuilderFactory;
@@ -24,7 +23,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = "frontend.data.set.name=" + PIMFDSNames.CONNECTORS,
 	service = FDSView.class
 )
-public class PIMConnectorTableFDSView extends BaseTableFDSView {
+public class PIMConnectorTableFDSView extends BasePIMTableFDSView {
 
 	@Override
 	public FDSTableSchema getFDSTableSchema(Locale locale) {
@@ -38,7 +37,11 @@ public class PIMConnectorTableFDSView extends BaseTableFDSView {
 		).add(
 			"key", "connector"
 		).add(
-			"active", "active"
+			getDateFDSTableSchemaField("dateModified", "modified")
+		).add(
+			"active", "status",
+			fdsTableSchemaField -> fdsTableSchemaField.setContentRenderer(
+				"statusTableCellRenderer")
 		).build();
 	}
 

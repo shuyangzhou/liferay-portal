@@ -1,0 +1,86 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.liferay.source.formatter.dependencies;
+
+import com.liferay.portal.kernel.util.PropsValues;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLParameters;
+import javax.net.ssl.SSLSession;
+
+import org.apache.http.conn.ssl.AllowAllHostnameVerifier;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.impl.client.HttpClientBuilder;
+
+/**
+ * @author Caio Farias
+ */
+public class FIPSTLSVerification1 {
+
+	public void allowAllHostnameVerifierConstant(
+		HttpClientBuilder httpClientBuilder) {
+
+		httpClientBuilder.setSSLHostnameVerifier(
+			SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+	}
+
+	public void allowAllHostnameVerifierInstance(
+		HttpClientBuilder httpClientBuilder) {
+
+		httpClientBuilder.setSSLHostnameVerifier(
+			new AllowAllHostnameVerifier());
+	}
+
+	public void anonymousHostnameVerifier(HttpClientBuilder httpClientBuilder) {
+		httpClientBuilder.setSSLHostnameVerifier(
+			new HostnameVerifier() {
+
+				@Override
+				public boolean verify(String hostName, SSLSession sslSession) {
+					return true;
+				}
+
+			});
+	}
+
+	public void blankEndpointIdentificationAlgorithm(
+		SSLParameters sslParameters) {
+
+		sslParameters.setEndpointIdentificationAlgorithm("");
+	}
+
+	public void endpointIdentificationAlgorithm(SSLParameters sslParameters) {
+		sslParameters.setEndpointIdentificationAlgorithm(null);
+	}
+
+	public void guarded(HttpClientBuilder httpClientBuilder) {
+		if (PropsValues.FIPS_ENABLED && !_VERIFY_SERVER_HOSTNAME) {
+			throw new SecurityException(
+				"TLS verification must be enabled in FIPS mode");
+		}
+
+		httpClientBuilder.setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE);
+	}
+
+	public void lambdaHostnameVerifier(HttpClientBuilder httpClientBuilder) {
+		httpClientBuilder.setSSLHostnameVerifier(
+			(hostName, sslSession) -> true);
+	}
+
+	public void unguarded(HttpClientBuilder httpClientBuilder) {
+		httpClientBuilder.setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE);
+	}
+
+	private static final boolean _VERIFY_SERVER_HOSTNAME = true;
+
+	static {
+		HttpsURLConnection.setDefaultHostnameVerifier(
+			NoopHostnameVerifier.INSTANCE);
+	}
+
+}

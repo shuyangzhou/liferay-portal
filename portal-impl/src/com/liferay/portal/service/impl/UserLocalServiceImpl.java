@@ -4135,7 +4135,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 			passwordResetURL = StringBundler.concat(
 				serviceContext.getPortalURL(), serviceContext.getPathMain(),
-				"/portal/update_password?p_l_id=", serviceContext.getPlid(),
+				"/portal/update_password?doAsUserLanguageId=",
+				user.getLanguageId(), "&p_l_id=", serviceContext.getPlid(),
 				"&ticketId=", ticket.getTicketId(), "&ticketKey=",
 				ticket.getKey());
 
@@ -6604,7 +6605,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 				PropsKeys.ADMIN_EMAIL_USER_ADDED_NO_PASSWORD_BODY);
 		}
 		else {
-			String updatePasswordURL = "/portal/update_password?";
+			String updatePasswordURL =
+				"/portal/update_password?doAsUserLanguageId=" +
+					user.getLanguageId();
 
 			long plid = serviceContext.getPlid();
 
@@ -6615,8 +6618,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 					Group group = layout.getGroup();
 
 					if (!layout.isPrivateLayout() && !group.isUser()) {
-						updatePasswordURL +=
-							"p_l_id=" + serviceContext.getPlid() + "&";
+						updatePasswordURL += "&p_l_id=" + plid;
 					}
 				}
 			}
@@ -6642,9 +6644,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 			passwordResetURL = StringBundler.concat(
 				serviceContext.getPortalURL(), serviceContext.getPathMain(),
-				updatePasswordURL, "languageId=", user.getLanguageId(),
-				"&ticketId=", ticket.getTicketId(), "&ticketKey=",
-				ticket.getKey());
+				updatePasswordURL, "&ticketId=", ticket.getTicketId(),
+				"&ticketKey=", ticket.getKey());
 
 			ticket.setKey(PasswordEncryptorUtil.encrypt(ticket.getKey()));
 

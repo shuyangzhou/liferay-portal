@@ -15,20 +15,34 @@ import {LoadedImage} from '../imaging/loadImage';
 import {EditorAction} from '../state/editorReducer';
 import {EditState, rotatedSize} from '../state/types';
 import {CropMarquee} from './CropMarquee';
+import {OverlaysEditable} from './OverlaysEditable';
 
 interface Props {
 	aspectLocked: boolean;
 
 	dispatch: (action: EditorAction) => void;
 	image: LoadedImage;
+
+	multiSelectedIds: string[];
 	onAnnounce: (message: string) => void;
 	onCenterCrop: () => void;
+
+	onCopyOverlay: (id: string) => void;
+	onMultiSelectToggle: (id: string) => void;
+
+	onPasteOverlay: () => void;
+
+	onSelectOverlay: (id: string | null) => void;
 	onWorkspacePointerLeave?: () => void;
 	onWorkspacePointerMove?: (event: React.PointerEvent) => void;
 	onWorkspaceScroll?: () => void;
 	onZoom: (direction: -1 | 1) => void;
 	onZoomActual: () => void;
 	onZoomFit: () => void;
+
+	proportional: boolean;
+
+	selectedOverlayId: string | null;
 	showCrop: boolean;
 	showRecenter: boolean;
 	state: EditState;
@@ -40,14 +54,21 @@ export function Workspace({
 	aspectLocked,
 	dispatch,
 	image,
+	multiSelectedIds,
 	onAnnounce,
 	onCenterCrop,
+	onCopyOverlay,
+	onMultiSelectToggle,
+	onPasteOverlay,
+	onSelectOverlay,
 	onWorkspacePointerLeave,
 	onWorkspacePointerMove,
 	onWorkspaceScroll,
 	onZoom,
 	onZoomActual,
 	onZoomFit,
+	proportional,
+	selectedOverlayId,
 	showCrop,
 	showRecenter,
 	state,
@@ -80,6 +101,13 @@ export function Workspace({
 			event.preventDefault();
 			onCenterCrop();
 		}
+		else if (
+			(event.metaKey || event.ctrlKey) &&
+			event.key.toLowerCase() === 'v'
+		) {
+			event.preventDefault();
+			onPasteOverlay();
+		}
 	};
 
 	return (
@@ -88,6 +116,15 @@ export function Workspace({
 			aria-label={Liferay.Language.get('image-workspace')}
 			className="editor-workspace"
 			onKeyDown={handleKeyDown}
+			onPointerDown={(event) => {
+				if (
+					!(event.target as Element).closest(
+						'.overlay-hit, .object-handles, .overlay-text-editor'
+					)
+				) {
+					onSelectOverlay(null);
+				}
+			}}
 			onPointerLeave={onWorkspacePointerLeave}
 			onPointerMove={onWorkspacePointerMove}
 			onScroll={onWorkspaceScroll}
@@ -158,8 +195,6 @@ export function Workspace({
 					</g>
 				</g>
 
-				<FrameShape crop={crop} frame={state.frame} />
-
 				<CropMarquee
 					aspectLocked={aspectLocked}
 					bounds={bounds}
@@ -170,7 +205,40 @@ export function Workspace({
 					showCrop={showCrop}
 					showRecenter={showRecenter}
 					zoom={zoom}
-				/>
+				>
+
+					{/*
+					 * Under the annotations when asked: a mat that covers
+					 * the caption written along the bottom edge is a real
+					 * outcome, and which one is wanted is the user's call.
+					 */}
+
+					{!state.frame.overAnnotations && (
+						<FrameShape crop={crop} frame={state.frame} />
+					)}
+
+					<OverlaysEditable
+						dispatch={dispatch}
+						multiSelectedIds={multiSelectedIds}
+						onAnnounce={onAnnounce}
+						onCopy={onCopyOverlay}
+						onMultiSelectToggle={onMultiSelectToggle}
+						onSelect={onSelectOverlay}
+						overlays={state.overlays}
+						proportional={proportional}
+						selectedId={selectedOverlayId}
+						zoom={zoom}
+					/>
+
+					{/*
+					 * Above the marquee is never right: the marquee is
+					 * chrome, the frame is picture.
+					 */}
+
+					{state.frame.overAnnotations && (
+						<FrameShape crop={crop} frame={state.frame} />
+					)}
+				</CropMarquee>
 			</svg>
 		</div>
 	);

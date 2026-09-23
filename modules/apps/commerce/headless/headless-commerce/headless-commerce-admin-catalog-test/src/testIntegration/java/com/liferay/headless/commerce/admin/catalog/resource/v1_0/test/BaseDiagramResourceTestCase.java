@@ -171,6 +171,7 @@ public abstract class BaseDiagramResourceTestCase {
 		Diagram diagram = randomDiagram();
 
 		diagram.setColor(regex);
+		diagram.setImageExternalReferenceCode(regex);
 		diagram.setImageURL(regex);
 		diagram.setProductExternalReferenceCode(regex);
 		diagram.setType(regex);
@@ -182,6 +183,7 @@ public abstract class BaseDiagramResourceTestCase {
 		diagram = DiagramSerDes.toDTO(json);
 
 		Assert.assertEquals(regex, diagram.getColor());
+		Assert.assertEquals(regex, diagram.getImageExternalReferenceCode());
 		Assert.assertEquals(regex, diagram.getImageURL());
 		Assert.assertEquals(regex, diagram.getProductExternalReferenceCode());
 		Assert.assertEquals(regex, diagram.getType());
@@ -608,6 +610,16 @@ public abstract class BaseDiagramResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals(
+					"imageExternalReferenceCode", additionalAssertFieldName)) {
+
+				if (diagram.getImageExternalReferenceCode() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("imageId", additionalAssertFieldName)) {
 				if (diagram.getImageId() == null) {
 					valid = false;
@@ -800,6 +812,19 @@ public abstract class BaseDiagramResourceTestCase {
 
 			if (Objects.equals("id", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(diagram1.getId(), diagram2.getId())) {
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals(
+					"imageExternalReferenceCode", additionalAssertFieldName)) {
+
+				if (!Objects.deepEquals(
+						diagram1.getImageExternalReferenceCode(),
+						diagram2.getImageExternalReferenceCode())) {
+
 					return false;
 				}
 
@@ -1033,6 +1058,52 @@ public abstract class BaseDiagramResourceTestCase {
 				"Invalid entity field " + entityFieldName);
 		}
 
+		if (entityFieldName.equals("imageExternalReferenceCode")) {
+			Object object = diagram.getImageExternalReferenceCode();
+
+			String value = String.valueOf(object);
+
+			if (operator.equals("contains")) {
+				sb = new StringBundler();
+
+				sb.append("contains(");
+				sb.append(entityFieldName);
+				sb.append(",'");
+
+				if ((object != null) && (value.length() > 2)) {
+					sb.append(value.substring(1, value.length() - 1));
+				}
+				else {
+					sb.append(value);
+				}
+
+				sb.append("')");
+			}
+			else if (operator.equals("startswith")) {
+				sb = new StringBundler();
+
+				sb.append("startswith(");
+				sb.append(entityFieldName);
+				sb.append(",'");
+
+				if ((object != null) && (value.length() > 1)) {
+					sb.append(value.substring(0, value.length() - 1));
+				}
+				else {
+					sb.append(value);
+				}
+
+				sb.append("')");
+			}
+			else {
+				sb.append("'");
+				sb.append(value);
+				sb.append("'");
+			}
+
+			return sb.toString();
+		}
+
 		if (entityFieldName.equals("imageId")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
@@ -1236,6 +1307,8 @@ public abstract class BaseDiagramResourceTestCase {
 			{
 				color = StringUtil.toLowerCase(RandomTestUtil.randomString());
 				id = RandomTestUtil.randomLong();
+				imageExternalReferenceCode = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				imageId = RandomTestUtil.randomLong();
 				imageURL = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
@@ -1469,4 +1542,4 @@ public abstract class BaseDiagramResourceTestCase {
 			DiagramResource _diagramResource;
 
 }
-// LIFERAY-REST-BUILDER-HASH:888242743
+// LIFERAY-REST-BUILDER-HASH:-2017961467

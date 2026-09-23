@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.exception.UserPasswordException;
 import com.liferay.portal.kernel.exception.UserScreenNameException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
@@ -98,6 +99,7 @@ import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -118,6 +120,7 @@ import com.liferay.portal.security.audit.event.generators.constants.EventTypes;
 import com.liferay.portal.security.ldap.test.util.configuration.LDAPAuthConfigurationProviderTemporarySwapper;
 import com.liferay.portal.service.impl.UserLocalServiceImpl;
 import com.liferay.portal.spring.aop.AopInvocationHandler;
+import com.liferay.portal.test.mail.MailMessage;
 import com.liferay.portal.test.mail.MailServiceTestUtil;
 import com.liferay.portal.test.rule.FeatureFlag;
 import com.liferay.portal.test.rule.Inject;
@@ -131,8 +134,11 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -398,6 +404,36 @@ public class UserLocalServiceTest {
 
 			_assertUserHasPasswordPolicy(false, _addUser(false, "Liferay123"));
 		}
+	}
+
+	@Test
+	@TestInfo("LPD-105501")
+	public void testAddUserWithUserLanguageId() throws Exception {
+		int initialInboxSize = MailServiceTestUtil.getInboxSize();
+
+		_addUser(LocaleUtil.FRANCE);
+
+		Assert.assertEquals(
+			initialInboxSize + 1, MailServiceTestUtil.getInboxSize());
+		Assert.assertTrue(
+			MailServiceTestUtil.lastMailMessageContains(
+				"/portal/update_password?"));
+		Assert.assertTrue(
+			MailServiceTestUtil.lastMailMessageContains(
+				"doAsUserLanguageId=fr_FR"));
+		Assert.assertFalse(
+			MailServiceTestUtil.lastMailMessageContains("languageId="));
+
+		MailMessage mailMessage = MailServiceTestUtil.getLastMailMessage();
+
+		String content = HttpUtil.URLtoString(
+			_getUpdatePasswordURL(mailMessage.getBody()), true);
+
+		Assert.assertTrue(
+			content,
+			content.contains(
+				LanguageUtil.get(LocaleUtil.FRANCE, "change-password")));
+		Assert.assertTrue(content, content.contains(" lang=\"fr-FR\""));
 	}
 
 	@Test
@@ -1383,6 +1419,38 @@ public class UserLocalServiceTest {
 	}
 
 	@Test
+	@TestInfo("LPD-105501")
+	public void testSendPasswordWithUserLanguageId() throws Exception {
+		int initialInboxSize = MailServiceTestUtil.getInboxSize();
+
+		User user = UserTestUtil.addUser(
+			TestPropsValues.getGroupId(), LocaleUtil.FRANCE);
+
+		try (SafeCloseable safeCloseable =
+				_updateSecuritySendPasswordResetLinkWithSafeCloseable(
+					TestPropsValues.getCompanyId(), true)) {
+
+			ServiceContext serviceContext =
+				ServiceContextTestUtil.getServiceContext();
+
+			serviceContext.setPathMain(_portal.getPathMain());
+
+			_userLocalService.sendPassword(
+				TestPropsValues.getCompanyId(), user.getEmailAddress(), null,
+				null, null, null, serviceContext);
+
+			Assert.assertEquals(
+				initialInboxSize + 1, MailServiceTestUtil.getInboxSize());
+			Assert.assertTrue(
+				MailServiceTestUtil.lastMailMessageContains(
+					"/portal/update_password?"));
+			Assert.assertTrue(
+				MailServiceTestUtil.lastMailMessageContains(
+					"doAsUserLanguageId=fr_FR"));
+		}
+	}
+
+	@Test
 	public void testSetRoleUsers() throws Exception {
 		User user = UserTestUtil.addUser();
 
@@ -1950,6 +2018,27 @@ public class UserLocalServiceTest {
 			new long[] {TestPropsValues.getGroupId()}, serviceContext);
 	}
 
+	private User _addUser(Locale locale) throws Exception {
+		String screenName = RandomTestUtil.randomString(
+			NumericStringRandomizerBumper.INSTANCE,
+			UniqueStringRandomizerBumper.INSTANCE);
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext();
+
+		serviceContext.setPathMain(_portal.getPathMain());
+
+		return _userLocalService.addUser(
+			TestPropsValues.getUserId(), TestPropsValues.getCompanyId(), true,
+			null, null, false, screenName,
+			RandomTestUtil.randomString() + RandomTestUtil.nextLong() +
+				"@liferay.com",
+			locale, RandomTestUtil.randomString(),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(), 0, 0,
+			true, Calendar.JANUARY, 1, 1970, null, UserConstants.TYPE_REGULAR,
+			null, null, null, null, true, serviceContext);
+	}
+
 	private long[] _addUsers(int numberOfUsers) throws Exception {
 		long[] userIds = new long[numberOfUsers];
 
@@ -2006,6 +2095,17 @@ public class UserLocalServiceTest {
 		Assert.assertEquals(ldapUser ? 1 : -1, user.getLdapServerId());
 		Assert.assertTrue(user.isPasswordReset());
 		Assert.assertNotNull(user.getPasswordPolicy());
+	}
+
+	private String _getUpdatePasswordURL(String content) {
+		Matcher matcher = _updatePasswordURLPattern.matcher(content);
+
+		if (!matcher.find()) {
+			throw new IllegalStateException(
+				"Unable to find an update password URL in " + content);
+		}
+
+		return matcher.group();
 	}
 
 	private List<Long> _search(UserGroup userGroup) {
@@ -2273,8 +2373,9 @@ public class UserLocalServiceTest {
 	}
 
 	private void _testVerifyEmailAddress(boolean expired) throws Exception {
-		try (SafeCloseable safeCloseable = _updateSecurityWithSafeCloseable(
-				TestPropsValues.getCompanyId(), true)) {
+		try (SafeCloseable safeCloseable =
+				_updateSecurityStrangersVerifyWithSafeCloseable(
+					TestPropsValues.getCompanyId(), true)) {
 
 			User user = _userLocalService.addUserWithWorkflow(
 				0, TestPropsValues.getCompanyId(), false, "test", "test", false,
@@ -2377,7 +2478,29 @@ public class UserLocalServiceTest {
 		};
 	}
 
-	private SafeCloseable _updateSecurityWithSafeCloseable(
+	private SafeCloseable _updateSecuritySendPasswordResetLinkWithSafeCloseable(
+			long companyId, boolean sendPasswordResetLink)
+		throws Exception {
+
+		Company company = _companyLocalService.getCompany(companyId);
+
+		boolean originalSendPasswordResetLink =
+			company.isSendPasswordResetLink();
+
+		_companyLocalService.updateSecurity(
+			companyId, company.getAuthType(), company.isAutoLogin(),
+			sendPasswordResetLink, company.isStrangers(),
+			company.isStrangersWithMx(), company.isStrangersVerify(),
+			company.isSiteLogo());
+
+		return () -> _companyLocalService.updateSecurity(
+			companyId, company.getAuthType(), company.isAutoLogin(),
+			originalSendPasswordResetLink, company.isStrangers(),
+			company.isStrangersWithMx(), company.isStrangersVerify(),
+			company.isSiteLogo());
+	}
+
+	private SafeCloseable _updateSecurityStrangersVerifyWithSafeCloseable(
 			long companyId, boolean strangersVerify)
 		throws Exception {
 
@@ -2398,6 +2521,8 @@ public class UserLocalServiceTest {
 	}
 
 	private static String _originalName;
+	private static final Pattern _updatePasswordURLPattern = Pattern.compile(
+		"https?://[^\\s<]*/portal/update_password\\?[^\\s<]*");
 
 	@Inject
 	private AnnouncementsDeliveryLocalService

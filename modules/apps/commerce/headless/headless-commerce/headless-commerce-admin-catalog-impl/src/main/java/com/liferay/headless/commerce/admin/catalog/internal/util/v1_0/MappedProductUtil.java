@@ -16,6 +16,7 @@ import com.liferay.headless.commerce.core.helper.ServiceContextHelper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.custom.field.CustomFieldsUtil;
 
 import java.io.Serializable;
@@ -39,27 +40,26 @@ public class MappedProductUtil {
 			ServiceContextHelper serviceContextHelper)
 		throws PortalException {
 
-		long skuId = GetterUtil.getLong(mappedProduct.getSkuId());
+		long skuId = 0;
 
-		CPInstance cpInstance =
-			cpInstanceService.fetchCPInstanceByExternalReferenceCode(
-				mappedProduct.getSkuExternalReferenceCode(), companyId);
+		String skuExternalReferenceCode =
+			mappedProduct.getSkuExternalReferenceCode();
 
-		if (cpInstance != null) {
-			skuId = cpInstance.getCPInstanceId();
+		if (Validator.isNull(skuExternalReferenceCode)) {
+			skuId = GetterUtil.getLong(mappedProduct.getSkuId());
+		}
+		else {
+			CPInstance cpInstance =
+				cpInstanceService.fetchCPInstanceByExternalReferenceCode(
+					skuExternalReferenceCode, companyId);
+
+			if (cpInstance != null) {
+				skuId = cpInstance.getCPInstanceId();
+			}
 		}
 
-		long productId = GetterUtil.getLong(mappedProduct.getProductId());
-
-		CPDefinition cpDefinition =
-			cpDefinitionService.
-				fetchCPDefinitionByCProductExternalReferenceCode(
-					mappedProduct.getProductExternalReferenceCode(), companyId,
-					false);
-
-		if (cpDefinition != null) {
-			productId = cpDefinition.getCProductId();
-		}
+		long cProductId = getCProductId(
+			companyId, cpDefinitionService, groupId, mappedProduct);
 
 		ServiceContext serviceContext = serviceContextHelper.getServiceContext(
 			groupId);
@@ -68,7 +68,7 @@ public class MappedProductUtil {
 			getExpandoBridgeAttributes(companyId, locale, mappedProduct));
 
 		return csDiagramEntryService.addCSDiagramEntry(
-			cpDefinitionId, skuId, productId, isDiagram(null, mappedProduct),
+			cpDefinitionId, skuId, cProductId, isDiagram(null, mappedProduct),
 			GetterUtil.getInteger(mappedProduct.getQuantity()),
 			GetterUtil.getString(mappedProduct.getSequence()),
 			GetterUtil.getString(mappedProduct.getSku()), serviceContext);
@@ -97,6 +97,26 @@ public class MappedProductUtil {
 		return updateCSDiagramEntry(
 			companyId, csDiagramEntry, csDiagramEntryService, groupId, locale,
 			mappedProduct, serviceContextHelper);
+	}
+
+	public static long getCProductId(
+			long companyId, CPDefinitionService cpDefinitionService,
+			long groupId, MappedProduct mappedProduct)
+		throws PortalException {
+
+		String productExternalReferenceCode =
+			mappedProduct.getProductExternalReferenceCode();
+
+		if (Validator.isNull(productExternalReferenceCode)) {
+			return GetterUtil.getLong(mappedProduct.getProductId());
+		}
+
+		CPDefinition cpDefinition =
+			ProductUtil.getCPDefinitionByCProductExternalReferenceCode(
+				companyId, cpDefinitionService, productExternalReferenceCode,
+				groupId, mappedProduct.getProductType());
+
+		return cpDefinition.getCProductId();
 	}
 
 	public static Map<String, Serializable> getExpandoBridgeAttributes(

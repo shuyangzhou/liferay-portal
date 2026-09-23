@@ -57,7 +57,24 @@ public class FinderPath {
 		int convertNullBitmask, boolean baseModelResult,
 		Function<Object, Object[]> argsExtractorFunction) {
 
-		_cacheName = cacheName;
+		if (baseModelResult || !methodName.startsWith("count") ||
+			!cacheName.endsWith(".List2")) {
+
+			_cacheName = cacheName;
+		}
+		else {
+			_cacheName = cacheName.substring(0, cacheName.length() - 6);
+		}
+
+		int index = methodName.indexOf("By");
+
+		if (index == -1) {
+			_finderName = methodName;
+		}
+		else {
+			_finderName = methodName.substring(index + 2);
+		}
+
 		_columnNames = columnNames;
 		_caseInsensitiveBitmask = caseInsensitiveBitmask;
 		_convertNullBitmask = convertNullBitmask;
@@ -72,7 +89,7 @@ public class FinderPath {
 
 		_initCacheKeyPrefix(methodName, params);
 
-		if (_cacheName.contains(".List") || methodName.equals("dslQuery")) {
+		if (cacheName.contains(".List") || methodName.equals("dslQuery")) {
 			_singleResult = false;
 		}
 		else {
@@ -94,6 +111,10 @@ public class FinderPath {
 
 	public String[] getColumnNames() {
 		return _columnNames;
+	}
+
+	public String getFinderName() {
+		return _finderName;
 	}
 
 	public boolean isBaseModelResult() {
@@ -209,6 +230,7 @@ public class FinderPath {
 	private final int _caseInsensitiveBitmask;
 	private final String[] _columnNames;
 	private final int _convertNullBitmask;
+	private final String _finderName;
 	private final boolean _singleResult;
 	private volatile long _timestamp;
 

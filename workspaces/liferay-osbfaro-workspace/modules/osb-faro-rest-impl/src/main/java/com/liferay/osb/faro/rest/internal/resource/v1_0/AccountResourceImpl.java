@@ -55,7 +55,8 @@ public class AccountResourceImpl extends BaseAccountResourceImpl {
 	@Override
 	public Page<Account> getWorkspaceGroupChannelAccountsPage(
 			Long groupId, String channelId, String lifecycleStage,
-			String search, Pagination pagination, Sort[] sorts)
+			String rangeEnd, String rangeKey, String rangeStart, String search,
+			Pagination pagination, Sort[] sorts)
 		throws Exception {
 
 		FaroProject faroProject =
@@ -65,8 +66,10 @@ public class AccountResourceImpl extends BaseAccountResourceImpl {
 			_contactsEngineClient.getAccounts(
 				faroProject, channelId,
 				_getLifecycleStageFilterString(faroProject, lifecycleStage),
-				search, FaroPaginationUtil.getCur(pagination),
-				FaroPaginationUtil.getDelta(pagination), null);
+				true, search, rangeEnd, TimeRange.getRangeKey(rangeKey),
+				rangeStart, null, FaroPaginationUtil.getCur(pagination),
+				FaroPaginationUtil.getDelta(pagination),
+				FaroPaginationUtil.toSortString(sorts));
 
 		return Page.of(
 			transform(
