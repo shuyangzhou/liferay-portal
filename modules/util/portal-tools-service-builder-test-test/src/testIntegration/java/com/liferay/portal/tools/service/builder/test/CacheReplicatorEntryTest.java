@@ -119,7 +119,7 @@ public class CacheReplicatorEntryTest implements Serializable {
 
 			String[][] events = {
 				{cacheNames[0], "removeAll"}, {cacheNames[1], "remove"},
-				{cacheNames[2], "remove", "remove"},
+				{cacheNames[2], "remove", "remove", "remove", "remove"},
 				{cacheNames[3], "removeAll"}, {cacheNames[4], "removeAll"}
 			};
 
@@ -368,7 +368,7 @@ public class CacheReplicatorEntryTest implements Serializable {
 			_ENTITY_CLASS_NAME);
 
 		Assert.assertEquals(
-			entityFinderPaths.toString(), 1, entityFinderPaths.size());
+			entityFinderPaths.toString(), 2, entityFinderPaths.size());
 
 		Map<String, FinderPath> list1FinderPaths = finderPathsMap.get(
 			_LIST1_CACHE_NAME);
@@ -380,7 +380,7 @@ public class CacheReplicatorEntryTest implements Serializable {
 			_LIST2_CACHE_NAME);
 
 		Assert.assertEquals(
-			list2FinderPaths.toString(), 2, list2FinderPaths.size());
+			list2FinderPaths.toString(), 1, list2FinderPaths.size());
 	}
 
 	private List<PortalCache<Serializable, Serializable>>
