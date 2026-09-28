@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
+import com.liferay.portal.kernel.dao.orm.ModelRemovalThreadLocal;
 import com.liferay.portal.kernel.db.partition.DBPartition;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -369,8 +370,20 @@ public class FinderCacheImpl
 			return;
 		}
 
+		boolean removing = ModelRemovalThreadLocal.isRemoving(baseModel);
+
 		for (FinderPath finderPath :
 				_getFinderPaths(_getCountCacheName(className))) {
+
+			if (removing) {
+				_adjustResult(
+					finderPath,
+					argumentsResolver.getArguments(
+						finderPath, baseModel, false, true),
+					-1);
+
+				continue;
+			}
 
 			removeResult(
 				finderPath,
