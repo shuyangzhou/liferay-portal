@@ -11,6 +11,8 @@ import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.cache.PortalCacheWrapper;
+import com.liferay.portal.dao.init.DBInitUtil;
 import com.liferay.portal.kernel.cache.CacheRegistryItem;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.cache.MultiVMPool;
@@ -32,6 +34,7 @@ import com.liferay.portal.kernel.db.partition.DBPartition;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.change.tracking.CTModel;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -168,6 +171,13 @@ public class FinderCacheImpl
 
 			cacheValue = portalCache.get(cacheKey);
 
+			if ((cacheValue != null) &&
+				_isMaintainedCountFinderPath(finderPath)) {
+
+				_flushPendingWrites(
+					finderPath.getEntityClassName(), basePersistence);
+			}
+
 			if ((cacheValue != null) && (localCache != null)) {
 				localCache.put(localCacheKey, cacheValue);
 			}
@@ -287,6 +297,8 @@ public class FinderCacheImpl
 
 		_clearDSLQueryCache(className);
 
+		_markPendingFlush(className);
+
 		ArgumentsResolver argumentsResolver =
 			argumentsResolverHolder.getArgumentsResolver();
 
@@ -301,7 +313,24 @@ public class FinderCacheImpl
 					finderPath, baseModel, true, true));
 		}
 
-		_clearCache(_getCountCacheName(className));
+		if (!_countMaintenanceEnabled || !(baseModel instanceof MVCCModel)) {
+			_clearCache(_getCountCacheName(className));
+
+			return;
+		}
+
+		for (FinderPath finderPath :
+				_getFinderPaths(_getCountCacheName(className))) {
+
+			removeResult(
+				finderPath,
+				argumentsResolver.getArguments(
+					finderPath, baseModel, false, false));
+			removeResult(
+				finderPath,
+				argumentsResolver.getArguments(
+					finderPath, baseModel, true, true));
+		}
 	}
 
 	@Override
@@ -417,6 +446,8 @@ public class FinderCacheImpl
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
+
+		_countMaintenanceEnabled = !DBInitUtil.isReadWriteDataSource();
 
 		_valueObjectFinderCacheEnabled = GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_ENABLED));
@@ -579,6 +610,22 @@ public class FinderCacheImpl
 				finderPath.getCacheKeyPrefix(),
 				StringUtil.toHexString(cacheKeyGenerator.getCacheKey(keys))
 			});
+	}
+
+	private void _flushPendingWrites(
+		String cacheName, BasePersistence<?> basePersistence) {
+
+		if (TransactionalPortalCacheUtil.isEnabled() &&
+			Boolean.TRUE.equals(
+				TransactionalPortalCacheUtil.get(
+					_pendingFlushPortalCache, cacheName))) {
+
+			basePersistence.flush();
+
+			TransactionalPortalCacheUtil.put(
+				_pendingFlushPortalCache, cacheName, Boolean.FALSE,
+				PortalCache.DEFAULT_TIME_TO_LIVE, true);
+		}
 	}
 
 	private PortalCache<Serializable, Serializable> _getCTPortalCache(
@@ -833,6 +880,27 @@ public class FinderCacheImpl
 		return ThreadLocalFilterThreadLocal.isFilterInvoked();
 	}
 
+	private boolean _isMaintainedCountFinderPath(FinderPath finderPath) {
+		if (_countMaintenanceEnabled && finderPath.isCountResult() &&
+			_serviceTrackerMap.containsKey(finderPath.getEntityClassName())) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	private void _markPendingFlush(String cacheName) {
+		if (_countMaintenanceEnabled &&
+			TransactionalPortalCacheUtil.isEnabled() &&
+			!TransactionalPortalCacheUtil.isReadOnly()) {
+
+			TransactionalPortalCacheUtil.put(
+				_pendingFlushPortalCache, cacheName, Boolean.TRUE,
+				PortalCache.DEFAULT_TIME_TO_LIVE, true);
+		}
+	}
+
 	private void _putLocalCache(
 		FinderPath finderPath, Serializable cacheKey, Serializable cacheValue) {
 
@@ -885,6 +953,7 @@ public class FinderCacheImpl
 	@Reference
 	private ClusterExecutor _clusterExecutor;
 
+	private boolean _countMaintenanceEnabled;
 	private final Map<String, Set<String>> _dslQueryCacheNamesMap =
 		new ConcurrentHashMap<>();
 	private final Map<String, Map<String, FinderPath>> _finderPathsMap =
@@ -893,6 +962,20 @@ public class FinderCacheImpl
 
 	@Reference
 	private MultiVMPool _multiVMPool;
+
+	private final PortalCache<Serializable, Boolean> _pendingFlushPortalCache =
+		new PortalCacheWrapper<Serializable, Boolean>(null) {
+
+			@Override
+			public boolean isSharded() {
+				return PropsValues.DATABASE_PARTITION_ENABLED;
+			}
+
+			@Override
+			public void put(Serializable key, Boolean value, int timeToLive) {
+			}
+
+		};
 
 	private final ConcurrentMap<String, PortalCache<Serializable, Serializable>>
 		_portalCaches = new ConcurrentHashMap<>();
