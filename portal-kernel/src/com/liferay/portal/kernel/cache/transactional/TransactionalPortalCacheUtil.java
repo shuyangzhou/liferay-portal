@@ -276,6 +276,22 @@ public class TransactionalPortalCacheUtil {
 		return _NULL_HOLDER;
 	}
 
+	public static long getStartSequence() {
+		List<PortalCacheMap> portalCacheMaps = _portalCacheMaps.get();
+
+		int index = portalCacheMaps.size() - 1;
+
+		while (true) {
+			PortalCacheMap portalCacheMap = portalCacheMaps.get(index);
+
+			if (!portalCacheMap._savepoint) {
+				return portalCacheMap._startSequence;
+			}
+
+			index--;
+		}
+	}
+
 	public static void invalidate(PortalCache<?, ?> portalCache) {
 		_invalidationSequence.invalidate(
 			_getRegionName(portalCache), 0, true, Collections.emptySet());

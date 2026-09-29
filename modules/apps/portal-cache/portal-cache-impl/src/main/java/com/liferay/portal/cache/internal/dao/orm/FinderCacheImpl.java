@@ -84,6 +84,8 @@ public class FinderCacheImpl
 	public void clearByEntityCache(String className) {
 		clearLocalCache();
 
+		_removePrivateCounts();
+
 		_markCountFinderPaths(className);
 
 		_clearCache(className);
@@ -97,6 +99,8 @@ public class FinderCacheImpl
 	@Override
 	public void clearCache() {
 		clearLocalCache();
+
+		_removePrivateCounts();
 
 		for (PortalCache<?, ?> portalCache : _portalCaches.values()) {
 			portalCache.removeAll();
@@ -173,7 +177,13 @@ public class FinderCacheImpl
 
 			portalCache = _getCTPortalCache(finderPath.getCacheName());
 
-			cacheValue = portalCache.get(cacheKey);
+			CountKey countKey = _createCountKey(finderPath, cacheKey);
+
+			cacheValue = _getPrivateCount(countKey);
+
+			if (cacheValue == null) {
+				cacheValue = portalCache.get(cacheKey);
+			}
 
 			if ((cacheValue != null) &&
 				_isMaintainedCountFinderPath(finderPath)) {
@@ -271,6 +281,21 @@ public class FinderCacheImpl
 
 		Serializable cacheKey = _encodeCacheKey(finderPath, args);
 
+		CountKey countKey = _createCountKey(finderPath, cacheKey);
+
+		if (countKey != null) {
+			TransactionalPortalCacheUtil.put(
+				_privateCountPortalCache, countKey,
+				new PrivateCount(
+					(Long)cacheValue,
+					TransactionalPortalCacheUtil.getStartSequence()),
+				PortalCache.DEFAULT_TIME_TO_LIVE, true);
+
+			_putLocalCache(finderPath, cacheKey, cacheValue);
+
+			return;
+		}
+
 		if (!TransactionalPortalCacheUtil.completePut(
 				_getCTPortalCache(finderPath.getCacheName()), cacheKey,
 				cacheValue)) {
@@ -324,6 +349,8 @@ public class FinderCacheImpl
 		}
 
 		if (!_countMaintenanceEnabled || !(baseModel instanceof MVCCModel)) {
+			_removePrivateCounts();
+
 			_clearCache(_getCountCacheName(className));
 
 			return;
@@ -602,6 +629,36 @@ public class FinderCacheImpl
 		}
 	}
 
+	private CountKey _createCountKey(
+		FinderPath finderPath, Serializable cacheKey) {
+
+		if (!TransactionalPortalCacheUtil.isEnabled() ||
+			!_isMaintainedCountFinderPath(finderPath)) {
+
+			return null;
+		}
+
+		PortalCache<Serializable, Serializable> portalCache = _getPortalCache(
+			finderPath.getCacheName());
+
+		if (portalCache instanceof CTAwarePortalCache ctAwarePortalCache) {
+			if (!CTCollectionThreadLocal.isProductionMode()) {
+				return null;
+			}
+
+			portalCache = ctAwarePortalCache.getProductionPortalCache();
+		}
+
+		if (portalCache instanceof
+				TransactionalPortalCache<Serializable, Serializable>
+					transactionalPortalCache) {
+
+			return new CountKey(transactionalPortalCache, cacheKey);
+		}
+
+		return null;
+	}
+
 	private Serializable _encodeCacheKey(
 		FinderPath finderPath, Object[] arguments) {
 
@@ -839,6 +896,21 @@ public class FinderCacheImpl
 		return portalCache;
 	}
 
+	private Long _getPrivateCount(CountKey countKey) {
+		if (countKey == null) {
+			return null;
+		}
+
+		Object value = TransactionalPortalCacheUtil.get(
+			_privateCountPortalCache, countKey);
+
+		if (value instanceof PrivateCount privateCount) {
+			return privateCount._count;
+		}
+
+		return null;
+	}
+
 	private Object _getResult(
 		FinderPath finderPath, Object[] args,
 		BasePersistence<?> basePersistence, Serializable cacheValue) {
@@ -949,6 +1021,15 @@ public class FinderCacheImpl
 		}
 	}
 
+	private void _publishPrivateCount(CountKey countKey, Object value) {
+		if (value instanceof PrivateCount privateCount) {
+			TransactionalPortalCacheUtil.completePut(
+				countKey._portalCache.getWrappedPortalCache(),
+				countKey._cacheKey, privateCount._count,
+				privateCount._startSequence);
+		}
+	}
+
 	private void _putLocalCache(
 		FinderPath finderPath, Serializable cacheKey, Serializable cacheValue) {
 
@@ -958,6 +1039,15 @@ public class FinderCacheImpl
 			localCache.put(
 				new LocalCacheKey(finderPath.getCacheName(), cacheKey),
 				cacheValue);
+		}
+	}
+
+	private void _removePrivateCounts() {
+		if (_countMaintenanceEnabled &&
+			TransactionalPortalCacheUtil.isEnabled()) {
+
+			TransactionalPortalCacheUtil.removeAll(
+				_privateCountPortalCache, true);
 		}
 	}
 
@@ -981,6 +1071,15 @@ public class FinderCacheImpl
 			finderPath.getCacheName());
 
 		portalCache.remove(cacheKey);
+
+		CountKey countKey = _createCountKey(finderPath, cacheKey);
+
+		if (countKey != null) {
+			TransactionalPortalCacheUtil.put(
+				_privateCountPortalCache, countKey,
+				TransactionalPortalCacheUtil.getNullHolder(),
+				PortalCache.DEFAULT_TIME_TO_LIVE, true);
+		}
 	}
 
 	private void _wipeForNewCountFinderPaths(
@@ -1103,6 +1202,30 @@ public class FinderCacheImpl
 
 	private final ConcurrentMap<String, PortalCache<Serializable, Serializable>>
 		_portalCaches = new ConcurrentHashMap<>();
+
+	private final PortalCache<Serializable, Object> _privateCountPortalCache =
+		new PortalCacheWrapper<Serializable, Object>(null) {
+
+			@Override
+			public boolean isSharded() {
+				return PropsValues.DATABASE_PARTITION_ENABLED;
+			}
+
+			@Override
+			public void put(Serializable key, Object value, int timeToLive) {
+				_publishPrivateCount((CountKey)key, value);
+			}
+
+			@Override
+			public void remove(Serializable key) {
+			}
+
+			@Override
+			public void removeAll() {
+			}
+
+		};
+
 	private ServiceRegistration<CacheRegistryItem> _serviceRegistration;
 	private ServiceTrackerMap<String, ArgumentsResolverHolder>
 		_serviceTrackerMap;
@@ -1152,6 +1275,41 @@ public class FinderCacheImpl
 
 	}
 
+	private static class CountKey implements Serializable {
+
+		@Override
+		public boolean equals(Object object) {
+			CountKey countKey = (CountKey)object;
+
+			if ((_portalCache == countKey._portalCache) &&
+				_cacheKey.equals(countKey._cacheKey)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			return HashUtil.hash(
+				System.identityHashCode(_portalCache), _cacheKey.hashCode());
+		}
+
+		private CountKey(
+			TransactionalPortalCache<Serializable, Serializable> portalCache,
+			Serializable cacheKey) {
+
+			_portalCache = portalCache;
+			_cacheKey = cacheKey;
+		}
+
+		private final Serializable _cacheKey;
+		private final transient TransactionalPortalCache
+			<Serializable, Serializable> _portalCache;
+
+	}
+
 	private static class LocalCacheKey {
 
 		@Override
@@ -1179,6 +1337,18 @@ public class FinderCacheImpl
 
 		private final Serializable _cacheKey;
 		private final String _className;
+
+	}
+
+	private static class PrivateCount {
+
+		private PrivateCount(long count, long startSequence) {
+			_count = count;
+			_startSequence = startSequence;
+		}
+
+		private final long _count;
+		private final long _startSequence;
 
 	}
 
