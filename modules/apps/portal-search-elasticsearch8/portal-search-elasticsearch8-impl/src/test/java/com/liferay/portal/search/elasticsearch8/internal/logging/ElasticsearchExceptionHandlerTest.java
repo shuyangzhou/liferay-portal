@@ -62,7 +62,7 @@ public class ElasticsearchExceptionHandlerTest {
 			elasticsearchExceptionHandler.handleDeleteDocumentException(
 				searchException);
 
-			_assertLogCapture(logCapture, searchException, LoggerTestUtil.INFO);
+			_assertLogCapture(logCapture, LoggerTestUtil.INFO, searchException);
 		}
 	}
 
@@ -95,7 +95,7 @@ public class ElasticsearchExceptionHandlerTest {
 				searchException);
 
 			_assertLogCapture(
-				logCapture, searchException, LoggerTestUtil.ERROR);
+				logCapture, LoggerTestUtil.ERROR, searchException);
 		}
 	}
 
@@ -126,7 +126,7 @@ public class ElasticsearchExceptionHandlerTest {
 			elasticsearchExceptionHandler.logOrThrow(searchException);
 
 			_assertLogCapture(
-				logCapture, searchException, LoggerTestUtil.ERROR);
+				logCapture, LoggerTestUtil.ERROR, searchException);
 		}
 	}
 
@@ -134,8 +134,8 @@ public class ElasticsearchExceptionHandlerTest {
 	public ExpectedException expectedException = ExpectedException.none();
 
 	private void _assertLogCapture(
-		LogCapture logCapture, SearchException searchException,
-		String logLevel) {
+		LogCapture logCapture, String logLevel,
+		SearchException searchException) {
 
 		List<LogEntry> logEntries = logCapture.getLogEntries();
 
