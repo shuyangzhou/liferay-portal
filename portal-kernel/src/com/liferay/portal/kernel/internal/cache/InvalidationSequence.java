@@ -59,10 +59,21 @@ public class InvalidationSequence {
 			return;
 		}
 
-		publishRunnable.run();
+		RuntimeException runtimeException1 = null;
+
+		try {
+			publishRunnable.run();
+		}
+		catch (RuntimeException runtimeException2) {
+			runtimeException1 = runtimeException2;
+		}
 
 		if (_isWrittenAfter(regionName, sequence)) {
 			withdrawRunnable.run();
+		}
+
+		if (runtimeException1 != null) {
+			throw runtimeException1;
 		}
 	}
 

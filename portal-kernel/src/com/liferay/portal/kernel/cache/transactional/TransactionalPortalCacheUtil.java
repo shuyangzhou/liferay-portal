@@ -151,11 +151,24 @@ public class TransactionalPortalCacheUtil {
 	public static void commit(boolean readOnly) {
 		PortalCacheMap portalCacheMap = _popPortalCacheMap();
 
+		RuntimeException runtimeException1 = null;
+
 		for (UncommittedBuffer uncommittedBuffer : portalCacheMap.values()) {
-			uncommittedBuffer.commit(readOnly, portalCacheMap._startSequence);
+			try {
+				uncommittedBuffer.commit(
+					readOnly, portalCacheMap._startSequence);
+			}
+			catch (RuntimeException runtimeException2) {
+				runtimeException1 = _addSuppressed(
+					runtimeException1, runtimeException2);
+			}
 		}
 
 		portalCacheMap.clear();
+
+		if (runtimeException1 != null) {
+			throw runtimeException1;
+		}
 	}
 
 	public static void commitSavepoint() {
@@ -366,6 +379,19 @@ public class TransactionalPortalCacheUtil {
 		private final boolean _savepoint;
 		private final long _startSequence = _invalidationSequence.getSequence();
 
+	}
+
+	private static RuntimeException _addSuppressed(
+		RuntimeException runtimeException1,
+		RuntimeException runtimeException2) {
+
+		if (runtimeException1 == null) {
+			return runtimeException2;
+		}
+
+		runtimeException1.addSuppressed(runtimeException2);
+
+		return runtimeException1;
 	}
 
 	private static void _begin(boolean savepoint) {
@@ -594,17 +620,30 @@ public class TransactionalPortalCacheUtil {
 				}
 			}
 
+			RuntimeException runtimeException1 = null;
+
 			for (Map.Entry<? extends Serializable, ValueEntry> entry :
 					_uncommittedMap.entrySet()) {
 
 				ValueEntry valueEntry = entry.getValue();
 
-				if (byRemove) {
-					valueEntry.commitToByRemove(_portalCache, entry.getKey());
+				try {
+					if (byRemove) {
+						valueEntry.commitToByRemove(
+							_portalCache, entry.getKey());
+					}
+					else {
+						valueEntry.commitTo(_portalCache, entry.getKey());
+					}
 				}
-				else {
-					valueEntry.commitTo(_portalCache, entry.getKey());
+				catch (RuntimeException runtimeException2) {
+					runtimeException1 = _addSuppressed(
+						runtimeException1, runtimeException2);
 				}
+			}
+
+			if (runtimeException1 != null) {
+				throw runtimeException1;
 			}
 		}
 
@@ -666,6 +705,8 @@ public class TransactionalPortalCacheUtil {
 
 		@Override
 		public void commit(boolean readOnly, long startSequence) {
+			RuntimeException runtimeException1 = null;
+
 			for (Map.Entry<Long, UncommittedBuffer> entry :
 					_shardedUncommittedBuffers.entrySet()) {
 
@@ -677,9 +718,17 @@ public class TransactionalPortalCacheUtil {
 
 					uncommittedBuffer.commit(readOnly, startSequence);
 				}
+				catch (RuntimeException runtimeException2) {
+					runtimeException1 = _addSuppressed(
+						runtimeException1, runtimeException2);
+				}
 			}
 
 			_shardedUncommittedBuffers.clear();
+
+			if (runtimeException1 != null) {
+				throw runtimeException1;
+			}
 		}
 
 		@Override

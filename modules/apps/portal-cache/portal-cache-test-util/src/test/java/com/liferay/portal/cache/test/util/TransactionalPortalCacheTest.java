@@ -939,6 +939,56 @@ public class TransactionalPortalCacheTest {
 		Assert.assertEquals(_VALUE_1, _portalCache.get(_KEY_1));
 
 		companyThreadLocalMockedStatic.close();
+
+		long companyId2 = RandomTestUtil.randomLong();
+
+		ShardedTestPortalCache<String, String> failingShardedPortalCache =
+			new ShardedTestPortalCache<String, String>(
+				"Failing Sharded Test Portal Cache") {
+
+				@Override
+				protected void doPut(String key, String value, int timeToLive) {
+					if (CompanyThreadLocal.getNonsystemCompanyId() ==
+							companyId1) {
+
+						throw new IllegalStateException(key);
+					}
+
+					super.doPut(key, value, timeToLive);
+				}
+
+			};
+
+		TransactionalPortalCache<String, String>
+			failingTransactionalPortalCache = new TransactionalPortalCache<>(
+				failingShardedPortalCache, false);
+
+		TransactionalPortalCacheUtil.begin();
+
+		_companyIdThreadLocal.set(companyId1);
+
+		failingTransactionalPortalCache.put(_KEY_1, _VALUE_1);
+		failingTransactionalPortalCache.put(_KEY_2, _VALUE_2);
+
+		_companyIdThreadLocal.set(companyId2);
+
+		failingTransactionalPortalCache.put(_KEY_1, _VALUE_1);
+		transactionalPortalCache.put(_KEY_2, _VALUE_2);
+
+		try {
+			TransactionalPortalCacheUtil.commit(false);
+
+			Assert.fail();
+		}
+		catch (IllegalStateException illegalStateException) {
+			Throwable[] throwables = illegalStateException.getSuppressed();
+
+			Assert.assertEquals(
+				Arrays.toString(throwables), 1, throwables.length);
+		}
+
+		Assert.assertEquals(_VALUE_1, failingShardedPortalCache.get(_KEY_1));
+		Assert.assertEquals(_VALUE_2, _portalCache.get(_KEY_2));
 	}
 
 	@Test

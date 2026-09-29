@@ -126,6 +126,31 @@ public class InvalidationSequenceTest {
 			() -> actions.add("withdraw"));
 
 		Assert.assertEquals(Arrays.asList("publish", "withdraw"), actions);
+
+		actions.clear();
+
+		RuntimeException runtimeException1 = new RuntimeException();
+
+		try {
+			invalidationSequence.publish(
+				_REGION_NAME_2, invalidationSequence.getSequence(),
+				() -> {
+					actions.add("publish");
+
+					invalidationSequence.invalidate(
+						_REGION_NAME_2, 0, false, Collections.emptyList());
+
+					throw runtimeException1;
+				},
+				() -> actions.add("withdraw"));
+
+			Assert.fail();
+		}
+		catch (RuntimeException runtimeException2) {
+			Assert.assertSame(runtimeException1, runtimeException2);
+		}
+
+		Assert.assertEquals(Arrays.asList("publish", "withdraw"), actions);
 	}
 
 	@Test
