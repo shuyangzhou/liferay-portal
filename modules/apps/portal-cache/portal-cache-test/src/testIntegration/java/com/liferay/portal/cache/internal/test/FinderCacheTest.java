@@ -192,6 +192,47 @@ public class FinderCacheTest {
 		}
 
 		Assert.assertNull(_finderCache.getResult(finderPath, finderArgs, null));
+
+		FinderPath countFinderPath = new FinderPath(
+			"com.liferay.portal.model.impl.TicketImpl.List2",
+			"count" + RandomTestUtil.randomString(),
+			new String[] {
+				Long.class.getName(), Long.class.getName(), Long.class.getName()
+			},
+			new String[] {"companyId", "classNameId", "classPK"}, false);
+
+		TransactionInvokerUtil.invoke(
+			TransactionConfig.Factory.create(
+				Propagation.REQUIRED, new Class<?>[] {Exception.class}),
+			(Callable<Void>)() -> {
+				_addTicket(classPK, serviceContext);
+
+				try {
+					TransactionInvokerUtil.invoke(
+						TransactionConfig.Factory.create(
+							Propagation.NOT_SUPPORTED,
+							new Class<?>[] {Exception.class}),
+						(Callable<Void>)() -> {
+							Assert.assertNull(
+								_finderCache.getResult(
+									countFinderPath, finderArgs,
+									_ticketPersistence));
+
+							return null;
+						});
+				}
+				catch (Throwable throwable) {
+					throw new Exception(throwable);
+				}
+
+				return null;
+			});
+
+		_finderCache.putResult(countFinderPath, finderArgs, 1L);
+
+		Assert.assertNull(
+			_finderCache.getResult(
+				countFinderPath, finderArgs, _ticketPersistence));
 	}
 
 	@Test
