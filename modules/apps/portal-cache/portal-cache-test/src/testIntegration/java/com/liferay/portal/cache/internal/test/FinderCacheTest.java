@@ -292,6 +292,8 @@ public class FinderCacheTest {
 
 		Object[] finderArgs = _getFinderArgs(classPK);
 
+		Object[] countFinderArgs = _getFinderArgs(RandomTestUtil.randomLong());
+
 		TransactionConfig.Builder builder = new TransactionConfig.Builder();
 
 		builder.setReadOnly(true);
@@ -302,6 +304,18 @@ public class FinderCacheTest {
 			(Callable<Void>)() -> {
 				Assert.assertNull(
 					_finderCache.getResult(_finderPath, finderArgs, null));
+
+				Assert.assertNull(
+					_finderCache.getResult(
+						_countFinderPath, finderArgs, _ticketPersistence));
+
+				_finderCache.putResult(_countFinderPath, finderArgs, 1L);
+
+				Assert.assertNull(
+					_finderCache.getResult(
+						_countFinderPath, countFinderArgs, _ticketPersistence));
+
+				_finderCache.putResult(_countFinderPath, countFinderArgs, 0L);
 
 				try {
 					TransactionInvokerUtil.invoke(
@@ -320,6 +334,14 @@ public class FinderCacheTest {
 
 				return null;
 			});
+
+		Assert.assertNull(
+			_finderCache.getResult(
+				_countFinderPath, finderArgs, _ticketPersistence));
+		Assert.assertEquals(
+			0L,
+			_finderCache.getResult(
+				_countFinderPath, countFinderArgs, _ticketPersistence));
 
 		tickets = _ticketLocalService.getTickets(
 			TestPropsValues.getCompanyId(), User.class.getName(), classPK);
