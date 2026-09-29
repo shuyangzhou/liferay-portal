@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.cache.SkipReplicationThreadLocal;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.internal.cache.InvalidationSequence;
+import com.liferay.portal.kernel.internal.spring.transaction.ReadOnlyTransactionThreadLocal;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionAttribute;
@@ -276,6 +277,10 @@ public class TransactionalPortalCacheUtil {
 		List<PortalCacheMap> portalCacheMaps = _portalCacheMaps.get();
 
 		return !portalCacheMaps.isEmpty();
+	}
+
+	public static boolean isReadOnly() {
+		return ReadOnlyTransactionThreadLocal.isReadOnly();
 	}
 
 	public static <K extends Serializable> void preparePut(

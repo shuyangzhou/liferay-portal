@@ -1353,6 +1353,9 @@ public class TransactionalPortalCacheTest {
 		Assert.assertTrue(
 			"TransactionalPortalCacheUtil should be enabled",
 			TransactionalPortalCacheUtil.isEnabled());
+		Assert.assertFalse(
+			"Transaction should not be read only",
+			TransactionalPortalCacheUtil.isReadOnly());
 
 		TransactionalPortalCacheUtil.commit(false);
 
