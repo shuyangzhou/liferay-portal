@@ -310,6 +310,12 @@ public class TransactionalPortalCacheUtil {
 			_getRegionName(portalCache), 0, true, Collections.emptySet());
 	}
 
+	public static <K extends Serializable> void invalidate(
+		PortalCache<K, ?> portalCache, K key) {
+
+		_invalidationSequence.invalidateKey(_getRegionName(portalCache), key);
+	}
+
 	public static boolean isEnabled() {
 		if (!_isTransactionalCacheEnabled()) {
 			return false;
