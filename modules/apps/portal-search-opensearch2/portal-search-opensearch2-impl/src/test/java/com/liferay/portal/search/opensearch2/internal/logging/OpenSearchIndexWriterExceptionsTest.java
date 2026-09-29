@@ -34,6 +34,7 @@ import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Test;
 
+import org.opensearch.client.opensearch._types.ErrorCause;
 import org.opensearch.client.opensearch._types.OpenSearchException;
 
 /**
@@ -73,11 +74,15 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 			Assert.fail();
 		}
 		catch (OpenSearchException openSearchException) {
-			String expectedMessage =
-				"[mapper_parsing_exception] failed to parse field " +
-					"[expirationDate] of type [date]";
+			ErrorCause errorCause = openSearchException.error();
 
-			String message = openSearchException.getMessage();
+			Assert.assertEquals("mapper_parsing_exception", errorCause.type());
+
+			String expectedMessage =
+				"failed to parse field [expirationDate] of type [date] in " +
+					"document with id";
+
+			String message = errorCause.reason();
 
 			Assert.assertTrue(
 				message + " does not contain " + expectedMessage,
@@ -134,14 +139,10 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 			Assert.fail();
 		}
 		catch (OpenSearchException openSearchException) {
-			String expectedMessage =
-				"[index_not_found_exception] no such index";
+			ErrorCause errorCause = openSearchException.error();
 
-			String message = openSearchException.getMessage();
-
-			Assert.assertTrue(
-				message + " does not contain " + expectedMessage,
-				message.contains(expectedMessage));
+			Assert.assertEquals("index_not_found_exception", errorCause.type());
+			Assert.assertEquals("no such index [1]", errorCause.reason());
 		}
 	}
 
@@ -215,14 +216,10 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 			Assert.fail();
 		}
 		catch (OpenSearchException openSearchException) {
-			String expectedMessage =
-				"[index_not_found_exception] no such index";
+			ErrorCause errorCause = openSearchException.error();
 
-			String message = openSearchException.getMessage();
-
-			Assert.assertTrue(
-				message + " does not contain " + expectedMessage,
-				message.contains(expectedMessage));
+			Assert.assertEquals("index_not_found_exception", errorCause.type());
+			Assert.assertEquals("no such index [1]", errorCause.reason());
 		}
 	}
 
