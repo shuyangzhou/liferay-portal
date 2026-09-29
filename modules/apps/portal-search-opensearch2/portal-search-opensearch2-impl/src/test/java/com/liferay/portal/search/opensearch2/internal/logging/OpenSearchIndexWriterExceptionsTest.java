@@ -27,6 +27,7 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -47,6 +48,20 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 	@ClassRule
 	public static OpenSearchTestRule openSearchTestRule =
 		OpenSearchTestRule.INSTANCE;
+
+	@After
+	@Override
+	public void tearDown() throws Exception {
+		super.tearDown();
+
+		IndexWriter indexWriter = getIndexWriter();
+
+		if (indexWriter == null) {
+			return;
+		}
+
+		indexWriter.deleteDocument(createSearchContext(), "1");
+	}
 
 	@Test
 	public void testAddDocument() {
@@ -197,6 +212,9 @@ public class OpenSearchIndexWriterExceptionsTest extends BaseIndexingTestCase {
 
 	@Test
 	public void testPartiallyUpdateDocuments() {
+		expectedException.expect(RuntimeException.class);
+		expectedException.expectMessage("Bulk partial update failed");
+
 		Document document = new DocumentImpl();
 
 		List<Document> documents = new ArrayList<>();
