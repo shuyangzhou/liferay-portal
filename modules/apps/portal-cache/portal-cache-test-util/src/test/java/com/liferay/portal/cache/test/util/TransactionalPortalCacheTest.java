@@ -404,6 +404,16 @@ public class TransactionalPortalCacheTest {
 			TransactionalPortalCacheUtil.completePut(
 				_portalCache, _KEY_1, _VALUE_1));
 		Assert.assertEquals(_VALUE_1, _portalCache.get(_KEY_1));
+
+		TransactionalPortalCacheUtil.preparePut(_portalCache, _KEY_2);
+
+		TransactionalPortalCacheUtil.invalidate(_portalCache);
+
+		Assert.assertFalse(
+			"Put after a writer that invalidated the region should be dropped",
+			TransactionalPortalCacheUtil.completePut(
+				_portalCache, _KEY_2, _VALUE_2));
+		Assert.assertNull(_portalCache.get(_KEY_2));
 	}
 
 	@Test

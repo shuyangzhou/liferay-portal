@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 
 import java.io.Serializable;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -91,6 +92,12 @@ public class CTAwarePortalCache
 		}
 
 		return ctPortalCache;
+	}
+
+	public Collection<PortalCache<Serializable, Serializable>>
+		getCTPortalCaches() {
+
+		return _ctPortalCaches.values();
 	}
 
 	@Override

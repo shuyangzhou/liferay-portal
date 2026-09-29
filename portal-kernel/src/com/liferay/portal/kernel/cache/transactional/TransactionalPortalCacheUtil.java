@@ -29,6 +29,7 @@ import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -273,6 +274,11 @@ public class TransactionalPortalCacheUtil {
 
 	public static Serializable getNullHolder() {
 		return _NULL_HOLDER;
+	}
+
+	public static void invalidate(PortalCache<?, ?> portalCache) {
+		_invalidationSequence.invalidate(
+			_getRegionName(portalCache), 0, true, Collections.emptySet());
 	}
 
 	public static boolean isEnabled() {
