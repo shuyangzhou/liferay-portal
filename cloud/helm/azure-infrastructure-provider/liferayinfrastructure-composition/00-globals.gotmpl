@@ -11,7 +11,9 @@
 {{- $overlayAccess := $xr.spec.overlayAccess | default dict -}}
 {{- $projectId := $xr.spec.projectId -}}
 {{- $region := $xr.spec.region -}}
+{{- $restoreGeneration := $xr.spec.restoreGeneration | default "" -}}
 {{- $restorePhase := $xr.spec.restorePhase | default "none" -}}
+{{- $retainedDataPlanes := $xr.spec.retainedDataPlanes | default dict -}}
 {{- $targetActiveDataPlane := $xr.spec.targetActiveDataPlane | default "blue" -}}
 
 {{- $activeDataPlane := $targetActiveDataPlane -}}
@@ -35,6 +37,57 @@
 
 {{- $baseName := printf "%.18s-%s" $projectIdFull $uidHash -}}
 {{- $storageAccountBase := printf "%.15s%s" ($projectIdFull | replace "-" "" | lower) $uidHash -}}
+
+{{- $backupVaultName := printf "%s-vault" $baseName -}}
+{{- $dataPlaneKeys := dict -}}
+
+{{- range $dataPlane := list "blue" "green" -}}
+    {{- $observedDatabaseServer := dig (printf "database-primary-%s" $dataPlane) "resource" dict $observedResources -}}
+    {{- if and $observedDatabaseServer (not (dig "metadata" "deletionTimestamp" "" $observedDatabaseServer)) -}}
+        {{- $_ := set $dataPlaneKeys $dataPlane (dig "metadata" "labels" "dataPlaneKey" $dataPlane $observedDatabaseServer) -}}
+    {{- else if and (eq $restorePhase "provisioning") (eq $dataPlane $targetActiveDataPlane) $restoreGeneration -}}
+        {{- $_ := set $dataPlaneKeys $dataPlane (printf "%s-%s" $dataPlane $restoreGeneration) -}}
+    {{- else -}}
+        {{- $_ := set $dataPlaneKeys $dataPlane $dataPlane -}}
+    {{- end -}}
+{{- end }}
+
+{{- $dataPlaneNames := dict -}}
+
+{{- range $dataPlaneKey := concat (values $dataPlaneKeys) (keys $retainedDataPlanes) -}}
+    {{- $dataPlane := first (splitList "-" $dataPlaneKey) -}}
+    {{- $generation := trimPrefix (printf "%s-" $dataPlane) $dataPlaneKey -}}
+    {{- $resourceNames := dict "databaseServer" (printf "%s-%s" $baseName $dataPlaneKey) -}}
+    {{- if eq $generation $dataPlaneKey -}}
+        {{- $_ := set $resourceNames "storageAccount" (printf "%s%s" $storageAccountBase (trunc 1 $dataPlane)) -}}
+        {{- $_ := set $resourceNames "backupInstance" (printf "%s-storage-instance-%s" $backupVaultName $dataPlane) -}}
+    {{- else -}}
+        {{- $_ := set $resourceNames "storageAccount" (printf "%.11s%s%s%s" ($projectIdFull | replace "-" "" | lower) $uidHash (trunc 1 $dataPlane) $generation) -}}
+        {{- $_ := set $resourceNames "backupInstance" (printf "%s-%s" $backupVaultName $resourceNames.storageAccount) -}}
+    {{- end -}}
+    {{- $_ := set $dataPlaneNames $dataPlaneKey $resourceNames -}}
+{{- end }}
+
+{{- $databaseServerNames := dict -}}
+{{- $storageAccountNames := dict -}}
+
+{{- range $dataPlane, $dataPlaneKey := $dataPlaneKeys -}}
+    {{- $_ := set $databaseServerNames $dataPlane (index $dataPlaneNames $dataPlaneKey "databaseServer") -}}
+    {{- $_ := set $storageAccountNames $dataPlane (index $dataPlaneNames $dataPlaneKey "storageAccount") -}}
+{{- end }}
+
+{{- $demotedDataPlane := "" -}}
+
+{{- if and (eq $restorePhase "promoting") (hasKey $retainedDataPlanes (index $dataPlaneKeys $targetInactiveDataPlane)) -}}
+    {{- $demotedDataPlane = $targetInactiveDataPlane -}}
+{{- end }}
+
+{{- $demotedManagementPolicies := (eq $demotedDataPlane "") | ternary $managementPolicies (list "Create" "Observe" "Update" | toJson) -}}
+{{- $renderedDataPlaneKeys := list -}}
+
+{{- range $dataPlane := $dataPlanes -}}
+    {{- $renderedDataPlaneKeys = append $renderedDataPlaneKeys (index $dataPlaneKeys $dataPlane) -}}
+{{- end }}
 
 {{- $cmkIdentityId := printf "/subscriptions/%s/resourceGroups/%s/providers/Microsoft.ManagedIdentity/userAssignedIdentities/%s-cmk" $env.subscriptionId $env.resourceGroupName $baseName -}}
 {{- $keyVaultName := printf "%s-kv" $storageAccountBase -}}

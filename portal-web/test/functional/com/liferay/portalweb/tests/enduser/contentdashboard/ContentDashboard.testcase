@@ -13,7 +13,24 @@ definition {
 
 		HeadlessSite.addSite(siteName = "Test Site Name");
 
+		JSONLayout.addPublicLayout(
+			groupName = "Test Site Name",
+			layoutName = "Test Page");
+
 		Category.openCategoriesAdmin(siteURLKey = "test-site-name");
+	}
+
+	tearDown {
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
+
+		if (${testLiferayVirtualInstance} == "true") {
+			PortalInstances.tearDownCP();
+		}
+		else {
+			JSONUser.tearDownNonAdminUsers();
+
+			JSONGroup.deleteGroupByName(groupName = "Test Site Name");
+		}
 	}
 
 	@description = "LPS-116987 When the user makes a change on web content and creates a draft version, the Info panel shows the version for the last version approved and the version of the draft "
@@ -2564,7 +2581,7 @@ definition {
 				dmDocumentTitle = "DM Document Title 2",
 				groupName = "Test Site Name",
 				mimeType = "text/plain",
-				sourceFileName = "Document_1.txt");
+				sourceFileName = "Document_2.txt");
 
 			ContentDashboard.navigateToDocumentVersionHistoryPage(
 				dmDocumentTitle = "DM Document Title 2",
@@ -3069,12 +3086,12 @@ definition {
 
 			AssertTextEquals(
 				key_tableEntry = "WC Title",
-				locator1 = "LexiconTable#TABLE_ENTRY_TITLE_LINK",
+				locator1 = "LexiconTable#TABLE_ENTRY_TITLE",
 				value1 = "WC Title");
 
 			AssertTextEquals(
 				key_tableEntry = "WC Title 2",
-				locator1 = "LexiconTable#TABLE_ENTRY_TITLE_LINK",
+				locator1 = "LexiconTable#TABLE_ENTRY_TITLE",
 				value1 = "WC Title 2");
 		}
 	}
@@ -3801,7 +3818,7 @@ definition {
 
 			AssertVisible(
 				key_columnName = "review-date",
-				key_tableEntry = "2100-01-01",
+				key_tableEntry = "1/1/00",
 				locator1 = "LexiconTable#TABLE_ENTRY_INFO");
 		}
 	}

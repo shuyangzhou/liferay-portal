@@ -1353,7 +1353,7 @@ public class ActionUtil {
 				classNameId, null,
 				_COMPARE_LAYOUT_PAGE_TEMPLATE_ENTRY_KEY_PREFIX +
 					objectDefinitionName,
-				LayoutPageTemplateEntryTypeConstants.DISPLAY_PAGE, 0, true, 0,
+				LayoutPageTemplateEntryTypeConstants.DISPLAY_PAGE, 0, false, 0,
 				0, 0, WorkflowConstants.STATUS_APPROVED, serviceContext);
 
 		Layout layout = LayoutLocalServiceUtil.getLayout(
@@ -1572,7 +1572,8 @@ public class ActionUtil {
 
 		if (configurationJSONObject != null) {
 			JSONObject editableValuesJSONObject =
-				fragmentEntryLink.getEditableValuesJSONObject();
+				JSONFactoryUtil.createJSONObject(
+					fragmentEntryLink.getEditableValues());
 
 			JSONObject jsonObject = editableValuesJSONObject.getJSONObject(
 				FragmentEntryProcessorConstants.
@@ -1631,7 +1632,8 @@ public class ActionUtil {
 
 			formRelationshipStyledLayoutStructureItem.setContentType(
 				infoFieldSet.getName());
-			formRelationshipStyledLayoutStructureItem.setRepeatable(editMode);
+			formRelationshipStyledLayoutStructureItem.setRepeatable(
+				editMode && !readOnly);
 
 			layoutStructureItem = formRelationshipStyledLayoutStructureItem;
 		}
@@ -1900,7 +1902,7 @@ public class ActionUtil {
 				classNameId, null,
 				_TRANSLATION_LAYOUT_PAGE_TEMPLATE_ENTRY_KEY_PREFIX +
 					objectDefinitionName,
-				LayoutPageTemplateEntryTypeConstants.DISPLAY_PAGE, 0, true, 0,
+				LayoutPageTemplateEntryTypeConstants.DISPLAY_PAGE, 0, false, 0,
 				0, 0, WorkflowConstants.STATUS_APPROVED, serviceContext);
 
 		Layout layout = LayoutLocalServiceUtil.getLayout(

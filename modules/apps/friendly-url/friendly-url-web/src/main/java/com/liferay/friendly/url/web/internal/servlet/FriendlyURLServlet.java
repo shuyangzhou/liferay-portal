@@ -7,6 +7,7 @@ package com.liferay.friendly.url.web.internal.servlet;
 
 import com.liferay.friendly.url.info.item.provider.InfoItemFriendlyURLProvider;
 import com.liferay.friendly.url.info.item.updater.InfoItemFriendlyURLUpdater;
+import com.liferay.friendly.url.model.FriendlyURLEntry;
 import com.liferay.friendly.url.model.FriendlyURLEntryLocalization;
 import com.liferay.friendly.url.service.FriendlyURLEntryLocalService;
 import com.liferay.info.item.ClassPKInfoItemIdentifier;
@@ -75,6 +76,10 @@ public class FriendlyURLServlet extends HttpServlet {
 
 		try {
 			String className = _getClassName(httpServletRequest);
+			long classPK = _getClassPK(httpServletRequest);
+			FriendlyURLEntry friendlyURLEntry =
+				_friendlyURLEntryLocalService.fetchFriendlyURLEntry(
+					_getEntryId(httpServletRequest));
 
 			InfoItemPermissionProvider infoItemPermissionProvider =
 				_infoItemServiceRegistry.getFirstInfoItemService(
@@ -83,9 +88,10 @@ public class FriendlyURLServlet extends HttpServlet {
 			if (!infoItemPermissionProvider.hasPermission(
 					_permissionCheckerFactory.create(
 						_portal.getUser(httpServletRequest)),
-					new InfoItemReference(
-						className, _getClassPK(httpServletRequest)),
-					ActionKeys.UPDATE)) {
+					new InfoItemReference(className, classPK),
+					ActionKeys.UPDATE) ||
+				(friendlyURLEntry == null) ||
+				(friendlyURLEntry.getClassPK() != classPK)) {
 
 				_writeJSON(httpServletResponse, JSONUtil.put("success", false));
 			}
@@ -158,6 +164,9 @@ public class FriendlyURLServlet extends HttpServlet {
 		try {
 			String className = _getClassName(httpServletRequest);
 			long classPK = _getClassPK(httpServletRequest);
+			FriendlyURLEntry friendlyURLEntry =
+				_friendlyURLEntryLocalService.fetchFriendlyURLEntry(
+					_getEntryId(httpServletRequest));
 
 			InfoItemPermissionProvider<Object> infoItemPermissionProvider =
 				_infoItemServiceRegistry.getFirstInfoItemService(
@@ -167,7 +176,9 @@ public class FriendlyURLServlet extends HttpServlet {
 					_permissionCheckerFactory.create(
 						_portal.getUser(httpServletRequest)),
 					new InfoItemReference(className, classPK),
-					ActionKeys.UPDATE)) {
+					ActionKeys.UPDATE) ||
+				(friendlyURLEntry == null) ||
+				(friendlyURLEntry.getClassPK() != classPK)) {
 
 				_writeJSON(httpServletResponse, JSONUtil.put("success", false));
 			}

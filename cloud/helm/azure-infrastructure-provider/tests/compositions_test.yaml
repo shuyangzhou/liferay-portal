@@ -9,6 +9,38 @@ tests:
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
+                    pattern: "range \\$retainedDataPlaneKey, \\$_ := \\$retainedDataPlanes \\}\\}\\s+\\{\\{- if not \\(has \\$retainedDataPlaneKey \\$renderedDataPlaneKeys\\) \\}\\}\\s+\\{\\{- \\$retainedBackupInstanceName := index \\$dataPlaneNames \\$retainedDataPlaneKey \"backupInstance\" \\}\\}\\s+apiVersion: dataprotection[^\\n]+\\s+kind: BackupInstanceBlobStorage"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "crossplane.io/external-name: \\{\\{ \\$retainedBackupInstanceName \\}\\}\\s+gotemplating[^:]*: liferay-backup-instance-retained-\\{\\{ \\$retainedDataPlaneKey \\}\\}"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "retainedDataPlane: \\{\\{ \\$retainedDataPlaneKey \\}\\}\\s+name: \\{\\{ \\$retainedBackupInstanceName \\}\\}-retained\\s+spec:\\s+forProvider:\\s+vaultId: [^\\n]+backupVaults/\\{\\{ \\$backupVaultName \\}\\}\\s+managementPolicies: \\{\\{ list \"Delete\" \"Observe\" \\| toJson \\}\\}"
+        it: Adopts each retained backup instance without ever updating it
+    -   asserts:
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "range \\$retainedDataPlaneKey, \\$_ := \\$retainedDataPlanes \\}\\}\\s+\\{\\{- if not \\(has \\$retainedDataPlaneKey \\$renderedDataPlaneKeys\\) \\}\\}\\s+\\{\\{- \\$retainedDatabaseServerName := index \\$dataPlaneNames \\$retainedDataPlaneKey \"databaseServer\" \\}\\}\\s+---\\s+apiVersion: dbforpostgresql[^\\n]+\\s+kind: FlexibleServer"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "crossplane.io/external-name: \\{\\{ \\$retainedDatabaseServerName \\}\\}\\s+gotemplating[^:]*: database-retained-\\{\\{ \\$retainedDataPlaneKey \\}\\}"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "retainedDataPlane: \\{\\{ \\$retainedDataPlaneKey \\}\\}\\s+name: \\{\\{ \\$retainedDatabaseServerName \\}\\}-retained\\s+spec:\\s+forProvider:\\s+resourceGroupName: \\{\\{ \\$env.resourceGroupName \\}\\}\\s+managementPolicies: \\{\\{ list \"Delete\" \"Observe\" \\| toJson \\}\\}"
+            -   documentIndex: 0
+                notMatchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: retained-until
+        it: Adopts each retained server by name alone without managing its spec
+    -   asserts:
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
                     pattern: "composition-resource-name: backup-restore-role-binding"
             -   documentIndex: 0
                 matchRegex:
@@ -103,7 +135,7 @@ tests:
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
-                    pattern: "principalId: \\{\\{ \\$backupRestoreIdentityPrincipalId \\}\\}\\s+principalType: ServicePrincipal\\s+roleDefinitionName: Storage Blob Data Contributor\\s+scope: [^\\n]+Microsoft.Storage/storageAccounts/\\{\\{ \\$storageAccountBase \\}\\}\\{\\{ trunc 1 \\$dataPlane \\}\\}"
+                    pattern: "principalId: \\{\\{ \\$backupRestoreIdentityPrincipalId \\}\\}\\s+principalType: ServicePrincipal\\s+roleDefinitionName: Storage Blob Data Contributor\\s+scope: [^\\n]+Microsoft.Storage/storageAccounts/\\{\\{ index \\$storageAccountNames \\$dataPlane \\}\\}"
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
@@ -121,6 +153,10 @@ tests:
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
+                    pattern: "Microsoft.DBforPostgreSQL/flexibleServers/\\{\\{ index \\$databaseServerNames \\$dataPlane \\}\\}"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
                     pattern: "range \\$dataPlane := \\$dataPlanes \\}\\}\\s+apiVersion: authorization[^\\v]*\\s+kind: RoleAssignment\\s+metadata:\\s+annotations:\\s+gotemplating[^:]*: liferay-backup-restore-database-"
         it: Grants the restore identity read on each plane database server
     -   asserts:
@@ -133,6 +169,16 @@ tests:
                     path: spec.pipeline[1].input.inline.template
                     pattern: "principalId: \\{\\{ \\$backupRestoreIdentityPrincipalId \\}\\}\\s+principalType: ServicePrincipal\\s+roleDefinitionName: Reader\\s+scope: [^\\n]+Microsoft.Storage/storageAccounts/"
         it: Grants the restore identity read on each plane storage account
+    -   asserts:
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "composition-resource-name: liferay-backup-restore-database-retained-\\{\\{ \\$retainedDataPlaneKey \\}\\}"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "roleDefinitionName: Reader\\s+scope: [^\\n]+Microsoft.DBforPostgreSQL/flexibleServers/\\{\\{ index \\$dataPlaneNames \\$retainedDataPlaneKey \"databaseServer\" \\}\\}"
+        it: Grants the restore identity read on each retained database server
     -   asserts:
             -   documentIndex: 0
                 matchRegex:
@@ -191,7 +237,7 @@ tests:
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
-                    pattern: \{\{- if and \$backupRoleId \(or \(eq \$dataPlane \$activeDataPlane\) \(has \$dataPlane \$observedBackupDataPlanes\)\) \}\}
+                    pattern: \{\{- if \$backupRoleId \}\}
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
@@ -217,11 +263,11 @@ tests:
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
-                    pattern: "if and \\$backupRoleId \\(or \\(eq \\$dataPlane \\$activeDataPlane\\) \\(has \\$dataPlane \\$observedBackupDataPlanes\\)\\)"
+                    pattern: "\\$backupInstanceDataPlanes := list \\$activeDataPlane"
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
-                    pattern: "if or \\(eq \\$dataPlane \\$activeDataPlane\\) \\(has \\$dataPlane \\$observedBackupDataPlanes\\)"
+                    pattern: "range \\$dataPlane := \\$backupInstanceDataPlanes \\}\\}\\s+\\{\\{- \\$backupRoleId := dig"
         it: Holds protection off the restore target until it is promoted
     -   asserts:
             -   equal:
@@ -277,30 +323,34 @@ tests:
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
-                    pattern: "range \\$i, \\$dataPlane := list \"blue\" \"green\" \\}\\}\\s+\\{\\{- \\$storageAccountName"
+                    pattern: "\\{\\{- if or \\(eq \\$dataPlane \\$activeDataPlane\\) \\(eq \\$restorePhase \"promoting\"\\) \\}\\}\\s+---\\s+apiVersion: storage.azure.m.upbound.io/v1beta1\\s+kind: Container"
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
-                    pattern: "range \\$dataPlane := list \"blue\" \"green\" \\}\\}\\s+apiVersion: authorization[^\\v]*\\s+kind: RoleAssignment\\s+metadata:\\s+annotations:\\s+gotemplating[^:]*: liferay-storage-role-assignment-"
-            -   documentIndex: 0
-                matchRegex:
-                    path: spec.pipeline[1].input.inline.template
-                    pattern: "range \\$dataPlane := list \"blue\" \"green\" \\}\\}\\s+apiVersion: authorization[^\\v]*\\s+kind: RoleAssignment\\s+metadata:\\s+annotations:\\s+gotemplating[^:]*: liferay-backup-vault-storage-"
-            -   documentIndex: 0
-                matchRegex:
-                    path: spec.pipeline[1].input.inline.template
-                    pattern: "range \\$dataPlane := list \"blue\" \"green\" \\}\\}\\s+apiVersion: authorization[^\\v]*\\s+kind: RoleAssignment\\s+metadata:\\s+annotations:\\s+gotemplating[^:]*: liferay-backup-restore-storage-"
-        it: Keeps each plane storage account and its role assignments beyond a data plane swap
+                    pattern: "writeConnectionSecretToRef:\\s+name: liferay-storage-\\{\\{ \\$dataPlane \\}\\}-credentials\\s+\\{\\{- if or \\(eq \\$dataPlane \\$activeDataPlane\\)"
+        it: Keeps the demoted document library container until the restore is cleaned up
     -   asserts:
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
-                    pattern: "\\{\\{- if eq \\$dataPlane \\$activeDataPlane \\}\\}\\s+---\\s+apiVersion: storage.azure.m.upbound.io/v1beta1\\s+kind: Container"
+                    pattern: "\\$observedDatabaseServer := dig \\(printf \"database-primary-%s\" \\$dataPlane\\) \"resource\" dict \\$observedResources"
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
-                    pattern: "writeConnectionSecretToRef:\\s+name: liferay-storage-\\{\\{ \\$dataPlane \\}\\}-credentials\\s+\\{\\{- if eq \\$dataPlane \\$activeDataPlane \\}\\}"
-        it: Keeps the document library container only on the active plane
+                    pattern: "if and \\$observedDatabaseServer \\(not \\(dig \"metadata\" \"deletionTimestamp\" \"\" \\$observedDatabaseServer\\)\\) -\\}\\}\\s+\\{\\{- \\$_ := set \\$dataPlaneKeys \\$dataPlane \\(dig \"metadata\" \"labels\" \"dataPlaneKey\" \\$dataPlane \\$observedDatabaseServer\\)"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "kind: FlexibleServer\\s+metadata:[\\s\\S]{0,300}?dataPlaneKey: \\{\\{ index \\$dataPlaneKeys \\$dataPlane \\}\\}\\s+name: \\{\\{ \\$databaseServerName \\}\\}"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "kind: Account\\s+metadata:[\\s\\S]{0,300}?dataPlaneKey: \\{\\{ index \\$dataPlaneKeys \\$dataPlane \\}\\}\\s+name: \\{\\{ \\$storageAccountName \\}\\}"
+            -   documentIndex: 0
+                notMatchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: observedStorageAccount|observedBackupInstance
+        it: Latches each plane key from the observed server unless it is being released
     -   asserts:
             -   documentIndex: 0
                 notMatchRegex:
@@ -367,6 +417,56 @@ tests:
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
+                    pattern: "set \\$resourceNames \"backupInstance\" \\(printf \"%s-storage-instance-%s\" \\$backupVaultName \\$dataPlane\\)"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "set \\$resourceNames \"backupInstance\" \\(printf \"%s-%s\" \\$backupVaultName \\$resourceNames.storageAccount\\)"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "kind: BackupInstanceBlobStorage\\s+metadata:[\\s\\S]{0,300}?dataPlaneKey: \\{\\{ index \\$dataPlaneKeys \\$dataPlane \\}\\}\\s+name: \\{\\{ index \\$dataPlaneNames \\(index \\$dataPlaneKeys \\$dataPlane\\) \"backupInstance\" \\}\\}"
+        it: Names each restored backup instance after its storage account and keeps the original name on a plain key
+    -   asserts:
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "else if and \\(eq \\$restorePhase \"provisioning\"\\) \\(eq \\$dataPlane \\$targetActiveDataPlane\\) \\$restoreGeneration -\\}\\}\\s+\\{\\{- \\$_ := set \\$dataPlaneKeys \\$dataPlane \\(printf \"%s-%s\" \\$dataPlane \\$restoreGeneration\\)"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "else -\\}\\}\\s+\\{\\{- \\$_ := set \\$dataPlaneKeys \\$dataPlane \\$dataPlane -\\}\\}"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "\\$resourceNames := dict \"databaseServer\" \\(printf \"%s-%s\" \\$baseName \\$dataPlaneKey\\)"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "\\$databaseServerName := index \\$databaseServerNames \\$dataPlane"
+            -   documentIndex: 0
+                notMatchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "restorePointInTime \\| default \"\" \\| sha256sum"
+        it: Names each restored server after its restore generation so no two restores share one
+    -   asserts:
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "set \\$resourceNames \"storageAccount\" \\(printf \"%.11s%s%s%s\" \\(\\$projectIdFull \\| replace \"-\" \"\" \\| lower\\) \\$uidHash \\(trunc 1 \\$dataPlane\\) \\$generation\\)"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "set \\$resourceNames \"storageAccount\" \\(printf \"%s%s\" \\$storageAccountBase \\(trunc 1 \\$dataPlane\\)\\)"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "LIFERAY_DOCLIB_STORAGE_ACCOUNT_NAME: \\{\\{ index \\$storageAccountNames \\$activeDataPlane \\| b64enc \\| quote \\}\\}"
+        it: Names each restored storage account after its restore generation so the demoted account keeps its own
+    -   asserts:
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
                     pattern: "\\{\\{- \\$isDatabaseRestoreTarget := and \\(eq \\$restorePhase \"provisioning\"\\) \\(eq \\$dataPlane \\$targetActiveDataPlane\\) \\}\\}"
             -   documentIndex: 0
                 matchRegex:
@@ -393,12 +493,36 @@ tests:
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
-                    pattern: \$observedBackupDataPlanes = append \$observedBackupDataPlanes \$dataPlane
+                    pattern: "range \\$dataPlane := \\$backupInstanceDataPlanes \\}\\}\\s+\\{\\{- if dig \\(printf \"liferay-backup-vault-storage-%s\" \\$dataPlane\\)"
+        it: Orders the storage account deletion behind its backup instance
+    -   asserts:
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
-                    pattern: "or \\(eq \\$dataPlane \\$activeDataPlane\\) \\(has \\$dataPlane \\$observedBackupDataPlanes\\)"
-        it: Orders the storage account deletion behind its backup instance
+                    pattern: "if \\$demotedDataPlane -\\}\\}\\s+\\{\\{- \\$backupInstanceDataPlanes = append \\$backupInstanceDataPlanes \\$demotedDataPlane"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "vaultIdRef:\\s+name: \\{\\{ \\$backupVaultName \\}\\}\\s+managementPolicies: \\{\\{ \\(eq \\$dataPlane \\$demotedDataPlane\\) \\| ternary \\$demotedManagementPolicies \\$managementPolicies \\}\\}"
+        it: Orphans the demoted backup instance only when the workflow has marked its data plane retained
+    -   asserts:
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "if and \\(eq \\$restorePhase \"promoting\"\\) \\(hasKey \\$retainedDataPlanes \\(index \\$dataPlaneKeys \\$targetInactiveDataPlane\\)\\) -\\}\\}\\s+\\{\\{- \\$demotedDataPlane = \\$targetInactiveDataPlane -\\}\\}"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "\\$demotedManagementPolicies := \\(eq \\$demotedDataPlane \"\"\\) \\| ternary \\$managementPolicies \\(list \"Create\" \"Observe\" \"Update\" \\| toJson\\)"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "kind: FlexibleServerActiveDirectoryAdministrator[\\s\\S]*?managementPolicies: \\{\\{ \\(eq \\$dataPlane \\$demotedDataPlane\\) \\| ternary \\$demotedManagementPolicies \\$managementPolicies \\}\\}"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "managementPolicies: \\{\\{ \\$isDemotedDataPlane \\| ternary \\$demotedManagementPolicies \\$managementPolicies \\}\\}"
+        it: Orphans the demoted server only when the workflow has marked its data plane retained
     -   asserts:
             -   documentIndex: 0
                 matchRegex:
@@ -511,6 +635,42 @@ tests:
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
+                    pattern: "gotemplating[^:]*: backup-restore-release-cron-workflow"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "kind: CronWorkflow\\s+metadata:\\s+labels:\\s+\\{\\{- \\$tags \\| toYaml \\| nindent 20 \\}\\}\\s+name: backup-restore-release-cron-workflow\\s+namespace: \\{\\{ \\$namespace \\}\\}"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "concurrencyPolicy: Forbid\\s+schedules:\\s+-   0 \\* \\* \\* \\*"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "clusterScope: true\\s+name: backup-restore-cluster-workflow-template\\s+template: release-retained-data-planes"
+        it: Releases retained data planes hourly from a CronWorkflow the composition owns
+    -   asserts:
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "range \\$i, \\$dataPlane := \\$dataPlanes \\}\\}\\s+\\{\\{- \\$storageAccountName := index \\$storageAccountNames \\$dataPlane \\}\\}"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "range \\$dataPlane := \\$dataPlanes \\}\\}\\s+apiVersion: authorization[^\\v]*\\s+kind: RoleAssignment\\s+metadata:\\s+annotations:\\s+gotemplating[^:]*: liferay-storage-role-assignment-"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "range \\$dataPlane := \\$dataPlanes \\}\\}\\s+apiVersion: authorization[^\\v]*\\s+kind: RoleAssignment\\s+metadata:\\s+annotations:\\s+gotemplating[^:]*: liferay-backup-vault-storage-"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "range \\$dataPlane := \\$dataPlanes \\}\\}\\s+apiVersion: authorization[^\\v]*\\s+kind: RoleAssignment\\s+metadata:\\s+annotations:\\s+gotemplating[^:]*: liferay-backup-restore-storage-"
+        it: Renders each storage account and its role assignments only while its plane is rendered
+    -   asserts:
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
                     pattern: R/%sT%s:00\+00:00/%s
             -   documentIndex: 0
                 matchRegex:
@@ -547,18 +707,16 @@ tests:
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
-                    pattern: "sourceServerIdSelector:\\s+matchControllerRef: true\\s+matchLabels:\\s+dataPlane: \\{\\{ \\$activeDataPlane \\}\\}"
-            -   documentIndex: 0
-                notMatchRegex:
-                    path: spec.pipeline[1].input.inline.template
-                    pattern: "sourceServerId: "
-        it: Restores the inactive plane to a point in time through initProvider
-    -   asserts:
+                    pattern: "\\$restoreSourceDatabaseServerName := dig \\(\\$databaseSpec.restoreSourceDataPlane \\| default \\(index \\$dataPlaneKeys \\$activeDataPlane\\)\\) \"databaseServer\" \"\" \\$dataPlaneNames"
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
-                    pattern: "range \\$dataPlane := list \"blue\" \"green\" \\}\\}\\s+\\{\\{- \\$backupRoleId := dig"
-        it: Retains each backup instance once created so a promotion never soft deletes one
+                    pattern: "sourceServerId: /subscriptions/[^\\n]+/flexibleServers/\\{\\{ \\$restoreSourceDatabaseServerName \\}\\}"
+            -   documentIndex: 0
+                notMatchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: sourceServerIdSelector
+        it: Restores the inactive plane to a point in time through initProvider
     -   asserts:
             -   documentIndex: 0
                 matchRegex:

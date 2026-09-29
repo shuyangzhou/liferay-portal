@@ -1,10 +1,244 @@
 components:
     schemas:
+        ApprovedFragmentVersion:
+            allOf:
+                -   $ref: "#/components/schemas/FragmentVersion"
+                -   properties:
+                        configuration:
+                            $ref: "#/components/schemas/Configuration"
+                            description:
+                                The fragment version's configuration, which defines the field sets a page creator can use to customize the fragment. Reading a fragment whose stored configuration does not match the configuration schema fails.
+            description:
+                An approved (published) version of a fragment. Its configuration must match the configuration schema.
+            type: object
         BasicFragment:
             allOf:
                 -   $ref: "#/components/schemas/Fragment"
             description:
                 A basic fragment entry.
+            type: object
+        CategoryFragmentConfigurationFieldDefaultValue:
+            description:
+                The default value of a `categoryTreeNodeSelector` fragment configuration field. It mirrors the shape of the corresponding fragment configuration field value of the headless admin site API.
+            properties:
+                value:
+                    $ref: ../../headless-admin-site/headless-admin-site-impl/rest-openapi.yaml#ItemExternalReference
+                    description:
+                        A reference to the selected category or vocabulary. The `className` distinguishes a category from a vocabulary.
+            type: object
+        CategoryTreeNodeSelectorField:
+            allOf:
+                -   $ref: "#/components/schemas/Field"
+                -   properties:
+                        defaultValue:
+                            $ref: "#/components/schemas/CategoryFragmentConfigurationFieldDefaultValue"
+                            description:
+                                The field's default value.
+                        typeOptions:
+                            $ref: "#/components/schemas/TypeOptions"
+                            description:
+                                The field's type-specific options.
+            description:
+                A `categoryTreeNodeSelector` field of a fragment configuration's field set.
+            type: object
+        CheckboxField:
+            allOf:
+                -   $ref: "#/components/schemas/Field"
+                -   properties:
+                        defaultValue:
+                            $ref: "#/components/schemas/CheckboxFragmentConfigurationFieldDefaultValue"
+                            description:
+                                The field's default value.
+                        typeOptions:
+                            $ref: "#/components/schemas/CheckboxTypeOptions"
+                            description:
+                                The field's type-specific options.
+            description:
+                A `checkbox` field of a fragment configuration's field set.
+            type: object
+        CheckboxFragmentConfigurationFieldDefaultValue:
+            description:
+                The default value of a `checkbox` fragment configuration field. It mirrors the shape of the corresponding fragment configuration field value of the headless admin site API.
+            properties:
+                value:
+                    description:
+                        A flag that indicates whether the field is checked by default. The stored strings `true` and `false` are returned as booleans.
+                    type: boolean
+            type: object
+        CheckboxTypeOptions:
+            allOf:
+                -   $ref: "#/components/schemas/TypeOptions"
+                -   properties:
+                        displayType:
+                            description:
+                                How the field is displayed in the page editor.
+                            enum: [checkbox, toggle]
+                            type: string
+            description:
+                The type-specific options of a `checkbox` fragment configuration field.
+            type: object
+        ColorPaletteField:
+            allOf:
+                -   $ref: "#/components/schemas/Field"
+                -   properties:
+                        defaultValue:
+                            $ref: "#/components/schemas/ColorPaletteFragmentConfigurationFieldDefaultValue"
+                            description:
+                                The field's default value.
+                        typeOptions:
+                            $ref: "#/components/schemas/TypeOptions"
+                            description:
+                                The field's type-specific options.
+            description:
+                A `colorPalette` field of a fragment configuration's field set.
+            type: object
+        ColorPaletteFragmentConfigurationFieldDefaultValue:
+            description:
+                The default value of a `colorPalette` fragment configuration field. It mirrors the shape of the corresponding fragment configuration field value of the headless admin site API.
+            properties:
+                value:
+                    $ref: ../../headless-admin-site/headless-admin-site-impl/rest-openapi.yaml#ColorPaletteValue
+                    description:
+                        The selected color: either a `color` from the style book's color palette, or a `cssClass` and `rgbValue` pair.
+            type: object
+        ColorPickerField:
+            allOf:
+                -   $ref: "#/components/schemas/Field"
+                -   properties:
+                        defaultValue:
+                            $ref: "#/components/schemas/ColorPickerFragmentConfigurationFieldDefaultValue"
+                            description:
+                                The field's default value.
+                        typeOptions:
+                            $ref: "#/components/schemas/TypeOptions"
+                            description:
+                                The field's type-specific options.
+            description:
+                A `colorPicker` field of a fragment configuration's field set.
+            type: object
+        ColorPickerFragmentConfigurationFieldDefaultValue:
+            description:
+                The default value of a `colorPicker` fragment configuration field. It mirrors the shape of the corresponding fragment configuration field value of the headless admin site API.
+            properties:
+                value:
+                    description:
+                        The name of a color token from the style book, or an RGB hex color such as `#FFFFFF` when the style book has no color tokens.
+                    type: string
+            type: object
+        Configuration:
+            description:
+                A fragment's configuration, which defines the field sets a page creator can use to customize the fragment.
+            properties:
+                fieldSets:
+                    description:
+                        The configuration's field sets.
+                    items:
+                        $ref: "#/components/schemas/FieldSet"
+                    type: array
+            required:
+                -   fieldSets
+            type: object
+        Dependency:
+            description:
+                A visibility condition on another fragment configuration field's value. The dependent field is shown only when the condition is met.
+            properties:
+                type:
+                    description:
+                        The comparison operator applied to the other field's value.
+                    enum: [equal, not-equal]
+                    type: string
+                value:
+                    description:
+                        The value the other field's value is compared with.
+                    type: string
+            required:
+                -   type
+                -   value
+            type: object
+        DraftFragmentVersion:
+            allOf:
+                -   $ref: "#/components/schemas/FragmentVersion"
+                -   properties:
+                        configuration:
+                            description:
+                                The fragment version's raw configuration JSON. A draft's configuration is not validated, so any value is preserved as it is stored.
+                            type: string
+            description:
+                A draft version of a fragment. Its configuration is not validated against the configuration schema.
+            type: object
+        Field:
+            description:
+                A customizable field of a fragment configuration's field set.
+            discriminator:
+                mapping:
+                    categoryTreeNodeSelector: "#/components/schemas/CategoryTreeNodeSelectorField"
+                    checkbox: "#/components/schemas/CheckboxField"
+                    colorPalette: "#/components/schemas/ColorPaletteField"
+                    colorPicker: "#/components/schemas/ColorPickerField"
+                    itemSelector: "#/components/schemas/ItemSelectorField"
+                    length: "#/components/schemas/LengthField"
+                    select: "#/components/schemas/SelectField"
+                    text: "#/components/schemas/TextField"
+                    url: "#/components/schemas/URLField"
+                propertyName: type
+            properties:
+                dataType:
+                    description:
+                        The data type the field's value is converted to when it is rendered.
+                    enum: [array, double, int, object, string]
+                    type: string
+                description:
+                    description:
+                        The field's description.
+                    type: string
+                label:
+                    description:
+                        The field's label.
+                    type: string
+                localizable:
+                    description:
+                        A flag that indicates whether the field's value can be localized.
+                    type: boolean
+                name:
+                    description:
+                        The field's name. It can only contain alphanumeric characters.
+                    minLength: 1
+                    pattern: ^[A-Za-z0-9]+$
+                    type: string
+                type:
+                    description:
+                        The field's type.
+                    enum: [categoryTreeNodeSelector, checkbox, colorPalette, colorPicker, itemSelector, length, select, text, url]
+                    type: string
+            required:
+                -   name
+                -   type
+            type: object
+        FieldSet:
+            description:
+                A group of related fields in a fragment's configuration.
+            properties:
+                configurationRole:
+                    description:
+                        The role of the field set in the page editor's configuration panel.
+                    enum: [advanced, style]
+                    type: string
+                customComponentModule:
+                    description:
+                        The JavaScript module loaded to render the field set with a custom component.
+                    type: string
+                fields:
+                    description:
+                        The field set's fields.
+                    items:
+                        $ref: "#/components/schemas/Field"
+                    type: array
+                label:
+                    description:
+                        The field set's label.
+                    type: string
+            required:
+                -   fields
             type: object
         FieldType:
             description:
@@ -169,11 +403,12 @@ components:
         FragmentVersion:
             description:
                 A version of a fragment (draft or published).
+            discriminator:
+                mapping:
+                    Approved: "#/components/schemas/ApprovedFragmentVersion"
+                    Draft: "#/components/schemas/DraftFragmentVersion"
+                propertyName: status
             properties:
-                configuration:
-                    description:
-                        The fragment version's JSON configuration.
-                    type: string
                 css:
                     description:
                         The fragment version's CSS code.
@@ -191,6 +426,113 @@ components:
                         The fragment version's status (Approved or Draft).
                     enum: [Approved, Draft]
                     type: string
+            type: object
+        ItemFragmentConfigurationFieldDefaultValue:
+            description:
+                The default value of an `itemSelector` fragment configuration field. It mirrors the shape of the corresponding fragment configuration field value of the headless admin site API.
+            properties:
+                value:
+                    $ref: ../../headless-admin-site/headless-admin-site-impl/rest-openapi.yaml#ItemValue
+                    description:
+                        A reference to the selected item. The item is referenced by external reference code, which survives promoting the fragment across environments. The value's `templateReference` is not stored: a fragment configuration cannot carry the template that renders the item.
+            type: object
+        ItemSelectorField:
+            allOf:
+                -   $ref: "#/components/schemas/Field"
+                -   properties:
+                        defaultValue:
+                            $ref: "#/components/schemas/ItemFragmentConfigurationFieldDefaultValue"
+                            description:
+                                The field's default value.
+                        typeOptions:
+                            $ref: "#/components/schemas/ItemSelectorTypeOptions"
+                            description:
+                                The field's type-specific options.
+            description:
+                An `itemSelector` field of a fragment configuration's field set.
+            type: object
+        ItemSelectorTypeOptions:
+            allOf:
+                -   $ref: "#/components/schemas/TypeOptions"
+                -   properties:
+                        className:
+                            description:
+                                The class name of the items that can be selected.
+                            type: string
+                        enableSelectTemplate:
+                            description:
+                                A flag that indicates whether a template can be selected for the item.
+                            type: boolean
+                        itemSubtype:
+                            description:
+                                The subtype of the items that can be selected.
+                            type: string
+                        itemType:
+                            description:
+                                The type of the items that can be selected.
+                            type: string
+                        mimeTypes:
+                            description:
+                                The MIME types of the files that can be selected.
+                            items:
+                                type: string
+                            type: array
+            description:
+                The type-specific options of an `itemSelector` fragment configuration field.
+            type: object
+        LengthField:
+            allOf:
+                -   $ref: "#/components/schemas/Field"
+                -   properties:
+                        defaultValue:
+                            $ref: "#/components/schemas/LengthFragmentConfigurationFieldDefaultValue"
+                            description:
+                                The field's default value.
+                        typeOptions:
+                            $ref: "#/components/schemas/TypeOptions"
+                            description:
+                                The field's type-specific options.
+            description:
+                A `length` field of a fragment configuration's field set.
+            type: object
+        LengthFragmentConfigurationFieldDefaultValue:
+            description:
+                The default value of a `length` fragment configuration field. It mirrors the shape of the corresponding fragment configuration field value of the headless admin site API.
+            properties:
+                value:
+                    description:
+                        A CSS length value, such as `12px` or `50%`, or any CSS expression the page editor's length input accepts as a custom unit, such as `auto`.
+                    type: string
+            type: object
+        NumberValidation:
+            allOf:
+                -   $ref: "#/components/schemas/Validation"
+                -   properties:
+                        max:
+                            description:
+                                The maximum value allowed.
+                            format: int64
+                            type: integer
+                        min:
+                            description:
+                                The minimum value allowed.
+                            format: int64
+                            type: integer
+            description:
+                A `number` validation of a `text` fragment configuration field's value.
+            type: object
+        PatternValidation:
+            allOf:
+                -   $ref: "#/components/schemas/Validation"
+                -   properties:
+                        regexp:
+                            description:
+                                The regular expression the field's value must match.
+                            type: string
+            description:
+                A `pattern` validation of a `text` fragment configuration field's value.
+            required:
+                -   regexp
             type: object
         ResourceFile:
             description:
@@ -284,9 +626,181 @@ components:
                         The external reference code of the resource folder's parent resource folder, used to reference an existing parent. Takes precedence over `parentResourceFolder` when both are set.
                     type: string
             type: object
+        SelectField:
+            allOf:
+                -   $ref: "#/components/schemas/Field"
+                -   properties:
+                        defaultValue:
+                            $ref: "#/components/schemas/SelectFragmentConfigurationFieldDefaultValue"
+                            description:
+                                The field's default value.
+                        typeOptions:
+                            $ref: "#/components/schemas/SelectTypeOptions"
+                            description:
+                                The field's type-specific options.
+            description:
+                A `select` field of a fragment configuration's field set.
+            type: object
+        SelectFragmentConfigurationFieldDefaultValue:
+            description:
+                The default value of a `select` fragment configuration field. It mirrors the shape of the corresponding fragment configuration field value of the headless admin site API.
+            properties:
+                value:
+                    description:
+                        The `value` of one of the field's `validValues`.
+                    type: string
+            type: object
+        SelectTypeOptions:
+            allOf:
+                -   $ref: "#/components/schemas/TypeOptions"
+                -   properties:
+                        validValues:
+                            description:
+                                The values the field can take.
+                            items:
+                                $ref: "#/components/schemas/ValidValue"
+                            minItems: 1
+                            type: array
+            description:
+                The type-specific options of a `select` fragment configuration field.
+            type: object
+        TextField:
+            allOf:
+                -   $ref: "#/components/schemas/Field"
+                -   properties:
+                        defaultValue:
+                            $ref: "#/components/schemas/TextFragmentConfigurationFieldDefaultValue"
+                            description:
+                                The field's default value.
+                        typeOptions:
+                            $ref: "#/components/schemas/TextTypeOptions"
+                            description:
+                                The field's type-specific options.
+            description:
+                A `text` field of a fragment configuration's field set.
+            type: object
+        TextFragmentConfigurationFieldDefaultValue:
+            description:
+                The default value of a `text` fragment configuration field. It mirrors the shape of the corresponding fragment configuration field value of the headless admin site API.
+            properties:
+                value:
+                    description:
+                        The field's default text. When the field is localizable, it is a language key that is translated when the fragment is rendered.
+                    type: string
+            type: object
+        TextTypeOptions:
+            allOf:
+                -   $ref: "#/components/schemas/TypeOptions"
+                -   properties:
+                        placeholder:
+                            description:
+                                The placeholder shown when the field is empty.
+                            type: string
+                        validation:
+                            $ref: "#/components/schemas/Validation"
+                            description:
+                                The validation applied to the field's value.
+            description:
+                The type-specific options of a `text` fragment configuration field.
+            type: object
+        TextValidation:
+            allOf:
+                -   $ref: "#/components/schemas/Validation"
+                -   properties:
+                        maxLength:
+                            description:
+                                The maximum length allowed.
+                            format: int64
+                            type: integer
+                        minLength:
+                            description:
+                                The minimum length allowed.
+                            format: int64
+                            type: integer
+            description:
+                An `email`, `text`, or `url` validation of a `text` fragment configuration field's value.
+            type: object
+        TypeOptions:
+            description:
+                The type-specific options of a fragment configuration field.
+            properties:
+                dependency:
+                    additionalProperties:
+                        $ref: "#/components/schemas/Dependency"
+                    description:
+                        The field's visibility conditions, keyed by the name of the field each condition applies to.
+                    type: object
+            type: object
+        URLField:
+            allOf:
+                -   $ref: "#/components/schemas/Field"
+                -   properties:
+                        defaultValue:
+                            $ref: "#/components/schemas/URLFragmentConfigurationFieldDefaultValue"
+                            description:
+                                The field's default value.
+                        typeOptions:
+                            $ref: "#/components/schemas/TypeOptions"
+                            description:
+                                The field's type-specific options.
+            description:
+                A `url` field of a fragment configuration's field set.
+            type: object
+        URLFragmentConfigurationFieldDefaultValue:
+            description:
+                The default value of a `url` fragment configuration field. It mirrors the shape of the corresponding fragment configuration field value of the headless admin site API.
+            properties:
+                value:
+                    $ref: ../../headless-admin-site/headless-admin-site-impl/rest-openapi.yaml#URLValue
+                    description:
+                        Either a manual link (`Href`) or a site page referenced by external reference code (`SitePage`).
+            type: object
+        ValidValue:
+            description:
+                A value a `select` fragment configuration field can take.
+            properties:
+                label:
+                    description:
+                        The label shown for the value.
+                    type: string
+                value:
+                    description:
+                        The value.
+                    type: string
+            required:
+                -   value
+            type: object
+        Validation:
+            description:
+                The validation applied to a `text` fragment configuration field's value.
+            discriminator:
+                mapping:
+                    email: "#/components/schemas/TextValidation"
+                    number: "#/components/schemas/NumberValidation"
+                    pattern: "#/components/schemas/PatternValidation"
+                    text: "#/components/schemas/TextValidation"
+                    url: "#/components/schemas/TextValidation"
+                propertyName: type
+            properties:
+                errorMessage:
+                    description:
+                        The message shown when the field's value is not valid.
+                    type: string
+                required:
+                    description:
+                        A flag that indicates whether the field's value is mandatory.
+                    type: boolean
+                type:
+                    description:
+                        The validation's type.
+                    enum: [email, number, pattern, text, url]
+                    type: string
+            required:
+                -   type
+            type: object
 info:
     description:
-        "A Java client JAR is available for use with the group ID 'com.liferay', artifact ID 'com.liferay.headless.admin.fragment.client', and version '1.0.5'."
+        "A Java client JAR is available for use with the group ID 'com.liferay', artifact ID 'com.liferay.headless.admin.fragment.client', and version '1.0.6'."
     license:
         name: Apache 2.0
         url: http://www.apache.org/licenses/LICENSE-2.0.html

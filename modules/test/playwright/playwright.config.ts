@@ -78,6 +78,7 @@ import {config as systemSettingsWithUIConfig} from './tests/configuration-admin-
 import {config as consentManagementPlatformIntegrationConfig} from './tests/consent-management-platform-integration/main/config';
 import {config as contactsWebConfig} from './tests/contacts-web/main/config';
 import {config as contentDashboardWebConfig} from './tests/content-dashboard-web/main/config';
+import {config as contentMarketingPlatformWebConfig} from './tests/content-marketing-platform-web/main/config';
 import {config as cookiesBannerWebConfig} from './tests/cookies-banner-web/main/config';
 import {config as dataCleanupConfig} from './tests/data-cleanup/main/config';
 import {config as depotWebConfig} from './tests/depot-web/main/config';
@@ -105,6 +106,7 @@ import {config as frontendJsAuiWebSearchContainerSelectConfig} from './tests/fro
 import {config as frontendJsBootstrapSupportWebConfig} from './tests/frontend-js-bootstrap-support-web/main/config';
 import {config as frontendJsClayWebConfig} from './tests/frontend-js-clay-web/main/config';
 import {config as frontendJsComponentsWebConfig} from './tests/frontend-js-components-web/main/config';
+import {config as frontendJsImageEditorWebConfig} from './tests/frontend-js-image-editor-web/main/config';
 import {config as frontendJsItemSelectorWebConfig} from './tests/frontend-js-item-selector-web/main/config';
 import {config as frontendJsSpaWebConfig} from './tests/frontend-js-spa-web/main/config';
 import {config as frontendJsWebConfig} from './tests/frontend-js-web/main/config';
@@ -238,7 +240,6 @@ import {config as pageManagementSiteTeardownConfig} from './tests/setup/page-man
 import {config as siteCmsSiteConfig} from './tests/setup/site-cms-site/main/config';
 import {config as siteCmsSiteTeardownConfig} from './tests/setup/site-cms-site/teardown/config';
 import {config as siteAdminWebConfig} from './tests/site-admin-web/main/config';
-import {config as siteCmpSiteInitializerConfig} from './tests/site-cmp-site-initializer/main/config';
 import {config as siteCmsSiteInitializerConfig} from './tests/site-cms-site-initializer/main/config';
 import {config as siteCmsSiteInitializerPermissionsConfig} from './tests/site-cms-site-initializer/permissions/config';
 import {config as siteCmsSiteInitializerStructureBuilderConfig} from './tests/site-cms-site-initializer/structure-builder/config';
@@ -357,6 +358,7 @@ export default defineConfig({
 		systemSettingsOverrideConfig,
 		systemSettingsWithUIConfig,
 		contentDashboardWebConfig,
+		contentMarketingPlatformWebConfig,
 		cookiesBannerWebConfig,
 		customerConfig,
 		depotWebConfig,
@@ -384,6 +386,7 @@ export default defineConfig({
 		frontendJsBootstrapSupportWebConfig,
 		frontendJsClayWebConfig,
 		frontendJsComponentsWebConfig,
+		frontendJsImageEditorWebConfig,
 		frontendJsItemSelectorWebConfig,
 		frontendJsSpaWebConfig,
 		frontendJsWebConfig,
@@ -515,7 +518,6 @@ export default defineConfig({
 		serverAdminWebConfig,
 		serverAdminWebDatabaseMigrationConfig,
 		siteAdminWebConfig,
-		siteCmpSiteInitializerConfig,
 		siteCmsSiteInitializerConfig,
 		siteCmsSiteInitializerPermissionsConfig,
 		siteCmsSiteInitializerStructureBuilderConfig,

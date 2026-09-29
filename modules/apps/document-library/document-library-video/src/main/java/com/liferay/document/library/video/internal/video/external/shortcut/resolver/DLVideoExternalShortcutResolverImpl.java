@@ -13,7 +13,9 @@ import com.liferay.document.library.video.internal.helper.DLVideoExternalShortcu
 import com.liferay.document.library.video.internal.helper.DLVideoExternalShortcutMetadataHelperFactory;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.repository.model.FileVersion;
+import com.liferay.portal.kernel.util.Validator;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -104,8 +106,19 @@ public class DLVideoExternalShortcutResolverImpl
 
 			@Override
 			public String renderHTML(HttpServletRequest httpServletRequest) {
-				return dlVideoExternalShortcutMetadataHelper.getFieldValue(
-					DLVideoConstants.DDM_FIELD_NAME_HTML);
+				String url = getURL();
+
+				if (Validator.isNull(url)) {
+					return StringPool.BLANK;
+				}
+
+				DLVideoExternalShortcut dlVideoExternalShortcut = resolve(url);
+
+				if (dlVideoExternalShortcut == null) {
+					return StringPool.BLANK;
+				}
+
+				return dlVideoExternalShortcut.renderHTML(httpServletRequest);
 			}
 
 		};

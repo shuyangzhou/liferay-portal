@@ -33,9 +33,17 @@ const test = mergeTests(
 
 const PICKLIST = 'CMS Bulk Action Statuses';
 
+const RELATED_CONTENT_LABEL = 'Reference';
+
 function getDiffBox(frame: FrameLocator, fieldName: string): Locator {
 	return frame.locator(
 		`[data-field-name="ObjectField_${fieldName}"] .cms-compare-versions-diff`
+	);
+}
+
+function getRelatedContentDiffBox(frame: FrameLocator): Locator {
+	return frame.locator(
+		'[data-field-name^="ObjectField_r_"] .cms-compare-versions-diff'
 	);
 }
 
@@ -83,6 +91,23 @@ async function selectPicklistOption(
 	await page.getByRole('option', {name: option}).click();
 }
 
+async function selectRelatedContent(page: Page, title: string) {
+	const combobox = page.getByRole('combobox', {
+		exact: true,
+		name: RELATED_CONTENT_LABEL,
+	});
+
+	const option = page.getByRole('option', {exact: true, name: title});
+
+	await expect(async () => {
+		await combobox.fill(title, {timeout: 2000});
+
+		await expect(option).toBeVisible({timeout: 3000});
+	}).toPass({timeout: 30000});
+
+	await option.click();
+}
+
 async function uploadAttachment(page: Page, fileName: string) {
 	const fileChooserPromise = page.waitForEvent('filechooser');
 
@@ -97,7 +122,7 @@ async function uploadAttachment(page: Page, fileName: string) {
 
 test(
 	'Compares every field type against the previous version',
-	{tag: '@LPD-101811'},
+	{tag: ['@LPD-101811', '@LPD-106606']},
 	async ({
 		apiHelpers,
 		assetsPage,
@@ -109,13 +134,26 @@ test(
 		const contentTitle = `zoo content ${getRandomString()}`;
 		const revisedTitle = `${contentTitle} revised`;
 		const spaceName = `Space ${getRandomString()}`;
+		const firstRelatedTitle = `first reference ${getRandomString()}`;
+		const secondRelatedTitle = `second reference ${getRandomString()}`;
 
-		await test.step('Create a space', async () => {
+		await test.step('Create a space with two contents to reference', async () => {
 			await apiHelpers.headlessAssetLibrary.createAssetLibrary({
 				name: spaceName,
 				settings: {},
 				type: 'Space',
 			});
+
+			for (const title of [firstRelatedTitle, secondRelatedTitle]) {
+				await apiHelpers.objectEntry.postObjectEntry(
+					{
+						objectEntryFolderExternalReferenceCode: 'L_CONTENTS',
+						title,
+					},
+					'cms/basic-web-contents',
+					spaceName
+				);
+			}
 		});
 
 		await test.step('Create a structure with every field type', async () => {
@@ -138,6 +176,8 @@ test(
 				['Date', 'Day', {}],
 				['Date and Time', 'Moment', {}],
 				['Boolean', 'Flag', {}],
+				['Email', 'Contact', {}],
+				['Phone Number', 'Line', {}],
 				['Select from List', 'State', {picklist: PICKLIST}],
 				[
 					'Select from List',
@@ -156,6 +196,11 @@ test(
 				});
 			}
 
+			await structureBuilderPage.addRelatedContent(
+				RELATED_CONTENT_LABEL,
+				'Basic Web Content'
+			);
+
 			await structureBuilderPage.publishStructure();
 		});
 
@@ -170,9 +215,13 @@ test(
 				{label: 'Essay', value: 'First long text value.'},
 				{label: 'Amount', value: '10'},
 				{label: 'Ratio', value: '1.5'},
+				{label: 'Contact', value: 'first@liferay.com'},
+				{label: 'Line', value: '600111222'},
 				{label: 'Day', type: 'Date', value: '08/28/2026'},
 				{label: 'Moment', type: 'Date', value: '08/28/2026 10:30 AM'},
 			]);
+
+			await selectRelatedContent(page, firstRelatedTitle);
 
 			await selectPicklistOption(page, 'State', 'Completed');
 			await selectPicklistOption(page, 'Tags', 'Initial');
@@ -194,10 +243,14 @@ test(
 				{label: 'Essay', value: 'Second long text value.'},
 				{label: 'Amount', value: '25'},
 				{label: 'Ratio', value: '3.75'},
+				{label: 'Contact', value: 'second@liferay.com'},
+				{label: 'Line', value: '600999888'},
 				{label: 'Day', type: 'Date', value: '09/15/2026'},
 				{label: 'Moment', type: 'Date', value: '09/15/2026 04:45 PM'},
 				{label: 'Flag', type: 'Checkbox', value: true},
 			]);
+
+			await selectRelatedContent(page, secondRelatedTitle);
 
 			await selectPicklistOption(page, 'State', 'Failed');
 			await selectPicklistOption(page, 'Tags', 'Started');
@@ -285,7 +338,7 @@ test(
 			}
 		});
 
-		await test.step('A changed date is marked as a single value', async () => {
+		await test.step('A changed atomic value is marked as one unit', async () => {
 			const leftDay = getDiffBox(leftFrame, 'day').locator(
 				'.diff-html-added'
 			);
@@ -300,6 +353,33 @@ test(
 			await expect(
 				getDiffBox(leftFrame, 'moment').locator('.diff-html-added')
 			).toHaveText('09/15/2026, 04:45 PM');
+
+			const atomicCases: [string, string, string][] = [
+				['contact', 'second@liferay.com', 'first@liferay.com'],
+				['line', '+1600999888', '+1600111222'],
+				['ratio', '3.75', '1.5'],
+			];
+
+			for (const [fieldName, leftValue, rightValue] of atomicCases) {
+				await expect(
+					getDiffBox(leftFrame, fieldName).locator('.diff-html-added')
+				).toHaveText(leftValue);
+				await expect(
+					getDiffBox(rightFrame, fieldName).locator(
+						'.diff-html-added'
+					)
+				).toHaveText(rightValue);
+			}
+		});
+
+		await test.step('A changed reference is marked by its title', async () => {
+			await expect(
+				getRelatedContentDiffBox(leftFrame).locator('.diff-html-added')
+			).toHaveText(secondRelatedTitle);
+
+			await expect(
+				getRelatedContentDiffBox(rightFrame).locator('.diff-html-added')
+			).toHaveText(firstRelatedTitle);
 		});
 
 		await test.step('A replaced attachment shows each version thumbnail and file name', async () => {
@@ -336,7 +416,7 @@ test(
 
 test(
 	'Falls back to the default language and shows an empty state for missing translations',
-	{tag: '@LPD-104103'},
+	{tag: ['@LPD-104103', '@LPD-106618']},
 	async ({
 		apiHelpers,
 		assetsPage,
@@ -457,6 +537,207 @@ test(
 			await expect(
 				page.getByText('No Translation Available')
 			).toBeVisible();
+		});
+
+		await test.step('The version can still be changed from the empty state', async () => {
+			await page
+				.getByRole('combobox', {
+					name: /Select a version. Current version: 1/,
+				})
+				.click();
+
+			await page.getByRole('option', {name: 'Version 2'}).click();
+
+			await expect(
+				page.getByText('No Translation Available')
+			).toBeHidden();
+
+			await expectDiffBoxToShow(rightFrame, 'words', 'Green');
+		});
+	}
+);
+
+test(
+	'Keeps both versions read only and aligned in a single scroll',
+	{tag: '@LPD-106618'},
+	async ({
+		apiHelpers,
+		assetsPage,
+		contentsPage,
+		page,
+		structureBuilderPage,
+	}) => {
+		const referencedStructureLabel = `Nested${getRandomInt()}`;
+		const structureLabel = `Scroll${getRandomInt()}`;
+		const contentTitle = `scroll content ${getRandomString()}`;
+		const spaceName = `Space ${getRandomString()}`;
+
+		await test.step('Create a space and a structure with a repeatable group', async () => {
+			await apiHelpers.headlessAssetLibrary.createAssetLibrary({
+				name: spaceName,
+				settings: {},
+				type: 'Space',
+			});
+
+			await structureBuilderPage.createStructureFromData({
+				label: referencedStructureLabel,
+				name: referencedStructureLabel,
+				page: structureBuilderPage,
+				publish: true,
+			});
+
+			await structureBuilderPage.createStructureFromData({
+				label: structureLabel,
+				name: structureLabel,
+				page: structureBuilderPage,
+				publish: false,
+			});
+
+			await structureBuilderPage.addField('Long Text');
+
+			await structureBuilderPage.changeFieldSettings({label: 'Essay'});
+
+			await structureBuilderPage.addField('Decimal');
+
+			await structureBuilderPage.changeFieldSettings({label: 'Ratio'});
+
+			await structureBuilderPage.addReferencedStructures([
+				referencedStructureLabel,
+			]);
+
+			await structureBuilderPage.publishStructure();
+		});
+
+		await test.step('Publish two versions with a long text', async () => {
+			await contentsPage.goto();
+
+			await contentsPage.createContent(structureLabel, spaceName);
+
+			await contentsPage.fillData([
+				{label: 'Title', value: contentTitle},
+				{
+					label: 'Essay',
+					value: Array.from(
+						{length: 30},
+						(_, index) => `Line ${index + 1}.`
+					).join('\n'),
+				},
+				{label: 'Ratio', value: '1.5'},
+			]);
+
+			await page
+				.locator('.lfr-layout-structure-item-form-relationship')
+				.getByRole('textbox', {exact: true, name: 'Title'})
+				.fill('Nested title');
+
+			await contentsPage.saveContent();
+
+			await contentsPage.editContent(contentTitle);
+
+			await contentsPage.fillData([{label: 'Ratio', value: '3.75'}]);
+
+			await contentsPage.saveContent();
+		});
+
+		await test.step('Open the comparison of both versions', async () => {
+			await assetsPage.execItemAction({
+				action: 'View History',
+				filter: contentTitle,
+			});
+
+			await page
+				.getByRole('button', {name: `${contentTitle} Actions`})
+				.first()
+				.click();
+
+			await page.getByRole('menuitem', {name: 'Compare to...'}).click();
+
+			await page
+				.getByRole('combobox', {
+					name: 'Select a Version for Comparison',
+				})
+				.click();
+
+			await page.getByRole('option', {name: 'Version 1'}).click();
+		});
+
+		const leftFrame = page.frameLocator('iframe[title="Version 2"]');
+		const rightFrame = page.frameLocator('iframe[title="Version 1"]');
+
+		await test.step('The key help icon shows a tooltip with its label', async () => {
+			await page
+				.getByRole('button', {name: 'Compare Versions Key Help'})
+				.hover();
+
+			await expect(
+				page
+					.getByRole('tooltip')
+					.filter({hasText: 'Compare Versions Key Help'})
+			).toBeVisible();
+
+			await page.mouse.move(0, 0);
+		});
+
+		await test.step('Both versions scroll together in a single scroll', async () => {
+			await expectDiffBoxToShow(leftFrame, 'ratio', '3.75');
+			await expectDiffBoxToShow(rightFrame, 'ratio', '1.5');
+
+			for (const frame of [leftFrame, rightFrame]) {
+				await expect(async () => {
+					const {clientHeight, scrollHeight} = await frame
+						.locator('#main-content')
+						.evaluate((element) => ({
+							clientHeight: element.clientHeight,
+							scrollHeight: element.scrollHeight,
+						}));
+
+					expect(scrollHeight).toBeLessThanOrEqual(clientHeight + 1);
+				}).toPass();
+			}
+
+			const panes = page.locator('.cms-compare-versions-panes');
+
+			const {clientHeight, scrollHeight} = await panes.evaluate(
+				(element) => ({
+					clientHeight: element.clientHeight,
+					scrollHeight: element.scrollHeight,
+				})
+			);
+
+			expect(scrollHeight).toBeGreaterThan(clientHeight);
+		});
+
+		await test.step('The repeatable group is read only', async () => {
+			for (const frame of [leftFrame, rightFrame]) {
+				await expect(
+					frame.locator(
+						'.lfr-layout-structure-item-form-relationship'
+					)
+				).toBeVisible();
+
+				await expect(frame.getByText('Add New')).toHaveCount(0);
+			}
+		});
+
+		await test.step('A changed field keeps the read-only input style', async () => {
+			for (const frame of [leftFrame, rightFrame]) {
+				const field = frame.locator(
+					'[data-field-name="ObjectField_ratio"]'
+				);
+
+				const getBackgroundColor = (locator: Locator) =>
+					locator.evaluate(
+						(element) => getComputedStyle(element).backgroundColor
+					);
+
+				expect(
+					await getBackgroundColor(
+						field.locator('.cms-compare-versions-diff')
+					)
+				).toBe(
+					await getBackgroundColor(field.locator('input[readonly]'))
+				);
+			}
 		});
 	}
 );

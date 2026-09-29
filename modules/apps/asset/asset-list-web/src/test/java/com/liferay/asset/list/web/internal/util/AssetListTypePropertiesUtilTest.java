@@ -88,7 +88,67 @@ public class AssetListTypePropertiesUtilTest {
 			true
 		);
 
+		_portalUtilMockedStatic.when(
+			() -> PortalUtil.getClassName(Mockito.anyLong())
+		).thenThrow(
+			new RuntimeException()
+		);
+
 		_setUpLanguageUtil();
+	}
+
+	@Test
+	public void testGetTypePropertiesJSONArrayEmitsKeywordTypes() {
+		ObjectField objectField = _mockObjectField(
+			ObjectFieldConstants.BUSINESS_TYPE_TEXT, "keyword_field");
+
+		Mockito.when(
+			objectField.isIndexedAsKeyword()
+		).thenReturn(
+			true
+		);
+
+		_setUpObjectDefinition(
+			_CLASS_NAME_ID_1, _LABEL_1, Collections.singletonList(objectField));
+
+		JSONArray typePropertiesJSONArray =
+			AssetListTypePropertiesUtil.getTypePropertiesJSONArray(
+				new long[] {_CLASS_NAME_ID_1}, new long[] {_CLASS_TYPE_ID_1},
+				_COMPANY_ID, LocaleUtil.US);
+
+		JSONObject groupJSONObject = typePropertiesJSONArray.getJSONObject(0);
+
+		JSONArray itemsJSONArray = groupJSONObject.getJSONArray("items");
+
+		String type = null;
+
+		for (int i = 0; i < itemsJSONArray.length(); i++) {
+			JSONObject itemJSONObject = itemsJSONArray.getJSONObject(i);
+
+			String name = itemJSONObject.getString("name");
+
+			if (name.equals("externalReferenceCode")) {
+				type = itemJSONObject.getString("type");
+			}
+		}
+
+		Assert.assertEquals(itemsJSONArray.toString(), "keyword", type);
+
+		groupJSONObject = typePropertiesJSONArray.getJSONObject(1);
+
+		Assert.assertEquals(_LABEL_1, groupJSONObject.getString("label"));
+
+		itemsJSONArray = groupJSONObject.getJSONArray("items");
+
+		Assert.assertEquals(
+			itemsJSONArray.toString(), 1, itemsJSONArray.length());
+
+		JSONObject itemJSONObject = itemsJSONArray.getJSONObject(0);
+
+		Assert.assertEquals("keyword_field", itemJSONObject.getString("name"));
+		Assert.assertEquals(
+			itemJSONObject.toString(), "keyword",
+			itemJSONObject.getString("type"));
 	}
 
 	@Test
@@ -419,6 +479,26 @@ public class AssetListTypePropertiesUtilTest {
 		}
 	}
 
+	@Test
+	public void testGetTypePropertiesJSONArraySkipsNonexistentClassNameId() {
+		_setUpObjectDefinition(
+			_CLASS_NAME_ID_1, _LABEL_1,
+			Collections.singletonList(
+				_mockObjectField(
+					ObjectFieldConstants.BUSINESS_TYPE_TEXT, "title")));
+
+		JSONArray jsonArray =
+			AssetListTypePropertiesUtil.getTypePropertiesJSONArray(
+				new long[] {_CLASS_NAME_ID_1, RandomTestUtil.randomLong()},
+				new long[] {_CLASS_TYPE_ID_1, 0}, _COMPANY_ID, LocaleUtil.US);
+
+		Assert.assertEquals(jsonArray.toString(), 2, jsonArray.length());
+
+		JSONObject groupJSONObject = jsonArray.getJSONObject(1);
+
+		Assert.assertEquals(_LABEL_1, groupJSONObject.getString("label"));
+	}
+
 	private static void _setUpJSONFactoryUtil() {
 		JSONFactoryUtil jsonFactoryUtil = new JSONFactoryUtil();
 
@@ -499,7 +579,7 @@ public class AssetListTypePropertiesUtilTest {
 		);
 
 		_portalUtilMockedStatic.when(
-			() -> PortalUtil.getClassName(classNameId)
+			() -> PortalUtil.fetchClassName(classNameId)
 		).thenReturn(
 			"com.liferay.test.Class" + classNameId
 		);

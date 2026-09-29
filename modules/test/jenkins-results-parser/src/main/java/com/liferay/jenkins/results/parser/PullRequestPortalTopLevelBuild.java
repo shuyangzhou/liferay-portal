@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 
 import org.dom4j.Element;
@@ -69,6 +70,21 @@ public class PullRequestPortalTopLevelBuild
 		}
 
 		return super.getBranchName();
+	}
+
+	public String getPortalUpstreamBranchName() {
+		String portalUpstreamBranchName = getParameterValue(
+			"PORTAL_UPSTREAM_BRANCH_NAME");
+
+		if (!JenkinsResultsParserUtil.isNullOrEmpty(portalUpstreamBranchName)) {
+			return portalUpstreamBranchName;
+		}
+
+		if (Objects.equals(getBranchName(), "master-private")) {
+			return "master";
+		}
+
+		return null;
 	}
 
 	@Override
@@ -251,6 +267,8 @@ public class PullRequestPortalTopLevelBuild
 			portalWorkspace.setBuildProfile(getBuildProfile());
 			portalWorkspace.setOSBAsahGitHubURL(_getOSBAsahGitHubURL());
 			portalWorkspace.setOSBFaroGitHubURL(_getOSBFaroGitHubURL());
+			portalWorkspace.setPortalUpstreamBranchName(
+				getPortalUpstreamBranchName());
 		}
 
 		WorkspaceGitRepository workspaceGitRepository =
@@ -526,22 +544,39 @@ public class PullRequestPortalTopLevelBuild
 			return null;
 		}
 
-		String branchName = getBranchName();
 		Job.BuildProfile buildProfile = getBuildProfile();
 		String jobName = getJobName();
+
+		String portalUpstreamBranchName = getPortalUpstreamBranchName();
+
+		String branchName = getBranchName();
+
+		if (JenkinsResultsParserUtil.isNullOrEmpty(portalUpstreamBranchName)) {
+			portalUpstreamBranchName = branchName;
+		}
+
 		String repositoryName = getBaseGitRepositoryName();
 		String stableTestSuiteName = "stable";
 
+		PortalGitWorkingDirectory portalGitWorkingDirectory = null;
+
+		if (JenkinsResultsParserUtil.isCINode()) {
+			portalGitWorkingDirectory =
+				GitWorkingDirectoryFactory.newPortalGitWorkingDirectory(
+					portalUpstreamBranchName);
+		}
+
 		try {
 			_stableJob = JobFactory.newJob(
-				buildProfile, jobName, null, null, null, branchName, null,
-				repositoryName, stableTestSuiteName, branchName);
+				buildProfile, jobName, null, portalGitWorkingDirectory, null,
+				portalUpstreamBranchName, null, repositoryName,
+				stableTestSuiteName, branchName);
 
 			BuildDatabase buildDatabase = BuildDatabaseUtil.getBuildDatabase();
 
 			buildDatabase.putJob(
 				JobFactory.getKey(
-					buildProfile, jobName, null, branchName, null,
+					buildProfile, jobName, null, portalUpstreamBranchName, null,
 					repositoryName, stableTestSuiteName, branchName),
 				_stableJob);
 		}

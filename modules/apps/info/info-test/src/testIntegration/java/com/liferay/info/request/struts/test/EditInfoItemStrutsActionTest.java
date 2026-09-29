@@ -8,10 +8,13 @@ package com.liferay.info.request.struts.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.service.DLFileEntryLocalService;
+import com.liferay.info.exception.InfoFormPrincipalException;
 import com.liferay.info.exception.InfoFormValidationException;
 import com.liferay.info.field.InfoField;
 import com.liferay.info.form.InfoForm;
+import com.liferay.info.item.InfoItemFieldValues;
 import com.liferay.info.item.InfoItemServiceRegistry;
+import com.liferay.info.item.provider.InfoItemFieldValuesProvider;
 import com.liferay.info.item.provider.InfoItemFormProvider;
 import com.liferay.layout.constants.LayoutTypeSettingsConstants;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
@@ -67,6 +70,7 @@ import com.liferay.portal.kernel.servlet.PipingServletResponse;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.struts.StrutsAction;
 import com.liferay.portal.kernel.test.TestInfo;
+import com.liferay.portal.kernel.test.context.ContextUserReplace;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -80,6 +84,7 @@ import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -129,6 +134,11 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceRegistration;
 
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
@@ -530,6 +540,108 @@ public class EditInfoItemStrutsActionTest {
 			"http://localhost:" + PortalUtil.getPortalServerPort(false) +
 				"/home",
 			null, WorkflowConstants.STATUS_APPROVED);
+	}
+
+	@Test
+	public void testAddInfoItemWithoutDisplayPage() throws Exception {
+		List<Object> infoItems = new ArrayList<>();
+
+		InfoItemFieldValuesProvider<Object> infoItemFieldValuesProvider =
+			new InfoItemFieldValuesProvider<Object>() {
+
+				@Override
+				public InfoItemFieldValues getInfoItemFieldValues(
+					Object infoItem) {
+
+					infoItems.add(infoItem);
+
+					return InfoItemFieldValues.builder(
+					).build();
+				}
+
+			};
+
+		Bundle bundle = FrameworkUtil.getBundle(
+			EditInfoItemStrutsActionTest.class);
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		ServiceRegistration<?> serviceRegistration =
+			bundleContext.registerService(
+				InfoItemFieldValuesProvider.class, infoItemFieldValuesProvider,
+				HashMapDictionaryBuilder.<String, Object>put(
+					"item.class.name", _objectDefinition.getClassName()
+				).put(
+					"service.ranking", Integer.MAX_VALUE
+				).build());
+
+		try {
+			Assert.assertSame(
+				infoItemFieldValuesProvider,
+				_infoItemServiceRegistry.getFirstInfoItemService(
+					InfoItemFieldValuesProvider.class,
+					_objectDefinition.getClassName()));
+
+			_testAddInfoItem(
+				null, null, null, null, null, null, null, null, null, null,
+				null, null,
+				"http://localhost:" + PortalUtil.getPortalServerPort(false) +
+					"/home",
+				null, WorkflowConstants.STATUS_APPROVED);
+
+			Assert.assertTrue(infoItems.toString(), infoItems.isEmpty());
+		}
+		finally {
+			serviceRegistration.unregister();
+		}
+	}
+
+	@Test
+	@TestInfo("LPD-106864")
+	public void testExecuteWithoutUpdatePermission() throws Exception {
+		String stringValue = RandomTestUtil.randomString();
+
+		ObjectEntry objectEntry = _testAddInfoItem(
+			null, null, null, null, null, null, null, null, null, null, null,
+			null, null, stringValue, WorkflowConstants.STATUS_APPROVED);
+
+		User guestUser = _userLocalService.getGuestUser(_group.getCompanyId());
+
+		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
+				guestUser)) {
+
+			MockHttpServletResponse mockHttpServletResponse =
+				new MockHttpServletResponse();
+			UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
+
+			PipingServletResponse pipingServletResponse =
+				new PipingServletResponse(
+					mockHttpServletResponse, unsyncStringWriter);
+
+			UploadPortletRequest uploadPortletRequest =
+				_getUploadPortletRequest(
+					null, null, null, null, objectEntry.getObjectEntryId(),
+					null, null, null, null, null, null, null, null, null, null,
+					null, null, null, WorkflowConstants.STATUS_APPROVED,
+					RandomTestUtil.randomString());
+
+			_processEvents(
+				mockHttpServletResponse, uploadPortletRequest, guestUser);
+
+			_editInfoItemStrutsAction.execute(
+				uploadPortletRequest, pipingServletResponse);
+
+			Assert.assertTrue(
+				SessionErrors.get(uploadPortletRequest, _formItemId) instanceof
+					InfoFormPrincipalException);
+		}
+
+		objectEntry = _objectEntryLocalService.fetchObjectEntry(
+			objectEntry.getObjectEntryId());
+
+		Map<String, Serializable> values = objectEntry.getValues();
+
+		Assert.assertEquals(stringValue, values.get("myText"));
 	}
 
 	@Test

@@ -5,6 +5,7 @@
 
 package com.liferay.site.dsr.site.initializer.internal.instance.lifecycle;
 
+import com.liferay.fragment.service.FragmentEntryLinkLocalService;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.instance.lifecycle.InitialRequestPortalInstanceLifecycleListener;
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
@@ -18,10 +19,17 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.site.dsr.site.initializer.constants.DSRFragmentRendererConstants;
 import com.liferay.site.dsr.site.initializer.internal.constants.DSRConstants;
+import com.liferay.site.dsr.site.initializer.internal.constants.DSRSiteInitializerConstants;
 import com.liferay.site.dsr.site.initializer.internal.util.SiteInitializerUtil;
 import com.liferay.site.initializer.SiteInitializer;
+
+import jakarta.servlet.ServletContext;
+
+import java.util.Objects;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -73,7 +81,15 @@ public class DSRInitialRequestPortalInstanceLifecycleListener
 			Layout layout = _layoutLocalService.fetchLayoutByFriendlyURL(
 				group.getGroupId(), false, DSRConstants.DSR_HOME_FRIENDLY_URL);
 
-			if (layout != null) {
+			if ((layout != null) &&
+				ListUtil.exists(
+					_fragmentEntryLinkLocalService.getFragmentEntryLinksByPlid(
+						layout.getGroupId(), layout.getPlid()),
+					fragmentEntryLink -> Objects.equals(
+						fragmentEntryLink.getRendererKey(),
+						DSRFragmentRendererConstants.
+							FRAGMENT_RENDERER_KEY_DSR_VIEW_ROOMS))) {
+
 				return;
 			}
 
@@ -82,10 +98,18 @@ public class DSRInitialRequestPortalInstanceLifecycleListener
 	}
 
 	@Reference
+	private FragmentEntryLinkLocalService _fragmentEntryLinkLocalService;
+
+	@Reference
 	private GroupLocalService _groupLocalService;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;
+
+	@Reference(
+		target = "(osgi.web.symbolicname=" + DSRSiteInitializerConstants.BUNDLE_SYMBOLIC_NAME + ")"
+	)
+	private ServletContext _servletContext;
 
 	@Reference(
 		target = "(site.initializer.key=com.liferay.site.initializer.dsr)"

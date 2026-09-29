@@ -79,6 +79,7 @@ import com.liferay.portal.kernel.util.CopyLayoutThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.ScopeUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
@@ -1006,8 +1007,27 @@ public class LayoutLocalServiceWrapper
 		return layoutPortletIds;
 	}
 
+	private String _getScopeExternalReferenceCode(
+			String externalReferenceCode, String scopeExternalReferenceCode,
+			long sourceGroupId, Layout targetLayout)
+		throws Exception {
+
+		if (Validator.isNull(externalReferenceCode)) {
+			return null;
+		}
+
+		if (Validator.isNotNull(scopeExternalReferenceCode)) {
+			return ScopeUtil.getItemScopeExternalReferenceCode(
+				scopeExternalReferenceCode, targetLayout.getGroupId());
+		}
+
+		return ScopeUtil.getItemScopeExternalReferenceCode(
+			sourceGroupId, targetLayout.getGroupId());
+	}
+
 	private Map<Long, Long> _getSegmentsExperienceIds(
-		long[] segmentsExperiencesIds, Layout targetLayout, User user) {
+			long[] segmentsExperiencesIds, Layout targetLayout, User user)
+		throws Exception {
 
 		Map<Long, Long> segmentsExperienceIdsMap = new HashMap<>();
 
@@ -1039,7 +1059,11 @@ public class LayoutLocalServiceWrapper
 					targetSegmentsExperience.setSegmentsEntryERC(
 						sourceSegmentsExperience.getSegmentsEntryERC());
 					targetSegmentsExperience.setSegmentsEntryScopeERC(
-						sourceSegmentsExperience.getSegmentsEntryScopeERC());
+						_getScopeExternalReferenceCode(
+							sourceSegmentsExperience.getSegmentsEntryERC(),
+							sourceSegmentsExperience.getSegmentsEntryScopeERC(),
+							sourceSegmentsExperience.getGroupId(),
+							targetLayout));
 					targetSegmentsExperience.setNameMap(
 						sourceSegmentsExperience.getNameMap());
 					targetSegmentsExperience.setPriority(minPriority++);
@@ -1058,12 +1082,18 @@ public class LayoutLocalServiceWrapper
 			newSegmentsExperience.setExternalReferenceCode(null);
 			newSegmentsExperience.setSegmentsExperienceId(
 				_counterLocalService.increment());
+			newSegmentsExperience.setGroupId(targetLayout.getGroupId());
 			newSegmentsExperience.setUserId(user.getUserId());
 			newSegmentsExperience.setUserName(user.getFullName());
 			newSegmentsExperience.setCreateDate(
 				serviceContext.getCreateDate(new Date()));
 			newSegmentsExperience.setModifiedDate(
 				serviceContext.getModifiedDate(new Date()));
+			newSegmentsExperience.setSegmentsEntryScopeERC(
+				_getScopeExternalReferenceCode(
+					sourceSegmentsExperience.getSegmentsEntryERC(),
+					sourceSegmentsExperience.getSegmentsEntryScopeERC(),
+					sourceSegmentsExperience.getGroupId(), targetLayout));
 			newSegmentsExperience.setSegmentsExperienceKey(
 				sourceSegmentsExperience.getSegmentsExperienceKey());
 			newSegmentsExperience.setPlid(targetLayout.getPlid());
@@ -1336,6 +1366,7 @@ public class LayoutLocalServiceWrapper
 				newFragmentEntryLink.setExternalReferenceCode(null);
 				newFragmentEntryLink.setFragmentEntryLinkId(
 					_counterLocalService.increment());
+				newFragmentEntryLink.setGroupId(targetLayout.getGroupId());
 				newFragmentEntryLink.setUserId(user.getUserId());
 				newFragmentEntryLink.setUserName(user.getFullName());
 				newFragmentEntryLink.setCreateDate(
@@ -1352,6 +1383,13 @@ public class LayoutLocalServiceWrapper
 					newFragmentEntryLink.setOriginalFragmentEntryLinkERC(null);
 				}
 
+				newFragmentEntryLink.setFragmentEntryScopeERC(
+					_getScopeExternalReferenceCode(
+						sourceLayoutFragmentEntryLink.getFragmentEntryERC(),
+						sourceLayoutFragmentEntryLink.
+							getFragmentEntryScopeERC(),
+						sourceLayoutFragmentEntryLink.getGroupId(),
+						targetLayout));
 				newFragmentEntryLink.setSegmentsExperienceId(
 					targetSegmentsExperienceId);
 				newFragmentEntryLink.setClassNameId(

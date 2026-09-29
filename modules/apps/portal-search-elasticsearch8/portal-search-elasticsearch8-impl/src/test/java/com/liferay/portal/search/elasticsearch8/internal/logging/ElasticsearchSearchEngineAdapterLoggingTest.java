@@ -125,7 +125,7 @@ public class ElasticsearchSearchEngineAdapterLoggingTest {
 			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
 
 			_assertLogEntry(
-				logEntries.get(0), "The search engine processed",
+				"The search engine processed", logEntries.get(0),
 				LoggerTestUtil.DEBUG);
 		}
 	}
@@ -149,7 +149,7 @@ public class ElasticsearchSearchEngineAdapterLoggingTest {
 	}
 
 	private void _assertLogEntry(
-		LogEntry logEntry, String expectedMessage, String logLevel) {
+		String expectedMessage, LogEntry logEntry, String logLevel) {
 
 		String message = logEntry.getMessage();
 
@@ -165,14 +165,13 @@ public class ElasticsearchSearchEngineAdapterLoggingTest {
 		Assert.assertEquals(logEntries.toString(), 3, logEntries.size());
 
 		_assertLogEntry(
-			logEntries.get(0), "Stack trace for [" + _INDEX_NAME + "]:",
+			"Stack trace for [" + _INDEX_NAME + "]:", logEntries.get(0),
 			LoggerTestUtil.INFO);
 		_assertLogEntry(
-			logEntries.get(1),
 			"Search request string for [" + _INDEX_NAME + "]:",
-			LoggerTestUtil.DEBUG);
+			logEntries.get(1), LoggerTestUtil.DEBUG);
 		_assertLogEntry(
-			logEntries.get(2), "The search engine processed the request in",
+			"The search engine processed the request in", logEntries.get(2),
 			LoggerTestUtil.DEBUG);
 	}
 

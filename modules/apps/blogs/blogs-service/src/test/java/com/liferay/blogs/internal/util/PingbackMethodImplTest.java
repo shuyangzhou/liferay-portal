@@ -253,6 +253,39 @@ public class PingbackMethodImplTest {
 	}
 
 	@Test
+	public void testExecuteWithFTPSourceURI() throws Exception {
+		URI sourceURI = new URI(_SOURCE_URI);
+
+		PingbackMethodImpl pingbackMethodImpl = _getPingbackMethodImpl();
+
+		pingbackMethodImpl.setArguments(
+			new Object[] {
+				"ftp://" + sourceURI.getHost(), "http://" + _TARGET_URI
+			});
+
+		pingbackMethodImpl.execute(_COMPANY_ID);
+
+		_verifyFault(PingbackMethodImpl.ACCESS_DENIED, "Access Denied");
+
+		Mockito.verifyNoInteractions(_http);
+	}
+
+	@Test
+	public void testExecuteWithSourceFetchedOnce() throws Exception {
+		execute();
+
+		_verifySuccess();
+
+		Mockito.verify(
+			_http
+		).URLtoString(
+			_getOptions(_SOURCE_URI)
+		);
+
+		Mockito.verifyNoMoreInteractions(_http);
+	}
+
+	@Test
 	public void testExecuteWithSuccess() throws Exception {
 		execute();
 
@@ -341,7 +374,7 @@ public class PingbackMethodImplTest {
 	@Test
 	public void testGetExcerptWhenReferrerIsUnavailable() throws Exception {
 		Mockito.when(
-			_http.URLtoString(_SOURCE_URI)
+			_http.URLtoString(_getOptions(_SOURCE_URI))
 		).thenThrow(
 			IOException.class
 		);
@@ -361,7 +394,7 @@ public class PingbackMethodImplTest {
 			String sourceURL = "http://" + inetAddress.getHostAddress();
 
 			Mockito.when(
-				_http.URLtoString(sourceURL)
+				_http.URLtoString(_getOptions(sourceURL))
 			).thenReturn(
 				StringBundler.concat(
 					"<body><a href='http://", _TARGET_URI, "'>", _EXCERPT_BODY,
@@ -426,6 +459,13 @@ public class PingbackMethodImplTest {
 		).getEntry(
 			entryId
 		);
+	}
+
+	private Http.Options _getOptions(String location) {
+		return Mockito.argThat(
+			options ->
+				(options != null) && !options.isFollowRedirects() &&
+				location.equals(options.getLocation()));
 	}
 
 	private PingbackMethodImpl _getPingbackMethodImpl() {
@@ -686,7 +726,7 @@ public class PingbackMethodImplTest {
 
 	private void _whenHttpURLToString(String returnValue) throws Exception {
 		Mockito.when(
-			_http.URLtoString(_SOURCE_URI)
+			_http.URLtoString(_getOptions(_SOURCE_URI))
 		).thenReturn(
 			returnValue
 		);

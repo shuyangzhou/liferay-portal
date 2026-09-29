@@ -96,6 +96,18 @@ resource "helm_release" "crossplane" {
 												cidr=var.master_ipv4_cidr_block
 											}
 										},
+										{
+											namespaceSelector={
+												matchLabels={
+													"kubernetes.io/metadata.name"="kube-system"
+												}
+											}
+											podSelector={
+												matchLabels={
+													"k8s-app"="konnectivity-agent"
+												}
+											}
+										},
 									]
 									ports=[
 										{

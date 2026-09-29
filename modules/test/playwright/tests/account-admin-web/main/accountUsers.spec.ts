@@ -8,7 +8,6 @@ import {Page, expect, mergeTests} from '@playwright/test';
 import {accountsPagesTest} from '../../../fixtures/accountsPagesTest';
 import {apiHelpersTest} from '../../../fixtures/apiHelpersTest';
 import {dataApiHelpersTest} from '../../../fixtures/dataApiHelpersTest';
-import {featureFlagsTest} from '../../../fixtures/featureFlagsTest';
 import {loginTest} from '../../../fixtures/loginTest';
 import {serverAdministrationPageTest} from '../../../fixtures/serverAdministrationPageTest';
 import {usersAndOrganizationsPagesTest} from '../../../fixtures/usersAndOrganizationsPagesTest';
@@ -27,9 +26,6 @@ export const test = mergeTests(
 	accountsPagesTest,
 	apiHelpersTest,
 	dataApiHelpersTest,
-	featureFlagsTest({
-		'LPD-35443': {enabled: true},
-	}),
 	loginTest(),
 	serverAdministrationPageTest,
 	usersAndOrganizationsPagesTest
@@ -424,6 +420,34 @@ test(
 		await expect(
 			editAccountPage.personAccountUserName(user.name)
 		).toHaveCount(0);
+	}
+);
+
+test(
+	'Person account user row is keyed by the user ID',
+	{tag: '@LPD-106191'},
+	async ({accountsPage, apiHelpers, editAccountPage}) => {
+		const account = await apiHelpers.headlessAdminUser.postAccount({
+			type: 'person',
+		});
+
+		const user = await apiHelpers.headlessAdminUser.postUserAccount();
+
+		await apiHelpers.headlessAdminUser.assignUserToAccountByEmailAddress(
+			account.id,
+			[user.emailAddress]
+		);
+
+		await accountsPage.goto();
+
+		await (await accountsPage.accountsTable.cellLink(account.name)).click();
+
+		await expect(
+			editAccountPage.personAccountUserName(user.name)
+		).toBeVisible();
+		await expect(
+			editAccountPage.personAccountUserPrimaryKeysInput
+		).toHaveValue(String(user.id));
 	}
 );
 
@@ -1291,6 +1315,27 @@ test(
 				false
 			);
 		}
+	}
+);
+
+test(
+	'Valid domains are displayed as text',
+	{tag: '@LPD-106203'},
+	async ({page}) => {
+		const domain = `<b>${getRandomString()}</b>`;
+		const namespace =
+			'_com_liferay_account_admin_web_internal_portlet_AccountEntriesAdminPortlet_';
+
+		await page.goto(
+			`${liferayConfig.environment.baseUrl}/group/control_panel/manage?p_p_id=com_liferay_account_admin_web_internal_portlet_AccountEntriesAdminPortlet&p_p_lifecycle=0&p_p_state=pop_up&${namespace}mvcPath=${encodeURIComponent('/account_users_admin/account_user/view_valid_domains.jsp')}&${namespace}validDomains=${encodeURIComponent(`liferay.com,${domain}`)}`
+		);
+
+		await expect(
+			page.getByRole('cell', {exact: true, name: 'liferay.com'})
+		).toBeVisible();
+		await expect(
+			page.getByRole('cell', {exact: true, name: domain})
+		).toBeVisible();
 	}
 );
 

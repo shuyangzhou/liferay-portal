@@ -116,7 +116,9 @@ public class TalendProcess {
 				arguments.addAll(_jvmOptions);
 			}
 
-			if (JavaDetector.isJDK21()) {
+			String javaVersion = JavaDetector.getJavaVersion();
+
+			if (javaVersion.startsWith("21")) {
 				arguments.add("-Djava.security.manager=allow");
 			}
 

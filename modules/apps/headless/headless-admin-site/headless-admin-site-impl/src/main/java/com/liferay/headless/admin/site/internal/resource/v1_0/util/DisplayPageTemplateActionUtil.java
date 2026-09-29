@@ -6,10 +6,13 @@
 package com.liferay.headless.admin.site.internal.resource.v1_0.util;
 
 import com.liferay.headless.admin.site.internal.resource.v1_0.DisplayPageTemplateResourceImpl;
+import com.liferay.layout.page.template.constants.LayoutPageTemplateActionKeys;
+import com.liferay.layout.page.template.constants.LayoutPageTemplateConstants;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.util.ActionUtil;
 
 import jakarta.ws.rs.core.UriInfo;
@@ -37,6 +40,34 @@ public class DisplayPageTemplateActionUtil {
 		).build();
 
 		return HashMapBuilder.<String, Map<String, String>>put(
+			() -> {
+				if (!layoutPageTemplateEntry.isDraft()) {
+					return "copy";
+				}
+
+				return null;
+			},
+			() -> _addAction(
+				LayoutPageTemplateActionKeys.ADD_LAYOUT_PAGE_TEMPLATE_ENTRY,
+				contextScopeChecker, layoutPageTemplateEntry,
+				"postDesignLibraryDisplayPageTemplateCopy",
+				LayoutPageTemplateConstants.RESOURCE_NAME, templateParameterMap,
+				uriInfo)
+		).put(
+			() -> {
+				if (!layoutPageTemplateEntry.isDraft()) {
+					return "copyWithPermission";
+				}
+
+				return null;
+			},
+			() -> _addAction(
+				LayoutPageTemplateActionKeys.ADD_LAYOUT_PAGE_TEMPLATE_ENTRY,
+				contextScopeChecker, layoutPageTemplateEntry,
+				"postDesignLibraryDisplayPageTemplateCopyWithPermission",
+				LayoutPageTemplateConstants.RESOURCE_NAME, templateParameterMap,
+				uriInfo)
+		).put(
 			"delete",
 			_addAction(
 				ActionKeys.DELETE, contextScopeChecker, layoutPageTemplateEntry,
@@ -49,11 +80,35 @@ public class DisplayPageTemplateActionUtil {
 				"getDesignLibraryDisplayPageTemplate", modelResourcePermission,
 				templateParameterMap, uriInfo)
 		).put(
+			() -> {
+				if (_isMarkableAsDefault(layoutPageTemplateEntry)) {
+					return "markAsDefault";
+				}
+
+				return null;
+			},
+			() -> _addAction(
+				ActionKeys.UPDATE, contextScopeChecker, layoutPageTemplateEntry,
+				"postDesignLibraryDisplayPageTemplateMarkAsDefault",
+				modelResourcePermission, templateParameterMap, uriInfo)
+		).put(
 			"permissions",
 			_addAction(
 				ActionKeys.PERMISSIONS, contextScopeChecker,
 				layoutPageTemplateEntry,
 				"getDesignLibraryDisplayPageTemplatePermissionsPage",
+				modelResourcePermission, templateParameterMap, uriInfo)
+		).put(
+			() -> {
+				if (layoutPageTemplateEntry.isDefaultTemplate()) {
+					return "unmarkAsDefault";
+				}
+
+				return null;
+			},
+			() -> _addAction(
+				ActionKeys.UPDATE, contextScopeChecker, layoutPageTemplateEntry,
+				"postDesignLibraryDisplayPageTemplateUnmarkAsDefault",
 				modelResourcePermission, templateParameterMap, uriInfo)
 		).build();
 	}
@@ -70,6 +125,33 @@ public class DisplayPageTemplateActionUtil {
 			layoutPageTemplateEntry.getLayoutPageTemplateEntryId(), methodName,
 			contextScopeChecker, modelResourcePermission, templateParameterMap,
 			uriInfo);
+	}
+
+	private static Map<String, String> _addAction(
+		String actionName, Object contextScopeChecker,
+		LayoutPageTemplateEntry layoutPageTemplateEntry, String methodName,
+		String resourceName, Map<String, String> templateParameterMap,
+		UriInfo uriInfo) {
+
+		return ActionUtil.addAction(
+			actionName, DisplayPageTemplateResourceImpl.class,
+			layoutPageTemplateEntry.getGroupId(), methodName,
+			contextScopeChecker, null, resourceName,
+			layoutPageTemplateEntry.getGroupId(), templateParameterMap,
+			uriInfo);
+	}
+
+	private static boolean _isMarkableAsDefault(
+		LayoutPageTemplateEntry layoutPageTemplateEntry) {
+
+		if (!layoutPageTemplateEntry.isApproved() ||
+			layoutPageTemplateEntry.isDefaultTemplate() ||
+			Validator.isNull(layoutPageTemplateEntry.getClassName())) {
+
+			return false;
+		}
+
+		return true;
 	}
 
 }

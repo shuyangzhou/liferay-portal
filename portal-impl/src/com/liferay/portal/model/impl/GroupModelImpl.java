@@ -1565,9 +1565,19 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void copyCacheFields(Group source) {
-		GroupModelImpl sourceModelImpl = (GroupModelImpl)source;
+		if (getMvccVersion() != source.getMvccVersion()) {
+			return;
+		}
 
-		setClassName(sourceModelImpl.getClassName());
+		try {
+			_classNameSetterMethodHandle.invokeExact(
+				(GroupImpl)this,
+				(String)_classNameGetterMethodHandle.invokeExact(
+					(GroupImpl)source));
+		}
+		catch (Throwable throwable) {
+			ReflectionUtil.throwException(throwable);
+		}
 	}
 
 	@Override
@@ -1737,7 +1747,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 		try {
 			groupCacheModel.className =
-				(String)_classNameMethodHandle.invokeExact((GroupImpl)this);
+				(String)_classNameGetterMethodHandle.invokeExact(
+					(GroupImpl)this);
 		}
 		catch (Throwable throwable) {
 			ReflectionUtil.throwException(throwable);
@@ -1982,13 +1993,16 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 			}
 		};
 
-	private static final MethodHandle _classNameMethodHandle;
+	private static final MethodHandle _classNameGetterMethodHandle;
+	private static final MethodHandle _classNameSetterMethodHandle;
 
 	static {
 		MethodHandles.Lookup lookup = ReflectionUtil.getImplLookup();
 
 		try {
-			_classNameMethodHandle = lookup.findGetter(
+			_classNameGetterMethodHandle = lookup.findGetter(
+				GroupImpl.class, "_className", String.class);
+			_classNameSetterMethodHandle = lookup.findSetter(
 				GroupImpl.class, "_className", String.class);
 		}
 		catch (ReflectiveOperationException reflectiveOperationException) {
@@ -1999,4 +2013,4 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 	private Group _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1730413023
+// LIFERAY-SERVICE-BUILDER-HASH:-349176140

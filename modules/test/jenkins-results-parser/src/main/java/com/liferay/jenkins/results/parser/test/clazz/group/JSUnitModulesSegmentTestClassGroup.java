@@ -6,6 +6,7 @@
 package com.liferay.jenkins.results.parser.test.clazz.group;
 
 import com.liferay.jenkins.results.parser.test.clazz.TestClass;
+import com.liferay.jenkins.results.parser.test.clazz.TestClassMethod;
 
 import org.json.JSONObject;
 
@@ -36,6 +37,16 @@ public class JSUnitModulesSegmentTestClassGroup
 
 		for (TestClass testClass : axisTestClassGroup.getTestClasses()) {
 			sb.append(testClass.getTestTaskName());
+
+			if (_hasTestFileGlobs()) {
+				for (TestClassMethod testClassMethod :
+						testClass.getTestClassMethods()) {
+
+					sb.append("#");
+					sb.append(testClassMethod.getName());
+				}
+			}
+
 			sb.append(",");
 		}
 
@@ -44,6 +55,13 @@ public class JSUnitModulesSegmentTestClassGroup
 		}
 
 		return sb.toString();
+	}
+
+	private boolean _hasTestFileGlobs() {
+		JSUnitModulesBatchTestClassGroup jsUnitModulesBatchTestClassGroup =
+			(JSUnitModulesBatchTestClassGroup)getBatchTestClassGroup();
+
+		return jsUnitModulesBatchTestClassGroup.hasTestFileGlobs();
 	}
 
 }

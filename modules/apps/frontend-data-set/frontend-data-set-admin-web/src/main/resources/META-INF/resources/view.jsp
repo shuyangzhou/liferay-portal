@@ -12,7 +12,7 @@
 
 <aui:style type="text/css">
 	.management-bar-wrapper {
-		background: #fff;
+		background: var(--white);
 		margin-left: -100%;
 		margin-right: -100%;
 		padding-left: 100%;

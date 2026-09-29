@@ -185,9 +185,13 @@ export default function AddDataMasksModal({
 							)}
 						</TreeView>
 					) : (
-						<p className="text-secondary">
-							{Liferay.Language.get('no-data-masks-were-found')}
-						</p>
+						<div className="align-items-center d-flex justify-content-center py-4">
+							<p className="text-secondary" role="status">
+								{Liferay.Language.get(
+									'no-data-masks-were-found'
+								)}
+							</p>
+						</div>
 					)}
 				</div>
 			</ClayModal.Body>
@@ -204,9 +208,11 @@ export default function AddDataMasksModal({
 						</ClayButton>
 
 						<ClayButton
+							aria-busy={saving}
 							disabled={
 								!selectedExternalReferenceCodes.length || saving
 							}
+							loading={saving}
 							onClick={addSelected}
 							type="button"
 						>

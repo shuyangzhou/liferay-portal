@@ -8,13 +8,18 @@ package com.liferay.iframe.web.internal.portlet.action;
 import com.liferay.iframe.web.internal.constants.IFramePortletKeys;
 import com.liferay.iframe.web.internal.util.IFrameUtil;
 import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.security.key.secret.SecretResolver;
 
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
@@ -26,6 +31,7 @@ import jakarta.portlet.ReadOnlyException;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -99,6 +105,41 @@ public class IFrameConfigurationAction extends DefaultConfigurationAction {
 				throw new PortalException(readOnlyException);
 			}
 		}
+
+		_store(companyId, "basicPassword", portletPreferences, portletRequest);
+		_store(companyId, "formPassword", portletPreferences, portletRequest);
 	}
+
+	private void _store(
+			long companyId, String name, PortletPreferences portletPreferences,
+			PortletRequest portletRequest)
+		throws PortalException {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		String value = portletPreferences.getValue(name, StringPool.BLANK);
+
+		String storedValue = _secretResolver.store(
+			companyId, name,
+			StringBundler.concat(
+				"portlet/", themeDisplay.getPlid(), StringPool.SLASH,
+				ParamUtil.getString(portletRequest, "portletResource")),
+			value);
+
+		if (storedValue.equals(value)) {
+			return;
+		}
+
+		try {
+			portletPreferences.setValue(name, storedValue);
+		}
+		catch (ReadOnlyException readOnlyException) {
+			throw new PortalException(readOnlyException);
+		}
+	}
+
+	@Reference
+	private SecretResolver _secretResolver;
 
 }

@@ -1314,10 +1314,20 @@ public class DDMStructureVersionModelImpl
 
 	@Override
 	public void copyCacheFields(DDMStructureVersion source) {
-		DDMStructureVersionModelImpl sourceModelImpl =
-			(DDMStructureVersionModelImpl)source;
+		if (getMvccVersion() != source.getMvccVersion()) {
+			return;
+		}
 
-		setDDMForm(sourceModelImpl.getDDMForm());
+		try {
+			_ddmFormSetterMethodHandle.invokeExact(
+				(DDMStructureVersionImpl)this,
+				(com.liferay.dynamic.data.mapping.model.DDMForm)
+					_ddmFormGetterMethodHandle.invokeExact(
+						(DDMStructureVersionImpl)source));
+		}
+		catch (Throwable throwable) {
+			ReflectionUtil.throwException(throwable);
+		}
 	}
 
 	@Override
@@ -1483,7 +1493,7 @@ public class DDMStructureVersionModelImpl
 
 			ddmStructureVersionCacheModel.ddmForm =
 				(com.liferay.dynamic.data.mapping.model.DDMForm)
-					_ddmFormMethodHandle.invokeExact(
+					_ddmFormGetterMethodHandle.invokeExact(
 						(DDMStructureVersionImpl)this);
 		}
 		catch (Throwable throwable) {
@@ -1712,13 +1722,17 @@ public class DDMStructureVersionModelImpl
 					}
 				};
 
-	private static final MethodHandle _ddmFormMethodHandle;
+	private static final MethodHandle _ddmFormGetterMethodHandle;
+	private static final MethodHandle _ddmFormSetterMethodHandle;
 
 	static {
 		MethodHandles.Lookup lookup = ReflectionUtil.getImplLookup();
 
 		try {
-			_ddmFormMethodHandle = lookup.findGetter(
+			_ddmFormGetterMethodHandle = lookup.findGetter(
+				DDMStructureVersionImpl.class, "_ddmForm",
+				com.liferay.dynamic.data.mapping.model.DDMForm.class);
+			_ddmFormSetterMethodHandle = lookup.findSetter(
 				DDMStructureVersionImpl.class, "_ddmForm",
 				com.liferay.dynamic.data.mapping.model.DDMForm.class);
 		}
@@ -1730,4 +1744,4 @@ public class DDMStructureVersionModelImpl
 	private DDMStructureVersion _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1041382354
+// LIFERAY-SERVICE-BUILDER-HASH:-1092328706

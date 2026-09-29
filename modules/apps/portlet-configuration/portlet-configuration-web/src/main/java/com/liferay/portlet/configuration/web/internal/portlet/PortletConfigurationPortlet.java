@@ -10,6 +10,7 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.lang.SafeCloseable;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -71,6 +72,7 @@ import com.liferay.portal.kernel.util.Tuple;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.security.key.secret.SecretResolver;
 import com.liferay.portlet.configuration.kernel.util.PortletConfigurationUtil;
 import com.liferay.portlet.configuration.web.internal.constants.PortletConfigurationPortletKeys;
 import com.liferay.portlet.configuration.web.internal.constants.PortletConfigurationWebKeys;
@@ -1008,7 +1010,18 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 		boolean facebookShowAddAppLink = ParamUtil.getBoolean(
 			actionRequest, "facebookShowAddAppLink");
 
-		portletPreferences.setValue("lfrFacebookApiKey", facebookAPIKey);
+		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		portletPreferences.setValue(
+			"lfrFacebookApiKey",
+			_secretResolver.store(
+				themeDisplay.getCompanyId(), "lfrFacebookApiKey",
+				StringBundler.concat(
+					"portlet/", themeDisplay.getPlid(), StringPool.SLASH,
+					ParamUtil.getString(actionRequest, "portletResource")),
+				facebookAPIKey));
+
 		portletPreferences.setValue(
 			"lfrFacebookCanvasPageUrl", facebookCanvasPageURL);
 		portletPreferences.setValue(
@@ -1168,6 +1181,9 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 
 	@Reference
 	private RoleTypeContributorProvider _roleTypeContributorProvider;
+
+	@Reference
+	private SecretResolver _secretResolver;
 
 	private ServiceTrackerMap<String, CTService<?>> _serviceTrackerMap;
 

@@ -6,6 +6,10 @@
 package com.liferay.headless.admin.fragment.resource.v1_0.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.asset.kernel.model.AssetCategory;
+import com.liferay.asset.kernel.model.AssetVocabulary;
+import com.liferay.asset.kernel.service.AssetCategoryLocalService;
+import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.exportimport.test.util.LazyReferencingTestUtil;
 import com.liferay.fragment.model.FragmentCollection;
 import com.liferay.fragment.model.FragmentEntry;
@@ -13,19 +17,29 @@ import com.liferay.fragment.model.FragmentEntryVersion;
 import com.liferay.fragment.service.FragmentCollectionLocalService;
 import com.liferay.fragment.service.FragmentEntryLocalService;
 import com.liferay.headless.admin.fragment.client.constant.v1_0.FieldType;
+import com.liferay.headless.admin.fragment.client.dto.v1_0.ApprovedFragmentVersion;
 import com.liferay.headless.admin.fragment.client.dto.v1_0.BasicFragment;
+import com.liferay.headless.admin.fragment.client.dto.v1_0.Configuration;
 import com.liferay.headless.admin.fragment.client.dto.v1_0.Creator;
+import com.liferay.headless.admin.fragment.client.dto.v1_0.DraftFragmentVersion;
+import com.liferay.headless.admin.fragment.client.dto.v1_0.Field;
+import com.liferay.headless.admin.fragment.client.dto.v1_0.FieldSet;
 import com.liferay.headless.admin.fragment.client.dto.v1_0.FormFragment;
 import com.liferay.headless.admin.fragment.client.dto.v1_0.Fragment;
 import com.liferay.headless.admin.fragment.client.dto.v1_0.FragmentSet;
 import com.liferay.headless.admin.fragment.client.dto.v1_0.FragmentVersion;
+import com.liferay.headless.admin.fragment.client.dto.v1_0.ItemSelectorField;
 import com.liferay.headless.admin.fragment.client.dto.v1_0.ThumbnailURLReference;
 import com.liferay.headless.admin.fragment.client.pagination.Page;
 import com.liferay.headless.admin.fragment.client.pagination.Pagination;
 import com.liferay.headless.admin.fragment.client.problem.Problem;
 import com.liferay.headless.admin.fragment.client.resource.v1_0.FragmentResource;
+import com.liferay.headless.admin.fragment.client.serdes.v1_0.ConfigurationSerDes;
 import com.liferay.headless.batch.engine.client.http.HttpInvoker;
 import com.liferay.headless.batch.engine.client.resource.v1_0.ImportTaskResource;
+import com.liferay.journal.constants.JournalFolderConstants;
+import com.liferay.journal.model.JournalArticle;
+import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.petra.io.StreamUtil;
@@ -37,11 +51,14 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.Repository;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepository;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
@@ -63,6 +80,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.search.test.util.IdempotentRetryAssert;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
@@ -71,6 +89,7 @@ import com.liferay.portal.test.rule.FeatureFlag;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
+import com.liferay.portal.vulcan.util.TransformUtil;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
@@ -101,6 +120,8 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.skyscreamer.jsonassert.JSONAssert;
 
 /**
  * @author Rubén Pulido
@@ -188,12 +209,20 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 
 	@Override
 	@Test
-	@TestInfo({"LPD-88395", "LPD-88489", "LPD-95281"})
+	@TestInfo(
+		{
+			"LPD-88395", "LPD-88489", "LPD-95281", "LPD-103947", "LPD-107082",
+			"LPD-107083", "LPD-107084", "LPD-107087", "LPD-107185",
+			"LPD-107186", "LPD-107187", "LPD-107188"
+		}
+	)
 	public void testGetSiteFragment() throws Exception {
 		super.testGetSiteFragment();
 
 		_testGetSiteFragmentApproved();
 		_testGetSiteFragmentApprovedAndDraft();
+		_testGetSiteFragmentApprovedConfiguration();
+		_testGetSiteFragmentApprovedConfigurationMalformedProblemException();
 		_testGetSiteFragmentDraft();
 		_testGetSiteFragmentFragmentSet();
 		_testGetSiteFragmentThumbnailURLReference();
@@ -225,14 +254,22 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 
 	@Override
 	@Test
-	@TestInfo({"LPD-88395", "LPD-88489", "LPD-95281"})
+	@TestInfo(
+		{
+			"LPD-88395", "LPD-88489", "LPD-95281", "LPD-103947", "LPD-107082",
+			"LPD-107083", "LPD-107084", "LPD-107087", "LPD-107185",
+			"LPD-107186", "LPD-107187", "LPD-107188"
+		}
+	)
 	public void testPostSiteFragment() throws Exception {
 		super.testPostSiteFragment();
 
 		_testPostSiteFragmentApproved();
 		_testPostSiteFragmentApprovedAndDraft();
+		_testPostSiteFragmentApprovedConfiguration();
 		_testPostSiteFragmentBatch();
 		_testPostSiteFragmentDraft();
+		_testPostSiteFragmentDraftConfiguration();
 		_testPostSiteFragmentDuplicateExternalReferenceCodeProblemException();
 		_testPostSiteFragmentDuplicateKeyProblemException();
 		_testPostSiteFragmentEmpty();
@@ -282,7 +319,13 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 
 	@Override
 	@Test
-	@TestInfo({"LPD-88395", "LPD-88489", "LPD-95281"})
+	@TestInfo(
+		{
+			"LPD-88395", "LPD-88489", "LPD-95281", "LPD-103947", "LPD-107082",
+			"LPD-107083", "LPD-107084", "LPD-107087", "LPD-107185",
+			"LPD-107186", "LPD-107187", "LPD-107188"
+		}
+	)
 	public void testPutSiteFragment() throws Exception {
 		_testPutSiteFragmentBatch();
 		_testPutSiteFragmentCreateApproved();
@@ -298,6 +341,7 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 		_testPutSiteFragmentUpdateApprovedAddDraftModifyApproved();
 		_testPutSiteFragmentUpdateApprovedAndDraftToDraftProblemException();
 		_testPutSiteFragmentUpdateApprovedAndDraftToEmptyProblemException();
+		_testPutSiteFragmentUpdateApprovedConfigurationUnmodified();
 		_testPutSiteFragmentUpdateApprovedModifyApproved();
 		_testPutSiteFragmentUpdateApprovedModifyApprovedAndDraft();
 		_testPutSiteFragmentUpdateApprovedToDraftProblemException();
@@ -481,6 +525,12 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 			clazz.getResourceAsStream("dependencies/" + fileName),
 			RandomTestUtil.randomString() + ".png", ContentTypes.IMAGE_PNG,
 			false);
+	}
+
+	private void _assertEqualsJSON(String expectedJSON, String actualJSON)
+		throws Exception {
+
+		JSONAssert.assertEquals(expectedJSON, actualJSON, true);
 	}
 
 	private void _assertExportImportFragments(
@@ -766,6 +816,90 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 		}
 	}
 
+	private String _getConfigurationJSON(FragmentVersion fragmentVersion) {
+		if (fragmentVersion instanceof
+				DraftFragmentVersion draftFragmentVersion) {
+
+			return draftFragmentVersion.getConfiguration();
+		}
+
+		ApprovedFragmentVersion approvedFragmentVersion =
+			(ApprovedFragmentVersion)fragmentVersion;
+
+		Configuration configuration =
+			approvedFragmentVersion.getConfiguration();
+
+		if (configuration == null) {
+			return null;
+		}
+
+		return configuration.toString();
+	}
+
+	private Map<String, String> _getConfigurationValuesMap() throws Exception {
+		AssetVocabulary assetVocabulary =
+			_assetVocabularyLocalService.addVocabulary(
+				TestPropsValues.getUserId(), testGroup.getGroupId(),
+				RandomTestUtil.randomString(),
+				ServiceContextTestUtil.getServiceContext(
+					testGroup.getGroupId()));
+
+		AssetCategory assetCategory = _assetCategoryLocalService.addCategory(
+			TestPropsValues.getUserId(), testGroup.getGroupId(),
+			RandomTestUtil.randomString(), assetVocabulary.getVocabularyId(),
+			ServiceContextTestUtil.getServiceContext(testGroup.getGroupId()));
+
+		JournalArticle journalArticle = JournalTestUtil.addArticle(
+			testGroup.getGroupId(),
+			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID);
+
+		Layout layout = _layoutLocalService.addLayout(
+			null, TestPropsValues.getUserId(), testGroup.getGroupId(), false,
+			LayoutConstants.DEFAULT_PARENT_LAYOUT_ID,
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			StringPool.BLANK, LayoutConstants.TYPE_PORTLET, false,
+			StringPool.BLANK,
+			ServiceContextTestUtil.getServiceContext(testGroup.getGroupId()));
+
+		return HashMapBuilder.put(
+			"CATEGORY_ERC", assetCategory.getExternalReferenceCode()
+		).put(
+			"CATEGORY_ID", String.valueOf(assetCategory.getCategoryId())
+		).put(
+			"CATEGORY_NAME", assetCategory.getName()
+		).put(
+			"JOURNAL_ARTICLE_CLASS_NAME_ID",
+			String.valueOf(PortalUtil.getClassNameId(JournalArticle.class))
+		).put(
+			"JOURNAL_ARTICLE_EXTERNAL_REFERENCE_CODE",
+			journalArticle.getExternalReferenceCode()
+		).put(
+			"JOURNAL_ARTICLE_RESOURCE_PRIM_KEY",
+			String.valueOf(journalArticle.getResourcePrimKey())
+		).put(
+			"LAYOUT_ERC", layout.getExternalReferenceCode()
+		).put(
+			"LAYOUT_ID", String.valueOf(layout.getLayoutId())
+		).put(
+			"LAYOUT_NAME", layout.getName(LocaleUtil.getMostRelevantLocale())
+		).put(
+			"LAYOUT_UUID", layout.getUuid()
+		).put(
+			"NONEXISTENT_CLASS_PK", String.valueOf(RandomTestUtil.randomLong())
+		).put(
+			"SITE_EXTERNAL_REFERENCE_CODE", testGroup.getExternalReferenceCode()
+		).put(
+			"SITE_GROUP_ID", String.valueOf(testGroup.getGroupId())
+		).put(
+			"VOCABULARY_ERC", assetVocabulary.getExternalReferenceCode()
+		).put(
+			"VOCABULARY_ID", String.valueOf(assetVocabulary.getVocabularyId())
+		).put(
+			"VOCABULARY_TITLE",
+			assetVocabulary.getTitle(LocaleUtil.getMostRelevantLocale())
+		).build();
+	}
+
 	private FragmentResource _getFragmentResource(String nestedFields)
 		throws Exception {
 
@@ -856,6 +990,26 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 
 		return fragmentResource.postSiteFragment(
 			testGroup.getExternalReferenceCode(), fragment);
+	}
+
+	private Fragment _postSiteFragment(String configuration) throws Exception {
+		Fragment postFragment = _postSiteFragment(_randomFragment(true, false));
+
+		FragmentEntry fragmentEntry =
+			_fragmentEntryLocalService.getFragmentEntryByExternalReferenceCode(
+				postFragment.getExternalReferenceCode(),
+				testGroup.getGroupId());
+
+		_fragmentEntryLocalService.updateFragmentEntry(
+			TestPropsValues.getUserId(), fragmentEntry.getFragmentEntryId(),
+			fragmentEntry.getFragmentCollectionId(), fragmentEntry.getName(),
+			fragmentEntry.getCss(), fragmentEntry.getHtml(),
+			fragmentEntry.getJs(), fragmentEntry.isCacheable(), configuration,
+			fragmentEntry.getIcon(), fragmentEntry.getPreviewFileEntryId(),
+			fragmentEntry.isReadOnly(), fragmentEntry.getTypeOptions(),
+			WorkflowConstants.STATUS_APPROVED);
+
+		return postFragment;
 	}
 
 	private Fragment _postSiteFragmentAndAssertThumbnailURLReference(
@@ -953,6 +1107,23 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 				setType(Fragment.Type.BASIC_FRAGMENT);
 			}
 		};
+	}
+
+	private Configuration _randomConfiguration() {
+		Configuration configuration = new Configuration();
+
+		FieldSet fieldSet = new FieldSet();
+
+		ItemSelectorField itemSelectorField = new ItemSelectorField();
+
+		itemSelectorField.setName(RandomTestUtil.randomString());
+		itemSelectorField.setType(Field.Type.ITEM_SELECTOR);
+
+		fieldSet.setFields(new Field[] {itemSelectorField});
+
+		configuration.setFieldSets(new FieldSet[] {fieldSet});
+
+		return configuration;
 	}
 
 	private FormFragment _randomFormFragment() {
@@ -1061,9 +1232,21 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 	private FragmentVersion _randomFragmentVersion(
 		FragmentVersion.Status fragmentVersionStatus) {
 
-		return new FragmentVersion() {
+		if (fragmentVersionStatus == FragmentVersion.Status.DRAFT) {
+			return new DraftFragmentVersion() {
+				{
+					configuration = RandomTestUtil.randomString();
+					css = RandomTestUtil.randomString();
+					html = RandomTestUtil.randomString();
+					js = RandomTestUtil.randomString();
+					status = fragmentVersionStatus;
+				}
+			};
+		}
+
+		return new ApprovedFragmentVersion() {
 			{
-				configuration = RandomTestUtil.randomString();
+				configuration = _randomConfiguration();
 				css = RandomTestUtil.randomString();
 				html = RandomTestUtil.randomString();
 				js = RandomTestUtil.randomString();
@@ -1085,6 +1268,17 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 		fragment.setMarketplace(true);
 
 		return fragment;
+	}
+
+	private String _readConfiguration(String fileName) {
+		return StringUtil.read(getClass(), "dependencies/" + fileName);
+	}
+
+	private String _readConfiguration(
+		String fileName, Map<String, String> valuesMap) {
+
+		return StringUtil.replace(
+			_readConfiguration(fileName), "${", "}", valuesMap);
 	}
 
 	private void _testBatchEngineDeleteImportTask() throws Exception {
@@ -1266,6 +1460,61 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 
 	private void _testGetSiteFragmentApprovedAndDraft() throws Exception {
 		_testGetSiteFragment(true, true);
+	}
+
+	private void _testGetSiteFragmentApprovedConfiguration() throws Exception {
+		Map<String, String> valuesMap = _getConfigurationValuesMap();
+
+		Fragment postFragment = _postSiteFragment(
+			_readConfiguration("get_configuration.json", valuesMap));
+
+		Fragment getFragment = fragmentResource.getSiteFragment(
+			testGroup.getExternalReferenceCode(),
+			postFragment.getExternalReferenceCode());
+
+		ApprovedFragmentVersion approvedFragmentVersion =
+			(ApprovedFragmentVersion)_getFragmentVersion(
+				getFragment, FragmentVersion.Status.APPROVED);
+
+		_assertEqualsJSON(
+			_readConfiguration("get_configuration_dto.json", valuesMap),
+			String.valueOf(approvedFragmentVersion.getConfiguration()));
+	}
+
+	private void _testGetSiteFragmentApprovedConfigurationMalformedProblemException()
+		throws Exception {
+
+		Fragment postFragment = _postSiteFragment(_randomFragment(true, false));
+
+		FragmentEntry fragmentEntry =
+			_fragmentEntryLocalService.getFragmentEntryByExternalReferenceCode(
+				postFragment.getExternalReferenceCode(),
+				testGroup.getGroupId());
+
+		String configuration = "{\"malformedJSON\": [";
+
+		fragmentEntry = _fragmentEntryLocalService.updateFragmentEntry(
+			TestPropsValues.getUserId(), fragmentEntry.getFragmentEntryId(),
+			fragmentEntry.getFragmentCollectionId(), fragmentEntry.getName(),
+			fragmentEntry.getCss(), fragmentEntry.getHtml(),
+			fragmentEntry.getJs(), fragmentEntry.isCacheable(), configuration,
+			fragmentEntry.getIcon(), fragmentEntry.getPreviewFileEntryId(),
+			fragmentEntry.isReadOnly(), fragmentEntry.getTypeOptions(),
+			WorkflowConstants.STATUS_APPROVED);
+
+		Assert.assertEquals(configuration, fragmentEntry.getConfiguration());
+
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				"com.liferay.portal.vulcan.internal.jaxrs.exception.mapper." +
+					"ExceptionMapper",
+				LoggerTestUtil.ERROR)) {
+
+			_assertProblemExceptionProblemStatus(
+				"INTERNAL_SERVER_ERROR",
+				() -> fragmentResource.getSiteFragment(
+					testGroup.getExternalReferenceCode(),
+					postFragment.getExternalReferenceCode()));
+		}
 	}
 
 	private void _testGetSiteFragmentDraft() throws Exception {
@@ -1617,6 +1866,85 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 		_testPostFragmentApprovedAndDraft(this::_postSiteFragment);
 	}
 
+	private void _testPostSiteFragmentApprovedConfiguration() throws Exception {
+		Fragment fragment = _randomFragment(true, false);
+
+		ApprovedFragmentVersion approvedFragmentVersion =
+			(ApprovedFragmentVersion)_getFragmentVersion(
+				fragment, FragmentVersion.Status.APPROVED);
+
+		Map<String, String> valuesMap = _getConfigurationValuesMap();
+
+		approvedFragmentVersion.setConfiguration(
+			ConfigurationSerDes.toDTO(
+				_readConfiguration("post_configuration_dto.json", valuesMap)));
+
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				"com.liferay.headless.admin.fragment.internal.util." +
+					"ConfigurationUtil",
+				LoggerTestUtil.WARN)) {
+
+			Fragment postFragment = _postSiteFragment(fragment);
+
+			FragmentEntry fragmentEntry =
+				_fragmentEntryLocalService.
+					getFragmentEntryByExternalReferenceCode(
+						postFragment.getExternalReferenceCode(),
+						testGroup.getGroupId());
+
+			_assertEqualsJSON(
+				_readConfiguration("post_configuration.json", valuesMap),
+				fragmentEntry.getConfiguration());
+
+			Assert.assertEquals(
+				Arrays.asList(
+					StringBundler.concat(
+						"Optional reference generated for missing entity with ",
+						"class name ", AssetCategory.class.getName(),
+						", external reference code category-erc, and null ",
+						"scope with current scope ID ", testGroup.getGroupId()),
+					StringBundler.concat(
+						"Optional reference generated for missing entity with ",
+						"class name ", AssetCategory.class.getName(),
+						", external reference code ",
+						"category-erc-and-scope-erc, and scope external ",
+						"reference code category-scope-erc"),
+					StringBundler.concat(
+						"Optional reference generated for missing entity with ",
+						"class name ", JournalArticle.class.getName(),
+						", external reference code item-erc, and null scope ",
+						"with current scope ID ", testGroup.getGroupId()),
+					StringBundler.concat(
+						"Optional reference generated for missing entity with ",
+						"class name ", JournalArticle.class.getName(),
+						", external reference code item-erc-and-scope-erc, ",
+						"and scope external reference code item-scope-erc"),
+					StringBundler.concat(
+						"Optional reference generated for missing entity with ",
+						"class name ", Layout.class.getName(),
+						", external reference code layout-erc, and null scope ",
+						"with current scope ID ", testGroup.getGroupId()),
+					StringBundler.concat(
+						"Optional reference generated for missing entity with ",
+						"class name ", Layout.class.getName(),
+						", external reference code layout-erc-and-scope-erc, ",
+						"and scope external reference code layout-scope-erc"),
+					StringBundler.concat(
+						"Optional reference generated for missing entity with ",
+						"class name ", AssetVocabulary.class.getName(),
+						", external reference code vocabulary-erc, and null ",
+						"scope with current scope ID ", testGroup.getGroupId()),
+					StringBundler.concat(
+						"Optional reference generated for missing entity with ",
+						"class name ", AssetVocabulary.class.getName(),
+						", external reference code ",
+						"vocabulary-erc-and-scope-erc, and scope external ",
+						"reference code vocabulary-scope-erc")),
+				TransformUtil.transform(
+					logCapture.getLogEntries(), LogEntry::getMessage));
+		}
+	}
+
 	private void _testPostSiteFragmentBatch() throws Exception {
 		_testPostSiteFragmentBatchWithLazyReferencingDisabled();
 		_testPostSiteFragmentBatchWithLazyReferencingEnabled();
@@ -1702,6 +2030,42 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 
 	private void _testPostSiteFragmentDraft() throws Exception {
 		_testPostFragmentDraft(this::_postSiteFragment);
+	}
+
+	private void _testPostSiteFragmentDraftConfiguration() throws Exception {
+		Fragment fragment = _randomFragment(false, true);
+
+		DraftFragmentVersion draftFragmentVersion = new DraftFragmentVersion();
+
+		String configuration = "{\"malformedJSON\": [";
+
+		draftFragmentVersion.setConfiguration(configuration);
+
+		draftFragmentVersion.setCss(RandomTestUtil.randomString());
+		draftFragmentVersion.setHtml(RandomTestUtil.randomString());
+		draftFragmentVersion.setJs(RandomTestUtil.randomString());
+		draftFragmentVersion.setStatus(FragmentVersion.Status.DRAFT);
+
+		fragment.setFragmentVersions(
+			new FragmentVersion[] {draftFragmentVersion});
+
+		Fragment postFragment = _postSiteFragment(fragment);
+
+		Assert.assertEquals(
+			configuration,
+			_getConfigurationJSON(
+				_getFragmentVersion(
+					postFragment, FragmentVersion.Status.DRAFT)));
+
+		Fragment getFragment = fragmentResource.getSiteFragment(
+			testGroup.getExternalReferenceCode(),
+			postFragment.getExternalReferenceCode());
+
+		Assert.assertEquals(
+			configuration,
+			_getConfigurationJSON(
+				_getFragmentVersion(
+					getFragment, FragmentVersion.Status.DRAFT)));
 	}
 
 	private void _testPostSiteFragmentDuplicateExternalReferenceCodeProblemException()
@@ -1889,7 +2253,7 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 
 			FragmentVersion postFragmentVersion = postFragmentVersions[i];
 
-			Assert.assertNull(postFragmentVersion.getConfiguration());
+			Assert.assertNull(_getConfigurationJSON(postFragmentVersion));
 			Assert.assertNull(postFragmentVersion.getCss());
 			Assert.assertNull(postFragmentVersion.getHtml());
 			Assert.assertNull(postFragmentVersion.getJs());
@@ -1898,11 +2262,17 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 
 			if (fragmentVersion.getStatus() == FragmentVersion.Status.DRAFT) {
 				curFragmentEntry = draftFragmentEntry;
+
+				Assert.assertEquals(
+					_getConfigurationJSON(fragmentVersion),
+					curFragmentEntry.getConfiguration());
+			}
+			else {
+				_assertEqualsJSON(
+					_getConfigurationJSON(fragmentVersion),
+					curFragmentEntry.getConfiguration());
 			}
 
-			Assert.assertEquals(
-				fragmentVersion.getConfiguration(),
-				curFragmentEntry.getConfiguration());
 			Assert.assertEquals(
 				fragmentVersion.getCss(), curFragmentEntry.getCss());
 			Assert.assertEquals(
@@ -2592,6 +2962,32 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 			"at-least-one-fragment-entry-version-is-required");
 	}
 
+	private void _testPutSiteFragmentUpdateApprovedConfigurationUnmodified()
+		throws Exception {
+
+		Map<String, String> valuesMap = _getConfigurationValuesMap();
+
+		Fragment postFragment = _postSiteFragment(
+			_readConfiguration("get_configuration.json", valuesMap));
+
+		Fragment getFragment = fragmentResource.getSiteFragment(
+			testGroup.getExternalReferenceCode(),
+			postFragment.getExternalReferenceCode());
+
+		fragmentResource.putSiteFragment(
+			testGroup.getExternalReferenceCode(),
+			postFragment.getExternalReferenceCode(), getFragment);
+
+		FragmentEntry fragmentEntry =
+			_fragmentEntryLocalService.getFragmentEntryByExternalReferenceCode(
+				postFragment.getExternalReferenceCode(),
+				testGroup.getGroupId());
+
+		_assertEqualsJSON(
+			_readConfiguration("put_configuration.json", valuesMap),
+			fragmentEntry.getConfiguration());
+	}
+
 	private void _testPutSiteFragmentUpdateApprovedModifyApproved()
 		throws Exception {
 
@@ -3092,6 +3488,12 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 	private static byte[] _thumbnail2Bytes;
 	private static String _thumbnail2URL;
 
+	@Inject
+	private AssetCategoryLocalService _assetCategoryLocalService;
+
+	@Inject
+	private AssetVocabularyLocalService _assetVocabularyLocalService;
+
 	private FragmentCollection _fragmentCollection;
 
 	@Inject
@@ -3102,6 +3504,9 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 
 	@Inject
 	private Language _language;
+
+	@Inject
+	private LayoutLocalService _layoutLocalService;
 
 	@Inject
 	private PortletFileRepository _portletFileRepository;

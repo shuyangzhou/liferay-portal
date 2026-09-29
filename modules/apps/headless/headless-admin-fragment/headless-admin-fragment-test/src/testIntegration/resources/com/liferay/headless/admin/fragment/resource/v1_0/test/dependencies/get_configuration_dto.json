@@ -1,0 +1,586 @@
+{
+	"fieldSets": [
+		{
+			"fields": [
+				{
+					"defaultValue": {
+						"value": {
+							"className": "com.liferay.asset.kernel.model.AssetCategory",
+							"externalReferenceCode": "category-erc"
+						}
+					},
+					"name": "categoryByExternalReferenceCode",
+					"type": "categoryTreeNodeSelector",
+					"typeOptions": {
+						"dependency": {
+							"checkboxTrue": {
+								"type": "equal",
+								"value": "true"
+							}
+						}
+					}
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"className": "com.liferay.asset.kernel.model.AssetCategory",
+							"externalReferenceCode": "category-erc-and-scope-erc",
+							"scope": {
+								"externalReferenceCode": "category-scope-erc",
+								"type": "Site"
+							}
+						}
+					},
+					"name": "categoryByExternalReferenceCodeAndScope",
+					"type": "categoryTreeNodeSelector"
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"className": "com.liferay.asset.kernel.model.AssetCategory",
+							"externalReferenceCode": "category-as-string-erc",
+							"scope": {
+								"externalReferenceCode": "category-as-string-scope-erc",
+								"type": "Site"
+							}
+						}
+					},
+					"name": "categoryByExternalReferenceCodeAndScopeAsString",
+					"type": "categoryTreeNodeSelector"
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"className": "com.liferay.asset.kernel.model.AssetCategory",
+							"externalReferenceCode": "${CATEGORY_ERC}"
+						}
+					},
+					"name": "categoryById",
+					"type": "categoryTreeNodeSelector"
+				},
+				{
+					"name": "categoryByNonexistentId",
+					"type": "categoryTreeNodeSelector"
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"className": "com.liferay.asset.kernel.model.AssetCategory",
+							"externalReferenceCode": "category-nonexistent-id-erc"
+						}
+					},
+					"name": "categoryByNonexistentIdAndExternalReferenceCode",
+					"type": "categoryTreeNodeSelector"
+				},
+				{
+					"defaultValue": {
+						"value": false
+					},
+					"name": "checkboxFalseAsString",
+					"type": "checkbox",
+					"typeOptions": {
+						"dependency": {
+							"checkboxTrue": {
+								"type": "not-equal",
+								"value": "false"
+							}
+						},
+						"displayType": "checkbox"
+					}
+				},
+				{
+					"defaultValue": {
+						"value": true
+					},
+					"name": "checkboxTrue",
+					"type": "checkbox",
+					"typeOptions": {
+						"displayType": "toggle"
+					}
+				},
+				{
+					"defaultValue": {
+						"value": true
+					},
+					"name": "checkboxTrueAsString",
+					"type": "checkbox"
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"cssClass": "brand-color-1",
+							"rgbValue": "#0B5FFF"
+						}
+					},
+					"name": "colorPaletteByCSSClassAndRGBValue",
+					"type": "colorPalette"
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"color": "primary"
+						}
+					},
+					"name": "colorPaletteByColor",
+					"type": "colorPalette"
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"color": "success"
+						}
+					},
+					"name": "colorPaletteByColorAsString",
+					"type": "colorPalette"
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"color": "secondary"
+						}
+					},
+					"name": "colorPaletteVisibleWhenCheckboxTrue",
+					"type": "colorPalette",
+					"typeOptions": {
+						"dependency": {
+							"checkboxTrue": {
+								"type": "equal",
+								"value": "true"
+							}
+						}
+					}
+				},
+				{
+					"defaultValue": {
+						"value": "#FFFFFF"
+					},
+					"name": "colorPicker",
+					"type": "colorPicker"
+				},
+				{
+					"defaultValue": {
+						"value": "brand-color-1"
+					},
+					"name": "colorPickerToken",
+					"type": "colorPicker"
+				},
+				{
+					"defaultValue": {
+						"value": "#0B5FFF"
+					},
+					"name": "colorPickerVisibleWhenCheckboxTrue",
+					"type": "colorPicker",
+					"typeOptions": {
+						"dependency": {
+							"checkboxTrue": {
+								"type": "equal",
+								"value": "true"
+							}
+						}
+					}
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"itemExternalReference": {
+								"className": "com.liferay.journal.model.JournalArticle",
+								"externalReferenceCode": "${JOURNAL_ARTICLE_EXTERNAL_REFERENCE_CODE}"
+							}
+						}
+					},
+					"name": "itemByClassPK",
+					"type": "itemSelector"
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"itemExternalReference": {
+								"className": "com.liferay.journal.model.JournalArticle",
+								"externalReferenceCode": "${JOURNAL_ARTICLE_EXTERNAL_REFERENCE_CODE}"
+							}
+						}
+					},
+					"localizable": true,
+					"name": "itemByClassPKLocalizable",
+					"type": "itemSelector"
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"itemExternalReference": {
+								"className": "com.liferay.journal.model.JournalArticle",
+								"externalReferenceCode": "item-erc"
+							}
+						}
+					},
+					"name": "itemByExternalReferenceCode",
+					"type": "itemSelector",
+					"typeOptions": {
+						"className": "com.liferay.journal.model.JournalArticle",
+						"dependency": {
+							"checkboxTrue": {
+								"type": "equal",
+								"value": "true"
+							}
+						},
+						"enableSelectTemplate": true,
+						"itemSubtype": "BASIC-WEB-CONTENT",
+						"itemType": "com.liferay.journal.model.JournalArticle",
+						"mimeTypes": [
+							"image/jpeg",
+							"image/png"
+						]
+					}
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"itemExternalReference": {
+								"className": "com.liferay.journal.model.JournalArticle",
+								"externalReferenceCode": "item-erc-and-scope-erc",
+								"scope": {
+									"externalReferenceCode": "item-scope-erc",
+									"type": "Site"
+								}
+							}
+						}
+					},
+					"name": "itemByExternalReferenceCodeAndScope",
+					"type": "itemSelector"
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"itemExternalReference": {
+								"className": "com.liferay.journal.model.JournalArticle",
+								"externalReferenceCode": "item-as-string-erc",
+								"scope": {
+									"externalReferenceCode": "item-as-string-scope-erc",
+									"type": "Site"
+								}
+							}
+						}
+					},
+					"name": "itemByExternalReferenceCodeAndScopeAsString",
+					"type": "itemSelector"
+				},
+				{
+					"name": "itemByNonexistentClassPK",
+					"type": "itemSelector"
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"itemExternalReference": {
+								"className": "com.liferay.journal.model.JournalArticle",
+								"externalReferenceCode": "item-nonexistent-class-pk-erc"
+							}
+						}
+					},
+					"name": "itemByNonexistentClassPKAndExternalReferenceCode",
+					"type": "itemSelector"
+				},
+				{
+					"defaultValue": {
+						"value": "16px"
+					},
+					"name": "length",
+					"type": "length"
+				},
+				{
+					"defaultValue": {
+						"value": "auto"
+					},
+					"name": "lengthCustom",
+					"type": "length"
+				},
+				{
+					"defaultValue": {
+						"value": "50%"
+					},
+					"name": "lengthVisibleWhenCheckboxTrue",
+					"type": "length",
+					"typeOptions": {
+						"dependency": {
+							"checkboxTrue": {
+								"type": "equal",
+								"value": "true"
+							}
+						}
+					}
+				},
+				{
+					"defaultValue": {
+						"value": "detailed"
+					},
+					"name": "selectWithLabels",
+					"type": "select",
+					"typeOptions": {
+						"dependency": {
+							"checkboxTrue": {
+								"type": "equal",
+								"value": "true"
+							}
+						},
+						"validValues": [
+							{
+								"label": "Compact",
+								"value": "compact"
+							},
+							{
+								"label": "Detailed",
+								"value": "detailed"
+							}
+						]
+					}
+				},
+				{
+					"defaultValue": {
+						"value": "sm"
+					},
+					"name": "selectWithoutLabels",
+					"type": "select",
+					"typeOptions": {
+						"dependency": {
+							"selectWithLabels": {
+								"type": "not-equal",
+								"value": "compact"
+							}
+						},
+						"validValues": [
+							{
+								"value": "sm"
+							},
+							{
+								"value": "lg"
+							}
+						]
+					}
+				},
+				{
+					"defaultValue": {
+						"value": "Default text"
+					},
+					"name": "text",
+					"type": "text"
+				},
+				{
+					"defaultValue": {
+						"value": "submit"
+					},
+					"localizable": true,
+					"name": "textLocalizable",
+					"type": "text"
+				},
+				{
+					"defaultValue": {
+						"value": "Visible text"
+					},
+					"name": "textVisibleWhenText",
+					"type": "text",
+					"typeOptions": {
+						"dependency": {
+							"text": {
+								"type": "equal",
+								"value": "Default text"
+							}
+						}
+					}
+				},
+				{
+					"defaultValue": {
+						"value": "test@liferay.com"
+					},
+					"name": "textWithEmailValidation",
+					"type": "text",
+					"typeOptions": {
+						"validation": {
+							"type": "email"
+						}
+					}
+				},
+				{
+					"defaultValue": {
+						"value": "5"
+					},
+					"name": "textWithNumberValidation",
+					"type": "text",
+					"typeOptions": {
+						"validation": {
+							"max": 10,
+							"min": 1,
+							"type": "number"
+						}
+					}
+				},
+				{
+					"defaultValue": {
+						"value": "abc"
+					},
+					"name": "textWithPatternValidation",
+					"type": "text",
+					"typeOptions": {
+						"validation": {
+							"regexp": "^[a-z]+$",
+							"type": "pattern"
+						}
+					}
+				},
+				{
+					"defaultValue": {
+						"value": "Valid"
+					},
+					"name": "textWithTextValidation",
+					"type": "text",
+					"typeOptions": {
+						"placeholder": "Type a text",
+						"validation": {
+							"errorMessage": "The text must have between 3 and 20 characters.",
+							"maxLength": 20,
+							"minLength": 3,
+							"required": true,
+							"type": "text"
+						}
+					}
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"href": "https://www.liferay.com",
+							"urlType": "Href"
+						}
+					},
+					"name": "urlHref",
+					"type": "url"
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"sitePageItemExternalReference": {
+								"className": "com.liferay.portal.kernel.model.Layout",
+								"externalReferenceCode": "layout-erc"
+							},
+							"urlType": "SitePage"
+						}
+					},
+					"name": "urlSitePageByExternalReferenceCode",
+					"type": "url"
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"sitePageItemExternalReference": {
+								"className": "com.liferay.portal.kernel.model.Layout",
+								"externalReferenceCode": "layout-erc-and-scope-erc",
+								"scope": {
+									"externalReferenceCode": "layout-scope-erc",
+									"type": "Site"
+								}
+							},
+							"urlType": "SitePage"
+						}
+					},
+					"name": "urlSitePageByExternalReferenceCodeAndScope",
+					"type": "url"
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"sitePageItemExternalReference": {
+								"className": "com.liferay.portal.kernel.model.Layout",
+								"externalReferenceCode": "${LAYOUT_ERC}"
+							},
+							"urlType": "SitePage"
+						}
+					},
+					"name": "urlSitePageByLayoutId",
+					"type": "url"
+				},
+				{
+					"name": "urlSitePageByNonexistentLayoutId",
+					"type": "url"
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"href": "https://www.liferay.com/visible",
+							"urlType": "Href"
+						}
+					},
+					"name": "urlVisibleWhenCheckboxTrue",
+					"type": "url",
+					"typeOptions": {
+						"dependency": {
+							"checkboxTrue": {
+								"type": "equal",
+								"value": "true"
+							}
+						}
+					}
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"className": "com.liferay.asset.kernel.model.AssetVocabulary",
+							"externalReferenceCode": "vocabulary-erc"
+						}
+					},
+					"name": "vocabularyByExternalReferenceCode",
+					"type": "categoryTreeNodeSelector"
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"className": "com.liferay.asset.kernel.model.AssetVocabulary",
+							"externalReferenceCode": "vocabulary-erc-and-scope-erc",
+							"scope": {
+								"externalReferenceCode": "vocabulary-scope-erc",
+								"type": "Site"
+							}
+						}
+					},
+					"name": "vocabularyByExternalReferenceCodeAndScope",
+					"type": "categoryTreeNodeSelector"
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"className": "com.liferay.asset.kernel.model.AssetVocabulary",
+							"externalReferenceCode": "vocabulary-as-string-erc",
+							"scope": {
+								"externalReferenceCode": "vocabulary-as-string-scope-erc",
+								"type": "Site"
+							}
+						}
+					},
+					"name": "vocabularyByExternalReferenceCodeAndScopeAsString",
+					"type": "categoryTreeNodeSelector"
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"className": "com.liferay.asset.kernel.model.AssetVocabulary",
+							"externalReferenceCode": "${VOCABULARY_ERC}"
+						}
+					},
+					"name": "vocabularyById",
+					"type": "categoryTreeNodeSelector"
+				},
+				{
+					"name": "vocabularyByNonexistentId",
+					"type": "categoryTreeNodeSelector"
+				},
+				{
+					"defaultValue": {
+						"value": {
+							"className": "com.liferay.asset.kernel.model.AssetVocabulary",
+							"externalReferenceCode": "vocabulary-nonexistent-id-erc"
+						}
+					},
+					"name": "vocabularyByNonexistentIdAndExternalReferenceCode",
+					"type": "categoryTreeNodeSelector"
+				}
+			]
+		}
+	]
+}

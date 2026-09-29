@@ -110,6 +110,29 @@ public interface DisplayPageTemplateResource {
 			DisplayPageTemplate displayPageTemplate)
 		throws Exception;
 
+	public DisplayPageTemplate postDesignLibraryDisplayPageTemplateCopy(
+			String designLibraryExternalReferenceCode,
+			String displayPageTemplateExternalReferenceCode)
+		throws Exception;
+
+	public DisplayPageTemplate
+			postDesignLibraryDisplayPageTemplateCopyWithPermission(
+				String designLibraryExternalReferenceCode,
+				String displayPageTemplateExternalReferenceCode)
+		throws Exception;
+
+	public DisplayPageTemplate
+			postDesignLibraryDisplayPageTemplateMarkAsDefault(
+				String designLibraryExternalReferenceCode,
+				String displayPageTemplateExternalReferenceCode)
+		throws Exception;
+
+	public DisplayPageTemplate
+			postDesignLibraryDisplayPageTemplateUnmarkAsDefault(
+				String designLibraryExternalReferenceCode,
+				String displayPageTemplateExternalReferenceCode)
+		throws Exception;
+
 	public DisplayPageTemplate postSiteDisplayPageTemplate(
 			String siteExternalReferenceCode,
 			DisplayPageTemplate displayPageTemplate)
@@ -256,4 +279,4 @@ public interface DisplayPageTemplateResource {
 	}
 
 }
-// LIFERAY-REST-BUILDER-HASH:-217622481
+// LIFERAY-REST-BUILDER-HASH:923741493

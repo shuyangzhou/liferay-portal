@@ -1420,13 +1420,33 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void copyCacheFields(DDMStructure source) {
-		DDMStructureModelImpl sourceModelImpl = (DDMStructureModelImpl)source;
+		if (getMvccVersion() != source.getMvccVersion()) {
+			return;
+		}
 
-		setClassName(sourceModelImpl.getClassName());
+		try {
+			_classNameSetterMethodHandle.invokeExact(
+				(DDMStructureImpl)this,
+				(String)_classNameGetterMethodHandle.invokeExact(
+					(DDMStructureImpl)source));
 
-		setDDMForm(sourceModelImpl.getDDMForm());
+			_ddmFormSetterMethodHandle.invokeExact(
+				(DDMStructureImpl)this,
+				(com.liferay.dynamic.data.mapping.model.DDMForm)
+					_ddmFormGetterMethodHandle.invokeExact(
+						(DDMStructureImpl)source));
 
-		setDDMFormFieldsMap(sourceModelImpl.getDDMFormFieldsMap());
+			_ddmFormFieldsMapSetterMethodHandle.invokeExact(
+				(DDMStructureImpl)this,
+				(Map
+					<String,
+					 com.liferay.dynamic.data.mapping.model.DDMFormField>)
+						 _ddmFormFieldsMapGetterMethodHandle.invokeExact(
+							 (DDMStructureImpl)source));
+		}
+		catch (Throwable throwable) {
+			ReflectionUtil.throwException(throwable);
+		}
 	}
 
 	@Override
@@ -1629,14 +1649,15 @@ public class DDMStructureModelImpl
 			setClassName(null);
 
 			ddmStructureCacheModel.className =
-				(String)_classNameMethodHandle.invokeExact(
+				(String)_classNameGetterMethodHandle.invokeExact(
 					(DDMStructureImpl)this);
 
 			setDDMForm(null);
 
 			ddmStructureCacheModel.ddmForm =
 				(com.liferay.dynamic.data.mapping.model.DDMForm)
-					_ddmFormMethodHandle.invokeExact((DDMStructureImpl)this);
+					_ddmFormGetterMethodHandle.invokeExact(
+						(DDMStructureImpl)this);
 
 			setDDMFormFieldsMap(null);
 
@@ -1644,7 +1665,7 @@ public class DDMStructureModelImpl
 				(Map
 					<String,
 					 com.liferay.dynamic.data.mapping.model.DDMFormField>)
-						 _ddmFormFieldsMapMethodHandle.invokeExact(
+						 _ddmFormFieldsMapGetterMethodHandle.invokeExact(
 							 (DDMStructureImpl)this);
 		}
 		catch (Throwable throwable) {
@@ -1883,7 +1904,8 @@ public class DDMStructureModelImpl
 			}
 		};
 
-	private static final MethodHandle _classNameMethodHandle;
+	private static final MethodHandle _classNameGetterMethodHandle;
+	private static final MethodHandle _classNameSetterMethodHandle;
 
 	protected static final BiConsumer
 		<DDMStructure, com.liferay.dynamic.data.mapping.model.DDMForm>
@@ -1901,7 +1923,8 @@ public class DDMStructureModelImpl
 				}
 			};
 
-	private static final MethodHandle _ddmFormMethodHandle;
+	private static final MethodHandle _ddmFormGetterMethodHandle;
+	private static final MethodHandle _ddmFormSetterMethodHandle;
 
 	protected static final BiConsumer
 		<DDMStructure,
@@ -1923,20 +1946,28 @@ public class DDMStructureModelImpl
 					}
 				};
 
-	private static final MethodHandle _ddmFormFieldsMapMethodHandle;
+	private static final MethodHandle _ddmFormFieldsMapGetterMethodHandle;
+	private static final MethodHandle _ddmFormFieldsMapSetterMethodHandle;
 
 	static {
 		MethodHandles.Lookup lookup = ReflectionUtil.getImplLookup();
 
 		try {
-			_classNameMethodHandle = lookup.findGetter(
+			_classNameGetterMethodHandle = lookup.findGetter(
+				DDMStructureImpl.class, "_className", String.class);
+			_classNameSetterMethodHandle = lookup.findSetter(
 				DDMStructureImpl.class, "_className", String.class);
 
-			_ddmFormMethodHandle = lookup.findGetter(
+			_ddmFormGetterMethodHandle = lookup.findGetter(
+				DDMStructureImpl.class, "_ddmForm",
+				com.liferay.dynamic.data.mapping.model.DDMForm.class);
+			_ddmFormSetterMethodHandle = lookup.findSetter(
 				DDMStructureImpl.class, "_ddmForm",
 				com.liferay.dynamic.data.mapping.model.DDMForm.class);
 
-			_ddmFormFieldsMapMethodHandle = lookup.findGetter(
+			_ddmFormFieldsMapGetterMethodHandle = lookup.findGetter(
+				DDMStructureImpl.class, "_ddmFormFieldsMap", Map.class);
+			_ddmFormFieldsMapSetterMethodHandle = lookup.findSetter(
 				DDMStructureImpl.class, "_ddmFormFieldsMap", Map.class);
 		}
 		catch (ReflectiveOperationException reflectiveOperationException) {
@@ -1947,4 +1978,4 @@ public class DDMStructureModelImpl
 	private DDMStructure _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1773620455
+// LIFERAY-SERVICE-BUILDER-HASH:-1779353037

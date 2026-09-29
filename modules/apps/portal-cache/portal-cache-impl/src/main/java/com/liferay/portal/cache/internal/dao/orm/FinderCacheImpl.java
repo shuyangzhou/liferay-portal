@@ -15,11 +15,11 @@ import com.liferay.portal.kernel.cache.CacheRegistryItem;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
-import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
 import com.liferay.portal.kernel.cache.PortalCacheManager;
 import com.liferay.portal.kernel.cache.PortalCacheManagerListener;
 import com.liferay.portal.kernel.cache.key.CacheKeyGenerator;
 import com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil;
+import com.liferay.portal.kernel.cache.transactional.TransactionalPortalCacheUtil;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
@@ -149,6 +149,7 @@ public class FinderCacheImpl
 		Serializable cacheValue = null;
 		Map<LocalCacheKey, Serializable> localCache = null;
 		LocalCacheKey localCacheKey = null;
+		PortalCache<Serializable, Serializable> portalCache = null;
 
 		if (_isLocalCacheEnabled()) {
 			localCache = _localCache.get();
@@ -162,8 +163,7 @@ public class FinderCacheImpl
 		if (cacheValue == null) {
 			finderPath.touch();
 
-			PortalCache<Serializable, Serializable> portalCache =
-				_getPortalCache(finderPath.getCacheName());
+			portalCache = _getCTPortalCache(finderPath.getCacheName());
 
 			cacheValue = portalCache.get(cacheKey);
 
@@ -172,57 +172,18 @@ public class FinderCacheImpl
 			}
 		}
 
-		if (cacheValue == null) {
-			return null;
-		}
+		Object result = _getResult(
+			finderPath, args, basePersistence, cacheValue);
 
-		if (cacheValue instanceof EmptyResult) {
-			EmptyResult emptyResult = (EmptyResult)cacheValue;
-
-			if (emptyResult.matches(args)) {
-				return Collections.emptyList();
+		if (result == null) {
+			if (portalCache == null) {
+				portalCache = _getCTPortalCache(finderPath.getCacheName());
 			}
 
-			return null;
+			TransactionalPortalCacheUtil.preparePut(portalCache, cacheKey);
 		}
 
-		if (!finderPath.isBaseModelResult()) {
-			return cacheValue;
-		}
-
-		if (cacheValue instanceof Serializable[]) {
-			Serializable[] primaryKeys = (Serializable[])cacheValue;
-
-			if (primaryKeys.length == 1) {
-				Serializable result = basePersistence.fetchByPrimaryKey(
-					primaryKeys[0]);
-
-				if (result == null) {
-					return null;
-				}
-
-				return Arrays.asList(result);
-			}
-
-			Set<Serializable> primaryKeysSet = SetUtil.fromArray(primaryKeys);
-
-			Map<Serializable, ? extends BaseModel<?>> map =
-				basePersistence.fetchByPrimaryKeys(primaryKeysSet);
-
-			if (map.size() < primaryKeysSet.size()) {
-				return null;
-			}
-
-			List<Serializable> list = new ArrayList<>(primaryKeys.length);
-
-			for (Serializable curPrimaryKey : primaryKeys) {
-				list.add(map.get(curPrimaryKey));
-			}
-
-			return Collections.unmodifiableList(list);
-		}
-
-		return basePersistence.fetchByPrimaryKey(cacheValue);
+		return result;
 	}
 
 	@Override
@@ -323,6 +284,19 @@ public class FinderCacheImpl
 
 		Serializable cacheKey = _encodeCacheKey(finderPath, args);
 
+		if (!TransactionalPortalCacheUtil.completePut(
+				_getCTPortalCache(cacheName), cacheKey, cacheValue)) {
+
+			if (_isLocalCacheEnabled()) {
+				Map<LocalCacheKey, Serializable> localCache = _localCache.get();
+
+				localCache.remove(
+					new LocalCacheKey(finderPath.getCacheName(), cacheKey));
+			}
+
+			return;
+		}
+
 		if (_isLocalCacheEnabled()) {
 			Map<LocalCacheKey, Serializable> localCache = _localCache.get();
 
@@ -330,9 +304,6 @@ public class FinderCacheImpl
 				new LocalCacheKey(finderPath.getCacheName(), cacheKey),
 				cacheValue);
 		}
-
-		PortalCacheHelperUtil.putWithoutReplicator(
-			_getPortalCache(finderPath.getCacheName()), cacheKey, cacheValue);
 	}
 
 	public void removeByEntityCache(String className, BaseModel<?> baseModel) {
@@ -603,6 +574,19 @@ public class FinderCacheImpl
 			});
 	}
 
+	private PortalCache<Serializable, Serializable> _getCTPortalCache(
+		String cacheName) {
+
+		PortalCache<Serializable, Serializable> portalCache = _getPortalCache(
+			cacheName);
+
+		if (portalCache instanceof CTAwarePortalCache ctAwarePortalCache) {
+			return ctAwarePortalCache.getCTPortalCache();
+		}
+
+		return portalCache;
+	}
+
 	private CacheKeyGenerator _getCacheKeyGenerator(boolean baseModel) {
 		if (baseModel) {
 			CacheKeyGenerator cacheKeyGenerator = _baseModelCacheKeyGenerator;
@@ -767,6 +751,63 @@ public class FinderCacheImpl
 		}
 
 		return portalCache;
+	}
+
+	private Object _getResult(
+		FinderPath finderPath, Object[] args,
+		BasePersistence<?> basePersistence, Serializable cacheValue) {
+
+		if (cacheValue == null) {
+			return null;
+		}
+
+		if (cacheValue instanceof EmptyResult) {
+			EmptyResult emptyResult = (EmptyResult)cacheValue;
+
+			if (emptyResult.matches(args)) {
+				return Collections.emptyList();
+			}
+
+			return null;
+		}
+
+		if (!finderPath.isBaseModelResult()) {
+			return cacheValue;
+		}
+
+		if (cacheValue instanceof Serializable[]) {
+			Serializable[] primaryKeys = (Serializable[])cacheValue;
+
+			if (primaryKeys.length == 1) {
+				Serializable result = basePersistence.fetchByPrimaryKey(
+					primaryKeys[0]);
+
+				if (result == null) {
+					return null;
+				}
+
+				return Arrays.asList(result);
+			}
+
+			Set<Serializable> primaryKeysSet = SetUtil.fromArray(primaryKeys);
+
+			Map<Serializable, ? extends BaseModel<?>> map =
+				basePersistence.fetchByPrimaryKeys(primaryKeysSet);
+
+			if (map.size() < primaryKeysSet.size()) {
+				return null;
+			}
+
+			List<Serializable> list = new ArrayList<>(primaryKeys.length);
+
+			for (Serializable curPrimaryKey : primaryKeys) {
+				list.add(map.get(curPrimaryKey));
+			}
+
+			return Collections.unmodifiableList(list);
+		}
+
+		return basePersistence.fetchByPrimaryKey(cacheValue);
 	}
 
 	private boolean _isLocalCacheEnabled() {

@@ -14,6 +14,7 @@ import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
 import com.liferay.asset.list.asset.entry.provider.AssetListAssetEntryProvider;
+import com.liferay.asset.list.constants.AssetListConstants;
 import com.liferay.asset.list.constants.AssetListEntryTypeConstants;
 import com.liferay.asset.list.model.AssetListEntry;
 import com.liferay.asset.list.model.AssetListEntrySegmentsEntryRel;
@@ -1158,6 +1159,43 @@ public class AssetListAssetEntryProviderTest {
 	}
 
 	@Test
+	public void testGetDynamicAssetEntriesWithNonexistentClassNameIds()
+		throws Exception {
+
+		_blogsEntryLocalService.addEntry(
+			TestPropsValues.getUserId(), RandomTestUtil.randomString(),
+			RandomTestUtil.randomString(),
+			ServiceContextTestUtil.getServiceContext(
+				_group.getGroupId(), TestPropsValues.getUserId()));
+
+		long nonexistentClassNameId = RandomTestUtil.randomLong();
+
+		_assertDynamicAssetEntriesCount(
+			Boolean.FALSE.toString(),
+			String.valueOf(AssetListConstants.CLASS_NAME_ID_NONEXISTENT), 0);
+		_assertDynamicAssetEntriesCount(
+			Boolean.FALSE.toString(),
+			StringUtil.merge(
+				new long[] {
+					_portal.getClassNameId(BlogsEntry.class.getName()),
+					nonexistentClassNameId
+				}),
+			1);
+		_assertDynamicAssetEntriesCount(
+			Boolean.FALSE.toString(),
+			StringUtil.merge(
+				new long[] {
+					nonexistentClassNameId, RandomTestUtil.randomLong()
+				}),
+			0);
+		_assertDynamicAssetEntriesCount(
+			String.valueOf(AssetListConstants.CLASS_NAME_ID_NONEXISTENT), null,
+			0);
+		_assertDynamicAssetEntriesCount(
+			String.valueOf(nonexistentClassNameId), null, 0);
+	}
+
+	@Test
 	public void testGetDynamicAssetEntriesWithSegmentsEntryNotPrioritized()
 		throws Exception {
 
@@ -2014,6 +2052,34 @@ public class AssetListAssetEntryProviderTest {
 		for (AssetEntry expectedAssetEntry : expectedAssetEntries) {
 			Assert.assertTrue(assetEntries.contains(expectedAssetEntry));
 		}
+	}
+
+	private void _assertDynamicAssetEntriesCount(
+			String anyAssetType, String classNameIds, int expectedCount)
+		throws Exception {
+
+		AssetListEntry assetListEntry =
+			_assetListEntryLocalService.addAssetListEntry(
+				RandomTestUtil.randomString(), TestPropsValues.getUserId(),
+				_group.getGroupId(), RandomTestUtil.randomString(),
+				AssetListEntryTypeConstants.TYPE_DYNAMIC,
+				UnicodePropertiesBuilder.create(
+					true
+				).put(
+					"anyAssetType", anyAssetType
+				).put(
+					"classNameIds", classNameIds
+				).put(
+					"groupIds", String.valueOf(_group.getGroupId())
+				).buildString(),
+				_serviceContext);
+
+		_assertAssetListEntryResults(
+			_assetListAssetEntryProvider.getAssetEntriesInfoPage(
+				assetListEntry, new long[] {SegmentsEntryConstants.ID_DEFAULT},
+				null, null, StringPool.BLANK, StringPool.BLANK,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS),
+			expectedCount);
 	}
 
 	private void _assertGetManualAssetEntriesMatchingAllAssetCategories(

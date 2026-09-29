@@ -99,6 +99,7 @@ import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -114,7 +115,6 @@ import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.FeatureFlag;
-import com.liferay.portal.test.rule.FeatureFlags;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -149,9 +149,7 @@ import org.junit.runner.RunWith;
  * @author Rubén Pulido
  * @author Lourdes Fernández Besada
  */
-@FeatureFlags(
-	featureFlags = {@FeatureFlag("LPD-35443"), @FeatureFlag("LPD-57283")}
-)
+@FeatureFlag("LPD-57283")
 @RunWith(Arquillian.class)
 public class DisplayPageTemplateResourceTest
 	extends BaseDisplayPageTemplateResourceTestCase {
@@ -237,7 +235,7 @@ public class DisplayPageTemplateResourceTest
 
 	@Override
 	@Test
-	@TestInfo("LPD-106070")
+	@TestInfo({"LPD-106070", "LPD-107020"})
 	public void testGetDesignLibraryDisplayPageTemplate() throws Exception {
 		super.testGetDesignLibraryDisplayPageTemplate();
 
@@ -248,10 +246,11 @@ public class DisplayPageTemplateResourceTest
 		Map<String, Map<String, String>> actions =
 			displayPageTemplate.getActions();
 
-		Assert.assertTrue(actions.toString(), actions.containsKey("delete"));
-		Assert.assertTrue(actions.toString(), actions.containsKey("get"));
-		Assert.assertTrue(
-			actions.toString(), actions.containsKey("permissions"));
+		Assert.assertFalse(actions.containsKey("copy"));
+		Assert.assertFalse(actions.containsKey("copyWithPermission"));
+		Assert.assertTrue(actions.containsKey("delete"));
+		Assert.assertTrue(actions.containsKey("get"));
+		Assert.assertTrue(actions.containsKey("permissions"));
 	}
 
 	@Override
@@ -487,6 +486,283 @@ public class DisplayPageTemplateResourceTest
 				testGroup.getExternalReferenceCode(),
 				expectedDisplayPageTemplate.getExternalReferenceCode(),
 				expectedDisplayPageTemplate));
+	}
+
+	@Override
+	@Test
+	@TestInfo({"LPD-106072", "LPD-107020"})
+	public void testPostDesignLibraryDisplayPageTemplateCopy()
+		throws Exception {
+
+		String externalReferenceCode = _getDesignLibraryExternalReferenceCode();
+
+		DisplayPageTemplate displayPageTemplate =
+			_addDesignLibraryDisplayPageTemplate(
+				externalReferenceCode, WorkflowConstants.STATUS_APPROVED);
+
+		Map<String, Map<String, String>> actions =
+			displayPageTemplate.getActions();
+
+		Map<String, String> copyAction = actions.get("copy");
+
+		String copyHref = copyAction.get("href");
+
+		Assert.assertTrue(copyHref.contains("/design-libraries/"));
+		Assert.assertTrue(copyHref.endsWith("/copy"));
+
+		Map<String, String> copyWithPermissionAction = actions.get(
+			"copyWithPermission");
+
+		String copyWithPermissionHref = copyWithPermissionAction.get("href");
+
+		Assert.assertTrue(
+			copyWithPermissionHref.endsWith("/copy-with-permission"));
+
+		Role role = RoleTestUtil.addRole(RoleConstants.TYPE_REGULAR);
+
+		_addViewPermission(
+			externalReferenceCode,
+			displayPageTemplate.getExternalReferenceCode(), role);
+
+		DisplayPageTemplate copiedDisplayPageTemplate =
+			displayPageTemplateResource.
+				postDesignLibraryDisplayPageTemplateCopy(
+					externalReferenceCode,
+					displayPageTemplate.getExternalReferenceCode());
+
+		Assert.assertEquals(
+			displayPageTemplate.getContentTypeReference(),
+			copiedDisplayPageTemplate.getContentTypeReference());
+		Assert.assertNotEquals(
+			displayPageTemplate.getExternalReferenceCode(),
+			copiedDisplayPageTemplate.getExternalReferenceCode());
+		Assert.assertTrue(
+			StringUtil.startsWith(
+				copiedDisplayPageTemplate.getName(),
+				displayPageTemplate.getName()));
+		Assert.assertFalse(
+			_hasViewPermission(
+				externalReferenceCode,
+				copiedDisplayPageTemplate.getExternalReferenceCode(),
+				role.getName()));
+
+		Page<DisplayPageTemplate> displayPageTemplatesPage =
+			displayPageTemplateResource.
+				getDesignLibraryDisplayPageTemplatesPage(
+					externalReferenceCode, null, null, null, null, null);
+
+		Assert.assertNotNull(
+			displayPageTemplatesPage.toString(),
+			_getDisplayPageTemplate(
+				(List<DisplayPageTemplate>)displayPageTemplatesPage.getItems(),
+				copiedDisplayPageTemplate.getExternalReferenceCode()));
+
+		DisplayPageTemplate draftDisplayPageTemplate =
+			_addDesignLibraryDisplayPageTemplate(externalReferenceCode);
+
+		_assertProblemException(
+			"BAD_REQUEST", "A draft display page template cannot be copied",
+			() ->
+				displayPageTemplateResource.
+					postDesignLibraryDisplayPageTemplateCopy(
+						externalReferenceCode,
+						draftDisplayPageTemplate.getExternalReferenceCode()));
+	}
+
+	@Override
+	@Test
+	@TestInfo("LPD-107020")
+	public void testPostDesignLibraryDisplayPageTemplateCopyWithPermission()
+		throws Exception {
+
+		String externalReferenceCode = _getDesignLibraryExternalReferenceCode();
+
+		DisplayPageTemplate displayPageTemplate =
+			_addDesignLibraryDisplayPageTemplate(
+				externalReferenceCode, WorkflowConstants.STATUS_APPROVED);
+
+		Role role = RoleTestUtil.addRole(RoleConstants.TYPE_REGULAR);
+
+		_addViewPermission(
+			externalReferenceCode,
+			displayPageTemplate.getExternalReferenceCode(), role);
+
+		DisplayPageTemplate copiedDisplayPageTemplate =
+			displayPageTemplateResource.
+				postDesignLibraryDisplayPageTemplateCopyWithPermission(
+					externalReferenceCode,
+					displayPageTemplate.getExternalReferenceCode());
+
+		Assert.assertNotEquals(
+			displayPageTemplate.getExternalReferenceCode(),
+			copiedDisplayPageTemplate.getExternalReferenceCode());
+		Assert.assertTrue(
+			_hasViewPermission(
+				externalReferenceCode,
+				copiedDisplayPageTemplate.getExternalReferenceCode(),
+				role.getName()));
+
+		Map<String, Map<String, String>> actions =
+			copiedDisplayPageTemplate.getActions();
+
+		Assert.assertFalse(actions.containsKey("copy"));
+		Assert.assertFalse(actions.containsKey("copyWithPermission"));
+
+		DisplayPageTemplate draftDisplayPageTemplate =
+			_addDesignLibraryDisplayPageTemplate(externalReferenceCode);
+
+		_assertProblemException(
+			"BAD_REQUEST", "A draft display page template cannot be copied",
+			() ->
+				displayPageTemplateResource.
+					postDesignLibraryDisplayPageTemplateCopyWithPermission(
+						externalReferenceCode,
+						draftDisplayPageTemplate.getExternalReferenceCode()));
+	}
+
+	@Override
+	@Test
+	@TestInfo("LPD-106073")
+	public void testPostDesignLibraryDisplayPageTemplateMarkAsDefault()
+		throws Exception {
+
+		String externalReferenceCode = _getDesignLibraryExternalReferenceCode();
+
+		DisplayPageTemplate displayPageTemplate =
+			_addDesignLibraryDisplayPageTemplate(
+				externalReferenceCode, WorkflowConstants.STATUS_APPROVED);
+
+		Assert.assertFalse(displayPageTemplate.getMarkedAsDefault());
+
+		Map<String, Map<String, String>> actions =
+			displayPageTemplate.getActions();
+
+		Assert.assertTrue(actions.containsKey("markAsDefault"));
+		Assert.assertFalse(actions.containsKey("unmarkAsDefault"));
+
+		Map<String, String> markAsDefaultAction = actions.get("markAsDefault");
+
+		String markAsDefaultHref = markAsDefaultAction.get("href");
+
+		Assert.assertTrue(markAsDefaultHref.endsWith("/mark-as-default"));
+
+		DisplayPageTemplate defaultDisplayPageTemplate =
+			displayPageTemplateResource.
+				postDesignLibraryDisplayPageTemplateMarkAsDefault(
+					externalReferenceCode,
+					displayPageTemplate.getExternalReferenceCode());
+
+		Assert.assertTrue(defaultDisplayPageTemplate.getMarkedAsDefault());
+
+		actions = defaultDisplayPageTemplate.getActions();
+
+		Assert.assertFalse(actions.containsKey("markAsDefault"));
+		Assert.assertTrue(actions.containsKey("unmarkAsDefault"));
+
+		_assertProblemException(
+			"CONFLICT",
+			"The display page template already is the default for its " +
+				"content type",
+			() ->
+				displayPageTemplateResource.
+					postDesignLibraryDisplayPageTemplateMarkAsDefault(
+						externalReferenceCode,
+						displayPageTemplate.getExternalReferenceCode()));
+
+		DisplayPageTemplate draftDisplayPageTemplate =
+			_addDesignLibraryDisplayPageTemplate(
+				externalReferenceCode, WorkflowConstants.STATUS_DRAFT);
+
+		actions = draftDisplayPageTemplate.getActions();
+
+		Assert.assertFalse(actions.containsKey("markAsDefault"));
+
+		_assertProblemException(
+			"CONFLICT",
+			"The default display page template must be published first.",
+			() ->
+				displayPageTemplateResource.
+					postDesignLibraryDisplayPageTemplateMarkAsDefault(
+						externalReferenceCode,
+						draftDisplayPageTemplate.getExternalReferenceCode()));
+
+		DisplayPageTemplate noContentTypeDisplayPageTemplate =
+			_addDesignLibraryDisplayPageTemplate(externalReferenceCode);
+
+		actions = noContentTypeDisplayPageTemplate.getActions();
+
+		Assert.assertFalse(actions.containsKey("markAsDefault"));
+
+		_assertProblemException(
+			"CONFLICT",
+			"A display page template without a content type cannot be marked " +
+				"as default",
+			() ->
+				displayPageTemplateResource.
+					postDesignLibraryDisplayPageTemplateMarkAsDefault(
+						externalReferenceCode,
+						noContentTypeDisplayPageTemplate.
+							getExternalReferenceCode()));
+	}
+
+	@Override
+	@Test
+	@TestInfo("LPD-106073")
+	public void testPostDesignLibraryDisplayPageTemplateUnmarkAsDefault()
+		throws Exception {
+
+		String externalReferenceCode = _getDesignLibraryExternalReferenceCode();
+
+		DisplayPageTemplate displayPageTemplate =
+			_addDesignLibraryDisplayPageTemplate(
+				externalReferenceCode, WorkflowConstants.STATUS_APPROVED);
+
+		_assertProblemException(
+			"CONFLICT",
+			"The display page template is not the default for its content type",
+			() ->
+				displayPageTemplateResource.
+					postDesignLibraryDisplayPageTemplateUnmarkAsDefault(
+						externalReferenceCode,
+						displayPageTemplate.getExternalReferenceCode()));
+
+		DisplayPageTemplate defaultDisplayPageTemplate =
+			displayPageTemplateResource.
+				postDesignLibraryDisplayPageTemplateMarkAsDefault(
+					externalReferenceCode,
+					displayPageTemplate.getExternalReferenceCode());
+
+		Map<String, Map<String, String>> actions =
+			defaultDisplayPageTemplate.getActions();
+
+		Map<String, String> unmarkAsDefaultAction = actions.get(
+			"unmarkAsDefault");
+
+		String unmarkAsDefaultHref = unmarkAsDefaultAction.get("href");
+
+		Assert.assertTrue(unmarkAsDefaultHref.endsWith("/unmark-as-default"));
+
+		DisplayPageTemplate nondefaultDisplayPageTemplate =
+			displayPageTemplateResource.
+				postDesignLibraryDisplayPageTemplateUnmarkAsDefault(
+					externalReferenceCode,
+					displayPageTemplate.getExternalReferenceCode());
+
+		Assert.assertFalse(nondefaultDisplayPageTemplate.getMarkedAsDefault());
+
+		actions = nondefaultDisplayPageTemplate.getActions();
+
+		Assert.assertTrue(actions.containsKey("markAsDefault"));
+		Assert.assertFalse(actions.containsKey("unmarkAsDefault"));
+
+		_assertProblemException(
+			"CONFLICT",
+			"The display page template is not the default for its content type",
+			() ->
+				displayPageTemplateResource.
+					postDesignLibraryDisplayPageTemplateUnmarkAsDefault(
+						externalReferenceCode,
+						displayPageTemplate.getExternalReferenceCode()));
 	}
 
 	@Override
@@ -844,6 +1120,24 @@ public class DisplayPageTemplateResourceTest
 			layoutPageTemplateEntry.getExternalReferenceCode());
 	}
 
+	private DisplayPageTemplate _addDesignLibraryDisplayPageTemplate(
+			String designLibraryExternalReferenceCode, int status)
+		throws Exception {
+
+		Group group = _groupLocalService.getGroupByExternalReferenceCode(
+			designLibraryExternalReferenceCode, TestPropsValues.getCompanyId());
+
+		LayoutPageTemplateEntry layoutPageTemplateEntry =
+			DisplayPageTemplateTestUtil.addDisplayPageTemplate(
+				group.getGroupId(),
+				_portal.getClassNameId(AssetCategory.class.getName()), null,
+				false, status);
+
+		return displayPageTemplateResource.getDesignLibraryDisplayPageTemplate(
+			designLibraryExternalReferenceCode,
+			layoutPageTemplateEntry.getExternalReferenceCode());
+	}
+
 	private Group _addDesignLibraryGroup() throws Exception {
 		FeatureFlagTestUtil.invokeFeatureFlagListeners(
 			TestPropsValues.getCompanyId(), true, "LPD-57283");
@@ -858,6 +1152,25 @@ public class DisplayPageTemplateResourceTest
 				testGroup.getGroupId(), TestPropsValues.getUserId()));
 
 		return depotEntry.getGroup();
+	}
+
+	private void _addViewPermission(
+			String designLibraryExternalReferenceCode,
+			String displayPageTemplateExternalReferenceCode, Role role)
+		throws Exception {
+
+		displayPageTemplateResource.
+			putDesignLibraryDisplayPageTemplatePermissionsPage(
+				designLibraryExternalReferenceCode,
+				displayPageTemplateExternalReferenceCode,
+				new Permission[] {
+					new Permission() {
+						{
+							setActionIds(new String[] {"VIEW"});
+							setRoleName(role.getName());
+						}
+					}
+				});
 	}
 
 	private void _assertDesignLibraryPermissionActionHrefs(
@@ -1332,6 +1645,23 @@ public class DisplayPageTemplateResourceTest
 			layout, _layoutServiceContextHelper, _layoutStructureProvider,
 			_segmentsExperienceLocalService.fetchDefaultSegmentsExperienceId(
 				layout.getPlid()));
+	}
+
+	private boolean _hasViewPermission(
+			String designLibraryExternalReferenceCode,
+			String displayPageTemplateExternalReferenceCode, String roleName)
+		throws Exception {
+
+		Page<Permission> page =
+			displayPageTemplateResource.
+				getDesignLibraryDisplayPageTemplatePermissionsPage(
+					designLibraryExternalReferenceCode,
+					displayPageTemplateExternalReferenceCode, roleName);
+
+		return ListUtil.exists(
+			(List<Permission>)page.getItems(),
+			permission -> ArrayUtil.contains(
+				permission.getActionIds(), "VIEW"));
 	}
 
 	private boolean _isPublished(Layout layout) {

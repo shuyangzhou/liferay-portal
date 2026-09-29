@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -44,17 +45,19 @@ public class YouTubeDLVideoExternalShortcutProvider
 			return null;
 		}
 
-		JSONObject jsonObject = _getEmbedJSONObject(url);
-
 		return new DLVideoExternalShortcut() {
 
 			@Override
 			public String getThumbnailURL() {
+				JSONObject jsonObject = _getJSONObject();
+
 				return jsonObject.getString("thumbnail_url");
 			}
 
 			@Override
 			public String getTitle() {
+				JSONObject jsonObject = _getJSONObject();
+
 				return jsonObject.getString("title");
 			}
 
@@ -66,8 +69,8 @@ public class YouTubeDLVideoExternalShortcutProvider
 			@Override
 			public String renderHTML(HttpServletRequest httpServletRequest) {
 				String iframeSrc =
-					"https://www.youtube.com/embed/" + youTubeVideoId +
-						"?rel=0";
+					"https://www.youtube.com/embed/" +
+						HtmlUtil.escapeAttribute(youTubeVideoId) + "?rel=0";
 				String start = HttpComponentsUtil.getParameter(url, "t", false);
 
 				if (Validator.isNotNull(start)) {
@@ -80,6 +83,16 @@ public class YouTubeDLVideoExternalShortcutProvider
 					"allowfullscreen height=\"315\" frameborder=\"0\" ",
 					"src=\"", iframeSrc, "\" width=\"560\"></iframe>");
 			}
+
+			private JSONObject _getJSONObject() {
+				if (_jsonObject == null) {
+					_jsonObject = _getEmbedJSONObject(url);
+				}
+
+				return _jsonObject;
+			}
+
+			private JSONObject _jsonObject;
 
 		};
 	}

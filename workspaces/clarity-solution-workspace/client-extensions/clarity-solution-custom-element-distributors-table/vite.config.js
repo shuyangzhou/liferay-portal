@@ -8,6 +8,7 @@ import {defineConfig} from 'vite';
 
 export default defineConfig({
 	build: {
+		assetsInlineLimit: 32 * 1024,
 		outDir: 'build/vite',
 		rollupOptions: {
 			external: [

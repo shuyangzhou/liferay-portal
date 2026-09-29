@@ -180,7 +180,18 @@ public class PingbackMethodImpl implements Method {
 				"Pingbacks are disabled");
 		}
 
-		Response response = _validateSource();
+		if (!_isAllowedSourceURI()) {
+			return XmlRpcUtil.createFault(ACCESS_DENIED, "Access Denied");
+		}
+
+		String html = _getSourceHTML();
+
+		if (html == null) {
+			return XmlRpcUtil.createFault(
+				SOURCE_URI_DOES_NOT_EXIST, "Error accessing source URI");
+		}
+
+		Response response = _validateSource(html);
 
 		if (response != null) {
 			return response;
@@ -192,7 +203,7 @@ public class PingbackMethodImpl implements Method {
 		long classPK = entry.getEntryId();
 
 		String body = StringBundler.concat(
-			"[...] ", _getExcerpt(), " [...] <a href=", _sourceURI, ">",
+			"[...] ", _getExcerpt(html), " [...] <a href=", _sourceURI, ">",
 			_language.get(LocaleUtil.getSiteDefault(), "read-more"), "</a>");
 
 		ServiceContext serviceContext = _buildServiceContext(
@@ -305,9 +316,7 @@ public class PingbackMethodImpl implements Method {
 		return entry;
 	}
 
-	private String _getExcerpt() throws Exception {
-		String html = _http.URLtoString(_sourceURI);
-
+	private String _getExcerpt(String html) {
 		Source source = new Source(html);
 
 		source.fullSequentialParse();
@@ -360,6 +369,15 @@ public class PingbackMethodImpl implements Method {
 		return PropsValues.BLOGS_LINKBACK_EXCERPT_LENGTH;
 	}
 
+	private Http.Options _getOptions() {
+		Http.Options options = new Http.Options();
+
+		options.setFollowRedirects(false);
+		options.setLocation(_sourceURI);
+
+		return options;
+	}
+
 	private String _getParam(Map<String, String[]> params, String name) {
 		String[] paramArray = params.get(name);
 
@@ -388,19 +406,30 @@ public class PingbackMethodImpl implements Method {
 		return PortletProviderUtil.getPortletId(className, action);
 	}
 
-	private boolean _isPingbackEnabled() {
-		if (_pingbackProperties != null) {
-			return _pingbackProperties.isPingbackEnabled();
+	private String _getSourceHTML() {
+		try {
+			return _http.URLtoString(_getOptions());
 		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(exception);
+			}
 
-		return PropsValues.BLOGS_PINGBACK_ENABLED;
+			return null;
+		}
 	}
 
-	private boolean _isSourceURILocalNetwork() {
+	private boolean _isAllowedSourceURI() {
 		try {
 			URL url = new URL(_sourceURI);
 
-			return InetAddressUtil.isLocalInetAddress(
+			String protocol = url.getProtocol();
+
+			if (!protocol.equals(Http.HTTP) && !protocol.equals(Http.HTTPS)) {
+				return false;
+			}
+
+			return !InetAddressUtil.isLocalInetAddress(
 				_getInetAddressByName(url.getHost()));
 		}
 		catch (Exception exception) {
@@ -409,29 +438,19 @@ public class PingbackMethodImpl implements Method {
 			}
 		}
 
-		return true;
+		return false;
 	}
 
-	private Response _validateSource() throws Exception {
-		if (_isSourceURILocalNetwork()) {
-			return XmlRpcUtil.createFault(ACCESS_DENIED, "Access Denied");
+	private boolean _isPingbackEnabled() {
+		if (_pingbackProperties != null) {
+			return _pingbackProperties.isPingbackEnabled();
 		}
 
-		Source source = null;
+		return PropsValues.BLOGS_PINGBACK_ENABLED;
+	}
 
-		try {
-			String html = _http.URLtoString(_sourceURI);
-
-			source = new Source(html);
-		}
-		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception);
-			}
-
-			return XmlRpcUtil.createFault(
-				SOURCE_URI_DOES_NOT_EXIST, "Error accessing source URI");
-		}
+	private Response _validateSource(String html) {
+		Source source = new Source(html);
 
 		List<StartTag> startTags = source.getAllStartTags("a");
 

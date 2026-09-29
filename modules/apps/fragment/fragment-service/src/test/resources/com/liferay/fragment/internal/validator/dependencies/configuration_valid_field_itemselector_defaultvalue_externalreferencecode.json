@@ -1,0 +1,17 @@
+{
+	"fieldSets": [
+		{
+			"fields": [
+				{
+					"defaultValue": {
+						"className": "com.liferay.journal.model.JournalArticle",
+						"externalReferenceCode": "8e5e3dd1-9b57-4184-4271-066a55f9c452",
+						"scopeExternalReferenceCode": "5237a55f-9f2c-1a44-1c37-01d2a55f9c37"
+					},
+					"name": "itemSelector1",
+					"type": "itemSelector"
+				}
+			]
+		}
+	]
+}

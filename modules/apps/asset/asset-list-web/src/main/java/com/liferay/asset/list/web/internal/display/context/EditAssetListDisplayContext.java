@@ -567,7 +567,7 @@ public class EditAssetListDisplayContext {
 		long defaultClassNameId = GetterUtil.getLong(
 			unicodeProperties.getProperty("anyAssetType", null));
 
-		if (defaultClassNameId > 0) {
+		if (defaultClassNameId != 0) {
 			if (ArrayUtil.contains(availableClassNameIds, defaultClassNameId)) {
 				return new long[] {defaultClassNameId};
 			}
@@ -600,9 +600,17 @@ public class EditAssetListDisplayContext {
 			return _classTypeIds;
 		}
 
-		String className = getClassName(
+		AssetRendererFactory<?> assetRendererFactory =
 			AssetRendererFactoryRegistryUtil.
-				getAssetRendererFactoryByClassNameId(classNameIds[0]));
+				getAssetRendererFactoryByClassNameId(classNameIds[0]);
+
+		if (assetRendererFactory == null) {
+			_classTypeIds = new long[0];
+
+			return _classTypeIds;
+		}
+
+		String className = getClassName(assetRendererFactory);
 
 		long classTypeId = GetterUtil.getLong(
 			_unicodeProperties.getProperty("anyClassType" + className));
@@ -782,6 +790,48 @@ public class EditAssetListDisplayContext {
 		).setPortletResource(
 			AssetListPortletKeys.ASSET_LIST
 		).buildString();
+	}
+
+	public long[] getNonexistentClassNameIds() {
+		if (_nonexistentClassNameIds != null) {
+			return _nonexistentClassNameIds;
+		}
+
+		_nonexistentClassNameIds = getNonexistentClassNameIds(
+			_unicodeProperties);
+
+		return _nonexistentClassNameIds;
+	}
+
+	public long[] getNonexistentClassNameIds(
+		UnicodeProperties unicodeProperties) {
+
+		boolean anyAssetType = GetterUtil.getBoolean(
+			unicodeProperties.getProperty(
+				"anyAssetType", Boolean.TRUE.toString()));
+		String selectionStyle = unicodeProperties.getProperty(
+			"selectionStyle", "dynamic");
+
+		if (anyAssetType || selectionStyle.equals("manual")) {
+			return new long[0];
+		}
+
+		long[] classNameIds = GetterUtil.getLongValues(
+			StringUtil.split(
+				unicodeProperties.getProperty(
+					"classNameIds", StringPool.BLANK)));
+
+		long defaultClassNameId = GetterUtil.getLong(
+			unicodeProperties.getProperty("anyAssetType", null));
+
+		if (defaultClassNameId != 0) {
+			classNameIds = new long[] {defaultClassNameId};
+		}
+
+		return ArrayUtil.filter(
+			classNameIds,
+			classNameId -> Validator.isNull(
+				PortalUtil.fetchClassName(classNameId)));
 	}
 
 	public String getOrderByColumn1() {
@@ -1477,6 +1527,7 @@ public class EditAssetListDisplayContext {
 	private final InfoSearchClassMapperRegistry _infoSearchClassMapperRegistry;
 	private final ItemSelector _itemSelector;
 	private Boolean _liveGroup;
+	private long[] _nonexistentClassNameIds;
 	private final ObjectDefinitionLocalService _objectDefinitionLocalService;
 	private String _orderByColumn1;
 	private String _orderByColumn2;

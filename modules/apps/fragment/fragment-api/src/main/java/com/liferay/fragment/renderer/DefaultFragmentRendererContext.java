@@ -9,8 +9,10 @@ import com.liferay.fragment.constants.FragmentEntryLinkConstants;
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.info.form.InfoForm;
 import com.liferay.info.item.InfoItemReference;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
@@ -27,7 +29,7 @@ public class DefaultFragmentRendererContext implements FragmentRendererContext {
 	public DefaultFragmentRendererContext(FragmentEntryLink fragmentEntryLink) {
 		_fragmentEntryLink = fragmentEntryLink;
 
-		_fragmentEntryElementId = "fragment-" + PortalUUIDUtil.generate();
+		_fragmentEntryElementId = "fragment-" + PortalUtil.getUniqueElementId();
 	}
 
 	@Override
@@ -73,6 +75,17 @@ public class DefaultFragmentRendererContext implements FragmentRendererContext {
 	@Override
 	public String getMode() {
 		return _mode;
+	}
+
+	@Override
+	public JSONObject getModifiableEditableValuesJSONObject() {
+		if (_modifiableEditableValuesJSONObject == null) {
+			_modifiableEditableValuesJSONObject =
+				JSONFactoryUtil.safeCreateJSONObject(
+					_fragmentEntryLink.getEditableValues());
+		}
+
+		return _modifiableEditableValuesJSONObject;
 	}
 
 	@Override
@@ -197,6 +210,7 @@ public class DefaultFragmentRendererContext implements FragmentRendererContext {
 	private InfoItemReference _infoItemReference;
 	private Locale _locale = LocaleUtil.getMostRelevantLocale();
 	private String _mode = FragmentEntryLinkConstants.VIEW;
+	private JSONObject _modifiableEditableValuesJSONObject;
 	private long _previewClassNameId;
 	private long _previewClassPK;
 	private int _previewType;

@@ -119,11 +119,13 @@ public class TalendProcessTest {
 			argument -> Assert.assertFalse(
 				argument.startsWith("--context_param lastRunStartDate=")));
 
+		String javaVersion = JavaDetector.getJavaVersion();
+
 		ProcessConfig processConfig = talendProcess.getProcessConfig();
 
 		List<String> processConfigArguments = processConfig.getArguments();
 
-		if (JavaDetector.isJDK21()) {
+		if (javaVersion.startsWith("21")) {
 			Assert.assertEquals(
 				processConfigArguments.toString(), 4,
 				processConfigArguments.size());

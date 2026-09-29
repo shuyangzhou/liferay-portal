@@ -1587,6 +1587,102 @@ public abstract class BaseDisplayPageTemplateResourceTestCase {
 	}
 
 	@Test
+	public void testPostDesignLibraryDisplayPageTemplateCopy()
+		throws Exception {
+
+		DisplayPageTemplate randomDisplayPageTemplate =
+			randomDisplayPageTemplate();
+
+		DisplayPageTemplate postDisplayPageTemplate =
+			testPostDesignLibraryDisplayPageTemplateCopy_addDisplayPageTemplate(
+				randomDisplayPageTemplate);
+
+		assertEquals(randomDisplayPageTemplate, postDisplayPageTemplate);
+		assertValid(postDisplayPageTemplate);
+	}
+
+	protected DisplayPageTemplate
+			testPostDesignLibraryDisplayPageTemplateCopy_addDisplayPageTemplate(
+				DisplayPageTemplate displayPageTemplate)
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	@Test
+	public void testPostDesignLibraryDisplayPageTemplateCopyWithPermission()
+		throws Exception {
+
+		DisplayPageTemplate randomDisplayPageTemplate =
+			randomDisplayPageTemplate();
+
+		DisplayPageTemplate postDisplayPageTemplate =
+			testPostDesignLibraryDisplayPageTemplateCopyWithPermission_addDisplayPageTemplate(
+				randomDisplayPageTemplate);
+
+		assertEquals(randomDisplayPageTemplate, postDisplayPageTemplate);
+		assertValid(postDisplayPageTemplate);
+	}
+
+	protected DisplayPageTemplate
+			testPostDesignLibraryDisplayPageTemplateCopyWithPermission_addDisplayPageTemplate(
+				DisplayPageTemplate displayPageTemplate)
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	@Test
+	public void testPostDesignLibraryDisplayPageTemplateMarkAsDefault()
+		throws Exception {
+
+		DisplayPageTemplate randomDisplayPageTemplate =
+			randomDisplayPageTemplate();
+
+		DisplayPageTemplate postDisplayPageTemplate =
+			testPostDesignLibraryDisplayPageTemplateMarkAsDefault_addDisplayPageTemplate(
+				randomDisplayPageTemplate);
+
+		assertEquals(randomDisplayPageTemplate, postDisplayPageTemplate);
+		assertValid(postDisplayPageTemplate);
+	}
+
+	protected DisplayPageTemplate
+			testPostDesignLibraryDisplayPageTemplateMarkAsDefault_addDisplayPageTemplate(
+				DisplayPageTemplate displayPageTemplate)
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	@Test
+	public void testPostDesignLibraryDisplayPageTemplateUnmarkAsDefault()
+		throws Exception {
+
+		DisplayPageTemplate randomDisplayPageTemplate =
+			randomDisplayPageTemplate();
+
+		DisplayPageTemplate postDisplayPageTemplate =
+			testPostDesignLibraryDisplayPageTemplateUnmarkAsDefault_addDisplayPageTemplate(
+				randomDisplayPageTemplate);
+
+		assertEquals(randomDisplayPageTemplate, postDisplayPageTemplate);
+		assertValid(postDisplayPageTemplate);
+	}
+
+	protected DisplayPageTemplate
+			testPostDesignLibraryDisplayPageTemplateUnmarkAsDefault_addDisplayPageTemplate(
+				DisplayPageTemplate displayPageTemplate)
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	@Test
 	public void testPostSiteDisplayPageTemplate() throws Exception {
 		DisplayPageTemplate randomDisplayPageTemplate =
 			randomDisplayPageTemplate();
@@ -3373,4 +3469,4 @@ public abstract class BaseDisplayPageTemplateResourceTestCase {
 			DisplayPageTemplateResource _displayPageTemplateResource;
 
 }
-// LIFERAY-REST-BUILDER-HASH:1579022092
+// LIFERAY-REST-BUILDER-HASH:2001146410

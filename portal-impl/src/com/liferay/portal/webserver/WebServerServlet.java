@@ -100,6 +100,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -110,6 +111,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.Validator_IW;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.webdav.WebDAVUtil;
+import com.liferay.portal.kernel.webserver.WebServerServletTokenUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.impl.ImageImpl;
 import com.liferay.portal.util.PortalInstances;
@@ -546,52 +548,14 @@ public class WebServerServlet extends HttpServlet {
 		if (imageId > 0) {
 			image = ImageLocalServiceUtil.fetchImage(imageId);
 
+			_checkImagePermission(httpServletRequest, imageId);
+
 			String path = GetterUtil.getString(
 				httpServletRequest.getPathInfo());
 
-			if (path.startsWith("/layout_icon") || path.startsWith("/logo")) {
-				Layout layout = LayoutLocalServiceUtil.fetchLayoutByIconImageId(
-					true, imageId);
-
-				if (layout != null) {
-					PermissionChecker permissionChecker = _getPermissionChecker(
-						httpServletRequest);
-
-					if (!LayoutPermissionUtil.contains(
-							permissionChecker, layout, ActionKeys.VIEW)) {
-
-						throw new PrincipalException.MustHavePermission(
-							permissionChecker, Layout.class.getName(),
-							layout.getPlid(), ActionKeys.VIEW);
-					}
-				}
-			}
-			else if (path.startsWith("/layout_set_logo")) {
-				LayoutSet layoutSet =
-					LayoutSetLocalServiceUtil.fetchLayoutSetByLogoId(
-						true, imageId);
-
-				if (layoutSet != null) {
-					PermissionChecker permissionChecker = _getPermissionChecker(
-						httpServletRequest);
-
-					Group group = layoutSet.getGroup();
-
-					if (!group.isShowSite(
-							permissionChecker, layoutSet.isPrivateLayout()) &&
-						!GroupPermissionUtil.contains(
-							permissionChecker, layoutSet.getGroupId(),
-							ActionKeys.VIEW)) {
-
-						throw new PrincipalException.MustHavePermission(
-							permissionChecker, LayoutSet.class.getName(),
-							layoutSet.getLayoutSetId(), ActionKeys.VIEW);
-					}
-				}
-			}
-			else if (path.startsWith("/user_female_portrait") ||
-					 path.startsWith("/user_male_portrait") ||
-					 path.startsWith("/user_portrait")) {
+			if (path.startsWith("/user_female_portrait") ||
+				path.startsWith("/user_male_portrait") ||
+				path.startsWith("/user_portrait")) {
 
 				image = getUserPortraitImageResized(image, imageId);
 			}
@@ -608,6 +572,8 @@ public class WebServerServlet extends HttpServlet {
 					FileEntry fileEntry =
 						DLAppLocalServiceUtil.getFileEntryByUuidAndGroupId(
 							uuid, groupId);
+
+					_checkFileEntry(fileEntry, httpServletRequest);
 
 					image = convertFileEntry(igSmallImage, fileEntry);
 				}
@@ -758,6 +724,12 @@ public class WebServerServlet extends HttpServlet {
 					return 0;
 				}
 			}
+		}
+
+		if ((imageId <= 0) ||
+			!_isImageTokenAccepted(httpServletRequest, imageId)) {
+
+			return 0;
 		}
 
 		return imageId;
@@ -1001,8 +973,8 @@ public class WebServerServlet extends HttpServlet {
 				String title = name;
 
 				sendFile(
-					httpServletResponse, user, groupId, folderId,
-					URLCodec.decodeURL(title));
+					httpServletRequest, httpServletResponse, user, groupId,
+					folderId, URLCodec.decodeURL(title));
 
 				return;
 			}
@@ -1010,7 +982,8 @@ public class WebServerServlet extends HttpServlet {
 
 		try {
 			sendFile(
-				httpServletResponse, user, groupId, folderId, "index.html");
+				httpServletRequest, httpServletResponse, user, groupId,
+				folderId, "index.html");
 
 			return;
 		}
@@ -1021,7 +994,8 @@ public class WebServerServlet extends HttpServlet {
 
 			try {
 				sendFile(
-					httpServletResponse, user, groupId, folderId, "index.htm");
+					httpServletRequest, httpServletResponse, user, groupId,
+					folderId, "index.htm");
 
 				return;
 			}
@@ -1064,6 +1038,33 @@ public class WebServerServlet extends HttpServlet {
 
 		sendHTML(
 			httpServletResponse, URLCodec.decodeURL(path), webServerEntries);
+	}
+
+	protected void sendFile(
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse, User user, long groupId,
+			long folderId, String title)
+		throws Exception {
+
+		FileEntry fileEntry = DLAppLocalServiceUtil.getFileEntry(
+			groupId, folderId, title);
+
+		_checkFileEntry(fileEntry, httpServletRequest);
+
+		httpServletResponse.setHeader(
+			HttpHeaders.CACHE_CONTROL,
+			FileEntryHttpHeaderCustomizerUtil.getHttpHeaderValue(
+				fileEntry, HttpHeaders.CACHE_CONTROL,
+				HttpHeaders.CACHE_CONTROL_PRIVATE_VALUE));
+
+		String contentDispositionType =
+			_isBrowserExecutableContentType(fileEntry.getMimeType()) ?
+				HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT : null;
+
+		ServletResponseUtil.sendFile(
+			null, httpServletResponse, fileEntry.getTitle(),
+			fileEntry.getContentStream(), fileEntry.getSize(),
+			fileEntry.getMimeType(), contentDispositionType);
 	}
 
 	protected void sendFile(
@@ -1312,30 +1313,6 @@ public class WebServerServlet extends HttpServlet {
 					inputStream, contentLength, contentType);
 			}
 		}
-	}
-
-	protected void sendFile(
-			HttpServletResponse httpServletResponse, User user, long groupId,
-			long folderId, String title)
-		throws Exception {
-
-		FileEntry fileEntry = DLAppLocalServiceUtil.getFileEntry(
-			groupId, folderId, title);
-
-		httpServletResponse.setHeader(
-			HttpHeaders.CACHE_CONTROL,
-			FileEntryHttpHeaderCustomizerUtil.getHttpHeaderValue(
-				fileEntry, HttpHeaders.CACHE_CONTROL,
-				HttpHeaders.CACHE_CONTROL_PRIVATE_VALUE));
-
-		String contentDispositionType =
-			_isBrowserExecutableContentType(fileEntry.getMimeType()) ?
-				HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT : null;
-
-		ServletResponseUtil.sendFile(
-			null, httpServletResponse, fileEntry.getTitle(),
-			fileEntry.getContentStream(), fileEntry.getSize(),
-			fileEntry.getMimeType(), contentDispositionType);
 	}
 
 	protected void sendGroups(
@@ -1752,6 +1729,58 @@ public class WebServerServlet extends HttpServlet {
 		}
 	}
 
+	private void _checkImagePermission(
+			HttpServletRequest httpServletRequest, long imageId)
+		throws Exception {
+
+		Layout layout = LayoutLocalServiceUtil.fetchLayoutByIconImageId(
+			true, imageId);
+
+		if (layout == null) {
+			layout = LayoutLocalServiceUtil.fetchLayoutByIconImageId(
+				false, imageId);
+		}
+
+		if (layout != null) {
+			PermissionChecker permissionChecker = _getPermissionChecker(
+				httpServletRequest);
+
+			if (!LayoutPermissionUtil.contains(
+					permissionChecker, layout, ActionKeys.VIEW)) {
+
+				throw new PrincipalException.MustHavePermission(
+					permissionChecker, Layout.class.getName(), layout.getPlid(),
+					ActionKeys.VIEW);
+			}
+		}
+
+		LayoutSet layoutSet = LayoutSetLocalServiceUtil.fetchLayoutSetByLogoId(
+			true, imageId);
+
+		if (layoutSet == null) {
+			layoutSet = LayoutSetLocalServiceUtil.fetchLayoutSetByLogoId(
+				false, imageId);
+		}
+
+		if (layoutSet != null) {
+			PermissionChecker permissionChecker = _getPermissionChecker(
+				httpServletRequest);
+
+			Group group = layoutSet.getGroup();
+
+			if (!group.isShowSite(
+					permissionChecker, layoutSet.isPrivateLayout()) &&
+				!GroupPermissionUtil.contains(
+					permissionChecker, layoutSet.getGroupId(),
+					ActionKeys.VIEW)) {
+
+				throw new PrincipalException.MustHavePermission(
+					permissionChecker, LayoutSet.class.getName(),
+					layoutSet.getLayoutSetId(), ActionKeys.VIEW);
+			}
+		}
+	}
+
 	private void _checkResourcePermission(
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse)
@@ -1973,6 +2002,38 @@ public class WebServerServlet extends HttpServlet {
 	private boolean _isBrowserExecutableContentType(String contentType) {
 		return _browserExecutableContentTypes.contains(
 			StringUtil.toLowerCase(contentType));
+	}
+
+	private boolean _isImageTokenAccepted(
+		HttpServletRequest httpServletRequest, long imageId) {
+
+		String token = WebServerServletTokenUtil.getToken(imageId);
+
+		if (Validator.isNotNull(token)) {
+			String imageToken = ParamUtil.getString(httpServletRequest, "t");
+
+			if (MessageDigest.isEqual(
+					imageToken.getBytes(StandardCharsets.UTF_8),
+					token.getBytes(StandardCharsets.UTF_8))) {
+
+				return true;
+			}
+		}
+
+		if (GetterUtil.getBoolean(
+				PropsUtil.get("image.token.check.disabled"))) {
+
+			return true;
+		}
+
+		if (_log.isWarnEnabled()) {
+			_log.warn(
+				StringBundler.concat(
+					"Image ", imageId,
+					" was requested without a valid \"t\" parameter"));
+		}
+
+		return false;
 	}
 
 	private boolean _processCompanyInactiveRequest(

@@ -14,10 +14,14 @@ import com.liferay.list.type.model.ListTypeEntry;
 import com.liferay.list.type.service.ListTypeEntryLocalService;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.constants.ObjectFieldSettingConstants;
+import com.liferay.object.exception.NoSuchObjectEntryException;
 import com.liferay.object.model.ObjectEntryVersion;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectFieldSetting;
+import com.liferay.object.model.ObjectRelationship;
+import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectEntryVersionService;
+import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -29,6 +33,9 @@ import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.test.log.LogCapture;
+import com.liferay.portal.test.log.LogEntry;
+import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.FastDateFormatFactoryImpl;
 
@@ -81,7 +88,8 @@ public class ObjectEntryVersionFieldValueResolverTest {
 			new ObjectEntryVersionFieldValueResolver(
 				_diffHtml, _dlAppLocalService, _dlFileEntryLocalService,
 				_dlURLHelper, _language, _listTypeEntryLocalService,
-				_objectEntryVersionService);
+				_objectEntryLocalService, _objectEntryVersionService,
+				_objectRelationshipLocalService);
 	}
 
 	@Test
@@ -95,6 +103,7 @@ public class ObjectEntryVersionFieldValueResolverTest {
 	public void testToDiffHtml() throws Exception {
 		_testToDiffHtmlWithAttachmentObjectField();
 		_testToDiffHtmlWithDateObjectField();
+		_testToDiffHtmlWithoutDiffHtml();
 		_testToDiffHtmlWithTextObjectField();
 	}
 
@@ -106,11 +115,14 @@ public class ObjectEntryVersionFieldValueResolverTest {
 		_testToDisplayValueWithDateTimeObjectField();
 		_testToDisplayValueWithHTMLFileName();
 		_testToDisplayValueWithHTMLListTypeEntryName();
+		_testToDisplayValueWithHTMLObjectEntryTitle();
 		_testToDisplayValueWithHTMLTextValue();
 		_testToDisplayValueWithMultiselectPicklistObjectField();
 		_testToDisplayValueWithNonexistentFileEntry();
+		_testToDisplayValueWithNonexistentObjectEntry();
 		_testToDisplayValueWithNullValue();
 		_testToDisplayValueWithPicklistObjectField();
+		_testToDisplayValueWithRelationshipObjectField();
 		_testToDisplayValueWithRichTextObjectField();
 	}
 
@@ -161,6 +173,37 @@ public class ObjectEntryVersionFieldValueResolverTest {
 			objectField.getObjectFieldSettings()
 		).thenReturn(
 			objectFieldSettings
+		);
+
+		return objectField;
+	}
+
+	private ObjectField _mockRelationshipObjectField(long objectDefinitionId) {
+		ObjectField objectField = _mockObjectField(
+			ObjectFieldConstants.BUSINESS_TYPE_RELATIONSHIP);
+
+		long objectFieldId = RandomTestUtil.randomLong();
+
+		Mockito.when(
+			objectField.getObjectFieldId()
+		).thenReturn(
+			objectFieldId
+		);
+
+		ObjectRelationship objectRelationship = Mockito.mock(
+			ObjectRelationship.class);
+
+		Mockito.when(
+			objectRelationship.getObjectDefinitionId1()
+		).thenReturn(
+			objectDefinitionId
+		);
+
+		Mockito.when(
+			_objectRelationshipLocalService.
+				fetchObjectRelationshipByObjectFieldId2(objectFieldId)
+		).thenReturn(
+			objectRelationship
 		);
 
 		return objectField;
@@ -420,6 +463,39 @@ public class ObjectEntryVersionFieldValueResolverTest {
 				"old"));
 	}
 
+	private void _testToDiffHtmlWithoutDiffHtml() throws Exception {
+		_testToDiffHtmlWithoutDiffHtml(
+			ObjectFieldConstants.BUSINESS_TYPE_DECIMAL);
+		_testToDiffHtmlWithoutDiffHtml(
+			ObjectFieldConstants.BUSINESS_TYPE_EMAIL_ADDRESS);
+		_testToDiffHtmlWithoutDiffHtml(
+			ObjectFieldConstants.BUSINESS_TYPE_INTEGER);
+		_testToDiffHtmlWithoutDiffHtml(
+			ObjectFieldConstants.BUSINESS_TYPE_LONG_INTEGER);
+		_testToDiffHtmlWithoutDiffHtml(
+			ObjectFieldConstants.BUSINESS_TYPE_PHONE_NUMBER);
+		_testToDiffHtmlWithoutDiffHtml(
+			ObjectFieldConstants.BUSINESS_TYPE_PRECISION_DECIMAL);
+		_testToDiffHtmlWithoutDiffHtml(
+			ObjectFieldConstants.BUSINESS_TYPE_RELATIONSHIP);
+	}
+
+	private void _testToDiffHtmlWithoutDiffHtml(String businessType)
+		throws Exception {
+
+		String addedDisplayValue = RandomTestUtil.randomString();
+		String removedDisplayValue = RandomTestUtil.randomString();
+
+		Assert.assertEquals(
+			StringBundler.concat(
+				"<span class=\"diff-html-removed\">", removedDisplayValue,
+				"</span><span class=\"diff-html-added\">", addedDisplayValue,
+				"</span>"),
+			_objectEntryVersionFieldValueResolver.toDiffHtml(
+				addedDisplayValue, _mockObjectField(businessType),
+				removedDisplayValue));
+	}
+
 	private void _testToDisplayValueWithAttachmentObjectField()
 		throws Exception {
 
@@ -561,6 +637,26 @@ public class ObjectEntryVersionFieldValueResolverTest {
 				_LANGUAGE_ID, objectField, null, key));
 	}
 
+	private void _testToDisplayValueWithHTMLObjectEntryTitle()
+		throws Exception {
+
+		long objectDefinitionId = RandomTestUtil.randomLong();
+		long primaryKey = RandomTestUtil.randomLong();
+
+		Mockito.when(
+			_objectEntryLocalService.getTitleValue(
+				objectDefinitionId, primaryKey)
+		).thenReturn(
+			"<img src=x onerror=alert(1)>"
+		);
+
+		Assert.assertEquals(
+			"&lt;img src=x onerror=alert(1)&gt;",
+			_objectEntryVersionFieldValueResolver.toDisplayValue(
+				_LANGUAGE_ID, _mockRelationshipObjectField(objectDefinitionId),
+				null, primaryKey));
+	}
+
 	private void _testToDisplayValueWithHTMLTextValue() {
 		Assert.assertEquals(
 			"&lt;img src=x onerror=alert(1)&gt;",
@@ -632,6 +728,52 @@ public class ObjectEntryVersionFieldValueResolverTest {
 				_LANGUAGE_ID, objectField, null, fileEntryId));
 	}
 
+	private void _testToDisplayValueWithNonexistentObjectEntry()
+		throws Exception {
+
+		long primaryKey = RandomTestUtil.randomLong();
+
+		Assert.assertEquals(
+			StringPool.BLANK,
+			_objectEntryVersionFieldValueResolver.toDisplayValue(
+				_LANGUAGE_ID,
+				_mockObjectField(
+					ObjectFieldConstants.BUSINESS_TYPE_RELATIONSHIP),
+				null, primaryKey));
+
+		NoSuchObjectEntryException noSuchObjectEntryException =
+			new NoSuchObjectEntryException();
+		long objectDefinitionId = RandomTestUtil.randomLong();
+
+		Mockito.when(
+			_objectEntryLocalService.getTitleValue(
+				objectDefinitionId, primaryKey)
+		).thenThrow(
+			noSuchObjectEntryException
+		);
+
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				ObjectEntryVersionFieldValueResolver.class.getName(),
+				LoggerTestUtil.WARN)) {
+
+			Assert.assertEquals(
+				StringPool.BLANK,
+				_objectEntryVersionFieldValueResolver.toDisplayValue(
+					_LANGUAGE_ID,
+					_mockRelationshipObjectField(objectDefinitionId), null,
+					primaryKey));
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
+
+			LogEntry logEntry = logEntries.get(0);
+
+			Assert.assertSame(
+				noSuchObjectEntryException, logEntry.getThrowable());
+		}
+	}
+
 	private void _testToDisplayValueWithNullValue() {
 		_setUpBooleanLabels();
 
@@ -641,6 +783,8 @@ public class ObjectEntryVersionFieldValueResolverTest {
 		_assertNullDisplayValue(
 			ObjectFieldConstants.BUSINESS_TYPE_MULTISELECT_PICKLIST);
 		_assertNullDisplayValue(ObjectFieldConstants.BUSINESS_TYPE_PICKLIST);
+		_assertNullDisplayValue(
+			ObjectFieldConstants.BUSINESS_TYPE_RELATIONSHIP);
 		_assertNullDisplayValue(ObjectFieldConstants.BUSINESS_TYPE_TEXT);
 
 		Assert.assertEquals(
@@ -684,6 +828,27 @@ public class ObjectEntryVersionFieldValueResolverTest {
 				_LANGUAGE_ID, objectField, null, unknownKey));
 	}
 
+	private void _testToDisplayValueWithRelationshipObjectField()
+		throws Exception {
+
+		long objectDefinitionId = RandomTestUtil.randomLong();
+		long primaryKey = RandomTestUtil.randomLong();
+		String title = RandomTestUtil.randomString();
+
+		Mockito.when(
+			_objectEntryLocalService.getTitleValue(
+				objectDefinitionId, primaryKey)
+		).thenReturn(
+			title
+		);
+
+		Assert.assertEquals(
+			title,
+			_objectEntryVersionFieldValueResolver.toDisplayValue(
+				_LANGUAGE_ID, _mockRelationshipObjectField(objectDefinitionId),
+				null, primaryKey));
+	}
+
 	private void _testToDisplayValueWithRichTextObjectField() {
 		String richText = "<p>Hello <b>World</b></p>";
 
@@ -708,9 +873,14 @@ public class ObjectEntryVersionFieldValueResolverTest {
 	private final Language _language = Mockito.mock(Language.class);
 	private final ListTypeEntryLocalService _listTypeEntryLocalService =
 		Mockito.mock(ListTypeEntryLocalService.class);
+	private final ObjectEntryLocalService _objectEntryLocalService =
+		Mockito.mock(ObjectEntryLocalService.class);
 	private ObjectEntryVersionFieldValueResolver
 		_objectEntryVersionFieldValueResolver;
 	private final ObjectEntryVersionService _objectEntryVersionService =
 		Mockito.mock(ObjectEntryVersionService.class);
+	private final ObjectRelationshipLocalService
+		_objectRelationshipLocalService = Mockito.mock(
+			ObjectRelationshipLocalService.class);
 
 }

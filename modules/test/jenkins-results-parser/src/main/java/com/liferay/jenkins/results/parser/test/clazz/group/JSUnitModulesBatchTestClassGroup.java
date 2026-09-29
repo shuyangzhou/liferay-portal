@@ -40,6 +40,37 @@ import org.json.JSONObject;
 public class JSUnitModulesBatchTestClassGroup
 	extends ModulesBatchTestClassGroup {
 
+	@Override
+	public JSONObject getJSONObject() {
+		if (jsonObject != null) {
+			return jsonObject;
+		}
+
+		jsonObject = super.getJSONObject();
+
+		jsonObject.put(
+			"test_file_exclude_globs",
+			getGlobs(_getTestFileExcludesJobProperties()));
+		jsonObject.put(
+			"test_file_include_globs",
+			getGlobs(_getTestFileIncludesJobProperties()));
+
+		return jsonObject;
+	}
+
+	public boolean hasTestFileGlobs() {
+		List<String> testFileExcludeGlobs = getGlobs(
+			_getTestFileExcludesJobProperties());
+		List<String> testFileIncludeGlobs = getGlobs(
+			_getTestFileIncludesJobProperties());
+
+		if (testFileExcludeGlobs.isEmpty() && testFileIncludeGlobs.isEmpty()) {
+			return false;
+		}
+
+		return true;
+	}
+
 	protected JSUnitModulesBatchTestClassGroup(
 		JSONObject jsonObject, PortalTestClassJob portalTestClassJob) {
 
@@ -156,8 +187,13 @@ public class JSUnitModulesBatchTestClassGroup
 			}
 		}
 
+		int jsUnitFilesCount = 0;
 		PortalGitWorkingDirectory portalGitWorkingDirectory =
 			getPortalGitWorkingDirectory();
+		List<PathMatcher> testFileExcludesPathMatchers = getPathMatchers(
+			_getTestFileExcludesJobProperties());
+		List<PathMatcher> testFileIncludesPathMatchers = getPathMatchers(
+			_getTestFileIncludesJobProperties());
 
 		for (File baseModuleDir : getBaseModuleDirs()) {
 			List<File> moduleTestDirs = _getModulesProjectDirs(baseModuleDir);
@@ -189,6 +225,16 @@ public class JSUnitModulesBatchTestClassGroup
 					if (!jsUnitFilePath.startsWith(moduleTestDirPath) ||
 						((testPackage != null) &&
 						 testPackage.isTestClassFileIgnored(jsUnitFile))) {
+
+						continue;
+					}
+
+					jsUnitFilesCount++;
+
+					if (!JenkinsResultsParserUtil.isFileIncluded(
+							testFileExcludesPathMatchers,
+							testFileIncludesPathMatchers,
+							new File(jsUnitFilePath))) {
 
 						continue;
 					}
@@ -229,6 +275,17 @@ public class JSUnitModulesBatchTestClassGroup
 					addTestClass(testClass);
 				}
 			}
+		}
+
+		if (hasTestFileGlobs() && (jsUnitFilesCount > 0) && !hasTestClasses()) {
+			throw new RuntimeException(
+				JenkinsResultsParserUtil.combine(
+					"Unable to select any of the ",
+					String.valueOf(jsUnitFilesCount), " test files in the ",
+					batchName,
+					" batch. Please check the \"modules.excludes\", ",
+					"\"modules.includes\", \"test.batch.test.file.excludes\" ",
+					"and \"test.batch.test.file.includes\" properties."));
 		}
 	}
 
@@ -290,7 +347,37 @@ public class JSUnitModulesBatchTestClassGroup
 		return modulesProjectDirs;
 	}
 
+	private List<JobProperty> _getTestFileExcludesJobProperties() {
+		List<JobProperty> excludesJobProperties = new ArrayList<>();
+
+		excludesJobProperties.add(
+			getJobProperty(
+				"test.batch.test.file.excludes", testSuiteName, batchName,
+				JobProperty.Type.EXCLUDE_GLOB));
+
+		recordJobProperties(excludesJobProperties);
+
+		return excludesJobProperties;
+	}
+
+	private List<JobProperty> _getTestFileIncludesJobProperties() {
+		List<JobProperty> includesJobProperties = new ArrayList<>();
+
+		includesJobProperties.add(
+			getJobProperty(
+				"test.batch.test.file.includes", testSuiteName, batchName,
+				JobProperty.Type.INCLUDE_GLOB));
+
+		recordJobProperties(includesJobProperties);
+
+		return includesJobProperties;
+	}
+
 	private boolean _isTestClassFileReported() {
+		if (hasTestFileGlobs()) {
+			return true;
+		}
+
 		JobProperty jobProperty = getJobProperty("test.batch.report.type");
 
 		String jobPropertyValue = jobProperty.getValue();

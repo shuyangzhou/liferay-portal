@@ -7,6 +7,7 @@ package com.liferay.portal.settings.web.internal.portlet.action;
 
 import com.liferay.configuration.admin.constants.ConfigurationAdminPortletKeys;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
+import com.liferay.google.places.constants.GooglePlacesWebKeys;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.Disjunction;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -65,6 +66,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.security.key.secret.SecretResolver;
 import com.liferay.portal.settings.web.internal.exception.RequiredLocaleException;
 import com.liferay.portlet.usersadmin.util.UsersAdminUtil;
 
@@ -175,6 +177,17 @@ public class EditCompanyMVCActionCommand extends BaseFormMVCActionCommand {
 		throws Exception {
 	}
 
+	private void _store(
+			long companyId, String key, UnicodeProperties unicodeProperties)
+		throws Exception {
+
+		unicodeProperties.setProperty(
+			key,
+			_secretResolver.store(
+				companyId, key, "company/" + companyId,
+				unicodeProperties.getProperty(key)));
+	}
+
 	private void _updateCompany(ActionRequest actionRequest) throws Exception {
 		long companyId = _portal.getCompanyId(actionRequest);
 
@@ -259,6 +272,11 @@ public class EditCompanyMVCActionCommand extends BaseFormMVCActionCommand {
 		if (!Validator.isBlank(https) && !_urlValidator.isValid(https)) {
 			throw new WebsiteURLException(https);
 		}
+
+		_store(
+			companyId, GooglePlacesWebKeys.GOOGLE_PLACES_API_KEY,
+			unicodeProperties);
+		_store(companyId, "googleMapsAPIKey", unicodeProperties);
 
 		String[] discardLegacyKeys = ParamUtil.getStringValues(
 			actionRequest, "discardLegacyKey");
@@ -440,6 +458,9 @@ public class EditCompanyMVCActionCommand extends BaseFormMVCActionCommand {
 
 	@Reference
 	private PrefsProps _prefsProps;
+
+	@Reference
+	private SecretResolver _secretResolver;
 
 	@Reference
 	private URLValidator _urlValidator;

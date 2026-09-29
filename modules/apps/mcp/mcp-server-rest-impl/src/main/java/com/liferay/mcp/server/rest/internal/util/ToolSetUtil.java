@@ -264,7 +264,9 @@ public class ToolSetUtil {
 		for (HeadlessApplicationProvider.Application application :
 				headlessApplicationProvider.getApplications()) {
 
-			if (Validator.isNull(application.getBasePath())) {
+			if (Validator.isNull(application.getBasePath()) ||
+				Objects.equals(application.getBasePath(), "/openapi")) {
+
 				continue;
 			}
 

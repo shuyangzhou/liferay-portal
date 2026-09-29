@@ -6,6 +6,7 @@
 package com.liferay.layout.admin.web.internal.portlet.action;
 
 import com.liferay.layout.admin.constants.LayoutAdminPortletKeys;
+import com.liferay.layout.admin.web.internal.util.LayoutPageTemplatePortletUtil;
 import com.liferay.layout.page.template.constants.LayoutPageTemplateEntryTypeConstants;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryService;
@@ -60,11 +61,14 @@ public class GetLayoutPageTemplateEntryListMVCResourceCommand
 		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
+		long layoutPageTemplateCollectionId = ParamUtil.getLong(
+			resourceRequest, "layoutPageTemplateCollectionId");
+
 		for (LayoutPageTemplateEntry layoutPageTemplateEntry :
 				_layoutPageTemplateEntryService.getLayoutPageTemplateEntries(
-					themeDisplay.getScopeGroupId(),
-					ParamUtil.getLong(
-						resourceRequest, "layoutPageTemplateCollectionId"),
+					LayoutPageTemplatePortletUtil.getGroupId(
+						layoutPageTemplateCollectionId, themeDisplay),
+					layoutPageTemplateCollectionId,
 					WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS,
 					QueryUtil.ALL_POS)) {
 

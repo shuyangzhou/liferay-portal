@@ -391,7 +391,9 @@ public class Sidecar {
 			"--enable-native-access=org.elasticsearch.nativeaccess," +
 				"org.apache.lucene.core");
 
-		if (JavaDetector.isJDK21() && OSDetector.isLinux()) {
+		String javaVersion = JavaDetector.getJavaVersion();
+
+		if (javaVersion.startsWith("21") && OSDetector.isLinux()) {
 			arguments.add("-XX:-UseContainerSupport");
 		}
 
@@ -528,7 +530,9 @@ public class Sidecar {
 		settingsHelperImpl.put(
 			"path.repo", String.valueOf(dataParentPath.resolve("repo")));
 
-		if (JavaDetector.isJDK21()) {
+		String javaVersion = JavaDetector.getJavaVersion();
+
+		if (javaVersion.startsWith("21")) {
 			settingsHelperImpl.put("thread_pool.warmer.max", "20");
 		}
 

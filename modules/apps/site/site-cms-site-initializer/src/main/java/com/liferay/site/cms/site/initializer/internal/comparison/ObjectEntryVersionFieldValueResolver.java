@@ -16,8 +16,11 @@ import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.field.setting.util.ObjectFieldSettingUtil;
 import com.liferay.object.model.ObjectEntryVersion;
 import com.liferay.object.model.ObjectField;
+import com.liferay.object.model.ObjectRelationship;
 import com.liferay.object.rest.dto.v1_0.ObjectEntry;
+import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectEntryVersionService;
+import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -31,6 +34,7 @@ import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -51,6 +55,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 
 /**
@@ -64,7 +69,9 @@ public class ObjectEntryVersionFieldValueResolver {
 		DLFileEntryLocalService dlFileEntryLocalService,
 		DLURLHelper dlURLHelper, Language language,
 		ListTypeEntryLocalService listTypeEntryLocalService,
-		ObjectEntryVersionService objectEntryVersionService) {
+		ObjectEntryLocalService objectEntryLocalService,
+		ObjectEntryVersionService objectEntryVersionService,
+		ObjectRelationshipLocalService objectRelationshipLocalService) {
 
 		_diffHtml = diffHtml;
 		_dlAppLocalService = dlAppLocalService;
@@ -72,7 +79,9 @@ public class ObjectEntryVersionFieldValueResolver {
 		_dlURLHelper = dlURLHelper;
 		_language = language;
 		_listTypeEntryLocalService = listTypeEntryLocalService;
+		_objectEntryLocalService = objectEntryLocalService;
 		_objectEntryVersionService = objectEntryVersionService;
+		_objectRelationshipLocalService = objectRelationshipLocalService;
 	}
 
 	public Map<String, Object> getFieldValues(
@@ -151,11 +160,7 @@ public class ObjectEntryVersionFieldValueResolver {
 		String businessType =
 			(objectField == null) ? null : objectField.getBusinessType();
 
-		if (ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT.equals(
-				businessType) ||
-			ObjectFieldConstants.BUSINESS_TYPE_DATE.equals(businessType) ||
-			ObjectFieldConstants.BUSINESS_TYPE_DATE_TIME.equals(businessType)) {
-
+		if (_nondiffableObjectFieldBusinessTypes.contains(businessType)) {
 			StringBundler sb = new StringBundler(6);
 
 			if (!removedDisplayValue.isEmpty()) {
@@ -212,6 +217,12 @@ public class ObjectEntryVersionFieldValueResolver {
 
 		if (ObjectFieldConstants.BUSINESS_TYPE_PICKLIST.equals(businessType)) {
 			return _toPicklistDisplayValue(languageId, objectField, value);
+		}
+
+		if (ObjectFieldConstants.BUSINESS_TYPE_RELATIONSHIP.equals(
+				businessType)) {
+
+			return _toRelationshipDisplayValue(objectField, value);
 		}
 
 		if (value == null) {
@@ -428,8 +439,53 @@ public class ObjectEntryVersionFieldValueResolver {
 		return HtmlUtil.escape(listTypeEntry.getName(languageId));
 	}
 
+	private String _toRelationshipDisplayValue(
+		ObjectField objectField, Object value) {
+
+		long primaryKey = GetterUtil.getLong(value);
+
+		if (primaryKey == 0) {
+			return StringPool.BLANK;
+		}
+
+		ObjectRelationship objectRelationship =
+			_objectRelationshipLocalService.
+				fetchObjectRelationshipByObjectFieldId2(
+					objectField.getObjectFieldId());
+
+		if (objectRelationship == null) {
+			return StringPool.BLANK;
+		}
+
+		try {
+			return HtmlUtil.escape(
+				_objectEntryLocalService.getTitleValue(
+					objectRelationship.getObjectDefinitionId1(), primaryKey));
+		}
+		catch (PortalException portalException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(portalException);
+			}
+
+			return StringPool.BLANK;
+		}
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		ObjectEntryVersionFieldValueResolver.class);
+
+	private static final Set<String> _nondiffableObjectFieldBusinessTypes =
+		SetUtil.fromArray(
+			ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT,
+			ObjectFieldConstants.BUSINESS_TYPE_DATE,
+			ObjectFieldConstants.BUSINESS_TYPE_DATE_TIME,
+			ObjectFieldConstants.BUSINESS_TYPE_DECIMAL,
+			ObjectFieldConstants.BUSINESS_TYPE_EMAIL_ADDRESS,
+			ObjectFieldConstants.BUSINESS_TYPE_INTEGER,
+			ObjectFieldConstants.BUSINESS_TYPE_LONG_INTEGER,
+			ObjectFieldConstants.BUSINESS_TYPE_PHONE_NUMBER,
+			ObjectFieldConstants.BUSINESS_TYPE_PRECISION_DECIMAL,
+			ObjectFieldConstants.BUSINESS_TYPE_RELATIONSHIP);
 
 	private final DiffHtml _diffHtml;
 	private final DLAppLocalService _dlAppLocalService;
@@ -437,6 +493,9 @@ public class ObjectEntryVersionFieldValueResolver {
 	private final DLURLHelper _dlURLHelper;
 	private final Language _language;
 	private final ListTypeEntryLocalService _listTypeEntryLocalService;
+	private final ObjectEntryLocalService _objectEntryLocalService;
 	private final ObjectEntryVersionService _objectEntryVersionService;
+	private final ObjectRelationshipLocalService
+		_objectRelationshipLocalService;
 
 }
