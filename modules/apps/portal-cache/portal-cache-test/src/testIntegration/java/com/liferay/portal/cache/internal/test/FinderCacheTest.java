@@ -123,6 +123,10 @@ public class FinderCacheTest {
 					0L,
 					_finderCache.getResult(
 						_countFinderPath, countFinderArgs, _ticketPersistence));
+				Assert.assertEquals(
+					2L,
+					_finderCache.getResult(
+						_countFinderPath, finderArgs, _ticketPersistence));
 
 				Ticket newTicket = _addTicket(classPK, serviceContext);
 
