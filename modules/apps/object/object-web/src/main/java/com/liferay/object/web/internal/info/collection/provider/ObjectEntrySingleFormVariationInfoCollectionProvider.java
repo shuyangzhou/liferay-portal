@@ -166,7 +166,8 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 				objectDefinition.isDefaultStorageType() &&
 				objectDefinition.isEnableIndexSearch()) {
 
-				return _getCollectionInfoPageByIndexer(collectionQuery);
+				return _getCollectionInfoPageByIndexer(
+					collectionQuery, objectDefinition);
 			}
 
 			return _getCollectionInfoPageByObjectEntryManager(
@@ -467,14 +468,13 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		return InfoPage.of(
 			TransformUtil.transform(
 				new ArrayList<>(objectEntriesPage.getItems()),
-				objectEntry -> ObjectEntryUtil.toObjectEntry(
-					objectDefinition, objectEntry)),
+				objectEntry -> _toObjectEntry(objectDefinition, objectEntry)),
 			collectionQuery.getPagination(),
 			(int)objectEntriesPage.getTotalCount());
 	}
 
 	private InfoPage<ObjectEntry> _getCollectionInfoPageByIndexer(
-			CollectionQuery collectionQuery)
+			CollectionQuery collectionQuery, ObjectDefinition objectDefinition)
 		throws Exception {
 
 		Indexer<ObjectEntry> indexer = IndexerRegistryUtil.getIndexer(
@@ -489,7 +489,14 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 					long classPK = GetterUtil.getLong(
 						document.get(Field.ENTRY_CLASS_PK));
 
-					return _objectEntryLocalService.fetchObjectEntry(classPK);
+					ObjectEntry objectEntry =
+						_objectEntryLocalService.fetchObjectEntry(classPK);
+
+					if (objectEntry != null) {
+						objectEntry.setObjectDefinition(objectDefinition);
+					}
+
+					return objectEntry;
 				}),
 			collectionQuery.getPagination(), hits.getLength());
 	}
@@ -526,9 +533,15 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 						collectionQuery),
 					_SORTS_DEFAULT_OBJECT_ENTRY);
 
+			List<ObjectEntry> objectEntries = new ArrayList<>(
+				objectEntriesPage.getItems());
+
+			for (ObjectEntry objectEntry : objectEntries) {
+				objectEntry.setObjectDefinition(objectDefinition);
+			}
+
 			return InfoPage.of(
-				new ArrayList<>(objectEntriesPage.getItems()),
-				collectionQuery.getPagination(),
+				objectEntries, collectionQuery.getPagination(),
 				(int)objectEntriesPage.getTotalCount());
 		}
 
@@ -549,8 +562,7 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		return InfoPage.of(
 			TransformUtil.transform(
 				new ArrayList<>(objectEntriesPage.getItems()),
-				objectEntry -> ObjectEntryUtil.toObjectEntry(
-					objectDefinition, objectEntry)),
+				objectEntry -> _toObjectEntry(objectDefinition, objectEntry)),
 			collectionQuery.getPagination(),
 			(int)objectEntriesPage.getTotalCount());
 	}
@@ -822,6 +834,18 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		}
 
 		return false;
+	}
+
+	private ObjectEntry _toObjectEntry(
+		ObjectDefinition objectDefinition,
+		com.liferay.object.rest.dto.v1_0.ObjectEntry objectEntry) {
+
+		ObjectEntry serviceBuilderObjectEntry = ObjectEntryUtil.toObjectEntry(
+			objectDefinition, objectEntry);
+
+		serviceBuilderObjectEntry.setObjectDefinition(objectDefinition);
+
+		return serviceBuilderObjectEntry;
 	}
 
 	private static final Sort[] _SORTS_DEFAULT_INDEXED = {
