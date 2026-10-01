@@ -69,17 +69,7 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 					Field.EXPIRATION_DATE, "text"));
 
 			_assertLogCapture(
-				message -> {
-					Assert.assertTrue(
-						message + " does not contain " + _EXPECTED_MIME_TYPE,
-						message.contains(_EXPECTED_MIME_TYPE));
-					Assert.assertTrue(
-						message + " does not start with " + _EXPECTED_PREFIX,
-						message.startsWith(_EXPECTED_PREFIX));
-					Assert.assertTrue(
-						message + " does not contain " + _EXPECTED_STATUS,
-						message.contains(_EXPECTED_STATUS));
-				},
+				message -> _assertErrorMessage(_EXPECTED_PREFIX, message),
 				logCapture, LoggerTestUtil.ERROR);
 		}
 	}
@@ -122,18 +112,7 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 			}
 
 			_assertLogCapture(
-				message -> {
-					Assert.assertTrue(
-						message + " does not contain " + _EXPECTED_MIME_TYPE,
-						message.contains(_EXPECTED_MIME_TYPE));
-					Assert.assertTrue(
-						message + " does not start with " +
-							_EXPECTED_BULK_PREFIX,
-						message.startsWith(_EXPECTED_BULK_PREFIX));
-					Assert.assertTrue(
-						message + " does not contain " + _EXPECTED_STATUS,
-						message.contains(_EXPECTED_STATUS));
-				},
+				message -> _assertErrorMessage(_EXPECTED_BULK_PREFIX, message),
 				logCapture, LoggerTestUtil.WARN);
 		}
 	}
@@ -152,17 +131,7 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 			}
 
 			_assertLogCapture(
-				message -> {
-					Assert.assertTrue(
-						message + " does not contain " + _EXPECTED_MIME_TYPE,
-						message.contains(_EXPECTED_MIME_TYPE));
-					Assert.assertTrue(
-						message + " does not start with " + _EXPECTED_PREFIX,
-						message.startsWith(_EXPECTED_PREFIX));
-					Assert.assertTrue(
-						message + " does not contain " + _EXPECTED_STATUS,
-						message.contains(_EXPECTED_STATUS));
-				},
+				message -> _assertErrorMessage(_EXPECTED_PREFIX, message),
 				logCapture, LoggerTestUtil.ERROR);
 		}
 	}
@@ -181,17 +150,7 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 			}
 
 			_assertLogCapture(
-				message -> {
-					Assert.assertTrue(
-						message + " does not contain " + _EXPECTED_MIME_TYPE,
-						message.contains(_EXPECTED_MIME_TYPE));
-					Assert.assertTrue(
-						message + " does not start with " + _EXPECTED_PREFIX,
-						message.startsWith(_EXPECTED_PREFIX));
-					Assert.assertTrue(
-						message + " does not contain " + _EXPECTED_STATUS,
-						message.contains(_EXPECTED_STATUS));
-				},
+				message -> _assertErrorMessage(_EXPECTED_PREFIX, message),
 				logCapture, LoggerTestUtil.ERROR);
 		}
 	}
@@ -232,18 +191,7 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 			}
 
 			_assertLogCapture(
-				message -> {
-					Assert.assertTrue(
-						message + " does not contain " + _EXPECTED_MIME_TYPE,
-						message.contains(_EXPECTED_MIME_TYPE));
-					Assert.assertTrue(
-						message + " does not start with " +
-							_EXPECTED_BULK_PREFIX,
-						message.startsWith(_EXPECTED_BULK_PREFIX));
-					Assert.assertTrue(
-						message + " does not contain " + _EXPECTED_STATUS,
-						message.contains(_EXPECTED_STATUS));
-				},
+				message -> _assertErrorMessage(_EXPECTED_BULK_PREFIX, message),
 				logCapture, LoggerTestUtil.WARN);
 		}
 	}
@@ -285,17 +233,7 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 			}
 
 			_assertLogCapture(
-				message -> {
-					Assert.assertTrue(
-						message + " does not contain " + _EXPECTED_MIME_TYPE,
-						message.contains(_EXPECTED_MIME_TYPE));
-					Assert.assertTrue(
-						message + " does not start with " + _EXPECTED_PREFIX,
-						message.startsWith(_EXPECTED_PREFIX));
-					Assert.assertTrue(
-						message + " does not contain " + _EXPECTED_STATUS,
-						message.contains(_EXPECTED_STATUS));
-				},
+				message -> _assertErrorMessage(_EXPECTED_PREFIX, message),
 				logCapture, LoggerTestUtil.ERROR);
 		}
 	}
@@ -339,18 +277,7 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 			}
 
 			_assertLogCapture(
-				message -> {
-					Assert.assertTrue(
-						message + " does not contain " + _EXPECTED_MIME_TYPE,
-						message.contains(_EXPECTED_MIME_TYPE));
-					Assert.assertTrue(
-						message + " does not start with " +
-							_EXPECTED_BULK_PREFIX,
-						message.startsWith(_EXPECTED_BULK_PREFIX));
-					Assert.assertTrue(
-						message + " does not contain " + _EXPECTED_STATUS,
-						message.contains(_EXPECTED_STATUS));
-				},
+				message -> _assertErrorMessage(_EXPECTED_BULK_PREFIX, message),
 				logCapture, LoggerTestUtil.WARN);
 		}
 	}
@@ -372,18 +299,7 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 			String expectedMessagePrefix = "Update failed: " + _EXPECTED_PREFIX;
 
 			_assertLogCapture(
-				message -> {
-					Assert.assertTrue(
-						message + " does not contain " + _EXPECTED_MIME_TYPE,
-						message.contains(_EXPECTED_MIME_TYPE));
-					Assert.assertTrue(
-						message + " does not start with " +
-							expectedMessagePrefix,
-						message.startsWith(expectedMessagePrefix));
-					Assert.assertTrue(
-						message + " does not contain " + _EXPECTED_STATUS,
-						message.contains(_EXPECTED_STATUS));
-				},
+				message -> _assertErrorMessage(expectedMessagePrefix, message),
 				logCapture, LoggerTestUtil.ERROR);
 		}
 	}
@@ -409,19 +325,8 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 
 			for (LogEntry logEntry : logEntries) {
 				_assertLogEntry(
-					message -> {
-						Assert.assertTrue(
-							message + " does not contain " +
-								_EXPECTED_MIME_TYPE,
-							message.contains(_EXPECTED_MIME_TYPE));
-						Assert.assertTrue(
-							message + " does not start with " +
-								_EXPECTED_BULK_PREFIX,
-							message.startsWith(_EXPECTED_BULK_PREFIX));
-						Assert.assertTrue(
-							message + " does not contain " + _EXPECTED_STATUS,
-							message.contains(_EXPECTED_STATUS));
-					},
+					message -> _assertErrorMessage(
+						_EXPECTED_BULK_PREFIX, message),
 					logEntry, LoggerTestUtil.WARN);
 			}
 		}
@@ -445,18 +350,7 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 			String expectedMessagePrefix = "Update failed: " + _EXPECTED_PREFIX;
 
 			_assertLogCapture(
-				message -> {
-					Assert.assertTrue(
-						message + " does not contain " + _EXPECTED_MIME_TYPE,
-						message.contains(_EXPECTED_MIME_TYPE));
-					Assert.assertTrue(
-						message + " does not start with " +
-							expectedMessagePrefix,
-						message.startsWith(expectedMessagePrefix));
-					Assert.assertTrue(
-						message + " does not contain " + _EXPECTED_STATUS,
-						message.contains(_EXPECTED_STATUS));
-				},
+				message -> _assertErrorMessage(expectedMessagePrefix, message),
 				logCapture, LoggerTestUtil.ERROR);
 		}
 	}
@@ -483,19 +377,8 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 
 			for (LogEntry logEntry : logEntries) {
 				_assertLogEntry(
-					message -> {
-						Assert.assertTrue(
-							message + " does not contain " +
-								_EXPECTED_MIME_TYPE,
-							message.contains(_EXPECTED_MIME_TYPE));
-						Assert.assertTrue(
-							message + " does not start with " +
-								_EXPECTED_BULK_PREFIX,
-							message.startsWith(_EXPECTED_BULK_PREFIX));
-						Assert.assertTrue(
-							message + " does not contain " + _EXPECTED_STATUS,
-							message.contains(_EXPECTED_STATUS));
-					},
+					message -> _assertErrorMessage(
+						_EXPECTED_BULK_PREFIX, message),
 					logEntry, LoggerTestUtil.WARN);
 			}
 		}
@@ -518,6 +401,18 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 			RandomTestUtil.randomString(), RandomTestUtil.randomLong());
 
 		return document;
+	}
+
+	private void _assertErrorMessage(String expectedPrefix, String message) {
+		Assert.assertTrue(
+			message + " does not contain " + _EXPECTED_MIME_TYPE,
+			message.contains(_EXPECTED_MIME_TYPE));
+		Assert.assertTrue(
+			message + " does not start with " + expectedPrefix,
+			message.startsWith(expectedPrefix));
+		Assert.assertTrue(
+			message + " does not contain " + _EXPECTED_STATUS,
+			message.contains(_EXPECTED_STATUS));
 	}
 
 	private void _assertLogCapture(
