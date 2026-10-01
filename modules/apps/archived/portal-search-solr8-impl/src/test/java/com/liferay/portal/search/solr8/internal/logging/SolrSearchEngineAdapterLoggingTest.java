@@ -58,7 +58,7 @@ public class SolrSearchEngineAdapterLoggingTest extends BaseIndexingTestCase {
 			searchEngineAdapter.execute(
 				new CountSearchRequest() {
 					{
-						setIndexNames("liferay");
+						setIndexNames(_INDEX_NAME);
 						setQuery(new MatchAllQuery());
 					}
 				});
@@ -78,7 +78,7 @@ public class SolrSearchEngineAdapterLoggingTest extends BaseIndexingTestCase {
 						addSearchSearchRequest(
 							new SearchSearchRequest() {
 								{
-									setIndexNames("liferay");
+									setIndexNames(_INDEX_NAME);
 									setQuery(new MatchAllQuery());
 								}
 							});
@@ -102,7 +102,7 @@ public class SolrSearchEngineAdapterLoggingTest extends BaseIndexingTestCase {
 			searchEngineAdapter.execute(
 				new SearchSearchRequest() {
 					{
-						setIndexNames("liferay");
+						setIndexNames(_INDEX_NAME);
 						setQuery(new MatchAllQuery());
 					}
 				});
@@ -118,7 +118,7 @@ public class SolrSearchEngineAdapterLoggingTest extends BaseIndexingTestCase {
 		searchEngineAdapter.execute(
 			new SearchSearchRequest() {
 				{
-					setIndexNames("liferay");
+					setIndexNames(_INDEX_NAME);
 					setQuery(QueriesUtil.matchAll());
 				}
 			});
@@ -159,5 +159,7 @@ public class SolrSearchEngineAdapterLoggingTest extends BaseIndexingTestCase {
 			message + " does not contain " + expectedLog,
 			message.contains(expectedLog));
 	}
+
+	private static final String _INDEX_NAME = "liferay";
 
 }
