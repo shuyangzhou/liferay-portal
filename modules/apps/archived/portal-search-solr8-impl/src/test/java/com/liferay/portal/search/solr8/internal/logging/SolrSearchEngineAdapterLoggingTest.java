@@ -6,7 +6,6 @@
 package com.liferay.portal.search.solr8.internal.logging;
 
 import com.liferay.portal.kernel.search.MatchAllQuery;
-import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
 import com.liferay.portal.search.engine.adapter.search.CountSearchRequest;
 import com.liferay.portal.search.engine.adapter.search.MultisearchSearchRequest;
@@ -16,18 +15,21 @@ import com.liferay.portal.search.solr8.internal.SolrUnitTestRequirements;
 import com.liferay.portal.search.solr8.internal.indexing.SolrIndexingFixture;
 import com.liferay.portal.search.solr8.internal.search.engine.adapter.search.CountSearchRequestExecutor;
 import com.liferay.portal.search.solr8.internal.search.engine.adapter.search.SearchSearchRequestExecutor;
-import com.liferay.portal.search.test.rule.logging.ExpectedLogMethodTestRule;
 import com.liferay.portal.search.test.util.indexing.BaseIndexingTestCase;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
-import com.liferay.portal.search.test.util.logging.ExpectedLog;
+import com.liferay.portal.test.log.LogCapture;
+import com.liferay.portal.test.log.LogEntry;
+import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
+import java.util.List;
+
+import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 /**
  * @author Bryan Engler
@@ -36,9 +38,8 @@ public class SolrSearchEngineAdapterLoggingTest extends BaseIndexingTestCase {
 
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			ExpectedLogMethodTestRule.INSTANCE, LiferayUnitTestRule.INSTANCE);
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -46,60 +47,68 @@ public class SolrSearchEngineAdapterLoggingTest extends BaseIndexingTestCase {
 			SolrUnitTestRequirements.isSolrExternallyStartedByDeveloper());
 	}
 
-	@ExpectedLog(
-		expectedClass = CountSearchRequestExecutor.class,
-		expectedLevel = ExpectedLog.Level.FINE,
-		expectedLog = "The search engine processed"
-	)
 	@Test
 	public void testCountSearchRequestExecutorLogs() {
-		SearchEngineAdapter searchEngineAdapter = getSearchEngineAdapter();
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				CountSearchRequestExecutor.class.getName(),
+				LoggerTestUtil.DEBUG)) {
 
-		searchEngineAdapter.execute(
-			new CountSearchRequest() {
-				{
-					setIndexNames("liferay");
-					setQuery(new MatchAllQuery());
-				}
-			});
+			SearchEngineAdapter searchEngineAdapter = getSearchEngineAdapter();
+
+			searchEngineAdapter.execute(
+				new CountSearchRequest() {
+					{
+						setIndexNames(_INDEX_NAME);
+						setQuery(new MatchAllQuery());
+					}
+				});
+
+			_assertLogCapture("rows=0", logCapture);
+		}
 	}
 
 	@Test
 	public void testMultisearchSearchRequestExecutorLogs() {
-		expectedException.expect(UnsupportedOperationException.class);
-
 		SearchEngineAdapter searchEngineAdapter = getSearchEngineAdapter();
 
-		searchEngineAdapter.execute(
-			new MultisearchSearchRequest() {
-				{
-					addSearchSearchRequest(
-						new SearchSearchRequest() {
-							{
-								setIndexNames("liferay");
-								setQuery(new MatchAllQuery());
-							}
-						});
-				}
-			});
+		try {
+			searchEngineAdapter.execute(
+				new MultisearchSearchRequest() {
+					{
+						addSearchSearchRequest(
+							new SearchSearchRequest() {
+								{
+									setIndexNames(_INDEX_NAME);
+									setQuery(new MatchAllQuery());
+								}
+							});
+					}
+				});
+
+			Assert.fail();
+		}
+		catch (UnsupportedOperationException unsupportedOperationException) {
+		}
 	}
 
-	@ExpectedLog(
-		expectedClass = SearchSearchRequestExecutor.class,
-		expectedLevel = ExpectedLog.Level.FINE,
-		expectedLog = "The search engine processed"
-	)
 	@Test
 	public void testSearchSearchRequestExecutorLogs() {
-		SearchEngineAdapter searchEngineAdapter = getSearchEngineAdapter();
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				SearchSearchRequestExecutor.class.getName(),
+				LoggerTestUtil.DEBUG)) {
 
-		searchEngineAdapter.execute(
-			new SearchSearchRequest() {
-				{
-					setIndexNames("liferay");
-					setQuery(new MatchAllQuery());
-				}
-			});
+			SearchEngineAdapter searchEngineAdapter = getSearchEngineAdapter();
+
+			searchEngineAdapter.execute(
+				new SearchSearchRequest() {
+					{
+						setIndexNames(_INDEX_NAME);
+						setQuery(new MatchAllQuery());
+					}
+				});
+
+			_assertLogCapture("fl=uid", logCapture);
+		}
 	}
 
 	@Test
@@ -109,18 +118,48 @@ public class SolrSearchEngineAdapterLoggingTest extends BaseIndexingTestCase {
 		searchEngineAdapter.execute(
 			new SearchSearchRequest() {
 				{
-					setIndexNames("liferay");
+					setIndexNames(_INDEX_NAME);
 					setQuery(QueriesUtil.matchAll());
 				}
 			});
 	}
 
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
-
 	@Override
 	protected IndexingFixture createIndexingFixture() throws Exception {
 		return new SolrIndexingFixture();
 	}
+
+	private void _assertLogCapture(String expectedLog, LogCapture logCapture) {
+		List<LogEntry> logEntries = logCapture.getLogEntries();
+
+		Assert.assertEquals(logEntries.toString(), 2, logEntries.size());
+
+		LogEntry firstLogEntry = logEntries.get(0);
+
+		Assert.assertEquals(LoggerTestUtil.DEBUG, firstLogEntry.getPriority());
+
+		_assertMessage(expectedLog, "Search query", firstLogEntry.getMessage());
+
+		LogEntry secondLogEntry = logEntries.get(1);
+
+		Assert.assertEquals(LoggerTestUtil.DEBUG, secondLogEntry.getPriority());
+
+		_assertMessage(
+			expectedLog, "The search engine processed",
+			secondLogEntry.getMessage());
+	}
+
+	private void _assertMessage(
+		String expectedLog, String expectedPrefix, String message) {
+
+		Assert.assertTrue(
+			message + " does not start with " + expectedPrefix,
+			message.startsWith(expectedPrefix));
+		Assert.assertTrue(
+			message + " does not contain " + expectedLog,
+			message.contains(expectedLog));
+	}
+
+	private static final String _INDEX_NAME = "liferay";
 
 }

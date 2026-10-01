@@ -10,23 +10,28 @@ import com.liferay.portal.kernel.search.DocumentImpl;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.IndexWriter;
 import com.liferay.portal.kernel.search.SearchException;
-import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.search.solr8.internal.SolrIndexWriter;
 import com.liferay.portal.search.solr8.internal.SolrUnitTestRequirements;
 import com.liferay.portal.search.solr8.internal.indexing.SolrIndexingFixture;
 import com.liferay.portal.search.solr8.internal.search.engine.adapter.document.BulkDocumentRequestExecutor;
-import com.liferay.portal.search.test.rule.logging.ExpectedLogMethodTestRule;
 import com.liferay.portal.search.test.util.indexing.BaseIndexingTestCase;
 import com.liferay.portal.search.test.util.indexing.DocumentCreationHelpers;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
-import com.liferay.portal.search.test.util.logging.ExpectedLog;
+import com.liferay.portal.test.log.LogCapture;
+import com.liferay.portal.test.log.LogEntry;
+import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.function.Consumer;
+
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -40,9 +45,8 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			ExpectedLogMethodTestRule.INSTANCE, LiferayUnitTestRule.INSTANCE);
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -55,244 +59,278 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 	public void tearDown() throws Exception {
 	}
 
-	@ExpectedLog(
-		expectedClass = SolrIndexWriter.class,
-		expectedLevel = ExpectedLog.Level.WARNING, expectedLog = "404 Not Found"
-	)
 	@Test
-	public void testAddDocument() throws Exception {
-		addDocument(
-			DocumentCreationHelpers.singleKeyword(
-				Field.EXPIRATION_DATE, "text"));
+	public void testAddDocument() {
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				SolrIndexWriter.class.getName(), LoggerTestUtil.ERROR)) {
+
+			addDocument(
+				DocumentCreationHelpers.singleKeyword(
+					Field.EXPIRATION_DATE, "text"));
+
+			_assertLogCapture(
+				message -> _assertErrorMessage(_EXPECTED_PREFIX, message),
+				logCapture, LoggerTestUtil.ERROR,
+				HttpSolrClient.RemoteSolrException.class);
+		}
 	}
 
-	@ExpectedLog(
-		expectedClass = SolrIndexWriter.class,
-		expectedLevel = ExpectedLog.Level.WARNING,
-		expectedLog = "Bulk add failed"
-	)
 	@Test
-	public void testAddDocuments() {
-		IndexWriter indexWriter = getIndexWriter();
+	public void testAddDocuments() throws SearchException {
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				SolrIndexWriter.class.getName(), LoggerTestUtil.ERROR)) {
 
-		try {
+			IndexWriter indexWriter = getIndexWriter();
+
 			indexWriter.addDocuments(
 				createSearchContext(),
 				Collections.singletonList(getTestDocument()));
-		}
-		catch (SearchException searchException) {
+
+			_assertLogCapture(
+				message -> Assert.assertEquals("Bulk add failed", message),
+				logCapture, LoggerTestUtil.ERROR);
 		}
 	}
 
-	@ExpectedLog(
-		expectedClass = BulkDocumentRequestExecutor.class,
-		expectedLevel = ExpectedLog.Level.WARNING, expectedLog = "404 Not Found"
-	)
 	@Test
-	public void testAddDocumentsBulkExecutor() {
-		IndexWriter indexWriter = getIndexWriter();
+	public void testAddDocumentsBulkExecutor() throws SearchException {
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				BulkDocumentRequestExecutor.class.getName(),
+				LoggerTestUtil.WARN)) {
 
-		try {
+			IndexWriter indexWriter = getIndexWriter();
+
 			indexWriter.addDocuments(
 				createSearchContext(),
 				Collections.singletonList(getTestDocument()));
-		}
-		catch (SearchException searchException) {
+
+			_assertLogCapture(
+				message -> _assertErrorMessage(_EXPECTED_BULK_PREFIX, message),
+				logCapture, LoggerTestUtil.WARN);
 		}
 	}
 
-	@ExpectedLog(
-		expectedClass = SolrIndexWriter.class,
-		expectedLevel = ExpectedLog.Level.WARNING, expectedLog = "404 Not Found"
-	)
 	@Test
-	public void testCommit() {
-		IndexWriter indexWriter = getIndexWriter();
+	public void testCommit() throws SearchException {
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				SolrIndexWriter.class.getName(), LoggerTestUtil.ERROR)) {
 
-		try {
+			IndexWriter indexWriter = getIndexWriter();
+
 			indexWriter.commit(createSearchContext());
-		}
-		catch (SearchException searchException) {
+
+			_assertLogCapture(
+				message -> _assertErrorMessage(_EXPECTED_PREFIX, message),
+				logCapture, LoggerTestUtil.ERROR,
+				HttpSolrClient.RemoteSolrException.class);
 		}
 	}
 
-	@ExpectedLog(
-		expectedClass = SolrIndexWriter.class,
-		expectedLevel = ExpectedLog.Level.WARNING, expectedLog = "404 Not Found"
-	)
 	@Test
-	public void testDeleteDocument() {
-		IndexWriter indexWriter = getIndexWriter();
+	public void testDeleteDocument() throws SearchException {
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				SolrIndexWriter.class.getName(), LoggerTestUtil.ERROR)) {
 
-		try {
+			IndexWriter indexWriter = getIndexWriter();
+
 			indexWriter.deleteDocument(createSearchContext(), null);
-		}
-		catch (SearchException searchException) {
+
+			_assertLogCapture(
+				message -> _assertErrorMessage(_EXPECTED_PREFIX, message),
+				logCapture, LoggerTestUtil.ERROR,
+				HttpSolrClient.RemoteSolrException.class);
 		}
 	}
 
-	@ExpectedLog(
-		expectedClass = SolrIndexWriter.class,
-		expectedLevel = ExpectedLog.Level.WARNING,
-		expectedLog = "Bulk delete failed"
-	)
 	@Test
-	public void testDeleteDocuments() {
-		IndexWriter indexWriter = getIndexWriter();
+	public void testDeleteDocuments() throws SearchException {
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				SolrIndexWriter.class.getName(), LoggerTestUtil.ERROR)) {
 
-		try {
+			IndexWriter indexWriter = getIndexWriter();
+
 			indexWriter.deleteDocuments(
 				createSearchContext(), Collections.singletonList(null));
-		}
-		catch (SearchException searchException) {
+
+			_assertLogCapture(
+				message -> Assert.assertEquals("Bulk delete failed", message),
+				logCapture, LoggerTestUtil.ERROR);
 		}
 	}
 
-	@ExpectedLog(
-		expectedClass = BulkDocumentRequestExecutor.class,
-		expectedLevel = ExpectedLog.Level.WARNING, expectedLog = "404 Not Found"
-	)
 	@Test
-	public void testDeleteDocumentsBulkExecutor() {
-		IndexWriter indexWriter = getIndexWriter();
+	public void testDeleteDocumentsBulkExecutor() throws SearchException {
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				BulkDocumentRequestExecutor.class.getName(),
+				LoggerTestUtil.WARN)) {
 
-		try {
+			IndexWriter indexWriter = getIndexWriter();
+
 			indexWriter.deleteDocuments(
 				createSearchContext(), Collections.singletonList(null));
-		}
-		catch (SearchException searchException) {
+
+			_assertLogCapture(
+				message -> _assertErrorMessage(_EXPECTED_BULK_PREFIX, message),
+				logCapture, LoggerTestUtil.WARN);
 		}
 	}
 
-	@ExpectedLog(
-		expectedClass = SolrIndexWriter.class,
-		expectedLevel = ExpectedLog.Level.WARNING, expectedLog = "null"
-	)
 	@Test
-	public void testDeleteEntityDocuments() {
-		IndexWriter indexWriter = getIndexWriter();
+	public void testDeleteEntityDocuments() throws SearchException {
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				SolrIndexWriter.class.getName(), LoggerTestUtil.ERROR)) {
 
-		try {
+			IndexWriter indexWriter = getIndexWriter();
+
 			indexWriter.deleteEntityDocuments(createSearchContext(), null);
-		}
-		catch (SearchException searchException) {
+
+			String expectedMessage =
+				"Cannot invoke \"String.isEmpty()\" because \"value\" is null";
+
+			_assertLogCapture(
+				message -> Assert.assertEquals(expectedMessage, message),
+				logCapture, LoggerTestUtil.ERROR, NullPointerException.class);
 		}
 	}
 
-	@ExpectedLog(
-		expectedClass = SolrIndexWriter.class,
-		expectedLevel = ExpectedLog.Level.WARNING, expectedLog = "404 Not Found"
-	)
 	@Test
-	public void testPartiallyUpdateDocument() {
-		IndexWriter indexWriter = getIndexWriter();
+	public void testPartiallyUpdateDocument() throws SearchException {
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				SolrIndexWriter.class.getName(), LoggerTestUtil.ERROR)) {
 
-		try {
+			IndexWriter indexWriter = getIndexWriter();
+
 			indexWriter.partiallyUpdateDocument(
 				createSearchContext(), getTestDocument());
-		}
-		catch (SearchException searchException) {
+
+			_assertLogCapture(
+				message -> _assertErrorMessage(_EXPECTED_PREFIX, message),
+				logCapture, LoggerTestUtil.ERROR,
+				HttpSolrClient.RemoteSolrException.class);
 		}
 	}
 
-	@ExpectedLog(
-		expectedClass = SolrIndexWriter.class,
-		expectedLevel = ExpectedLog.Level.WARNING,
-		expectedLog = "Bulk partial update failed"
-	)
 	@Test
-	public void testPartiallyUpdateDocuments() {
-		IndexWriter indexWriter = getIndexWriter();
+	public void testPartiallyUpdateDocuments() throws SearchException {
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				SolrIndexWriter.class.getName(), LoggerTestUtil.ERROR)) {
 
-		try {
+			IndexWriter indexWriter = getIndexWriter();
+
 			indexWriter.partiallyUpdateDocuments(
 				createSearchContext(),
 				Collections.singletonList(getTestDocument()));
-		}
-		catch (SearchException searchException) {
+
+			_assertLogCapture(
+				message -> Assert.assertEquals(
+					"Bulk partial update failed", message),
+				logCapture, LoggerTestUtil.ERROR);
 		}
 	}
 
-	@ExpectedLog(
-		expectedClass = BulkDocumentRequestExecutor.class,
-		expectedLevel = ExpectedLog.Level.WARNING, expectedLog = "404 Not Found"
-	)
 	@Test
-	public void testPartiallyUpdateDocumentsBulkExecutor() {
-		IndexWriter indexWriter = getIndexWriter();
+	public void testPartiallyUpdateDocumentsBulkExecutor()
+		throws SearchException {
 
-		try {
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				BulkDocumentRequestExecutor.class.getName(),
+				LoggerTestUtil.WARN)) {
+
+			IndexWriter indexWriter = getIndexWriter();
+
 			indexWriter.partiallyUpdateDocuments(
 				createSearchContext(),
 				Collections.singletonList(getTestDocument()));
-		}
-		catch (SearchException searchException) {
+
+			_assertLogCapture(
+				message -> _assertErrorMessage(_EXPECTED_BULK_PREFIX, message),
+				logCapture, LoggerTestUtil.WARN);
 		}
 	}
 
-	@ExpectedLog(
-		expectedClass = SolrIndexWriter.class,
-		expectedLevel = ExpectedLog.Level.WARNING, expectedLog = "Update failed"
-	)
 	@Test
-	public void testUpdateDocument() {
-		IndexWriter indexWriter = getIndexWriter();
+	public void testUpdateDocument() throws SearchException {
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				SolrIndexWriter.class.getName(), LoggerTestUtil.ERROR)) {
 
-		try {
+			IndexWriter indexWriter = getIndexWriter();
+
 			indexWriter.updateDocument(
 				createSearchContext(), getTestDocument());
-		}
-		catch (SearchException searchException) {
+
+			String expectedMessagePrefix = "Update failed: " + _EXPECTED_PREFIX;
+
+			_assertLogCapture(
+				message -> _assertErrorMessage(expectedMessagePrefix, message),
+				logCapture, LoggerTestUtil.ERROR);
 		}
 	}
 
-	@ExpectedLog(
-		expectedClass = BulkDocumentRequestExecutor.class,
-		expectedLevel = ExpectedLog.Level.WARNING, expectedLog = "404 Not Found"
-	)
 	@Test
-	public void testUpdateDocumentBulkExecutor() {
-		IndexWriter indexWriter = getIndexWriter();
+	public void testUpdateDocumentBulkExecutor() throws SearchException {
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				BulkDocumentRequestExecutor.class.getName(),
+				LoggerTestUtil.WARN)) {
 
-		try {
+			IndexWriter indexWriter = getIndexWriter();
+
 			indexWriter.updateDocument(
 				createSearchContext(), getTestDocument());
-		}
-		catch (SearchException searchException) {
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertEquals(logEntries.toString(), 2, logEntries.size());
+
+			for (LogEntry logEntry : logEntries) {
+				_assertLogEntry(
+					message -> _assertErrorMessage(
+						_EXPECTED_BULK_PREFIX, message),
+					logEntry, LoggerTestUtil.WARN, null);
+			}
 		}
 	}
 
-	@ExpectedLog(
-		expectedClass = SolrIndexWriter.class,
-		expectedLevel = ExpectedLog.Level.WARNING, expectedLog = "Update failed"
-	)
 	@Test
-	public void testUpdateDocuments() {
-		IndexWriter indexWriter = getIndexWriter();
+	public void testUpdateDocuments() throws SearchException {
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				SolrIndexWriter.class.getName(), LoggerTestUtil.ERROR)) {
 
-		try {
+			IndexWriter indexWriter = getIndexWriter();
+
 			indexWriter.updateDocuments(
 				createSearchContext(),
 				Collections.singletonList(getTestDocument()));
-		}
-		catch (SearchException searchException) {
+
+			String expectedMessagePrefix = "Update failed: " + _EXPECTED_PREFIX;
+
+			_assertLogCapture(
+				message -> _assertErrorMessage(expectedMessagePrefix, message),
+				logCapture, LoggerTestUtil.ERROR);
 		}
 	}
 
-	@ExpectedLog(
-		expectedClass = BulkDocumentRequestExecutor.class,
-		expectedLevel = ExpectedLog.Level.WARNING, expectedLog = "404 Not Found"
-	)
 	@Test
-	public void testUpdateDocumentsBulkExecutor() {
-		IndexWriter indexWriter = getIndexWriter();
+	public void testUpdateDocumentsBulkExecutor() throws SearchException {
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				BulkDocumentRequestExecutor.class.getName(),
+				LoggerTestUtil.WARN)) {
 
-		try {
+			IndexWriter indexWriter = getIndexWriter();
+
 			indexWriter.updateDocuments(
 				createSearchContext(),
 				Collections.singletonList(getTestDocument()));
-		}
-		catch (SearchException searchException) {
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertEquals(logEntries.toString(), 2, logEntries.size());
+
+			for (LogEntry logEntry : logEntries) {
+				_assertLogEntry(
+					message -> _assertErrorMessage(
+						_EXPECTED_BULK_PREFIX, message),
+					logEntry, LoggerTestUtil.WARN, null);
+			}
 		}
 	}
 
@@ -315,6 +353,64 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 		return document;
 	}
 
+	private void _assertErrorMessage(String expectedPrefix, String message) {
+		Assert.assertTrue(
+			message + " does not contain " + _EXPECTED_MIME_TYPE,
+			message.contains(_EXPECTED_MIME_TYPE));
+		Assert.assertTrue(
+			message + " does not start with " + expectedPrefix,
+			message.startsWith(expectedPrefix));
+		Assert.assertTrue(
+			message + " does not contain " + _EXPECTED_STATUS,
+			message.contains(_EXPECTED_STATUS));
+	}
+
+	private void _assertLogCapture(
+		Consumer<String> consumer, LogCapture logCapture, String logLevel) {
+
+		_assertLogCapture(consumer, logCapture, logLevel, null);
+	}
+
+	private void _assertLogCapture(
+		Consumer<String> consumer, LogCapture logCapture, String logLevel,
+		Class<? extends Throwable> throwableClass) {
+
+		List<LogEntry> logEntries = logCapture.getLogEntries();
+
+		Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
+
+		_assertLogEntry(consumer, logEntries.get(0), logLevel, throwableClass);
+	}
+
+	private void _assertLogEntry(
+		Consumer<String> consumer, LogEntry logEntry, String logLevel,
+		Class<? extends Throwable> throwableClass) {
+
+		Assert.assertEquals(logLevel, logEntry.getPriority());
+
+		Throwable throwable = logEntry.getThrowable();
+
+		if (throwableClass == null) {
+			Assert.assertNull(String.valueOf(throwable), throwable);
+		}
+		else {
+			Assert.assertSame(throwableClass, throwable.getClass());
+		}
+
+		consumer.accept(logEntry.getMessage());
+	}
+
 	private static final String _COLLECTION_NAME = "alpha";
+
+	private static final String _EXPECTED_BULK_PREFIX =
+		"{class=class " + HttpSolrClient.RemoteSolrException.class.getName() +
+			", message=Error from server at";
+
+	private static final String _EXPECTED_MIME_TYPE =
+		"Expected mime type application/octet-stream but got text";
+
+	private static final String _EXPECTED_PREFIX = "Error from server at";
+
+	private static final String _EXPECTED_STATUS = "Error 404 Not Found";
 
 }
