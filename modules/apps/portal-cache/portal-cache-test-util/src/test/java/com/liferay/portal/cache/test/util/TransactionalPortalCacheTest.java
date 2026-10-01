@@ -202,10 +202,15 @@ public class TransactionalPortalCacheTest {
 		transactionLifecycleListener.created(
 			transactionAttribute, transactionStatus);
 
+		long startSequence = TransactionalPortalCacheUtil.getStartSequence();
+
 		_commitRemove(transactionalPortalCache, _KEY_1);
 
 		transactionLifecycleListener.created(
 			savepointTransactionAttribute, savepointTransactionStatus);
+
+		Assert.assertEquals(
+			startSequence, TransactionalPortalCacheUtil.getStartSequence());
 
 		transactionalPortalCache.put(_KEY_1, _VALUE_1);
 
@@ -283,6 +288,16 @@ public class TransactionalPortalCacheTest {
 			TransactionalPortalCacheUtil.completePut(
 				_portalCache, _KEY_1, _VALUE_1));
 		Assert.assertNull(_portalCache.get(_KEY_1));
+
+		TransactionalPortalCacheUtil.preparePut(_portalCache, _KEY_2);
+
+		TransactionalPortalCacheUtil.invalidate(_portalCache, _KEY_2);
+
+		Assert.assertFalse(
+			"Put should be dropped",
+			TransactionalPortalCacheUtil.completePut(
+				_portalCache, _KEY_2, _VALUE_2));
+		Assert.assertNull(_portalCache.get(_KEY_2));
 
 		ShardedTestPortalCache<String, String> shardedPortalCache =
 			new ShardedTestPortalCache<>("Sharded Test Portal Cache");
@@ -404,6 +419,16 @@ public class TransactionalPortalCacheTest {
 			TransactionalPortalCacheUtil.completePut(
 				_portalCache, _KEY_1, _VALUE_1));
 		Assert.assertEquals(_VALUE_1, _portalCache.get(_KEY_1));
+
+		TransactionalPortalCacheUtil.preparePut(_portalCache, _KEY_2);
+
+		TransactionalPortalCacheUtil.invalidate(_portalCache);
+
+		Assert.assertFalse(
+			"Put after a writer that invalidated the region should be dropped",
+			TransactionalPortalCacheUtil.completePut(
+				_portalCache, _KEY_2, _VALUE_2));
+		Assert.assertNull(_portalCache.get(_KEY_2));
 	}
 
 	@Test
@@ -924,6 +949,56 @@ public class TransactionalPortalCacheTest {
 		Assert.assertEquals(_VALUE_1, _portalCache.get(_KEY_1));
 
 		companyThreadLocalMockedStatic.close();
+
+		long companyId2 = RandomTestUtil.randomLong();
+
+		ShardedTestPortalCache<String, String> failingShardedPortalCache =
+			new ShardedTestPortalCache<String, String>(
+				"Failing Sharded Test Portal Cache") {
+
+				@Override
+				protected void doPut(String key, String value, int timeToLive) {
+					if (CompanyThreadLocal.getNonsystemCompanyId() ==
+							companyId1) {
+
+						throw new IllegalStateException(key);
+					}
+
+					super.doPut(key, value, timeToLive);
+				}
+
+			};
+
+		TransactionalPortalCache<String, String>
+			failingTransactionalPortalCache = new TransactionalPortalCache<>(
+				failingShardedPortalCache, false);
+
+		TransactionalPortalCacheUtil.begin();
+
+		_companyIdThreadLocal.set(companyId1);
+
+		failingTransactionalPortalCache.put(_KEY_1, _VALUE_1);
+		failingTransactionalPortalCache.put(_KEY_2, _VALUE_2);
+
+		_companyIdThreadLocal.set(companyId2);
+
+		failingTransactionalPortalCache.put(_KEY_1, _VALUE_1);
+		transactionalPortalCache.put(_KEY_2, _VALUE_2);
+
+		try {
+			TransactionalPortalCacheUtil.commit(false);
+
+			Assert.fail();
+		}
+		catch (IllegalStateException illegalStateException) {
+			Throwable[] throwables = illegalStateException.getSuppressed();
+
+			Assert.assertEquals(
+				Arrays.toString(throwables), 1, throwables.length);
+		}
+
+		Assert.assertEquals(_VALUE_1, failingShardedPortalCache.get(_KEY_1));
+		Assert.assertEquals(_VALUE_2, _portalCache.get(_KEY_2));
 	}
 
 	@Test
@@ -1353,6 +1428,9 @@ public class TransactionalPortalCacheTest {
 		Assert.assertTrue(
 			"TransactionalPortalCacheUtil should be enabled",
 			TransactionalPortalCacheUtil.isEnabled());
+		Assert.assertFalse(
+			"Transaction should not be read only",
+			TransactionalPortalCacheUtil.isReadOnly());
 
 		TransactionalPortalCacheUtil.commit(false);
 

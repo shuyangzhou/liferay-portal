@@ -51,6 +51,10 @@ public class InvalidationSequence {
 		return false;
 	}
 
+	public void invalidateKey(String regionName, Serializable key) {
+		_invalidateKey(regionName, key, _sequence.incrementAndGet());
+	}
+
 	public void publish(
 		String regionName, long sequence, Runnable publishRunnable,
 		Runnable withdrawRunnable) {
@@ -59,10 +63,21 @@ public class InvalidationSequence {
 			return;
 		}
 
-		publishRunnable.run();
+		RuntimeException runtimeException1 = null;
+
+		try {
+			publishRunnable.run();
+		}
+		catch (RuntimeException runtimeException2) {
+			runtimeException1 = runtimeException2;
+		}
 
 		if (_isWrittenAfter(regionName, sequence)) {
 			withdrawRunnable.run();
+		}
+
+		if (runtimeException1 != null) {
+			throw runtimeException1;
 		}
 	}
 

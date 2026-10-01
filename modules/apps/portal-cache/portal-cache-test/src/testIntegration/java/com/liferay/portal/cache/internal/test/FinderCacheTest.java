@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.TicketLocalService;
+import com.liferay.portal.kernel.service.persistence.TicketPersistence;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -50,7 +51,7 @@ public class FinderCacheTest {
 		new LiferayIntegrationTestRule();
 
 	@Test
-	public void testPutResult() throws Exception {
+	public void testPutResult() throws Throwable {
 		long classPK = RandomTestUtil.randomLong();
 
 		List<Ticket> tickets = _ticketLocalService.getTickets(
@@ -77,6 +78,90 @@ public class FinderCacheTest {
 			TestPropsValues.getCompanyId(), User.class.getName(), classPK);
 
 		Assert.assertEquals(tickets.toString(), 2, tickets.size());
+
+		Assert.assertNull(
+			_finderCache.getResult(
+				_countFinderPath, finderArgs, _ticketPersistence));
+
+		TransactionInvokerUtil.invoke(
+			TransactionConfig.Factory.create(
+				Propagation.REQUIRED, new Class<?>[] {Exception.class}),
+			(Callable<Void>)() -> {
+				Assert.assertNull(
+					_finderCache.getResult(
+						_countFinderPath, finderArgs, _ticketPersistence));
+
+				_finderCache.putResult(_countFinderPath, finderArgs, 2L);
+
+				return null;
+			});
+
+		_addTicket(classPK, serviceContext);
+
+		_finderCache.putResult(_countFinderPath, finderArgs, 2L);
+
+		Assert.assertEquals(
+			3L,
+			_finderCache.getResult(
+				_countFinderPath, finderArgs, _ticketPersistence));
+
+		Object[] countFinderArgs = _getFinderArgs(RandomTestUtil.randomLong());
+
+		Assert.assertNull(
+			_finderCache.getResult(
+				_countFinderPath, countFinderArgs, _ticketPersistence));
+
+		_finderCache.putResult(_countFinderPath, countFinderArgs, 0L);
+
+		TransactionInvokerUtil.invoke(
+			TransactionConfig.Factory.create(
+				Propagation.REQUIRED, new Class<?>[] {Exception.class}),
+			(Callable<Void>)() -> {
+				_ticketLocalService.deleteTicket(ticket);
+
+				Assert.assertEquals(
+					0L,
+					_finderCache.getResult(
+						_countFinderPath, countFinderArgs, _ticketPersistence));
+				Assert.assertEquals(
+					2L,
+					_finderCache.getResult(
+						_countFinderPath, finderArgs, _ticketPersistence));
+
+				Ticket newTicket = _addTicket(classPK, serviceContext);
+
+				newTicket.setKey(ticket.getKey());
+
+				_ticketLocalService.updateTicket(newTicket);
+
+				long newClassPK = RandomTestUtil.randomLong();
+
+				Object[] newFinderArgs = _getFinderArgs(newClassPK);
+
+				Assert.assertNull(
+					_finderCache.getResult(
+						_countFinderPath, newFinderArgs, _ticketPersistence));
+
+				_finderCache.putResult(_countFinderPath, newFinderArgs, 0L);
+
+				_addTicket(newClassPK, serviceContext);
+
+				Assert.assertEquals(
+					1L,
+					_finderCache.getResult(
+						_countFinderPath, newFinderArgs, _ticketPersistence));
+
+				newTicket.setClassPK(newClassPK);
+
+				_ticketLocalService.updateTicket(newTicket);
+
+				Assert.assertEquals(
+					2L,
+					_finderCache.getResult(
+						_countFinderPath, newFinderArgs, _ticketPersistence));
+
+				return null;
+			});
 	}
 
 	@Test
@@ -163,6 +248,47 @@ public class FinderCacheTest {
 		}
 
 		Assert.assertNull(_finderCache.getResult(finderPath, finderArgs, null));
+
+		FinderPath countFinderPath = new FinderPath(
+			"com.liferay.portal.model.impl.TicketImpl.List2",
+			"count" + RandomTestUtil.randomString(),
+			new String[] {
+				Long.class.getName(), Long.class.getName(), Long.class.getName()
+			},
+			new String[] {"companyId", "classNameId", "classPK"}, false);
+
+		TransactionInvokerUtil.invoke(
+			TransactionConfig.Factory.create(
+				Propagation.REQUIRED, new Class<?>[] {Exception.class}),
+			(Callable<Void>)() -> {
+				_addTicket(classPK, serviceContext);
+
+				try {
+					TransactionInvokerUtil.invoke(
+						TransactionConfig.Factory.create(
+							Propagation.NOT_SUPPORTED,
+							new Class<?>[] {Exception.class}),
+						(Callable<Void>)() -> {
+							Assert.assertNull(
+								_finderCache.getResult(
+									countFinderPath, finderArgs,
+									_ticketPersistence));
+
+							return null;
+						});
+				}
+				catch (Throwable throwable) {
+					throw new Exception(throwable);
+				}
+
+				return null;
+			});
+
+		_finderCache.putResult(countFinderPath, finderArgs, 1L);
+
+		Assert.assertNull(
+			_finderCache.getResult(
+				countFinderPath, finderArgs, _ticketPersistence));
 	}
 
 	@Test
@@ -181,6 +307,8 @@ public class FinderCacheTest {
 
 		Object[] finderArgs = _getFinderArgs(classPK);
 
+		Object[] countFinderArgs = _getFinderArgs(RandomTestUtil.randomLong());
+
 		TransactionConfig.Builder builder = new TransactionConfig.Builder();
 
 		builder.setReadOnly(true);
@@ -191,6 +319,18 @@ public class FinderCacheTest {
 			(Callable<Void>)() -> {
 				Assert.assertNull(
 					_finderCache.getResult(_finderPath, finderArgs, null));
+
+				Assert.assertNull(
+					_finderCache.getResult(
+						_countFinderPath, finderArgs, _ticketPersistence));
+
+				_finderCache.putResult(_countFinderPath, finderArgs, 1L);
+
+				Assert.assertNull(
+					_finderCache.getResult(
+						_countFinderPath, countFinderArgs, _ticketPersistence));
+
+				_finderCache.putResult(_countFinderPath, countFinderArgs, 0L);
 
 				try {
 					TransactionInvokerUtil.invoke(
@@ -209,6 +349,14 @@ public class FinderCacheTest {
 
 				return null;
 			});
+
+		Assert.assertNull(
+			_finderCache.getResult(
+				_countFinderPath, finderArgs, _ticketPersistence));
+		Assert.assertEquals(
+			0L,
+			_finderCache.getResult(
+				_countFinderPath, countFinderArgs, _ticketPersistence));
 
 		tickets = _ticketLocalService.getTickets(
 			TestPropsValues.getCompanyId(), User.class.getName(), classPK);
@@ -235,6 +383,12 @@ public class FinderCacheTest {
 		};
 	}
 
+	private static final FinderPath _countFinderPath = new FinderPath(
+		"com.liferay.portal.model.impl.TicketImpl.List2", "countByC_C_C",
+		new String[] {
+			Long.class.getName(), Long.class.getName(), Long.class.getName()
+		},
+		new String[] {"companyId", "classNameId", "classPK"}, false);
 	private static final FinderPath _finderPath = new FinderPath(
 		"com.liferay.portal.model.impl.TicketImpl.List2", "findByC_C_C",
 		new String[] {
@@ -250,6 +404,9 @@ public class FinderCacheTest {
 
 	@Inject
 	private TicketLocalService _ticketLocalService;
+
+	@Inject
+	private TicketPersistence _ticketPersistence;
 
 	@DeleteAfterTestRun
 	private final List<Ticket> _tickets = new ArrayList<>();

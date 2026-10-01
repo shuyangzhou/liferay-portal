@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.cache.SkipReplicationThreadLocal;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.internal.cache.InvalidationSequence;
+import com.liferay.portal.kernel.internal.spring.transaction.ReadOnlyTransactionThreadLocal;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionAttribute;
@@ -28,6 +29,7 @@ import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -149,11 +151,24 @@ public class TransactionalPortalCacheUtil {
 	public static void commit(boolean readOnly) {
 		PortalCacheMap portalCacheMap = _popPortalCacheMap();
 
+		RuntimeException runtimeException1 = null;
+
 		for (UncommittedBuffer uncommittedBuffer : portalCacheMap.values()) {
-			uncommittedBuffer.commit(readOnly, portalCacheMap._startSequence);
+			try {
+				uncommittedBuffer.commit(
+					readOnly, portalCacheMap._startSequence);
+			}
+			catch (RuntimeException runtimeException2) {
+				runtimeException1 = _addSuppressed(
+					runtimeException1, runtimeException2);
+			}
 		}
 
 		portalCacheMap.clear();
+
+		if (runtimeException1 != null) {
+			throw runtimeException1;
+		}
 	}
 
 	public static void commitSavepoint() {
@@ -183,22 +198,38 @@ public class TransactionalPortalCacheUtil {
 	public static <K extends Serializable, V> boolean completePut(
 		PortalCache<K, V> portalCache, K key, V value) {
 
+		return completePut(
+			portalCache, key, value, PortalCache.DEFAULT_TIME_TO_LIVE);
+	}
+
+	public static <K extends Serializable, V> boolean completePut(
+		PortalCache<K, V> portalCache, K key, V value, int timeToLive) {
+
 		PendingPut pendingPut = _pendingPut.get();
 
 		if ((pendingPut == null) || (pendingPut._portalCache != portalCache) ||
 			!key.equals(pendingPut._key) || isEnabled()) {
 
-			PortalCacheHelperUtil.putWithoutReplicator(portalCache, key, value);
+			PortalCacheHelperUtil.putWithoutReplicator(
+				portalCache, key, value, timeToLive);
 
 			return true;
 		}
 
 		_pendingPut.remove();
 
+		return completePut(
+			portalCache, key, value, pendingPut._sequence, timeToLive);
+	}
+
+	public static <K extends Serializable, V> boolean completePut(
+		PortalCache<K, V> portalCache, K key, V value, long sequence,
+		int timeToLive) {
+
 		return _invalidationSequence.publishKey(
-			_getRegionName(portalCache), key, pendingPut._sequence,
+			_getRegionName(portalCache), key, sequence,
 			() -> PortalCacheHelperUtil.putWithoutReplicator(
-				portalCache, key, value),
+				portalCache, key, value, timeToLive),
 			() -> PortalCacheHelperUtil.removeWithoutReplicator(
 				portalCache, key));
 	}
@@ -268,6 +299,33 @@ public class TransactionalPortalCacheUtil {
 		return _NULL_HOLDER;
 	}
 
+	public static long getStartSequence() {
+		List<PortalCacheMap> portalCacheMaps = _portalCacheMaps.get();
+
+		int index = portalCacheMaps.size() - 1;
+
+		while (true) {
+			PortalCacheMap portalCacheMap = portalCacheMaps.get(index);
+
+			if (!portalCacheMap._savepoint) {
+				return portalCacheMap._startSequence;
+			}
+
+			index--;
+		}
+	}
+
+	public static void invalidate(PortalCache<?, ?> portalCache) {
+		_invalidationSequence.invalidate(
+			_getRegionName(portalCache), 0, true, Collections.emptySet());
+	}
+
+	public static <K extends Serializable> void invalidate(
+		PortalCache<K, ?> portalCache, K key) {
+
+		_invalidationSequence.invalidateKey(_getRegionName(portalCache), key);
+	}
+
 	public static boolean isEnabled() {
 		if (!_isTransactionalCacheEnabled()) {
 			return false;
@@ -276,6 +334,10 @@ public class TransactionalPortalCacheUtil {
 		List<PortalCacheMap> portalCacheMaps = _portalCacheMaps.get();
 
 		return !portalCacheMaps.isEmpty();
+	}
+
+	public static boolean isReadOnly() {
+		return ReadOnlyTransactionThreadLocal.isReadOnly();
 	}
 
 	public static <K extends Serializable> void preparePut(
@@ -333,6 +395,19 @@ public class TransactionalPortalCacheUtil {
 		private final boolean _savepoint;
 		private final long _startSequence = _invalidationSequence.getSequence();
 
+	}
+
+	private static RuntimeException _addSuppressed(
+		RuntimeException runtimeException1,
+		RuntimeException runtimeException2) {
+
+		if (runtimeException1 == null) {
+			return runtimeException2;
+		}
+
+		runtimeException1.addSuppressed(runtimeException2);
+
+		return runtimeException1;
 	}
 
 	private static void _begin(boolean savepoint) {
@@ -561,17 +636,30 @@ public class TransactionalPortalCacheUtil {
 				}
 			}
 
+			RuntimeException runtimeException1 = null;
+
 			for (Map.Entry<? extends Serializable, ValueEntry> entry :
 					_uncommittedMap.entrySet()) {
 
 				ValueEntry valueEntry = entry.getValue();
 
-				if (byRemove) {
-					valueEntry.commitToByRemove(_portalCache, entry.getKey());
+				try {
+					if (byRemove) {
+						valueEntry.commitToByRemove(
+							_portalCache, entry.getKey());
+					}
+					else {
+						valueEntry.commitTo(_portalCache, entry.getKey());
+					}
 				}
-				else {
-					valueEntry.commitTo(_portalCache, entry.getKey());
+				catch (RuntimeException runtimeException2) {
+					runtimeException1 = _addSuppressed(
+						runtimeException1, runtimeException2);
 				}
+			}
+
+			if (runtimeException1 != null) {
+				throw runtimeException1;
 			}
 		}
 
@@ -633,6 +721,8 @@ public class TransactionalPortalCacheUtil {
 
 		@Override
 		public void commit(boolean readOnly, long startSequence) {
+			RuntimeException runtimeException1 = null;
+
 			for (Map.Entry<Long, UncommittedBuffer> entry :
 					_shardedUncommittedBuffers.entrySet()) {
 
@@ -644,9 +734,17 @@ public class TransactionalPortalCacheUtil {
 
 					uncommittedBuffer.commit(readOnly, startSequence);
 				}
+				catch (RuntimeException runtimeException2) {
+					runtimeException1 = _addSuppressed(
+						runtimeException1, runtimeException2);
+				}
 			}
 
 			_shardedUncommittedBuffers.clear();
+
+			if (runtimeException1 != null) {
+				throw runtimeException1;
+			}
 		}
 
 		@Override
