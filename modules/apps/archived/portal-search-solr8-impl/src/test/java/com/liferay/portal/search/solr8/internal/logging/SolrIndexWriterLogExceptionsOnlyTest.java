@@ -70,7 +70,8 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 
 			_assertLogCapture(
 				message -> _assertErrorMessage(_EXPECTED_PREFIX, message),
-				logCapture, LoggerTestUtil.ERROR);
+				logCapture, LoggerTestUtil.ERROR,
+				HttpSolrClient.RemoteSolrException.class);
 		}
 	}
 
@@ -132,7 +133,8 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 
 			_assertLogCapture(
 				message -> _assertErrorMessage(_EXPECTED_PREFIX, message),
-				logCapture, LoggerTestUtil.ERROR);
+				logCapture, LoggerTestUtil.ERROR,
+				HttpSolrClient.RemoteSolrException.class);
 		}
 	}
 
@@ -151,7 +153,8 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 
 			_assertLogCapture(
 				message -> _assertErrorMessage(_EXPECTED_PREFIX, message),
-				logCapture, LoggerTestUtil.ERROR);
+				logCapture, LoggerTestUtil.ERROR,
+				HttpSolrClient.RemoteSolrException.class);
 		}
 	}
 
@@ -214,7 +217,7 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 
 			_assertLogCapture(
 				message -> Assert.assertEquals(expectedMessage, message),
-				logCapture, LoggerTestUtil.ERROR);
+				logCapture, LoggerTestUtil.ERROR, NullPointerException.class);
 		}
 	}
 
@@ -234,7 +237,8 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 
 			_assertLogCapture(
 				message -> _assertErrorMessage(_EXPECTED_PREFIX, message),
-				logCapture, LoggerTestUtil.ERROR);
+				logCapture, LoggerTestUtil.ERROR,
+				HttpSolrClient.RemoteSolrException.class);
 		}
 	}
 
@@ -327,7 +331,7 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 				_assertLogEntry(
 					message -> _assertErrorMessage(
 						_EXPECTED_BULK_PREFIX, message),
-					logEntry, LoggerTestUtil.WARN);
+					logEntry, LoggerTestUtil.WARN, null);
 			}
 		}
 	}
@@ -379,7 +383,7 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 				_assertLogEntry(
 					message -> _assertErrorMessage(
 						_EXPECTED_BULK_PREFIX, message),
-					logEntry, LoggerTestUtil.WARN);
+					logEntry, LoggerTestUtil.WARN, null);
 			}
 		}
 	}
@@ -418,17 +422,35 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 	private void _assertLogCapture(
 		Consumer<String> consumer, LogCapture logCapture, String logLevel) {
 
+		_assertLogCapture(consumer, logCapture, logLevel, null);
+	}
+
+	private void _assertLogCapture(
+		Consumer<String> consumer, LogCapture logCapture, String logLevel,
+		Class<? extends Throwable> throwableClass) {
+
 		List<LogEntry> logEntries = logCapture.getLogEntries();
 
 		Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
 
-		_assertLogEntry(consumer, logEntries.get(0), logLevel);
+		_assertLogEntry(consumer, logEntries.get(0), logLevel, throwableClass);
 	}
 
 	private void _assertLogEntry(
-		Consumer<String> consumer, LogEntry logEntry, String logLevel) {
+		Consumer<String> consumer, LogEntry logEntry, String logLevel,
+		Class<? extends Throwable> throwableClass) {
 
 		Assert.assertEquals(logLevel, logEntry.getPriority());
+
+		Throwable throwable = logEntry.getThrowable();
+
+		if (throwableClass == null) {
+			Assert.assertNull(String.valueOf(throwable), throwable);
+		}
+		else {
+			Assert.assertSame(throwableClass, throwable.getClass());
+		}
+
 		consumer.accept(logEntry.getMessage());
 	}
 
