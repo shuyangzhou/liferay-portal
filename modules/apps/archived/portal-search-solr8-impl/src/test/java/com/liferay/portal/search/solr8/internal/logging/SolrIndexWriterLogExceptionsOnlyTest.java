@@ -76,19 +76,15 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 	}
 
 	@Test
-	public void testAddDocuments() {
+	public void testAddDocuments() throws SearchException {
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				SolrIndexWriter.class.getName(), LoggerTestUtil.ERROR)) {
 
 			IndexWriter indexWriter = getIndexWriter();
 
-			try {
-				indexWriter.addDocuments(
-					createSearchContext(),
-					Collections.singletonList(getTestDocument()));
-			}
-			catch (SearchException searchException) {
-			}
+			indexWriter.addDocuments(
+				createSearchContext(),
+				Collections.singletonList(getTestDocument()));
 
 			_assertLogCapture(
 				message -> Assert.assertEquals("Bulk add failed", message),
@@ -97,20 +93,16 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 	}
 
 	@Test
-	public void testAddDocumentsBulkExecutor() {
+	public void testAddDocumentsBulkExecutor() throws SearchException {
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				BulkDocumentRequestExecutor.class.getName(),
 				LoggerTestUtil.WARN)) {
 
 			IndexWriter indexWriter = getIndexWriter();
 
-			try {
-				indexWriter.addDocuments(
-					createSearchContext(),
-					Collections.singletonList(getTestDocument()));
-			}
-			catch (SearchException searchException) {
-			}
+			indexWriter.addDocuments(
+				createSearchContext(),
+				Collections.singletonList(getTestDocument()));
 
 			_assertLogCapture(
 				message -> _assertErrorMessage(_EXPECTED_BULK_PREFIX, message),
@@ -119,17 +111,13 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 	}
 
 	@Test
-	public void testCommit() {
+	public void testCommit() throws SearchException {
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				SolrIndexWriter.class.getName(), LoggerTestUtil.ERROR)) {
 
 			IndexWriter indexWriter = getIndexWriter();
 
-			try {
-				indexWriter.commit(createSearchContext());
-			}
-			catch (SearchException searchException) {
-			}
+			indexWriter.commit(createSearchContext());
 
 			_assertLogCapture(
 				message -> _assertErrorMessage(_EXPECTED_PREFIX, message),
@@ -139,17 +127,13 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 	}
 
 	@Test
-	public void testDeleteDocument() {
+	public void testDeleteDocument() throws SearchException {
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				SolrIndexWriter.class.getName(), LoggerTestUtil.ERROR)) {
 
 			IndexWriter indexWriter = getIndexWriter();
 
-			try {
-				indexWriter.deleteDocument(createSearchContext(), null);
-			}
-			catch (SearchException searchException) {
-			}
+			indexWriter.deleteDocument(createSearchContext(), null);
 
 			_assertLogCapture(
 				message -> _assertErrorMessage(_EXPECTED_PREFIX, message),
@@ -159,18 +143,14 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 	}
 
 	@Test
-	public void testDeleteDocuments() {
+	public void testDeleteDocuments() throws SearchException {
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				SolrIndexWriter.class.getName(), LoggerTestUtil.ERROR)) {
 
 			IndexWriter indexWriter = getIndexWriter();
 
-			try {
-				indexWriter.deleteDocuments(
-					createSearchContext(), Collections.singletonList(null));
-			}
-			catch (SearchException searchException) {
-			}
+			indexWriter.deleteDocuments(
+				createSearchContext(), Collections.singletonList(null));
 
 			_assertLogCapture(
 				message -> Assert.assertEquals("Bulk delete failed", message),
@@ -179,19 +159,15 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 	}
 
 	@Test
-	public void testDeleteDocumentsBulkExecutor() {
+	public void testDeleteDocumentsBulkExecutor() throws SearchException {
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				BulkDocumentRequestExecutor.class.getName(),
 				LoggerTestUtil.WARN)) {
 
 			IndexWriter indexWriter = getIndexWriter();
 
-			try {
-				indexWriter.deleteDocuments(
-					createSearchContext(), Collections.singletonList(null));
-			}
-			catch (SearchException searchException) {
-			}
+			indexWriter.deleteDocuments(
+				createSearchContext(), Collections.singletonList(null));
 
 			_assertLogCapture(
 				message -> _assertErrorMessage(_EXPECTED_BULK_PREFIX, message),
@@ -200,17 +176,13 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 	}
 
 	@Test
-	public void testDeleteEntityDocuments() {
+	public void testDeleteEntityDocuments() throws SearchException {
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				SolrIndexWriter.class.getName(), LoggerTestUtil.ERROR)) {
 
 			IndexWriter indexWriter = getIndexWriter();
 
-			try {
-				indexWriter.deleteEntityDocuments(createSearchContext(), null);
-			}
-			catch (SearchException searchException) {
-			}
+			indexWriter.deleteEntityDocuments(createSearchContext(), null);
 
 			String expectedMessage =
 				"Cannot invoke \"String.isEmpty()\" because \"value\" is null";
@@ -222,18 +194,14 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 	}
 
 	@Test
-	public void testPartiallyUpdateDocument() {
+	public void testPartiallyUpdateDocument() throws SearchException {
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				SolrIndexWriter.class.getName(), LoggerTestUtil.ERROR)) {
 
 			IndexWriter indexWriter = getIndexWriter();
 
-			try {
-				indexWriter.partiallyUpdateDocument(
-					createSearchContext(), getTestDocument());
-			}
-			catch (SearchException searchException) {
-			}
+			indexWriter.partiallyUpdateDocument(
+				createSearchContext(), getTestDocument());
 
 			_assertLogCapture(
 				message -> _assertErrorMessage(_EXPECTED_PREFIX, message),
@@ -243,19 +211,15 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 	}
 
 	@Test
-	public void testPartiallyUpdateDocuments() {
+	public void testPartiallyUpdateDocuments() throws SearchException {
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				SolrIndexWriter.class.getName(), LoggerTestUtil.ERROR)) {
 
 			IndexWriter indexWriter = getIndexWriter();
 
-			try {
-				indexWriter.partiallyUpdateDocuments(
-					createSearchContext(),
-					Collections.singletonList(getTestDocument()));
-			}
-			catch (SearchException searchException) {
-			}
+			indexWriter.partiallyUpdateDocuments(
+				createSearchContext(),
+				Collections.singletonList(getTestDocument()));
 
 			_assertLogCapture(
 				message -> Assert.assertEquals(
@@ -265,20 +229,18 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 	}
 
 	@Test
-	public void testPartiallyUpdateDocumentsBulkExecutor() {
+	public void testPartiallyUpdateDocumentsBulkExecutor()
+		throws SearchException {
+
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				BulkDocumentRequestExecutor.class.getName(),
 				LoggerTestUtil.WARN)) {
 
 			IndexWriter indexWriter = getIndexWriter();
 
-			try {
-				indexWriter.partiallyUpdateDocuments(
-					createSearchContext(),
-					Collections.singletonList(getTestDocument()));
-			}
-			catch (SearchException searchException) {
-			}
+			indexWriter.partiallyUpdateDocuments(
+				createSearchContext(),
+				Collections.singletonList(getTestDocument()));
 
 			_assertLogCapture(
 				message -> _assertErrorMessage(_EXPECTED_BULK_PREFIX, message),
@@ -287,18 +249,14 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 	}
 
 	@Test
-	public void testUpdateDocument() {
+	public void testUpdateDocument() throws SearchException {
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				SolrIndexWriter.class.getName(), LoggerTestUtil.ERROR)) {
 
 			IndexWriter indexWriter = getIndexWriter();
 
-			try {
-				indexWriter.updateDocument(
-					createSearchContext(), getTestDocument());
-			}
-			catch (SearchException searchException) {
-			}
+			indexWriter.updateDocument(
+				createSearchContext(), getTestDocument());
 
 			String expectedMessagePrefix = "Update failed: " + _EXPECTED_PREFIX;
 
@@ -309,19 +267,15 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 	}
 
 	@Test
-	public void testUpdateDocumentBulkExecutor() {
+	public void testUpdateDocumentBulkExecutor() throws SearchException {
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				BulkDocumentRequestExecutor.class.getName(),
 				LoggerTestUtil.WARN)) {
 
 			IndexWriter indexWriter = getIndexWriter();
 
-			try {
-				indexWriter.updateDocument(
-					createSearchContext(), getTestDocument());
-			}
-			catch (SearchException searchException) {
-			}
+			indexWriter.updateDocument(
+				createSearchContext(), getTestDocument());
 
 			List<LogEntry> logEntries = logCapture.getLogEntries();
 
@@ -337,19 +291,15 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 	}
 
 	@Test
-	public void testUpdateDocuments() {
+	public void testUpdateDocuments() throws SearchException {
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				SolrIndexWriter.class.getName(), LoggerTestUtil.ERROR)) {
 
 			IndexWriter indexWriter = getIndexWriter();
 
-			try {
-				indexWriter.updateDocuments(
-					createSearchContext(),
-					Collections.singletonList(getTestDocument()));
-			}
-			catch (SearchException searchException) {
-			}
+			indexWriter.updateDocuments(
+				createSearchContext(),
+				Collections.singletonList(getTestDocument()));
 
 			String expectedMessagePrefix = "Update failed: " + _EXPECTED_PREFIX;
 
@@ -360,20 +310,16 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 	}
 
 	@Test
-	public void testUpdateDocumentsBulkExecutor() {
+	public void testUpdateDocumentsBulkExecutor() throws SearchException {
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				BulkDocumentRequestExecutor.class.getName(),
 				LoggerTestUtil.WARN)) {
 
 			IndexWriter indexWriter = getIndexWriter();
 
-			try {
-				indexWriter.updateDocuments(
-					createSearchContext(),
-					Collections.singletonList(getTestDocument()));
-			}
-			catch (SearchException searchException) {
-			}
+			indexWriter.updateDocuments(
+				createSearchContext(),
+				Collections.singletonList(getTestDocument()));
 
 			List<LogEntry> logEntries = logCapture.getLogEntries();
 
