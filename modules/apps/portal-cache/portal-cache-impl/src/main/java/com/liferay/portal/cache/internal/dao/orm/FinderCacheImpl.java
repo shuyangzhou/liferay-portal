@@ -303,16 +303,18 @@ public class FinderCacheImpl
 		}
 
 		Serializable portalCacheValue = cacheValue;
+		int timeToLive = PortalCache.DEFAULT_TIME_TO_LIVE;
 
 		if ((result instanceof Long count) &&
 			_isMaintainedCountFinderPath(finderPath)) {
 
 			portalCacheValue = new AtomicLong(count);
+			timeToLive = _COUNT_TIME_TO_LIVE;
 		}
 
 		if (!TransactionalPortalCacheUtil.completePut(
 				_getCTPortalCache(finderPath.getCacheName()), cacheKey,
-				portalCacheValue)) {
+				portalCacheValue, timeToLive)) {
 
 			if (_isLocalCacheEnabled()) {
 				Map<LocalCacheKey, Serializable> localCache = _localCache.get();
@@ -1175,7 +1177,7 @@ public class FinderCacheImpl
 			TransactionalPortalCacheUtil.completePut(
 				countKey._portalCache.getWrappedPortalCache(),
 				countKey._cacheKey, new AtomicLong(privateCount._count),
-				privateCount._startSequence);
+				privateCount._startSequence, _COUNT_TIME_TO_LIVE);
 		}
 	}
 
@@ -1305,6 +1307,10 @@ public class FinderCacheImpl
 				wrappedPortalCache);
 		}
 	}
+
+	private static final int _COUNT_TIME_TO_LIVE =
+		PropsValues.CLUSTER_LINK_ENABLED ? 60 :
+			PortalCache.DEFAULT_TIME_TO_LIVE;
 
 	private static final String _GROUP_KEY_PREFIX =
 		FinderCache.class.getName() + StringPool.PERIOD;
