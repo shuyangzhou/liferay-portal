@@ -9,19 +9,21 @@ import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.DocumentImpl;
 import com.liferay.portal.kernel.search.IndexWriter;
 import com.liferay.portal.kernel.search.SearchException;
-import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.search.solr8.internal.SolrUnitTestRequirements;
 import com.liferay.portal.search.solr8.internal.indexing.SolrIndexingFixture;
 import com.liferay.portal.search.solr8.internal.search.engine.adapter.document.BulkDocumentRequestExecutor;
-import com.liferay.portal.search.test.rule.logging.ExpectedLogMethodTestRule;
 import com.liferay.portal.search.test.util.indexing.BaseIndexingTestCase;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
-import com.liferay.portal.search.test.util.logging.ExpectedLog;
+import com.liferay.portal.test.log.LogCapture;
+import com.liferay.portal.test.log.LogEntry;
+import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Collections;
+import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -35,9 +37,8 @@ public class SolrIndexWriterLoggingTest extends BaseIndexingTestCase {
 
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			ExpectedLogMethodTestRule.INSTANCE, LiferayUnitTestRule.INSTANCE);
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -45,21 +46,23 @@ public class SolrIndexWriterLoggingTest extends BaseIndexingTestCase {
 			SolrUnitTestRequirements.isSolrExternallyStartedByDeveloper());
 	}
 
-	@ExpectedLog(
-		expectedClass = BulkDocumentRequestExecutor.class,
-		expectedLevel = ExpectedLog.Level.INFO,
-		expectedLog = "response={responseHeader={status=0"
-	)
 	@Test
 	public void testBulkDocumentRequestExecutorLogs() {
-		IndexWriter indexWriter = getIndexWriter();
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				BulkDocumentRequestExecutor.class.getName(),
+				LoggerTestUtil.INFO)) {
 
-		try {
-			indexWriter.addDocuments(
-				createSearchContext(),
-				Collections.singletonList(getTestDocument()));
-		}
-		catch (SearchException searchException) {
+			IndexWriter indexWriter = getIndexWriter();
+
+			try {
+				indexWriter.addDocuments(
+					createSearchContext(),
+					Collections.singletonList(getTestDocument()));
+			}
+			catch (SearchException searchException) {
+			}
+
+			_assertLogCapture(logCapture);
 		}
 	}
 
@@ -75,6 +78,30 @@ public class SolrIndexWriterLoggingTest extends BaseIndexingTestCase {
 			RandomTestUtil.randomString(), RandomTestUtil.randomLong());
 
 		return document;
+	}
+
+	private void _assertLogCapture(LogCapture logCapture) {
+		List<LogEntry> logEntries = logCapture.getLogEntries();
+
+		Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
+
+		LogEntry logEntry = logEntries.get(0);
+
+		Assert.assertEquals(LoggerTestUtil.INFO, logEntry.getPriority());
+
+		String message = logEntry.getMessage();
+
+		String expectedPrefix = "{elapsedTime=";
+
+		Assert.assertTrue(
+			message + " does not start with " + expectedPrefix,
+			message.startsWith(expectedPrefix));
+
+		String expectedLog = "response={responseHeader={status=0,QTime=";
+
+		Assert.assertTrue(
+			message + " does not contain " + expectedLog,
+			message.contains(expectedLog));
 	}
 
 }
