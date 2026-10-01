@@ -22,6 +22,8 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.List;
 
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
+
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.BeforeClass;
@@ -93,6 +95,11 @@ public class SolrIndexSearcherLogExceptionsOnlyTest
 		LogEntry logEntry = logEntries.get(0);
 
 		Assert.assertEquals(LoggerTestUtil.ERROR, logEntry.getPriority());
+
+		Throwable throwable = logEntry.getThrowable();
+
+		Assert.assertSame(
+			HttpSolrClient.RemoteSolrException.class, throwable.getClass());
 
 		String message = logEntry.getMessage();
 
