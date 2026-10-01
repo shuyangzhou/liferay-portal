@@ -9,7 +9,6 @@ import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.TermQuery;
-import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.search.solr8.internal.SolrIndexSearcher;
 import com.liferay.portal.search.solr8.internal.SolrUnitTestRequirements;
 import com.liferay.portal.search.solr8.internal.indexing.SolrIndexingFixture;
@@ -20,6 +19,7 @@ import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
@@ -73,9 +73,7 @@ public class SolrIndexSearcherLogExceptionsOnlyTest
 	@Override
 	protected IndexingFixture createIndexingFixture() throws Exception {
 		return new SolrIndexingFixture(
-			HashMapBuilder.<String, Object>put(
-				"logExceptionsOnly", true
-			).build());
+			Collections.singletonMap("logExceptionsOnly", true));
 	}
 
 	protected Query getMalformedQuery() {
