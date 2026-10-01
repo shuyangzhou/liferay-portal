@@ -66,7 +66,7 @@ public class SolrIndexSearcherLoggingTest extends BaseIndexingTestCase {
 				message.contains("rows=0"));
 
 			_assertLogEntry(
-				"The search engine processed", logEntries.get(1),
+				_SEARCH_ENGINE_PROCESSED, logEntries.get(1),
 				LoggerTestUtil.DEBUG);
 		}
 	}
@@ -83,7 +83,7 @@ public class SolrIndexSearcherLoggingTest extends BaseIndexingTestCase {
 			Assert.assertEquals(logEntries.toString(), 2, logEntries.size());
 
 			_assertLogEntry(
-				"The search engine processed", logEntries.get(0),
+				_SEARCH_ENGINE_PROCESSED, logEntries.get(0),
 				LoggerTestUtil.INFO);
 			_assertLogEntry(
 				"Searching took", logEntries.get(1), LoggerTestUtil.INFO);
@@ -102,7 +102,7 @@ public class SolrIndexSearcherLoggingTest extends BaseIndexingTestCase {
 			Assert.assertEquals(logEntries.toString(), 2, logEntries.size());
 
 			_assertLogEntry(
-				"The search engine processed", logEntries.get(0),
+				_SEARCH_ENGINE_PROCESSED, logEntries.get(0),
 				LoggerTestUtil.INFO);
 			_assertLogEntry(
 				"Searching took", logEntries.get(1), LoggerTestUtil.INFO);
@@ -132,7 +132,7 @@ public class SolrIndexSearcherLoggingTest extends BaseIndexingTestCase {
 				message.contains("rows=20"));
 
 			_assertLogEntry(
-				"The search engine processed", logEntries.get(1),
+				_SEARCH_ENGINE_PROCESSED, logEntries.get(1),
 				LoggerTestUtil.DEBUG);
 		}
 	}
@@ -153,5 +153,8 @@ public class SolrIndexSearcherLoggingTest extends BaseIndexingTestCase {
 			message + " does not start with " + expectedMessage,
 			message.startsWith(expectedMessage));
 	}
+
+	private static final String _SEARCH_ENGINE_PROCESSED =
+		"The search engine processed";
 
 }
