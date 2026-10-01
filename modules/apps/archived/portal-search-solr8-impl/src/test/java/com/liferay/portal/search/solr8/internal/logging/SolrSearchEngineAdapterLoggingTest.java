@@ -30,7 +30,6 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 /**
  * @author Bryan Engler
@@ -70,22 +69,26 @@ public class SolrSearchEngineAdapterLoggingTest extends BaseIndexingTestCase {
 
 	@Test
 	public void testMultisearchSearchRequestExecutorLogs() {
-		expectedException.expect(UnsupportedOperationException.class);
-
 		SearchEngineAdapter searchEngineAdapter = getSearchEngineAdapter();
 
-		searchEngineAdapter.execute(
-			new MultisearchSearchRequest() {
-				{
-					addSearchSearchRequest(
-						new SearchSearchRequest() {
-							{
-								setIndexNames("liferay");
-								setQuery(new MatchAllQuery());
-							}
-						});
-				}
-			});
+		try {
+			searchEngineAdapter.execute(
+				new MultisearchSearchRequest() {
+					{
+						addSearchSearchRequest(
+							new SearchSearchRequest() {
+								{
+									setIndexNames("liferay");
+									setQuery(new MatchAllQuery());
+								}
+							});
+					}
+				});
+
+			Assert.fail();
+		}
+		catch (UnsupportedOperationException unsupportedOperationException) {
+		}
 	}
 
 	@Test
@@ -120,9 +123,6 @@ public class SolrSearchEngineAdapterLoggingTest extends BaseIndexingTestCase {
 				}
 			});
 	}
-
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
 
 	@Override
 	protected IndexingFixture createIndexingFixture() throws Exception {
