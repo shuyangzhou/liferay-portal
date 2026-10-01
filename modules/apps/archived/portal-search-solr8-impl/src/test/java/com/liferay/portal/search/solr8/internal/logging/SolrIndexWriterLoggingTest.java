@@ -47,20 +47,16 @@ public class SolrIndexWriterLoggingTest extends BaseIndexingTestCase {
 	}
 
 	@Test
-	public void testBulkDocumentRequestExecutorLogs() {
+	public void testBulkDocumentRequestExecutorLogs() throws SearchException {
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				BulkDocumentRequestExecutor.class.getName(),
 				LoggerTestUtil.INFO)) {
 
 			IndexWriter indexWriter = getIndexWriter();
 
-			try {
-				indexWriter.addDocuments(
-					createSearchContext(),
-					Collections.singletonList(getTestDocument()));
-			}
-			catch (SearchException searchException) {
-			}
+			indexWriter.addDocuments(
+				createSearchContext(),
+				Collections.singletonList(getTestDocument()));
 
 			_assertLogCapture(logCapture);
 		}
