@@ -285,8 +285,11 @@ test(
 
 		await page.getByRole('button', {name: 'Versions'}).waitFor();
 
-		await page.getByLabel('Select View, Currently').click();
-		await page.getByRole('menuitem', {name: 'Table'}).click();
+		await journalPage.changeView('Table');
+
+		const resultRows = page.locator('tbody tr[data-selectable="true"]');
+
+		await resultRows.first().waitFor({state: 'visible'});
 
 		const searchInput = page.locator('input[type="search"]');
 		await searchInput.waitFor({state: 'visible'});
@@ -298,7 +301,6 @@ test(
 			.filter({hasText: /^Clear$/})
 			.waitFor();
 
-		const resultRows = page.locator('tbody tr[data-selectable="true"]');
 		await resultRows.first().waitFor({state: 'visible'});
 		const count = await resultRows.count();
 		expect(count).toBe(1);

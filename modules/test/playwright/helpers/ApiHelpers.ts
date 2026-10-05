@@ -9,8 +9,14 @@ import {
 	ObjectFolderAPI,
 	ObjectRelationshipAPI,
 } from '@liferay/object-admin-rest-client-js';
-import {BrowserContext, Page} from '@playwright/test';
+import {Page} from '@playwright/test';
 
+import {
+	clearAuthToken,
+	getCSRFTokenHeader,
+	getHeader,
+	readAuthToken,
+} from '../../playwright-core/src/authToken';
 import {liferayConfig} from '../liferay.config';
 import {AnalyticsSettingsRestApiHelper} from './AnalyticsSettingsRestApiHelper';
 import {ApiBuilderHelper} from './ApiBuilderHelper';
@@ -87,8 +93,6 @@ import {JSONWebServicesTeamApiHelper} from './json-web-services/JSONWebServicesT
 import {JSONWebServicesUserApiHelper} from './json-web-services/JSONWebServicesUserApiHelper';
 import {JSONWebServicesUserGroupApiHelper} from './json-web-services/JSONWebServicesUserGroupApiHelper';
 
-type ContentType = 'application/json' | 'application/x-www-form-urlencoded';
-
 type TDataApiHelpersData = {
 	applicationName?: string;
 	id: any;
@@ -106,41 +110,7 @@ interface RequestOptions<T> {
 	multipart?: {[key: string]: any};
 }
 
-const authTokens = new WeakMap<BrowserContext, string>();
-
-export function clearAuthToken(page: Page) {
-	authTokens.delete(page.context());
-}
-
-export async function readAuthToken(page: Page) {
-	const authToken = await page.evaluate(() => Liferay.authToken);
-
-	authTokens.set(page.context(), authToken);
-
-	return authToken;
-}
-
-async function getCSRFTokenHeader(page: Page) {
-	let authToken = authTokens.get(page.context());
-
-	if (authToken === undefined) {
-		authToken = await readAuthToken(page);
-	}
-
-	return {
-		'x-csrf-token': authToken,
-	};
-}
-
-export async function getHeader(
-	page: Page,
-	contentType: ContentType = 'application/json'
-) {
-	return {
-		'Content-Type': contentType,
-		...(await getCSRFTokenHeader(page)),
-	};
-}
+export {clearAuthToken, getHeader, readAuthToken};
 
 export class ApiHelpers {
 	readonly analyticsSettingsRest: AnalyticsSettingsRestApiHelper;

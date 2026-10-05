@@ -417,6 +417,16 @@ public class CommerceVirtualOrderItemLocalServiceUtil {
 		return getService().getIndexableActionableDynamicQuery();
 	}
 
+	public static List<CommerceVirtualOrderItem>
+			getNoCPDVirtualSettingFileEntryCommerceVirtualOrderItems(
+				long cpdVirtualSettingFileEntryId)
+		throws PortalException {
+
+		return getService().
+			getNoCPDVirtualSettingFileEntryCommerceVirtualOrderItems(
+				cpdVirtualSettingFileEntryId);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
@@ -487,4 +497,4 @@ public class CommerceVirtualOrderItemLocalServiceUtil {
 			CommerceVirtualOrderItemLocalService.class);
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:956614246
+// LIFERAY-SERVICE-BUILDER-HASH:-848719594

@@ -261,7 +261,7 @@ test(
 
 		// Check width is not 355 anymore
 
-		await page.locator('header.page-editor__disabled-area').click();
+		await pageEditorPage.deselectItem();
 
 		await page.getByText('Select a Page Element', {exact: true}).waitFor();
 

@@ -9,6 +9,7 @@ import com.liferay.account.service.AccountEntryService;
 import com.liferay.account.service.AccountGroupService;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetCategoryService;
+import com.liferay.asset.kernel.service.AssetVocabularyService;
 import com.liferay.commerce.currency.service.CommerceCurrencyService;
 import com.liferay.commerce.discount.exception.NoSuchDiscountException;
 import com.liferay.commerce.discount.model.CommerceDiscount;
@@ -506,9 +507,10 @@ public class DiscountResourceImpl
 		if (discountCategories != null) {
 			for (DiscountCategory discountCategory : discountCategories) {
 				DiscountCategoryUtil.addCommerceDiscountRel(
-					contextCompany.getGroupId(), _assetCategoryLocalService,
-					_assetCategoryService, _commerceDiscountRelService,
-					discountCategory, commerceDiscount, _serviceContextHelper);
+					_assetCategoryLocalService, _assetCategoryService,
+					_assetVocabularyService, commerceDiscount,
+					_commerceDiscountRelService, discountCategory,
+					contextCompany.getGroupId(), _serviceContextHelper);
 			}
 		}
 
@@ -611,6 +613,9 @@ public class DiscountResourceImpl
 
 	@Reference
 	private AssetCategoryService _assetCategoryService;
+
+	@Reference
+	private AssetVocabularyService _assetVocabularyService;
 
 	@Reference
 	private CProductLocalService _cProductLocalService;

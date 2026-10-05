@@ -25,8 +25,10 @@ import com.liferay.object.model.ObjectFieldTable;
 import com.liferay.object.model.ObjectRelationshipTable;
 import com.liferay.object.model.ObjectViewFilterColumn;
 import com.liferay.object.model.ObjectViewFilterColumnTable;
+import com.liferay.object.model.bag.ObjectFieldBag;
 import com.liferay.object.model.listener.RelevantObjectEntryModelListener;
 import com.liferay.object.rest.dto.v1_0.Assignee;
+import com.liferay.object.rest.dto.v1_0.Location;
 import com.liferay.object.search.StrictObjectReindexThreadLocal;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
@@ -324,10 +326,9 @@ public class ObjectEntryModelListener extends BaseModelListener<ObjectEntry> {
 
 		String defaultLanguageId = _getDefaultLanguageId(objectEntry);
 
-		for (ObjectField objectField :
-				_objectFieldLocalService.getObjectFields(
-					objectDefinition.getObjectDefinitionId())) {
+		ObjectFieldBag objectFieldBag = objectDefinition.getObjectFieldBag();
 
+		for (ObjectField objectField : objectFieldBag.getObjectFields()) {
 			Map<String, Serializable> values = objectEntry.getValues();
 
 			if (objectField.isLocalized()) {
@@ -407,6 +408,31 @@ public class ObjectEntryModelListener extends BaseModelListener<ObjectEntry> {
 					if (_log.isDebugEnabled()) {
 						_log.debug(portalException);
 					}
+				}
+			}
+		}
+		else if (Objects.equals(
+					objectField.getBusinessType(),
+					ObjectFieldConstants.BUSINESS_TYPE_LOCATION)) {
+
+			ObjectFieldBusinessType locationObjectFieldBusinessType =
+				_objectFieldBusinessTypeRegistry.getObjectFieldBusinessType(
+					ObjectFieldConstants.BUSINESS_TYPE_LOCATION);
+
+			try {
+				Location location =
+					(Location)locationObjectFieldBusinessType.getDTOValue(
+						null, null, null, null, (Serializable)value);
+
+				if (location == null) {
+					return null;
+				}
+
+				return _jsonFactory.createJSONObject(location.toString());
+			}
+			catch (Exception exception) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(exception);
 				}
 			}
 		}
@@ -509,10 +535,9 @@ public class ObjectEntryModelListener extends BaseModelListener<ObjectEntry> {
 
 		List<Attribute> attributes = new ArrayList<>();
 
-		for (ObjectField objectField :
-				_objectFieldLocalService.getObjectFields(
-					objectDefinition.getObjectDefinitionId())) {
+		ObjectFieldBag objectFieldBag = objectDefinition.getObjectFieldBag();
 
+		for (ObjectField objectField : objectFieldBag.getObjectFields()) {
 			if (objectField.isLocalized() &&
 				_addModifiedLocalizedAttributes(
 					attributes, defaultLanguageId, objectField, originalValues,
@@ -541,9 +566,7 @@ public class ObjectEntryModelListener extends BaseModelListener<ObjectEntry> {
 			ObjectEntry objectEntry)
 		throws PortalException {
 
-		ObjectDefinition objectDefinition =
-			_objectDefinitionLocalService.getObjectDefinition(
-				objectEntry.getObjectDefinitionId());
+		ObjectDefinition objectDefinition = objectEntry.getObjectDefinition();
 
 		if (!objectDefinition.isEnableObjectEntryHistory()) {
 			return;

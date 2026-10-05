@@ -23,7 +23,7 @@ public class CTConflictCheckerDispatchTriggerUpgradeProcess
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (!hasTable("DispatchTrigger")) {
+		if (!hasColumn("DispatchTrigger", "dispatchTaskSettings")) {
 			return;
 		}
 

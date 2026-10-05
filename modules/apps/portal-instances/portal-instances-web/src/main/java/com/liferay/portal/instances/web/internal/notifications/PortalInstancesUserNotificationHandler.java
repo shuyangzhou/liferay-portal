@@ -14,7 +14,9 @@ import com.liferay.portal.kernel.model.UserNotificationEvent;
 import com.liferay.portal.kernel.notifications.BaseUserNotificationHandler;
 import com.liferay.portal.kernel.notifications.UserNotificationHandler;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.Validator;
 
 import jakarta.portlet.PortletRequest;
 
@@ -82,7 +84,9 @@ public class PortalInstancesUserNotificationHandler
 		String status = jsonObject.getString("status");
 
 		if (operationType.equals(
-				PortalInstancesNotificationConstants.OPERATION_TYPE_ADD)) {
+				PortalInstancesNotificationConstants.OPERATION_TYPE_ADD) ||
+			operationType.equals(
+				PortalInstancesNotificationConstants.OPERATION_TYPE_COPY)) {
 
 			if (status.equals(
 					PortalInstancesNotificationConstants.STATUS_SUCCESS)) {
@@ -92,8 +96,7 @@ public class PortalInstancesUserNotificationHandler
 					jsonObject.getString("portalInstanceId"));
 			}
 
-			return serviceContext.translate(
-				jsonObject.getString("errorMessageKey"));
+			return _getErrorMessage(jsonObject, serviceContext);
 		}
 
 		if (operationType.equals(
@@ -107,8 +110,7 @@ public class PortalInstancesUserNotificationHandler
 					jsonObject.getString("portalInstanceId"));
 			}
 
-			return serviceContext.translate(
-				jsonObject.getString("errorMessageKey"));
+			return _getErrorMessage(jsonObject, serviceContext);
 		}
 
 		if (operationType.equals(
@@ -122,9 +124,8 @@ public class PortalInstancesUserNotificationHandler
 					jsonObject.getString("schemaName"));
 			}
 
-			return serviceContext.translate(
-				jsonObject.getString("errorMessageKey"),
-				jsonObject.getString("schemaName"));
+			return _getErrorMessage(
+				jsonObject, serviceContext, jsonObject.getString("schemaName"));
 		}
 
 		if (operationType.equals(
@@ -138,14 +139,32 @@ public class PortalInstancesUserNotificationHandler
 					jsonObject.getString("portalInstanceId"));
 			}
 
-			return serviceContext.translate(
-				jsonObject.getString("errorMessageKey"));
+			return _getErrorMessage(jsonObject, serviceContext);
 		}
 
 		throw new IllegalArgumentException(
 			StringBundler.concat(
 				"No portal instances user notification found for operation ",
 				"type ", operationType, " and status ", status));
+	}
+
+	private String _getErrorMessage(
+		JSONObject jsonObject, ServiceContext serviceContext,
+		Object... arguments) {
+
+		String errorMessageKey = jsonObject.getString("errorMessageKey");
+
+		if (Validator.isNotNull(errorMessageKey)) {
+			return serviceContext.translate(errorMessageKey, arguments);
+		}
+
+		String errorMessage = jsonObject.getString("errorMessage");
+
+		if (Validator.isNotNull(errorMessage)) {
+			return HtmlUtil.escape(errorMessage);
+		}
+
+		return serviceContext.translate("an-unexpected-error-occurred");
 	}
 
 	private String _getTitle(
@@ -167,6 +186,24 @@ public class PortalInstancesUserNotificationHandler
 
 			return serviceContext.translate(
 				"the-instance-x-could-not-be-created",
+				jsonObject.getString("portalInstanceId"));
+		}
+
+		if (operationType.equals(
+				PortalInstancesNotificationConstants.OPERATION_TYPE_COPY)) {
+
+			if (status.equals(
+					PortalInstancesNotificationConstants.STATUS_SUCCESS)) {
+
+				return serviceContext.translate(
+					"the-instance-x-was-copied-to-y",
+					jsonObject.getString("sourcePortalInstanceId"),
+					jsonObject.getString("portalInstanceId"));
+			}
+
+			return serviceContext.translate(
+				"the-instance-x-could-not-be-copied-to-y",
+				jsonObject.getString("sourcePortalInstanceId"),
 				jsonObject.getString("portalInstanceId"));
 		}
 

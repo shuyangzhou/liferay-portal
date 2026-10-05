@@ -6,7 +6,9 @@
 package com.liferay.headless.commerce.admin.pricing.internal.dto.v2_0.converter;
 
 import com.liferay.asset.kernel.model.AssetCategory;
+import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetCategoryService;
+import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.commerce.discount.model.CommerceDiscount;
 import com.liferay.commerce.discount.model.CommerceDiscountRel;
 import com.liferay.commerce.discount.service.CommerceDiscountRelService;
@@ -60,12 +62,27 @@ public class DiscountCategoryDTOConverter
 				setDiscountExternalReferenceCode(
 					commerceDiscount::getExternalReferenceCode);
 				setDiscountId(commerceDiscount::getCommerceDiscountId);
+				setVocabularyExternalReferenceCode(
+					() -> {
+						AssetVocabulary assetVocabulary =
+							_assetVocabularyLocalService.fetchAssetVocabulary(
+								assetCategory.getVocabularyId());
+
+						if (assetVocabulary == null) {
+							return null;
+						}
+
+						return assetVocabulary.getExternalReferenceCode();
+					});
 			}
 		};
 	}
 
 	@Reference
 	private AssetCategoryService _assetCategoryService;
+
+	@Reference
+	private AssetVocabularyLocalService _assetVocabularyLocalService;
 
 	@Reference
 	private CommerceDiscountRelService _commerceDiscountRelService;

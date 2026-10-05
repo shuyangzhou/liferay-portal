@@ -8,6 +8,7 @@ package com.liferay.headless.commerce.admin.pricing.internal.resource.v2_0;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetCategoryService;
+import com.liferay.asset.kernel.service.AssetVocabularyService;
 import com.liferay.commerce.discount.exception.NoSuchDiscountException;
 import com.liferay.commerce.discount.model.CommerceDiscount;
 import com.liferay.commerce.discount.model.CommerceDiscountRel;
@@ -124,9 +125,10 @@ public class DiscountCategoryResourceImpl
 
 		CommerceDiscountRel commerceDiscountRel =
 			DiscountCategoryUtil.addCommerceDiscountRel(
-				contextCompany.getGroupId(), _assetCategoryLocalService,
-				_assetCategoryService, _commerceDiscountRelService,
-				discountCategory, commerceDiscount, _serviceContextHelper);
+				_assetCategoryLocalService, _assetCategoryService,
+				_assetVocabularyService, commerceDiscount,
+				_commerceDiscountRelService, discountCategory,
+				contextCompany.getGroupId(), _serviceContextHelper);
 
 		return _toDiscountCategory(
 			commerceDiscountRel.getCommerceDiscountRelId());
@@ -139,11 +141,11 @@ public class DiscountCategoryResourceImpl
 
 		CommerceDiscountRel commerceDiscountRel =
 			DiscountCategoryUtil.addCommerceDiscountRel(
-				contextCompany.getGroupId(), _assetCategoryLocalService,
-				_assetCategoryService, _commerceDiscountRelService,
-				discountCategory,
+				_assetCategoryLocalService, _assetCategoryService,
+				_assetVocabularyService,
 				_commerceDiscountService.getCommerceDiscount(id),
-				_serviceContextHelper);
+				_commerceDiscountRelService, discountCategory,
+				contextCompany.getGroupId(), _serviceContextHelper);
 
 		return _toDiscountCategory(
 			commerceDiscountRel.getCommerceDiscountRelId());
@@ -193,6 +195,9 @@ public class DiscountCategoryResourceImpl
 
 	@Reference
 	private AssetCategoryService _assetCategoryService;
+
+	@Reference
+	private AssetVocabularyService _assetVocabularyService;
 
 	@Reference(
 		target = "(model.class.name=com.liferay.commerce.discount.model.CommerceDiscountRel)"

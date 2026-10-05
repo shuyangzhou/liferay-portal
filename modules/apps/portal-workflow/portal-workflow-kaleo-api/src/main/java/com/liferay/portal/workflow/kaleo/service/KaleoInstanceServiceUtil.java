@@ -44,6 +44,18 @@ public class KaleoInstanceServiceUtil {
 			workflowContext, serviceContext, waitForCompletion);
 	}
 
+	public static KaleoInstance deleteKaleoInstance(long kaleoInstanceId)
+		throws PortalException {
+
+		return getService().deleteKaleoInstance(kaleoInstanceId);
+	}
+
+	public static KaleoInstance getKaleoInstance(long kaleoInstanceId)
+		throws PortalException {
+
+		return getService().getKaleoInstance(kaleoInstanceId);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
@@ -51,6 +63,14 @@ public class KaleoInstanceServiceUtil {
 	 */
 	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static KaleoInstance updateKaleoInstance(
+			long kaleoInstanceId, Map<String, Serializable> workflowContext)
+		throws PortalException {
+
+		return getService().updateKaleoInstance(
+			kaleoInstanceId, workflowContext);
 	}
 
 	public static KaleoInstanceService getService() {
@@ -62,4 +82,4 @@ public class KaleoInstanceServiceUtil {
 			KaleoInstanceServiceUtil.class, KaleoInstanceService.class);
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2053914103
+// LIFERAY-SERVICE-BUILDER-HASH:-263926069

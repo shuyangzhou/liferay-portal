@@ -43,6 +43,7 @@ import com.liferay.portal.workflow.kaleo.definition.ExecutionType;
 import com.liferay.portal.workflow.kaleo.definition.deployment.WorkflowDeployer;
 import com.liferay.portal.workflow.kaleo.definition.parser.WorkflowModelParser;
 import com.liferay.portal.workflow.kaleo.definition.parser.WorkflowValidator;
+import com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException;
 import com.liferay.portal.workflow.kaleo.model.KaleoDefinition;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstance;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken;
@@ -126,6 +127,13 @@ public class DefaultWorkflowEngineImpl
 		catch (Exception exception) {
 			throw new WorkflowException(exception);
 		}
+	}
+
+	@Override
+	public void deleteWorkflowInstance(long workflowInstanceId)
+		throws PortalException {
+
+		_kaleoInstanceService.deleteKaleoInstance(workflowInstanceId);
 	}
 
 	@Override
@@ -297,6 +305,14 @@ public class DefaultWorkflowEngineImpl
 	}
 
 	@Override
+	public WorkflowInstance getWorkflowInstance(long workflowInstanceId)
+		throws PortalException {
+
+		return _kaleoWorkflowModelConverter.toWorkflowInstance(
+			_kaleoInstanceService.getKaleoInstance(workflowInstanceId));
+	}
+
+	@Override
 	public WorkflowInstance getWorkflowInstance(
 			long workflowInstanceId, ServiceContext serviceContext)
 		throws WorkflowException {
@@ -312,6 +328,14 @@ public class DefaultWorkflowEngineImpl
 			else {
 				kaleoInstance = kaleoInstanceLocalService.getKaleoInstance(
 					workflowInstanceId);
+
+				if (kaleoInstance.getCompanyId() !=
+						serviceContext.getCompanyId()) {
+
+					throw new NoSuchInstanceException(
+						"No KaleoInstance exists with the primary key " +
+							workflowInstanceId);
+				}
 			}
 
 			if (kaleoInstance != null) {
@@ -582,8 +606,9 @@ public class DefaultWorkflowEngineImpl
 		throws WorkflowException {
 
 		try {
-			KaleoInstance kaleoInstance = _updateContext(
-				workflowInstanceId, workflowContext);
+			KaleoInstance kaleoInstance =
+				_kaleoInstanceService.updateKaleoInstance(
+					workflowInstanceId, workflowContext);
 
 			KaleoInstanceToken kaleoInstanceToken =
 				kaleoInstance.getRootKaleoInstanceToken(serviceContext);
@@ -663,6 +688,16 @@ public class DefaultWorkflowEngineImpl
 		catch (Exception exception) {
 			throw new WorkflowException(exception);
 		}
+	}
+
+	@Override
+	public WorkflowInstance updateContext(
+			long workflowInstanceId, Map<String, Serializable> workflowContext)
+		throws PortalException {
+
+		return _kaleoWorkflowModelConverter.toWorkflowInstance(
+			_kaleoInstanceService.updateKaleoInstance(
+				workflowInstanceId, workflowContext));
 	}
 
 	@Override

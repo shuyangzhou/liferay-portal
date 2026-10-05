@@ -173,7 +173,7 @@ test(
 
 		await pageEditorPage.selectFragment(relatedCollectionId);
 
-		await page.locator('.page-editor__disabled-area').first().click();
+		await pageEditorPage.deselectItem();
 
 		await pageEditorPage.selectFragment(relatedCollectionId);
 

@@ -14,13 +14,13 @@ import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.kernel.service.AssetTagLocalService;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.asset.util.AssetHelper;
+import com.liferay.document.library.helper.DLURLHelper;
 import com.liferay.document.library.kernel.exception.FileExtensionException;
 import com.liferay.document.library.kernel.exception.FileSizeException;
 import com.liferay.document.library.kernel.exception.InvalidFileException;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.document.library.kernel.service.DLFileEntryLocalService;
-import com.liferay.document.library.util.DLURLHelper;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionFactory;
 import com.liferay.friendly.url.info.item.provider.InfoItemFriendlyURLProvider;
 import com.liferay.friendly.url.info.item.updater.InfoItemFriendlyURLUpdater;
@@ -232,7 +232,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				objectDefinition, _infoItemFieldReaderFieldSetProvider,
 				_listTypeEntryLocalService, _objectActionLocalService,
 				_objectDefinitionLocalService, objectFieldInfoFieldConverter,
-				_objectFieldLocalService, _objectFieldSettingLocalService,
+				_objectFieldSettingLocalService,
 				_objectRelationshipLocalService, _objectScopeProviderRegistry,
 				_restContextPathResolverRegistry,
 				_templateInfoItemFieldSetProvider, _userLocalService);
@@ -256,6 +256,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				new ObjectEntryAssetRendererFactory(
 					_assetDisplayPageFriendlyURLProvider, _dlAppLocalService,
 					_dlURLHelper, objectDefinition,
+					_objectDefinitionLocalService,
 					_objectEntryDisplayContextFactory, _objectEntryLocalService,
 					_objectEntryService, _objectFieldLocalService,
 					_servletContext),
@@ -280,9 +281,9 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					_assetCategoryLocalService, _assetTagLocalService,
 					_assetVocabularyLocalService, _groupLocalService,
 					_listTypeEntryLocalService, objectDefinition,
-					_objectEntryLocalService, _objectEntryManagerRegistry,
-					_objectFieldLocalService, _objectLayoutLocalService,
-					_objectScopeProviderRegistry),
+					_objectDefinitionLocalService, _objectEntryLocalService,
+					_objectEntryManagerRegistry, _objectFieldLocalService,
+					_objectLayoutLocalService, _objectScopeProviderRegistry),
 				HashMapDictionaryBuilder.<String, Object>put(
 					"company.id", objectDefinition.getCompanyId()
 				).put(
@@ -302,7 +303,8 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				InfoItemActionExecutor.class,
 				new ObjectEntryInfoItemActionExecutor(
 					infoItemFormProvider, _objectActionLocalService,
-					objectDefinition, _objectEntryManagerRegistry),
+					objectDefinition.getObjectDefinitionId(),
+					_objectDefinitionLocalService, _objectEntryManagerRegistry),
 				HashMapDictionaryBuilder.<String, Object>put(
 					"company.id", objectDefinition.getCompanyId()
 				).put(
@@ -337,9 +339,10 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 			_bundleContext.registerService(
 				InfoItemCreator.class,
 				new ObjectEntryInfoItemCreator(
-					infoItemFormProvider, objectDefinition,
-					_objectEntryLocalService, _objectEntryManagerRegistry,
-					_objectScopeProviderRegistry),
+					infoItemFormProvider,
+					objectDefinition.getObjectDefinitionId(),
+					_objectDefinitionLocalService, _objectEntryLocalService,
+					_objectEntryManagerRegistry, _objectScopeProviderRegistry),
 				HashMapDictionaryBuilder.<String, Object>put(
 					"company.id", objectDefinition.getCompanyId()
 				).put(
@@ -363,7 +366,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					_dlURLHelper, _friendlyURLEntryLocalService,
 					_infoItemFieldReaderFieldSetProvider,
 					_listTypeEntryLocalService, _objectActionLocalService,
-					objectDefinition, _objectDefinitionLocalService,
+					_objectDefinitionLocalService,
 					objectFieldInfoFieldConverter, _objectEntryLocalService,
 					_objectEntryManagerRegistry, _objectEntryService,
 					_objectFieldLocalService,
@@ -379,8 +382,8 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 			_bundleContext.registerService(
 				InfoItemFieldValuesUpdater.class,
 				new ObjectEntryInfoItemFieldValuesUpdater(
-					infoItemFormProvider, objectDefinition,
-					_objectEntryManagerRegistry, _objectScopeProviderRegistry),
+					infoItemFormProvider, _objectEntryManagerRegistry,
+					_objectScopeProviderRegistry),
 				HashMapDictionaryBuilder.<String, Object>put(
 					"company.id", objectDefinition.getCompanyId()
 				).put(
@@ -406,8 +409,8 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				InfoItemObjectProvider.class,
 				new ObjectEntryInfoItemObjectProvider(
 					_groupLocalService, objectDefinition,
-					_objectEntryLocalService, _objectEntryManagerRegistry,
-					_userLocalService),
+					_objectDefinitionLocalService, _objectEntryLocalService,
+					_objectEntryManagerRegistry, _userLocalService),
 				HashMapDictionaryBuilder.<String, Object>put(
 					Constants.SERVICE_RANKING, 100
 				).put(
@@ -424,7 +427,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 			_bundleContext.registerService(
 				InfoItemPermissionProvider.class,
 				new ObjectEntryInfoItemPermissionProvider(
-					objectDefinition,
+					objectDefinition, _objectDefinitionLocalService,
 					_objectEntryManagerRegistry.getObjectEntryManager(
 						objectDefinition.getCompanyId(),
 						objectDefinition.getStorageType()),

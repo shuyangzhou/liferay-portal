@@ -191,6 +191,7 @@ public abstract class BaseDiscountCategoryResourceTestCase {
 
 		discountCategory.setCategoryExternalReferenceCode(regex);
 		discountCategory.setDiscountExternalReferenceCode(regex);
+		discountCategory.setVocabularyExternalReferenceCode(regex);
 
 		String json = DiscountCategorySerDes.toJSON(discountCategory);
 
@@ -202,6 +203,8 @@ public abstract class BaseDiscountCategoryResourceTestCase {
 			regex, discountCategory.getCategoryExternalReferenceCode());
 		Assert.assertEquals(
 			regex, discountCategory.getDiscountExternalReferenceCode());
+		Assert.assertEquals(
+			regex, discountCategory.getVocabularyExternalReferenceCode());
 	}
 
 	@Test
@@ -1238,6 +1241,19 @@ public abstract class BaseDiscountCategoryResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals(
+					"vocabularyExternalReferenceCode",
+					additionalAssertFieldName)) {
+
+				if (discountCategory.getVocabularyExternalReferenceCode() ==
+						null) {
+
+					valid = false;
+				}
+
+				continue;
+			}
+
 			throw new IllegalArgumentException(
 				"Invalid additional assert field name " +
 					additionalAssertFieldName);
@@ -1439,6 +1455,21 @@ public abstract class BaseDiscountCategoryResourceTestCase {
 				if (!Objects.deepEquals(
 						discountCategory1.getDiscountId(),
 						discountCategory2.getDiscountId())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals(
+					"vocabularyExternalReferenceCode",
+					additionalAssertFieldName)) {
+
+				if (!Objects.deepEquals(
+						discountCategory1.getVocabularyExternalReferenceCode(),
+						discountCategory2.
+							getVocabularyExternalReferenceCode())) {
 
 					return false;
 				}
@@ -1671,6 +1702,53 @@ public abstract class BaseDiscountCategoryResourceTestCase {
 				"Invalid entity field " + entityFieldName);
 		}
 
+		if (entityFieldName.equals("vocabularyExternalReferenceCode")) {
+			Object object =
+				discountCategory.getVocabularyExternalReferenceCode();
+
+			String value = String.valueOf(object);
+
+			if (operator.equals("contains")) {
+				sb = new StringBundler();
+
+				sb.append("contains(");
+				sb.append(entityFieldName);
+				sb.append(",'");
+
+				if ((object != null) && (value.length() > 2)) {
+					sb.append(value.substring(1, value.length() - 1));
+				}
+				else {
+					sb.append(value);
+				}
+
+				sb.append("')");
+			}
+			else if (operator.equals("startswith")) {
+				sb = new StringBundler();
+
+				sb.append("startswith(");
+				sb.append(entityFieldName);
+				sb.append(",'");
+
+				if ((object != null) && (value.length() > 1)) {
+					sb.append(value.substring(0, value.length() - 1));
+				}
+				else {
+					sb.append(value);
+				}
+
+				sb.append("')");
+			}
+			else {
+				sb.append("'");
+				sb.append(value);
+				sb.append("'");
+			}
+
+			return sb.toString();
+		}
+
 		throw new IllegalArgumentException(
 			"Invalid entity field " + entityFieldName);
 	}
@@ -1725,6 +1803,8 @@ public abstract class BaseDiscountCategoryResourceTestCase {
 				discountExternalReferenceCode = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
 				discountId = RandomTestUtil.randomLong();
+				vocabularyExternalReferenceCode = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 			}
 		};
 	}
@@ -1975,4 +2055,4 @@ public abstract class BaseDiscountCategoryResourceTestCase {
 		DiscountCategoryResource _discountCategoryResource;
 
 }
-// LIFERAY-REST-BUILDER-HASH:987447250
+// LIFERAY-REST-BUILDER-HASH:-750559584

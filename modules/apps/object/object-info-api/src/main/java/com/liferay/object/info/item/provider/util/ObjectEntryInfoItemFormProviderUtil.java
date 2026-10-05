@@ -27,9 +27,9 @@ import com.liferay.object.model.ObjectAction;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectRelationship;
+import com.liferay.object.model.bag.ObjectFieldBag;
 import com.liferay.object.service.ObjectActionLocalService;
 import com.liferay.object.service.ObjectDefinitionLocalService;
-import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalServiceUtil;
 import com.liferay.petra.string.StringBundler;
@@ -64,10 +64,19 @@ public class ObjectEntryInfoItemFormProviderUtil {
 			ObjectDefinition objectDefinition, long objectDefinitionId,
 			ObjectDefinitionLocalService objectDefinitionLocalService,
 			ObjectFieldInfoFieldConverter objectFieldInfoFieldConverter,
-			ObjectFieldLocalService objectFieldLocalService,
 			ObjectRelationshipLocalService objectRelationshipLocalService,
 			TemplateInfoItemFieldSetProvider templateInfoItemFieldSetProvider)
 		throws NoSuchFormVariationException {
+
+		ObjectDefinition currentObjectDefinition;
+
+		if (objectDefinitionId == 0) {
+			currentObjectDefinition = null;
+		}
+		else {
+			currentObjectDefinition = _getObjectDefinition(
+				objectDefinitionId, objectDefinitionLocalService);
+		}
 
 		return InfoForm.builder(
 		).infoFieldSetEntry(
@@ -78,19 +87,9 @@ public class ObjectEntryInfoItemFormProviderUtil {
 					unsafeConsumer.accept(categorizationInfoFieldSet);
 				}
 			}
-		).<NoSuchFormVariationException>infoFieldSetEntry(
+		).infoFieldSetEntry(
 			unsafeConsumer -> {
 				if (objectDefinitionId != 0) {
-					ObjectDefinition currentObjectDefinition =
-						objectDefinitionLocalService.fetchObjectDefinition(
-							objectDefinitionId);
-
-					if (currentObjectDefinition == null) {
-						throw new NoSuchFormVariationException(
-							String.valueOf(objectDefinitionId),
-							new NoSuchObjectDefinitionException());
-					}
-
 					unsafeConsumer.accept(
 						_getInfoFieldSet(
 							true, false, currentObjectDefinition.getLabelMap(),
@@ -99,15 +98,20 @@ public class ObjectEntryInfoItemFormProviderUtil {
 							currentObjectDefinition,
 							objectDefinitionLocalService,
 							objectFieldInfoFieldConverter,
-							objectFieldLocalService,
 							objectRelationshipLocalService, null));
 				}
 			}
 		).infoFieldSetEntry(
 			unsafeConsumer -> {
+				if (currentObjectDefinition == null) {
+					return;
+				}
+
+				ObjectFieldBag objectFieldBag =
+					currentObjectDefinition.getObjectFieldBag();
+
 				for (ObjectField objectField :
-						objectFieldLocalService.getObjectFields(
-							objectDefinitionId)) {
+						objectFieldBag.getObjectFields()) {
 
 					if (!objectField.compareBusinessType(
 							ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT)) {
@@ -264,7 +268,6 @@ public class ObjectEntryInfoItemFormProviderUtil {
 							relatedObjectDefinition,
 							objectDefinitionLocalService,
 							objectFieldInfoFieldConverter,
-							objectFieldLocalService,
 							objectRelationshipLocalService, objectDefinition));
 				}
 			}
@@ -328,16 +331,17 @@ public class ObjectEntryInfoItemFormProviderUtil {
 		String name, String namespace, ObjectDefinition objectDefinition,
 		ObjectDefinitionLocalService objectDefinitionLocalService,
 		ObjectFieldInfoFieldConverter objectFieldInfoFieldConverter,
-		ObjectFieldLocalService objectFieldLocalService,
 		ObjectRelationshipLocalService objectRelationshipLocalService,
 		ObjectDefinition parentObjectDefinition) {
 
 		return InfoFieldSet.builder(
 		).infoFieldSetEntry(
 			unsafeConsumer -> {
+				ObjectFieldBag objectFieldBag =
+					objectDefinition.getObjectFieldBag();
+
 				for (ObjectField objectField :
-						objectFieldLocalService.getObjectFields(
-							objectDefinition.getObjectDefinitionId())) {
+						objectFieldBag.getObjectFields()) {
 
 					if (objectField.isMetadata()) {
 						continue;
@@ -510,7 +514,6 @@ public class ObjectEntryInfoItemFormProviderUtil {
 							relatedObjectDefinition,
 							objectDefinitionLocalService,
 							objectFieldInfoFieldConverter,
-							objectFieldLocalService,
 							objectRelationshipLocalService, objectDefinition));
 				}
 			}
@@ -527,6 +530,24 @@ public class ObjectEntryInfoItemFormProviderUtil {
 		).relationship(
 			parentObjectDefinition != null
 		).build();
+	}
+
+	private static ObjectDefinition _getObjectDefinition(
+			long objectDefinitionId,
+			ObjectDefinitionLocalService objectDefinitionLocalService)
+		throws NoSuchFormVariationException {
+
+		ObjectDefinition objectDefinition =
+			objectDefinitionLocalService.fetchObjectDefinition(
+				objectDefinitionId);
+
+		if (objectDefinition == null) {
+			throw new NoSuchFormVariationException(
+				String.valueOf(objectDefinitionId),
+				new NoSuchObjectDefinitionException());
+		}
+
+		return objectDefinition;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

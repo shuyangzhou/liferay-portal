@@ -6,7 +6,9 @@
 package com.liferay.headless.commerce.admin.pricing.internal.dto.v2_0.converter;
 
 import com.liferay.asset.kernel.model.AssetCategory;
+import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetCategoryService;
+import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.commerce.pricing.model.CommercePriceModifier;
 import com.liferay.commerce.pricing.model.CommercePriceModifierRel;
 import com.liferay.commerce.pricing.service.CommercePriceModifierRelService;
@@ -61,12 +63,27 @@ public class PriceModifierCategoryDTOConverter
 					commercePriceModifier::getExternalReferenceCode);
 				setPriceModifierId(
 					commercePriceModifier::getCommercePriceModifierId);
+				setVocabularyExternalReferenceCode(
+					() -> {
+						AssetVocabulary assetVocabulary =
+							_assetVocabularyLocalService.fetchAssetVocabulary(
+								assetCategory.getVocabularyId());
+
+						if (assetVocabulary == null) {
+							return null;
+						}
+
+						return assetVocabulary.getExternalReferenceCode();
+					});
 			}
 		};
 	}
 
 	@Reference
 	private AssetCategoryService _assetCategoryService;
+
+	@Reference
+	private AssetVocabularyLocalService _assetVocabularyLocalService;
 
 	@Reference
 	private CommercePriceModifierRelService _commercePriceModifierRelService;

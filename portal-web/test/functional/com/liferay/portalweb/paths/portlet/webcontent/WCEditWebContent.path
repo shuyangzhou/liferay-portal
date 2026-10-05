@@ -155,7 +155,7 @@
 </tr>
 <tr>
 	<td>SELECT_BUTTON_2</td>
-	<td>xpath=(//label[normalize-space(text())='${key_fieldFieldLabel}']//following-sibling::div[contains(@class,'form')]//button[normalize-space()='Select'])[2]</td>
+	<td>xpath=(//label[normalize-space(text())='${key_fieldFieldLabel}']//following-sibling::div//button[normalize-space()='Select'])[2]</td>
 	<td></td>
 </tr>
 <tr>
@@ -170,7 +170,7 @@
 </tr>
 <tr>
 	<td>SELECT_FIELD_TRIGGER</td>
-	<td>//label[normalize-space(text())='${key_fieldFieldLabel}']//following-sibling::div/button[contains(@class, 'select')]</td>
+	<td>//label[normalize-space(text())='${key_fieldFieldLabel}']//following-sibling::div//button[contains(@class, 'select')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -291,7 +291,17 @@
 </tr>
 <tr>
 	<td>REPEATED_FIELD_IN_FIELDS_GROUP</td>
-	<td>xpath=(//div[contains(@data-field-name, '${key_fieldName}')]/div[contains(@class,'repeatable')][@draggable='true'])[${key_index}]</td>
+	<td>xpath=((//div[@data-field-name='${key_fieldName}'])[1]/div[contains(@class,'repeatable')])[${key_index}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>REPEATED_FIELD_IN_FIELDS_GROUP_ADD_BUTTON</td>
+	<td>xpath=((//div[@data-field-name='${key_fieldName}'])[1]//button[contains(@class,'ddm-form-field-repeatable-add-button')])[last()]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>REPEATED_FIELD_IN_FIELDS_GROUP_REMOVE_BUTTON</td>
+	<td>xpath=(((//div[@data-field-name='${key_fieldName}'])[1]/div[contains(@class,'repeatable')])[${key_index}]//button[contains(@class,'ddm-form-field-repeatable-delete-button')])[last()]</td>
 	<td></td>
 </tr>
 <tr>

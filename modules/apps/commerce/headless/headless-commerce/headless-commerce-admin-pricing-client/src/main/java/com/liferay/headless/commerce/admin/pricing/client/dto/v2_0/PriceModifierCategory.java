@@ -184,6 +184,31 @@ public class PriceModifierCategory implements Cloneable, Serializable {
 
 	protected Long priceModifierId;
 
+	public String getVocabularyExternalReferenceCode() {
+		return vocabularyExternalReferenceCode;
+	}
+
+	public void setVocabularyExternalReferenceCode(
+		String vocabularyExternalReferenceCode) {
+
+		this.vocabularyExternalReferenceCode = vocabularyExternalReferenceCode;
+	}
+
+	public void setVocabularyExternalReferenceCode(
+		UnsafeSupplier<String, Exception>
+			vocabularyExternalReferenceCodeUnsafeSupplier) {
+
+		try {
+			vocabularyExternalReferenceCode =
+				vocabularyExternalReferenceCodeUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected String vocabularyExternalReferenceCode;
+
 	@Override
 	public PriceModifierCategory clone() throws CloneNotSupportedException {
 		return (PriceModifierCategory)super.clone();
@@ -217,4 +242,4 @@ public class PriceModifierCategory implements Cloneable, Serializable {
 	}
 
 }
-// LIFERAY-REST-BUILDER-HASH:1196827208
+// LIFERAY-REST-BUILDER-HASH:1249265144

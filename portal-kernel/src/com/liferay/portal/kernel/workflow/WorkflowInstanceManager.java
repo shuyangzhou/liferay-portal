@@ -5,6 +5,7 @@
 
 package com.liferay.portal.kernel.workflow;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.workflow.search.WorkflowModelSearchResult;
 
@@ -21,6 +22,12 @@ import java.util.Map;
  */
 public interface WorkflowInstanceManager {
 
+	public default void deleteWorkflowInstance(long workflowInstanceId)
+		throws PortalException {
+
+		throw new UnsupportedOperationException();
+	}
+
 	public void deleteWorkflowInstance(long companyId, long workflowInstanceId)
 		throws WorkflowException;
 
@@ -31,6 +38,12 @@ public interface WorkflowInstanceManager {
 	public List<WorkflowTransition> getNextWorkflowTransitions(
 			long companyId, long userId, long workflowInstanceId)
 		throws WorkflowException;
+
+	public default WorkflowInstance getWorkflowInstance(long workflowInstanceId)
+		throws PortalException {
+
+		throw new UnsupportedOperationException();
+	}
 
 	public WorkflowInstance getWorkflowInstance(
 			long companyId, long workflowInstanceId)
@@ -154,6 +167,13 @@ public interface WorkflowInstanceManager {
 			long userId, long companyId, long workflowInstanceId,
 			boolean active)
 		throws WorkflowException {
+
+		throw new UnsupportedOperationException();
+	}
+
+	public default WorkflowInstance updateContext(
+			long workflowInstanceId, Map<String, Serializable> workflowContext)
+		throws PortalException {
 
 		throw new UnsupportedOperationException();
 	}

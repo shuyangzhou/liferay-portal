@@ -16,16 +16,17 @@ import com.liferay.portal.kernel.exception.PortalException;
 public class ObjectDefinitionResourcePermissionUtil {
 
 	public static boolean hasModelResourcePermission(
-			ObjectDefinition objectDefinition, Long objectEntryId,
-			ObjectEntryService objectEntryService, String actionId)
+			boolean defaultStorageType, long objectDefinitionId,
+			Long objectEntryId, ObjectEntryService objectEntryService,
+			String actionId)
 		throws PortalException {
 
-		if (!objectDefinition.isDefaultStorageType()) {
+		if (!defaultStorageType) {
 			return true;
 		}
 
 		return objectEntryService.hasModelResourcePermission(
-			objectDefinition.getObjectDefinitionId(), objectEntryId, actionId);
+			objectDefinitionId, objectEntryId, actionId);
 	}
 
 	public static boolean hasModelResourcePermission(
@@ -34,8 +35,9 @@ public class ObjectDefinitionResourcePermissionUtil {
 		throws PortalException {
 
 		return hasModelResourcePermission(
-			objectDefinition, objectEntry.getId(), objectEntryService,
-			actionId);
+			objectDefinition.isDefaultStorageType(),
+			objectDefinition.getObjectDefinitionId(), objectEntry.getId(),
+			objectEntryService, actionId);
 	}
 
 }
