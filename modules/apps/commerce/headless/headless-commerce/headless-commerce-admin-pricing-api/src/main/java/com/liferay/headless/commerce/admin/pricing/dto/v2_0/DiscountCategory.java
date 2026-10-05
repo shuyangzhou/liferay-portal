@@ -388,6 +388,56 @@ public class DiscountCategory implements Serializable {
 	@JsonIgnore
 	private Supplier<Long> _discountIdSupplier;
 
+	@io.swagger.v3.oas.annotations.media.Schema(
+		description = "External reference code of the vocabulary that owns the category; on read the value mirrors the vocabulary's external reference code, and on write it is used only during an import to create the missing category inside the counterpart of that vocabulary.",
+		example = "AB-34098-789-N"
+	)
+	public String getVocabularyExternalReferenceCode() {
+		if (_vocabularyExternalReferenceCodeSupplier != null) {
+			vocabularyExternalReferenceCode =
+				_vocabularyExternalReferenceCodeSupplier.get();
+
+			_vocabularyExternalReferenceCodeSupplier = null;
+		}
+
+		return vocabularyExternalReferenceCode;
+	}
+
+	public void setVocabularyExternalReferenceCode(
+		String vocabularyExternalReferenceCode) {
+
+		this.vocabularyExternalReferenceCode = vocabularyExternalReferenceCode;
+
+		_vocabularyExternalReferenceCodeSupplier = null;
+	}
+
+	@JsonIgnore
+	public void setVocabularyExternalReferenceCode(
+		UnsafeSupplier<String, Exception>
+			vocabularyExternalReferenceCodeUnsafeSupplier) {
+
+		_vocabularyExternalReferenceCodeSupplier = () -> {
+			try {
+				return vocabularyExternalReferenceCodeUnsafeSupplier.get();
+			}
+			catch (RuntimeException runtimeException) {
+				throw runtimeException;
+			}
+			catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
+		};
+	}
+
+	@GraphQLField(
+		description = "External reference code of the vocabulary that owns the category; on read the value mirrors the vocabulary's external reference code, and on write it is used only during an import to create the missing category inside the counterpart of that vocabulary."
+	)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected String vocabularyExternalReferenceCode;
+
+	@JsonIgnore
+	private Supplier<String> _vocabularyExternalReferenceCodeSupplier;
+
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
@@ -507,6 +557,23 @@ public class DiscountCategory implements Serializable {
 			sb.append("\"discountId\": ");
 
 			sb.append(discountId);
+		}
+
+		String vocabularyExternalReferenceCode =
+			getVocabularyExternalReferenceCode();
+
+		if (vocabularyExternalReferenceCode != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"vocabularyExternalReferenceCode\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(vocabularyExternalReferenceCode));
+
+			sb.append("\"");
 		}
 
 		sb.append("}");
@@ -631,4 +698,4 @@ public class DiscountCategory implements Serializable {
 	private Map<String, Serializable> _extendedProperties;
 
 }
-// LIFERAY-REST-BUILDER-HASH:-337550102
+// LIFERAY-REST-BUILDER-HASH:542202900

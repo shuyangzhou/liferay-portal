@@ -7,6 +7,7 @@ package com.liferay.headless.commerce.admin.pricing.internal.util.v2_0;
 
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetCategoryService;
+import com.liferay.asset.kernel.service.AssetVocabularyService;
 import com.liferay.commerce.currency.service.CommerceCurrencyService;
 import com.liferay.commerce.pricing.model.CommercePriceModifier;
 import com.liferay.commerce.pricing.service.CommercePriceModifierRelService;
@@ -27,16 +28,17 @@ import com.liferay.portal.kernel.exception.PortalException;
 public class PriceModifierUtil {
 
 	public static void addOrUpdateCommercePriceModifierRels(
-			long groupId, AssetCategoryLocalService assetCategoryLocalService,
+			AssetCategoryLocalService assetCategoryLocalService,
 			AssetCategoryService assetCategoryService,
+			AssetVocabularyService assetVocabularyService,
 			CProductLocalService cProductLocalService,
 			CommerceCatalogService commerceCatalogService,
 			CommerceCurrencyService commerceCurrencyService,
+			CommercePriceModifier commercePriceModifier,
 			CommercePriceModifierRelService commercePriceModifierRelService,
 			CommercePricingClassService commercePricingClassService,
-			CPDefinitionService cpDefinitionService,
+			CPDefinitionService cpDefinitionService, long groupId,
 			PriceModifier priceModifier,
-			CommercePriceModifier commercePriceModifier,
 			ServiceContextHelper serviceContextHelper)
 		throws PortalException {
 
@@ -48,9 +50,10 @@ public class PriceModifierUtil {
 					priceModifierCategories) {
 
 				PriceModifierCategoryUtil.addCommercePriceModifierRel(
-					groupId, assetCategoryLocalService, assetCategoryService,
-					commercePriceModifierRelService, priceModifierCategory,
-					commercePriceModifier, serviceContextHelper);
+					assetCategoryLocalService, assetCategoryService,
+					assetVocabularyService, commercePriceModifier,
+					commercePriceModifierRelService, groupId,
+					priceModifierCategory, serviceContextHelper);
 			}
 		}
 

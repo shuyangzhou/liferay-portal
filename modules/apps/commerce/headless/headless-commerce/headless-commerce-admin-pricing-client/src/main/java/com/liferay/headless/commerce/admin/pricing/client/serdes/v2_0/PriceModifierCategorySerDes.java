@@ -132,6 +132,25 @@ public class PriceModifierCategorySerDes {
 			sb.append(priceModifierCategory.getPriceModifierId());
 		}
 
+		if (priceModifierCategory.getVocabularyExternalReferenceCode() !=
+				null) {
+
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"vocabularyExternalReferenceCode\": ");
+
+			sb.append("\"");
+
+			sb.append(
+				_escape(
+					priceModifierCategory.
+						getVocabularyExternalReferenceCode()));
+
+			sb.append("\"");
+		}
+
 		sb.append("}");
 
 		return sb.toString();
@@ -221,6 +240,19 @@ public class PriceModifierCategorySerDes {
 				String.valueOf(priceModifierCategory.getPriceModifierId()));
 		}
 
+		if (priceModifierCategory.getVocabularyExternalReferenceCode() ==
+				null) {
+
+			map.put("vocabularyExternalReferenceCode", null);
+		}
+		else {
+			map.put(
+				"vocabularyExternalReferenceCode",
+				String.valueOf(
+					priceModifierCategory.
+						getVocabularyExternalReferenceCode()));
+		}
+
 		return map;
 	}
 
@@ -265,6 +297,12 @@ public class PriceModifierCategorySerDes {
 				return false;
 			}
 			else if (Objects.equals(jsonParserFieldName, "priceModifierId")) {
+				return false;
+			}
+			else if (Objects.equals(
+						jsonParserFieldName,
+						"vocabularyExternalReferenceCode")) {
+
 				return false;
 			}
 
@@ -323,6 +361,15 @@ public class PriceModifierCategorySerDes {
 				if (jsonParserFieldValue != null) {
 					priceModifierCategory.setPriceModifierId(
 						Long.valueOf((String)jsonParserFieldValue));
+				}
+			}
+			else if (Objects.equals(
+						jsonParserFieldName,
+						"vocabularyExternalReferenceCode")) {
+
+				if (jsonParserFieldValue != null) {
+					priceModifierCategory.setVocabularyExternalReferenceCode(
+						(String)jsonParserFieldValue);
 				}
 			}
 		}
@@ -412,4 +459,4 @@ public class PriceModifierCategorySerDes {
 	}
 
 }
-// LIFERAY-REST-BUILDER-HASH:-2085578435
+// LIFERAY-REST-BUILDER-HASH:1588106833

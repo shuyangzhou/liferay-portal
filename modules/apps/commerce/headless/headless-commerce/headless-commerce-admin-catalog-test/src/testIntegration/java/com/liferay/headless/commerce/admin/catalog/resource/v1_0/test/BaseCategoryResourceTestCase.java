@@ -175,6 +175,7 @@ public abstract class BaseCategoryResourceTestCase {
 		category.setExternalReferenceCode(regex);
 		category.setName(regex);
 		category.setVocabulary(regex);
+		category.setVocabularyExternalReferenceCode(regex);
 
 		String json = CategorySerDes.toJSON(category);
 
@@ -185,6 +186,8 @@ public abstract class BaseCategoryResourceTestCase {
 		Assert.assertEquals(regex, category.getExternalReferenceCode());
 		Assert.assertEquals(regex, category.getName());
 		Assert.assertEquals(regex, category.getVocabulary());
+		Assert.assertEquals(
+			regex, category.getVocabularyExternalReferenceCode());
 	}
 
 	@Test
@@ -656,6 +659,17 @@ public abstract class BaseCategoryResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals(
+					"vocabularyExternalReferenceCode",
+					additionalAssertFieldName)) {
+
+				if (category.getVocabularyExternalReferenceCode() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
 			throw new IllegalArgumentException(
 				"Invalid additional assert field name " +
 					additionalAssertFieldName);
@@ -826,6 +840,20 @@ public abstract class BaseCategoryResourceTestCase {
 			if (Objects.equals("vocabulary", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
 						category1.getVocabulary(), category2.getVocabulary())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals(
+					"vocabularyExternalReferenceCode",
+					additionalAssertFieldName)) {
+
+				if (!Objects.deepEquals(
+						category1.getVocabularyExternalReferenceCode(),
+						category2.getVocabularyExternalReferenceCode())) {
 
 					return false;
 				}
@@ -1093,6 +1121,52 @@ public abstract class BaseCategoryResourceTestCase {
 			return sb.toString();
 		}
 
+		if (entityFieldName.equals("vocabularyExternalReferenceCode")) {
+			Object object = category.getVocabularyExternalReferenceCode();
+
+			String value = String.valueOf(object);
+
+			if (operator.equals("contains")) {
+				sb = new StringBundler();
+
+				sb.append("contains(");
+				sb.append(entityFieldName);
+				sb.append(",'");
+
+				if ((object != null) && (value.length() > 2)) {
+					sb.append(value.substring(1, value.length() - 1));
+				}
+				else {
+					sb.append(value);
+				}
+
+				sb.append("')");
+			}
+			else if (operator.equals("startswith")) {
+				sb = new StringBundler();
+
+				sb.append("startswith(");
+				sb.append(entityFieldName);
+				sb.append(",'");
+
+				if ((object != null) && (value.length() > 1)) {
+					sb.append(value.substring(0, value.length() - 1));
+				}
+				else {
+					sb.append(value);
+				}
+
+				sb.append("')");
+			}
+			else {
+				sb.append("'");
+				sb.append(value);
+				sb.append("'");
+			}
+
+			return sb.toString();
+		}
+
 		throw new IllegalArgumentException(
 			"Invalid entity field " + entityFieldName);
 	}
@@ -1146,6 +1220,8 @@ public abstract class BaseCategoryResourceTestCase {
 				name = StringUtil.toLowerCase(RandomTestUtil.randomString());
 				siteId = testGroup.getGroupId();
 				vocabulary = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				vocabularyExternalReferenceCode = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
 			}
 		};
@@ -1374,4 +1450,4 @@ public abstract class BaseCategoryResourceTestCase {
 			CategoryResource _categoryResource;
 
 }
-// LIFERAY-REST-BUILDER-HASH:-2069903382
+// LIFERAY-REST-BUILDER-HASH:-1397470990

@@ -775,9 +775,7 @@ baseTest(
 
 		await journalEditArticlePage.publishArticle();
 
-		await page.getByLabel('Select View, Currently').click();
-
-		await page.getByRole('menuitem', {name: 'Table'}).click();
+		await journalPage.changeView('Table');
 
 		await expect(
 			page.getByRole('cell', {name: 'Description'})
@@ -1983,6 +1981,7 @@ baseTest(
 	'LPD-29527 - Can delete translation of a web content created from a structure with at least one required and non-localizable field',
 	async ({apiHelpers, journalEditArticlePage, journalPage, page, site}) => {
 		const basicTextFieldName = 'Text1234';
+		const catalanContent = getRandomString();
 		const content = getRandomString();
 		const nonLocalizableFieldName = 'TextNonLocalizable';
 		const structureName = 'Structure 1';
@@ -2036,7 +2035,7 @@ baseTest(
 			await fillAndClickOutside(
 				page,
 				page.getByLabel(basicTextFieldName),
-				content
+				catalanContent
 			);
 
 			await translationButton.click();

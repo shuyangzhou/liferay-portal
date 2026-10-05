@@ -182,6 +182,31 @@ public class DiscountCategory implements Cloneable, Serializable {
 
 	protected Long discountId;
 
+	public String getVocabularyExternalReferenceCode() {
+		return vocabularyExternalReferenceCode;
+	}
+
+	public void setVocabularyExternalReferenceCode(
+		String vocabularyExternalReferenceCode) {
+
+		this.vocabularyExternalReferenceCode = vocabularyExternalReferenceCode;
+	}
+
+	public void setVocabularyExternalReferenceCode(
+		UnsafeSupplier<String, Exception>
+			vocabularyExternalReferenceCodeUnsafeSupplier) {
+
+		try {
+			vocabularyExternalReferenceCode =
+				vocabularyExternalReferenceCodeUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected String vocabularyExternalReferenceCode;
+
 	@Override
 	public DiscountCategory clone() throws CloneNotSupportedException {
 		return (DiscountCategory)super.clone();
@@ -214,4 +239,4 @@ public class DiscountCategory implements Cloneable, Serializable {
 	}
 
 }
-// LIFERAY-REST-BUILDER-HASH:867161320
+// LIFERAY-REST-BUILDER-HASH:-1169610244

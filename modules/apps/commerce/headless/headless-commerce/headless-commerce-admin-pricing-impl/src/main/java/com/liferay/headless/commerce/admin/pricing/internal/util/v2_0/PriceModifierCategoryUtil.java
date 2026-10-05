@@ -9,11 +9,13 @@ import com.liferay.asset.kernel.exception.NoSuchCategoryException;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetCategoryService;
+import com.liferay.asset.kernel.service.AssetVocabularyService;
 import com.liferay.commerce.pricing.model.CommercePriceModifier;
 import com.liferay.commerce.pricing.model.CommercePriceModifierRel;
 import com.liferay.commerce.pricing.service.CommercePriceModifierRelService;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.PriceModifierCategory;
 import com.liferay.headless.commerce.core.helper.ServiceContextHelper;
+import com.liferay.headless.commerce.core.util.AssetCategoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.lazy.referencing.LazyReferencingThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -26,11 +28,12 @@ import com.liferay.portal.kernel.util.Validator;
 public class PriceModifierCategoryUtil {
 
 	public static CommercePriceModifierRel addCommercePriceModifierRel(
-			long groupId, AssetCategoryLocalService assetCategoryLocalService,
+			AssetCategoryLocalService assetCategoryLocalService,
 			AssetCategoryService assetCategoryService,
-			CommercePriceModifierRelService commercePriceModifierRelService,
-			PriceModifierCategory priceModifierCategory,
+			AssetVocabularyService assetVocabularyService,
 			CommercePriceModifier commercePriceModifier,
+			CommercePriceModifierRelService commercePriceModifierRelService,
+			long groupId, PriceModifierCategory priceModifierCategory,
 			ServiceContextHelper serviceContextHelper)
 		throws PortalException {
 
@@ -38,8 +41,9 @@ public class PriceModifierCategoryUtil {
 			serviceContextHelper.getServiceContext();
 
 		AssetCategory assetCategory = _getAssetCategory(
-			groupId, assetCategoryLocalService, assetCategoryService,
-			priceModifierCategory, serviceContext);
+			assetCategoryLocalService, assetCategoryService,
+			assetVocabularyService, groupId, priceModifierCategory,
+			serviceContext);
 
 		CommercePriceModifierRel commercePriceModifierRel =
 			commercePriceModifierRelService.fetchCommercePriceModifierRel(
@@ -57,8 +61,9 @@ public class PriceModifierCategoryUtil {
 	}
 
 	private static AssetCategory _getAssetCategory(
-			long groupId, AssetCategoryLocalService assetCategoryLocalService,
+			AssetCategoryLocalService assetCategoryLocalService,
 			AssetCategoryService assetCategoryService,
+			AssetVocabularyService assetVocabularyService, long groupId,
 			PriceModifierCategory priceModifierCategory,
 			ServiceContext serviceContext)
 		throws PortalException {
@@ -100,8 +105,10 @@ public class PriceModifierCategoryUtil {
 					categoryExternalReferenceCode);
 		}
 
-		return assetCategoryService.getOrAddEmptyCategory(
-			categoryExternalReferenceCode, groupId);
+		return AssetCategoryUtil.getOrAddEmptyAssetCategory(
+			assetCategoryLocalService, assetCategoryService,
+			assetVocabularyService, categoryExternalReferenceCode, groupId,
+			priceModifierCategory.getVocabularyExternalReferenceCode());
 	}
 
 }

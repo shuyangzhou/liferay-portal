@@ -1419,9 +1419,6 @@ definition {
 			else if (isSet(copyToStagingSite)) {
 				Alert.viewErrorMessage(errorMessage = "Cannot copy to the live version of a site. Make your changes in staging and publish them to Live afterwards to make them public.");
 			}
-			else if (isSet(copyWithRequiredField)) {
-				Alert.viewErrorMessage(errorMessage = "No value defined for field name");
-			}
 			else if (isSet(copyExceedsSizeLimit)) {
 				Alert.viewErrorMessage(errorMessage = " Item cannot be copied because it exceeds the limit set in the destination site's site settings. The total size of all items to copy must not exceed ${copyExceedsSizeLimit}.");
 			}
@@ -2625,6 +2622,8 @@ definition {
 			key_oldFriendlyURL = ${oldFriendlyURL},
 			locator1 = "DocumentsAndMediaDocument#FRIENDLY_URL_HISTORY_ITEM");
 
+		WaitForVisible(locator1 = "Icon#FRIENDLY_URL_HISTORY_ITEM_RESTORE");
+
 		Click(locator1 = "Icon#FRIENDLY_URL_HISTORY_ITEM_RESTORE");
 
 		AssertVisible(
@@ -3194,7 +3193,7 @@ definition {
 		}
 
 		if (${indexNumber} == 2) {
-			Click(locator1 = "Button#DUPLICATE");
+			Button.click(button = "Add Option");
 
 			Type(
 				key_fieldLabel = "Mime Type",
@@ -3264,8 +3263,8 @@ definition {
 		}
 
 		if (isSet(guestWithoutViewPermission)) {
-			if (contains(${responseHeader}, 302)) {
-				echo("The guest user will be redirected to the login page when the user doesn't have view permissions.");
+			if (contains(${responseHeader}, 404)) {
+				echo("The guest user gets a not found response when the user doesn't have view permissions.");
 			}
 			else {
 				fail("FAIL!");

@@ -7,8 +7,8 @@ package com.liferay.object.web.internal.asset.model;
 
 import com.liferay.asset.display.page.portlet.AssetDisplayPageFriendlyURLProvider;
 import com.liferay.asset.kernel.model.AssetRenderer;
+import com.liferay.document.library.helper.DLURLHelper;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
-import com.liferay.document.library.util.DLURLHelper;
 import com.liferay.info.item.ClassPKInfoItemIdentifier;
 import com.liferay.info.item.InfoItemReference;
 import com.liferay.object.constants.ObjectFieldConstants;
@@ -446,9 +446,8 @@ public class ObjectEntryAssetRendererTest {
 	private AssetRenderer<ObjectEntry> _getObjectEntryAssetRenderer() {
 		return new ObjectEntryAssetRenderer(
 			_assetDisplayPageFriendlyURLProvider, _dlAppLocalService,
-			_dlURLHelper, _objectDefinition, _objectEntry,
-			_objectEntryDisplayContextFactoryImpl, _objectEntryService,
-			_objectFieldLocalService);
+			_dlURLHelper, _objectEntry, _objectEntryDisplayContextFactoryImpl,
+			_objectEntryService, _objectFieldLocalService);
 	}
 
 	private void _setUpDLAppLocalService() throws Exception {
@@ -478,6 +477,12 @@ public class ObjectEntryAssetRendererTest {
 			_objectEntry.getGroupId()
 		).thenReturn(
 			_GROUP_ID
+		);
+
+		Mockito.when(
+			_objectEntry.getObjectDefinition()
+		).thenReturn(
+			_objectDefinition
 		);
 
 		Mockito.when(

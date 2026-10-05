@@ -28,6 +28,7 @@ import com.liferay.object.model.ObjectEntryVersion;
 import com.liferay.object.model.ObjectEntryVersionModel;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectRelationship;
+import com.liferay.object.model.bag.ObjectFieldBag;
 import com.liferay.object.related.models.ObjectRelatedModelsProvider;
 import com.liferay.object.related.models.ObjectRelatedModelsProviderRegistry;
 import com.liferay.object.rest.dto.v1_0.AuditEvent;
@@ -143,8 +144,8 @@ public class ObjectEntryDTOConverter
 	public ObjectEntryDTOConverter() {
 	}
 
-	public ObjectEntryDTOConverter(ObjectDefinition objectDefinition) {
-		_objectDefinition = objectDefinition;
+	public ObjectEntryDTOConverter(String className) {
+		_className = className;
 	}
 
 	@Override
@@ -154,8 +155,8 @@ public class ObjectEntryDTOConverter
 
 	@Override
 	public String getDTOClassName() {
-		if (_objectDefinition != null) {
-			return _objectDefinition.getClassName();
+		if (_className != null) {
+			return _className;
 		}
 
 		return DTOConverter.super.getDTOClassName();
@@ -163,10 +164,9 @@ public class ObjectEntryDTOConverter
 
 	@Override
 	public String getExternalDTOClassName() {
-		if (_objectDefinition != null) {
+		if (_className != null) {
 			return StringUtil.replace(
-				_objectDefinition.getClassName(),
-				ObjectDefinition.class.getName(),
+				_className, ObjectDefinition.class.getName(),
 				com.liferay.object.admin.rest.dto.v1_0.ObjectDefinition.class.
 					getName());
 		}
@@ -178,8 +178,9 @@ public class ObjectEntryDTOConverter
 	public ObjectEntry toDTO(DTOConverterContext dtoConverterContext)
 		throws Exception {
 
-		ObjectDefinition objectDefinition = _getObjectDefinition(
-			dtoConverterContext);
+		ObjectDefinition objectDefinition =
+			(ObjectDefinition)dtoConverterContext.getAttribute(
+				"objectDefinition");
 
 		ObjectEntry objectEntry = ObjectEntry.unsafeToDTO(
 			(String)dtoConverterContext.getAttribute("payload"));
@@ -891,24 +892,9 @@ public class ObjectEntryDTOConverter
 	}
 
 	private ObjectDefinition _getObjectDefinition(
-		DTOConverterContext dtoConverterContext) {
-
-		if (_objectDefinition != null) {
-			return _objectDefinition;
-		}
-
-		return (ObjectDefinition)dtoConverterContext.getAttribute(
-			"objectDefinition");
-	}
-
-	private ObjectDefinition _getObjectDefinition(
 			DTOConverterContext dtoConverterContext,
 			com.liferay.object.model.ObjectEntry objectEntry)
 		throws Exception {
-
-		if (_objectDefinition != null) {
-			return _objectDefinition;
-		}
 
 		ObjectDefinition objectDefinition =
 			(ObjectDefinition)dtoConverterContext.getAttribute(
@@ -1177,11 +1163,9 @@ public class ObjectEntryDTOConverter
 
 		Map<String, Serializable> values = objectEntry.getValues();
 
-		List<ObjectField> objectFields =
-			_objectFieldLocalService.getObjectFields(
-				objectDefinition.getObjectDefinitionId());
+		ObjectFieldBag objectFieldBag = objectDefinition.getObjectFieldBag();
 
-		for (ObjectField objectField : objectFields) {
+		for (ObjectField objectField : objectFieldBag.getObjectFields()) {
 			if (objectField.isMetadata()) {
 				continue;
 			}
@@ -1202,15 +1186,17 @@ public class ObjectEntryDTOConverter
 						dtoConverterContext, objectEntry.getGroupId(),
 						objectField_i18n);
 
-					if (Objects.equals(
+					if (!objectField.compareBusinessType(
+							ObjectFieldConstants.BUSINESS_TYPE_LOCATION) &&
+						(Objects.equals(
 							objectField.getDBType(),
 							ObjectFieldConstants.DB_TYPE_BLOB) ||
-						Objects.equals(
-							objectField.getDBType(),
-							ObjectFieldConstants.DB_TYPE_CLOB) ||
-						Objects.equals(
-							objectField.getDBType(),
-							ObjectFieldConstants.DB_TYPE_STRING)) {
+						 Objects.equals(
+							 objectField.getDBType(),
+							 ObjectFieldConstants.DB_TYPE_CLOB) ||
+						 Objects.equals(
+							 objectField.getDBType(),
+							 ObjectFieldConstants.DB_TYPE_STRING))) {
 
 						serializable = GetterUtil.getString(serializable);
 					}
@@ -1415,6 +1401,8 @@ public class ObjectEntryDTOConverter
 	@Reference
 	private AuditEventLocalService _auditEventLocalService;
 
+	private String _className;
+
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
 
@@ -1435,8 +1423,6 @@ public class ObjectEntryDTOConverter
 
 	@Reference
 	private Language _language;
-
-	private ObjectDefinition _objectDefinition;
 
 	@Reference
 	private ObjectDefinitionLocalService _objectDefinitionLocalService;

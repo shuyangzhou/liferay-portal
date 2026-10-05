@@ -290,7 +290,7 @@ public abstract class BasePriceModifierCategoryResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/headless-commerce-admin-pricing/v2.0/price-modifiers/by-externalReferenceCode/{externalReferenceCode}/price-modifier-categories' -d $'{"categoryExternalReferenceCode": ___, "categoryId": ___, "priceModifierExternalReferenceCode": ___, "priceModifierId": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/headless-commerce-admin-pricing/v2.0/price-modifiers/by-externalReferenceCode/{externalReferenceCode}/price-modifier-categories' -d $'{"categoryExternalReferenceCode": ___, "categoryId": ___, "priceModifierExternalReferenceCode": ___, "priceModifierId": ___, "vocabularyExternalReferenceCode": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
 	@io.swagger.v3.oas.annotations.Operation(
 		description = "Creates price modifier link (AssetCategory binding) for PriceModifier by ERC. Throws NoSuchPriceModifierException when modifier ERC is unknown."
@@ -333,7 +333,7 @@ public abstract class BasePriceModifierCategoryResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/headless-commerce-admin-pricing/v2.0/price-modifiers/{id}/price-modifier-categories' -d $'{"categoryExternalReferenceCode": ___, "categoryId": ___, "priceModifierExternalReferenceCode": ___, "priceModifierId": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/headless-commerce-admin-pricing/v2.0/price-modifiers/{id}/price-modifier-categories' -d $'{"categoryExternalReferenceCode": ___, "categoryId": ___, "priceModifierExternalReferenceCode": ___, "priceModifierId": ___, "vocabularyExternalReferenceCode": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
 	@io.swagger.v3.oas.annotations.Operation(
 		description = "Creates price modifier link (AssetCategory binding) for PriceModifier by ID."
@@ -1145,4 +1145,4 @@ public abstract class BasePriceModifierCategoryResourceImpl
 		LogFactoryUtil.getLog(BasePriceModifierCategoryResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:-324564204
+// LIFERAY-REST-BUILDER-HASH:-1385535180

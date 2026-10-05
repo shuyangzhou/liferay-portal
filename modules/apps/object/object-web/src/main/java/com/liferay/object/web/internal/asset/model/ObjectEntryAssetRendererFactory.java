@@ -8,14 +8,15 @@ package com.liferay.object.web.internal.asset.model;
 import com.liferay.asset.display.page.portlet.AssetDisplayPageFriendlyURLProvider;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.BaseAssetRendererFactory;
+import com.liferay.document.library.helper.DLURLHelper;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
-import com.liferay.document.library.util.DLURLHelper;
 import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.display.context.ObjectEntryDisplayContextFactory;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.model.ObjectField;
+import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectEntryService;
 import com.liferay.object.service.ObjectFieldLocalService;
@@ -45,6 +46,7 @@ public class ObjectEntryAssetRendererFactory
 		AssetDisplayPageFriendlyURLProvider assetDisplayPageFriendlyURLProvider,
 		DLAppLocalService dlAppLocalService, DLURLHelper dlURLHelper,
 		ObjectDefinition objectDefinition,
+		ObjectDefinitionLocalService objectDefinitionLocalService,
 		ObjectEntryDisplayContextFactory objectEntryDisplayContextFactory,
 		ObjectEntryLocalService objectEntryLocalService,
 		ObjectEntryService objectEntryService,
@@ -54,32 +56,39 @@ public class ObjectEntryAssetRendererFactory
 		setClassName(objectDefinition.getClassName());
 		setSearchable(true);
 		setPortletId(objectDefinition.getPortletId());
+		setSelectable(
+			!StringUtil.equals(
+				objectDefinition.getScope(),
+				ObjectDefinitionConstants.SCOPE_COMPANY));
 
 		_assetDisplayPageFriendlyURLProvider =
 			assetDisplayPageFriendlyURLProvider;
 		_dlAppLocalService = dlAppLocalService;
 		_dlURLHelper = dlURLHelper;
-		_objectDefinition = objectDefinition;
+		_objectDefinitionLocalService = objectDefinitionLocalService;
 		_objectEntryDisplayContextFactory = objectEntryDisplayContextFactory;
 		_objectEntryLocalService = objectEntryLocalService;
 		_objectEntryService = objectEntryService;
 		_objectFieldLocalService = objectFieldLocalService;
 		_servletContext = servletContext;
+
+		_companyId = objectDefinition.getCompanyId();
+		_defaultStorageType = objectDefinition.isDefaultStorageType();
+		_objectDefinitionId = objectDefinition.getObjectDefinitionId();
 	}
 
 	@Override
 	public AssetRenderer<ObjectEntry> getAssetRenderer(long classPK, int type)
 		throws PortalException {
 
-		if (!_objectDefinition.isDefaultStorageType()) {
+		if (!_defaultStorageType) {
 			return null;
 		}
 
 		ObjectEntryAssetRenderer objectEntryAssetRenderer =
 			new ObjectEntryAssetRenderer(
 				_assetDisplayPageFriendlyURLProvider, _dlAppLocalService,
-				_dlURLHelper, _objectDefinition,
-				_objectEntryLocalService.getObjectEntry(classPK),
+				_dlURLHelper, _objectEntryLocalService.getObjectEntry(classPK),
 				_objectEntryDisplayContextFactory, _objectEntryService,
 				_objectFieldLocalService);
 
@@ -90,24 +99,25 @@ public class ObjectEntryAssetRendererFactory
 
 	@Override
 	public String getIconCssClass() {
-		if (!_objectDefinition.isCMS()) {
-			return StringPool.BLANK;
-		}
-
-		return _icons.getOrDefault(
-			_objectDefinition.getExternalReferenceCode(), "forms");
+		return getIconCssClass(
+			_objectDefinitionLocalService.fetchObjectDefinition(
+				_objectDefinitionId));
 	}
 
 	@Override
 	public String getType() {
-		return _objectDefinition.getClassName();
+		return getClassName();
 	}
 
 	@Override
 	public String getTypeName(Locale locale) {
 		String typeName = super.getTypeName(locale);
 
-		if (_objectDefinition.isCMS()) {
+		ObjectDefinition objectDefinition =
+			_objectDefinitionLocalService.fetchObjectDefinition(
+				_objectDefinitionId);
+
+		if (objectDefinition.isCMS()) {
 			typeName = StringUtil.appendParentheticalSuffix(typeName, "CMS");
 		}
 
@@ -118,24 +128,37 @@ public class ObjectEntryAssetRendererFactory
 	public boolean hasPermission(
 		PermissionChecker permissionChecker, long classPK, String actionId) {
 
-		if (Objects.equals(actionId, ActionKeys.DOWNLOAD) &&
-			_objectDefinition.isCMS()) {
-
-			ObjectField objectField = _objectFieldLocalService.fetchObjectField(
-				_objectDefinition.getObjectDefinitionId(), "file");
-
-			if ((objectField != null) &&
-				objectField.compareBusinessType(
-					ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT)) {
-
-				actionId = objectField.getAttachmentDownloadActionKey();
-			}
-		}
-
 		try {
+			if (_defaultStorageType &&
+				Objects.equals(actionId, ActionKeys.DOWNLOAD)) {
+
+				ObjectEntry objectEntry =
+					_objectEntryLocalService.getObjectEntry(classPK);
+
+				ObjectDefinition objectDefinition =
+					objectEntry.getObjectDefinition();
+
+				if (objectDefinition.isCMS()) {
+					ObjectField objectField =
+						_objectFieldLocalService.fetchObjectField(
+							_objectDefinitionId, "file");
+
+					if ((objectField != null) &&
+						objectField.compareBusinessType(
+							ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT)) {
+
+						actionId = objectField.getAttachmentDownloadActionKey();
+					}
+				}
+
+				return _objectEntryService.hasModelResourcePermission(
+					objectEntry, actionId);
+			}
+
 			return ObjectDefinitionResourcePermissionUtil.
 				hasModelResourcePermission(
-					_objectDefinition, classPK, _objectEntryService, actionId);
+					_defaultStorageType, _objectDefinitionId, classPK,
+					_objectEntryService, actionId);
 		}
 		catch (PortalException portalException) {
 			if (_log.isDebugEnabled()) {
@@ -148,18 +171,20 @@ public class ObjectEntryAssetRendererFactory
 
 	@Override
 	public boolean isActive(long companyId) {
-		if (_objectDefinition.getCompanyId() == companyId) {
+		if (_companyId == companyId) {
 			return true;
 		}
 
 		return false;
 	}
 
-	@Override
-	public boolean isSelectable() {
-		return !StringUtil.equals(
-			_objectDefinition.getScope(),
-			ObjectDefinitionConstants.SCOPE_COMPANY);
+	protected static String getIconCssClass(ObjectDefinition objectDefinition) {
+		if (!objectDefinition.isCMS()) {
+			return StringPool.BLANK;
+		}
+
+		return _icons.getOrDefault(
+			objectDefinition.getExternalReferenceCode(), "forms");
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -183,9 +208,12 @@ public class ObjectEntryAssetRendererFactory
 
 	private final AssetDisplayPageFriendlyURLProvider
 		_assetDisplayPageFriendlyURLProvider;
+	private final long _companyId;
+	private final boolean _defaultStorageType;
 	private final DLAppLocalService _dlAppLocalService;
 	private final DLURLHelper _dlURLHelper;
-	private final ObjectDefinition _objectDefinition;
+	private final long _objectDefinitionId;
+	private final ObjectDefinitionLocalService _objectDefinitionLocalService;
 	private final ObjectEntryDisplayContextFactory
 		_objectEntryDisplayContextFactory;
 	private final ObjectEntryLocalService _objectEntryLocalService;

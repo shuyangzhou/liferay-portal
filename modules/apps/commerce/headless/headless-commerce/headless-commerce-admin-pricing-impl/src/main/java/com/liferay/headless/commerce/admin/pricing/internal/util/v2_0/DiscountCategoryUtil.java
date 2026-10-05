@@ -9,11 +9,13 @@ import com.liferay.asset.kernel.exception.NoSuchCategoryException;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetCategoryService;
+import com.liferay.asset.kernel.service.AssetVocabularyService;
 import com.liferay.commerce.discount.model.CommerceDiscount;
 import com.liferay.commerce.discount.model.CommerceDiscountRel;
 import com.liferay.commerce.discount.service.CommerceDiscountRelService;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.DiscountCategory;
 import com.liferay.headless.commerce.core.helper.ServiceContextHelper;
+import com.liferay.headless.commerce.core.util.AssetCategoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.lazy.referencing.LazyReferencingThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -26,11 +28,12 @@ import com.liferay.portal.kernel.util.Validator;
 public class DiscountCategoryUtil {
 
 	public static CommerceDiscountRel addCommerceDiscountRel(
-			long groupId, AssetCategoryLocalService assetCategoryLocalService,
+			AssetCategoryLocalService assetCategoryLocalService,
 			AssetCategoryService assetCategoryService,
-			CommerceDiscountRelService commerceDiscountRelService,
-			DiscountCategory discountCategory,
+			AssetVocabularyService assetVocabularyService,
 			CommerceDiscount commerceDiscount,
+			CommerceDiscountRelService commerceDiscountRelService,
+			DiscountCategory discountCategory, long groupId,
 			ServiceContextHelper serviceContextHelper)
 		throws PortalException {
 
@@ -38,8 +41,8 @@ public class DiscountCategoryUtil {
 			serviceContextHelper.getServiceContext();
 
 		AssetCategory assetCategory = _getAssetCategory(
-			groupId, assetCategoryLocalService, assetCategoryService,
-			discountCategory, serviceContext);
+			assetCategoryLocalService, assetCategoryService,
+			assetVocabularyService, discountCategory, groupId, serviceContext);
 
 		CommerceDiscountRel commerceDiscountRel =
 			commerceDiscountRelService.fetchCommerceDiscountRel(
@@ -57,9 +60,11 @@ public class DiscountCategoryUtil {
 	}
 
 	private static AssetCategory _getAssetCategory(
-			long groupId, AssetCategoryLocalService assetCategoryLocalService,
+			AssetCategoryLocalService assetCategoryLocalService,
 			AssetCategoryService assetCategoryService,
-			DiscountCategory discountCategory, ServiceContext serviceContext)
+			AssetVocabularyService assetVocabularyService,
+			DiscountCategory discountCategory, long groupId,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		String categoryExternalReferenceCode =
@@ -98,8 +103,10 @@ public class DiscountCategoryUtil {
 					categoryExternalReferenceCode);
 		}
 
-		return assetCategoryService.getOrAddEmptyCategory(
-			categoryExternalReferenceCode, groupId);
+		return AssetCategoryUtil.getOrAddEmptyAssetCategory(
+			assetCategoryLocalService, assetCategoryService,
+			assetVocabularyService, categoryExternalReferenceCode, groupId,
+			discountCategory.getVocabularyExternalReferenceCode());
 	}
 
 }

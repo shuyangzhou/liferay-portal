@@ -362,13 +362,13 @@ definition {
 
 		Pagination.changePagination(itemsPerPage = 4);
 
-		for (var viewEntryCount : list "1,2,3,4") {
+		for (var viewEntryCount : list "4,5,6,7") {
 			AnnouncementsEntry.viewList(
 				distributionScope = "General",
 				entryTitle = "Announcements Entry Title ${viewEntryCount}");
 		}
 
-		for (var viewEntryCount : list "5,6,7") {
+		for (var viewEntryCount : list "1,2,3") {
 			AssertElementNotPresent(
 				key_entryTitle = "Announcements Entry Title ${viewEntryCount}",
 				locator1 = "Blogs#ENTRY_TABLE_TITLE");
@@ -376,13 +376,13 @@ definition {
 
 		Click(locator1 = "Pagination#NEXT_LINK");
 
-		for (var viewEntryCount : list "5,6,7") {
+		for (var viewEntryCount : list "1,2,3") {
 			AnnouncementsEntry.viewList(
 				distributionScope = "General",
 				entryTitle = "Announcements Entry Title ${viewEntryCount}");
 		}
 
-		for (var viewEntryCount : list "1,2,3,4") {
+		for (var viewEntryCount : list "4,5,6,7") {
 			AssertElementNotPresent(
 				key_entryTitle = "Announcements Entry Title ${viewEntryCount}",
 				locator1 = "Blogs#ENTRY_TABLE_TITLE");
@@ -390,13 +390,13 @@ definition {
 
 		Click(locator1 = "Pagination#PREVIOUS_LINK");
 
-		for (var viewEntryCount : list "1,2,3,4") {
+		for (var viewEntryCount : list "4,5,6,7") {
 			AnnouncementsEntry.viewList(
 				distributionScope = "General",
 				entryTitle = "Announcements Entry Title ${viewEntryCount}");
 		}
 
-		for (var viewEntryCount : list "5,6,7") {
+		for (var viewEntryCount : list "1,2,3") {
 			AssertElementNotPresent(
 				key_entryTitle = "Announcements Entry Title ${viewEntryCount}",
 				locator1 = "Blogs#ENTRY_TABLE_TITLE");

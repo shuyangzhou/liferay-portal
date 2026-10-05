@@ -7,6 +7,7 @@ package com.liferay.headless.commerce.admin.pricing.internal.resource.v2_0;
 
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetCategoryService;
+import com.liferay.asset.kernel.service.AssetVocabularyService;
 import com.liferay.commerce.currency.service.CommerceCurrencyService;
 import com.liferay.commerce.price.list.exception.NoSuchPriceListException;
 import com.liferay.commerce.price.list.model.CommercePriceList;
@@ -336,12 +337,12 @@ public class PriceModifierResourceImpl extends BasePriceModifierResourceImpl {
 		throws Exception {
 
 		PriceModifierUtil.addOrUpdateCommercePriceModifierRels(
-			contextCompany.getGroupId(), _assetCategoryLocalService,
-			_assetCategoryService, _cProductLocalService,
+			_assetCategoryLocalService, _assetCategoryService,
+			_assetVocabularyService, _cProductLocalService,
 			_commerceCatalogService, _commerceCurrencyService,
-			_commercePriceModifierRelService, _commercePricingClassService,
-			_cpDefinitionService, priceModifier, commercePriceModifier,
-			_serviceContextHelper);
+			commercePriceModifier, _commercePriceModifierRelService,
+			_commercePricingClassService, _cpDefinitionService,
+			contextCompany.getGroupId(), priceModifier, _serviceContextHelper);
 	}
 
 	private CommercePriceModifier _updatePriceModifier(
@@ -385,6 +386,9 @@ public class PriceModifierResourceImpl extends BasePriceModifierResourceImpl {
 
 	@Reference
 	private AssetCategoryService _assetCategoryService;
+
+	@Reference
+	private AssetVocabularyService _assetVocabularyService;
 
 	@Reference
 	private CProductLocalService _cProductLocalService;

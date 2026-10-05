@@ -495,6 +495,19 @@ public class CommerceVirtualOrderItemLocalServiceWrapper
 			getIndexableActionableDynamicQuery();
 	}
 
+	@Override
+	public java.util.List
+		<com.liferay.commerce.product.type.virtual.order.model.
+			CommerceVirtualOrderItem>
+					getNoCPDVirtualSettingFileEntryCommerceVirtualOrderItems(
+						long cpdVirtualSettingFileEntryId)
+				throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _commerceVirtualOrderItemLocalService.
+			getNoCPDVirtualSettingFileEntryCommerceVirtualOrderItems(
+				cpdVirtualSettingFileEntryId);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
@@ -591,4 +604,4 @@ public class CommerceVirtualOrderItemLocalServiceWrapper
 		_commerceVirtualOrderItemLocalService;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2091342337
+// LIFERAY-SERVICE-BUILDER-HASH:-1930450120

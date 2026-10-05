@@ -127,6 +127,21 @@ public class DiscountCategorySerDes {
 			sb.append(discountCategory.getDiscountId());
 		}
 
+		if (discountCategory.getVocabularyExternalReferenceCode() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"vocabularyExternalReferenceCode\": ");
+
+			sb.append("\"");
+
+			sb.append(
+				_escape(discountCategory.getVocabularyExternalReferenceCode()));
+
+			sb.append("\"");
+		}
+
 		sb.append("}");
 
 		return sb.toString();
@@ -205,6 +220,16 @@ public class DiscountCategorySerDes {
 				"discountId", String.valueOf(discountCategory.getDiscountId()));
 		}
 
+		if (discountCategory.getVocabularyExternalReferenceCode() == null) {
+			map.put("vocabularyExternalReferenceCode", null);
+		}
+		else {
+			map.put(
+				"vocabularyExternalReferenceCode",
+				String.valueOf(
+					discountCategory.getVocabularyExternalReferenceCode()));
+		}
+
 		return map;
 	}
 
@@ -248,6 +273,12 @@ public class DiscountCategorySerDes {
 				return false;
 			}
 			else if (Objects.equals(jsonParserFieldName, "discountId")) {
+				return false;
+			}
+			else if (Objects.equals(
+						jsonParserFieldName,
+						"vocabularyExternalReferenceCode")) {
+
 				return false;
 			}
 
@@ -305,6 +336,15 @@ public class DiscountCategorySerDes {
 				if (jsonParserFieldValue != null) {
 					discountCategory.setDiscountId(
 						Long.valueOf((String)jsonParserFieldValue));
+				}
+			}
+			else if (Objects.equals(
+						jsonParserFieldName,
+						"vocabularyExternalReferenceCode")) {
+
+				if (jsonParserFieldValue != null) {
+					discountCategory.setVocabularyExternalReferenceCode(
+						(String)jsonParserFieldValue);
 				}
 			}
 		}
@@ -394,4 +434,4 @@ public class DiscountCategorySerDes {
 	}
 
 }
-// LIFERAY-REST-BUILDER-HASH:478038616
+// LIFERAY-REST-BUILDER-HASH:-380992115

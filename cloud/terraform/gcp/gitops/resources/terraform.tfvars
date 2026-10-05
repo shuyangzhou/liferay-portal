@@ -1,4 +1,4 @@
-infrastructure_helm_chart_version="2.0.1"
-infrastructure_provider_helm_chart_version="1.1.2"
-liferay_helm_chart_version="2.0.1"
-observability_helm_chart_version="1.1.1"
+infrastructure_helm_chart_version="2.1.0"
+infrastructure_provider_helm_chart_version="1.2.0"
+liferay_helm_chart_version="3.0.0"
+observability_helm_chart_version="1.1.2"

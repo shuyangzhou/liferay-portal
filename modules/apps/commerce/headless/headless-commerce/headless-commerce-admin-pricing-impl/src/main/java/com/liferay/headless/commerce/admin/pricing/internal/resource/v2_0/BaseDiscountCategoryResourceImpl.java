@@ -281,7 +281,7 @@ public abstract class BaseDiscountCategoryResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/headless-commerce-admin-pricing/v2.0/discounts/by-externalReferenceCode/{externalReferenceCode}/discount-categories' -d $'{"categoryExternalReferenceCode": ___, "categoryId": ___, "discountExternalReferenceCode": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/headless-commerce-admin-pricing/v2.0/discounts/by-externalReferenceCode/{externalReferenceCode}/discount-categories' -d $'{"categoryExternalReferenceCode": ___, "categoryId": ___, "discountExternalReferenceCode": ___, "vocabularyExternalReferenceCode": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
 	@io.swagger.v3.oas.annotations.Operation(
 		description = "Creates discount link (AssetCategory binding) for Discount by ERC. Throws NoSuchDiscountException when discount ERC is unknown."
@@ -321,7 +321,7 @@ public abstract class BaseDiscountCategoryResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/headless-commerce-admin-pricing/v2.0/discounts/{id}/discount-categories' -d $'{"categoryExternalReferenceCode": ___, "categoryId": ___, "discountExternalReferenceCode": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/headless-commerce-admin-pricing/v2.0/discounts/{id}/discount-categories' -d $'{"categoryExternalReferenceCode": ___, "categoryId": ___, "discountExternalReferenceCode": ___, "vocabularyExternalReferenceCode": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
 	@io.swagger.v3.oas.annotations.Operation(
 		description = "Creates discount link (AssetCategory binding) for Discount by ID."
@@ -1118,4 +1118,4 @@ public abstract class BaseDiscountCategoryResourceImpl
 		LogFactoryUtil.getLog(BaseDiscountCategoryResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:259658779
+// LIFERAY-REST-BUILDER-HASH:-117556485

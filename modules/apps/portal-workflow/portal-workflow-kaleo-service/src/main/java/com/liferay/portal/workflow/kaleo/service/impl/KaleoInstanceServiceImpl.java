@@ -12,6 +12,7 @@ import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -151,6 +152,41 @@ public class KaleoInstanceServiceImpl extends KaleoInstanceServiceBaseImpl {
 		return kaleoInstance;
 	}
 
+	@Override
+	public KaleoInstance deleteKaleoInstance(long kaleoInstanceId)
+		throws PortalException {
+
+		_kaleoInstanceModelResourcePermission.check(
+			getPermissionChecker(), kaleoInstanceId, ActionKeys.DELETE);
+
+		return kaleoInstanceLocalService.deleteKaleoInstance(kaleoInstanceId);
+	}
+
+	@Override
+	public KaleoInstance getKaleoInstance(long kaleoInstanceId)
+		throws PortalException {
+
+		KaleoInstance kaleoInstance = kaleoInstancePersistence.findByPrimaryKey(
+			kaleoInstanceId);
+
+		_kaleoInstanceModelResourcePermission.check(
+			getPermissionChecker(), kaleoInstance, ActionKeys.VIEW);
+
+		return kaleoInstance;
+	}
+
+	@Override
+	public KaleoInstance updateKaleoInstance(
+			long kaleoInstanceId, Map<String, Serializable> workflowContext)
+		throws PortalException {
+
+		_kaleoInstanceModelResourcePermission.check(
+			getPermissionChecker(), kaleoInstanceId, ActionKeys.UPDATE);
+
+		return kaleoInstanceLocalService.updateKaleoInstance(
+			kaleoInstanceId, workflowContext);
+	}
+
 	private String _getVersion(int version) {
 		return version + StringPool.PERIOD + 0;
 	}
@@ -170,6 +206,12 @@ public class KaleoInstanceServiceImpl extends KaleoInstanceServiceBaseImpl {
 	@Reference
 	private KaleoDefinitionVersionPersistence
 		_kaleoDefinitionVersionPersistence;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.portal.workflow.kaleo.model.KaleoInstance)"
+	)
+	private ModelResourcePermission<KaleoInstance>
+		_kaleoInstanceModelResourcePermission;
 
 	@Reference
 	private KaleoLogLocalService _kaleoLogLocalService;

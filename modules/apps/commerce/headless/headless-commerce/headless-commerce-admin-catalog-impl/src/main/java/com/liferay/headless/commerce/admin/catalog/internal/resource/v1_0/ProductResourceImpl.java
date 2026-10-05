@@ -12,7 +12,9 @@ import com.liferay.account.service.AccountGroupService;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
+import com.liferay.asset.kernel.service.AssetCategoryService;
 import com.liferay.asset.kernel.service.AssetTagService;
+import com.liferay.asset.kernel.service.AssetVocabularyService;
 import com.liferay.commerce.currency.exception.NoSuchCurrencyException;
 import com.liferay.commerce.currency.model.CommerceCurrency;
 import com.liferay.commerce.currency.service.CommerceCurrencyService;
@@ -73,7 +75,10 @@ import com.liferay.document.library.kernel.service.DLAppService;
 import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
 import com.liferay.expando.kernel.service.ExpandoTableLocalService;
 import com.liferay.exportimport.constants.ExportImportConstants;
+import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.exportimport.vulcan.batch.engine.ExportImportVulcanBatchEngineTaskItemDelegate;
+import com.liferay.friendly.url.model.FriendlyURLEntry;
+import com.liferay.friendly.url.service.FriendlyURLEntryLocalService;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.Attachment;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.Category;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.Diagram;
@@ -114,6 +119,7 @@ import com.liferay.headless.commerce.admin.catalog.internal.util.v1_0.SkuUnitOfM
 import com.liferay.headless.commerce.admin.catalog.internal.util.v1_0.SkuUtil;
 import com.liferay.headless.commerce.admin.catalog.resource.v1_0.ProductResource;
 import com.liferay.headless.commerce.core.helper.ServiceContextHelper;
+import com.liferay.headless.commerce.core.util.AssetCategoryUtil;
 import com.liferay.headless.commerce.core.util.CommerceCurrencyUtil;
 import com.liferay.headless.commerce.core.util.DateConfig;
 import com.liferay.headless.commerce.core.util.ExpandoUtil;
@@ -831,6 +837,20 @@ public class ProductResourceImpl
 									category.getExternalReferenceCode(),
 									contextCompany.getGroupId());
 
+						if ((assetCategory == null) &&
+							LazyReferencingThreadLocal.isEnabled()) {
+
+							assetCategory =
+								AssetCategoryUtil.getOrAddEmptyAssetCategory(
+									_assetCategoryLocalService,
+									_assetCategoryService,
+									_assetVocabularyService,
+									category.getExternalReferenceCode(),
+									contextCompany.getGroupId(),
+									category.
+										getVocabularyExternalReferenceCode());
+						}
+
 						if (assetCategory == null) {
 							return null;
 						}
@@ -952,6 +972,10 @@ public class ProductResourceImpl
 			GetterUtil.getDouble(productShippingConfiguration.getWidth()),
 			productStatus, serviceContext);
 
+		if (ExportImportThreadLocal.isImportInProcess()) {
+			_setMainFriendlyURLEntry(cpDefinition, urlTitleMap);
+		}
+
 		if ((product.getActive() != null) && !product.getActive()) {
 			Map<String, Serializable> workflowContext = new HashMap<>();
 
@@ -991,7 +1015,7 @@ public class ProductResourceImpl
 		CommerceCurrency commerceCurrency = _getCommerceCurrency(product);
 
 		return _commerceCatalogService.getOrAddEmptyCommerceCatalog(
-			catalogExternalReferenceCode, commerceCurrency.getCode());
+			catalogExternalReferenceCode, null, commerceCurrency.getCode());
 	}
 
 	private Map<String, Map<String, String>> _getActions(
@@ -1249,6 +1273,49 @@ public class ProductResourceImpl
 		return productTaxConfiguration.getTaxable();
 	}
 
+	private void _setMainFriendlyURLEntry(
+		CPDefinition cpDefinition, Map<String, String> urlTitleMap) {
+
+		FriendlyURLEntry mainFriendlyURLEntry = null;
+
+		long classNameId = _classNameLocalService.getClassNameId(
+			CProduct.class);
+
+		if (urlTitleMap != null) {
+			mainFriendlyURLEntry =
+				_friendlyURLEntryLocalService.fetchFriendlyURLEntry(
+					contextCompany.getGroupId(), classNameId,
+					urlTitleMap.get(cpDefinition.getDefaultLanguageId()));
+		}
+
+		if ((mainFriendlyURLEntry != null) &&
+			(mainFriendlyURLEntry.getClassPK() !=
+				cpDefinition.getCProductId())) {
+
+			mainFriendlyURLEntry = null;
+		}
+
+		if (mainFriendlyURLEntry == null) {
+			for (FriendlyURLEntry friendlyURLEntry :
+					_friendlyURLEntryLocalService.getFriendlyURLEntries(
+						contextCompany.getGroupId(), classNameId,
+						cpDefinition.getCProductId())) {
+
+				if ((mainFriendlyURLEntry == null) ||
+					(friendlyURLEntry.getFriendlyURLEntryId() >
+						mainFriendlyURLEntry.getFriendlyURLEntryId())) {
+
+					mainFriendlyURLEntry = friendlyURLEntry;
+				}
+			}
+		}
+
+		if (mainFriendlyURLEntry != null) {
+			_friendlyURLEntryLocalService.setMainFriendlyURLEntry(
+				mainFriendlyURLEntry);
+		}
+	}
+
 	private Product _toProduct(Long cpDefinitionId) throws Exception {
 		CPDefinition cpDefinition = _cpDefinitionService.getCPDefinition(
 			cpDefinitionId);
@@ -1494,9 +1561,9 @@ public class ProductResourceImpl
 
 				CPInstance cpInstance = SkuUtil.addOrUpdateCPInstance(
 					cpDefinition, _cpDefinitionOptionRelService,
-					_cpDefinitionOptionValueRelService, _cpInstanceService,
-					_cpOptionService, sku.getExternalReferenceCode(), sku,
-					serviceContext);
+					_cpDefinitionOptionValueRelService, _cpDefinitionService,
+					_cpInstanceService, _cpOptionService,
+					sku.getExternalReferenceCode(), serviceContext, sku);
 
 				serviceContext.setExpandoBridgeAttributes(null);
 
@@ -1881,6 +1948,20 @@ public class ProductResourceImpl
 									category.getExternalReferenceCode(),
 									contextCompany.getGroupId());
 
+						if ((assetCategory == null) &&
+							LazyReferencingThreadLocal.isEnabled()) {
+
+							assetCategory =
+								AssetCategoryUtil.getOrAddEmptyAssetCategory(
+									_assetCategoryLocalService,
+									_assetCategoryService,
+									_assetVocabularyService,
+									category.getExternalReferenceCode(),
+									contextCompany.getGroupId(),
+									category.
+										getVocabularyExternalReferenceCode());
+						}
+
 						return assetCategory.getCategoryId();
 					}));
 		}
@@ -2038,7 +2119,13 @@ public class ProductResourceImpl
 	private AssetCategoryLocalService _assetCategoryLocalService;
 
 	@Reference
+	private AssetCategoryService _assetCategoryService;
+
+	@Reference
 	private AssetTagService _assetTagService;
+
+	@Reference
+	private AssetVocabularyService _assetVocabularyService;
 
 	@Reference
 	private CProductLocalService _cProductLocalService;
@@ -2181,6 +2268,9 @@ public class ProductResourceImpl
 
 	@Reference
 	private ExpandoTableLocalService _expandoTableLocalService;
+
+	@Reference
+	private FriendlyURLEntryLocalService _friendlyURLEntryLocalService;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

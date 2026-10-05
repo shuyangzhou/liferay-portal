@@ -41,16 +41,21 @@ public class ObjectEntryLayoutDisplayPageProviderTest {
 
 	@Before
 	public void setUp() {
-		_groupLocalService = Mockito.mock(GroupLocalService.class);
-		_objectDefinition = Mockito.mock(ObjectDefinition.class);
-		_objectEntryLocalService = Mockito.mock(ObjectEntryLocalService.class);
+		ObjectDefinitionLocalService objectDefinitionLocalService =
+			Mockito.mock(ObjectDefinitionLocalService.class);
+
+		Mockito.when(
+			objectDefinitionLocalService.fetchObjectDefinition(
+				Mockito.anyLong())
+		).thenReturn(
+			_objectDefinition
+		);
 
 		_objectEntryLayoutDisplayPageProvider =
 			new ObjectEntryLayoutDisplayPageProvider(
 				Mockito.mock(AssetHelper.class), _groupLocalService,
 				Mockito.mock(InfoItemFriendlyURLProvider.class),
-				_objectDefinition,
-				Mockito.mock(ObjectDefinitionLocalService.class),
+				_objectDefinition, objectDefinitionLocalService,
 				_objectEntryLocalService,
 				Mockito.mock(ObjectEntryManager.class),
 				Mockito.mock(ObjectRelationshipLocalService.class),
@@ -158,10 +163,13 @@ public class ObjectEntryLayoutDisplayPageProviderTest {
 
 	private static final String _URL_TITLE = RandomTestUtil.randomString();
 
-	private GroupLocalService _groupLocalService;
-	private ObjectDefinition _objectDefinition;
+	private final GroupLocalService _groupLocalService = Mockito.mock(
+		GroupLocalService.class);
+	private final ObjectDefinition _objectDefinition = Mockito.mock(
+		ObjectDefinition.class);
 	private ObjectEntryLayoutDisplayPageProvider
 		_objectEntryLayoutDisplayPageProvider;
-	private ObjectEntryLocalService _objectEntryLocalService;
+	private final ObjectEntryLocalService _objectEntryLocalService =
+		Mockito.mock(ObjectEntryLocalService.class);
 
 }

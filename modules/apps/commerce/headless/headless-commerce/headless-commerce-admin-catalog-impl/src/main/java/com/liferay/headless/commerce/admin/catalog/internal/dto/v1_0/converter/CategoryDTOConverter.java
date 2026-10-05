@@ -57,6 +57,18 @@ public class CategoryDTOConverter
 
 						return assetVocabulary.getName();
 					});
+				setVocabularyExternalReferenceCode(
+					() -> {
+						AssetVocabulary assetVocabulary =
+							_assetVocabularyLocalService.fetchAssetVocabulary(
+								assetCategory.getVocabularyId());
+
+						if (assetVocabulary == null) {
+							return null;
+						}
+
+						return assetVocabulary.getExternalReferenceCode();
+					});
 			}
 		};
 	}

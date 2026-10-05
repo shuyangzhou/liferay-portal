@@ -154,6 +154,24 @@ public class DisplayPageTemplateDesignLibraryResourceTypeContributor
 							LAYOUT_PAGE_TEMPLATES,
 						0, 0, PortletRequest.RENDER_PHASE)
 				).setMVCRenderCommandName(
+					"/layout_page_template_admin/configure_display_page"
+				).setRedirect(
+					backURL
+				).setParameter(
+					"displayPageTemplateExternalReferenceCode",
+					"{embedded.externalReferenceCode}"
+				).buildString(),
+				"cog", "configure",
+				LanguageUtil.get(httpServletRequest, "configure"), null, "get",
+				"link"),
+			new FDSActionDropdownItem(
+				PortletURLBuilder.create(
+					PortalUtil.getControlPanelPortletURL(
+						httpServletRequest, depotGroup,
+						LayoutPageTemplateAdminPortletKeys.
+							LAYOUT_PAGE_TEMPLATES,
+						0, 0, PortletRequest.RENDER_PHASE)
+				).setMVCRenderCommandName(
 					"/layout_page_template_admin/view_display_page_permissions"
 				).setParameter(
 					"displayPageTemplateExternalReferenceCode",

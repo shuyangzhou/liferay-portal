@@ -117,6 +117,20 @@ public class CategorySerDes {
 			sb.append("\"");
 		}
 
+		if (category.getVocabularyExternalReferenceCode() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"vocabularyExternalReferenceCode\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(category.getVocabularyExternalReferenceCode()));
+
+			sb.append("\"");
+		}
+
 		sb.append("}");
 
 		return sb.toString();
@@ -179,6 +193,15 @@ public class CategorySerDes {
 			map.put("vocabulary", String.valueOf(category.getVocabulary()));
 		}
 
+		if (category.getVocabularyExternalReferenceCode() == null) {
+			map.put("vocabularyExternalReferenceCode", null);
+		}
+		else {
+			map.put(
+				"vocabularyExternalReferenceCode",
+				String.valueOf(category.getVocabularyExternalReferenceCode()));
+		}
+
 		return map;
 	}
 
@@ -212,6 +235,12 @@ public class CategorySerDes {
 				return true;
 			}
 			else if (Objects.equals(jsonParserFieldName, "vocabulary")) {
+				return false;
+			}
+			else if (Objects.equals(
+						jsonParserFieldName,
+						"vocabularyExternalReferenceCode")) {
+
 				return false;
 			}
 
@@ -254,6 +283,15 @@ public class CategorySerDes {
 			else if (Objects.equals(jsonParserFieldName, "vocabulary")) {
 				if (jsonParserFieldValue != null) {
 					category.setVocabulary((String)jsonParserFieldValue);
+				}
+			}
+			else if (Objects.equals(
+						jsonParserFieldName,
+						"vocabularyExternalReferenceCode")) {
+
+				if (jsonParserFieldValue != null) {
+					category.setVocabularyExternalReferenceCode(
+						(String)jsonParserFieldValue);
 				}
 			}
 		}
@@ -343,4 +381,4 @@ public class CategorySerDes {
 	}
 
 }
-// LIFERAY-REST-BUILDER-HASH:1866504791
+// LIFERAY-REST-BUILDER-HASH:630970941

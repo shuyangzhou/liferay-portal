@@ -9,6 +9,9 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.dispatch.model.DispatchTrigger;
 import com.liferay.dispatch.service.DispatchTriggerLocalService;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -19,6 +22,8 @@ import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 import com.liferay.portal.upgrade.test.util.UpgradeTestUtil;
+
+import java.sql.Connection;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -48,6 +53,23 @@ public class CTConflictCheckerDispatchTriggerUpgradeProcessTest {
 
 	@Test
 	public void testUpgrade() throws Exception {
+		_testUpgradeWithDispatchTaskSettingsColumn();
+		_testUpgradeWithoutDispatchTaskSettingsColumn();
+	}
+
+	private void _renameColumn(String columnName, String newColumnName)
+		throws Exception {
+
+		try (Connection connection = DataAccess.getConnection()) {
+			DB db = DBManagerUtil.getDB();
+
+			db.alterColumnName(
+				connection, "DispatchTrigger", columnName,
+				newColumnName + " TEXT null");
+		}
+	}
+
+	private void _testUpgradeWithDispatchTaskSettingsColumn() throws Exception {
 		DispatchTrigger dispatchTrigger =
 			_dispatchTriggerLocalService.addDispatchTrigger(
 				null, TestPropsValues.getUserId(),
@@ -76,6 +98,41 @@ public class CTConflictCheckerDispatchTriggerUpgradeProcessTest {
 			dispatchTrigger.getDispatchTaskSettingsUnicodeProperties();
 
 		Assert.assertNull(unicodeProperties.getProperty("featureFlagKey"));
+	}
+
+	private void _testUpgradeWithoutDispatchTaskSettingsColumn()
+		throws Exception {
+
+		DispatchTrigger dispatchTrigger =
+			_dispatchTriggerLocalService.addDispatchTrigger(
+				null, TestPropsValues.getUserId(),
+				"scheduled-publications-conflict-checks",
+				UnicodePropertiesBuilder.create(
+					true
+				).put(
+					"featureFlagKey", "LPD-11018"
+				).build(),
+				RandomTestUtil.randomString(), false);
+
+		_renameColumn("dispatchTaskSettings", "taskSettings");
+
+		try {
+			_upgradeProcess.upgrade();
+		}
+		finally {
+			_renameColumn("taskSettings", "dispatchTaskSettings");
+		}
+
+		CacheRegistryUtil.clear();
+
+		dispatchTrigger = _dispatchTriggerLocalService.getDispatchTrigger(
+			dispatchTrigger.getDispatchTriggerId());
+
+		UnicodeProperties unicodeProperties =
+			dispatchTrigger.getDispatchTaskSettingsUnicodeProperties();
+
+		Assert.assertEquals(
+			"LPD-11018", unicodeProperties.getProperty("featureFlagKey"));
 	}
 
 	@Inject

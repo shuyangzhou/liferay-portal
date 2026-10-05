@@ -1,0 +1,65 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.liferay.source.formatter.dependencies;
+
+/**
+ * @author Alan Huang
+ */
+public class TextBlock {
+
+	public void method1() {
+		String colors = """
+         red
+         green
+         blue""";
+
+		System.out.println(colors);
+	}
+
+	public String method2() {
+		return """
+
+	Hello""";
+	}
+
+	public String method3() {
+		return """
+
+	rm font.ttf
+}
+
+function _get_duration {
+	echo $(ffprobe -i ${1} -loglevel error -of default=noprint_wrappers=1:nokey=1 -show_entries format=duration | cut -d. -f1)
+}
+
+function _get_resources {""";
+	}
+
+	public String method4() {
+		return """
+
+function _has_flag {
+	local flag_name=${1}
+
+	shift
+
+	local argument
+
+	for argument in "${@}"
+	do
+		if [[ ${argument} == --${flag_name} ]]
+		then
+			return 0
+		fi
+	done
+
+	return 1
+}
+
+main "${@}\"""";
+	}
+
+}

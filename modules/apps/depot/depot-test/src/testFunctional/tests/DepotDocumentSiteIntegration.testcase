@@ -263,7 +263,7 @@ definition {
 			dmDocumentTitle = "DM Document Title 2",
 			groupName = "Test Depot Name",
 			mimeType = "application/msword",
-			sourceFileName = "Document_1.doc");
+			sourceFileName = "Document_2.doc");
 
 		DepotNavigator.openDepotDocumentsAndMediaAdmin(depotName = "Test Depot Name");
 
@@ -615,6 +615,10 @@ definition {
 	@description = "This ensures that a depot image in the MB content field can be rendered correctly on a connected site after moving it to a folder."
 	@priority = 4
 	test CanViewImageInMBAfterMovingToFolder {
+		task ("Enable Message Boards") {
+			MessageboardsPortlet.enableMessageBoards();
+		}
+
 		JSONDocument.addFileWithUploadedFile(
 			dmDocumentDescription = "DM Document Description",
 			dmDocumentTitle = "DM Document Title",
@@ -670,6 +674,10 @@ definition {
 	test CanViewImageInMBWithPublication {
 		property osgi.module.configuration.file.names = "com.liferay.change.tracking.configuration.CTSettingsConfiguration.config";
 		property osgi.module.configurations = "enabled=B\"true\"";
+
+		task ("Enable Message Boards") {
+			MessageboardsPortlet.enableMessageBoards();
+		}
 
 		JSONPublications.addPublication(publicationName = "Publication Name");
 

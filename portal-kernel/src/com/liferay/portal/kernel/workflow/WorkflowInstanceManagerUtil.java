@@ -5,6 +5,7 @@
 
 package com.liferay.portal.kernel.workflow;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.workflow.search.WorkflowModelSearchResult;
@@ -22,6 +23,15 @@ import java.util.Map;
  * @author Raymond Augé
  */
 public class WorkflowInstanceManagerUtil {
+
+	public static void deleteWorkflowInstance(long workflowInstanceId)
+		throws PortalException {
+
+		WorkflowInstanceManager workflowInstanceManager =
+			_workflowInstanceManagerSnapshot.get();
+
+		workflowInstanceManager.deleteWorkflowInstance(workflowInstanceId);
+	}
 
 	public static void deleteWorkflowInstance(
 			long companyId, long workflowInstanceId)
@@ -43,6 +53,15 @@ public class WorkflowInstanceManagerUtil {
 
 		return workflowInstanceManager.getNextTransitionNames(
 			companyId, userId, workflowInstanceId);
+	}
+
+	public static WorkflowInstance getWorkflowInstance(long workflowInstanceId)
+		throws PortalException {
+
+		WorkflowInstanceManager workflowInstanceManager =
+			_workflowInstanceManagerSnapshot.get();
+
+		return workflowInstanceManager.getWorkflowInstance(workflowInstanceId);
 	}
 
 	public static WorkflowInstance getWorkflowInstance(
@@ -250,6 +269,17 @@ public class WorkflowInstanceManagerUtil {
 			companyId, groupId, userId, workflowDefinitionName,
 			workflowDefinitionVersion, transitionName, workflowContext,
 			waitForCompletion);
+	}
+
+	public static WorkflowInstance updateContext(
+			long workflowInstanceId, Map<String, Serializable> workflowContext)
+		throws PortalException {
+
+		WorkflowInstanceManager workflowInstanceManager =
+			_workflowInstanceManagerSnapshot.get();
+
+		return workflowInstanceManager.updateContext(
+			workflowInstanceId, workflowContext);
 	}
 
 	public static WorkflowInstance updateWorkflowContext(
