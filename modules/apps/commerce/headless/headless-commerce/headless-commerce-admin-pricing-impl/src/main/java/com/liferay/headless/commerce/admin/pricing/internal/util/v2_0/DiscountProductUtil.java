@@ -110,12 +110,13 @@ public class DiscountProductUtil {
 		CommerceCatalog commerceCatalog = CatalogUtil.getCommerceCatalog(
 			0, discountProduct.getCatalogCurrencyCode(),
 			discountProduct.getCatalogCurrencyExternalReferenceCode(),
-			discountProduct.getCatalogExternalReferenceCode(),
+			discountProduct.getCatalogExternalReferenceCode(), null,
 			commerceCatalogService, commerceCurrencyService, serviceContext);
 
 		CPDefinition cpDefinition =
 			cpDefinitionService.getOrAddEmptyCPDefinition(
 				productExternalReferenceCode, commerceCatalog.getGroupId(),
+				null,
 				GetterUtil.getString(
 					discountProduct.getProductType(),
 					SimpleCPTypeConstants.NAME));

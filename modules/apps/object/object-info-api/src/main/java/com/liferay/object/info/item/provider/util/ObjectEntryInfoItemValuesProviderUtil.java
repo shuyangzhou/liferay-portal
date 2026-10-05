@@ -5,8 +5,8 @@
 
 package com.liferay.object.info.item.provider.util;
 
+import com.liferay.document.library.helper.DLURLHelper;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
-import com.liferay.document.library.util.DLURLHelper;
 import com.liferay.friendly.url.model.FriendlyURLEntry;
 import com.liferay.friendly.url.service.FriendlyURLEntryLocalService;
 import com.liferay.info.field.InfoField;
@@ -35,6 +35,7 @@ import com.liferay.object.model.ObjectAction;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectRelationship;
+import com.liferay.object.model.bag.ObjectFieldBag;
 import com.liferay.object.related.models.ObjectRelatedModelsProvider;
 import com.liferay.object.related.models.ObjectRelatedModelsProviderRegistry;
 import com.liferay.object.rest.dto.v1_0.ListEntry;
@@ -45,7 +46,6 @@ import com.liferay.object.service.ObjectActionLocalService;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectEntryService;
-import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.petra.function.UnsafeSupplierValue;
@@ -127,7 +127,6 @@ public class ObjectEntryInfoItemValuesProviderUtil {
 			ObjectEntryManagerRegistry objectEntryManagerRegistry,
 			ObjectEntryService objectEntryService,
 			ObjectFieldInfoFieldConverter objectFieldInfoFieldConverter,
-			ObjectFieldLocalService objectFieldLocalService,
 			List<ObjectField> objectFields,
 			ObjectRelationshipLocalService objectRelationshipLocalService,
 			ObjectScopeProviderRegistry objectScopeProviderRegistry,
@@ -169,14 +168,14 @@ public class ObjectEntryInfoItemValuesProviderUtil {
 					fetchObjectRelationshipByObjectFieldId2(
 						objectField.getObjectFieldId());
 
-			ObjectDefinition parentObjectDefinition =
-				objectDefinitionLocalService.getObjectDefinition(
-					objectRelationship.getObjectDefinitionId1());
-
 			com.liferay.object.model.ObjectEntry
+				serviceBuilderRelatedObjectEntry = null;
+
+			if (serviceBuilderObjectEntry != null) {
 				serviceBuilderRelatedObjectEntry =
 					serviceBuilderObjectEntry.getRelatedObjectEntry(
 						objectField.getName());
+			}
 
 			if (serviceBuilderRelatedObjectEntry == null) {
 				long objectEntryId = GetterUtil.getLong(
@@ -187,6 +186,11 @@ public class ObjectEntryInfoItemValuesProviderUtil {
 						objectEntryLocalService.fetchObjectEntry(objectEntryId);
 				}
 			}
+
+			ObjectDefinition parentObjectDefinition =
+				_getParentObjectDefinition(
+					objectDefinitionLocalService, objectRelationship,
+					serviceBuilderRelatedObjectEntry);
 
 			ObjectEntry objectEntry = ObjectEntryInfoItemUtil.getObjectEntry(
 				parentObjectDefinition, objectEntryManagerRegistry,
@@ -202,9 +206,11 @@ public class ObjectEntryInfoItemValuesProviderUtil {
 					objectEntry.getDefaultLanguageId();
 			}
 
+			ObjectFieldBag objectFieldBag =
+				parentObjectDefinition.getObjectFieldBag();
+
 			for (ObjectField relatedObjectField :
-					objectFieldLocalService.getObjectFields(
-						parentObjectDefinition.getObjectDefinitionId())) {
+					objectFieldBag.getObjectFields()) {
 
 				if (relatedObjectField.isMetadata()) {
 					continue;
@@ -725,6 +731,21 @@ public class ObjectEntryInfoItemValuesProviderUtil {
 			).values(
 				listTypeEntry.getNameMap()
 			).build());
+	}
+
+	private static ObjectDefinition _getParentObjectDefinition(
+			ObjectDefinitionLocalService objectDefinitionLocalService,
+			ObjectRelationship objectRelationship,
+			com.liferay.object.model.ObjectEntry
+				serviceBuilderRelatedObjectEntry)
+		throws Exception {
+
+		if (serviceBuilderRelatedObjectEntry == null) {
+			return objectDefinitionLocalService.getObjectDefinition(
+				objectRelationship.getObjectDefinitionId1());
+		}
+
+		return serviceBuilderRelatedObjectEntry.getObjectDefinition();
 	}
 
 	private static WebImage _getWebImage(

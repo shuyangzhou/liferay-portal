@@ -369,7 +369,7 @@ public class ObjectEntryLocalServiceImpl
 			if (objectField.isLocalized()) {
 				Map<String, Object> localizedValues =
 					objectFieldBusinessType.getLocalizedValues(
-						objectField, userId, new HashMap<>(values));
+						groupId, objectField, userId, new HashMap<>(values));
 
 				if (localizedValues != null) {
 					values.put(
@@ -451,7 +451,8 @@ public class ObjectEntryLocalServiceImpl
 
 		defaultLanguageId = _getDefaultLanguageId(defaultLanguageId, groupId);
 
-		_fillDefaultValue(defaultLanguageId, objectDefinitionId, values);
+		_fillDefaultValue(
+			defaultLanguageId, groupId, objectDefinitionId, values);
 
 		_contributeValues(groupId, objectDefinition, userId, values);
 
@@ -4147,7 +4148,7 @@ public class ObjectEntryLocalServiceImpl
 	}
 
 	private void _fillDefaultValue(
-		String defaultLanguageId, long objectDefinitionId,
+		String defaultLanguageId, long groupId, long objectDefinitionId,
 		Map<String, Serializable> values) {
 
 		for (ObjectField objectField :
@@ -4173,23 +4174,46 @@ public class ObjectEntryLocalServiceImpl
 			Object value = ObjectFieldSettingUtil.getDefaultValue(
 				_ddmExpressionFactory, objectField, (Map)values);
 
-			if (value != null) {
-				values.put(objectField.getName(), (Serializable)value);
+			if (value == null) {
+				continue;
+			}
 
-				if (!objectField.isLocalized()) {
+			if (objectField.compareBusinessType(
+					ObjectFieldConstants.BUSINESS_TYPE_LOCATION)) {
+
+				ObjectFieldBusinessType objectFieldBusinessType =
+					_objectFieldBusinessTypeRegistry.getObjectFieldBusinessType(
+						objectField.getBusinessType());
+
+				try {
+					value = objectFieldBusinessType.getValue(
+						groupId, objectField, 0,
+						Map.of(objectField.getName(), value));
+				}
+				catch (PortalException portalException) {
+					if (_log.isDebugEnabled()) {
+						_log.debug(portalException);
+					}
+
 					continue;
 				}
+			}
 
-				if (localizedValues.isEmpty()) {
-					values.put(
-						objectField.getI18nObjectFieldName(),
-						HashMapBuilder.put(
-							defaultLanguageId, value
-						).build());
-				}
-				else {
-					localizedValues.putIfAbsent(defaultLanguageId, value);
-				}
+			values.put(objectField.getName(), (Serializable)value);
+
+			if (!objectField.isLocalized()) {
+				continue;
+			}
+
+			if (localizedValues.isEmpty()) {
+				values.put(
+					objectField.getI18nObjectFieldName(),
+					HashMapBuilder.put(
+						defaultLanguageId, value
+					).build());
+			}
+			else {
+				localizedValues.putIfAbsent(defaultLanguageId, value);
 			}
 		}
 	}
@@ -5264,7 +5288,8 @@ public class ObjectEntryLocalServiceImpl
 				table, objectField.getDBColumnName(), search);
 		}
 
-		Column<?, ?> column = table.getColumn(objectField.getDBColumnName());
+		Column<?, ?> column = table.getColumn(
+			objectField.getDefaultDBColumnName());
 
 		if (column == null) {
 			return null;
@@ -6096,13 +6121,9 @@ public class ObjectEntryLocalServiceImpl
 			}
 
 			if (columnName.endsWith(StringPool.UNDERLINE)) {
-				String[] parts = StringUtil.split(
-					columnName, StringPool.UNDERLINE);
+				String[] parts = _splitColumnName(columnName);
 
-				if ((parts.length == 2) &&
-					(Objects.equals(parts[0], "classNameId") ||
-					 Objects.equals(parts[0], "classPK"))) {
-
+				if (parts != null) {
 					_putValue(
 						javaTypeClass, parts[0], object,
 						(Map<String, Serializable>)values.computeIfAbsent(
@@ -6248,12 +6269,14 @@ public class ObjectEntryLocalServiceImpl
 		sb.append(", languageId");
 
 		for (ObjectField objectField : objectFields) {
-			columnNames.add(objectField.getDBColumnName());
+			for (String dbColumnName : objectField.getDBColumnNames()) {
+				columnNames.add(dbColumnName);
 
-			count++;
+				count++;
 
-			sb.append(", ");
-			sb.append(objectField.getDBColumnName());
+				sb.append(", ");
+				sb.append(dbColumnName);
+			}
 		}
 
 		Set<Locale> locales = _getLocales(
@@ -6297,10 +6320,6 @@ public class ObjectEntryLocalServiceImpl
 					Types.VARCHAR, languageId);
 
 				for (ObjectField objectField : objectFields) {
-					Column<?, ?> column =
-						dynamicObjectDefinitionLocalizationTable.getColumn(
-							objectField.getDBColumnName());
-
 					Map<String, Serializable> insertedLocalizedValue =
 						new HashMap<>(1);
 
@@ -6321,18 +6340,21 @@ public class ObjectEntryLocalServiceImpl
 							localizedValue, StringPool.BLANK);
 					}
 
-					_setColumn(
-						column, columnNames, index++, insertedLocalizedValue,
-						objectField, preparedStatement, localizedValue);
+					for (String dbColumnName : objectField.getDBColumnNames()) {
+						_setColumn(
+							dynamicObjectDefinitionLocalizationTable.getColumn(
+								dbColumnName),
+							columnNames, index++, insertedLocalizedValue,
+							objectField, preparedStatement, localizedValue);
+					}
 
 					Map<String, Serializable> localizedValues =
 						(Map<String, Serializable>)insertedValues.getOrDefault(
-							column.getName() + "i18n", new HashMap<>());
+							objectField.getI18nObjectFieldName(),
+							new HashMap<>());
 
 					Serializable insertedLocalizedSerializable =
-						insertedLocalizedValue.get(
-							StringUtil.removeLast(
-								column.getName(), StringPool.UNDERLINE));
+						insertedLocalizedValue.get(objectField.getName());
 
 					if ((insertedLocalizedSerializable instanceof Long) ||
 						Validator.isNotNull(insertedLocalizedSerializable)) {
@@ -6342,8 +6364,8 @@ public class ObjectEntryLocalServiceImpl
 					}
 
 					_putLocalizedValues(
-						column.getName(), defaultLanguageId, localizedValues,
-						insertedValues);
+						objectField.getDBColumnName(), defaultLanguageId,
+						localizedValues, insertedValues);
 				}
 
 				preparedStatement.addBatch();
@@ -6922,6 +6944,35 @@ public class ObjectEntryLocalServiceImpl
 		Map<String, Serializable> localizedValues,
 		Map<String, Serializable> values) {
 
+		String[] parts = _splitColumnName(columnName);
+
+		if (parts != null) {
+			Map<String, Serializable> i18nValues =
+				(Map<String, Serializable>)values.computeIfAbsent(
+					parts[1] + "_i18n", key -> new HashMap<>());
+
+			for (Map.Entry<String, Serializable> entry :
+					localizedValues.entrySet()) {
+
+				Map<String, Serializable> valueMap =
+					(Map<String, Serializable>)i18nValues.computeIfAbsent(
+						entry.getKey(), key -> new HashMap<>());
+
+				valueMap.put(parts[0], entry.getValue());
+			}
+
+			Map<String, Serializable> valueMap =
+				(Map<String, Serializable>)values.computeIfAbsent(
+					parts[1], key -> new HashMap<>());
+
+			valueMap.put(
+				parts[0],
+				localizedValues.getOrDefault(
+					defaultLanguageId, StringPool.BLANK));
+
+			return;
+		}
+
 		values.put(columnName + "i18n", (Serializable)localizedValues);
 		values.put(
 			StringUtil.removeLast(columnName, StringPool.UNDERLINE),
@@ -6959,21 +7010,15 @@ public class ObjectEntryLocalServiceImpl
 		Class<?> javaTypeClass = column.getJavaType();
 
 		if (columnName.endsWith(StringPool.UNDERLINE)) {
-			if (columnName.startsWith("class")) {
-				String[] parts = StringUtil.split(
-					columnName, StringPool.UNDERLINE);
+			String[] parts = _splitColumnName(columnName);
 
-				if ((parts.length == 2) &&
-					(Objects.equals(parts[0], "classNameId") ||
-					 Objects.equals(parts[0], "classPK"))) {
+			if (parts != null) {
+				_putValue(
+					javaTypeClass, parts[0], object,
+					(Map<String, Serializable>)values.computeIfAbsent(
+						parts[1], key -> new HashMap<>()));
 
-					_putValue(
-						javaTypeClass, parts[0], object,
-						(Map<String, Serializable>)values.computeIfAbsent(
-							parts[1], key -> new HashMap<>()));
-
-					return;
-				}
+				return;
 			}
 
 			columnName = columnName.substring(0, columnName.length() - 1);
@@ -7165,20 +7210,21 @@ public class ObjectEntryLocalServiceImpl
 				columnNames, index, insertedValues, preparedStatement,
 				column.getSQLType(), value);
 		}
-		else if (objectField.compareBusinessType(
-					ObjectFieldConstants.BUSINESS_TYPE_ASSIGNEE)) {
-
+		else if (objectField.hasMultipleDBColumns()) {
 			String columnName = StringUtil.extractFirst(
 				column.getName(), StringPool.UNDERLINE);
 
 			columnNames.set(index - 1, columnName);
+
+			Map<String, Serializable> valueMap =
+				(Map<String, Serializable>)value;
 
 			_setColumn(
 				columnNames, index,
 				(Map<String, Serializable>)insertedValues.computeIfAbsent(
 					objectField.getName(), key -> new HashMap<>()),
 				preparedStatement, column.getSQLType(),
-				MapUtil.getLong((Map<String, Serializable>)value, columnName));
+				valueMap.get(columnName));
 		}
 		else if (objectField.compareBusinessType(
 					ObjectFieldConstants.BUSINESS_TYPE_ENCRYPTED)) {
@@ -7528,6 +7574,23 @@ public class ObjectEntryLocalServiceImpl
 			objectEntry.getObjectEntryId());
 	}
 
+	private String[] _splitColumnName(String columnName) {
+		if (columnName.startsWith("address_") ||
+			columnName.startsWith("classNameId_") ||
+			columnName.startsWith("classPK_") ||
+			columnName.startsWith("latitude_") ||
+			columnName.startsWith("longitude_")) {
+
+			String[] parts = StringUtil.split(columnName, StringPool.UNDERLINE);
+
+			if (parts.length == 2) {
+				return parts;
+			}
+		}
+
+		return null;
+	}
+
 	private void _startWorkflowInstance(
 			long userId, ObjectEntry objectEntry, ServiceContext serviceContext,
 			boolean skipModelListener)
@@ -7809,7 +7872,7 @@ public class ObjectEntryLocalServiceImpl
 
 		if (!partialUpdate) {
 			_fillDefaultValue(
-				objectEntry.getDefaultLanguageId(),
+				objectEntry.getDefaultLanguageId(), objectEntry.getGroupId(),
 				objectDefinition.getObjectDefinitionId(), values);
 		}
 
@@ -8689,9 +8752,7 @@ public class ObjectEntryLocalServiceImpl
 			throw new ObjectEntryValuesException.Required(
 				objectField.getName());
 		}
-		else if (objectField.compareBusinessType(
-					ObjectFieldConstants.BUSINESS_TYPE_ASSIGNEE)) {
-
+		else if (objectField.hasMultipleDBColumns()) {
 			if (MapUtil.isEmpty((Map<String, Serializable>)value)) {
 				throw new ObjectEntryValuesException.Required(
 					objectField.getName());
@@ -8826,10 +8887,7 @@ public class ObjectEntryLocalServiceImpl
 			String valueLanguageId)
 		throws PortalException {
 
-		if (StringUtil.equals(
-				objectField.getBusinessType(),
-				ObjectFieldConstants.BUSINESS_TYPE_ASSIGNEE)) {
-
+		if (objectField.hasMultipleDBColumns()) {
 			return;
 		}
 		else if (StringUtil.equals(

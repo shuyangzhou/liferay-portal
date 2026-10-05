@@ -11,10 +11,14 @@ import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.cache.PortalCacheWrapper;
+import com.liferay.portal.cache.TransactionalPortalCache;
+import com.liferay.portal.dao.init.DBInitUtil;
 import com.liferay.portal.kernel.cache.CacheRegistryItem;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
+import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
 import com.liferay.portal.kernel.cache.PortalCacheManager;
 import com.liferay.portal.kernel.cache.PortalCacheManagerListener;
 import com.liferay.portal.kernel.cache.key.CacheKeyGenerator;
@@ -25,13 +29,17 @@ import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
+import com.liferay.portal.kernel.dao.orm.CountFinderPathRegistry;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
+import com.liferay.portal.kernel.dao.orm.ModelRemovalThreadLocal;
+import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.db.partition.DBPartition;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.change.tracking.CTModel;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -58,6 +66,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -79,9 +88,12 @@ public class FinderCacheImpl
 	public void clearByEntityCache(String className) {
 		clearLocalCache();
 
+		_removePrivateCounts();
+
 		_clearCache(className);
 		_clearCache(_getCacheNameWithPagination(className));
 		_clearCache(_getCacheNameWithoutPagination(className));
+		_clearCache(_getCountCacheName(className));
 
 		_clearDSLQueryCache(className);
 	}
@@ -89,6 +101,8 @@ public class FinderCacheImpl
 	@Override
 	public void clearCache() {
 		clearLocalCache();
+
+		_removePrivateCounts();
 
 		for (PortalCache<?, ?> portalCache : _portalCaches.values()) {
 			portalCache.removeAll();
@@ -165,7 +179,34 @@ public class FinderCacheImpl
 
 			portalCache = _getCTPortalCache(finderPath.getCacheName());
 
-			cacheValue = portalCache.get(cacheKey);
+			boolean transactionalCount = false;
+
+			if (_isMaintainedCountFinderPath(finderPath) &&
+				TransactionalPortalCacheUtil.isEnabled()) {
+
+				transactionalCount = true;
+			}
+
+			CountKey countKey = null;
+
+			if (transactionalCount) {
+				countKey = _createCountKey(finderPath, cacheKey);
+			}
+
+			cacheValue = _getPrivateCount(countKey);
+
+			if (cacheValue == null) {
+				cacheValue = portalCache.get(cacheKey);
+
+				if (cacheValue instanceof AtomicLong atomicLong) {
+					cacheValue = atomicLong.get() + _getPendingDelta(countKey);
+				}
+			}
+
+			if ((cacheValue != null) && transactionalCount) {
+				_flushPendingWrites(
+					finderPath.getEntityClassName(), basePersistence);
+			}
 
 			if ((cacheValue != null) && (localCache != null)) {
 				localCache.put(localCacheKey, cacheValue);
@@ -231,7 +272,7 @@ public class FinderCacheImpl
 			else if ((objects.size() > _valueObjectFinderCacheListThreshold) &&
 					 (_valueObjectFinderCacheListThreshold > 0)) {
 
-				_removeResult(finderPath, args);
+				_removeResult(finderPath, args, true);
 
 				return;
 			}
@@ -248,44 +289,42 @@ public class FinderCacheImpl
 			}
 		}
 
-		String cacheName = finderPath.getCacheName();
-		String cacheKeyPrefix = finderPath.getCacheKeyPrefix();
-
-		Map<String, FinderPath> finderPaths = _finderPathsMap.get(cacheName);
-
-		if (finderPaths == null) {
-			finderPaths = new ConcurrentHashMap<>();
-
-			Map<String, FinderPath> originalFinderPaths =
-				_finderPathsMap.putIfAbsent(cacheName, finderPaths);
-
-			if (originalFinderPaths != null) {
-				finderPaths = originalFinderPaths;
-			}
-		}
-
-		if (!finderPaths.containsKey(cacheKeyPrefix)) {
-			if (cacheKeyPrefix.startsWith("dslQuery")) {
-				for (String tableName :
-						FinderPath.decodeDSLQueryCacheName(cacheName)) {
-
-					Set<String> dslQueryCacheNames =
-						_dslQueryCacheNamesMap.computeIfAbsent(
-							tableName,
-							key -> Collections.newSetFromMap(
-								new ConcurrentHashMap<>()));
-
-					dslQueryCacheNames.add(cacheName);
-				}
-			}
-
-			finderPaths.putIfAbsent(cacheKeyPrefix, finderPath);
+		if (!finderPath.isCountResult()) {
+			_addFinderPath(finderPath);
 		}
 
 		Serializable cacheKey = _encodeCacheKey(finderPath, args);
 
+		Serializable portalCacheValue = cacheValue;
+		int timeToLive = PortalCache.DEFAULT_TIME_TO_LIVE;
+
+		if ((result instanceof Long count) &&
+			_isMaintainedCountFinderPath(finderPath)) {
+
+			if (TransactionalPortalCacheUtil.isEnabled()) {
+				CountKey countKey = _createCountKey(finderPath, cacheKey);
+
+				if (countKey != null) {
+					TransactionalPortalCacheUtil.put(
+						_privateCountPortalCache, countKey,
+						new PrivateCount(
+							count,
+							TransactionalPortalCacheUtil.getStartSequence()),
+						PortalCache.DEFAULT_TIME_TO_LIVE, true);
+
+					_putLocalCache(finderPath, cacheKey, cacheValue);
+
+					return;
+				}
+			}
+
+			portalCacheValue = new AtomicLong(count);
+			timeToLive = _COUNT_TIME_TO_LIVE;
+		}
+
 		if (!TransactionalPortalCacheUtil.completePut(
-				_getCTPortalCache(cacheName), cacheKey, cacheValue)) {
+				_getCTPortalCache(finderPath.getCacheName()), cacheKey,
+				portalCacheValue, timeToLive)) {
 
 			if (_isLocalCacheEnabled()) {
 				Map<LocalCacheKey, Serializable> localCache = _localCache.get();
@@ -297,13 +336,7 @@ public class FinderCacheImpl
 			return;
 		}
 
-		if (_isLocalCacheEnabled()) {
-			Map<LocalCacheKey, Serializable> localCache = _localCache.get();
-
-			localCache.put(
-				new LocalCacheKey(finderPath.getCacheName(), cacheKey),
-				cacheValue);
-		}
+		_putLocalCache(finderPath, cacheKey, cacheValue);
 	}
 
 	public void removeByEntityCache(String className, BaseModel<?> baseModel) {
@@ -327,14 +360,62 @@ public class FinderCacheImpl
 			argumentsResolverHolder.getArgumentsResolver();
 
 		for (FinderPath finderPath : _getFinderPaths(className)) {
-			removeResult(
+			_removeResult(
 				finderPath,
 				argumentsResolver.getArguments(
-					finderPath, baseModel, false, false));
-			removeResult(
+					finderPath, baseModel, false, false),
+				false);
+			_removeResult(
 				finderPath,
 				argumentsResolver.getArguments(
-					finderPath, baseModel, true, true));
+					finderPath, baseModel, true, true),
+				false);
+		}
+
+		if (!_countMaintenanceEnabled || !(baseModel instanceof MVCCModel)) {
+			_removePrivateCounts();
+
+			_clearCache(_getCountCacheName(className));
+
+			return;
+		}
+
+		_markPendingFlush(className, argumentsResolver.getTableName());
+
+		PortalCache<Serializable, Serializable> portalCache = _portalCaches.get(
+			_getCountCacheName(className));
+
+		if (CTCollectionThreadLocal.isProductionMode() &&
+			(portalCache instanceof CTAwarePortalCache ctAwarePortalCache)) {
+
+			ctAwarePortalCache.removeAllFromCTPortalCaches();
+		}
+
+		boolean removing = ModelRemovalThreadLocal.isRemoving(baseModel);
+
+		for (FinderPath finderPath :
+				CountFinderPathRegistry.getCountFinderPaths(className)) {
+
+			if (removing) {
+				_adjustResult(
+					finderPath,
+					argumentsResolver.getArguments(
+						finderPath, baseModel, false, true),
+					-1, false);
+
+				continue;
+			}
+
+			_removeResult(
+				finderPath,
+				argumentsResolver.getArguments(
+					finderPath, baseModel, false, false),
+				false);
+			_removeResult(
+				finderPath,
+				argumentsResolver.getArguments(
+					finderPath, baseModel, true, true),
+				false);
 		}
 	}
 
@@ -362,6 +443,7 @@ public class FinderCacheImpl
 		removeCache(cacheName);
 		removeCache(_getCacheNameWithPagination(cacheName));
 		removeCache(_getCacheNameWithoutPagination(cacheName));
+		removeCache(_getCountCacheName(cacheName));
 
 		String tableName = null;
 
@@ -391,7 +473,7 @@ public class FinderCacheImpl
 			return;
 		}
 
-		_removeResult(finderPath, args);
+		_removeResult(finderPath, args, true);
 	}
 
 	public void updateByEntityCache(String className, BaseModel<?> baseModel) {
@@ -418,27 +500,62 @@ public class FinderCacheImpl
 
 		finderPaths.addAll(
 			_getFinderPaths(_getCacheNameWithoutPagination(className)));
+		finderPaths.addAll(
+			CountFinderPathRegistry.getCountFinderPaths(className));
 		finderPaths.addAll(_getFinderPaths(className));
 
 		ArgumentsResolver argumentsResolver =
 			argumentsResolverHolder.getArgumentsResolver();
 
+		if (_countMaintenanceEnabled && (baseModel instanceof MVCCModel)) {
+			_markPendingFlush(className, argumentsResolver.getTableName());
+		}
+
 		for (FinderPath finderPath : finderPaths) {
+			if (_isMaintainedCountFinderPath(finderPath) &&
+				(baseModel instanceof MVCCModel)) {
+
+				if (baseModel.isNew()) {
+					_adjustResult(
+						finderPath,
+						argumentsResolver.getArguments(
+							finderPath, baseModel, false, false),
+						1, true);
+				}
+				else {
+					_adjustResult(
+						finderPath,
+						argumentsResolver.getArguments(
+							finderPath, baseModel, true, false),
+						1, true);
+					_adjustResult(
+						finderPath,
+						argumentsResolver.getArguments(
+							finderPath, baseModel, true, true),
+						-1, true);
+				}
+
+				continue;
+			}
+
 			if (baseModel.isNew()) {
 				_removeResult(
 					finderPath,
 					argumentsResolver.getArguments(
-						finderPath, baseModel, false, false));
+						finderPath, baseModel, false, false),
+					false);
 			}
 			else {
 				_removeResult(
 					finderPath,
 					argumentsResolver.getArguments(
-						finderPath, baseModel, true, false));
+						finderPath, baseModel, true, false),
+					false);
 				_removeResult(
 					finderPath,
 					argumentsResolver.getArguments(
-						finderPath, baseModel, true, true));
+						finderPath, baseModel, true, true),
+					false);
 			}
 		}
 	}
@@ -446,6 +563,13 @@ public class FinderCacheImpl
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
+
+		_countMaintenanceEnabled =
+			!DBInitUtil.isReadWriteDataSource() &&
+			GetterUtil.getBoolean(
+				PropsUtil.get(
+					PropsKeys.
+						VALUE_OBJECT_FINDER_CACHE_COUNT_MAINTENANCE_ENABLED));
 
 		_valueObjectFinderCacheEnabled = GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_ENABLED));
@@ -522,6 +646,95 @@ public class FinderCacheImpl
 		_serviceRegistration.unregister();
 	}
 
+	private void _addFinderPath(FinderPath finderPath) {
+		String cacheName = finderPath.getCacheName();
+		String cacheKeyPrefix = finderPath.getCacheKeyPrefix();
+
+		Map<String, FinderPath> finderPaths = _finderPathsMap.get(cacheName);
+
+		if (finderPaths == null) {
+			finderPaths = new ConcurrentHashMap<>();
+
+			Map<String, FinderPath> originalFinderPaths =
+				_finderPathsMap.putIfAbsent(cacheName, finderPaths);
+
+			if (originalFinderPaths != null) {
+				finderPaths = originalFinderPaths;
+			}
+		}
+
+		if (!finderPaths.containsKey(cacheKeyPrefix)) {
+			if (cacheKeyPrefix.startsWith("dslQuery")) {
+				for (String tableName :
+						FinderPath.decodeDSLQueryCacheName(cacheName)) {
+
+					Set<String> dslQueryCacheNames =
+						_dslQueryCacheNamesMap.computeIfAbsent(
+							tableName,
+							key -> Collections.newSetFromMap(
+								new ConcurrentHashMap<>()));
+
+					dslQueryCacheNames.add(cacheName);
+				}
+			}
+
+			finderPaths.putIfAbsent(cacheKeyPrefix, finderPath);
+		}
+	}
+
+	private void _adjustResult(
+		FinderPath finderPath, Object[] args, long delta,
+		boolean removeFromCTPortalCaches) {
+
+		if (args == null) {
+			return;
+		}
+
+		Serializable cacheKey = _encodeCacheKey(finderPath, args);
+
+		PortalCache<Serializable, Serializable> portalCache = _getPortalCache(
+			finderPath.getCacheName());
+
+		if (!removeFromCTPortalCaches &&
+			(portalCache instanceof CTAwarePortalCache ctAwarePortalCache)) {
+
+			portalCache = ctAwarePortalCache.getCTPortalCache();
+		}
+
+		CountKey countKey = null;
+
+		if (TransactionalPortalCacheUtil.isEnabled()) {
+			countKey = _createCountKey(finderPath, cacheKey);
+		}
+
+		if (countKey == null) {
+			portalCache.remove(cacheKey);
+
+			return;
+		}
+
+		Long privateCount = _getPrivateCount(countKey);
+
+		if (privateCount != null) {
+			TransactionalPortalCacheUtil.put(
+				_privateCountPortalCache, countKey, privateCount + delta,
+				PortalCache.DEFAULT_TIME_TO_LIVE, true);
+		}
+
+		Serializable cacheValue = countKey._portalCache.get(cacheKey);
+
+		if (cacheValue instanceof AtomicLong atomicLong) {
+			_putPendingCount(countKey, atomicLong, delta);
+
+			if (portalCache instanceof CTAwarePortalCache ctAwarePortalCache) {
+				ctAwarePortalCache.removeFromCTPortalCaches(cacheKey);
+			}
+		}
+		else {
+			portalCache.remove(cacheKey);
+		}
+	}
+
 	private void _clearCache(String cacheName) {
 		PortalCache<?, ?> portalCache = _getPortalCache(cacheName);
 
@@ -552,6 +765,30 @@ public class FinderCacheImpl
 		}
 	}
 
+	private CountKey _createCountKey(
+		FinderPath finderPath, Serializable cacheKey) {
+
+		PortalCache<Serializable, Serializable> portalCache = _getPortalCache(
+			finderPath.getCacheName());
+
+		if (portalCache instanceof CTAwarePortalCache ctAwarePortalCache) {
+			if (!CTCollectionThreadLocal.isProductionMode()) {
+				return null;
+			}
+
+			portalCache = ctAwarePortalCache.getProductionPortalCache();
+		}
+
+		if (portalCache instanceof
+				TransactionalPortalCache<Serializable, Serializable>
+					transactionalPortalCache) {
+
+			return new CountKey(transactionalPortalCache, cacheKey);
+		}
+
+		return null;
+	}
+
 	private Serializable _encodeCacheKey(
 		FinderPath finderPath, Object[] arguments) {
 
@@ -572,6 +809,53 @@ public class FinderCacheImpl
 				finderPath.getCacheKeyPrefix(),
 				StringUtil.toHexString(cacheKeyGenerator.getCacheKey(keys))
 			});
+	}
+
+	private void _flushPendingCount(
+		CountKey countKey, PendingCount pendingCount) {
+
+		if (pendingCount._delta == 0) {
+			return;
+		}
+
+		TransactionalPortalCacheUtil.invalidate(
+			countKey._portalCache, countKey._cacheKey);
+
+		PortalCache<Serializable, Serializable> portalCache =
+			countKey._portalCache.getWrappedPortalCache();
+
+		Serializable cacheValue = portalCache.get(countKey._cacheKey);
+
+		if (cacheValue == null) {
+			return;
+		}
+
+		if (cacheValue == pendingCount._atomicLong) {
+			pendingCount._atomicLong.addAndGet(pendingCount._delta);
+		}
+		else {
+			PortalCacheHelperUtil.removeWithoutReplicator(
+				portalCache, countKey._cacheKey);
+		}
+	}
+
+	private void _flushPendingWrites(
+		String cacheName, BasePersistence<?> basePersistence) {
+
+		String tableName = TransactionalPortalCacheUtil.get(
+			_pendingFlushPortalCache, cacheName);
+
+		if (tableName == null) {
+			return;
+		}
+
+		Session session = basePersistence.getCurrentSession();
+
+		session.autoFlushIfRequired(Collections.singleton(tableName));
+
+		TransactionalPortalCacheUtil.put(
+			_pendingFlushPortalCache, cacheName, null,
+			PortalCache.DEFAULT_TIME_TO_LIVE, true);
 	}
 
 	private PortalCache<Serializable, Serializable> _getCTPortalCache(
@@ -621,6 +905,10 @@ public class FinderCacheImpl
 		return cacheName.concat(".List2");
 	}
 
+	private String _getCountCacheName(String className) {
+		return className.concat(".Count");
+	}
+
 	private Collection<FinderPath> _getFinderPaths(String cacheName) {
 		Map<String, FinderPath> finderPaths = _finderPathsMap.get(cacheName);
 
@@ -629,6 +917,21 @@ public class FinderCacheImpl
 		}
 
 		return finderPaths.values();
+	}
+
+	private long _getPendingDelta(CountKey countKey) {
+		if (countKey == null) {
+			return 0;
+		}
+
+		PendingCount pendingCount = TransactionalPortalCacheUtil.get(
+			_pendingCountPortalCache, countKey);
+
+		if (pendingCount == null) {
+			return 0;
+		}
+
+		return pendingCount._delta;
 	}
 
 	private PortalCache<Serializable, Serializable> _getPortalCache(
@@ -645,7 +948,9 @@ public class FinderCacheImpl
 
 		String modelImplClassName = className;
 
-		if (className.endsWith(".List1") || className.endsWith(".List2")) {
+		if (className.endsWith(".Count") || className.endsWith(".List1") ||
+			className.endsWith(".List2")) {
+
 			modelImplClassName = className.substring(0, className.length() - 6);
 		}
 
@@ -753,6 +1058,25 @@ public class FinderCacheImpl
 		return portalCache;
 	}
 
+	private Long _getPrivateCount(CountKey countKey) {
+		if (countKey == null) {
+			return null;
+		}
+
+		Object value = TransactionalPortalCacheUtil.get(
+			_privateCountPortalCache, countKey);
+
+		if (value instanceof PrivateCount privateCount) {
+			return privateCount._count;
+		}
+
+		if (value instanceof Long count) {
+			return count;
+		}
+
+		return null;
+	}
+
 	private Object _getResult(
 		FinderPath finderPath, Object[] args,
 		BasePersistence<?> basePersistence, Serializable cacheValue) {
@@ -820,14 +1144,80 @@ public class FinderCacheImpl
 		return ThreadLocalFilterThreadLocal.isFilterInvoked();
 	}
 
-	private void _removeResult(FinderPath finderPath, Object[] args) {
+	private boolean _isMaintainedCountFinderPath(FinderPath finderPath) {
+		if (_countMaintenanceEnabled && finderPath.isCountResult()) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private void _markPendingFlush(String cacheName, String tableName) {
+		if (TransactionalPortalCacheUtil.isEnabled()) {
+			TransactionalPortalCacheUtil.put(
+				_pendingFlushPortalCache, cacheName, tableName,
+				PortalCache.DEFAULT_TIME_TO_LIVE, true);
+		}
+	}
+
+	private void _publishPrivateCount(CountKey countKey, Object value) {
+		if (value instanceof PrivateCount privateCount) {
+			TransactionalPortalCacheUtil.completePut(
+				countKey._portalCache.getWrappedPortalCache(),
+				countKey._cacheKey, new AtomicLong(privateCount._count),
+				privateCount._startSequence, _COUNT_TIME_TO_LIVE);
+		}
+	}
+
+	private void _putLocalCache(
+		FinderPath finderPath, Serializable cacheKey, Serializable cacheValue) {
+
+		if (_isLocalCacheEnabled()) {
+			Map<LocalCacheKey, Serializable> localCache = _localCache.get();
+
+			localCache.put(
+				new LocalCacheKey(finderPath.getCacheName(), cacheKey),
+				cacheValue);
+		}
+	}
+
+	private void _putPendingCount(
+		CountKey countKey, AtomicLong atomicLong, long delta) {
+
+		PendingCount pendingCount = TransactionalPortalCacheUtil.get(
+			_pendingCountPortalCache, countKey);
+
+		if (pendingCount == null) {
+			pendingCount = new PendingCount(atomicLong, delta);
+		}
+		else {
+			pendingCount = pendingCount.add(atomicLong, delta);
+		}
+
+		TransactionalPortalCacheUtil.put(
+			_pendingCountPortalCache, countKey, pendingCount,
+			PortalCache.DEFAULT_TIME_TO_LIVE, true);
+	}
+
+	private void _removePrivateCounts() {
+		if (_countMaintenanceEnabled &&
+			TransactionalPortalCacheUtil.isEnabled()) {
+
+			TransactionalPortalCacheUtil.removeAll(
+				_privateCountPortalCache, true);
+		}
+	}
+
+	private void _removeResult(
+		FinderPath finderPath, Object[] args, boolean removeFromLocalCache) {
+
 		if (args == null) {
 			return;
 		}
 
 		Serializable cacheKey = _encodeCacheKey(finderPath, args);
 
-		if (_isLocalCacheEnabled()) {
+		if (removeFromLocalCache && _isLocalCacheEnabled()) {
 			Map<LocalCacheKey, Serializable> localCache = _localCache.get();
 
 			localCache.remove(
@@ -838,7 +1228,24 @@ public class FinderCacheImpl
 			finderPath.getCacheName());
 
 		portalCache.remove(cacheKey);
+
+		if (TransactionalPortalCacheUtil.isEnabled() &&
+			_isMaintainedCountFinderPath(finderPath)) {
+
+			CountKey countKey = _createCountKey(finderPath, cacheKey);
+
+			if (countKey != null) {
+				TransactionalPortalCacheUtil.put(
+					_privateCountPortalCache, countKey,
+					TransactionalPortalCacheUtil.getNullHolder(),
+					PortalCache.DEFAULT_TIME_TO_LIVE, true);
+			}
+		}
 	}
+
+	private static final int _COUNT_TIME_TO_LIVE =
+		PropsValues.CLUSTER_LINK_ENABLED ? 60 :
+			PortalCache.DEFAULT_TIME_TO_LIVE;
 
 	private static final String _GROUP_KEY_PREFIX =
 		FinderCache.class.getName() + StringPool.PERIOD;
@@ -858,6 +1265,7 @@ public class FinderCacheImpl
 	@Reference
 	private ClusterExecutor _clusterExecutor;
 
+	private boolean _countMaintenanceEnabled;
 	private final Map<String, Set<String>> _dslQueryCacheNamesMap =
 		new ConcurrentHashMap<>();
 	private final Map<String, Map<String, FinderPath>> _finderPathsMap =
@@ -867,13 +1275,105 @@ public class FinderCacheImpl
 	@Reference
 	private MultiVMPool _multiVMPool;
 
+	private final PortalCache<Serializable, PendingCount>
+		_pendingCountPortalCache =
+			new PortalCacheWrapper<Serializable, PendingCount>(null) {
+
+				@Override
+				public boolean isSharded() {
+					return PropsValues.DATABASE_PARTITION_ENABLED;
+				}
+
+				@Override
+				public void put(
+					Serializable key, PendingCount pendingCount,
+					int timeToLive) {
+
+					_flushPendingCount((CountKey)key, pendingCount);
+				}
+
+			};
+
+	private final PortalCache<Serializable, String> _pendingFlushPortalCache =
+		new PortalCacheWrapper<Serializable, String>(null) {
+
+			@Override
+			public boolean isSharded() {
+				return PropsValues.DATABASE_PARTITION_ENABLED;
+			}
+
+			@Override
+			public void put(Serializable key, String value, int timeToLive) {
+			}
+
+		};
+
 	private final ConcurrentMap<String, PortalCache<Serializable, Serializable>>
 		_portalCaches = new ConcurrentHashMap<>();
+
+	private final PortalCache<Serializable, Object> _privateCountPortalCache =
+		new PortalCacheWrapper<Serializable, Object>(null) {
+
+			@Override
+			public boolean isSharded() {
+				return PropsValues.DATABASE_PARTITION_ENABLED;
+			}
+
+			@Override
+			public void put(Serializable key, Object value, int timeToLive) {
+				_publishPrivateCount((CountKey)key, value);
+			}
+
+			@Override
+			public void remove(Serializable key) {
+			}
+
+			@Override
+			public void removeAll() {
+			}
+
+		};
+
 	private ServiceRegistration<CacheRegistryItem> _serviceRegistration;
 	private ServiceTrackerMap<String, ArgumentsResolverHolder>
 		_serviceTrackerMap;
 	private boolean _valueObjectFinderCacheEnabled;
 	private int _valueObjectFinderCacheListThreshold;
+
+	private static class CountKey implements Serializable {
+
+		@Override
+		public boolean equals(Object object) {
+			CountKey countKey = (CountKey)object;
+
+			if ((_portalCache == countKey._portalCache) &&
+				_cacheKey.equals(countKey._cacheKey)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			return HashUtil.hash(
+				System.identityHashCode(_portalCache), _cacheKey.hashCode());
+		}
+
+		private CountKey(
+			TransactionalPortalCache<Serializable, Serializable> portalCache,
+			Serializable cacheKey) {
+
+			_portalCache = portalCache;
+			_cacheKey = cacheKey;
+		}
+
+		private final Serializable _cacheKey;
+		private final transient TransactionalPortalCache
+			<Serializable, Serializable> _portalCache;
+
+	}
 
 	private static class LocalCacheKey {
 
@@ -902,6 +1402,38 @@ public class FinderCacheImpl
 
 		private final Serializable _cacheKey;
 		private final String _className;
+
+	}
+
+	private static class PendingCount {
+
+		public PendingCount add(AtomicLong atomicLong, long delta) {
+			if (atomicLong == _atomicLong) {
+				return new PendingCount(atomicLong, _delta + delta);
+			}
+
+			return new PendingCount(null, _delta + delta);
+		}
+
+		private PendingCount(AtomicLong atomicLong, long delta) {
+			_atomicLong = atomicLong;
+			_delta = delta;
+		}
+
+		private final AtomicLong _atomicLong;
+		private final long _delta;
+
+	}
+
+	private static class PrivateCount {
+
+		private PrivateCount(long count, long startSequence) {
+			_count = count;
+			_startSequence = startSequence;
+		}
+
+		private final long _count;
+		private final long _startSequence;
 
 	}
 
