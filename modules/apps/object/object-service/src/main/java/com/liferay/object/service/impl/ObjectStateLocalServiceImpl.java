@@ -6,6 +6,7 @@
 package com.liferay.object.service.impl;
 
 import com.liferay.object.model.ObjectState;
+import com.liferay.object.model.ObjectStateTransition;
 import com.liferay.object.service.ObjectStateTransitionLocalService;
 import com.liferay.object.service.base.ObjectStateLocalServiceBaseImpl;
 import com.liferay.object.service.persistence.ObjectStateTransitionPersistence;
@@ -15,7 +16,12 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
 
+import java.io.Serializable;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -79,10 +85,25 @@ public class ObjectStateLocalServiceImpl
 
 	@Override
 	public List<ObjectState> getNextObjectStates(long sourceObjectStateId) {
-		return TransformUtil.transform(
+		List<ObjectStateTransition> objectStateTransitions =
 			_objectStateTransitionPersistence.findBySourceObjectStateId(
-				sourceObjectStateId),
-			objectStateTransition -> objectStatePersistence.fetchByPrimaryKey(
+				sourceObjectStateId);
+
+		Set<Serializable> targetObjectStateIds = new HashSet<>();
+
+		for (ObjectStateTransition objectStateTransition :
+				objectStateTransitions) {
+
+			targetObjectStateIds.add(
+				objectStateTransition.getTargetObjectStateId());
+		}
+
+		Map<Serializable, ObjectState> objectStates =
+			objectStatePersistence.fetchByPrimaryKeys(targetObjectStateIds);
+
+		return TransformUtil.transform(
+			objectStateTransitions,
+			objectStateTransition -> objectStates.get(
 				objectStateTransition.getTargetObjectStateId()));
 	}
 
