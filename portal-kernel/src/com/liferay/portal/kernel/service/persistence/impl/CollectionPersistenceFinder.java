@@ -16,9 +16,11 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsValues;
 
 import java.lang.reflect.Array;
 
@@ -71,6 +73,8 @@ public class CollectionPersistenceFinder
 		else {
 			_arrayableIndexes = ArrayUtil.toIntArray(arrayableIndexes);
 		}
+
+		_equalityCountFinderPath = _createEqualityCountFinderPath();
 	}
 
 	public int count(FinderCache finderCache, Object[] values) {
@@ -85,10 +89,19 @@ public class CollectionPersistenceFinder
 
 			normalizeValues(values);
 
+			FinderPath countFinderPath = _countFinderPath;
+
+			if ((_equalityCountFinderPath != null) &&
+				finderCache.isCountMaintenanceEnabled() &&
+				_isAllArrayableLengthOne(values)) {
+
+				countFinderPath = _equalityCountFinderPath;
+			}
+
 			Object[] finderArgs = buildFinderArgs(values);
 
 			Long count = (Long)finderCache.getResult(
-				_countFinderPath, finderArgs, basePersistenceImpl);
+				countFinderPath, finderArgs, basePersistenceImpl);
 
 			if (count == null) {
 				List<Object[]> valuesList = _paginate(
@@ -101,7 +114,7 @@ public class CollectionPersistenceFinder
 					count = _countChunked(valuesList);
 				}
 
-				finderCache.putResult(_countFinderPath, finderArgs, count);
+				finderCache.putResult(countFinderPath, finderArgs, count);
 			}
 
 			return count.intValue();
@@ -300,6 +313,24 @@ public class CollectionPersistenceFinder
 		return total;
 	}
 
+	private FinderPath _createEqualityCountFinderPath() {
+		if ((_arrayableIndexes == null) || (_unpaginatedFindPath == null) ||
+			(_uniquePersistenceFinder != null) ||
+			PropsValues.CLUSTER_LINK_ENABLED ||
+			!MVCCModel.class.isAssignableFrom(
+				basePersistenceImpl.getModelClass())) {
+
+			return null;
+		}
+
+		FinderPath equalityCountFinderPath =
+			_countFinderPath.createEqualityCountFinderPath();
+
+		CountFinderPathRegistry.register(equalityCountFinderPath);
+
+		return equalityCountFinderPath;
+	}
+
 	private List<T> _findChunked(
 		List<Object[]> valuesList, int start, int end,
 		OrderByComparator<T> orderByComparator) {
@@ -469,6 +500,7 @@ public class CollectionPersistenceFinder
 	private final int[] _arrayableIndexes;
 	private final FinderPath _countFinderPath;
 	private final String _defaultOrderByJpql;
+	private final FinderPath _equalityCountFinderPath;
 	private final String _orderByEntityAlias;
 	private final FinderPath _paginatedFindPath;
 	private final String _sqlCountWhere;

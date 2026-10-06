@@ -58,6 +58,9 @@ public class CollectionPersistenceFinderTest {
 
 		return new CollectionPersistenceFinder<>(
 			new BasePersistenceImpl<TestModel, NoSuchModelException>() {
+				{
+					setModelClass(TestModel.class);
+				}
 			},
 			_PAGINATED_FIND_PATH, _UNPAGINATED_FIND_PATH, _COUNT_FIND_PATH, "",
 			"", "", "", "", "", null,

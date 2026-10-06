@@ -239,6 +239,11 @@ public class FinderCacheImpl
 	}
 
 	@Override
+	public boolean isCountMaintenanceEnabled() {
+		return _countMaintenanceEnabled;
+	}
+
+	@Override
 	public void notifyPortalCacheAdded(String portalCacheName) {
 	}
 

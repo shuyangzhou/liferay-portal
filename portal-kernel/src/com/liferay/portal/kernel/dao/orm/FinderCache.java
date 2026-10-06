@@ -30,6 +30,10 @@ public interface FinderCache {
 
 	public void invalidate();
 
+	public default boolean isCountMaintenanceEnabled() {
+		return false;
+	}
+
 	public default void putResult(
 		FinderPath finderPath, BaseModel<?> baseModel) {
 
