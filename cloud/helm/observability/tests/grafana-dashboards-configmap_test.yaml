@@ -4,6 +4,30 @@ templates:
 tests:
     -   asserts:
             -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: where \$__timeFilter\(\$\{timeField\}\)\\n\| where status in \(.Cancelled., .Completed., .CompletedWithWarnings., .Failed.\)\\n[^"]*where status in \(.Completed., .CompletedWithWarnings.\)\\n\| summarize \[.Successful Runs.\] = count\(\)
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: where \$__timeFilter\(\$\{timeField\}\)\\n\| where status in \(.Cancelled., .Completed., .CompletedWithWarnings., .Failed.\)\\n[^"]*where status !in \(.Completed., .CompletedWithWarnings.\)\\n\| summarize \[.Failed Runs.\] = count\(\)
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: where \$__timeFilter\(\$\{timeField\}\)\\n\| where status in \(.Cancelled., .Completed., .CompletedWithWarnings., .Failed.\)\\n[^"]*where namespace == .\$environment.\\n\| summarize \[.Total Runs.\] = count\(\)
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: where \$__timeFilter\(\$\{timeField\}\)\\n\| where status in \(.Cancelled., .Completed., .CompletedWithWarnings., .Failed.\)\\n[^"]*summarize failed = countif\(status !in \(.Completed., .CompletedWithWarnings.\)\), total = count\(\)\\n\| project \[.Backup Failure Rate.\] = iff\(total == 0, real\(null\), 100.0 \* failed / total\)
+            -   notMatchRegex:
+                    path: data["backups.json"]
+                    pattern: \$__timeFilter\(startTime\)
+        documentSelector:
+            path: metadata.name
+            value: RELEASE-NAME-observability-dashboard-backups
+        it: Counts the finished backups that match the table for the job health tiles
+        set:
+            azure.resourceGroupName: liferay-test
+            azure.subscriptionId: 00000000-0000-0000-0000-000000000000
+            cloudProvider: azure
+    -   asserts:
+            -   matchRegex:
                     path: data["kubernetes-workloads.json"]
                     pattern: kube_pod_container_status_restarts_total\{[^}]*\}\\n  - kube_pod_container_status_restarts_total\{[^}]*\} offset \$__interval
             -   notMatchRegex:
@@ -134,6 +158,21 @@ tests:
                     pattern: resourceGroups/liferay-test/providers/Microsoft.Storage/storageAccounts/\$\{__value.raw\}/overview
             -   matchRegex:
                     path: data["backups.json"]
+                    pattern: az dataprotection backup-instance list[^<]*--vault-name \$\{backupVault\}[^<]*\| xargs -I % az dataprotection recovery-point list[^<]*--backup-instance-name %
+            -   notMatchRegex:
+                    path: data["backups.json"]
+                    pattern: \$\{backupInstance\}
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: "\"name\": \"backupListEndTime\""
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: "\"name\": \"backupVault\""
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: resourceGroups/liferay-test/providers/Microsoft.DataProtection/backupVaults/\$\{backupVault\}/overview
+            -   matchRegex:
+                    path: data["backups.json"]
                     pattern: "\"id\": \"links\",\\s+\"value\": \\[\\s+\\]"
             -   notMatchRegex:
                     path: data["backups.json"]
@@ -151,6 +190,33 @@ tests:
         set:
             azure.resourceGroupName: liferay-test
             azure.subscriptionId: 00000000-0000-0000-0000-000000000000
+            cloudProvider: azure
+    -   asserts:
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: azb-tile-muted azb-tile-row\\" href=\\"#\\"
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: Set centralHub.argoWorkflowsURL in your values.yaml to enable this link.
+        documentSelector:
+            path: metadata.name
+            value: RELEASE-NAME-observability-dashboard-backups
+        it: Mutes the Argo Workflows link in the Azure restore guide when centralHub.argoWorkflowsURL is not set
+        set:
+            cloudProvider: azure
+    -   asserts:
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: azb-tile azb-tile-row\\" href=\\"https://argo.example.com/workflow-templates/\$\{environment\}/backup-restore-workflow-template\\"
+            -   notMatchRegex:
+                    path: data["backups.json"]
+                    pattern: azb-tile-muted azb-tile-row
+        documentSelector:
+            path: metadata.name
+            value: RELEASE-NAME-observability-dashboard-backups
+        it: Opens the backup-restore workflow template from the Azure restore guide when centralHub.argoWorkflowsURL is set
+        set:
+            centralHub.argoWorkflowsURL: https://argo.example.com
             cloudProvider: azure
     -   asserts:
             -   matchRegex:

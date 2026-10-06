@@ -292,7 +292,8 @@ public class PriceListResourceImpl
 			priceList.getCatalogCurrencyCode(),
 			priceList.getCatalogCurrencyExternalReferenceCode(),
 			priceList.getCatalogExternalReferenceCode(),
-			_commerceCatalogService, _commerceCurrencyService, serviceContext);
+			priceList.getCatalogName(), _commerceCatalogService,
+			_commerceCurrencyService, serviceContext);
 
 		CommerceCurrency commerceCurrency = _getCommerceCurrency(priceList);
 
@@ -301,9 +302,14 @@ public class PriceListResourceImpl
 		DateConfig expirationDateConfig = DateConfig.toExpirationDateConfig(
 			priceList.getExpirationDate(), serviceContext.getTimeZone());
 
+		long catalogBaseCommercePriceListId =
+			_getCatalogBaseCommercePriceListId(
+				commerceCatalog, externalReferenceCode, priceList);
+
 		CommercePriceList commercePriceList =
 			_commercePriceListService.addOrUpdateCommercePriceList(
-				externalReferenceCode, commerceCatalog.getGroupId(), 0L,
+				externalReferenceCode, commerceCatalog.getGroupId(),
+				catalogBaseCommercePriceListId,
 				GetterUtil.get(priceList.getParentPriceListId(), 0L),
 				GetterUtil.get(priceList.getCatalogBasePriceList(), false),
 				commerceCurrency.getCode(), displayDateConfig.getDay(),
@@ -320,6 +326,13 @@ public class PriceListResourceImpl
 					priceList.getTypeAsString(),
 					CommercePriceListConstants.TYPE_PRICE_LIST),
 				serviceContext);
+
+		if (catalogBaseCommercePriceListId > 0) {
+			commercePriceList =
+				_commercePriceListService.updateExternalReferenceCode(
+					commercePriceList, externalReferenceCode,
+					serviceContext.getCompanyId());
+		}
 
 		// Expando
 
@@ -371,6 +384,40 @@ public class PriceListResourceImpl
 		).build();
 	}
 
+	private long _getCatalogBaseCommercePriceListId(
+			CommerceCatalog commerceCatalog, String externalReferenceCode,
+			PriceList priceList)
+		throws Exception {
+
+		if (!LazyReferencingThreadLocal.isEnabled() ||
+			!GetterUtil.get(priceList.getCatalogBasePriceList(), false)) {
+
+			return 0;
+		}
+
+		CommercePriceList commercePriceList =
+			_commercePriceListService.
+				fetchCommercePriceListByExternalReferenceCode(
+					externalReferenceCode, commerceCatalog.getCompanyId());
+
+		if (commercePriceList != null) {
+			return 0;
+		}
+
+		commercePriceList =
+			_commercePriceListService.fetchCatalogBaseCommercePriceListByType(
+				commerceCatalog.getGroupId(),
+				GetterUtil.get(
+					priceList.getTypeAsString(),
+					CommercePriceListConstants.TYPE_PRICE_LIST));
+
+		if (commercePriceList == null) {
+			return 0;
+		}
+
+		return commercePriceList.getCommercePriceListId();
+	}
+
 	private CommerceCurrency _getCommerceCurrency(PriceList priceList)
 		throws Exception {
 
@@ -402,6 +449,18 @@ public class PriceListResourceImpl
 
 		return _commerceCurrencyService.getOrAddEmptyCommerceCurrency(
 			currencyExternalReferenceCode, priceList.getCurrencyCode());
+	}
+
+	private double _getPriceModifierPriority(
+		PriceList priceList, PriceModifier priceModifier) {
+
+		if (LazyReferencingThreadLocal.isEnabled() &&
+			(priceModifier.getPriority() != null)) {
+
+			return priceModifier.getPriority();
+		}
+
+		return GetterUtil.get(priceList.getPriority(), 0D);
 	}
 
 	private PriceList _toPriceList(CommercePriceList commercePriceList)
@@ -528,7 +587,7 @@ public class PriceListResourceImpl
 							priceModifier.getTitle(), priceModifier.getTarget(),
 							priceModifier.getModifierAmount(),
 							priceModifier.getModifierType(),
-							GetterUtil.get(priceList.getPriority(), 0D),
+							_getPriceModifierPriority(priceList, priceModifier),
 							GetterUtil.getBoolean(
 								priceModifier.getActive(), true),
 							displayDateConfig.getMonth(),
@@ -575,7 +634,7 @@ public class PriceListResourceImpl
 				CPInstance cpInstance = SkuUtil.fetchCPInstance(
 					_cpDefinitionService, _cpInstanceService,
 					commercePriceList.getGroupId(),
-					priceEntry.getProductExternalReferenceCode(),
+					priceEntry.getProductExternalReferenceCode(), null,
 					priceEntry.getProductType(), serviceContext,
 					priceEntry.getSkuExternalReferenceCode(),
 					GetterUtil.getLong(priceEntry.getSkuId()));

@@ -466,6 +466,8 @@ public class UserLocalServiceTest {
 				() -> _userLocalService.authenticateByEmailAddress(
 					companyId, emailAddress, "password", null, null, null));
 
+			EntityCacheUtil.removeResult(UserImpl.class, user.getUserId());
+
 			user = _userLocalService.fetchUser(user.getUserId());
 
 			Assert.assertEquals(
@@ -479,11 +481,43 @@ public class UserLocalServiceTest {
 						passwordPolicy.setMaxAge(0);
 					})) {
 
+			user.setPassword("password");
+			user.setPasswordEncrypted(false);
+
+			user = _userLocalService.updateUser(user);
+
+			long mvccVersion = user.getMvccVersion();
+
+			EntityCacheUtil.removeResult(UserImpl.class, user.getUserId());
+
 			Assert.assertEquals(
 				Authenticator.SUCCESS,
 				_userLocalService.authenticateByEmailAddress(
 					user.getCompanyId(), user.getEmailAddress(), "password",
 					null, null, null));
+
+			EntityCacheUtil.removeResult(UserImpl.class, user.getUserId());
+
+			user = _userLocalService.fetchUser(user.getUserId());
+
+			Assert.assertEquals(0, user.getFailedLoginAttempts());
+			Assert.assertEquals(mvccVersion + 1, user.getMvccVersion());
+			Assert.assertTrue(user.isPasswordEncrypted());
+
+			Assert.assertEquals(
+				Authenticator.SUCCESS,
+				_userLocalService.authenticateByEmailAddress(
+					user.getCompanyId(), user.getEmailAddress(), "password",
+					null, null, null));
+
+			EntityCacheUtil.removeResult(UserImpl.class, user.getUserId());
+
+			User curUser = _userLocalService.fetchUser(user.getUserId());
+
+			Assert.assertEquals(
+				user.getModifiedDate(), curUser.getModifiedDate());
+			Assert.assertEquals(
+				user.getMvccVersion(), curUser.getMvccVersion());
 		}
 	}
 
@@ -497,6 +531,37 @@ public class UserLocalServiceTest {
 			"PBKDF2WITHHMACSHA1/160/2600000", "PBKDF2WITHHMACSHA1/160/1300000");
 		_testAuthenticateByEmailAddressWithOutdatedPasswordsEncryptionAlgorithm(
 			"SHA-384", "PBKDF2WITHHMACSHA1/160/1300000");
+	}
+
+	@Test
+	public void testAuthenticateForDigest() throws Exception {
+		String method = RandomTestUtil.randomString();
+		String nonce = RandomTestUtil.randomString();
+		String password = RandomTestUtil.randomString();
+		String uriString = RandomTestUtil.randomString();
+
+		User user = UserTestUtil.addUser();
+
+		Assert.assertEquals(
+			user.getUserId(),
+			_authenticateForDigest(
+				DigesterUtil.MD5, method, nonce, password, uriString, user));
+
+		try (SafeCloseable safeCloseable =
+				PropsValuesTestUtil.swapWithSafeCloseable(
+					"FIPS_ENABLED", true)) {
+
+			Assert.assertEquals(
+				0,
+				_authenticateForDigest(
+					DigesterUtil.MD5, method, nonce, password, uriString,
+					user));
+			Assert.assertEquals(
+				user.getUserId(),
+				_authenticateForDigest(
+					DigesterUtil.SHA_256, method, nonce, password, uriString,
+					user));
+		}
 	}
 
 	@Test
@@ -2136,6 +2201,27 @@ public class UserLocalServiceTest {
 		Assert.assertEquals(ldapUser ? 1 : -1, user.getLdapServerId());
 		Assert.assertTrue(user.isPasswordReset());
 		Assert.assertNotNull(user.getPasswordPolicy());
+	}
+
+	private long _authenticateForDigest(
+			String algorithm, String method, String nonce, String password,
+			String uriString, User user)
+		throws Exception {
+
+		user.setDigest(user.getDigest(password));
+
+		user = _userLocalService.updateUser(user);
+
+		String ha1 = DigesterUtil.digestHex(
+			algorithm, String.valueOf(user.getUserId()), Portal.PORTAL_REALM,
+			password);
+
+		String ha2 = DigesterUtil.digestHex(algorithm, method, uriString);
+
+		return _userLocalService.authenticateForDigest(
+			user.getCompanyId(), String.valueOf(user.getUserId()),
+			Portal.PORTAL_REALM, nonce, method, uriString,
+			DigesterUtil.digestHex(algorithm, ha1, nonce, ha2));
 	}
 
 	private String _getUpdatePasswordURL(String content) {

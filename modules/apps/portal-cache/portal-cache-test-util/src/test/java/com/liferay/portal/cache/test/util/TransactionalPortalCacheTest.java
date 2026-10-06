@@ -101,7 +101,7 @@ public class TransactionalPortalCacheTest {
 	}
 
 	@Test
-	public void testCommitAfterWriterCommit() {
+	public void testCommitAfterWriterCommitBeforePut() {
 		_setEnableTransactionalCache(true);
 
 		TransactionalPortalCache<String, String> transactionalPortalCache =
@@ -115,7 +115,7 @@ public class TransactionalPortalCacheTest {
 
 		TransactionalPortalCacheUtil.commit(false);
 
-		Assert.assertNull(_portalCache.get(_KEY_1));
+		Assert.assertEquals(_VALUE_1, _portalCache.get(_KEY_1));
 	}
 
 	@Test
@@ -202,10 +202,15 @@ public class TransactionalPortalCacheTest {
 		transactionLifecycleListener.created(
 			transactionAttribute, transactionStatus);
 
+		long startSequence = TransactionalPortalCacheUtil.getStartSequence();
+
 		_commitRemove(transactionalPortalCache, _KEY_1);
 
 		transactionLifecycleListener.created(
 			savepointTransactionAttribute, savepointTransactionStatus);
+
+		Assert.assertEquals(
+			startSequence, TransactionalPortalCacheUtil.getStartSequence());
 
 		transactionalPortalCache.put(_KEY_1, _VALUE_1);
 
@@ -283,6 +288,16 @@ public class TransactionalPortalCacheTest {
 			TransactionalPortalCacheUtil.completePut(
 				_portalCache, _KEY_1, _VALUE_1));
 		Assert.assertNull(_portalCache.get(_KEY_1));
+
+		TransactionalPortalCacheUtil.preparePut(_portalCache, _KEY_2);
+
+		TransactionalPortalCacheUtil.invalidate(_portalCache, _KEY_2);
+
+		Assert.assertFalse(
+			"Put should be dropped",
+			TransactionalPortalCacheUtil.completePut(
+				_portalCache, _KEY_2, _VALUE_2));
+		Assert.assertNull(_portalCache.get(_KEY_2));
 
 		ShardedTestPortalCache<String, String> shardedPortalCache =
 			new ShardedTestPortalCache<>("Sharded Test Portal Cache");

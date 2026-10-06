@@ -223,7 +223,7 @@ public class PriceListResourceImpl extends BasePriceListResourceImpl {
 			GetterUtil.getLong(priceList.getCatalogId()),
 			priceList.getCatalogCurrencyCode(),
 			priceList.getCatalogCurrencyExternalReferenceCode(),
-			priceList.getCatalogExternalReferenceCode(),
+			priceList.getCatalogExternalReferenceCode(), null,
 			_commerceCatalogService, _commerceCurrencyService, serviceContext);
 
 		CommerceCurrency commerceCurrency = _getCommerceCurrency(priceList);
@@ -340,7 +340,7 @@ public class PriceListResourceImpl extends BasePriceListResourceImpl {
 				CPInstance cpInstance = SkuUtil.fetchCPInstance(
 					_cpDefinitionService, _cpInstanceService,
 					commercePriceList.getGroupId(),
-					priceEntry.getProductExternalReferenceCode(),
+					priceEntry.getProductExternalReferenceCode(), null,
 					priceEntry.getProductType(), serviceContext,
 					priceEntry.getSkuExternalReferenceCode(),
 					GetterUtil.getLong(priceEntry.getSkuId()));

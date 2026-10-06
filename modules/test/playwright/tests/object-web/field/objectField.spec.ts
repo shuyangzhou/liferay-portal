@@ -43,13 +43,6 @@ const cmsTest = mergeTests(
 	})
 );
 
-const descriptionTest = mergeTests(
-	test,
-	featureFlagsTest({
-		'LPD-80279': {enabled: true},
-	})
-);
-
 cmsTest.describe('Manage object field attachment storage locations', () => {
 	cmsTest(
 		'can create field with CMS storage types',
@@ -2890,7 +2883,9 @@ test.describe('Create Object Fields', () => {
 			})
 		).toBeVisible({visible});
 		await expect(
-			objectFieldsPage.iframeLocator.getByText('Language')
+			objectFieldsPage.iframeLocator
+				.locator('label')
+				.filter({hasText: /^LanguageMandatory$/})
 		).toBeVisible({visible});
 		await expect(
 			objectFieldsPage.iframeLocator.getByRole('radio', {
@@ -3079,9 +3074,7 @@ test.describe('Create Object Fields', () => {
 					.getByLabel('Label')
 					.fill('Updated Label');
 
-				await objectFieldsPage.iframeLocator
-					.getByTitle('en_US')
-					.click();
+				await objectFieldsPage.labelLocalizationButton.click();
 				await objectFieldsPage.iframeLocator
 					.getByRole('option', {name: 'pt_BR'})
 					.click();
@@ -3149,9 +3142,7 @@ test.describe('Create Object Fields', () => {
 			await test.step('Verify that translated Label is updated', async () => {
 				await objectFieldsPage.openObjectField('Updated Label');
 
-				await objectFieldsPage.iframeLocator
-					.getByTitle('en_US')
-					.click();
+				await objectFieldsPage.labelLocalizationButton.click();
 				await objectFieldsPage.iframeLocator
 					.getByRole('option', {name: 'pt_BR'})
 					.click();
@@ -3197,9 +3188,7 @@ test.describe('Create Object Fields', () => {
 					.getByLabel('Label')
 					.fill('New Updated Label');
 
-				await objectFieldsPage.iframeLocator
-					.getByTitle('en_US')
-					.click();
+				await objectFieldsPage.labelLocalizationButton.click();
 				await objectFieldsPage.iframeLocator
 					.getByRole('option', {name: 'pt_BR'})
 					.click();
@@ -3239,9 +3228,7 @@ test.describe('Create Object Fields', () => {
 			await test.step('Verify that translated Label is updated', async () => {
 				await objectFieldsPage.openObjectField('New Updated Label');
 
-				await objectFieldsPage.iframeLocator
-					.getByTitle('en_US')
-					.click();
+				await objectFieldsPage.labelLocalizationButton.click();
 				await objectFieldsPage.iframeLocator
 					.getByRole('option', {name: 'pt_BR'})
 					.click();
@@ -4224,8 +4211,8 @@ test.describe('Manage object fields default value properties', () => {
 	);
 });
 
-descriptionTest.describe('Manage object field descriptions', () => {
-	descriptionTest(
+test.describe('Manage object field descriptions', () => {
+	test(
 		'can add description through Model Builder',
 		{tag: '@LPD-103747'},
 		async ({
@@ -4295,7 +4282,7 @@ descriptionTest.describe('Manage object field descriptions', () => {
 		}
 	);
 
-	descriptionTest(
+	test(
 		'can manage description through Objects Admin',
 		{tag: '@LPD-103747'},
 		async ({apiHelpers, objectFieldsPage}) => {
@@ -4353,7 +4340,7 @@ descriptionTest.describe('Manage object field descriptions', () => {
 		}
 	);
 
-	descriptionTest(
+	test(
 		'does not show the description for a framework metadata field',
 		{tag: '@LPD-103747'},
 		async ({
@@ -4427,7 +4414,7 @@ descriptionTest.describe('Manage object field descriptions', () => {
 		}
 	);
 
-	descriptionTest(
+	test(
 		'shows the relationship description on the child foreign key field',
 		{tag: '@LPD-103748'},
 		async ({apiHelpers, objectFieldsPage}) => {
