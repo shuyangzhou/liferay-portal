@@ -9545,6 +9545,10 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="mariadb" database.version="10.6" />
 	</target>
 
+	<target name="modules-integration-mariadb118">
+		<run-modules-integration-test database.type="mariadb" database.version="11.8" />
+	</target>
+
 	<target name="modules-integration-mysql">
 		<run-modules-integration-test database.type="mysql" />
 	</target>
@@ -9631,6 +9635,14 @@ information. Make sure to commit in all format-javadoc results.
 
 	<target name="modules-integration-postgresql163_stable">
 		<run-modules-integration-test database.type="postgresql" database.version="16.3" />
+	</target>
+
+	<target name="modules-integration-postgresql175">
+		<run-modules-integration-test database.type="postgresql" database.version="17.5" />
+	</target>
+
+	<target name="modules-integration-postgresql180">
+		<run-modules-integration-test database.type="postgresql" database.version="18.0" />
 	</target>
 
 	<target name="modules-integration-project-templates">
