@@ -9,7 +9,6 @@ import com.liferay.frontend.js.loader.modules.extender.esm.ESImportUtil;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolvedPackageNameUtil;
 import com.liferay.frontend.taglib.clay.internal.servlet.ServletContextUtil;
 import com.liferay.frontend.taglib.clay.internal.servlet.taglib.util.ServicesProvider;
-import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;
@@ -324,7 +323,7 @@ public class BaseContainerTag extends AttributesTagSupport {
 		String cssClass = getCssClass();
 
 		if (Validator.isNotNull(cssClass)) {
-			cssClasses.addAll(StringUtil.split(cssClass, CharPool.SPACE));
+			cssClasses.add(cssClass.trim());
 		}
 
 		return StringUtil.merge(cssClasses, StringPool.SPACE);

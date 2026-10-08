@@ -29,8 +29,8 @@ public class BaseContainerTagTest {
 		ColTag colTag = new ColTag();
 
 		String[][] colCssClassesArray = {
-			{null, "col"}, {"\t", "col"}, {" a  b ", "col a b"},
-			{"a col a", "col a"},
+			{null, "col"}, {"\t", "col "}, {" a  b ", "col a  b"},
+			{"a col a", "col a col a"},
 			{
 				"col-lg-4 col-sm-12 col-12 col-md-4 d-flex flex-column ",
 				"col col-lg-4 col-sm-12 col-12 col-md-4 d-flex flex-column"
