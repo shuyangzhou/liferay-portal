@@ -941,6 +941,11 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 	}
 
 	@Test
+	public void testRedundantAssertMessages() throws Exception {
+		test("RedundantAssertMessages.testjava");
+	}
+
+	@Test
 	public void testRedundantCommas() throws Exception {
 		test("RedundantCommas.testjava");
 	}

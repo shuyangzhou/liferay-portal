@@ -1,0 +1,45 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.liferay.source.formatter.dependencies;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
+import org.junit.Assert;
+
+/**
+ * @author Shuyang Zhou
+ */
+public class RedundantAssertMessages {
+
+	public void test(
+		Iterator<String> iterator, List<String> list, long[] longs,
+		List<Long> longList, String name, double number, Throwable throwable) {
+
+		Assert.assertNull(String.valueOf(throwable), throwable);
+
+		Assert.assertEquals(
+			list.toString(), Collections.singletonList(name), list);
+
+		Assert.assertEquals(list.toString(), 1, list.size());
+		Assert.assertArrayEquals(Arrays.toString(longs), new long[0], longs);
+		Assert.assertNotSame(list.toString(), Collections.emptyList(), list);
+		Assert.assertEquals(String.valueOf(name), "name", name);
+		Assert.assertEquals(String.valueOf(number), 1.0, number, 0.1);
+		Assert.assertNull(String.valueOf(iterator.next()), iterator.next());
+
+		for (Long value : longList) {
+			Assert.assertNotNull(value);
+		}
+
+		for (String value : list) {
+			Assert.assertEquals(String.valueOf(value), name, value);
+		}
+	}
+
+}
