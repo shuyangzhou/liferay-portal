@@ -158,6 +158,7 @@ JavaNewProblemInstantiationParametersCheck | [Bug Prevention](bug_prevention_che
 [JavaPackagePathCheck](check/java_package_path_check.md#javapackagepathcheck) | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | Checks that the package name matches the file location. |
 [JavaProcessCallableCheck](check/java_process_callable_check.md#javaprocesscallablecheck) | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | Checks that a class implementing `ProcessCallable` assigns a `serialVersionUID`. |
 JavaProviderTypeAnnotationCheck | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | Performs several checks on classes with `@ProviderType` annotation. |
+JavaRedundantAssertMessageCheck | [Styling](styling_checks.md#styling-checks) | Removes `Assert` messages that only repeat the asserted value. |
 JavaRedundantConstructorCheck | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | Finds unnecessary empty constructor. |
 [JavaRedundantContainsCheck](check/java_redundant_contains_check.md#javaredundantcontainscheck) | [Performance](performance_checks.md#performance-checks) | Finds a `contains` or `containsKey` check that is immediately followed by a `get`, `remove`, `put`, or `add` on the same key or element, which should be combined into the single operation that already reports presence through its return value. |
 JavaReferenceAnnotationsCheck | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | Performs several checks on classes with `@Reference` annotations. |

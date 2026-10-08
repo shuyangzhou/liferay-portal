@@ -918,6 +918,11 @@
 			<category name="Bug Prevention" />
 			<description name="Performs several checks on classes with `@ProviderType` annotation." />
 		</check>
+		<check name="JavaRedundantAssertMessageCheck">
+			<category name="Styling" />
+			<description name="Removes `Assert` messages that only repeat the asserted value." />
+			<property name="enabled" value="false" />
+		</check>
 		<check name="JavaReferenceAnnotationsCheck">
 			<category name="Bug Prevention" />
 			<description name="Performs several checks on classes with `@Reference` annotations." />
