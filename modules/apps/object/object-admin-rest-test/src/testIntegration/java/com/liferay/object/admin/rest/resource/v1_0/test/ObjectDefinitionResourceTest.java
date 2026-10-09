@@ -782,6 +782,26 @@ public class ObjectDefinitionResourceTest
 		_testPostObjectDefinitionWithWorkflowDefinitionLinks();
 	}
 
+	@Test
+	public void testProbeStep4Loop() throws Exception {
+		_testProbeLoop(150, false);
+	}
+
+	@Test
+	public void testProbeSteps2To4Loop1() throws Exception {
+		_testProbeLoop(100, true);
+	}
+
+	@Test
+	public void testProbeSteps2To4Loop2() throws Exception {
+		_testProbeLoop(100, true);
+	}
+
+	@Test
+	public void testProbeSteps2To4Loop3() throws Exception {
+		_testProbeLoop(100, true);
+	}
+
 	@Override
 	@Test
 	public void testPutObjectDefinition() throws Exception {
@@ -3501,6 +3521,54 @@ public class ObjectDefinitionResourceTest
 			_addObjectDefinition(objectDefinition), workflowDefinitionLinks);
 	}
 
+	private void _testProbeLoop(int passes, boolean steps2And3)
+		throws Exception {
+
+		long startTime = System.currentTimeMillis();
+
+		System.out.println(
+			StringBundler.concat(
+				"ODRT-PROBE start steps2And3=", steps2And3, " passes=",
+				passes));
+
+		for (int i = 1; i <= passes; i++) {
+			try {
+				if (steps2And3) {
+					_testPutObjectDefinitionByExternalReferenceCodeWithEmptyObjectDefinitionAndSystemObjectField();
+					_testPutObjectDefinitionByExternalReferenceCodeWithMissingObjectDefinition1();
+				}
+
+				_testPutObjectDefinitionByExternalReferenceCodeWithSystemAggregationObjectField(
+					true);
+			}
+			catch (Throwable throwable) {
+				String message = StringBundler.concat(
+					"ODRT-PROBE stopped at pass ", i, " of ", passes,
+					" steps2And3=", steps2And3, " after ",
+					System.currentTimeMillis() - startTime, " ms: ",
+					throwable.getMessage());
+
+				System.out.println(message);
+
+				throw new AssertionError(message, throwable);
+			}
+
+			if ((i % 10) == 0) {
+				System.out.println(
+					StringBundler.concat(
+						"ODRT-PROBE pass ", i, " of ", passes, " steps2And3=",
+						steps2And3, " elapsed ",
+						System.currentTimeMillis() - startTime, " ms"));
+			}
+		}
+
+		System.out.println(
+			StringBundler.concat(
+				"ODRT-PROBE completed ", passes, " passes steps2And3=",
+				steps2And3, " in ", System.currentTimeMillis() - startTime,
+				" ms"));
+	}
+
 	private void _testPutObjectDefinitionByExternalReferenceCodeWithDuplicateDefaultObjectLayout()
 		throws Exception {
 
@@ -3786,6 +3854,14 @@ public class ObjectDefinitionResourceTest
 	private void _testPutObjectDefinitionByExternalReferenceCodeWithSystemAggregationObjectField()
 		throws Exception {
 
+		_testPutObjectDefinitionByExternalReferenceCodeWithSystemAggregationObjectField(
+			false);
+	}
+
+	private void _testPutObjectDefinitionByExternalReferenceCodeWithSystemAggregationObjectField(
+			boolean deleteObjectDefinitions)
+		throws Exception {
+
 		ObjectDefinition randomModifiableSystemObjectDefinition =
 			_randomModifiableSystemObjectDefinition();
 		ObjectDefinition randomObjectDefinition = randomObjectDefinition();
@@ -3868,6 +3944,24 @@ public class ObjectDefinitionResourceTest
 		Assert.assertNotNull(
 			_objectFieldLocalService.getObjectField(
 				putObjectDefinition.getId(), aggregationObjectFieldName));
+
+		if (!deleteObjectDefinitions) {
+			return;
+		}
+
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			putObjectDefinition.getId());
+
+		com.liferay.object.model.ObjectDefinition objectDefinition2 =
+			_objectDefinitionLocalService.
+				fetchObjectDefinitionByExternalReferenceCode(
+					randomObjectDefinition.getExternalReferenceCode(),
+					TestPropsValues.getCompanyId());
+
+		if (objectDefinition2 != null) {
+			_objectDefinitionLocalService.deleteObjectDefinition(
+				objectDefinition2);
+		}
 	}
 
 	private void _testPutObjectDefinitionDescription(
