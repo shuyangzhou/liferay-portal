@@ -98,6 +98,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsValues;
+import com.liferay.portal.kernel.util.StackTraceUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.TextFormatter;
@@ -106,6 +107,9 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.odata.entity.EntityField;
+import com.liferay.portal.test.log.LogCapture;
+import com.liferay.portal.test.log.LogEntry;
+import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 import com.liferay.portal.workflow.constants.WorkflowDefinitionConstants;
@@ -776,6 +780,26 @@ public class ObjectDefinitionResourceTest
 		_testPostObjectDefinitionWithPermissions();
 		_testPostObjectDefinitionWithSystemAggregationObjectField();
 		_testPostObjectDefinitionWithWorkflowDefinitionLinks();
+	}
+
+	@Test
+	public void testProbeStep4Loop() throws Exception {
+		_testProbeLoop(150, false);
+	}
+
+	@Test
+	public void testProbeSteps2To4Loop1() throws Exception {
+		_testProbeLoop(100, true);
+	}
+
+	@Test
+	public void testProbeSteps2To4Loop2() throws Exception {
+		_testProbeLoop(100, true);
+	}
+
+	@Test
+	public void testProbeSteps2To4Loop3() throws Exception {
+		_testProbeLoop(100, true);
 	}
 
 	@Override
@@ -3497,6 +3521,54 @@ public class ObjectDefinitionResourceTest
 			_addObjectDefinition(objectDefinition), workflowDefinitionLinks);
 	}
 
+	private void _testProbeLoop(int passes, boolean steps2And3)
+		throws Exception {
+
+		long startTime = System.currentTimeMillis();
+
+		System.out.println(
+			StringBundler.concat(
+				"ODRT-PROBE start steps2And3=", steps2And3, " passes=",
+				passes));
+
+		for (int i = 1; i <= passes; i++) {
+			try {
+				if (steps2And3) {
+					_testPutObjectDefinitionByExternalReferenceCodeWithEmptyObjectDefinitionAndSystemObjectField();
+					_testPutObjectDefinitionByExternalReferenceCodeWithMissingObjectDefinition1();
+				}
+
+				_testPutObjectDefinitionByExternalReferenceCodeWithSystemAggregationObjectField(
+					true);
+			}
+			catch (Throwable throwable) {
+				String message = StringBundler.concat(
+					"ODRT-PROBE stopped at pass ", i, " of ", passes,
+					" steps2And3=", steps2And3, " after ",
+					System.currentTimeMillis() - startTime, " ms: ",
+					throwable.getMessage());
+
+				System.out.println(message);
+
+				throw new AssertionError(message, throwable);
+			}
+
+			if ((i % 10) == 0) {
+				System.out.println(
+					StringBundler.concat(
+						"ODRT-PROBE pass ", i, " of ", passes, " steps2And3=",
+						steps2And3, " elapsed ",
+						System.currentTimeMillis() - startTime, " ms"));
+			}
+		}
+
+		System.out.println(
+			StringBundler.concat(
+				"ODRT-PROBE completed ", passes, " passes steps2And3=",
+				steps2And3, " in ", System.currentTimeMillis() - startTime,
+				" ms"));
+	}
+
 	private void _testPutObjectDefinitionByExternalReferenceCodeWithDuplicateDefaultObjectLayout()
 		throws Exception {
 
@@ -3782,6 +3854,14 @@ public class ObjectDefinitionResourceTest
 	private void _testPutObjectDefinitionByExternalReferenceCodeWithSystemAggregationObjectField()
 		throws Exception {
 
+		_testPutObjectDefinitionByExternalReferenceCodeWithSystemAggregationObjectField(
+			false);
+	}
+
+	private void _testPutObjectDefinitionByExternalReferenceCodeWithSystemAggregationObjectField(
+			boolean deleteObjectDefinitions)
+		throws Exception {
+
 		ObjectDefinition randomModifiableSystemObjectDefinition =
 			_randomModifiableSystemObjectDefinition();
 		ObjectDefinition randomObjectDefinition = randomObjectDefinition();
@@ -3801,15 +3881,87 @@ public class ObjectDefinitionResourceTest
 			aggregationObjectFieldName, randomModifiableSystemObjectDefinition,
 			objectRelationship.getName());
 
-		ObjectDefinition putObjectDefinition =
-			objectDefinitionResource.putObjectDefinitionByExternalReferenceCode(
-				randomModifiableSystemObjectDefinition.
-					getExternalReferenceCode(),
-				randomModifiableSystemObjectDefinition);
+		ObjectDefinition putObjectDefinition = null;
+
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				"com.liferay.portal.vulcan.internal.jaxrs.writer.interceptor." +
+					"ProblemWriterInterceptor",
+				LoggerTestUtil.DEBUG)) {
+
+			try {
+				putObjectDefinition =
+					objectDefinitionResource.
+						putObjectDefinitionByExternalReferenceCode(
+							randomModifiableSystemObjectDefinition.
+								getExternalReferenceCode(),
+							randomModifiableSystemObjectDefinition);
+			}
+			catch (Problem.ProblemException problemException) {
+				StringBundler sb = new StringBundler();
+
+				sb.append("ODRT-PROBE HIT problem=");
+				sb.append(problemException.getProblem());
+				sb.append(" objectDefinitionExternalReferenceCode1=");
+				sb.append(
+					randomModifiableSystemObjectDefinition.
+						getExternalReferenceCode());
+				sb.append(" objectDefinitionName1=");
+				sb.append(randomModifiableSystemObjectDefinition.getName());
+				sb.append(" objectDefinitionExternalReferenceCode2=");
+				sb.append(randomObjectDefinition.getExternalReferenceCode());
+				sb.append(" objectDefinitionId2=");
+				sb.append(randomObjectDefinition.getId());
+				sb.append(" objectRelationshipName=");
+				sb.append(objectRelationship.getName());
+				sb.append(" capturedLogEntries=");
+
+				List<LogEntry> logEntries = logCapture.getLogEntries();
+
+				sb.append(logEntries.size());
+
+				for (LogEntry logEntry : logEntries) {
+					sb.append("\n----- captured ");
+					sb.append(logEntry.getPriority());
+					sb.append(" message=");
+					sb.append(logEntry.getMessage());
+					sb.append("\n");
+
+					Throwable throwable = logEntry.getThrowable();
+
+					if (throwable != null) {
+						sb.append(StackTraceUtil.getStackTrace(throwable));
+					}
+				}
+
+				String message = sb.toString();
+
+				System.out.println(message);
+
+				throw new AssertionError(message, problemException);
+			}
+		}
 
 		Assert.assertNotNull(
 			_objectFieldLocalService.getObjectField(
 				putObjectDefinition.getId(), aggregationObjectFieldName));
+
+		if (!deleteObjectDefinitions) {
+			return;
+		}
+
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			putObjectDefinition.getId());
+
+		com.liferay.object.model.ObjectDefinition objectDefinition2 =
+			_objectDefinitionLocalService.
+				fetchObjectDefinitionByExternalReferenceCode(
+					randomObjectDefinition.getExternalReferenceCode(),
+					TestPropsValues.getCompanyId());
+
+		if (objectDefinition2 != null) {
+			_objectDefinitionLocalService.deleteObjectDefinition(
+				objectDefinition2);
+		}
 	}
 
 	private void _testPutObjectDefinitionDescription(
