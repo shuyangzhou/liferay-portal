@@ -308,7 +308,7 @@ public class S3Store implements Store {
 			fileNames[i] = S3KeyTransformerUtil.getFileName(s3Object.key());
 		}
 
-		return fileNames;
+		return ArrayUtil.distinct(fileNames);
 	}
 
 	@Override
