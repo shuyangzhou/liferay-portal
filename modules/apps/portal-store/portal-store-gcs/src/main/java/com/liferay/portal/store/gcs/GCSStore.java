@@ -167,12 +167,13 @@ public class GCSStore implements Store {
 			StoreArea.getCurrentStoreAreaPath(companyId, repositoryId) +
 				StringPool.SLASH;
 
-		return TransformUtil.transform(
-			_getFilePaths(companyId, repositoryId, dirName),
-			filePath -> filePath.substring(
-				filePath.indexOf(prefix) + prefix.length(),
-				filePath.lastIndexOf(StringPool.SLASH)),
-			String.class);
+		return ArrayUtil.distinct(
+			TransformUtil.transform(
+				_getFilePaths(companyId, repositoryId, dirName),
+				filePath -> filePath.substring(
+					filePath.indexOf(prefix) + prefix.length(),
+					filePath.lastIndexOf(StringPool.SLASH)),
+				String.class));
 	}
 
 	@Override
