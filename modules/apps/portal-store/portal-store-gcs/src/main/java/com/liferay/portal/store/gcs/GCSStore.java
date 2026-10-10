@@ -199,6 +199,10 @@ public class GCSStore implements Store {
 	public String[] getFileVersions(
 		long companyId, long repositoryId, String fileName) {
 
+		if (!fileName.endsWith(StringPool.SLASH)) {
+			fileName += StringPool.SLASH;
+		}
+
 		return TransformUtil.transform(
 			_getFilePaths(companyId, repositoryId, fileName),
 			path -> {
