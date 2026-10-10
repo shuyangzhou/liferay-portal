@@ -4642,18 +4642,15 @@ public class PortalImpl implements Portal {
 			liveGroup = group.getLiveGroup();
 		}
 
-		if (LanguageUtil.isInheritLocales(liveGroup.getGroupId())) {
-			Company company = CompanyLocalServiceUtil.getCompany(
-				liveGroup.getCompanyId());
+		User guestUser = UserLocalServiceUtil.getGuestUser(
+			group.getCompanyId());
 
-			return company.getLocale();
+		if (LanguageUtil.isInheritLocales(liveGroup.getGroupId())) {
+			return guestUser.getLocale();
 		}
 
 		UnicodeProperties typeSettingsUnicodeProperties =
 			liveGroup.getTypeSettingsProperties();
-
-		User guestUser = UserLocalServiceUtil.getGuestUser(
-			group.getCompanyId());
 
 		String languageId = GetterUtil.getString(
 			typeSettingsUnicodeProperties.getProperty("languageId"),
