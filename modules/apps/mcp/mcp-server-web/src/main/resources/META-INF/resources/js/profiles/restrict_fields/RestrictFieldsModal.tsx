@@ -7,9 +7,13 @@ import ClayButton from '@clayui/button';
 import {TreeView} from '@clayui/core';
 import {ClayCheckbox} from '@clayui/form';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
+import ClayManagementToolbar from '@clayui/management-toolbar';
 import ClayModal from '@clayui/modal';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 
+import AutoSearch from '../../components/AutoSearch';
+import FilterResultsStatus from '../../components/FilterResultsStatus';
+import Highlight from '../../components/Highlight';
 import SelectedItemsBar from '../../components/SelectedItemsBar';
 import {getTool} from '../../services/getTool';
 import {patchProfileTool} from '../../services/patchProfileTool';
@@ -18,6 +22,7 @@ import {openErrorToast, openSuccessToast} from '../../utils';
 import {FieldTreeItem} from './types';
 import {
 	buildFieldTree,
+	filterFieldTree,
 	getExpandedKeys,
 	getSelectedKeys,
 	toRestrictFields,
@@ -40,17 +45,32 @@ export default function RestrictFieldsModal({
 	const [expandedKeys, setExpandedKeys] = useState<Set<React.Key>>(new Set());
 	const [items, setItems] = useState<FieldTreeItem[]>([]);
 	const [loading, setLoading] = useState(true);
+	const [query, setQuery] = useState('');
 	const [saving, setSaving] = useState(false);
 	const [selectedKeys, setSelectedKeys] = useState<Set<React.Key>>(new Set());
 	const [treeVersion, setTreeVersion] = useState(0);
 
+	const expandedKeysBeforeFilterRef = useRef<Set<React.Key> | null>(null);
+	const searchInputRef = useRef<HTMLInputElement>(null);
 	const treeRef = useRef<HTMLDivElement>(null);
+
+	const trimmedQuery = query.trim();
+
+	const {matchCount, visibleKeys} = useMemo(
+		() => filterFieldTree(items, trimmedQuery),
+		[items, trimmedQuery]
+	);
 
 	useEffect(() => {
 		if (treeVersion) {
-			treeRef.current
-				?.querySelector<HTMLElement>('[role="treeitem"]')
-				?.focus();
+			(
+				Array.from(
+					treeRef.current?.querySelectorAll<HTMLElement>(
+						'[role="treeitem"]'
+					) ?? []
+				).find((element) => !element.closest('.d-none')) ??
+				searchInputRef.current
+			)?.focus();
 		}
 	}, [treeVersion]);
 
@@ -90,6 +110,24 @@ export default function RestrictFieldsModal({
 		setTreeVersion((previousVersion) => previousVersion + 1);
 	};
 
+	const onSearch = (value: string) => {
+		setQuery(value);
+
+		if (!value.trim()) {
+			setExpandedKeys(
+				expandedKeysBeforeFilterRef.current ?? expandedKeys
+			);
+
+			expandedKeysBeforeFilterRef.current = null;
+
+			return;
+		}
+
+		expandedKeysBeforeFilterRef.current ??= expandedKeys;
+
+		setExpandedKeys(filterFieldTree(items, value).expandedKeys);
+	};
+
 	const save = async () => {
 		setSaving(true);
 
@@ -111,6 +149,15 @@ export default function RestrictFieldsModal({
 		onClose();
 	};
 
+	const isVisible = (item: FieldTreeItem) =>
+		!trimmedQuery || visibleKeys.has(item.id);
+
+	const getRowClassName = (item: FieldTreeItem) =>
+		isVisible(item) ? undefined : 'd-none';
+
+	const isExpandable = (item: FieldTreeItem) =>
+		!!item.children?.length && item.children.some(isVisible);
+
 	return (
 		<>
 			<ClayModal.Header
@@ -128,54 +175,113 @@ export default function RestrictFieldsModal({
 					<ClayLoadingIndicator />
 				) : (
 					<>
-						<div className="sticky-top">
-							<SelectedItemsBar
-								count={selectedKeys.size}
-								onDeselectAll={deselectAll}
-							/>
-						</div>
+						{!!items.length && (
+							<div className="sticky-top">
+								<ClayManagementToolbar role="none">
+									<AutoSearch
+										label={Liferay.Language.get(
+											'search-fields'
+										)}
+										onSearch={onSearch}
+										query={query}
+										ref={searchInputRef}
+									/>
+								</ClayManagementToolbar>
+
+								<SelectedItemsBar
+									count={selectedKeys.size}
+									onDeselectAll={deselectAll}
+								/>
+							</div>
+						)}
 
 						<div className="px-4 py-2" ref={treeRef}>
 							{items.length ? (
-								<TreeView
-									className="bg-transparent"
-									defaultItems={items}
-									expandedKeys={expandedKeys}
-									key={treeVersion}
-									nestedKey="children"
-									onExpandedChange={setExpandedKeys}
-									onSelectionChange={setSelectedKeys}
-									selectedKeys={selectedKeys}
-									selectionMode="multiple-recursive"
-									showExpanderOnHover={false}
-								>
-									{(item: FieldTreeItem) => (
-										<TreeView.Item>
-											<TreeView.ItemStack
-												expandOnClick={false}
-											>
-												<ClayCheckbox checked />
+								<>
+									<FilterResultsStatus
+										matchCount={matchCount}
+										query={trimmedQuery}
+									/>
 
-												{item.name}
-											</TreeView.ItemStack>
-
-											<TreeView.Group
-												items={item.children}
-											>
-												{(child: FieldTreeItem) => (
-													<TreeView.Item>
-														<ClayCheckbox checked />
-
-														{child.name}
-													</TreeView.Item>
+									<TreeView
+										aria-label={Liferay.Language.get(
+											'fields'
+										)}
+										className="bg-transparent"
+										defaultItems={items}
+										expandedKeys={expandedKeys}
+										key={`${treeVersion}:${trimmedQuery}`}
+										nestedKey="children"
+										onExpandedChange={setExpandedKeys}
+										onSelectionChange={setSelectedKeys}
+										selectedKeys={selectedKeys}
+										selectionMode="multiple-recursive"
+										showExpanderOnHover={false}
+									>
+										{(item: FieldTreeItem) => (
+											<TreeView.Item
+												className={getRowClassName(
+													item
 												)}
-											</TreeView.Group>
-										</TreeView.Item>
-									)}
-								</TreeView>
+											>
+												<TreeView.ItemStack
+													expandOnClick={false}
+													expanderDisabled={
+														!isExpandable(item)
+													}
+													onKeyDown={(event) => {
+														if (
+															event.key ===
+																'ArrowRight' &&
+															!isExpandable(item)
+														) {
+															event.preventDefault();
+														}
+													}}
+												>
+													<ClayCheckbox checked />
+
+													<span className="font-weight-normal pl-1 text-3">
+														<Highlight
+															query={trimmedQuery}
+															text={item.name}
+														/>
+													</span>
+												</TreeView.ItemStack>
+
+												<TreeView.Group
+													items={item.children}
+												>
+													{(child: FieldTreeItem) => (
+														<TreeView.Item
+															className={getRowClassName(
+																child
+															)}
+														>
+															<ClayCheckbox
+																checked
+															/>
+
+															<span className="font-weight-normal pl-1 text-3">
+																<Highlight
+																	query={
+																		trimmedQuery
+																	}
+																	text={
+																		child.name
+																	}
+																/>
+															</span>
+														</TreeView.Item>
+													)}
+												</TreeView.Group>
+											</TreeView.Item>
+										)}
+									</TreeView>
+								</>
 							) : (
 								<div className="align-items-center d-flex justify-content-center py-4">
-									<p className="text-secondary" role="status">
+									<p className="text-secondary">
 										{Liferay.Language.get(
 											'no-fields-were-found'
 										)}

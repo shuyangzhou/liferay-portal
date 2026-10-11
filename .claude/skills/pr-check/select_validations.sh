@@ -16,7 +16,7 @@ function main {
 
 	for validation_file in "${skill_dir}/validations/branch"/*.md "${skill_dir}/validations/portal"/*.md
 	do
-		_print_estimate "${1}" "${validation_file}"
+		_print_validation "${1}" "${validation_file}"
 	done
 
 	local workspace
@@ -28,24 +28,28 @@ function main {
 		do
 			for validation_file in "${skill_dir}/validations/workspaces"/*.md
 			do
-				_print_estimate "${1}" "${validation_file}" "${workspace}"
+				_print_validation "${1}" "${validation_file}" "${workspace}"
 			done
 		done
 }
 
-function _print_estimate {
+function _print_validation {
 	local paths
 
 	paths=$(bash "$(dirname "${0}")/select_paths.sh" "${1}" "${2}" "${3}")
 
-	if [[ ! -z ${paths} ]]
+	if [[ -z ${paths} ]]
 	then
-		echo "== ${2} ${3} ($(echo "${paths}" | wc -l | tr -d " ") paths)"
+		echo "-- ${2} ${3} (not fired)"
 
-		sed -e "/^## Time Estimate$/,/^## /p" -n "${2}"
-
-		echo
+		return
 	fi
+
+	echo "== ${2} ${3} ($(echo "${paths}" | wc -l | tr -d " ") paths)"
+
+	awk '/^## / {print_section = ($0 == "## Preconditions" || $0 == "## Time Estimate")} print_section' "${2}"
+
+	echo
 }
 
 main "${@}"

@@ -1203,11 +1203,11 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 		userGroup.setExternalReferenceCode(externalReferenceCode);
 		userGroup.setName(name);
 		userGroup.setDescription(description);
-
-		if (userGroup.getStatus() == WorkflowConstants.STATUS_EMPTY) {
-			userGroup.setStatus(WorkflowConstants.STATUS_APPROVED);
-		}
-
+		userGroup.setStatus(
+			EmptyModelManagerUtil.solveEmptyModel(
+				externalReferenceCode, userGroup.getModelClassName(),
+				userGroup.getCompanyId(), 0, userGroup.getStatus(),
+				() -> WorkflowConstants.STATUS_APPROVED));
 		userGroup.setExpandoBridgeAttributes(serviceContext);
 
 		userGroup = userGroupPersistence.update(userGroup);

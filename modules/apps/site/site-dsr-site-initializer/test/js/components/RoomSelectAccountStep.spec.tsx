@@ -144,7 +144,7 @@ describe('RoomSelectAccountStep', () => {
 			setHandleStepSubmit: () => {},
 		});
 
-		expect(spyOnGetAccounts).toBeCalledTimes(1);
+		expect(spyOnGetAccounts).toHaveBeenCalledTimes(1);
 
 		await setFieldValue(screen.getByTestId('selectAccountInput'), 'ac');
 

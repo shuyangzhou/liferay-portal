@@ -48,7 +48,7 @@ describe('resolveEditableValue', () => {
 			getField
 		);
 
-		expect(getField).toBeCalledWith(
+		expect(getField).toHaveBeenCalledWith(
 			expect.objectContaining({
 				classNameId: 3,
 				classPK: 2,

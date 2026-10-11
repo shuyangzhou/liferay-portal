@@ -24,7 +24,7 @@ public class DefaultSegmentsExperienceExceptionProblemMapper
 
 		return ProblemUtil.getProblem(
 			"The default page experience cannot reference a segment",
-			Problem.Status.CONFLICT, defaultSegmentsExperienceException);
+			Problem.Status.BAD_REQUEST, defaultSegmentsExperienceException);
 	}
 
 }

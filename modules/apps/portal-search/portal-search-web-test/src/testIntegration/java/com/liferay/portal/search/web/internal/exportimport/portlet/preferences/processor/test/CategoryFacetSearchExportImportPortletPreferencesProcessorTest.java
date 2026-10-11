@@ -9,9 +9,12 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil;
 import com.liferay.asset.test.util.AssetTestUtil;
+import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.portlet.preferences.processor.ExportImportPortletPreferencesProcessor;
 import com.liferay.exportimport.test.util.ExportImportTestUtil;
+import com.liferay.layout.exporter.PortletPreferencesPortletConfigurationExporter;
+import com.liferay.layout.importer.PortletPreferencesPortletConfigurationImporter;
 import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
@@ -19,11 +22,14 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.test.TestInfo;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.search.test.util.exportimport.BaseExportImportPortletPreferencesProcessorTestCase;
 import com.liferay.portal.search.web.internal.category.facet.constants.CategoryFacetPortletKeys;
 import com.liferay.portal.test.rule.Inject;
@@ -32,6 +38,7 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import jakarta.portlet.PortletPreferences;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -87,6 +94,58 @@ public class CategoryFacetSearchExportImportPortletPreferencesProcessorTest
 		_portletPreferences =
 			PortletPreferencesFactoryUtil.getStrictPortletSetup(
 				layout, CategoryFacetPortletKeys.CATEGORY_FACET);
+	}
+
+	@Test
+	@TestInfo("LPD-108488")
+	public void testExportImportWithCompanyGroupAssetVocabulary()
+		throws Exception {
+
+		Group companyGroup = GroupLocalServiceUtil.getCompanyGroup(
+			_group.getCompanyId());
+
+		_assetVocabulary = AssetTestUtil.addVocabulary(
+			companyGroup.getGroupId());
+
+		Layout layout = LayoutTestUtil.addTypePortletLayout(_group);
+
+		String portletId = LayoutTestUtil.addPortletToLayout(
+			layout, CategoryFacetPortletKeys.CATEGORY_FACET,
+			HashMapBuilder.put(
+				"groupVocabularyExternalReferenceCodes",
+				new String[] {
+					companyGroup.getExternalReferenceCode() + "&&" +
+						_assetVocabulary.getExternalReferenceCode()
+				}
+			).build());
+
+		ExportImportThreadLocal.setPortletStagingInProcess(true);
+
+		Map<String, Object> portletConfiguration =
+			_portletPreferencesPortletConfigurationExporter.
+				getPortletConfiguration(layout.getPlid(), portletId);
+
+		Assert.assertEquals(
+			"[$COMPANY_GROUP_EXTERNAL_REFERENCE_CODE$]&&" +
+				_assetVocabulary.getExternalReferenceCode(),
+			portletConfiguration.get("groupVocabularyExternalReferenceCodes"));
+
+		Layout importedLayout = LayoutTestUtil.addTypePortletLayout(_group);
+
+		_portletPreferencesPortletConfigurationImporter.
+			importPortletConfiguration(
+				importedLayout.getPlid(), portletId, portletConfiguration);
+
+		PortletPreferences portletPreferences =
+			LayoutTestUtil.getPortletPreferences(importedLayout, portletId);
+
+		Assert.assertEquals(
+			companyGroup.getExternalReferenceCode() + "&&" +
+				_assetVocabulary.getExternalReferenceCode(),
+			portletPreferences.getValue(
+				"groupVocabularyExternalReferenceCodes", ""));
+
+		ExportImportThreadLocal.setPortletStagingInProcess(false);
 	}
 
 	@Test
@@ -280,6 +339,9 @@ public class CategoryFacetSearchExportImportPortletPreferencesProcessorTest
 		_portletPreferences.store();
 	}
 
+	@DeleteAfterTestRun
+	private AssetVocabulary _assetVocabulary;
+
 	@Inject(
 		filter = "jakarta.portlet.name=" + CategoryFacetPortletKeys.CATEGORY_FACET
 	)
@@ -292,5 +354,13 @@ public class CategoryFacetSearchExportImportPortletPreferencesProcessorTest
 	private PortletDataContext _portletDataContextExport;
 	private PortletDataContext _portletDataContextImport;
 	private PortletPreferences _portletPreferences;
+
+	@Inject
+	private PortletPreferencesPortletConfigurationExporter
+		_portletPreferencesPortletConfigurationExporter;
+
+	@Inject
+	private PortletPreferencesPortletConfigurationImporter
+		_portletPreferencesPortletConfigurationImporter;
 
 }

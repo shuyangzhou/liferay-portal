@@ -86,7 +86,7 @@ describe('Attributes Step', () => {
 		});
 
 		expect(data.pageView).toEqual('VIEW_WIZARD_MODE');
-		expect(onDataChange).toBeCalledTimes(1);
+		expect(onDataChange).toHaveBeenCalledTimes(1);
 
 		expect(attributesStepTitle).toBeInTheDocument();
 		expect(attributesStepDescription).toBeInTheDocument();

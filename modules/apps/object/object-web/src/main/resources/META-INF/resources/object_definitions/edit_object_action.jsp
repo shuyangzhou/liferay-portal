@@ -21,6 +21,8 @@ ObjectAction objectAction = objectDefinitionsActionsDisplayContext.getObjectActi
 		HashMapBuilder.<String, Object>put(
 			"allowScriptContentToBeExecutedOrIncluded", objectDefinitionsActionsDisplayContext.isAllowScriptContentToBeExecutedOrIncluded()
 		).put(
+			"companyAdmin", permissionChecker.isCompanyAdmin()
+		).put(
 			"hasUserNotificationHandler", objectDefinitionsActionsDisplayContext.hasUserNotificationHandler(objectDefinition.getClassName())
 		).put(
 			"isApproved", objectDefinition.isApproved()

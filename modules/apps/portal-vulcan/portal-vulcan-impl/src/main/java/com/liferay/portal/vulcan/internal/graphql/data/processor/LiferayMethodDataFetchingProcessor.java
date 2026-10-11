@@ -10,8 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.depot.service.DepotEntryLocalService;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.portal.kernel.language.Language;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Sort;
@@ -287,10 +285,10 @@ public class LiferayMethodDataFetchingProcessor {
 				httpServletResponse, instanceArguments, source);
 		}
 		else {
-			Field field = _getThisField(declaringClass);
+			Class<?> enclosingClass = _getEnclosingClass(declaringClass);
 
 			if ((root == source) || Objects.equals(fieldName, "graphQLNode") ||
-				(field == null)) {
+				(enclosingClass == null)) {
 
 				instance = _fillQueryInstance(
 					arguments, httpServletRequest, httpServletResponse,
@@ -300,11 +298,9 @@ public class LiferayMethodDataFetchingProcessor {
 				Constructor<?>[] constructors =
 					declaringClass.getConstructors();
 
-				Class<?> typeClass = field.getType();
-
 				Object queryInstance = _fillQueryInstance(
 					arguments, httpServletRequest, httpServletResponse,
-					typeClass.newInstance(), instanceArguments);
+					enclosingClass.newInstance(), instanceArguments);
 
 				instance = ReflectionKit.constructNewInstance(
 					constructors[0], queryInstance, source);
@@ -624,6 +620,14 @@ public class LiferayMethodDataFetchingProcessor {
 		return ReflectionKit.constructNewInstance(constructor, args);
 	}
 
+	private Class<?> _getEnclosingClass(Class<?> clazz) {
+		if (!clazz.isMemberClass() || Modifier.isStatic(clazz.getModifiers())) {
+			return null;
+		}
+
+		return clazz.getEnclosingClass();
+	}
+
 	private EntityModel _getEntityModel(
 			Object resource, Map<String, String[]> parameterMap)
 		throws Exception {
@@ -683,22 +687,6 @@ public class LiferayMethodDataFetchingProcessor {
 
 		return null;
 	}
-
-	private Field _getThisField(Class<?> clazz) {
-		try {
-			return clazz.getDeclaredField("this$0");
-		}
-		catch (NoSuchFieldException noSuchFieldException) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(noSuchFieldException);
-			}
-
-			return null;
-		}
-	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		LiferayMethodDataFetchingProcessor.class);
 
 	private final BundleContext _bundleContext;
 	private final CompanyLocalService _companyLocalService;

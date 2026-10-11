@@ -6,6 +6,9 @@
 package com.liferay.user.groups.admin.service.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.exportimport.report.constants.ExportImportReportEntryConstants;
+import com.liferay.exportimport.report.model.ExportImportReportEntry;
+import com.liferay.exportimport.report.service.ExportImportReportEntryLocalService;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.DuplicateUserGroupException;
@@ -521,17 +524,38 @@ public class UserGroupLocalServiceTest {
 			Assert.assertEquals(
 				externalReferenceCode, userGroup.getExternalReferenceCode());
 
-			String description = RandomTestUtil.randomString();
+			ExportImportReportEntry exportImportReportEntry =
+				_exportImportReportEntryLocalService.
+					getOrAddExportImportReportEntry(
+						0, TestPropsValues.getCompanyId(),
+						externalReferenceCode,
+						_portal.getClassNameId(UserGroup.class), 0,
+						RandomTestUtil.randomLong(),
+						ExportImportReportEntryConstants.TYPE_EMPTY, null, null,
+						RandomTestUtil.randomString());
+
 			String name = RandomTestUtil.randomString();
+			String description = RandomTestUtil.randomString();
 
 			userGroup = _userGroupLocalService.updateUserGroup(
 				externalReferenceCode, TestPropsValues.getCompanyId(),
 				userGroup.getUserGroupId(), name, description, null);
 
-			Assert.assertEquals(description, userGroup.getDescription());
 			Assert.assertEquals(name, userGroup.getName());
+			Assert.assertEquals(description, userGroup.getDescription());
 			Assert.assertEquals(
 				WorkflowConstants.STATUS_APPROVED, userGroup.getStatus());
+
+			exportImportReportEntry =
+				_exportImportReportEntryLocalService.getExportImportReportEntry(
+					exportImportReportEntry.getExportImportReportEntryId());
+
+			Assert.assertEquals(
+				ExportImportReportEntryConstants.STATUS_RESOLVED,
+				exportImportReportEntry.getStatus());
+
+			_exportImportReportEntryLocalService.deleteExportImportReportEntry(
+				exportImportReportEntry);
 		}
 	}
 
@@ -593,6 +617,10 @@ public class UserGroupLocalServiceTest {
 	}
 
 	private int _count;
+
+	@Inject
+	private ExportImportReportEntryLocalService
+		_exportImportReportEntryLocalService;
 
 	@Inject
 	private Portal _portal;

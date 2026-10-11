@@ -334,7 +334,7 @@ describe('AddressSelector', () => {
 		) => {
 			await setFieldValue(field, value);
 
-			expect(isFormValid).toBeCalledWith(expectedResult);
+			expect(isFormValid).toHaveBeenCalledWith(expectedResult);
 		};
 
 		const renderedComponent = render(
@@ -359,7 +359,7 @@ describe('AddressSelector', () => {
 			expect(addressCountrySelect?.options?.length).toBe(3);
 		});
 
-		expect(isFormValid).toBeCalledWith(false);
+		expect(isFormValid).toHaveBeenCalledWith(false);
 
 		await checkIsFormValid(false, addressCountrySelect, 'Italy');
 		await checkIsFormValid(false, addressLocalityInput, 'addressLocality');
@@ -484,7 +484,7 @@ describe('AddressSelector', () => {
 			) as IPostalAddress
 		);
 
-		expect(isFormValid).toBeCalledWith(true);
+		expect(isFormValid).toHaveBeenCalledWith(true);
 
 		changeAddress(
 			102,
@@ -493,7 +493,7 @@ describe('AddressSelector', () => {
 			) as IPostalAddress
 		);
 
-		expect(isFormValid).toBeCalledWith(true);
+		expect(isFormValid).toHaveBeenCalledWith(true);
 
 		changeAddress(
 			103,
@@ -502,11 +502,11 @@ describe('AddressSelector', () => {
 			) as IPostalAddress
 		);
 
-		expect(isFormValid).toBeCalledWith(true);
+		expect(isFormValid).toHaveBeenCalledWith(true);
 
 		changeAddress(0, {} as IPostalAddress, false);
 
-		expect(isFormValid).toBeCalledWith(false);
+		expect(isFormValid).toHaveBeenCalledWith(false);
 	});
 
 	it('Must preload with specified address', async () => {
@@ -571,7 +571,7 @@ describe('AddressSelector', () => {
 			selectedAddress.streetAddressLine3
 		);
 
-		expect(isFormValid).toBeCalledWith(true);
+		expect(isFormValid).toHaveBeenCalledWith(true);
 	});
 
 	it('Must create a new address', async () => {
@@ -1033,7 +1033,7 @@ describe('AddressSelector', () => {
 		expect(addressSubtypeInput).toBeDisabled();
 		expect(addressSubtypeInput).toHaveValue('SHIPPING 2');
 
-		expect(isFormValid).toBeCalledWith(true);
+		expect(isFormValid).toHaveBeenCalledWith(true);
 	});
 
 	it('Must preload the subtype field when selecting an existing address', async () => {
@@ -1111,17 +1111,17 @@ describe('AddressSelector', () => {
 		await changeAddress(105, 'SHIPPING 2');
 
 		expect(fetchMock.callHistory.calls('matched').length).toBe(3);
-		expect(isFormValid).toBeCalledWith(true);
+		expect(isFormValid).toHaveBeenCalledWith(true);
 
 		await changeAddress(106, 'BILLING AND SHIPPING 2');
 
 		expect(fetchMock.callHistory.calls('matched').length).toBe(4);
-		expect(isFormValid).toBeCalledWith(true);
+		expect(isFormValid).toHaveBeenCalledWith(true);
 
 		await changeAddress(101, '');
 
 		expect(fetchMock.callHistory.calls('matched').length).toBe(4);
-		expect(isFormValid).toBeCalledWith(true);
+		expect(isFormValid).toHaveBeenCalledWith(true);
 	});
 });
 

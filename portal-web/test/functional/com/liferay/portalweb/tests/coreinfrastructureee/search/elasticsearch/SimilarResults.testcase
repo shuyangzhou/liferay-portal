@@ -127,6 +127,10 @@ definition {
 
 	@priority = 4
 	test AssertDisplayWithMBMessages {
+		task ("Enable Message Boards") {
+			MessageboardsPortlet.enableMessageBoards();
+		}
+
 		for (var count : list "1,2,3") {
 			JSONMBMessage.addMessage(
 				groupName = "Guest",
@@ -169,6 +173,10 @@ definition {
 
 	@priority = 4
 	test AssertMatchesAssetType {
+		task ("Enable Message Boards") {
+			MessageboardsPortlet.enableMessageBoards();
+		}
+
 		for (var count : list "1,2,3") {
 			JSONBlog.addEntry(
 				entryContent = "Blogs Content",

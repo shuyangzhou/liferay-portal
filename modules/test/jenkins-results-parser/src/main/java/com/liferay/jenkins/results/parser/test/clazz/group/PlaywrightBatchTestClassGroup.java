@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,6 +45,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -86,7 +88,7 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 			_getPlaywrightProjectsIncludesJobProperty();
 
 		if (playwrightProjectsIncludesJobProperty == null) {
-			_addProjectNames(_getDefaultProjectNames());
+			_projectNames.addAll(_getDefaultProjectNames());
 		}
 		else {
 			_addProjectNames(playwrightProjectsIncludesJobProperty.getValue());
@@ -184,9 +186,7 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 		playwrightJobProperties.removeAll(Collections.singleton(null));
 
 		for (JobProperty jobProperty : playwrightJobProperties) {
-			String jobPropertyValue = jobProperty.getValue();
-
-			Collections.addAll(_projectNames, jobPropertyValue.split(","));
+			_addProjectNames(jobProperty.getValue());
 		}
 
 		JobProperty excludesJobProperty =
@@ -311,10 +311,8 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 					playwrightTestProjectJobProperties) {
 
 				if (playwrightTestProjectJobProperty.getValue() != null) {
-					String projectNames =
-						playwrightTestProjectJobProperty.getValue();
-
-					_addProjectNames(projectNames);
+					_addProjectNames(
+						playwrightTestProjectJobProperty.getValue());
 
 					playwrightJobProperties.add(
 						playwrightTestProjectJobProperty);
@@ -330,10 +328,8 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 					playwrightExcludeProjectJobProperties) {
 
 				if (playwrightExcludeProjectJobProperty.getValue() != null) {
-					String projectNames =
-						playwrightExcludeProjectJobProperty.getValue();
-
-					removeProjectNames(projectNames);
+					removeProjectNames(
+						playwrightExcludeProjectJobProperty.getValue());
 
 					playwrightJobProperties.add(
 						playwrightExcludeProjectJobProperty);
@@ -346,11 +342,9 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 		return new ArrayList<>(playwrightJobProperties);
 	}
 
-	protected void removeProjectNames(String jobPropertyValue) {
-		String[] excludesProjectNames = jobPropertyValue.split("\\s*,\\s*");
-
-		for (String excludeProjectName : excludesProjectNames) {
-			_projectNames.remove(excludeProjectName);
+	protected void removeProjectNames(String projectNamesString) {
+		for (String projectName : StringUtils.split(projectNamesString, ", ")) {
+			_projectNames.remove(projectName);
 		}
 	}
 
@@ -373,6 +367,17 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 		}
 
 		for (String projectName : _projectNames) {
+			if (!_isDatabaseTypeSupported(projectName)) {
+				System.out.println(
+					JenkinsResultsParserUtil.combine(
+						"[", getBatchName(), "] Skipping Playwright project \"",
+						projectName,
+						"\" because its database types do not include the ",
+						"batch database type"));
+
+				continue;
+			}
+
 			List<TestClass> testClasses = _getTestClasses(
 				projectName, rootDir, testClassesMaps);
 
@@ -470,10 +475,9 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 				JenkinsResultsParserUtil.toDurationString(duration)));
 	}
 
-	private void _addProjectNames(String projectNames) {
-		projectNames = projectNames.trim();
-
-		Collections.addAll(_projectNames, projectNames.split("\\s*,\\s*"));
+	private void _addProjectNames(String projectNamesString) {
+		Collections.addAll(
+			_projectNames, StringUtils.split(projectNamesString, ", "));
 	}
 
 	private String _callGradleCommand(
@@ -567,17 +571,82 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 		}
 	}
 
-	private String _getDefaultProjectNames() {
+	private File _getConfigFile(String projectName) throws IOException {
+		if (_configFiles == null) {
+			_configFiles = new HashMap<>();
+
+			for (File configFile :
+					JenkinsResultsParserUtil.findFiles(
+						new File(getPlaywrightBaseDir(), "tests"),
+						"config\\.ts")) {
+
+				Matcher matcher = _configProjectNamePattern.matcher(
+					JenkinsResultsParserUtil.read(configFile));
+
+				while (matcher.find()) {
+					_configFiles.put(matcher.group("projectName"), configFile);
+				}
+			}
+		}
+
+		return _configFiles.get(projectName);
+	}
+
+	private List<String> _getDatabaseTypes(File dir) {
+		Properties testProperties = JenkinsResultsParserUtil.getProperties(
+			new File(dir, "test.properties"));
+
+		String[] databaseTypes = StringUtils.split(
+			JenkinsResultsParserUtil.getProperty(
+				testProperties, "database.types"),
+			", ");
+
+		if (databaseTypes == null) {
+			return Collections.emptyList();
+		}
+
+		return Arrays.asList(databaseTypes);
+	}
+
+	private List<String> _getDatabaseTypes(String projectName)
+		throws IOException {
+
+		File configFile = _getConfigFile(projectName);
+
+		if (configFile == null) {
+			return Collections.emptyList();
+		}
+
+		List<String> databaseTypes = _getDatabaseTypes(
+			configFile.getParentFile());
+
+		if (!databaseTypes.isEmpty()) {
+			return databaseTypes;
+		}
+
+		Matcher matcher = _configTestDirPattern.matcher(
+			JenkinsResultsParserUtil.read(configFile));
+
+		if (!matcher.find()) {
+			return Collections.emptyList();
+		}
+
+		return _getDatabaseTypes(
+			new File(getPlaywrightBaseDir(), matcher.group("testDir")));
+	}
+
+	private List<String> _getDefaultProjectNames() {
 		String playwrightProjectName = Environment.get(
 			"PLAYWRIGHT_PROJECT_NAME");
 
 		if (!JenkinsResultsParserUtil.isNullOrEmpty(playwrightProjectName)) {
-			return playwrightProjectName;
+			return Arrays.asList(
+				StringUtils.split(playwrightProjectName, ", "));
 		}
 
 		_loadPlaywrightJSONObjects();
 
-		StringBuilder sb = new StringBuilder();
+		List<String> projectNames = new ArrayList<>();
 
 		JSONObject configJSONObject = _playwrightJSONObject.getJSONObject(
 			"config");
@@ -587,14 +656,10 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 		for (int i = 0; i < projectsJSONArray.length(); i++) {
 			JSONObject projectJSONObject = projectsJSONArray.getJSONObject(i);
 
-			sb.append(projectJSONObject.optString("name"));
-
-			sb.append(",");
+			projectNames.add(projectJSONObject.optString("name"));
 		}
 
-		sb.setLength(sb.length() - 1);
-
-		return sb.toString();
+		return projectNames;
 	}
 
 	private File _getModulesDir() {
@@ -780,6 +845,59 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 		}
 
 		return false;
+	}
+
+	private boolean _isDatabaseTypeSupported(String projectName) {
+		List<String> databaseTypes = null;
+
+		try {
+			databaseTypes = _getDatabaseTypes(projectName);
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(ioException);
+		}
+
+		if (databaseTypes.isEmpty()) {
+			return true;
+		}
+
+		Set<String> validDatabaseTypes = new HashSet<>();
+
+		Properties testProperties =
+			portalGitWorkingDirectory.getTestProperties();
+
+		for (String propertyName : testProperties.stringPropertyNames()) {
+			Matcher matcher = _databaseVersionPropertyNamePattern.matcher(
+				propertyName);
+
+			if (matcher.matches()) {
+				validDatabaseTypes.add(matcher.group("databaseType"));
+			}
+		}
+
+		boolean databaseTypeSupported = false;
+
+		for (String databaseType : databaseTypes) {
+			if (!validDatabaseTypes.contains(databaseType)) {
+				throw new RuntimeException(
+					JenkinsResultsParserUtil.combine(
+						"Invalid database type \"", databaseType,
+						"\" in Playwright project \"", projectName, "\""));
+			}
+
+			Pattern batchNameDatabaseTypePattern = Pattern.compile(
+				JenkinsResultsParserUtil.combine(
+					"-", databaseType, "\\d*(?=[-_]|$)"));
+
+			Matcher matcher = batchNameDatabaseTypePattern.matcher(
+				getBatchName());
+
+			if (matcher.find()) {
+				databaseTypeSupported = true;
+			}
+		}
+
+		return databaseTypeSupported;
 	}
 
 	private boolean _isPlaywrightInYarnWorkspace() throws IOException {
@@ -1122,6 +1240,12 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 			"Playwright batch creation failure", "Liferay Playwright");
 	}
 
+	private static final Pattern _configProjectNamePattern = Pattern.compile(
+		"name:\\s*'(?<projectName>[^']+)'");
+	private static final Pattern _configTestDirPattern = Pattern.compile(
+		"testDir:\\s*'(?<testDir>[^']+)'");
+	private static final Pattern _databaseVersionPropertyNamePattern =
+		Pattern.compile("database\\.(?<databaseType>[^.]+)\\.version");
 	private static final Pattern _npmCommandOutputPattern = Pattern.compile(
 		"^\\s*(\\{)", Pattern.MULTILINE);
 	private static final Pattern _playwrightFileNamePattern = Pattern.compile(
@@ -1135,6 +1259,7 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 				"\\s*[\"']runPlaywright[\"'])",
 			Pattern.MULTILINE);
 
+	private Map<String, File> _configFiles;
 	private Boolean _hasRunPlaywrightGradleTask;
 	private final Set<String> _projectNames = new HashSet<>();
 

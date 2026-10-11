@@ -71,7 +71,7 @@ describe('PortletContentContextProvider', () => {
 
 		expect(
 			FragmentService.renderFragmentEntryLinksContent
-		).not.toBeCalled();
+		).not.toHaveBeenCalled();
 	});
 
 	it('call API for refresh portlets when changing viewport size', () => {
@@ -87,7 +87,9 @@ describe('PortletContentContextProvider', () => {
 
 		rerender();
 
-		expect(FragmentService.renderFragmentEntryLinksContent).toBeCalledWith(
+		expect(
+			FragmentService.renderFragmentEntryLinksContent
+		).toHaveBeenCalledWith(
 			expect.objectContaining({
 				data: expect.arrayContaining([
 					expect.objectContaining({fragmentEntryLinkId: '12345'}),
@@ -112,7 +114,9 @@ describe('PortletContentContextProvider', () => {
 
 		rerender();
 
-		expect(FragmentService.renderFragmentEntryLinksContent).toBeCalledWith(
+		expect(
+			FragmentService.renderFragmentEntryLinksContent
+		).toHaveBeenCalledWith(
 			expect.objectContaining({
 				data: expect.arrayContaining([
 					expect.objectContaining({fragmentEntryLinkId: '12345'}),

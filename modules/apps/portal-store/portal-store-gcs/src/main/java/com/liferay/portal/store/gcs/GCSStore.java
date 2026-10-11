@@ -167,12 +167,13 @@ public class GCSStore implements Store {
 			StoreArea.getCurrentStoreAreaPath(companyId, repositoryId) +
 				StringPool.SLASH;
 
-		return TransformUtil.transform(
-			_getFilePaths(companyId, repositoryId, dirName),
-			filePath -> filePath.substring(
-				filePath.indexOf(prefix) + prefix.length(),
-				filePath.lastIndexOf(StringPool.SLASH)),
-			String.class);
+		return ArrayUtil.distinct(
+			TransformUtil.transform(
+				_getFilePaths(companyId, repositoryId, dirName),
+				filePath -> filePath.substring(
+					filePath.indexOf(prefix) + prefix.length(),
+					filePath.lastIndexOf(StringPool.SLASH)),
+				String.class));
 	}
 
 	@Override
@@ -198,6 +199,10 @@ public class GCSStore implements Store {
 	@Override
 	public String[] getFileVersions(
 		long companyId, long repositoryId, String fileName) {
+
+		if (!fileName.endsWith(StringPool.SLASH)) {
+			fileName += StringPool.SLASH;
+		}
 
 		return TransformUtil.transform(
 			_getFilePaths(companyId, repositoryId, fileName),
@@ -388,11 +393,11 @@ public class GCSStore implements Store {
 	private String[] _getFilePaths(long companyId) {
 		List<String> filePaths = new ArrayList<>();
 
-		Bucket bucket = _gcsStore.get(_gcsStoreConfiguration.bucketName());
-
 		String path = StoreArea.getCurrentStoreAreaPath(companyId);
 
-		Page<Blob> blobPage = bucket.list(Storage.BlobListOption.prefix(path));
+		Page<Blob> blobPage = _gcsStore.list(
+			_gcsStoreConfiguration.bucketName(),
+			Storage.BlobListOption.prefix(path));
 
 		Iterable<Blob> blobs = blobPage.iterateAll();
 
@@ -406,20 +411,17 @@ public class GCSStore implements Store {
 
 		List<String> filePaths = new ArrayList<>();
 
-		Bucket bucket = _gcsStore.get(_gcsStoreConfiguration.bucketName());
-
-		String path = null;
-
 		if (Validator.isNull(dirName) ||
 			dirName.equals(StringPool.FORWARD_SLASH)) {
 
-			path = _getRepositoryKey(companyId, repositoryId);
-		}
-		else {
-			path = _getDirectoryKey(companyId, repositoryId, dirName);
+			dirName = StringPool.BLANK;
 		}
 
-		Page<Blob> blobPage = bucket.list(Storage.BlobListOption.prefix(path));
+		String path = _getDirectoryKey(companyId, repositoryId, dirName);
+
+		Page<Blob> blobPage = _gcsStore.list(
+			_gcsStoreConfiguration.bucketName(),
+			Storage.BlobListOption.prefix(path));
 
 		Iterable<Blob> blobs = blobPage.iterateAll();
 
@@ -471,10 +473,6 @@ public class GCSStore implements Store {
 		}
 
 		return blob.reader(_decryptBlobBlobSourceOption);
-	}
-
-	private String _getRepositoryKey(long companyId, long repositoryId) {
-		return StoreArea.getCurrentStoreAreaPath(companyId, repositoryId);
 	}
 
 	private WriteChannel _getWriteChannel(BlobInfo blobInfo) {

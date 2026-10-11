@@ -440,7 +440,7 @@ describe('PageStructureSidebar', () => {
 		await userEvent.type(input, 'Custom Fragment Name');
 		fireEvent.blur(input);
 		expect(screen.getByText('Custom Fragment Name')).toBeInTheDocument();
-		expect(updateItemConfig).toBeCalledWith(
+		expect(updateItemConfig).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemConfig: {name: 'Custom Fragment Name'},
 			})

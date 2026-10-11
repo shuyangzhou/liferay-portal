@@ -76,7 +76,7 @@ describe('LengthField', () => {
 		await userEvent.type(input, '24');
 		fireEvent.blur(input);
 
-		expect(onValueSelect).toBeCalledWith(FIELD.name, '24px');
+		expect(onValueSelect).toHaveBeenCalledWith(FIELD.name, '24px');
 	});
 
 	it('saves the value when the Enter button is pressed', async () => {
@@ -88,7 +88,7 @@ describe('LengthField', () => {
 		await userEvent.type(input, '30');
 		fireEvent.keyUp(input, {key: 'Enter'});
 
-		expect(onValueSelect).toBeCalledWith(FIELD.name, '30px');
+		expect(onValueSelect).toHaveBeenCalledWith(FIELD.name, '30px');
 	});
 
 	it('changes the unit of the value', async () => {
@@ -238,7 +238,7 @@ describe('LengthField', () => {
 			fireEvent.blur(input);
 
 			expect(input).toHaveValue('initial');
-			expect(onValueSelect).not.toBeCalled();
+			expect(onValueSelect).not.toHaveBeenCalled();
 		});
 	});
 });

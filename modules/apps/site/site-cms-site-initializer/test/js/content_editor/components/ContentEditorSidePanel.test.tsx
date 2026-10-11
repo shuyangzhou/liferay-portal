@@ -112,7 +112,7 @@ describe('ContentEditorSidePanel', () => {
 			expect(subscribeButton).toBeEnabled();
 		});
 
-		expect(mockFetch).toBeCalledWith('subscribeURL', {
+		expect(mockFetch).toHaveBeenCalledWith('subscribeURL', {
 			body: {
 				cmd: 'subscribe',
 			},
@@ -151,7 +151,7 @@ describe('ContentEditorSidePanel', () => {
 			expect(unsubscribeButton).toBeEnabled();
 		});
 
-		expect(mockFetch).toBeCalledWith('subscribeURL', {
+		expect(mockFetch).toHaveBeenCalledWith('subscribeURL', {
 			body: {
 				cmd: 'unsubscribe',
 			},

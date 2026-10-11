@@ -4,16 +4,19 @@
 
 `.`
 
+## Preconditions
+
+- SDK
+
 ## Command
 
-Run the SDK setup, then run the source formatter in `current-branch` mode:
+Run the source formatter in `current-branch` mode:
 
 ```bash
-(cd "${REPO_ROOT}" && ant setup-sdk)
 (cd "${REPO_ROOT}/portal-impl" && ANT_OPTS="-Xmx2560m" ant format-source-current-branch -Dvalidate.commit.messages=true)
 ```
 
-A nonzero `ant setup-sdk` is an environment failure rather than a formatting one, so report **NOT VERIFIED** and stop rather than formatting a tree that is not set up. That applies to `setup-sdk` alone. A nonzero formatter is a finding, and never read it as an environment failure, however much it looks like one: an unfixable violation surfaces as `Unable to execute Gradle task: :portalYarnFormatCurrentBranch` on the last line or two, which is indistinguishable from a broken toolchain and is why the violations have to be read from the middle of the log. The accompanying `finished with non-zero exit value 1` line sits further up, inside the stack trace, and names the node binary by its full path rather than as `command node`, so search it as a substring or not at all.
+A nonzero formatter is a finding, and never read it as an environment failure, however much it looks like one: an unfixable violation surfaces as `Unable to execute Gradle task: :portalYarnFormatCurrentBranch` on the last line or two, which is indistinguishable from a broken toolchain and is why the violations have to be read from the middle of the log. The accompanying `finished with non-zero exit value 1` line sits further up, inside the stack trace, and names the node binary by its full path rather than as `command node`, so search it as a substring or not at all.
 
 Two formatters run here and they fail differently, at opposite ends of the log. Search for both, and do not read a clean Java side as a pass, since a run where every `SourceCheck` violation was fixed and committed can still be failing on the yarn side:
 
@@ -32,7 +35,7 @@ The yarn side does not always run. `portal-impl/build.xml` sets `skip.node.task`
 
 When `git status --porcelain` is nonempty after the formatter (fixable subset applied to the working tree), stage the tracked modifications with `git add --update` and create a commit titled `<TICKET> SF`.
 
-Use `--update` rather than `--all`. The formatter edits files that already exist, so `--update` covers everything it does, while `--all` also sweeps in whatever else is untracked in the tree at that moment. The run reaches `ant setup-sdk`, `downloadNode`, and `yarnInstall` on the way, and those stay out of the commit only because `.gitignore` happens to cover them. List the staged files against the paths the formatter named before committing, and report any it did not.
+Use `--update` rather than `--all`. The formatter edits files that already exist, so `--update` covers everything it does, while `--all` also sweeps in whatever else is untracked in the tree at that moment. The **SDK** precondition runs `ant setup-sdk` before the formatter, which reaches `downloadNode` and `yarnInstall` on the way, and the output of all three stays out of the commit only because `.gitignore` happens to cover it. List the staged files against the paths the formatter named before committing, and report any it did not.
 
 When the commit fails, record the failure and continue to the next validation.
 

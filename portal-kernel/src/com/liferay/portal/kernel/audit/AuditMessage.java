@@ -64,20 +64,20 @@ public class AuditMessage implements Serializable {
 		_eventType = eventType;
 		_message = message;
 
-		AuditRequestThreadLocal auditRequestThreadLocal =
-			AuditRequestThreadLocal.getAuditThreadLocal();
+		AuditRequestContext auditRequestContext =
+			AuditRequestContextThreadLocal.getAuditRequestContext();
 
-		_clientHost = auditRequestThreadLocal.getClientHost();
-		_clientIP = auditRequestThreadLocal.getClientIP();
-		_correlationId = auditRequestThreadLocal.getCorrelationId();
-		_requestId = auditRequestThreadLocal.getRequestId();
-		_requestIdGenerated = auditRequestThreadLocal.isRequestIdGenerated();
-		_serverName = auditRequestThreadLocal.getServerName();
-		_serverPort = auditRequestThreadLocal.getServerPort();
-		_sessionID = auditRequestThreadLocal.getSessionID();
-		_userEmailAddress = auditRequestThreadLocal.getRealUserEmailAddress();
+		_clientHost = auditRequestContext.getClientHost();
+		_clientIP = auditRequestContext.getClientIP();
+		_correlationId = auditRequestContext.getCorrelationId();
+		_requestId = auditRequestContext.getRequestId();
+		_requestIdGenerated = auditRequestContext.isRequestIdGenerated();
+		_serverName = auditRequestContext.getServerName();
+		_serverPort = auditRequestContext.getServerPort();
+		_sessionID = auditRequestContext.getSessionID();
+		_userEmailAddress = auditRequestContext.getRealUserEmailAddress();
 
-		long realUserId = auditRequestThreadLocal.getRealUserId();
+		long realUserId = auditRequestContext.getRealUserId();
 
 		long doAsUserId = 0;
 
@@ -100,7 +100,7 @@ public class AuditMessage implements Serializable {
 		}
 
 		if (userId == realUserId) {
-			_userLogin = auditRequestThreadLocal.getRealUserLogin();
+			_userLogin = auditRequestContext.getRealUserLogin();
 		}
 
 		// LPS-172507

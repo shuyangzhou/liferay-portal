@@ -154,7 +154,7 @@ describe('FragmentGeneralPanel', () => {
 			target: {value: 'h2'},
 		});
 
-		expect(FragmentService.updateConfigurationValues).toBeCalledWith(
+		expect(FragmentService.updateConfigurationValues).toHaveBeenCalledWith(
 			expect.objectContaining({
 				editableValues: {
 					[EDITABLE_FRAGMENT_ENTRY_PROCESSOR]: {},
@@ -191,7 +191,7 @@ describe('FragmentGeneralPanel', () => {
 			target: {value: 'h2'},
 		});
 
-		expect(FragmentService.updateConfigurationValues).toBeCalledWith(
+		expect(FragmentService.updateConfigurationValues).toHaveBeenCalledWith(
 			expect.objectContaining({
 				editableValues: {
 					[EDITABLE_FRAGMENT_ENTRY_PROCESSOR]: {},
@@ -215,7 +215,7 @@ describe('FragmentGeneralPanel', () => {
 			target: {value: 'h2'},
 		});
 
-		expect(FragmentService.updateConfigurationValues).toBeCalledWith(
+		expect(FragmentService.updateConfigurationValues).toHaveBeenCalledWith(
 			expect.objectContaining({
 				editableValues: {
 					[EDITABLE_FRAGMENT_ENTRY_PROCESSOR]: {},
@@ -288,7 +288,7 @@ describe('FragmentGeneralPanel', () => {
 			target: {value: 'h2'},
 		});
 
-		expect(FragmentService.updateConfigurationValues).toBeCalledWith(
+		expect(FragmentService.updateConfigurationValues).toHaveBeenCalledWith(
 			expect.objectContaining({
 				editableValues: {
 					[EDITABLE_FRAGMENT_ENTRY_PROCESSOR]: {},

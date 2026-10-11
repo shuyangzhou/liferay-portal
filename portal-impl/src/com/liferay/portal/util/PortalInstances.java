@@ -499,7 +499,7 @@ public class PortalInstances {
 
 		if (_copyInProcessCompanyId != null) {
 			throw new UnsupportedOperationException(
-				"Company in copy process company ID is not null");
+				"Copying an instance is already in progress");
 		}
 
 		_copyInProcessCompanyId = companyId;
@@ -512,7 +512,7 @@ public class PortalInstances {
 
 		if (_importInProcessCompanyId != null) {
 			throw new UnsupportedOperationException(
-				"Company in import process company ID is not null");
+				"Importing an instance is already in progress");
 		}
 
 		_importInProcessCompanyId = companyId;

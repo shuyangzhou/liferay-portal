@@ -34,13 +34,11 @@ const defaultConfig = {
 			},
 		],
 		'block-no-empty': true,
-		'color-hex-case': 'lower',
 		'color-hex-length': 'short',
 		'color-no-invalid-hex': true,
 		'comment-no-empty': true,
 		'declaration-block-no-shorthand-property-overrides': true,
 		'font-family-no-duplicate-names': true,
-		'function-calc-no-invalid': true,
 		'function-name-case': 'lower',
 		'function-url-no-scheme-relative': true,
 		'function-url-quotes': 'never',
@@ -56,10 +54,6 @@ const defaultConfig = {
 			},
 		],
 		'no-duplicate-at-import-rules': true,
-		'no-extra-semicolons': true,
-		'number-leading-zero': 'always',
-		'number-no-trailing-zeros': true,
-		'property-case': 'lower',
 		'property-no-unknown': [
 			true,
 			{
@@ -80,9 +74,8 @@ const defaultConfig = {
 			},
 		],
 		'shorthand-property-no-redundant-values': true,
-		'unit-case': 'lower',
 		'unit-no-unknown': true,
-		'value-keyword-case': 'lower',
+		'value-keyword-case': ['lower', {camelCaseSvgKeywords: true}],
 	},
 };
 

@@ -21,9 +21,11 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
+import com.liferay.portal.kernel.service.VirtualHostLocalService;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.HTTPTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -37,6 +39,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
+import com.liferay.portal.util.PortalInstances;
 
 import java.util.Arrays;
 
@@ -114,6 +117,7 @@ public class PortalInstanceCopyResourceTest
 
 		_testPostPortalInstanceCopyBatch();
 		_testPostPortalInstanceCopyDefaultCompany();
+		_testPostPortalInstanceCopyInProgress();
 		_testPostPortalInstanceCopyMissingRequiredFields();
 		_testPostPortalInstanceCopySuccess();
 		_testPostPortalInstanceCopySuccessWithDestinationCompanyId();
@@ -176,6 +180,13 @@ public class PortalInstanceCopyResourceTest
 				expectedCompanyId, copiedPortalInstance.getCompanyId());
 		}
 
+		Company persistedCompany = _companyLocalService.getCompany(
+			copiedPortalInstance.getCompanyId());
+
+		Assert.assertEquals(
+			Integer.valueOf(persistedCompany.getMaxUsers()),
+			copiedPortalInstance.getMaxUsers());
+
 		_deleteCompany(copiedPortalInstance.getCompanyId());
 	}
 
@@ -195,14 +206,14 @@ public class PortalInstanceCopyResourceTest
 		).build();
 	}
 
-	private void _deleteCompanyByVirtualHost(String virtualHost)
+	private void _deleteCompanyByVirtualHost(String virtualHostname)
 		throws Exception {
 
-		Company company = _companyLocalService.fetchCompanyByVirtualHost(
-			virtualHost);
+		VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
+			virtualHostname);
 
-		if (company != null) {
-			_deleteCompany(company.getCompanyId());
+		if (virtualHost != null) {
+			_deleteCompany(virtualHost.getCompanyId());
 		}
 	}
 
@@ -288,6 +299,29 @@ public class PortalInstanceCopyResourceTest
 			Assert.assertEquals(
 				"Company ID " + defaultCompany.getCompanyId() +
 					" is the default company ID",
+				problem.getTitle());
+		}
+	}
+
+	private void _testPostPortalInstanceCopyInProgress() throws Exception {
+		try (SafeCloseable safeCloseable =
+				PortalInstances.setCopyInProcessCompanyIdWithSafeCloseable(
+					RandomTestUtil.randomLong());
+			LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				_CLASS_NAME_PORTAL_INSTANCE_COPY_RESOURCE_IMPL,
+				LoggerTestUtil.ERROR)) {
+
+			portalInstanceCopyResource.postPortalInstanceCopy(
+				_randomPortalInstanceCopy());
+
+			Assert.fail();
+		}
+		catch (Problem.ProblemException problemException) {
+			Problem problem = problemException.getProblem();
+
+			Assert.assertEquals("BAD_REQUEST", problem.getStatus());
+			Assert.assertEquals(
+				"Copying an instance is already in progress",
 				problem.getTitle());
 		}
 	}
@@ -485,5 +519,8 @@ public class PortalInstanceCopyResourceTest
 
 	@Inject
 	private static CompanyLocalService _companyLocalService;
+
+	@Inject
+	private VirtualHostLocalService _virtualHostLocalService;
 
 }

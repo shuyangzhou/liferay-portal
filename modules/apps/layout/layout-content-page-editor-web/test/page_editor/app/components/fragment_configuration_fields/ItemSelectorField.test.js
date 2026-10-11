@@ -78,7 +78,7 @@ describe('ItemSelectorField', () => {
 		expect(screen.getByText('Web Content Title')).toBeInTheDocument();
 		expect(screen.getByText('Document Title')).toBeInTheDocument();
 
-		expect(openItemSelector).not.toBeCalled();
+		expect(openItemSelector).not.toHaveBeenCalled();
 	});
 
 	it('shows only the recent page contents matching the declared item type', async () => {
@@ -89,7 +89,7 @@ describe('ItemSelectorField', () => {
 		expect(screen.getByText('Document Title')).toBeInTheDocument();
 		expect(screen.queryByText('Web Content Title')).not.toBeInTheDocument();
 
-		expect(openItemSelector).not.toBeCalled();
+		expect(openItemSelector).not.toHaveBeenCalled();
 	});
 
 	it('opens the item selector when no recent page content matches the declared item type', async () => {
@@ -99,7 +99,7 @@ describe('ItemSelectorField', () => {
 
 		await userEvent.click(screen.getByLabelText(`select-${FIELD_NAME}`));
 
-		expect(openItemSelector).toBeCalled();
+		expect(openItemSelector).toHaveBeenCalled();
 	});
 
 	it('opens the item selector when the field declares an item subtype', async () => {
@@ -112,7 +112,7 @@ describe('ItemSelectorField', () => {
 
 		expect(screen.queryByText('Web Content Title')).not.toBeInTheDocument();
 
-		expect(openItemSelector).toBeCalled();
+		expect(openItemSelector).toHaveBeenCalled();
 	});
 
 	it('opens the item selector when the field declares mime types', async () => {
@@ -125,6 +125,6 @@ describe('ItemSelectorField', () => {
 
 		expect(screen.queryByText('Document Title')).not.toBeInTheDocument();
 
-		expect(openItemSelector).toBeCalled();
+		expect(openItemSelector).toHaveBeenCalled();
 	});
 });

@@ -75,14 +75,14 @@ describe('DisplayTemplateSelector', () => {
 
 		selectTemplate('Icon Menu');
 
-		expect(Liferay.fire).toBeCalledWith(
+		expect(Liferay.fire).toHaveBeenCalledWith(
 			'templateSelector:changedTemplate',
 			{value: 'ddmTemplate_LANGUAGE-ICON-MENU-FTL'}
 		);
 
 		selectTemplate('Long Text');
 
-		expect(Liferay.fire).toBeCalledWith(
+		expect(Liferay.fire).toHaveBeenCalledWith(
 			'templateSelector:changedTemplate',
 			{value: 'ddmTemplate_LANGUAGE-LONG-TEXT-FTL'}
 		);
@@ -91,7 +91,7 @@ describe('DisplayTemplateSelector', () => {
 	it('calls Liferay.fire with correct value on first render', async () => {
 		renderComponent();
 
-		expect(Liferay.fire).toBeCalledWith(
+		expect(Liferay.fire).toHaveBeenCalledWith(
 			'templateSelector:changedTemplate',
 			{value: 'IconValue'}
 		);

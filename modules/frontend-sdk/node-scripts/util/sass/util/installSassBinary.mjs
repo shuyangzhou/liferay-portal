@@ -107,10 +107,9 @@ async function downloadAndExtract(url, dir) {
 		});
 	}
 	else if (bundlePath.endsWith('.zip')) {
-		const fd = await fs.open(bundlePath, 'r');
-		const file = fd.createReadStream();
+		const directory = await unzipper.Open.file(bundlePath);
 
-		await stream.pipeline(file, unzipper.Extract({path: dir}));
+		await directory.extract({path: dir});
 	}
 	else {
 		throw new Error(`Don't know how to uncompress ${bundlePath}`);

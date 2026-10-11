@@ -1,5 +1,0 @@
-Bundle-Name: angular
-Bundle-SymbolicName: angular
-Bundle-Version: 1.0.0
-Export-Package: angular.constants
-Web-ContextPath: /angular

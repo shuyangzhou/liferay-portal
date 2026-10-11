@@ -364,6 +364,10 @@ definition {
 		property custom.properties = "feature.flag.LPD-35013=true${line.separator}feature.flag.LPS-122920=true";
 		property txtai.enabled = "true";
 
+		task ("Enable Message Boards") {
+			MessageboardsPortlet.enableMessageBoards();
+		}
+
 		JSONWebcontent.addWebContent(
 			content = "",
 			groupName = "Guest",

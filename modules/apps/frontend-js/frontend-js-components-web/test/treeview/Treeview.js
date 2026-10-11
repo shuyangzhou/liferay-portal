@@ -104,7 +104,7 @@ describe('Treeview', () => {
 		fireEvent.click(getByText('Sandro'));
 		fireEvent.click(getByText('Victor'));
 
-		expect(onSelectedNodesChange).toBeCalledWith(new Set(['1', '2']));
+		expect(onSelectedNodesChange).toHaveBeenCalledWith(new Set(['1', '2']));
 	});
 
 	it('marks the initialSelectedNodeIds as selected', () => {
@@ -225,7 +225,7 @@ describe('Treeview', () => {
 
 			fireEvent.click(getByText('Sandro'));
 
-			expect(onSelectedNodesChange).toBeCalledWith(
+			expect(onSelectedNodesChange).toHaveBeenCalledWith(
 				new Set(['1', '1.1', '1.2', '1.2.1'])
 			);
 		});
@@ -243,7 +243,7 @@ describe('Treeview', () => {
 
 			fireEvent.click(getByText('Pablictor'));
 
-			expect(onSelectedNodesChange).toBeCalledWith(
+			expect(onSelectedNodesChange).toHaveBeenCalledWith(
 				new Set(['1', '1.1', '1.2', '1.2.1'])
 			);
 		});
@@ -261,7 +261,7 @@ describe('Treeview', () => {
 
 			fireEvent.click(getByText('Pablictor'));
 
-			expect(onSelectedNodesChange).toBeCalledWith(
+			expect(onSelectedNodesChange).toHaveBeenCalledWith(
 				new Set(['1.2', '1.2.1'])
 			);
 		});

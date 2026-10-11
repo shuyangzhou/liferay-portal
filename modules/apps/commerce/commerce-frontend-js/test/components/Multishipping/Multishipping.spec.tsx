@@ -1872,7 +1872,7 @@ describe('MultiShipping - bulk actions', () => {
 
 		userEvent.click(bulkSplitActionButton);
 
-		expect(spyOnShowError).toBeCalledWith({
+		expect(spyOnShowError).toHaveBeenCalledWith({
 			detail: 'the-item-s-quantity-is-not-valid-for-the-number-of-delivery-groups',
 		});
 	});
@@ -2077,7 +2077,7 @@ describe('MultiShipping - bulk actions', () => {
 
 		userEvent.click(bulkCopyActionButton);
 
-		expect(spyOnShowError).toBeCalledWith({
+		expect(spyOnShowError).toHaveBeenCalledWith({
 			detail: 'the-item-s-quantity-is-not-valid-for-the-number-of-delivery-groups',
 		});
 	});

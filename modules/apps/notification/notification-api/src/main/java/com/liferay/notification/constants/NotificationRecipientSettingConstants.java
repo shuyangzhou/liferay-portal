@@ -22,7 +22,12 @@ public class NotificationRecipientSettingConstants {
 
 	public static final String NAME_FROM_NAME = "fromName";
 
+	public static final String NAME_ROLE_EXTERNAL_REFERENCE_CODE =
+		"roleExternalReferenceCode";
+
 	public static final String NAME_ROLE_NAME = "roleName";
+
+	public static final String NAME_ROLE_TYPE = "roleType";
 
 	public static final String NAME_SINGLE_RECIPIENT = "singleRecipient";
 
@@ -31,6 +36,12 @@ public class NotificationRecipientSettingConstants {
 	public static final String NAME_TO = "to";
 
 	public static final String NAME_TO_TYPE = "toType";
+
+	public static final String NAME_USER_EXTERNAL_REFERENCE_CODE =
+		"userExternalReferenceCode";
+
+	public static final String NAME_USER_GROUP_EXTERNAL_REFERENCE_CODE =
+		"userGroupExternalReferenceCode";
 
 	public static final String NAME_USER_GROUP_NAME = "userGroupName";
 

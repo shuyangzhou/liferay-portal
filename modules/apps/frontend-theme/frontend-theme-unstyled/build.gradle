@@ -233,6 +233,8 @@ buildClayIcons {
 	eachFile new StripPathSegmentsAction(3)
 	from "../../frontend-js/frontend-js-clay-web/clay/clay-css"
 	include "src/images/icons/"
+	include "src/images/images/empty_states.svg"
+
 	includeEmptyDirs = false
 	into clayIconsDestinationDir
 }

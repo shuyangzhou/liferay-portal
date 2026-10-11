@@ -208,11 +208,11 @@ public class AudiencesCriteriaProviderTest {
 			audiencesCriterias.toString(), 4, audiencesCriterias.size());
 
 		_assertSegmentsAudiencesCriteria(
-			_getAudiencesCriteria(audiencesCriterias, "real_time_segments"),
-			"Real-Time Segments", realTimeSegmentsEntry);
-		_assertSegmentsAudiencesCriteria(
 			_getAudiencesCriteria(audiencesCriterias, "batch_segments"),
 			"Batch Segments", batchSegmentsEntry);
+		_assertSegmentsAudiencesCriteria(
+			_getAudiencesCriteria(audiencesCriterias, "real_time_segments"),
+			"Real Time Segments", realTimeSegmentsEntry);
 	}
 
 	private ClientExtensionEntry _addClientExtensionEntry(

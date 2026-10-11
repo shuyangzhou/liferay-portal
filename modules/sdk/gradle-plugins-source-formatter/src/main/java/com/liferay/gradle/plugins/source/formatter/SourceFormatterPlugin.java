@@ -14,9 +14,12 @@ import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.DependencySet;
+import org.gradle.api.attributes.AttributeContainer;
+import org.gradle.api.attributes.java.TargetJvmEnvironment;
 import org.gradle.api.execution.TaskExecutionGraph;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.invocation.Gradle;
+import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.specs.Spec;
 import org.gradle.api.tasks.TaskContainer;
 import org.gradle.language.base.plugins.LifecycleBasePlugin;
@@ -51,6 +54,15 @@ public class SourceFormatterPlugin implements Plugin<Project> {
 		Configuration configuration = GradleUtil.addConfiguration(
 			project, CONFIGURATION_NAME);
 
+		AttributeContainer attributeContainer = configuration.getAttributes();
+
+		ObjectFactory objectFactory = project.getObjects();
+
+		attributeContainer.attribute(
+			TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE,
+			objectFactory.named(
+				TargetJvmEnvironment.class, TargetJvmEnvironment.STANDARD_JVM));
+
 		configuration.defaultDependencies(
 			new Action<DependencySet>() {
 
@@ -61,6 +73,7 @@ public class SourceFormatterPlugin implements Plugin<Project> {
 
 			});
 
+		configuration.setCanBeConsumed(false);
 		configuration.setDescription(
 			"Configures Liferay Source Formatter for this project.");
 		configuration.setVisible(false);

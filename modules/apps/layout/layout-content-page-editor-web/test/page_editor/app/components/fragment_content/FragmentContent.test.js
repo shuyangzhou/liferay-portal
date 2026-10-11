@@ -158,7 +158,7 @@ describe('FragmentContent', () => {
 			renderFragmentContent({fragmentEntryLink});
 		});
 
-		expect(resolveEditableValue).toBeCalledWith(
+		expect(resolveEditableValue).toHaveBeenCalledWith(
 			{},
 			'en_US',
 			expect.any(Function)
@@ -175,7 +175,7 @@ describe('FragmentContent', () => {
 			renderFragmentContent({fragmentEntryLink});
 		});
 
-		expect(resolveEditableValue).toBeCalledWith(
+		expect(resolveEditableValue).toHaveBeenCalledWith(
 			{},
 			'en_US',
 			expect.any(Function)
@@ -199,7 +199,7 @@ describe('FragmentContent', () => {
 			renderFragmentContent({fragmentEntryLink});
 		});
 
-		expect(resolveEditableValue).toBeCalledWith(
+		expect(resolveEditableValue).toHaveBeenCalledWith(
 			{defaultValue: 'image.jpg'},
 			'en_US',
 			expect.any(Function)

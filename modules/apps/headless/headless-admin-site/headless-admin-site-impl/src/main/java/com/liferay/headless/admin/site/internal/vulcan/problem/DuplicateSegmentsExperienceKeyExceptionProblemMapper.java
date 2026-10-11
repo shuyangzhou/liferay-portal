@@ -8,7 +8,10 @@ package com.liferay.headless.admin.site.internal.vulcan.problem;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.problem.Problem;
 import com.liferay.portal.vulcan.problem.ProblemMapper;
+import com.liferay.segments.constants.SegmentsExperienceConstants;
 import com.liferay.segments.exception.DuplicateSegmentsExperienceKeyException;
+
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -26,6 +29,17 @@ public class DuplicateSegmentsExperienceKeyExceptionProblemMapper
 
 		String segmentsExperienceKey =
 			duplicateSegmentsExperienceKeyException.getSegmentsExperienceKey();
+
+		if (Objects.equals(
+				segmentsExperienceKey,
+				SegmentsExperienceConstants.KEY_DEFAULT)) {
+
+			return ProblemUtil.getProblem(
+				"Only the default segments experience can use the key \"" +
+					SegmentsExperienceConstants.KEY_DEFAULT + "\"",
+				Problem.Status.BAD_REQUEST,
+				duplicateSegmentsExperienceKeyException);
+		}
 
 		String message = "A page experience with the same key already exists";
 

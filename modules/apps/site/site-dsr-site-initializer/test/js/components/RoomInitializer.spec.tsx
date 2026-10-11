@@ -178,7 +178,7 @@ describe('RoomInitializer', () => {
 
 		screen.getByRole('button', {name: 'cancel'}).click();
 
-		expect(closeModal).toBeCalledTimes(1);
+		expect(closeModal).toHaveBeenCalledTimes(1);
 	});
 
 	it('calls API on save button with all the steps', async () => {
@@ -271,7 +271,7 @@ describe('RoomInitializer', () => {
 			screen.getByRole('button', {name: 'save'}).click();
 		});
 
-		expect(spyOnAddRoom).toBeCalledWith({
+		expect(spyOnAddRoom).toHaveBeenCalledWith({
 			accountEntryId: 100,
 			friendlyURL: 'testFriendlyURL',
 			name: 'testRoomName',
