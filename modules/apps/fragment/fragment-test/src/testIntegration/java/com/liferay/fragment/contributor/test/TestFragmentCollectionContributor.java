@@ -72,6 +72,11 @@ public class TestFragmentCollectionContributor
 	}
 
 	@Override
+	public String getFragmentEntryName(String fragmentEntryKey, Locale locale) {
+		return null;
+	}
+
+	@Override
 	public String getName() {
 		return "Test Fragment Collection Contributor";
 	}
