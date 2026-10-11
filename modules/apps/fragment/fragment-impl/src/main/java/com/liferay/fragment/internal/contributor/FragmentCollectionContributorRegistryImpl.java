@@ -16,9 +16,9 @@ import com.liferay.fragment.processor.FragmentEntryProcessorRegistry;
 import com.liferay.fragment.service.FragmentEntryLinkLocalService;
 import com.liferay.fragment.validator.FragmentEntryValidator;
 import com.liferay.layout.util.LayoutServiceContextHelper;
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
-import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.module.configuration.ConfigurationProvider;
@@ -141,17 +141,14 @@ public class FragmentCollectionContributorRegistryImpl
 	public Map<String, FragmentEntry> getFragmentEntries() {
 		Map<String, FragmentEntry> fragmentEntries = new HashMap<>();
 
-		for (FragmentCollectionBag fragmentCollectionBag :
-				_fragmentCollectionBagServiceTrackerMap.values()) {
+		for (String fragmentEntryKey :
+				_fragmentCollectionBagServiceTrackerMap.keySet()) {
 
-			FragmentCollectionContributor fragmentCollectionContributor =
-				fragmentCollectionBag._fragmentCollectionContributor;
+			FragmentEntry fragmentEntry = getFragmentEntry(fragmentEntryKey);
 
-			if (!fragmentCollectionContributor.isEnabled()) {
-				continue;
+			if (fragmentEntry != null) {
+				fragmentEntries.put(fragmentEntryKey, fragmentEntry);
 			}
-
-			fragmentEntries.putAll(fragmentCollectionBag._fragmentEntries);
 		}
 
 		return fragmentEntries;
@@ -233,7 +230,18 @@ public class FragmentCollectionContributorRegistryImpl
 		_fragmentCollectionBagServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
 				bundleContext, FragmentCollectionContributor.class,
-				"fragment.collection.key",
+				"(fragment.collection.key=*)",
+				ServiceReferenceMapperFactory.create(
+					bundleContext,
+					(fragmentCollectionContributor, emitter) -> {
+						for (FragmentEntry fragmentEntry :
+								fragmentCollectionContributor.
+									getFragmentEntries(
+										_SUPPORTED_FRAGMENT_TYPES)) {
+
+							emitter.emit(fragmentEntry.getFragmentEntryKey());
+						}
+					}),
 				new FragmentCollectionContributorServiceTrackerCustomizer(
 					bundleContext));
 		_fragmentCollectionContributorServiceTrackerMap =
@@ -261,15 +269,9 @@ public class FragmentCollectionContributorRegistryImpl
 			return null;
 		}
 
-		int index = fragmentEntryKey.indexOf(CharPool.DASH);
-
-		if (index == -1) {
-			return null;
-		}
-
 		FragmentCollectionBag fragmentCollectionBag =
 			_fragmentCollectionBagServiceTrackerMap.getService(
-				fragmentEntryKey.substring(0, index));
+				fragmentEntryKey);
 
 		if (fragmentCollectionBag == null) {
 			return null;
