@@ -136,10 +136,17 @@ public class FragmentCollectionContributorRegistryImpl
 			return null;
 		}
 
-		Map<String, FragmentComposition> fragmentCompostions =
-			fragmentCollectionBag._fragmentCompostions;
+		for (FragmentComposition fragmentComposition :
+				fragmentCollectionContributor.getFragmentCompositions()) {
 
-		return fragmentCompostions.get(fragmentCompositionKey);
+			if (fragmentCompositionKey.equals(
+					fragmentComposition.getFragmentCompositionKey())) {
+
+				return fragmentComposition;
+			}
+		}
+
+		return null;
 	}
 
 	@Override
@@ -428,17 +435,14 @@ public class FragmentCollectionContributorRegistryImpl
 
 		private FragmentCollectionBag(
 			FragmentCollectionContributor fragmentCollectionContributor,
-			Map<String, FragmentComposition> fragmentCompostions,
 			Map<String, FragmentEntry> fragmentEntries) {
 
 			_fragmentCollectionContributor = fragmentCollectionContributor;
-			_fragmentCompostions = fragmentCompostions;
 			_fragmentEntries = fragmentEntries;
 		}
 
 		private final FragmentCollectionContributor
 			_fragmentCollectionContributor;
-		private final Map<String, FragmentComposition> _fragmentCompostions;
 		private final Map<String, FragmentEntry> _fragmentEntries;
 
 	}
@@ -454,17 +458,7 @@ public class FragmentCollectionContributorRegistryImpl
 			FragmentCollectionContributor fragmentCollectionContributor =
 				_bundleContext.getService(serviceReference);
 
-			Map<String, FragmentComposition> fragmentCompositions =
-				new HashMap<>();
 			Map<String, FragmentEntry> fragmentEntries = new HashMap<>();
-
-			for (FragmentComposition fragmentComposition :
-					fragmentCollectionContributor.getFragmentCompositions()) {
-
-				fragmentCompositions.put(
-					fragmentComposition.getFragmentCompositionKey(),
-					fragmentComposition);
-			}
 
 			for (FragmentEntry fragmentEntry :
 					fragmentCollectionContributor.getFragmentEntries(
@@ -481,8 +475,7 @@ public class FragmentCollectionContributorRegistryImpl
 			_updateFragmentEntryLinks(fragmentEntries);
 
 			return new FragmentCollectionBag(
-				fragmentCollectionContributor, fragmentCompositions,
-				fragmentEntries);
+				fragmentCollectionContributor, fragmentEntries);
 		}
 
 		@Override
