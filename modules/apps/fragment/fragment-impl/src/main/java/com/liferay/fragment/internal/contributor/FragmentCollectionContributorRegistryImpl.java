@@ -68,17 +68,13 @@ public class FragmentCollectionContributorRegistryImpl
 	public FragmentCollectionContributor getFragmentCollectionContributor(
 		String fragmentCollectionKey) {
 
-		FragmentCollectionBag fragmentCollectionBag =
-			_serviceTrackerMap.getService(fragmentCollectionKey);
-
-		if (fragmentCollectionBag == null) {
-			return null;
-		}
-
 		FragmentCollectionContributor fragmentCollectionContributor =
-			fragmentCollectionBag._fragmentCollectionContributor;
+			_fragmentCollectionContributorServiceTrackerMap.getService(
+				fragmentCollectionKey);
 
-		if (!fragmentCollectionContributor.isEnabled()) {
+		if ((fragmentCollectionContributor == null) ||
+			!fragmentCollectionContributor.isEnabled()) {
+
 			return null;
 		}
 
@@ -92,11 +88,8 @@ public class FragmentCollectionContributorRegistryImpl
 		List<FragmentCollectionContributor> fragmentCollectionContributors =
 			new ArrayList<>();
 
-		for (FragmentCollectionBag fragmentCollectionBag :
-				_serviceTrackerMap.values()) {
-
-			FragmentCollectionContributor fragmentCollectionContributor =
-				fragmentCollectionBag._fragmentCollectionContributor;
+		for (FragmentCollectionContributor fragmentCollectionContributor :
+				_fragmentCollectionContributorServiceTrackerMap.values()) {
 
 			if (!fragmentCollectionContributor.isEnabled()) {
 				continue;
@@ -121,18 +114,13 @@ public class FragmentCollectionContributorRegistryImpl
 			return null;
 		}
 
-		FragmentCollectionBag fragmentCollectionBag =
-			_serviceTrackerMap.getService(
+		FragmentCollectionContributor fragmentCollectionContributor =
+			_fragmentCollectionContributorServiceTrackerMap.getService(
 				fragmentCompositionKey.substring(0, index));
 
-		if (fragmentCollectionBag == null) {
-			return null;
-		}
+		if ((fragmentCollectionContributor == null) ||
+			!fragmentCollectionContributor.isEnabled()) {
 
-		FragmentCollectionContributor fragmentCollectionContributor =
-			fragmentCollectionBag._fragmentCollectionContributor;
-
-		if (!fragmentCollectionContributor.isEnabled()) {
 			return null;
 		}
 
@@ -154,7 +142,7 @@ public class FragmentCollectionContributorRegistryImpl
 		Map<String, FragmentEntry> fragmentEntries = new HashMap<>();
 
 		for (FragmentCollectionBag fragmentCollectionBag :
-				_serviceTrackerMap.values()) {
+				_fragmentCollectionBagServiceTrackerMap.values()) {
 
 			FragmentCollectionContributor fragmentCollectionContributor =
 				fragmentCollectionBag._fragmentCollectionContributor;
@@ -173,11 +161,8 @@ public class FragmentCollectionContributorRegistryImpl
 	public Map<String, FragmentEntry> getFragmentEntries(Locale locale) {
 		Map<String, FragmentEntry> fragmentEntries = new HashMap<>();
 
-		for (FragmentCollectionBag fragmentCollectionBag :
-				_serviceTrackerMap.values()) {
-
-			FragmentCollectionContributor fragmentCollectionContributor =
-				fragmentCollectionBag._fragmentCollectionContributor;
+		for (FragmentCollectionContributor fragmentCollectionContributor :
+				_fragmentCollectionContributorServiceTrackerMap.values()) {
 
 			if (!fragmentCollectionContributor.isEnabled()) {
 				continue;
@@ -208,7 +193,8 @@ public class FragmentCollectionContributorRegistryImpl
 		}
 
 		FragmentCollectionBag fragmentCollectionBag =
-			_serviceTrackerMap.getService(fragmentEntryKey.substring(0, index));
+			_fragmentCollectionBagServiceTrackerMap.getService(
+				fragmentEntryKey.substring(0, index));
 
 		if (fragmentCollectionBag == null) {
 			return null;
@@ -231,11 +217,8 @@ public class FragmentCollectionContributorRegistryImpl
 	public ResourceBundleLoader getResourceBundleLoader() {
 		List<ResourceBundleLoader> resourceBundleLoaders = new ArrayList<>();
 
-		for (FragmentCollectionBag fragmentCollectionBag :
-				_serviceTrackerMap.values()) {
-
-			FragmentCollectionContributor fragmentCollectionContributor =
-				fragmentCollectionBag._fragmentCollectionContributor;
+		for (FragmentCollectionContributor fragmentCollectionContributor :
+				_fragmentCollectionContributorServiceTrackerMap.values()) {
 
 			ResourceBundleLoader resourceBundleLoader =
 				fragmentCollectionContributor.getResourceBundleLoader();
@@ -251,16 +234,22 @@ public class FragmentCollectionContributorRegistryImpl
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			bundleContext, FragmentCollectionContributor.class,
-			"fragment.collection.key",
-			new FragmentCollectionContributorServiceTrackerCustomizer(
-				bundleContext));
+		_fragmentCollectionBagServiceTrackerMap =
+			ServiceTrackerMapFactory.openSingleValueMap(
+				bundleContext, FragmentCollectionContributor.class,
+				"fragment.collection.key",
+				new FragmentCollectionContributorServiceTrackerCustomizer(
+					bundleContext));
+		_fragmentCollectionContributorServiceTrackerMap =
+			ServiceTrackerMapFactory.openSingleValueMap(
+				bundleContext, FragmentCollectionContributor.class,
+				"fragment.collection.key");
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_serviceTrackerMap.close();
+		_fragmentCollectionBagServiceTrackerMap.close();
+		_fragmentCollectionContributorServiceTrackerMap.close();
 	}
 
 	@Reference
@@ -417,6 +406,11 @@ public class FragmentCollectionContributorRegistryImpl
 	@Reference
 	private ConfigurationProvider _configurationProvider;
 
+	private ServiceTrackerMap<String, FragmentCollectionBag>
+		_fragmentCollectionBagServiceTrackerMap;
+	private ServiceTrackerMap<String, FragmentCollectionContributor>
+		_fragmentCollectionContributorServiceTrackerMap;
+
 	@Reference
 	private FragmentEntryLinkLocalService _fragmentEntryLinkLocalService;
 
@@ -428,8 +422,6 @@ public class FragmentCollectionContributorRegistryImpl
 
 	@Reference
 	private PortalPreferencesLocalService _portalPreferencesLocalService;
-
-	private ServiceTrackerMap<String, FragmentCollectionBag> _serviceTrackerMap;
 
 	private static class FragmentCollectionBag {
 
