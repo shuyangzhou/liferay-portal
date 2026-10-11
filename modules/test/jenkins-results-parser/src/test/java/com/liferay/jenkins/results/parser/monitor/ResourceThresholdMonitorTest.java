@@ -7,7 +7,6 @@ package com.liferay.jenkins.results.parser.monitor;
 
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.RandomTestUtil;
-import com.liferay.jenkins.results.parser.UrlReader;
 
 import java.io.IOException;
 
@@ -535,9 +534,9 @@ public class ResourceThresholdMonitorTest
 			String selectorValue)
 		throws Exception {
 
-		UrlReader urlReader = mockUrlReader();
+		mockURLReaders();
 
-		setUrlReaderOutput(scrape, "/prometheus", urlReader);
+		setURLReaderOutput(scrape, "/prometheus");
 
 		String masterName = MonitorTestUtil.newJenkinsMasterName();
 
@@ -595,9 +594,9 @@ public class ResourceThresholdMonitorTest
 			String metricDescription)
 		throws Exception {
 
-		UrlReader urlReader = mockUrlReader();
+		mockURLReaders();
 
-		setUrlReaderException(ioException, "/prometheus", urlReader);
+		setURLReaderException(ioException, "/prometheus");
 
 		String masterName = MonitorTestUtil.newJenkinsMasterName();
 

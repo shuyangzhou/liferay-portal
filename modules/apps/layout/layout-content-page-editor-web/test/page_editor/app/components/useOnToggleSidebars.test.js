@@ -33,7 +33,7 @@ describe('useOnToggleSidebars', () => {
 
 		result.current();
 
-		expect(mockDispatch).toBeCalledWith(
+		expect(mockDispatch).toHaveBeenCalledWith(
 			expect.objectContaining({hidden: false, type: SWITCH_SIDEBAR_PANEL})
 		);
 	});

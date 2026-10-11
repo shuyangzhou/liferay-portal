@@ -31,3 +31,11 @@ Run `/pr-check` from the root of a worktree that holds the planted changes, for 
 A branch in this repository always carries the rule change in its own diff, so a test run here also reports on the `.claude` files the change touched. That is expected.
 
 To test the rules as the private repository runs them, copy `pr`, `pr-check`, and `pr-check-publish` from the branch holding the change into a worktree of `liferay-portal-ee` on `master-private`. The copies do not come from local `master`, so name the rules commit in the prompt.
+
+## Measurements
+
+A change that can alter how long a run takes or how many tokens it uses, such as a new precondition, a narrower `## Match`, or a different **Command**, comes with numbers. Run `/pr-check` twice on the same planted branch, once with the rules on the base branch and once with the change, and put both sets of numbers side by side in the pull request description. A number without its base run says nothing about the change.
+
+For each run, record the wall time of the whole run and of each shared precondition, and the tokens the runner and every subagent used together. A headless session writes its transcript to `~/.claude/projects/<project>/<session>.jsonl` and each subagent's to `~/.claude/projects/<project>/<session>/subagents`, and the sum of the `usage` of every message across those files is the total.
+
+Run both on an idle machine and record its load average, since a build under load can take several times as long and reads as a slower change. Start both from the same Gradle build cache, empty or full, and say which, since a full cache hides most of what a build costs.

@@ -157,7 +157,7 @@ describe('Sidebar', () => {
 				screen.getByLabelText('open-keyboard-shortcuts', {exact: false})
 			);
 
-			expect(setOpenShortcutModal).toBeCalledWith(true);
+			expect(setOpenShortcutModal).toHaveBeenCalledWith(true);
 		});
 	});
 });

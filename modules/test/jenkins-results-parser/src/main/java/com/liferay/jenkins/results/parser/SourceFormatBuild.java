@@ -321,6 +321,38 @@ public class SourceFormatBuild
 	}
 
 	private String _getSourceFormatterVersion() {
+		String sourceFormatterVersion =
+			_getSourceFormatterVersionFromConsoleText();
+
+		if (sourceFormatterVersion != null) {
+			return sourceFormatterVersion;
+		}
+
+		return _getSourceFormatterVersionFromIvyXML();
+	}
+
+	private String _getSourceFormatterVersionFromConsoleText() {
+		try {
+			String sourceFormatterVersion = null;
+
+			String consoleText = getConsoleText();
+
+			for (String line : consoleText.split("\\s*\\n\\s*")) {
+				Matcher matcher = _sourceFormatterVersionPattern.matcher(line);
+
+				if (matcher.find()) {
+					sourceFormatterVersion = matcher.group("version");
+				}
+			}
+
+			return sourceFormatterVersion;
+		}
+		catch (Exception exception) {
+			return null;
+		}
+	}
+
+	private String _getSourceFormatterVersionFromIvyXML() {
 		PortalWorkspaceGitRepository portalWorkspaceGitRepository =
 			_getPortalWorkspaceGitRepository();
 
@@ -447,6 +479,10 @@ public class SourceFormatBuild
 		Pattern.compile(
 			"\\[beanshell\\] GITHUB_UPSTREAM_BRANCH_SHA=" +
 				"(?<sha>[0-9a-f]{7,40})");
+	private static final Pattern _sourceFormatterVersionPattern =
+		Pattern.compile(
+			"Running com\\.liferay\\.source\\.formatter\\.jar " +
+				"(?<version>\\S+?)\\.$");
 	private static final Pattern _upstreamBranchNamePattern = Pattern.compile(
 		"release-((\\d{4})\\.q([1-4])|(7\\.[0-4]\\.[0-9]?[0-9]\\.\\d+))");
 

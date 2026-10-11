@@ -100,7 +100,7 @@ describe('ColorPicker', () => {
 
 		await userEvent.click(getByTitle('clear-selection'));
 
-		expect(onValueSelect).toBeCalledWith('Color Picker', '');
+		expect(onValueSelect).toHaveBeenCalledWith('Color Picker', '');
 	});
 
 	it('clears the value and sets the default value of the field if it exists', async () => {

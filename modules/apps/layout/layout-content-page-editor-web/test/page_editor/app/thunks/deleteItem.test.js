@@ -188,7 +188,7 @@ describe('deleteItem', () => {
 			() => STATE
 		);
 
-		expect(dispatch).toBeCalledWith(
+		expect(dispatch).toHaveBeenCalledWith(
 			expect.objectContaining({
 				portletIds: [
 					'com_liferay_microblogs_web_portlet_MicroblogsPortlet',

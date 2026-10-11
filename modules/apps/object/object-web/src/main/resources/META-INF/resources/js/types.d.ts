@@ -183,6 +183,8 @@ interface ObjectActionParameters {
 	secret?: string;
 	system?: boolean;
 	url?: string;
+	urlHostsAllowed?: string;
+	urlLocalNetworkAccessEnabled?: boolean;
 	usePreferredLanguageForGuests?: boolean;
 }
 

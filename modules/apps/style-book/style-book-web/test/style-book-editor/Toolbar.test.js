@@ -141,7 +141,7 @@ describe('Toolbar', () => {
 			userEvent.click(screen.getByLabelText('undo'));
 		});
 
-		expect(saveDraft).toBeCalledWith({
+		expect(saveDraft).toHaveBeenCalledWith({
 			...STATE.frontendTokensValues,
 			brandColor2: {
 				cssVariableMapping: 'brand-color-2',
@@ -167,7 +167,7 @@ describe('Toolbar', () => {
 			userEvent.click(screen.getByLabelText('redo'));
 		});
 
-		expect(saveDraft).toBeCalledWith({
+		expect(saveDraft).toHaveBeenCalledWith({
 			...STATE.frontendTokensValues,
 			brandColor2: {
 				cssVariableMapping: 'brand-color-2',
@@ -199,7 +199,7 @@ describe('Toolbar', () => {
 			userEvent.click(undoButton);
 		});
 
-		expect(saveDraft).nthCalledWith(2, {
+		expect(saveDraft).toHaveBeenNthCalledWith(2, {
 			brandColor2: {
 				cssVariableMapping: 'brand-color-2',
 				value: 'gray',
@@ -237,7 +237,7 @@ describe('Toolbar', () => {
 			userEvent.click(redoButton);
 		});
 
-		expect(saveDraft).nthCalledWith(2, {
+		expect(saveDraft).toHaveBeenNthCalledWith(2, {
 			brandColor2: {
 				cssVariableMapping: 'brand-color-2',
 				value: 'yellow',
@@ -269,7 +269,7 @@ describe('Toolbar', () => {
 			userEvent.click(screen.getByText('undo-all'));
 		});
 
-		expect(saveDraft).toBeCalledWith({
+		expect(saveDraft).toHaveBeenCalledWith({
 			brandColor2: {
 				cssVariableMapping: 'brand-color-2',
 				value: 'gray',
@@ -321,7 +321,7 @@ describe('Toolbar', () => {
 			userEvent.click(screen.getByText('undo-all'));
 		});
 
-		expect(saveDraft).toBeCalledWith({});
+		expect(saveDraft).toHaveBeenCalledWith({});
 
 		expect(frontendTokensValuesRef.current).not.toHaveProperty(
 			'testColor1'
@@ -333,7 +333,7 @@ describe('Toolbar', () => {
 			userEvent.click(redoButton);
 		});
 
-		expect(saveDraft).nthCalledWith(2, {
+		expect(saveDraft).toHaveBeenNthCalledWith(2, {
 			testColor1: {
 				cssVariableMapping: 'test-color-1',
 				value: '111',
@@ -351,7 +351,7 @@ describe('Toolbar', () => {
 			userEvent.click(redoButton);
 		});
 
-		expect(saveDraft).nthCalledWith(3, {
+		expect(saveDraft).toHaveBeenNthCalledWith(3, {
 			testColor1: {
 				cssVariableMapping: 'test-color-1',
 				value: '222',
@@ -398,7 +398,7 @@ describe('Toolbar', () => {
 			userEvent.click(screen.getAllByText('update Test Color 1')[0]);
 		});
 
-		expect(saveDraft).toBeCalledWith({
+		expect(saveDraft).toHaveBeenCalledWith({
 			testColor1: {
 				cssVariableMapping: 'test-color-1',
 				value: '222',
@@ -411,7 +411,7 @@ describe('Toolbar', () => {
 			userEvent.click(undoButton);
 		});
 
-		expect(saveDraft).nthCalledWith(2, {
+		expect(saveDraft).toHaveBeenNthCalledWith(2, {
 			testColor1: {
 				cssVariableMapping: 'test-color-1',
 				value: '111',
@@ -422,7 +422,7 @@ describe('Toolbar', () => {
 			userEvent.click(undoButton);
 		});
 
-		expect(saveDraft).nthCalledWith(3, {});
+		expect(saveDraft).toHaveBeenNthCalledWith(3, {});
 
 		expect(frontendTokensValuesRef.current).not.toHaveProperty(
 			'testColor1'

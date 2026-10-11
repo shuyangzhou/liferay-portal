@@ -83,7 +83,7 @@ describe('TemplateSelect', () => {
 
 			expectedEvent.template = {...initialTemplate};
 
-			expect(mockTemplateSelected).toBeCalledWith(expectedEvent);
+			expect(mockTemplateSelected).toHaveBeenCalledWith(expectedEvent);
 		});
 	});
 
@@ -135,7 +135,7 @@ describe('TemplateSelect', () => {
 
 			expectedEvent.template = {...initialTemplate};
 
-			expect(mockTempalteSelected).toBeCalledWith(expectedEvent);
+			expect(mockTempalteSelected).toHaveBeenCalledWith(expectedEvent);
 		});
 	});
 });

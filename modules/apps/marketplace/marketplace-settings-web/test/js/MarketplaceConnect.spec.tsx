@@ -137,7 +137,7 @@ describe('MarketplaceConnect', () => {
 		fireEvent.click(connectButton);
 
 		await waitFor(() => {
-			expect(windowOpenSpy).toBeCalledTimes(1);
+			expect(windowOpenSpy).toHaveBeenCalledTimes(1);
 		});
 
 		const {searchParams} = new URL(windowOpenSpy.mock.calls[0][0]);
@@ -151,7 +151,7 @@ describe('MarketplaceConnect', () => {
 		expect(JSON.parse(searchParams.get('state') || '')).toMatchObject({
 			origin: 'http://localhost',
 		});
-		expect(closePopUpMock).toBeCalledTimes(0);
+		expect(closePopUpMock).toHaveBeenCalledTimes(0);
 
 		await act(async () => {
 			window.dispatchEvent(messageEventValid);
@@ -178,7 +178,7 @@ describe('MarketplaceConnect', () => {
 			)
 		).toBe(messageEventValid.data.serviceURL);
 
-		expect(closePopUpMock).toBeCalledTimes(1);
+		expect(closePopUpMock).toHaveBeenCalledTimes(1);
 
 		expect(statusListItem).toHaveClass('active');
 
@@ -230,13 +230,13 @@ describe('MarketplaceConnect', () => {
 		await act(async () => {
 			window.dispatchEvent(messageEventInvalid);
 
-			expect(closePopUpMock).toBeCalledTimes(0);
+			expect(closePopUpMock).toHaveBeenCalledTimes(0);
 		});
 
 		await act(async () => {
 			window.dispatchEvent(messageEventInvalidWithoutData);
 
-			expect(closePopUpMock).toBeCalledTimes(0);
+			expect(closePopUpMock).toHaveBeenCalledTimes(0);
 		});
 	});
 });

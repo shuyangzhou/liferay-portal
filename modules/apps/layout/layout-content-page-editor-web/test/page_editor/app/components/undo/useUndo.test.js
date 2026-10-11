@@ -84,7 +84,7 @@ describe('useUndo', () => {
 			it(`is supported by "${action}" action`, () => {
 				undoDispatch({type: action});
 
-				expect(dispatch).toBeCalledWith(
+				expect(dispatch).toHaveBeenCalledWith(
 					expect.objectContaining({type: Actions.ADD_UNDO_ACTION})
 				);
 

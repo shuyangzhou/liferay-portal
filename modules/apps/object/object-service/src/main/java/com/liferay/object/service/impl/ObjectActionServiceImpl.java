@@ -5,17 +5,24 @@
 
 package com.liferay.object.service.impl;
 
+import com.liferay.object.constants.ObjectActionExecutorConstants;
 import com.liferay.object.model.ObjectAction;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.base.ObjectActionServiceBaseImpl;
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -45,6 +52,10 @@ public class ObjectActionServiceImpl extends ObjectActionServiceBaseImpl {
 
 		_objectDefinitionModelResourcePermission.check(
 			getPermissionChecker(), objectDefinitionId, ActionKeys.UPDATE);
+
+		_validateParametersUnicodeProperties(
+			objectActionExecutorKey, new UnicodeProperties(),
+			parametersUnicodeProperties);
 
 		return objectActionLocalService.addObjectAction(
 			externalReferenceCode, getUserId(), objectDefinitionId, active,
@@ -98,11 +109,75 @@ public class ObjectActionServiceImpl extends ObjectActionServiceBaseImpl {
 			getPermissionChecker(), objectAction.getObjectDefinitionId(),
 			ActionKeys.UPDATE);
 
+		_validateParametersUnicodeProperties(
+			objectActionExecutorKey,
+			objectAction.getParametersUnicodeProperties(),
+			parametersUnicodeProperties);
+
 		return objectActionLocalService.updateObjectAction(
 			externalReferenceCode, objectActionId, active, conditionExpression,
 			descriptionMap, errorMessageMap, labelMap, name,
 			objectActionExecutorKey, objectActionTriggerKey,
 			parametersUnicodeProperties);
+	}
+
+	private void _validateParametersUnicodeProperties(
+			String objectActionExecutorKey,
+			UnicodeProperties oldParametersUnicodeProperties,
+			UnicodeProperties parametersUnicodeProperties)
+		throws PortalException {
+
+		if (!parametersUnicodeProperties.containsKey("urlHostsAllowed")) {
+			parametersUnicodeProperties.put(
+				"urlHostsAllowed",
+				oldParametersUnicodeProperties.get("urlHostsAllowed"));
+		}
+
+		if (!parametersUnicodeProperties.containsKey(
+				"urlLocalNetworkAccessEnabled")) {
+
+			parametersUnicodeProperties.put(
+				"urlLocalNetworkAccessEnabled",
+				oldParametersUnicodeProperties.get(
+					"urlLocalNetworkAccessEnabled"));
+		}
+
+		PermissionChecker permissionChecker = getPermissionChecker();
+
+		if (permissionChecker.isCompanyAdmin() ||
+			!Objects.equals(
+				objectActionExecutorKey,
+				ObjectActionExecutorConstants.KEY_WEBHOOK)) {
+
+			return;
+		}
+
+		String oldURLHostsAllowed = StringUtil.removeChar(
+			GetterUtil.getString(
+				oldParametersUnicodeProperties.get("urlHostsAllowed")),
+			CharPool.SPACE);
+		boolean oldURLLocalNetworkAccessEnabled = GetterUtil.getBoolean(
+			oldParametersUnicodeProperties.get("urlLocalNetworkAccessEnabled"));
+		String urlHostsAllowed = StringUtil.removeChar(
+			GetterUtil.getString(
+				parametersUnicodeProperties.get("urlHostsAllowed")),
+			CharPool.SPACE);
+		boolean urlLocalNetworkAccessEnabled = GetterUtil.getBoolean(
+			parametersUnicodeProperties.get("urlLocalNetworkAccessEnabled"));
+
+		if (!Objects.equals(oldURLHostsAllowed, urlHostsAllowed) ||
+			(oldURLLocalNetworkAccessEnabled != urlLocalNetworkAccessEnabled)) {
+
+			throw new PrincipalException.MustBeCompanyAdmin(permissionChecker);
+		}
+
+		if (oldURLLocalNetworkAccessEnabled &&
+			!Objects.equals(
+				oldParametersUnicodeProperties.get("url"),
+				parametersUnicodeProperties.get("url"))) {
+
+			throw new PrincipalException.MustBeCompanyAdmin(permissionChecker);
+		}
 	}
 
 	@Reference(

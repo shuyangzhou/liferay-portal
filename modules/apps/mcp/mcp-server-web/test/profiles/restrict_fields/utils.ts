@@ -5,6 +5,7 @@
 
 import {
 	buildFieldTree,
+	filterFieldTree,
 	getExpandedKeys,
 	getSelectedKeys,
 	toRestrictFields,
@@ -158,6 +159,76 @@ describe('restrict fields utils', () => {
 		it('selects nothing when the profile tool has no restricted fields', () => {
 			expect(getSelectedKeys(tree, undefined).size).toBe(0);
 			expect(getSelectedKeys(tree, '').size).toBe(0);
+		});
+	});
+
+	describe('filterFieldTree', () => {
+		it('keeps a deep match with its ancestors and expands the path to it', () => {
+			const {expandedKeys, matchCount, visibleKeys} = filterFieldTree(
+				tree,
+				'label'
+			);
+
+			expect(matchCount).toBe(1);
+
+			expect(visibleKeys).toEqual(
+				new Set([
+					'taxonomyCategoryBriefs',
+					'taxonomyCategoryBriefs.scope',
+					'taxonomyCategoryBriefs.scope.label',
+				])
+			);
+			expect(expandedKeys).toEqual(
+				new Set([
+					'taxonomyCategoryBriefs',
+					'taxonomyCategoryBriefs.scope',
+				])
+			);
+		});
+
+		it('does not drag the children of a matching parent', () => {
+			const {expandedKeys, visibleKeys} = filterFieldTree(
+				tree,
+				'modifiedBy'
+			);
+
+			expect(visibleKeys).toEqual(new Set(['modifiedBy']));
+			expect(expandedKeys.size).toBe(0);
+		});
+
+		it('matches the field name case insensitively at any position', () => {
+			const {matchCount, visibleKeys} = filterFieldTree(tree, 'NAME');
+
+			expect(matchCount).toBe(6);
+
+			expect(visibleKeys).toContain('name');
+			expect(visibleKeys).toContain('auditEvents.creator.name');
+			expect(visibleKeys).toContain(
+				'taxonomyCategoryBriefs.taxonomyCategoryName'
+			);
+			expect(visibleKeys).not.toContain('description');
+		});
+
+		it('treats regular expression characters as plain text', () => {
+			expect(filterFieldTree(tree, '.').visibleKeys.size).toBe(0);
+			expect(filterFieldTree(tree, '(').visibleKeys.size).toBe(0);
+		});
+
+		it('ignores the whitespace around the query', () => {
+			expect(filterFieldTree(tree, '  label  ')).toEqual(
+				filterFieldTree(tree, 'label')
+			);
+		});
+
+		it('hides and expands nothing without a query', () => {
+			const {expandedKeys, matchCount, visibleKeys} = filterFieldTree(
+				tree,
+				'   '
+			);
+
+			expect(visibleKeys.size).toBe(0);
+			expect(expandedKeys.size).toBe(0);
+			expect(matchCount).toBe(0);
 		});
 	});
 });

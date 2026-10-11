@@ -643,7 +643,7 @@ describe('OrderItemRow', () => {
 		expect(quantityCell).toHaveTextContent(String(14));
 
 		await waitFor(() => {
-			expect(handleSubmit).toBeCalledWith({
+			expect(handleSubmit).toHaveBeenCalledWith({
 				10000: {
 					options: '[]',
 					orderItemId: 100,
@@ -677,7 +677,7 @@ describe('OrderItemRow', () => {
 		expect(quantityCell).toHaveTextContent(String(18));
 
 		await waitFor(() => {
-			expect(handleSubmit).toBeCalledWith({
+			expect(handleSubmit).toHaveBeenCalledWith({
 				10000: {
 					options: '[]',
 					orderItemId: 100,
@@ -814,7 +814,7 @@ describe('OrderItemRow', () => {
 		expect(quantityCell).toHaveTextContent(String(24));
 
 		await waitFor(() => {
-			expect(handleSubmit).toBeCalledWith({
+			expect(handleSubmit).toHaveBeenCalledWith({
 				10000: {
 					options: '[]',
 					orderItemId: 100,
@@ -848,7 +848,7 @@ describe('OrderItemRow', () => {
 		expect(quantityCell).toHaveTextContent(String(12));
 
 		await waitFor(() => {
-			expect(handleSubmit).toBeCalledWith({
+			expect(handleSubmit).toHaveBeenCalledWith({
 				10000: {
 					options: '[]',
 					orderItemId: 100,
@@ -967,7 +967,7 @@ describe('OrderItemRow', () => {
 		expect(quantityCell).toHaveTextContent(String(4));
 
 		await waitFor(() => {
-			expect(handleSubmit).toBeCalledWith({
+			expect(handleSubmit).toHaveBeenCalledWith({
 				10001: {
 					options: '[]',
 					orderItemId: 101,
@@ -988,7 +988,7 @@ describe('OrderItemRow', () => {
 		);
 
 		await waitFor(() => {
-			expect(handleSubmit).toBeCalledWith({});
+			expect(handleSubmit).toHaveBeenCalledWith({});
 		});
 	});
 
@@ -1127,7 +1127,7 @@ describe('OrderItemRow', () => {
 		await setFieldValue(deliveryGroup1Input, '');
 
 		await waitFor(() => {
-			expect(handleSubmit).toBeCalledWith({});
+			expect(handleSubmit).toHaveBeenCalledWith({});
 		});
 
 		expect(quantityCell).toHaveTextContent(String(0));
@@ -1268,12 +1268,12 @@ describe('OrderItemRow', () => {
 
 		userEvent.click(row0Select);
 
-		expect(handleSelection).toBeCalledWith(100);
+		expect(handleSelection).toHaveBeenCalledWith(100);
 		expect(row0Select).toBeChecked();
 
 		userEvent.click(row0Select);
 
-		expect(handleSelection).toBeCalledWith(100);
+		expect(handleSelection).toHaveBeenCalledWith(100);
 		expect(row0Select).not.toBeChecked();
 	});
 });
@@ -1632,7 +1632,7 @@ describe('OrderItemRow - actions', () => {
 			expect(deliveryGroup2Input).toHaveValue(5);
 		});
 
-		expect(handleSubmit).not.toBeCalled();
+		expect(handleSubmit).not.toHaveBeenCalled();
 
 		await act(async () => {
 			row0Actions.click();
@@ -1657,7 +1657,7 @@ describe('OrderItemRow - actions', () => {
 			);
 			expect(deliveryGroup2Input).not.toHaveValue();
 
-			expect(handleSubmit).toBeCalledWith({
+			expect(handleSubmit).toHaveBeenCalledWith({
 				10000: {
 					options: '[]',
 					orderItemId: 100,
@@ -1779,7 +1779,7 @@ describe('OrderItemRow - actions', () => {
 			);
 			expect(deliveryGroup2Input).not.toHaveValue();
 
-			expect(handleSubmit).toBeCalledWith({
+			expect(handleSubmit).toHaveBeenCalledWith({
 				10000: {
 					options: '[]',
 					orderItemId: 0,
@@ -1899,7 +1899,7 @@ describe('OrderItemRow - actions', () => {
 		});
 
 		await waitFor(() => {
-			expect(handleSubmit).toBeCalledWith({
+			expect(handleSubmit).toHaveBeenCalledWith({
 				10000: {
 					options: '[]',
 					orderItemId: 100,
@@ -2210,7 +2210,7 @@ describe('OrderItemRow - actions', () => {
 			expect(deliveryGroup2Input).toHaveValue(5);
 		});
 
-		expect(handleSubmit).not.toBeCalled();
+		expect(handleSubmit).not.toHaveBeenCalled();
 
 		await act(async () => {
 			row0Actions.click();
@@ -2231,7 +2231,7 @@ describe('OrderItemRow - actions', () => {
 			expect(deliveryGroup1Input).not.toHaveValue();
 			expect(deliveryGroup2Input).not.toHaveValue();
 
-			expect(handleSubmit).toBeCalledWith({
+			expect(handleSubmit).toHaveBeenCalledWith({
 				10000: {
 					options: '[]',
 					orderItemId: 100,
@@ -2315,7 +2315,7 @@ describe('OrderItemRow - actions', () => {
 			expect(quantityCell).toBeVisible();
 			expect(quantityCell).toHaveTextContent(String(0));
 
-			expect(handleSubmit).toBeCalledWith(
+			expect(handleSubmit).toHaveBeenCalledWith(
 				{
 					...orderItem,
 					deliveryGroups: {},
@@ -2600,7 +2600,7 @@ describe('OrderItemRow - actions', () => {
 			expect(deliveryGroup2Input).toHaveValue(2);
 		});
 
-		expect(handleSubmit).not.toBeCalled();
+		expect(handleSubmit).not.toHaveBeenCalled();
 
 		await act(async () => {
 			row0Actions.click();
@@ -2621,7 +2621,7 @@ describe('OrderItemRow - actions', () => {
 			expect(deliveryGroup1Input).toHaveValue(5);
 			expect(deliveryGroup2Input).toHaveValue(5);
 
-			expect(handleSubmit).toBeCalledWith({
+			expect(handleSubmit).toHaveBeenCalledWith({
 				10000: {
 					options: '[]',
 					orderItemId: 100,
@@ -2739,7 +2739,7 @@ describe('OrderItemRow - actions', () => {
 			expect(deliveryGroup1Input).toHaveValue(3);
 			expect(deliveryGroup2Input).toHaveValue(2);
 
-			expect(handleSubmit).toBeCalledWith({
+			expect(handleSubmit).toHaveBeenCalledWith({
 				10000: {
 					options: '[]',
 					orderItemId: 100,
@@ -2857,7 +2857,7 @@ describe('OrderItemRow - actions', () => {
 			expect(deliveryGroup1Input).toHaveValue(3);
 			expect(deliveryGroup2Input).toHaveValue(2);
 
-			expect(handleSubmit).toBeCalledWith({
+			expect(handleSubmit).toHaveBeenCalledWith({
 				10000: {
 					options: '[]',
 					orderItemId: 0,

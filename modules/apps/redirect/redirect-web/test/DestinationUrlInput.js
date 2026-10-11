@@ -62,7 +62,7 @@ describe('DestinationUrlInput', () => {
 
 		fireEvent.click(checkButton);
 
-		expect(global.open).toBeCalledWith(testingUrl, '_blank');
+		expect(global.open).toHaveBeenCalledWith(testingUrl, '_blank');
 	});
 
 	it('window open appends the http protocol it not present in the url', () => {
@@ -81,6 +81,6 @@ describe('DestinationUrlInput', () => {
 
 		const finalUrl = 'http://' + testingUrl;
 
-		expect(global.open).toBeCalledWith(finalUrl, '_blank');
+		expect(global.open).toHaveBeenCalledWith(finalUrl, '_blank');
 	});
 });

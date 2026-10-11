@@ -5,6 +5,7 @@
 
 import fs from 'fs/promises';
 import path from 'path';
+import postcssScss from 'postcss-scss';
 import stylelint from 'stylelint';
 
 import {MODULES_DIR, PORTAL_DIR} from '../../locations.mjs';
@@ -30,12 +31,12 @@ export default async function formatWithStylelint(
 	// never needed. If we wanted to support it in the future we would need to
 	// manually load cascaded configuration files from here based on file path.
 
-	const {output, results} = await stylelint.lint({
+	const {code: output, results} = await stylelint.lint({
 		code: input,
 		codeFilename: filePath,
 		config: STYLELINT_CONFIG,
+		customSyntax: extName === '.scss' ? postcssScss : undefined,
 		fix: true,
-		syntax: extName.replace('.', ''),
 	});
 
 	if (results?.length) {

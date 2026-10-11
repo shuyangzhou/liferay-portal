@@ -403,7 +403,7 @@ describe('The instance list item should', () => {
 
 		fireEvent.click(instanceIdLink);
 
-		expect(setInstanceId).toBeCalledWith(1);
+		expect(setInstanceId).toHaveBeenCalledWith(1);
 	});
 
 	it('set BulkReassign modal visualization by clicking the reassign task button', () => {

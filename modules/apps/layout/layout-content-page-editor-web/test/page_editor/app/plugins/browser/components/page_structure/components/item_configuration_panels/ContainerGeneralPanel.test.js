@@ -117,7 +117,7 @@ describe('ContainerGeneralPanel', () => {
 			target: {value: 'fixed'},
 		});
 
-		expect(updateItemConfig).toBeCalledWith(
+		expect(updateItemConfig).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemConfig: {
 					widthType: 'fixed',
@@ -135,7 +135,7 @@ describe('ContainerGeneralPanel', () => {
 			target: {value: 'flex-row'},
 		});
 
-		expect(updateItemConfig).toBeCalledWith(
+		expect(updateItemConfig).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemConfig: {
 					contentDisplay: 'flex-row',

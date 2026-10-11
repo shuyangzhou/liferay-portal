@@ -8,11 +8,9 @@ import {openModal} from 'frontend-js-components-web';
 import {DocumentLibraryOpener} from '../../src/main/resources/META-INF/resources/js/index';
 
 const realSetTimeout = setTimeout;
-let mockUnmount;
+const mockUnmount = jest.fn();
 
 jest.mock('frontend-js-components-web', () => {
-	mockUnmount = jest.fn();
-
 	return {
 		openModal: jest.fn((options) => {
 			setTimeout(() => {

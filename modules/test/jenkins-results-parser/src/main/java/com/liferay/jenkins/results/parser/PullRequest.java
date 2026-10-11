@@ -921,17 +921,17 @@ public class PullRequest {
 			throw new RuntimeException(ioException);
 		}
 
-		String githubPullRequestUpdateEnabled =
+		String gitHubPullRequestUpdateEnabled =
 			JenkinsResultsParserUtil.getProperty(
 				buildProperties, "github.pull.request.update.enabled");
 
 		if (JenkinsResultsParserUtil.isNullOrEmpty(
-				githubPullRequestUpdateEnabled)) {
+				gitHubPullRequestUpdateEnabled)) {
 
 			return true;
 		}
 
-		return Boolean.parseBoolean(githubPullRequestUpdateEnabled);
+		return Boolean.parseBoolean(gitHubPullRequestUpdateEnabled);
 	}
 
 	public boolean isValidCIMergeFile() {

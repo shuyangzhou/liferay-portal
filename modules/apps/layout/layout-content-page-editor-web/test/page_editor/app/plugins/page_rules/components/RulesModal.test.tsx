@@ -370,7 +370,7 @@ describe('RulesModal', () => {
 
 		await userEvent.click(screen.getByText('save'));
 
-		expect(addRule).toBeCalledWith(
+		expect(addRule).toHaveBeenCalledWith(
 			expect.objectContaining({
 				actions: [
 					expect.objectContaining({
@@ -482,7 +482,7 @@ describe('RulesModal', () => {
 
 		await userEvent.click(screen.getByText('save'));
 
-		await expect(addRule).toBeCalled();
+		await expect(addRule).toHaveBeenCalled();
 	});
 
 	it('resets the fragment when the action changes', async () => {
@@ -535,7 +535,7 @@ describe('RulesModal', () => {
 
 		await userEvent.click(screen.getByText('save'));
 
-		expect(addRule).toBeCalledWith(
+		expect(addRule).toHaveBeenCalledWith(
 			expect.objectContaining({
 				actions: [
 					expect.objectContaining({

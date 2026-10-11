@@ -114,7 +114,7 @@ describe('duplicateItem', () => {
 			() => STATE
 		);
 
-		expect(dispatch).toBeCalledWith(
+		expect(dispatch).toHaveBeenCalledWith(
 			expect.objectContaining({
 				addedFragmentEntryLinks: [
 					{
@@ -141,7 +141,7 @@ describe('duplicateItem', () => {
 			() => STATE
 		);
 
-		expect(selectItems).toBeCalledWith(['heading02', 'button02'], {
+		expect(selectItems).toHaveBeenCalledWith(['heading02', 'button02'], {
 			origin: 'itemActions',
 		});
 	});

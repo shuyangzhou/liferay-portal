@@ -4,16 +4,17 @@
 		"node-scripts": "./bin.js"
 	},
 	"com.liferay": {
-		"sha256": "eea4c897ea9e8e9ea69a1ec86704923b8869b3f6a3825870185c6aceddba786a"
+		"sha256": "d487f6235d4a0ad8ad12455e377b354bebb7e12f287084ecc37bbd064e557d0f"
 	},
 	"dependencies": {
-		"@babel/preset-env": "7.24.7",
+		"@babel/plugin-transform-dynamic-import": "7.27.1",
+		"@babel/plugin-transform-export-namespace-from": "7.27.1",
+		"@babel/plugin-transform-modules-commonjs": "7.28.6",
 		"@babel/preset-react": "7.24.7",
 		"@babel/preset-typescript": "7.10.4",
 		"@testing-library/dom": "10.4.0",
 		"@testing-library/dom-8.11.1": "npm:@testing-library/dom@8.11.1",
 		"@testing-library/jest-dom": "6.6.3",
-		"@testing-library/jest-dom-4.2.4": "npm:@testing-library/jest-dom@4.2.4",
 		"@testing-library/react": "16.3.0",
 		"@testing-library/react-12.1.2": "npm:@testing-library/react@12.1.2",
 		"@testing-library/react-hooks": "8.0.1",
@@ -22,8 +23,9 @@
 		"@testing-library/user-event-4.2.4": "npm:@testing-library/user-event@4.2.4",
 		"acorn": "8.16.0",
 		"acorn-typescript": "1.4.13",
+		"autoprefixer": "9.8.8",
 		"babel-eslint": "10.1.0",
-		"babel-jest": "25.1.0",
+		"babel-jest": "27.5.1",
 		"cosmiconfig": "9.0.0",
 		"deepmerge": "4.3.1",
 		"esbuild": "0.21.5",
@@ -37,10 +39,12 @@
 		"jest": "27.5.1",
 		"jest-axe": "10.0.0",
 		"jest-fetch-mock": "3.0.3",
-		"jest-junit": "16.0.0",
+		"jest-junit": "17.0.0",
 		"liferay-theme-tasks": "11.5.6",
 		"micromatch": "4.0.2",
 		"minimist": "1.2.8",
+		"postcss": "8.5.29",
+		"postcss-scss": "4.0.9",
 		"prettier": "3.2.5",
 		"react-test-renderer": "18.2.0",
 		"react-test-renderer-16.12.0": "npm:react-test-renderer@16.12.0",
@@ -49,10 +53,10 @@
 		"rtlcss": "4.3.0",
 		"sass": "1.77.5",
 		"sonda": "0.7.1",
-		"stylelint": "13.2.0",
+		"stylelint": "16.26.1",
 		"tar": "7.5.22",
 		"typescript": "4.7.4",
-		"unzipper": "0.11.6"
+		"unzipper": "0.12.5"
 	},
 	"exports": {
 		".": "./index.js",

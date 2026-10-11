@@ -271,6 +271,7 @@ declare module Liferay {
 		export function getPathContext(): string;
 		export function getPathFriendlyURLPublic(): string;
 		export function getPathMain(): string;
+		export function getPathThemeEmptyStatesSpritemap(): string;
 		export function getPathThemeImages(): string;
 		export function getPathThemeSpritemap(): string;
 		export function getPlid(): number;

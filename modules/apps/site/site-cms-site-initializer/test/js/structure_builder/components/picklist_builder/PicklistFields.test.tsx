@@ -36,7 +36,7 @@ describe('PicklistFields', () => {
 		fireEvent.blur(nameInput);
 
 		await waitFor(() => {
-			expect(setName).toBeCalled();
+			expect(setName).toHaveBeenCalled();
 		});
 	});
 
@@ -51,7 +51,7 @@ describe('PicklistFields', () => {
 
 		fireEvent.blur(nameInput);
 
-		expect(setErc).toBeCalledWith('new erc');
+		expect(setErc).toHaveBeenCalledWith('new erc');
 	});
 
 	it('does not show an info alert if the picklist has not been saved yet', async () => {

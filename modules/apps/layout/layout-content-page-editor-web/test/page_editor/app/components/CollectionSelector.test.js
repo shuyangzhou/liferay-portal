@@ -59,7 +59,7 @@ describe('CollectionSelector', () => {
 
 		await userEvent.click(button);
 
-		expect(openItemSelector).toBeCalledWith(
+		expect(openItemSelector).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemSelectorURL: CUSTOM_COLLECTION_SELECTOR_URL,
 			})
@@ -83,7 +83,7 @@ describe('CollectionSelector', () => {
 
 		await userEvent.click(button);
 
-		expect(openItemSelector).toBeCalledWith(
+		expect(openItemSelector).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemSelectorURL: DEFAULT_ITEM_SELECTOR_URL,
 			})

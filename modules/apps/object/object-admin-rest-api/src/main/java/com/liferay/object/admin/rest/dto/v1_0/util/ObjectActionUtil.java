@@ -149,7 +149,9 @@ public class ObjectActionUtil {
 				value = GetterUtil.getBoolean(value);
 			}
 			else if (Objects.equals(
-						entry.getKey(), "usePreferredLanguageForGuests")) {
+						entry.getKey(), "urlLocalNetworkAccessEnabled") ||
+					 Objects.equals(
+						 entry.getKey(), "usePreferredLanguageForGuests")) {
 
 				value = GetterUtil.getBoolean(value);
 			}

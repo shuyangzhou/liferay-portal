@@ -1,6 +1,15 @@
 {{- $database := $xr.spec.database -}}
 {{- $observedDatabaseDataPlanes := list -}}
 
+{{- $restore := $database.restore | default dict -}}
+
+{{- $restorePointInTime := dig "pointInTime" "time" "" $restore -}}
+{{- $restoreSourceDataPlane := dig "pointInTime" "sourceDataPlane" "" $restore -}}
+
+{{- if and (eq $restorePhase "provisioning") (not $restorePointInTime) -}}
+{{- fail "Azure restores the database to a point in time, so database.restore.pointInTime.time is required while restoring" -}}
+{{- end -}}
+
 {{- range $dataPlane := list "blue" "green" -}}
     {{- if hasKey $observedResources (printf "liferay-db-%s" $dataPlane) -}}
         {{- $observedDatabaseDataPlanes = append $observedDatabaseDataPlanes $dataPlane -}}
@@ -11,7 +20,7 @@
 {{- $databaseServerName := index $databaseServerNames $dataPlane }}
 {{- $isDatabaseRestoreTarget := and (eq $restorePhase "provisioning") (eq $dataPlane $targetActiveDataPlane) }}
 {{- $isDemotedDataPlane := eq $dataPlane $demotedDataPlane }}
-{{- $restoreSourceDatabaseServerName := dig ($database.restoreSourceDataPlane | default (index $dataPlaneKeys $activeDataPlane)) "databaseServer" "" $dataPlaneNames }}
+{{- $restoreSourceDatabaseServerName := dig ($restoreSourceDataPlane | default (index $dataPlaneKeys $activeDataPlane)) "databaseServer" "" $dataPlaneNames }}
 {{- if $i }}
 ---
 {{- end }}
@@ -21,7 +30,6 @@ metadata:
     annotations:
         gotemplating.fn.crossplane.io/composition-resource-name: database-primary-{{ $dataPlane }}
     labels:
-        {{- $tags | toYaml | nindent 8 }}
         dataPlane: {{ $dataPlane }}
         dataPlaneKey: {{ index $dataPlaneKeys $dataPlane }}
     name: {{ $databaseServerName }}
@@ -63,15 +71,15 @@ spec:
         publicNetworkAccessEnabled: false
         resourceGroupName: {{ $env.resourceGroupName }}
         skuName: {{ $database.instanceType | default "GP_Standard_D2s_v3" }}
-        storageMb: {{ mul ($database.storageGB | default 32) 1024 }}
+        storageMb: {{ mul $database.storageGB 1024 }}
         tags:
-            {{- $backupTargetTags | toYaml | nindent 12 }}
             active: {{ printf "%t" (eq $dataPlane $activeDataPlane) | quote }}
-        version: {{ $database.version | default "16" | quote }}
+            should-back-up: "true"
+        version: {{ $database.version | quote }}
     {{- if $isDatabaseRestoreTarget }}
     initProvider:
         createMode: PointInTimeRestore
-        pointInTimeRestoreTimeInUtc: {{ $database.restorePointInTime }}
+        pointInTimeRestoreTimeInUtc: {{ $restorePointInTime }}
         sourceServerId: /subscriptions/{{ $env.subscriptionId }}/resourceGroups/{{ $env.resourceGroupName }}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{{ $restoreSourceDatabaseServerName }}
     {{- end }}
     managementPolicies: {{ $isDemotedDataPlane | ternary $demotedManagementPolicies $managementPolicies }}
@@ -83,7 +91,6 @@ metadata:
         crossplane.io/external-name: {{ $databaseName }}
         gotemplating.fn.crossplane.io/composition-resource-name: liferay-db-{{ $dataPlane }}
     labels:
-        {{- $tags | toYaml | nindent 8 }}
         dataPlane: {{ $dataPlane }}
     name: {{ $xr.metadata.name }}-db-{{ $dataPlane }}
 spec:
@@ -107,7 +114,6 @@ metadata:
         crossplane.io/external-name: {{ $retainedDatabaseServerName }}
         gotemplating.fn.crossplane.io/composition-resource-name: database-retained-{{ $retainedDataPlaneKey }}
     labels:
-        {{- $tags | toYaml | nindent 8 }}
         retainedDataPlane: {{ $retainedDataPlaneKey }}
     name: {{ $retainedDatabaseServerName }}-retained
 spec:

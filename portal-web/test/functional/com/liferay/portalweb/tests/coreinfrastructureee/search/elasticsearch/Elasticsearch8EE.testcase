@@ -111,6 +111,10 @@ definition {
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
+		task ("Enable Message Boards") {
+			MessageboardsPortlet.enableMessageBoards();
+		}
+
 		Elasticsearch.viewClusterStatusViaClusterHealthAPI(
 			nodePort = 9200,
 			numberOfNodes = 1);

@@ -583,7 +583,7 @@ describe('RulesSidebar', () => {
 
 			fireEvent.click(screen.getByText('delete'));
 
-			expect(deleteRule).toBeCalledWith(
+			expect(deleteRule).toHaveBeenCalledWith(
 				expect.objectContaining({
 					ruleId: 'rule-1',
 				})

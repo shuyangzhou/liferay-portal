@@ -75,8 +75,8 @@ describe('PicklistBuilderManagementBar', () => {
 
 		await userEvent.click(saveButton);
 
-		expect(PicklistService.updatePicklist).not.toBeCalled();
-		expect(PicklistService.createPicklist).toBeCalledWith({
+		expect(PicklistService.updatePicklist).not.toHaveBeenCalled();
+		expect(PicklistService.createPicklist).toHaveBeenCalledWith({
 			erc: 'picklistERC',
 			name: {en_US: 'Picklist Name'},
 			options: new Map([
@@ -109,8 +109,8 @@ describe('PicklistBuilderManagementBar', () => {
 
 		await userEvent.click(saveButton);
 
-		expect(PicklistService.createPicklist).not.toBeCalled();
-		expect(PicklistService.updatePicklist).toBeCalledWith(
+		expect(PicklistService.createPicklist).not.toHaveBeenCalled();
+		expect(PicklistService.updatePicklist).toHaveBeenCalledWith(
 			expect.objectContaining({
 				erc: 'newPicklistERC',
 			})
@@ -129,8 +129,8 @@ describe('PicklistBuilderManagementBar', () => {
 
 		await userEvent.click(saveButton);
 
-		expect(PicklistService.createPicklist).not.toBeCalled();
-		expect(PicklistService.updatePicklist).not.toBeCalled();
+		expect(PicklistService.createPicklist).not.toHaveBeenCalled();
+		expect(PicklistService.updatePicklist).not.toHaveBeenCalled();
 	});
 
 	it('does not save anything when there is no name', async () => {
@@ -140,8 +140,8 @@ describe('PicklistBuilderManagementBar', () => {
 
 		await userEvent.click(saveButton);
 
-		expect(PicklistService.createPicklist).not.toBeCalled();
-		expect(PicklistService.updatePicklist).not.toBeCalled();
+		expect(PicklistService.createPicklist).not.toHaveBeenCalled();
+		expect(PicklistService.updatePicklist).not.toHaveBeenCalled();
 	});
 
 	it('shows an error toast when there has been an issue saving', async () => {
@@ -172,13 +172,13 @@ describe('PicklistBuilderManagementBar', () => {
 		await waitFor(() => {
 			expect(
 				require('@liferay/layout-js-components-web').openConfirmModal
-			).toBeCalledWith(
+			).toHaveBeenCalledWith(
 				expect.objectContaining({
 					text: 'you-deleted-one-or-more-options-from-the-picklist',
 				})
 			);
-			expect(PicklistService.updatePicklist).not.toBeCalled();
-			expect(PicklistService.createPicklist).not.toBeCalled();
+			expect(PicklistService.updatePicklist).not.toHaveBeenCalled();
+			expect(PicklistService.createPicklist).not.toHaveBeenCalled();
 		});
 	});
 });

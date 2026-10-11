@@ -119,17 +119,21 @@ async function grantCategoryView(
 	categoryId: number,
 	roleNames: string[]
 ) {
-	for (const roleName of roleNames) {
-		await apiHelpers.headlessAdminTaxonomy.putTaxonomyVocabulariesTaxonomyVocabularyPermissions(
-			vocabularyId,
-			{actionIds: ['VIEW'], roleName}
-		);
 
-		await apiHelpers.headlessAdminTaxonomy.putTaxonomyCategoriesTaxonomyCategoryPermissions(
-			categoryId,
-			{actionIds: ['VIEW'], roleName}
-		);
-	}
+	// Each permissions PUT replaces the whole role set, so grant every role
+	// in a single request rather than one request per role
+
+	const data = roleNames.map((roleName) => ({actionIds: ['VIEW'], roleName}));
+
+	await apiHelpers.put(
+		`${apiHelpers.baseUrl}headless-admin-taxonomy/v1.0/taxonomy-vocabularies/${vocabularyId}/permissions`,
+		{data}
+	);
+
+	await apiHelpers.put(
+		`${apiHelpers.baseUrl}headless-admin-taxonomy/v1.0/taxonomy-categories/${categoryId}/permissions`,
+		{data}
+	);
 }
 
 async function connectSpaceToGuest(
@@ -230,6 +234,8 @@ async function verifySearch({
 			applyCategory,
 			'Category'
 		);
+
+		await expect(categoryCheckbox).toBeVisible({timeout: 10000});
 
 		await searchPage.selectSearchFacetCheckbox(categoryCheckbox);
 

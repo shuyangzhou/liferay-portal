@@ -127,7 +127,7 @@ describe('ItemSelector', () => {
 
 		fireEvent.click(screen.getByLabelText('select-itemSelectorLabel'));
 
-		expect(openItemSelector).toBeCalled();
+		expect(openItemSelector).toHaveBeenCalled();
 	});
 
 	it('shows recent items dropdown instead of calling openItemSelector when there are mapping items', () => {
@@ -143,7 +143,7 @@ describe('ItemSelector', () => {
 
 		expect(screen.getByText('Mapped Item Title')).toBeInTheDocument();
 
-		expect(openItemSelector).not.toBeCalled();
+		expect(openItemSelector).not.toHaveBeenCalled();
 	});
 
 	it('does not show recent collection page contents in the recent items', () => {
@@ -167,7 +167,7 @@ describe('ItemSelector', () => {
 		expect(screen.getByText('Mapped Item Title')).toBeInTheDocument();
 		expect(screen.queryByText('Mapped Collection')).not.toBeInTheDocument();
 
-		expect(openItemSelector).not.toBeCalled();
+		expect(openItemSelector).not.toHaveBeenCalled();
 	});
 
 	it('does not show recent page contents rejected by isAllowedMappedItem', async () => {
@@ -197,7 +197,7 @@ describe('ItemSelector', () => {
 		expect(screen.getByText('Document Title')).toBeInTheDocument();
 		expect(screen.queryByText('Web Content Title')).not.toBeInTheDocument();
 
-		expect(openItemSelector).not.toBeCalled();
+		expect(openItemSelector).not.toHaveBeenCalled();
 	});
 
 	it('selects a recent page content allowed by isAllowedMappedItem', async () => {
@@ -222,7 +222,7 @@ describe('ItemSelector', () => {
 
 		await userEvent.click(screen.getByText('Document Title'));
 
-		expect(onItemSelect).toBeCalledWith(
+		expect(onItemSelect).toHaveBeenCalledWith(
 			expect.objectContaining({title: 'Document Title'})
 		);
 	});
@@ -245,7 +245,7 @@ describe('ItemSelector', () => {
 
 		expect(screen.queryByText('Web Content Title')).not.toBeInTheDocument();
 
-		expect(openItemSelector).toBeCalled();
+		expect(openItemSelector).toHaveBeenCalled();
 	});
 
 	it('opens the item selector when showMappedItems is false', async () => {
@@ -266,7 +266,7 @@ describe('ItemSelector', () => {
 
 		expect(screen.queryByText('Web Content Title')).not.toBeInTheDocument();
 
-		expect(openItemSelector).toBeCalled();
+		expect(openItemSelector).toHaveBeenCalled();
 	});
 
 	it('removes selected item correctly when clear button is clicked', () => {

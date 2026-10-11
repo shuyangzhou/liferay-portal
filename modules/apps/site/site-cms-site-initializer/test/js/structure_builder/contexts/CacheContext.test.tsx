@@ -58,14 +58,14 @@ describe('StructureSettings', () => {
 	it('does not call server if cache contains spaces', async () => {
 		renderComponent({spaces: []});
 
-		expect(SpaceService.getSpaces).not.toBeCalled();
+		expect(SpaceService.getSpaces).not.toHaveBeenCalled();
 	});
 
 	it('calls server if cache does not contains spaces', async () => {
 		renderComponent();
 
 		await waitFor(() => {
-			expect(SpaceService.getSpaces).toBeCalled();
+			expect(SpaceService.getSpaces).toHaveBeenCalled();
 		});
 	});
 });

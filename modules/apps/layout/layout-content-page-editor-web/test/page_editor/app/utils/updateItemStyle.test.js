@@ -24,7 +24,7 @@ describe('updateItemStyle', () => {
 	it('updates item styles for Desktop viewport', () => {
 		updateItemStyle(INITIAL_CONFIG);
 
-		expect(updateItemConfig).toBeCalledWith({
+		expect(updateItemConfig).toHaveBeenCalledWith({
 			itemConfig: {styles: {display: 'none'}},
 			itemIds: ['fragment01'],
 		});
@@ -36,7 +36,7 @@ describe('updateItemStyle', () => {
 			selectedViewportSize: VIEWPORT_SIZES.tablet,
 		});
 
-		expect(updateItemConfig).toBeCalledWith({
+		expect(updateItemConfig).toHaveBeenCalledWith({
 			itemConfig: {tablet: {styles: {display: 'none'}}},
 			itemIds: ['fragment01'],
 		});
@@ -48,7 +48,7 @@ describe('updateItemStyle', () => {
 			selectedViewportSize: VIEWPORT_SIZES.landscapeMobile,
 		});
 
-		expect(updateItemConfig).toBeCalledWith({
+		expect(updateItemConfig).toHaveBeenCalledWith({
 			itemConfig: {landscapeMobile: {styles: {display: 'none'}}},
 			itemIds: ['fragment01'],
 		});
@@ -60,7 +60,7 @@ describe('updateItemStyle', () => {
 			selectedViewportSize: VIEWPORT_SIZES.portraitMobile,
 		});
 
-		expect(updateItemConfig).toBeCalledWith({
+		expect(updateItemConfig).toHaveBeenCalledWith({
 			itemConfig: {portraitMobile: {styles: {display: 'none'}}},
 			itemIds: ['fragment01'],
 		});

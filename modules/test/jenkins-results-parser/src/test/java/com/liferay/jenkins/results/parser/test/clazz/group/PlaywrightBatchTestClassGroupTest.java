@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -34,6 +35,7 @@ import java.util.regex.Pattern;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -47,6 +49,79 @@ import org.mockito.Mockito;
  */
 public class PlaywrightBatchTestClassGroupTest
 	extends com.liferay.jenkins.results.parser.Test {
+
+	@After
+	@Override
+	public void tearDown() {
+		super.tearDown();
+
+		AtomicBoolean playwrightJSONObjectsLoaded =
+			ReflectionTestUtil.getFieldValue(
+				PlaywrightBatchTestClassGroup.class,
+				"_playwrightJSONObjectsLoaded");
+
+		playwrightJSONObjectsLoaded.set(false);
+
+		ReflectionTestUtil.setFieldValue(
+			PlaywrightBatchTestClassGroup.class, "_playwrightJSONObject", null);
+	}
+
+	@Test
+	public void testIsDatabaseTypeSupported() throws Exception {
+		_testIsDatabaseTypeSupported(
+			"playwright-js-tomcat101", "database.types=mysql", false, null);
+		_testIsDatabaseTypeSupported(
+			"playwright-js-tomcat101", null, true, null);
+		_testIsDatabaseTypeSupported(
+			"playwright-js-tomcat101-db2111", "database.types=db2", true,
+			"database.types=mysql,postgresql");
+		_testIsDatabaseTypeSupported(
+			"playwright-js-tomcat101-db2111", "database.types=db2,mysql,oracle",
+			true, null);
+		_testIsDatabaseTypeSupported(
+			"playwright-js-tomcat101-db2111",
+			"testray.main.component.name=" + RandomTestUtil.randomString(),
+			false, "database.types=mysql,postgresql");
+		_testIsDatabaseTypeSupported(
+			"playwright-js-tomcat101-db2111", null, false,
+			"database.types=mysql,postgresql");
+		_testIsDatabaseTypeSupported(
+			"playwright-js-tomcat101-mysql84", "database.types=mysql", true,
+			null);
+		_testIsDatabaseTypeSupported(
+			"playwright-js-tomcat101-mysql84-jdk21_zulu",
+			"database.types=mysql", true, null);
+		_testIsDatabaseTypeSupported(
+			"playwright-js-tomcat101-mysql84_stable", "database.types=mysql",
+			true, null);
+		_testIsDatabaseTypeSupported(
+			"playwright-js-tomcat101-oracle193",
+			"database.types=db2,mysql,oracle", true, null);
+		_testIsDatabaseTypeSupported(
+			"playwright-js-tomcat101-postgresql163", "database.types=db2",
+			false, "database.types=mysql,postgresql");
+		_testIsDatabaseTypeSupported(
+			"playwright-js-tomcat101-postgresql163",
+			"database.types=db2,mysql,oracle", false, null);
+		_testIsDatabaseTypeSupported(
+			"playwright-js-tomcat101-postgresql163", "database.types=mysql",
+			false, null);
+		_testIsDatabaseTypeSupported(
+			"playwright-js-tomcat101-postgresql163", null, true,
+			"database.types=mysql,postgresql");
+		_testIsDatabaseTypeSupported(
+			"playwright-js-tomcat101-postgresql163_stable",
+			"database.types=mysql", false, null);
+	}
+
+	@Test
+	public void testIsDatabaseTypeSupportedFailure() throws Exception {
+		_testIsDatabaseTypeSupportedFailure(
+			"playwright-js-tomcat101-mysql84", "database.types=MySQL");
+		_testIsDatabaseTypeSupportedFailure(
+			"playwright-js-tomcat101-postgresql163",
+			"database.types=MySQL,postgresql");
+	}
 
 	@Test
 	public void testLoadPlaywrightJSONObjects() throws Exception {
@@ -298,6 +373,130 @@ public class PlaywrightBatchTestClassGroupTest
 			suitesJSONArray, testClassesMaps);
 
 		return testClassesMaps;
+	}
+
+	private void _testIsDatabaseTypeSupported(
+			String batchName, String configDirTestProperties, boolean expected,
+			String specDirTestProperties)
+		throws Exception {
+
+		Properties buildProperties = new Properties();
+
+		buildProperties.setProperty(
+			"jenkins.tmp.dir",
+			JenkinsResultsParserUtil.combine(
+				JenkinsResultsParserUtil.getCanonicalPath(
+					temporaryFolder.getRoot()),
+				"/"));
+
+		JenkinsResultsParserUtil.setBuildProperties(buildProperties);
+
+		File workingDirectory = temporaryFolder.newFolder();
+
+		JenkinsResultsParserUtil.write(
+			new File(workingDirectory, "test.properties"),
+			JenkinsResultsParserUtil.combine(
+				"database.db2.version=11.5\n", "database.mysql.version=8.4\n",
+				"database.oracle.version=19.3\n",
+				"database.postgresql.version=16.3"));
+
+		File playwrightDir = new File(
+			workingDirectory, "modules/test/playwright");
+
+		String projectName = RandomTestUtil.randomString();
+
+		JenkinsResultsParserUtil.write(
+			new File(playwrightDir, "tests/config/config.ts"),
+			JenkinsResultsParserUtil.combine(
+				"export const config = {\n\tname: '", projectName,
+				"',\n\ttestDir: 'tests/specs',\n};"));
+
+		if (configDirTestProperties != null) {
+			JenkinsResultsParserUtil.write(
+				new File(playwrightDir, "tests/config/test.properties"),
+				configDirTestProperties);
+		}
+
+		if (specDirTestProperties != null) {
+			JenkinsResultsParserUtil.write(
+				new File(playwrightDir, "tests/specs/test.properties"),
+				specDirTestProperties);
+		}
+
+		String specFilePath = RandomTestUtil.randomString();
+
+		ReflectionTestUtil.setFieldValue(
+			PlaywrightBatchTestClassGroup.class, "_playwrightJSONObject",
+			new JSONObject(
+			).put(
+				"config",
+				new JSONObject(
+				).put(
+					"rootDir", playwrightDir.getPath()
+				)
+			).put(
+				"suites",
+				new JSONArray(
+				).put(
+					_newSuiteJSONObject(
+						specFilePath,
+						new JSONArray(
+						).put(
+							_newSpecJSONObject(
+								RandomTestUtil.randomString(), projectName,
+								specFilePath, RandomTestUtil.randomString())
+						),
+						specFilePath)
+				)
+			));
+
+		AtomicBoolean playwrightJSONObjectsLoaded =
+			ReflectionTestUtil.getFieldValue(
+				PlaywrightBatchTestClassGroup.class,
+				"_playwrightJSONObjectsLoaded");
+
+		playwrightJSONObjectsLoaded.set(true);
+
+		setShellCommandOutput(
+			"git remote -v", mockShell(),
+			"upstream\tgit@github.com:liferay/liferay-portal.git (fetch)\n" +
+				"upstream\tgit@github.com:liferay/liferay-portal.git (push)\n");
+
+		mockEnvironment(
+			Collections.singletonMap("PLAYWRIGHT_PROJECT_NAME", projectName));
+
+		Properties jobProperties = new Properties();
+
+		jobProperties.setProperty("test.relevant.changes", "false");
+
+		PlaywrightBatchTestClassGroup playwrightBatchTestClassGroup =
+			new PlaywrightBatchTestClassGroup(
+				batchName,
+				BatchTestClassGroupTestUtil.getPortalTestClassJob(
+					jobProperties, Collections.emptyList(), workingDirectory));
+
+		List<TestClass> testClasses =
+			playwrightBatchTestClassGroup.getTestClasses();
+
+		Assert.assertEquals(batchName, expected, !testClasses.isEmpty());
+	}
+
+	private void _testIsDatabaseTypeSupportedFailure(
+			String batchName, String configDirTestProperties)
+		throws Exception {
+
+		try {
+			_testIsDatabaseTypeSupported(
+				batchName, configDirTestProperties, false, null);
+
+			Assert.fail(batchName);
+		}
+		catch (RuntimeException runtimeException) {
+			String message = runtimeException.getMessage();
+
+			Assert.assertTrue(
+				message, message.startsWith("Invalid database type \"MySQL\""));
+		}
 	}
 
 	private void _testLoadPlaywrightJSONObjects(

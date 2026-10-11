@@ -579,6 +579,26 @@ public class UserNotificationTypeTest extends BaseNotificationTypeTest {
 		}
 	}
 
+	@Test
+	public void testSendNotificationRecipientTypeUserWithoutRecipients()
+		throws Exception {
+
+		executeNotificationObjectAction(
+			0,
+			notificationTemplateLocalService.addNotificationTemplate(
+				_createNotificationContext(
+					Collections.emptyList(),
+					NotificationRecipientConstants.TYPE_USER)));
+
+		List<NotificationQueueEntry> notificationQueueEntries =
+			notificationQueueEntryLocalService.getNotificationQueueEntries(
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+		Assert.assertEquals(
+			notificationQueueEntries.toString(), 0,
+			notificationQueueEntries.size());
+	}
+
 	private User _addSiteRoleUser(Group group, Role siteRole) throws Exception {
 		resourcePermissionLocalService.addResourcePermission(
 			TestPropsValues.getCompanyId(),

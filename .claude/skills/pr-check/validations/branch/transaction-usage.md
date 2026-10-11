@@ -23,9 +23,8 @@ FINDINGS=$(
 		if command grep \
 			--extended-regexp \
 			--ignore-case \
-			--quiet \
 			--regexp='^[[:space:]]*(\*[[:space:]]*@generated|@generated\()' \
-			"${FILE}"
+			"${FILE}" > /dev/null
 		then
 			continue
 		fi

@@ -170,7 +170,7 @@ public class SearchUtil {
 				"assetEntryId", String.valueOf(assetEntry.getEntryId()));
 			viewContentURL.setParameter("type", assetRendererFactory.getType());
 
-			if (!viewInContext) {
+			if (!viewInContext && assetEntry.isVisible()) {
 				return viewContentURL.toString();
 			}
 

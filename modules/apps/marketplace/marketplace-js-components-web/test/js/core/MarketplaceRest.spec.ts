@@ -103,9 +103,9 @@ describe('MarketplaceRest', () => {
 		const marketplaceAuthorization =
 			await marketplaceRest.getMarketplaceToken();
 
-		expect(fetch).toBeCalledTimes(1);
-		expect(getItemFn).toBeCalledTimes(1);
-		expect(setItemFn).toBeCalledTimes(1);
+		expect(fetch).toHaveBeenCalledTimes(1);
+		expect(getItemFn).toHaveBeenCalledTimes(1);
+		expect(setItemFn).toHaveBeenCalledTimes(1);
 		expect(marketplaceAuthorization).toMatchObject(marketplaceToken);
 
 		const [firstSetItemCall] = setItemFn.mock.calls;
@@ -121,9 +121,9 @@ describe('MarketplaceRest', () => {
 		const marketplaceAuthorization =
 			await marketplaceRest.getMarketplaceToken();
 
-		expect(fetch).toBeCalledTimes(0);
-		expect(getItemFn).toBeCalledTimes(1);
-		expect(setItemFn).toBeCalledTimes(0);
+		expect(fetch).toHaveBeenCalledTimes(0);
+		expect(getItemFn).toHaveBeenCalledTimes(1);
+		expect(setItemFn).toHaveBeenCalledTimes(0);
 		expect(marketplaceAuthorization).toMatchObject(marketplaceToken);
 	});
 
@@ -142,7 +142,7 @@ describe('MarketplaceRest', () => {
 		const response = await marketplaceRest.getProducts();
 		const [fetchURL] = fetch.mock.calls[0];
 
-		expect(fetch).toBeCalledTimes(1);
+		expect(fetch).toHaveBeenCalledTimes(1);
 		expect(fetchURL).toBe(
 			`${marketplaceConfiguration.url}/o/headless-commerce-delivery-catalog/v1.0/channels/${marketplaceConfiguration.settings.channelId}/products?`
 		);
@@ -159,7 +159,7 @@ describe('MarketplaceRest', () => {
 		const response =
 			await marketplaceRest.fetchMarketplaceService('/dxp/test');
 
-		expect(fetch).toBeCalledTimes(1);
+		expect(fetch).toHaveBeenCalledTimes(1);
 		expect(response).toMatchObject(mockResponse);
 
 		const [fetchURL] = fetch.mock.calls[0];
@@ -338,7 +338,7 @@ describe('MarketplaceRest', () => {
 
 		await expect(
 			marketplaceRest.fetchMarketplace('/dxp/test')
-		).rejects.toThrowError('An error occurred while fetching the data.');
+		).rejects.toThrow('An error occurred while fetching the data.');
 
 		expect(fetch).toHaveBeenCalledTimes(1);
 
@@ -346,9 +346,9 @@ describe('MarketplaceRest', () => {
 
 		globalThis.Liferay.Util.SessionStorage.getItem = getItemFn as any;
 
-		await expect(
-			marketplaceRest.getMarketplaceToken()
-		).rejects.toThrowError('An error occurred while fetching the data');
+		await expect(marketplaceRest.getMarketplaceToken()).rejects.toThrow(
+			'An error occurred while fetching the data'
+		);
 
 		const [fetchURL] = fetch.mock.calls[1];
 

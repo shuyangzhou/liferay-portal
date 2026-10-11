@@ -20,16 +20,34 @@ public class TopLevelStandaloneBuildTestrayCaseResult
 	extends BaseStandaloneBuildTestrayCaseResult {
 
 	public TopLevelStandaloneBuildTestrayCaseResult(
-		TestrayBuild testrayBuild, TopLevelBuildReport topLevelBuildReport) {
+		Status status, TestrayBuild testrayBuild,
+		TopLevelBuildReport topLevelBuildReport) {
 
 		super(testrayBuild, topLevelBuildReport);
 
+		_status = status;
+
 		initBuildReport();
+	}
+
+	public TopLevelStandaloneBuildTestrayCaseResult(
+		TestrayBuild testrayBuild, TopLevelBuildReport topLevelBuildReport) {
+
+		this(null, testrayBuild, topLevelBuildReport);
 	}
 
 	@Override
 	public String getName() {
 		return "Top Level Build";
+	}
+
+	@Override
+	public Status getStatus() {
+		if (_status != null) {
+			return _status;
+		}
+
+		return super.getStatus();
 	}
 
 	@Override
@@ -69,5 +87,7 @@ public class TopLevelStandaloneBuildTestrayCaseResult
 	protected void initBuildReport() {
 		setBuildReport(getTopLevelBuildReport());
 	}
+
+	private final Status _status;
 
 }

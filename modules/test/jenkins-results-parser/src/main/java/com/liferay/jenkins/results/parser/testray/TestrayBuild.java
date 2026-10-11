@@ -523,6 +523,8 @@ public class TestrayBuild implements Comparable<TestrayBuild> {
 		_testrayRoutine = _testrayServer.getTestrayRoutineById(
 			Long.parseLong(matcher.group("routineId")));
 
+		_testrayProject = _testrayRoutine.getTestrayProject();
+
 		String filterString = JenkinsResultsParserUtil.combine(
 			"id eq '", matcher.group("buildId"), "'");
 
@@ -627,7 +629,7 @@ public class TestrayBuild implements Comparable<TestrayBuild> {
 	private String _pullRequestSenderUsername;
 	private Matcher _testrayAttachmentURLMatcher;
 	private TestrayProductVersion _testrayProductVersion;
-	private TestrayProject _testrayProject;
+	private final TestrayProject _testrayProject;
 	private final TestrayRoutine _testrayRoutine;
 	private List<TestrayRun> _testrayRuns;
 	private final TestrayServer _testrayServer;

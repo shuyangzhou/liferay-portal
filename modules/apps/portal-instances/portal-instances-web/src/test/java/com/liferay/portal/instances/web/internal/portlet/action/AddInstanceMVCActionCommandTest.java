@@ -11,11 +11,15 @@ import com.liferay.portal.kernel.exception.CompanyMaxUsersException;
 import com.liferay.portal.kernel.exception.CompanyMxException;
 import com.liferay.portal.kernel.exception.CompanyVirtualHostException;
 import com.liferay.portal.kernel.exception.CompanyWebIdException;
-import com.liferay.portal.kernel.exception.UserEmailAddressException;
-import com.liferay.portal.kernel.exception.UserPasswordException;
-import com.liferay.portal.kernel.exception.UserScreenNameException;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
+import com.liferay.portal.kernel.security.auth.EmailAddressValidator;
+import com.liferay.portal.kernel.security.auth.ScreenNameValidator;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
@@ -24,12 +28,16 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropsValues;
+import com.liferay.portal.security.auth.EmailAddressValidatorFactory;
+import com.liferay.portal.security.auth.ScreenNameValidatorFactory;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.batch.engine.resource.VulcanBatchEngineImportTaskResource;
 import com.liferay.portal.vulcan.batch.engine.resource.VulcanBatchEngineImportTaskResourceFactory;
 
 import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.PortletRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -43,6 +51,7 @@ import org.junit.ClassRule;
 import org.junit.Test;
 
 import org.mockito.ArgumentCaptor;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import org.osgi.service.component.ComponentServiceObjects;
@@ -77,6 +86,10 @@ public class AddInstanceMVCActionCommandTest {
 			_addInstanceMVCActionCommand, "_componentServiceObjects",
 			_componentServiceObjects);
 		ReflectionTestUtil.setFieldValue(
+			_addInstanceMVCActionCommand, "_jsonFactory", _jsonFactory);
+		ReflectionTestUtil.setFieldValue(
+			_addInstanceMVCActionCommand, "_language", _language);
+		ReflectionTestUtil.setFieldValue(
 			_addInstanceMVCActionCommand, "_portal", _portal);
 		ReflectionTestUtil.setFieldValue(
 			_addInstanceMVCActionCommand,
@@ -95,6 +108,24 @@ public class AddInstanceMVCActionCommandTest {
 		_setParameter("siteInitializerKey", _SITE_INITIALIZER_KEY);
 		_setParameter("virtualHostname", _VIRTUAL_HOST);
 		_setParameter("webId", _PORTAL_INSTANCE_ID);
+
+		Mockito.when(
+			_actionRequest.getLocale()
+		).thenReturn(
+			LocaleUtil.US
+		);
+
+		Mockito.when(
+			_emailAddressValidator.validate(0, _EMAIL_ADDRESS)
+		).thenReturn(
+			true
+		);
+
+		Mockito.when(
+			_jsonFactory.createJSONObject()
+		).thenReturn(
+			_jsonObject
+		);
 
 		Mockito.when(
 			_portal.getCompany(_actionRequest)
@@ -121,6 +152,12 @@ public class AddInstanceMVCActionCommandTest {
 		);
 
 		Mockito.when(
+			_screenNameValidator.validate(0, _SCREEN_NAME)
+		).thenReturn(
+			true
+		);
+
+		Mockito.when(
 			_vulcanBatchEngineImportTaskResourceFactory.create()
 		).thenReturn(
 			_vulcanBatchEngineImportTaskResource
@@ -143,7 +180,7 @@ public class AddInstanceMVCActionCommandTest {
 			"delegated"
 		);
 
-		_addPortalInstance();
+		_processAction();
 
 		ArgumentCaptor<HttpServletRequest> argumentCaptor =
 			ArgumentCaptor.forClass(HttpServletRequest.class);
@@ -165,7 +202,7 @@ public class AddInstanceMVCActionCommandTest {
 
 	@Test
 	public void testAddPortalInstanceSendsTheAdmin() throws Exception {
-		_addPortalInstance();
+		_processAction();
 
 		Map<String, Object> portalInstanceMap = _capturePortalInstanceMap();
 
@@ -182,7 +219,7 @@ public class AddInstanceMVCActionCommandTest {
 
 	@Test
 	public void testAddPortalInstanceSendsThePortalInstance() throws Exception {
-		_addPortalInstance();
+		_processAction();
 
 		Map<String, Object> portalInstanceMap = _capturePortalInstanceMap();
 
@@ -199,7 +236,7 @@ public class AddInstanceMVCActionCommandTest {
 
 	@Test
 	public void testAddPortalInstanceSetsThePreferredLocale() throws Exception {
-		_addPortalInstance();
+		_processAction();
 
 		ArgumentCaptor<AcceptLanguage> argumentCaptor = ArgumentCaptor.forClass(
 			AcceptLanguage.class);
@@ -219,7 +256,7 @@ public class AddInstanceMVCActionCommandTest {
 	public void testAddPortalInstanceSetsTheVulcanBatchEngineResource()
 		throws Exception {
 
-		_addPortalInstance();
+		_processAction();
 
 		Mockito.verify(
 			_portalInstanceResource
@@ -230,7 +267,7 @@ public class AddInstanceMVCActionCommandTest {
 
 	@Test
 	public void testAddPortalInstanceUngetsTheService() throws Exception {
-		_addPortalInstance();
+		_processAction();
 
 		Mockito.verify(
 			_componentServiceObjects
@@ -240,9 +277,95 @@ public class AddInstanceMVCActionCommandTest {
 	}
 
 	@Test
-	public void testAddPortalInstanceUngetsTheServiceWhenTheBatchFails()
+	public void testDoProcessAction() throws Exception {
+		_processAction();
+
+		Mockito.verify(
+			_companyLocalService
+		).validateCompany(
+			_PORTAL_INSTANCE_ID, _VIRTUAL_HOST, _DOMAIN, _MAX_USERS
+		);
+
+		Mockito.verify(
+			_emailAddressValidator
+		).validate(
+			0, _EMAIL_ADDRESS
+		);
+
+		Mockito.verify(
+			_jsonObject, Mockito.never()
+		).put(
+			Mockito.eq("error"), Mockito.any(Object.class)
+		);
+
+		Mockito.verify(
+			_portalInstanceResource
+		).postPortalInstanceBatch(
+			Mockito.isNull(), Mockito.any()
+		);
+
+		Mockito.verify(
+			_screenNameValidator
+		).validate(
+			0, _SCREEN_NAME
+		);
+	}
+
+	@Test
+	public void testDoProcessActionWhenTheAdminEmailAddressIsInvalid()
 		throws Exception {
 
+		Mockito.when(
+			_emailAddressValidator.validate(0, _EMAIL_ADDRESS)
+		).thenReturn(
+			false
+		);
+
+		_assertDoProcessActionError("please-enter-a-valid-email-address");
+	}
+
+	@Test
+	public void testDoProcessActionWhenTheAdminEmailAddressIsNull()
+		throws Exception {
+
+		_setParameter("defaultAdminEmailAddress", null);
+
+		_assertDoProcessActionError("please-enter-a-valid-email-address");
+	}
+
+	@Test
+	public void testDoProcessActionWhenTheAdminPasswordIsNull()
+		throws Exception {
+
+		_setParameter("defaultAdminPassword", null);
+
+		_assertDoProcessActionError("please-enter-a-valid-password");
+	}
+
+	@Test
+	public void testDoProcessActionWhenTheAdminScreenNameIsInvalid()
+		throws Exception {
+
+		Mockito.when(
+			_screenNameValidator.validate(0, _SCREEN_NAME)
+		).thenReturn(
+			false
+		);
+
+		_assertDoProcessActionError("please-enter-a-valid-screen-name");
+	}
+
+	@Test
+	public void testDoProcessActionWhenTheAdminScreenNameIsNull()
+		throws Exception {
+
+		_setParameter("defaultAdminScreenName", null);
+
+		_assertDoProcessActionError("please-enter-a-valid-screen-name");
+	}
+
+	@Test
+	public void testDoProcessActionWhenTheBatchFails() throws Exception {
 		Mockito.when(
 			_portalInstanceResource.postPortalInstanceBatch(
 				Mockito.isNull(), Mockito.any())
@@ -250,49 +373,90 @@ public class AddInstanceMVCActionCommandTest {
 			new IllegalStateException()
 		);
 
-		try {
-			_addPortalInstance();
+		String message = RandomTestUtil.randomString();
 
-			Assert.fail();
-		}
-		catch (IllegalStateException illegalStateException) {
-		}
+		Mockito.when(
+			_language.get(LocaleUtil.US, "an-unexpected-error-occurred")
+		).thenReturn(
+			message
+		);
+
+		_processAction();
 
 		Mockito.verify(
 			_componentServiceObjects
 		).ungetService(
 			_portalInstanceResource
 		);
+
+		Mockito.verify(
+			_jsonObject
+		).put(
+			"error", message
+		);
 	}
 
 	@Test
-	public void testGetErrorMessageKey() {
-		Assert.assertEquals(
-			"an-unexpected-error-occurred",
-			_getErrorMessageKey(new Exception()));
-		Assert.assertEquals(
-			"please-enter-a-valid-email-address",
-			_getErrorMessageKey(new UserEmailAddressException.MustNotBeNull()));
-		Assert.assertEquals(
-			"please-enter-a-valid-mail-domain",
-			_getErrorMessageKey(new CompanyMxException()));
-		Assert.assertEquals(
-			"please-enter-a-valid-max-users",
-			_getErrorMessageKey(new CompanyMaxUsersException()));
-		Assert.assertEquals(
-			"please-enter-a-valid-password",
-			_getErrorMessageKey(
-				new UserPasswordException.MustNotBeNull(
-					RandomTestUtil.randomLong())));
-		Assert.assertEquals(
-			"please-enter-a-valid-screen-name",
-			_getErrorMessageKey(new UserScreenNameException.MustNotBeNull()));
-		Assert.assertEquals(
-			"please-enter-a-valid-virtual-host",
-			_getErrorMessageKey(new CompanyVirtualHostException()));
-		Assert.assertEquals(
-			"please-enter-a-valid-web-id",
-			_getErrorMessageKey(new CompanyWebIdException()));
+	public void testDoProcessActionWhenTheCompanyDomainIsInvalid()
+		throws Exception {
+
+		_assertDoProcessActionError(
+			new CompanyMxException(), "please-enter-a-valid-mail-domain");
+	}
+
+	@Test
+	public void testDoProcessActionWhenTheCompanyMaxUsersIsInvalid()
+		throws Exception {
+
+		_assertDoProcessActionError(
+			new CompanyMaxUsersException(), "please-enter-a-valid-max-users");
+	}
+
+	@Test
+	public void testDoProcessActionWhenTheCompanyVirtualHostIsInvalid()
+		throws Exception {
+
+		_assertDoProcessActionError(
+			new CompanyVirtualHostException(),
+			"please-enter-a-valid-virtual-host");
+	}
+
+	@Test
+	public void testDoProcessActionWhenTheCompanyWebIdIsInvalid()
+		throws Exception {
+
+		_assertDoProcessActionError(
+			new CompanyWebIdException(), "please-enter-a-valid-web-id");
+	}
+
+	@Test
+	public void testDoProcessActionWhenTheDefaultAdminPasswordIsSet()
+		throws Exception {
+
+		_setParameter("defaultAdminEmailAddress", null);
+		_setParameter("defaultAdminPassword", null);
+		_setParameter("defaultAdminScreenName", null);
+
+		ReflectionTestUtil.setFieldValue(
+			PropsValues.class, "DEFAULT_ADMIN_PASSWORD",
+			RandomTestUtil.randomString());
+
+		_processAction();
+
+		Mockito.verify(
+			_jsonObject, Mockito.never()
+		).put(
+			Mockito.eq("error"), Mockito.any(Object.class)
+		);
+
+		Mockito.verify(
+			_portalInstanceResource
+		).postPortalInstanceBatch(
+			Mockito.isNull(), Mockito.any()
+		);
+
+		Mockito.verifyNoInteractions(
+			_emailAddressValidator, _screenNameValidator);
 	}
 
 	@Test
@@ -301,7 +465,7 @@ public class AddInstanceMVCActionCommandTest {
 
 		_setParameter("siteInitializerKey", StringPool.BLANK);
 
-		_addPortalInstance();
+		_processAction();
 
 		Map<String, Object> portalInstanceMap = _capturePortalInstanceMap();
 
@@ -316,7 +480,11 @@ public class AddInstanceMVCActionCommandTest {
 
 		_setParameter("defaultAdminEmailAddress", null);
 
-		_addPortalInstance();
+		ReflectionTestUtil.setFieldValue(
+			PropsValues.class, "DEFAULT_ADMIN_PASSWORD",
+			RandomTestUtil.randomString());
+
+		_processAction();
 
 		Map<String, Object> portalInstanceMap = _capturePortalInstanceMap();
 
@@ -325,59 +493,39 @@ public class AddInstanceMVCActionCommandTest {
 			portalInstanceMap.containsKey("admin"));
 	}
 
-	@Test
-	public void testValidateAdminIgnoresTheAdminWithADefaultAdminPassword()
+	private void _assertDoProcessActionError(
+			PortalException portalException, String key)
 		throws Exception {
 
-		_setParameter("defaultAdminEmailAddress", null);
-		_setParameter("defaultAdminPassword", null);
-		_setParameter("defaultAdminScreenName", null);
-
-		ReflectionTestUtil.setFieldValue(
-			PropsValues.class, "DEFAULT_ADMIN_PASSWORD",
-			RandomTestUtil.randomString());
-
-		_validateAdmin();
-	}
-
-	@Test(expected = UserPasswordException.MustNotBeNull.class)
-	public void testValidateAdminWithoutAPassword() throws Exception {
-		_setParameter("defaultAdminPassword", null);
-
-		_validateAdmin();
-	}
-
-	@Test(expected = UserScreenNameException.MustNotBeNull.class)
-	public void testValidateAdminWithoutAScreenName() throws Exception {
-		_setParameter("defaultAdminScreenName", null);
-
-		_validateAdmin();
-	}
-
-	@Test(expected = UserEmailAddressException.MustNotBeNull.class)
-	public void testValidateAdminWithoutAnEmailAddress() throws Exception {
-		_setParameter("defaultAdminEmailAddress", null);
-
-		_validateAdmin();
-	}
-
-	@Test
-	public void testValidateCompany() throws Exception {
-		ReflectionTestUtil.invoke(
-			_addInstanceMVCActionCommand, "_validateCompany",
-			new Class<?>[] {ActionRequest.class}, _actionRequest);
-
-		Mockito.verify(
+		Mockito.doThrow(
+			portalException
+		).when(
 			_companyLocalService
 		).validateCompany(
 			_PORTAL_INSTANCE_ID, _VIRTUAL_HOST, _DOMAIN, _MAX_USERS
 		);
+
+		_assertDoProcessActionError(key);
 	}
 
-	private void _addPortalInstance() throws Exception {
-		ReflectionTestUtil.invoke(
-			_addInstanceMVCActionCommand, "_addPortalInstance",
-			new Class<?>[] {ActionRequest.class}, _actionRequest);
+	private void _assertDoProcessActionError(String key) throws Exception {
+		String message = RandomTestUtil.randomString();
+
+		Mockito.when(
+			_language.get(LocaleUtil.US, key)
+		).thenReturn(
+			message
+		);
+
+		_processAction();
+
+		Mockito.verify(
+			_jsonObject
+		).put(
+			"error", message
+		);
+
+		Mockito.verifyNoInteractions(_componentServiceObjects);
 	}
 
 	private Map<String, Object> _capturePortalInstanceMap() throws Exception {
@@ -398,10 +546,34 @@ public class AddInstanceMVCActionCommandTest {
 		return maps.get(0);
 	}
 
-	private String _getErrorMessageKey(Exception exception) {
-		return ReflectionTestUtil.invoke(
-			_addInstanceMVCActionCommand, "_getErrorMessageKey",
-			new Class<?>[] {Exception.class}, exception);
+	private void _processAction() throws Exception {
+		try (MockedStatic<EmailAddressValidatorFactory>
+				emailAddressValidatorFactoryMockedStatic = Mockito.mockStatic(
+					EmailAddressValidatorFactory.class);
+			MockedStatic<JSONPortletResponseUtil>
+				jsonPortletResponseUtilMockedStatic = Mockito.mockStatic(
+					JSONPortletResponseUtil.class);
+			MockedStatic<ScreenNameValidatorFactory>
+				screenNameValidatorFactoryMockedStatic = Mockito.mockStatic(
+					ScreenNameValidatorFactory.class)) {
+
+			emailAddressValidatorFactoryMockedStatic.when(
+				EmailAddressValidatorFactory::getInstance
+			).thenReturn(
+				_emailAddressValidator
+			);
+
+			screenNameValidatorFactoryMockedStatic.when(
+				ScreenNameValidatorFactory::getInstance
+			).thenReturn(
+				_screenNameValidator
+			);
+
+			ReflectionTestUtil.invoke(
+				_addInstanceMVCActionCommand, "doProcessAction",
+				new Class<?>[] {ActionRequest.class, ActionResponse.class},
+				_actionRequest, Mockito.mock(ActionResponse.class));
+		}
 	}
 
 	private void _setParameter(String name, String value) {
@@ -410,12 +582,6 @@ public class AddInstanceMVCActionCommandTest {
 		).thenReturn(
 			value
 		);
-	}
-
-	private void _validateAdmin() throws Exception {
-		ReflectionTestUtil.invoke(
-			_addInstanceMVCActionCommand, "_validateAdmin",
-			new Class<?>[] {ActionRequest.class}, _actionRequest);
 	}
 
 	private static final String _DOMAIN = RandomTestUtil.randomString();
@@ -444,18 +610,34 @@ public class AddInstanceMVCActionCommandTest {
 
 	private final ActionRequest _actionRequest = Mockito.mock(
 		ActionRequest.class);
+
 	private final AddInstanceMVCActionCommand _addInstanceMVCActionCommand =
-		new AddInstanceMVCActionCommand();
+		new AddInstanceMVCActionCommand() {
+
+			@Override
+			protected void hideDefaultSuccessMessage(
+				PortletRequest portletRequest) {
+			}
+
+		};
+
 	private final CompanyLocalService _companyLocalService = Mockito.mock(
 		CompanyLocalService.class);
 	private final ComponentServiceObjects<PortalInstanceResource>
 		_componentServiceObjects = Mockito.mock(ComponentServiceObjects.class);
 	private String _defaultAdminPassword;
+	private final EmailAddressValidator _emailAddressValidator = Mockito.mock(
+		EmailAddressValidator.class);
 	private final HttpServletRequest _httpServletRequest = Mockito.mock(
 		HttpServletRequest.class);
+	private final JSONFactory _jsonFactory = Mockito.mock(JSONFactory.class);
+	private final JSONObject _jsonObject = Mockito.mock(JSONObject.class);
+	private final Language _language = Mockito.mock(Language.class);
 	private final Portal _portal = Mockito.mock(Portal.class);
 	private final PortalInstanceResource _portalInstanceResource = Mockito.mock(
 		PortalInstanceResource.class);
+	private final ScreenNameValidator _screenNameValidator = Mockito.mock(
+		ScreenNameValidator.class);
 	private final VulcanBatchEngineImportTaskResource
 		_vulcanBatchEngineImportTaskResource = Mockito.mock(
 			VulcanBatchEngineImportTaskResource.class);

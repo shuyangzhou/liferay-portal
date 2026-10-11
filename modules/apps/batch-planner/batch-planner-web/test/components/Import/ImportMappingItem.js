@@ -44,7 +44,7 @@ describe('ImportMappingItem', () => {
 			});
 		});
 
-		expect(onChangeMock).toBeCalledWith('address');
+		expect(onChangeMock).toHaveBeenCalledWith('address');
 	});
 
 	it('must have a error status when the form is evaluated, the field is required and no value is selected', () => {

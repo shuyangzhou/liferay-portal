@@ -23,13 +23,13 @@ public class PullRequestTest extends com.liferay.jenkins.results.parser.Test {
 	public void testGetCIMergeSHA() throws Exception {
 		PullRequest pullRequest = _newPullRequest();
 
-		UrlReader urlReader = mockUrlReader();
+		mockURLReaders();
 
-		setUrlReaderOutput(
+		setURLReaderOutput(
 			JenkinsResultsParserUtil.combine(
 				"[{\"filename\": \"test/ci-merge\", ",
 				"\"patch\": \"+abcdef0123456789abcdef0123456789abcdef01\"}]"),
-			"/files", urlReader);
+			"/files");
 
 		Assert.assertEquals(
 			"abcdef0123456789abcdef0123456789abcdef01",
@@ -40,13 +40,13 @@ public class PullRequestTest extends com.liferay.jenkins.results.parser.Test {
 	public void testGetFileNames() throws Exception {
 		PullRequest pullRequest = _newPullRequest();
 
-		UrlReader urlReader = mockUrlReader();
+		mockURLReaders();
 
-		setUrlReaderOutput(
+		setURLReaderOutput(
 			JenkinsResultsParserUtil.combine(
 				"[{\"filename\": \"modules/apps/foo/Foo.java\"}, ",
 				"{\"filename\": \"portal-impl/Bar.java\"}]"),
-			"/files", urlReader);
+			"/files");
 
 		Assert.assertEquals(
 			Arrays.asList("modules/apps/foo/Foo.java", "portal-impl/Bar.java"),
@@ -93,11 +93,11 @@ public class PullRequestTest extends com.liferay.jenkins.results.parser.Test {
 
 		PullRequest pullRequest = _newPullRequest();
 
-		UrlReader urlReader = mockUrlReader();
+		mockURLReaders();
 
-		setUrlReaderOutput(
+		setURLReaderOutput(
 			"[{\"context\": \"liferay/ci:test:sf\", \"state\": \"success\"}]",
-			"/statuses", urlReader);
+			"/statuses");
 
 		Properties buildProperties = new Properties();
 

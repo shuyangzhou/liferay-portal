@@ -1213,6 +1213,10 @@ definition {
 
 	@priority = 3
 	test ViewResultRankingsAssetDetails {
+		task ("Enable Message Boards") {
+			MessageboardsPortlet.enableMessageBoards();
+		}
+
 		JSONMBMessage.addMessage(
 			groupName = "Guest",
 			threadBody = "banana, red apple, blueberry!",

@@ -199,7 +199,7 @@ describe('ShortcutManager', () => {
 			})
 		);
 
-		expect(mockDispatch).toBeCalledWith(
+		expect(mockDispatch).toHaveBeenCalledWith(
 			expect.objectContaining({hidden: true, type: SWITCH_SIDEBAR_PANEL})
 		);
 	});
@@ -229,7 +229,7 @@ describe('ShortcutManager', () => {
 			})
 		);
 
-		expect(mockDispatch).toBeCalledWith(
+		expect(mockDispatch).toHaveBeenCalledWith(
 			expect.objectContaining({hidden: false, type: SWITCH_SIDEBAR_PANEL})
 		);
 	});
@@ -274,7 +274,7 @@ describe('ShortcutManager', () => {
 			})
 		);
 
-		expect(selectItem).toBeCalledWith('container01', {
+		expect(selectItem).toHaveBeenCalledWith('container01', {
 			itemType: 'layoutDataItem',
 			origin: 'layout',
 		});
@@ -295,7 +295,7 @@ describe('ShortcutManager', () => {
 			})
 		);
 
-		expect(setEditedNodeId).toBeCalledWith('fragment01');
+		expect(setEditedNodeId).toHaveBeenCalledWith('fragment01');
 	});
 
 	it('calls updateItemStyle when pressing ctrl + H', () => {
@@ -323,7 +323,7 @@ describe('ShortcutManager', () => {
 			})
 		);
 
-		expect(updateItemStyle).toBeCalledWith(
+		expect(updateItemStyle).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemIds: ['fragment01'],
 				selectedViewportSize: 'desktop',
@@ -347,13 +347,13 @@ describe('ShortcutManager', () => {
 			})
 		);
 
-		expect(deleteItem).toBeCalledWith(
+		expect(deleteItem).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemIds: ['fragment01'],
 			})
 		);
 
-		expect(setClipboard).toBeCalledWith(['fragment01']);
+		expect(setClipboard).toHaveBeenCalledWith(['fragment01']);
 	});
 
 	it('sets the item id to be copied when pressing ctrl + C', () => {
@@ -371,7 +371,7 @@ describe('ShortcutManager', () => {
 			})
 		);
 
-		expect(setClipboard).toBeCalledWith(['fragment01']);
+		expect(setClipboard).toHaveBeenCalledWith(['fragment01']);
 	});
 
 	it('calls pasteItems when pressing ctrl + V', () => {
@@ -386,7 +386,7 @@ describe('ShortcutManager', () => {
 			})
 		);
 
-		expect(pasteItems).toBeCalledWith(
+		expect(pasteItems).toHaveBeenCalledWith(
 			expect.objectContaining({
 				clipboard: ['fragment02'],
 				parentItemId: 'fragment01',
@@ -407,7 +407,7 @@ describe('ShortcutManager', () => {
 			})
 		);
 
-		expect(pasteItems).toBeCalledWith(
+		expect(pasteItems).toHaveBeenCalledWith(
 			expect.objectContaining({
 				clipboard: ['fragment02'],
 				parentItemId: 'root01',
@@ -428,7 +428,7 @@ describe('ShortcutManager', () => {
 			})
 		);
 
-		expect(pasteItems).toBeCalledTimes(0);
+		expect(pasteItems).toHaveBeenCalledTimes(0);
 	});
 
 	it('calls duplicateItem when pressing ctrl + alt + D', () => {
@@ -444,7 +444,7 @@ describe('ShortcutManager', () => {
 			})
 		);
 
-		expect(duplicateItem).toBeCalledWith(
+		expect(duplicateItem).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemIds: ['fragment01'],
 			})
@@ -462,7 +462,7 @@ describe('ShortcutManager', () => {
 			})
 		);
 
-		expect(deleteItem).toBeCalledWith(
+		expect(deleteItem).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemIds: ['fragment01'],
 			})
@@ -480,7 +480,7 @@ describe('ShortcutManager', () => {
 			})
 		);
 
-		expect(deleteItem).toBeCalledWith(
+		expect(deleteItem).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemIds: ['fragment01'],
 			})

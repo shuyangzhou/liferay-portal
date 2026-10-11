@@ -54,9 +54,27 @@ function expand(name: string) {
 	return userEvent.click(screen.getByRole('button', {expanded: false, name}));
 }
 
+function row(name: string) {
+	return screen.getByRole('treeitem', {name});
+}
+
+function search(value: string) {
+	return userEvent.type(searchBox(), value);
+}
+
+function searchBox() {
+	return screen.getByRole('searchbox', {name: 'search-fields'});
+}
+
 describe('RestrictFieldsModal', () => {
 	beforeAll(() => {
 		Liferay.Util.escapeHTML = jest.fn((value: string) => value);
+
+		const style = document.createElement('style');
+
+		style.textContent = '.d-none { display: none !important; }';
+
+		document.head.appendChild(style);
 	});
 
 	beforeEach(() => {
@@ -143,19 +161,15 @@ describe('RestrictFieldsModal', () => {
 
 		await findCheckbox('modifiedBy');
 
-		expect(screen.getByRole('status')).toHaveTextContent(
-			'nothing-selected'
-		);
+		expect(screen.getByText('nothing-selected')).toBeInTheDocument();
 
 		await userEvent.click(checkbox('description'));
 
-		expect(screen.getByRole('status')).toHaveTextContent('1-item-selected');
+		expect(screen.getByText('1-item-selected')).toBeInTheDocument();
 
 		await userEvent.click(checkbox('modifiedBy'));
 
-		expect(screen.getByRole('status')).toHaveTextContent(
-			'7-items-selected'
-		);
+		expect(screen.getByText('7-items-selected')).toBeInTheDocument();
 	});
 
 	it('clears the selection with the deselect all action', async () => {
@@ -170,9 +184,7 @@ describe('RestrictFieldsModal', () => {
 		);
 
 		expect(checkbox('description')).not.toBeChecked();
-		expect(screen.getByRole('status')).toHaveTextContent(
-			'nothing-selected'
-		);
+		expect(screen.getByText('nothing-selected')).toBeInTheDocument();
 		expect(screen.queryByRole('button', {name: 'deselect-all'})).toBeNull();
 	});
 
@@ -217,11 +229,11 @@ describe('RestrictFieldsModal', () => {
 
 		renderModal();
 
-		expect(await screen.findByText('no-fields-were-found')).toHaveAttribute(
-			'role',
-			'status'
-		);
+		expect(await screen.findByText('no-fields-were-found')).toBeVisible();
 		expect(screen.getByRole('button', {name: 'save'})).toBeDisabled();
+		expect(
+			screen.queryByRole('searchbox', {name: 'search-fields'})
+		).toBeNull();
 	});
 
 	it('closes with an error toast when the tool cannot be loaded', async () => {
@@ -306,9 +318,7 @@ describe('RestrictFieldsModal', () => {
 
 		expect(await findCheckbox('description')).toBeChecked();
 		expect(checkbox('modifiedBy')).toBePartiallyChecked();
-		expect(screen.getByRole('status')).toHaveTextContent(
-			'4-items-selected'
-		);
+		expect(screen.getByText('4-items-selected')).toBeInTheDocument();
 		expect(checkbox('userGroupBriefs')).toBeChecked();
 		expect(checkbox('id')).not.toBeChecked();
 		expect(screen.queryByRole('checkbox', {name: 'key'})).toBeNull();
@@ -370,5 +380,277 @@ describe('RestrictFieldsModal', () => {
 				})
 			)
 		);
+	});
+
+	it('filters the fields by name across every level and expands the path to each match', async () => {
+		fetch.mockResponseOnce(JSON.stringify(mockTool));
+
+		renderModal();
+
+		await findCheckbox('description');
+
+		await search('label');
+
+		expect(checkbox('label')).toBeVisible();
+		expect(checkbox('scope')).toBeVisible();
+		expect(checkbox('taxonomyCategoryBriefs')).toBeVisible();
+		expect(
+			screen.queryByRole('checkbox', {name: 'description'})
+		).toBeNull();
+		expect(screen.queryByRole('checkbox', {name: 'modifiedBy'})).toBeNull();
+		expect(screen.getAllByText('label', {selector: 'mark'})).toHaveLength(
+			1
+		);
+	});
+
+	it('hides the parents that neither match nor lead to a match', async () => {
+		fetch.mockResponseOnce(JSON.stringify(mockTool));
+
+		renderModal();
+
+		await findCheckbox('auditEvents');
+
+		await search('eventType');
+
+		expect(checkbox('auditEvents')).toBeVisible();
+		expect(checkbox('eventType')).toBeVisible();
+		expect(screen.queryByRole('checkbox', {name: 'creator'})).toBeNull();
+		expect(
+			screen.getAllByText('eventType', {selector: 'mark'})
+		).toHaveLength(1);
+	});
+
+	it('keeps the selected count while the query changes', async () => {
+		fetch.mockResponseOnce(JSON.stringify(mockTool));
+
+		renderModal();
+
+		await userEvent.click(await findCheckbox('description'));
+
+		expect(screen.getByText('1-item-selected')).toBeInTheDocument();
+
+		await search('label');
+
+		expect(
+			screen.queryByRole('checkbox', {name: 'description'})
+		).toBeNull();
+		expect(screen.getByText('1-item-selected')).toBeInTheDocument();
+	});
+
+	it('covers the hidden descendants when a parent is checked under a filter', async () => {
+		fetch.mockResponseOnce(JSON.stringify(mockTool));
+
+		renderModal();
+
+		await findCheckbox('modifiedBy');
+
+		await search('userGroupBriefs');
+
+		expect(checkbox('modifiedBy')).toBeVisible();
+		expect(checkbox('userGroupBriefs')).toBeVisible();
+		expect(screen.queryByRole('checkbox', {name: 'id'})).toBeNull();
+
+		await userEvent.click(checkbox('modifiedBy'));
+
+		expect(screen.getByText('6-items-selected')).toBeInTheDocument();
+
+		await userEvent.clear(searchBox());
+		await expand('modifiedBy');
+
+		expect(checkbox('id')).toBeChecked();
+		expect(checkbox('id')).toBeVisible();
+		expect(screen.getByText('6-items-selected')).toBeInTheDocument();
+	});
+
+	it('shows the empty message when no field matches the query', async () => {
+		fetch.mockResponseOnce(JSON.stringify(mockTool));
+
+		renderModal();
+
+		await findCheckbox('description');
+
+		await search('nothing-like-this');
+
+		expect(screen.getByText('no-results-found')).toBeInTheDocument();
+		expect(
+			screen.queryByRole('checkbox', {name: 'description'})
+		).toBeNull();
+		expect(screen.queryByText('no-fields-were-found')).toBeNull();
+	});
+
+	it('restores the expansion from before the filter when the query is cleared', async () => {
+		fetch.mockResponseOnce(JSON.stringify(mockTool));
+
+		renderModal();
+
+		await findCheckbox('modifiedBy');
+
+		await expand('modifiedBy');
+
+		await search('label');
+
+		expect(checkbox('label')).toBeInTheDocument();
+		expect(
+			screen.queryByRole('checkbox', {
+				hidden: true,
+				name: 'userGroupBriefs',
+			})
+		).toBeNull();
+
+		await userEvent.clear(searchBox());
+
+		await waitFor(() =>
+			expect(screen.queryByRole('checkbox', {name: 'label'})).toBeNull()
+		);
+		expect(checkbox('userGroupBriefs')).toBeInTheDocument();
+		expect(checkbox('description')).toBeVisible();
+	});
+
+	it('discards the expansions toggled under a filter when the query is cleared', async () => {
+		fetch.mockResponseOnce(JSON.stringify(mockTool));
+
+		renderModal();
+
+		await findCheckbox('modifiedBy');
+
+		await expand('modifiedBy');
+
+		await search('userGroupBriefs');
+
+		await userEvent.click(
+			screen.getByRole('button', {expanded: true, name: 'modifiedBy'})
+		);
+
+		expect(
+			screen.getByRole('button', {expanded: false, name: 'modifiedBy'})
+		).toBeInTheDocument();
+
+		await userEvent.clear(searchBox());
+
+		expect(
+			screen.getByRole('button', {expanded: true, name: 'modifiedBy'})
+		).toBeInTheDocument();
+	});
+
+	it('moves the focus to the first visible field when deselect all removes its button under a filter', async () => {
+		fetch.mockResponseOnce(JSON.stringify(mockTool));
+
+		renderModal();
+
+		await userEvent.click(await findCheckbox('description'));
+
+		await search('label');
+
+		await userEvent.click(
+			screen.getByRole('button', {name: 'deselect-all'})
+		);
+
+		expect(
+			checkbox('taxonomyCategoryBriefs').closest('[role="treeitem"]')
+		).toHaveFocus();
+	});
+
+	it('has no accessibility violations under a filter', async () => {
+		fetch.mockResponseOnce(JSON.stringify(mockTool));
+
+		const {container} = renderModal();
+
+		await findCheckbox('description');
+
+		await search('label');
+
+		await checkAccessibility({
+			bestPractices: true,
+			context: container,
+		});
+	});
+
+	it('does not filter with a whitespace only query', async () => {
+		fetch.mockResponseOnce(JSON.stringify(mockTool));
+
+		renderModal();
+
+		await findCheckbox('description');
+
+		await search('   ');
+
+		expect(checkbox('description')).toBeVisible();
+		expect(checkbox('modifiedBy')).toBeVisible();
+		expect(screen.queryByText('no-results-found')).toBeNull();
+	});
+
+	it('disables the expander of a match whose fields are all hidden', async () => {
+		fetch.mockResponseOnce(JSON.stringify(mockTool));
+
+		renderModal();
+
+		await findCheckbox('modifiedBy');
+
+		await search('userGroupBriefs');
+
+		expect(
+			screen.getByRole('button', {name: 'userGroupBriefs'})
+		).toBeDisabled();
+		expect(screen.getByRole('button', {name: 'modifiedBy'})).toBeEnabled();
+	});
+
+	it('ignores the right arrow on a match whose fields are all hidden', async () => {
+		fetch.mockResponseOnce(JSON.stringify(mockTool));
+
+		renderModal();
+
+		await findCheckbox('modifiedBy');
+
+		await search('userGroupBriefs');
+
+		row('userGroupBriefs').focus();
+
+		await userEvent.keyboard('{ArrowRight}');
+
+		expect(row('userGroupBriefs')).toHaveAttribute(
+			'aria-expanded',
+			'false'
+		);
+	});
+
+	it('announces the number of matches while fields are visible', async () => {
+		fetch.mockResponseOnce(JSON.stringify(mockTool));
+
+		renderModal();
+
+		await findCheckbox('description');
+
+		await search('label');
+
+		const status = screen.getByText('1-result-found');
+
+		expect(status).toHaveAttribute('role', 'status');
+		expect(status).toHaveClass('sr-only');
+	});
+
+	it('moves the focus to the search box when deselect all leaves no visible field', async () => {
+		fetch.mockResponseOnce(JSON.stringify(mockTool));
+
+		renderModal();
+
+		await userEvent.click(await findCheckbox('description'));
+
+		await search('nothing-like-this');
+
+		await userEvent.click(
+			screen.getByRole('button', {name: 'deselect-all'})
+		);
+
+		expect(searchBox()).toHaveFocus();
+	});
+
+	it('names the field tree', async () => {
+		fetch.mockResponseOnce(JSON.stringify(mockTool));
+
+		renderModal();
+
+		await findCheckbox('description');
+
+		expect(screen.getByRole('tree', {name: 'fields'})).toBeInTheDocument();
 	});
 });

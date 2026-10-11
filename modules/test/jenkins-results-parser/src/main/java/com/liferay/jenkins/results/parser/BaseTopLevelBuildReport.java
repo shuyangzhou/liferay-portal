@@ -5,8 +5,14 @@
 
 package com.liferay.jenkins.results.parser;
 
+import com.liferay.jenkins.results.parser.testray.TestrayBuild;
 import com.liferay.jenkins.results.parser.testray.TestrayCloudBucket;
 import com.liferay.jenkins.results.parser.testray.TestrayCloudObject;
+import com.liferay.jenkins.results.parser.testray.TestrayFactory;
+import com.liferay.jenkins.results.parser.testray.TestrayProductVersion;
+import com.liferay.jenkins.results.parser.testray.TestrayProject;
+import com.liferay.jenkins.results.parser.testray.TestrayRoutine;
+import com.liferay.jenkins.results.parser.testray.TestrayServer;
 
 import java.io.IOException;
 
@@ -440,9 +446,113 @@ public abstract class BaseTopLevelBuildReport
 	}
 
 	@Override
+	public synchronized TestrayBuild getTestrayBuild() {
+		if (_testrayBuild != null) {
+			return _testrayBuild;
+		}
+
+		JSONObject buildReportJSONObject = getBuildReportJSONObject();
+
+		if (buildReportJSONObject == null) {
+			return null;
+		}
+
+		String testrayBuildURL = buildReportJSONObject.optString(
+			"testrayBuildURL");
+
+		if (JenkinsResultsParserUtil.isNullOrEmpty(testrayBuildURL)) {
+			return null;
+		}
+
+		URL url = null;
+
+		try {
+			url = new URL(testrayBuildURL);
+		}
+		catch (MalformedURLException malformedURLException) {
+			return null;
+		}
+
+		if (TestrayBuild.getId(url) <= 0) {
+			return null;
+		}
+
+		_testrayBuild = TestrayFactory.newTestrayBuild(url);
+
+		return _testrayBuild;
+	}
+
+	@Override
 	public String getTestrayBuildDateString() {
 		return JenkinsResultsParserUtil.toDateString(
 			getStartDate(), "yyyy-MM-dd HH:mm:ss", "America/Los_Angeles");
+	}
+
+	@Override
+	public URL getTestrayCaseResultURL() {
+		JSONObject buildReportJSONObject = getBuildReportJSONObject();
+
+		if (buildReportJSONObject == null) {
+			return null;
+		}
+
+		String testrayCaseResultURL = buildReportJSONObject.optString(
+			"testrayCaseResultURL");
+
+		if (JenkinsResultsParserUtil.isNullOrEmpty(testrayCaseResultURL)) {
+			return null;
+		}
+
+		try {
+			return new URL(testrayCaseResultURL);
+		}
+		catch (MalformedURLException malformedURLException) {
+			return null;
+		}
+	}
+
+	@Override
+	public TestrayProductVersion getTestrayProductVersion() {
+		TestrayBuild testrayBuild = getTestrayBuild();
+
+		if (testrayBuild == null) {
+			return null;
+		}
+
+		return testrayBuild.getTestrayProductVersion();
+	}
+
+	@Override
+	public TestrayProject getTestrayProject() {
+		TestrayBuild testrayBuild = getTestrayBuild();
+
+		if (testrayBuild == null) {
+			return null;
+		}
+
+		return testrayBuild.getTestrayProject();
+	}
+
+	@Override
+	public TestrayRoutine getTestrayRoutine() {
+		TestrayBuild testrayBuild = getTestrayBuild();
+
+		if (testrayBuild == null) {
+			return null;
+		}
+
+		return testrayBuild.getTestrayRoutine();
+	}
+
+	@Override
+	public TestrayServer getTestrayServer() {
+		TestrayBuild testrayBuild = getTestrayBuild();
+
+		if (testrayBuild == null) {
+			return null;
+		}
+
+		return testrayBuild.getTestrayServer();
 	}
 
 	@Override
@@ -651,6 +761,7 @@ public abstract class BaseTopLevelBuildReport
 	private List<FailureReport> _failureReports;
 	private JobReport _jobReport;
 	private TopLevelBuildReport _previousTopLevelBuildReport;
+	private TestrayBuild _testrayBuild;
 	private List<FailureReport> _uniqueFailureReports;
 
 }

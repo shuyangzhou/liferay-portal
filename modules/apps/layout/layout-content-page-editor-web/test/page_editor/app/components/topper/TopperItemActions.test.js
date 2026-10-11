@@ -141,13 +141,13 @@ describe('TopperItemActions', () => {
 
 		await userEvent.click(screen.getByText('cut'));
 
-		expect(deleteItem).toBeCalledWith(
+		expect(deleteItem).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemIds: ['itemId1'],
 			})
 		);
 
-		expect(setClipboard).toBeCalledWith(
+		expect(setClipboard).toHaveBeenCalledWith(
 			expect.objectContaining(['itemId1'])
 		);
 	});
@@ -159,7 +159,7 @@ describe('TopperItemActions', () => {
 
 		await userEvent.click(screen.getByText('copy'));
 
-		expect(setClipboard).toBeCalledWith(
+		expect(setClipboard).toHaveBeenCalledWith(
 			expect.objectContaining(['itemId1'])
 		);
 	});
@@ -169,7 +169,7 @@ describe('TopperItemActions', () => {
 
 		await userEvent.click(screen.getByText('paste'));
 
-		expect(pasteItems).toBeCalledWith(
+		expect(pasteItems).toHaveBeenCalledWith(
 			expect.objectContaining({
 				clipboard: ['itemId2'],
 				parentItemId: 'itemId3',

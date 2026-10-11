@@ -11,6 +11,7 @@ import {ObjectActionContainer} from './ObjectActionContainer';
 interface AddObjectActionProps {
 	allowScriptContentToBeExecutedOrIncluded: boolean;
 	apiURL: string;
+	companyAdmin: boolean;
 	hasUserNotificationHandler: boolean;
 	objectActionCodeEditorElements: SidebarCategory[];
 	objectActionExecutors: ObjectActionTriggerExecutorItem[];
@@ -27,6 +28,7 @@ interface AddObjectActionProps {
 export default function AddObjectAction({
 	allowScriptContentToBeExecutedOrIncluded,
 	apiURL,
+	companyAdmin,
 	hasUserNotificationHandler,
 	objectActionCodeEditorElements,
 	objectActionExecutors = [],
@@ -44,6 +46,7 @@ export default function AddObjectAction({
 			allowScriptContentToBeExecutedOrIncluded={
 				allowScriptContentToBeExecutedOrIncluded
 			}
+			companyAdmin={companyAdmin}
 			hasUserNotificationHandler={hasUserNotificationHandler}
 			objectAction={{active: true, system: false}}
 			objectActionCodeEditorElements={objectActionCodeEditorElements}

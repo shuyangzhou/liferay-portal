@@ -223,7 +223,7 @@ public abstract class BasePortalInstanceResourceImpl
 	 * curl -X 'PATCH' 'http://localhost:8080/o/headless-portal-instances/v1.0/portal-instances/{portalInstanceId}' -d $'{"active": ___, "admin": ___, "companyId": ___, "domain": ___, "maxUsers": ___, "portalInstanceId": ___, "siteInitializerKey": ___, "virtualHost": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
 	@io.swagger.v3.oas.annotations.Operation(
-		description = "Updates the portal instance with information sent in the request body. Only the provided fields are updated."
+		description = "Updates the portal instance's domain and virtual host with the values sent in the request body. Only the provided fields are updated."
 	)
 	@io.swagger.v3.oas.annotations.Parameters(
 		value = {
@@ -1203,4 +1203,4 @@ public abstract class BasePortalInstanceResourceImpl
 		LogFactoryUtil.getLog(BasePortalInstanceResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:1508289217
+// LIFERAY-REST-BUILDER-HASH:2099311774

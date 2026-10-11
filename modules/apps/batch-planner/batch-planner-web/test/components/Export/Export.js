@@ -326,7 +326,7 @@ describe('Export', () => {
 		});
 
 		await waitFor(() => {
-			expect(fetchExportedFile).toBeCalled();
+			expect(fetchExportedFile).toHaveBeenCalled();
 		});
 	});
 });

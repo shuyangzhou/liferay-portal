@@ -221,7 +221,7 @@ describe('ReorderSetsModal', () => {
 
 		fireEvent.click(screen.getByText('save'));
 
-		expect(mockDispatch).not.toBeCalled();
+		expect(mockDispatch).not.toHaveBeenCalled();
 	});
 
 	it('allows focusing drag and drop icons', () => {

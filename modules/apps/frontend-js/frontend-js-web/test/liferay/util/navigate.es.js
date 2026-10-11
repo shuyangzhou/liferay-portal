@@ -22,7 +22,7 @@ describe('Liferay.Util.navigate', () => {
 		it('navigates to internal urls using the provided Liferay.SPA.app.navigate helper', () => {
 			navigate(internalUrl);
 
-			expect(Liferay.SPA.app.navigate).toBeCalledWith(internalUrl);
+			expect(Liferay.SPA.app.navigate).toHaveBeenCalledWith(internalUrl);
 		});
 
 		it('navigates to external urls using window.location.assign', () => {

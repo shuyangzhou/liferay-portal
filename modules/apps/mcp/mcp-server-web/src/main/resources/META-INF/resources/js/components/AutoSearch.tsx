@@ -3,63 +3,49 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {ClayButtonWithIcon} from '@clayui/button';
 import {ClayInput} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
-import React, {useState} from 'react';
+import ClayManagementToolbar from '@clayui/management-toolbar';
+import React, {forwardRef} from 'react';
 
-interface ISearchInterface {
-	onSearch: Function;
+interface AutoSearchProps {
+	label?: string;
+	onSearch: (value: string) => void;
 	query: string;
 }
 
-const AutoSearch = ({onSearch, query}: ISearchInterface) => {
-	const [focused, setFocused] = useState<boolean>(false);
-
-	return (
-		<ClayInput.Group>
-			<ClayInput.GroupItem>
-				{!focused && (
-					<ClayInput.GroupInsetItem before tag="span">
-						<ClayIcon
-							className="inline-item inline-item-before"
-							focusable="false"
-							role="presentation"
-							symbol="search"
+const AutoSearch = forwardRef<HTMLInputElement, AutoSearchProps>(
+	function AutoSearch(
+		{label = Liferay.Language.get('search'), onSearch, query},
+		ref
+	) {
+		return (
+			<ClayManagementToolbar.Search
+				onSubmit={(event) => event.preventDefault()}
+				onlySearch
+			>
+				<ClayInput.Group>
+					<ClayInput.GroupItem>
+						<ClayInput
+							aria-label={label}
+							insetAfter
+							onChange={(event) => onSearch(event.target.value)}
+							placeholder={Liferay.Language.get('search')}
+							ref={ref}
+							type="search"
+							value={query}
 						/>
-					</ClayInput.GroupInsetItem>
-				)}
 
-				<ClayInput
-					insetAfter={focused}
-					insetBefore={!focused}
-					onChange={(event) => onSearch(event.target.value)}
-					onFocus={() => setFocused(true)}
-					placeholder={Liferay.Language.get('search')}
-					type="text"
-					value={query}
-				/>
-
-				{focused && (
-					<ClayInput.GroupInsetItem after tag="span">
-						<ClayButtonWithIcon
-							aria-label={Liferay.Language.get('clear-search')}
-							borderless
-							displayType="secondary"
-							monospaced={false}
-							onClick={() => {
-								onSearch('');
-								setFocused(false);
-							}}
-							size="sm"
-							symbol="times"
-							title={Liferay.Language.get('clear-search')}
-						/>
-					</ClayInput.GroupInsetItem>
-				)}
-			</ClayInput.GroupItem>
-		</ClayInput.Group>
-	);
-};
+						<ClayInput.GroupInsetItem after tag="span">
+							<span className="mx-1 px-2">
+								<ClayIcon symbol="search" />
+							</span>
+						</ClayInput.GroupInsetItem>
+					</ClayInput.GroupItem>
+				</ClayInput.Group>
+			</ClayManagementToolbar.Search>
+		);
+	}
+);
 
 export default AutoSearch;

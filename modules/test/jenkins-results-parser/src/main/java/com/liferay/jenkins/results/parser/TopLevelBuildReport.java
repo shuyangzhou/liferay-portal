@@ -5,7 +5,12 @@
 
 package com.liferay.jenkins.results.parser;
 
+import com.liferay.jenkins.results.parser.testray.TestrayBuild;
 import com.liferay.jenkins.results.parser.testray.TestrayCloudObject;
+import com.liferay.jenkins.results.parser.testray.TestrayProductVersion;
+import com.liferay.jenkins.results.parser.testray.TestrayProject;
+import com.liferay.jenkins.results.parser.testray.TestrayRoutine;
+import com.liferay.jenkins.results.parser.testray.TestrayServer;
 
 import java.net.URL;
 
@@ -50,7 +55,19 @@ public interface TopLevelBuildReport extends BuildReport {
 
 	public String getTestSuiteName();
 
+	public TestrayBuild getTestrayBuild();
+
 	public String getTestrayBuildDateString();
+
+	public URL getTestrayCaseResultURL();
+
+	public TestrayProductVersion getTestrayProductVersion();
+
+	public TestrayProject getTestrayProject();
+
+	public TestrayRoutine getTestrayRoutine();
+
+	public TestrayServer getTestrayServer();
 
 	public long getTopLevelActiveDuration();
 

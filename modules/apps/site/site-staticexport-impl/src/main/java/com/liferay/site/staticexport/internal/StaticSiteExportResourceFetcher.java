@@ -6,7 +6,7 @@
 package com.liferay.site.staticexport.internal;
 
 import com.liferay.petra.io.StreamUtil;
-import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.servlet.DirectRequestDispatcherFactoryUtil;
 import com.liferay.portal.kernel.servlet.DynamicServletRequest;
 import com.liferay.portal.kernel.servlet.MetaInfoCacheServletResponse;
@@ -14,9 +14,8 @@ import com.liferay.portal.kernel.servlet.PipingServletResponse;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import jakarta.servlet.RequestDispatcher;
@@ -30,6 +29,8 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+
+import java.net.InetAddress;
 
 /**
  * @author Víctor Galán
@@ -51,41 +52,76 @@ public class StaticSiteExportResourceFetcher {
 			staticSiteExportBundleResourceResolver;
 	}
 
-	public File fetch(String url) throws Exception {
-		String path = HttpComponentsUtil.getPath(url);
+	public StaticSiteExportResourceFile fetch(String url) throws Exception {
+		StaticSiteExportURL staticSiteExportURL = new StaticSiteExportURL(url);
 
-		File file = null;
+		if (staticSiteExportURL.isExternal()) {
+			return _fetchExternalStaticSiteExportResourceFile(
+				staticSiteExportURL);
+		}
 
-		String moduleName = _getModuleName(path);
+		StaticSiteExportResourceFile staticSiteExportResourceFile = null;
+
+		String moduleName = staticSiteExportURL.getModuleName();
 
 		if (moduleName == null) {
-			file = _getServletFile(path, _servletContext, url);
+			staticSiteExportResourceFile =
+				_getServletStaticSiteExportResourceFile(
+					_servletContext, staticSiteExportURL);
 		}
 		else {
-			String resourcePath = StringUtil.removeFirst(
-				path, _MODULE_PATH_PREFIX + moduleName);
+			String dispatchPath = staticSiteExportURL.getDispatchPath();
 
-			file = _staticSiteExportBundleResourceResolver.resolve(
-				moduleName, resourcePath);
+			File file = _staticSiteExportBundleResourceResolver.resolve(
+				moduleName, dispatchPath);
 
-			if (file == null) {
-				file = _getServletFile(
-					resourcePath, ServletContextPool.get(moduleName), url);
+			if (file != null) {
+				return new StaticSiteExportResourceFile(
+					MimeTypesUtil.getContentType(dispatchPath), file);
 			}
+
+			staticSiteExportResourceFile =
+				_getServletStaticSiteExportResourceFile(
+					ServletContextPool.get(moduleName), staticSiteExportURL);
 		}
 
-		if (file != null) {
-			return file;
+		if (staticSiteExportResourceFile != null) {
+			return staticSiteExportResourceFile;
 		}
 
-		return _fetchFile(url);
+		return _fetchStaticSiteExportResourceFile(
+			true, _portalURL + staticSiteExportURL.getURL());
 	}
 
-	private File _fetchFile(String url) throws Exception {
+	private StaticSiteExportResourceFile
+			_fetchExternalStaticSiteExportResourceFile(
+				StaticSiteExportURL staticSiteExportURL)
+		throws Exception {
+
+		String hostName = staticSiteExportURL.getHostName();
+
+		if (Validator.isNull(hostName) || !_isPublicHost(hostName)) {
+			throw new IllegalArgumentException(
+				"Host " + hostName + " does not resolve to a public address");
+		}
+
+		String location = staticSiteExportURL.getURL();
+
+		if (!staticSiteExportURL.hasScheme()) {
+			location = Http.HTTPS + StringPool.COLON + location;
+		}
+
+		return _fetchStaticSiteExportResourceFile(false, location);
+	}
+
+	private StaticSiteExportResourceFile _fetchStaticSiteExportResourceFile(
+			boolean followRedirects, String location)
+		throws Exception {
+
 		Http.Options options = new Http.Options();
 
-		options.setFollowRedirects(true);
-		options.setLocation(_getLocation(url));
+		options.setFollowRedirects(followRedirects);
+		options.setLocation(location);
 
 		File file = FileUtil.createTempFile();
 
@@ -105,33 +141,14 @@ public class StaticSiteExportResourceFetcher {
 			return null;
 		}
 
-		return file;
+		return new StaticSiteExportResourceFile(
+			response.getContentType(), file);
 	}
 
-	private String _getLocation(String url) {
-		if (Validator.isNotNull(HttpComponentsUtil.getDomain(url))) {
-			return url;
-		}
-
-		return _portalURL + url;
-	}
-
-	private String _getModuleName(String path) {
-		if (!path.startsWith(_MODULE_PATH_PREFIX)) {
-			return null;
-		}
-
-		int index = path.indexOf(CharPool.SLASH, _MODULE_PATH_PREFIX.length());
-
-		if (index == -1) {
-			return null;
-		}
-
-		return path.substring(_MODULE_PATH_PREFIX.length(), index);
-	}
-
-	private File _getServletFile(
-			String path, ServletContext servletContext, String url)
+	private StaticSiteExportResourceFile
+			_getServletStaticSiteExportResourceFile(
+				ServletContext servletContext,
+				StaticSiteExportURL staticSiteExportURL)
 		throws Exception {
 
 		if (servletContext == null) {
@@ -140,7 +157,7 @@ public class StaticSiteExportResourceFetcher {
 
 		RequestDispatcher requestDispatcher =
 			DirectRequestDispatcherFactoryUtil.getRequestDispatcher(
-				servletContext, path);
+				servletContext, staticSiteExportURL.getDispatchPath());
 
 		if (requestDispatcher == null) {
 			return null;
@@ -148,7 +165,7 @@ public class StaticSiteExportResourceFetcher {
 
 		HttpServletRequest httpServletRequest = _httpServletRequest;
 
-		String queryString = HttpComponentsUtil.getQueryString(url);
+		String queryString = staticSiteExportURL.getQueryString();
 
 		if (Validator.isNotNull(queryString)) {
 			httpServletRequest = DynamicServletRequest.addQueryString(
@@ -166,7 +183,8 @@ public class StaticSiteExportResourceFetcher {
 					metaInfoCacheServletResponse, outputStream);
 
 			requestDispatcher.include(
-				new PathHttpServletRequestWrapper(httpServletRequest, path),
+				new PathHttpServletRequestWrapper(
+					httpServletRequest, staticSiteExportURL),
 				pipingServletResponse);
 
 			PrintWriter printWriter = pipingServletResponse.getWriter();
@@ -183,10 +201,24 @@ public class StaticSiteExportResourceFetcher {
 			return null;
 		}
 
-		return file;
+		return new StaticSiteExportResourceFile(
+			metaInfoCacheServletResponse.getContentType(), file);
 	}
 
-	private static final String _MODULE_PATH_PREFIX = "/o/";
+	private boolean _isPublicHost(String hostName) throws Exception {
+		for (InetAddress inetAddress : InetAddress.getAllByName(hostName)) {
+			if (inetAddress.isAnyLocalAddress() ||
+				inetAddress.isLinkLocalAddress() ||
+				inetAddress.isLoopbackAddress() ||
+				inetAddress.isMulticastAddress() ||
+				inetAddress.isSiteLocalAddress()) {
+
+				return false;
+			}
+		}
+
+		return true;
+	}
 
 	private final HttpServletRequest _httpServletRequest;
 	private final HttpServletResponse _httpServletResponse;
@@ -199,41 +231,35 @@ public class StaticSiteExportResourceFetcher {
 		extends HttpServletRequestWrapper {
 
 		public PathHttpServletRequestWrapper(
-			HttpServletRequest httpServletRequest, String path) {
+			HttpServletRequest httpServletRequest,
+			StaticSiteExportURL staticSiteExportURL) {
 
 			super(httpServletRequest);
 
-			_path = path;
+			_staticSiteExportURL = staticSiteExportURL;
 		}
 
 		@Override
 		public String getPathInfo() {
-			int index = _path.indexOf(CharPool.SLASH, 1);
+			return _staticSiteExportURL.getPathInfo();
+		}
 
-			if (index == -1) {
-				return null;
-			}
-
-			return _path.substring(index);
+		@Override
+		public String getQueryString() {
+			return _staticSiteExportURL.getQueryString();
 		}
 
 		@Override
 		public String getRequestURI() {
-			return _path;
+			return _staticSiteExportURL.getDispatchPath();
 		}
 
 		@Override
 		public String getServletPath() {
-			int index = _path.indexOf(CharPool.SLASH, 1);
-
-			if (index == -1) {
-				return _path;
-			}
-
-			return _path.substring(0, index);
+			return _staticSiteExportURL.getServletPath();
 		}
 
-		private final String _path;
+		private final StaticSiteExportURL _staticSiteExportURL;
 
 	}
 

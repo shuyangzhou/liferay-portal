@@ -211,7 +211,7 @@ describe('FormGeneralPanel', () => {
 
 		fireEvent.blur(input);
 
-		expect(updateFormItemConfig).toBeCalledWith(
+		expect(updateFormItemConfig).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemConfig: {
 					successMessage: {
@@ -235,7 +235,7 @@ describe('FormGeneralPanel', () => {
 
 		fireEvent.blur(input);
 
-		expect(updateFormItemConfig).toBeCalledWith(
+		expect(updateFormItemConfig).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemConfig: {
 					successMessage: {
@@ -396,7 +396,7 @@ describe('FormGeneralPanel', () => {
 
 		await fireEvent.click(button);
 
-		expect(openInfoFieldSelector).toBeCalledWith(
+		expect(openInfoFieldSelector).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemType: '11111-className',
 			})

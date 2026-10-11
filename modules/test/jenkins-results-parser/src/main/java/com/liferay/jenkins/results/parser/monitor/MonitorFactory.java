@@ -16,6 +16,10 @@ public class MonitorFactory {
 		String type = monitorConfig.getType();
 
 		if (!JenkinsResultsParserUtil.isNullOrEmpty(type)) {
+			if (type.equals("external-status")) {
+				return new ExternalStatusMonitor(monitorConfig);
+			}
+
 			if (type.equals("http-endpoint")) {
 				return new HTTPEndpointMonitor(monitorConfig);
 			}
@@ -30,6 +34,10 @@ public class MonitorFactory {
 
 			if (type.equals("resource-threshold")) {
 				return new ResourceThresholdMonitor(monitorConfig);
+			}
+
+			if (type.equals("smtp-endpoint")) {
+				return new SMTPEndpointMonitor(monitorConfig);
 			}
 
 			if (type.equals("upstream-job-health")) {
