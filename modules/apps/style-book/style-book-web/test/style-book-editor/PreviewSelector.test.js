@@ -210,7 +210,7 @@ describe('PreviewSelector', () => {
 
 		fireEvent.click(getByText('more'));
 
-		expect(openItemSelector).toBeCalledWith(
+		expect(openItemSelector).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemSelectorURL: 'page-item-selector-url',
 			})

@@ -8,6 +8,7 @@ package com.liferay.portal.kernel.dao.orm;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -57,11 +58,37 @@ public class FinderPath {
 		int convertNullBitmask, boolean baseModelResult,
 		Function<Object, Object[]> argsExtractorFunction) {
 
-		_cacheName = cacheName;
 		_columnNames = columnNames;
 		_caseInsensitiveBitmask = caseInsensitiveBitmask;
 		_convertNullBitmask = convertNullBitmask;
 		_baseModelResult = baseModelResult;
+
+		if (methodName.equals("dslQuery")) {
+			_entityClassName = null;
+		}
+		else if (cacheName.endsWith(_LIST_WITH_PAGINATION_SUFFIX) ||
+				 cacheName.endsWith(_LIST_WITHOUT_PAGINATION_SUFFIX)) {
+
+			_entityClassName = cacheName.substring(
+				0,
+				cacheName.length() - _LIST_WITHOUT_PAGINATION_SUFFIX.length());
+		}
+		else {
+			_entityClassName = cacheName;
+		}
+
+		if (cacheName.endsWith(_LIST_WITHOUT_PAGINATION_SUFFIX) &&
+			methodName.startsWith("count") &&
+			ArrayUtil.isNotEmpty(columnNames)) {
+
+			_cacheName = _entityClassName.concat(".Count");
+			_countResult = true;
+		}
+		else {
+			_cacheName = cacheName;
+
+			_countResult = false;
+		}
 
 		if (argsExtractorFunction == null) {
 			_argsExtractorFunction = _EMPTY_ARGS_EXTRACTOR_FUNCTION;
@@ -81,7 +108,7 @@ public class FinderPath {
 			_finderName = methodName.substring(index + 2);
 		}
 
-		if (_cacheName.contains(".List") || methodName.equals("dslQuery")) {
+		if (cacheName.contains(".List") || methodName.equals("dslQuery")) {
 			_singleResult = false;
 		}
 		else {
@@ -105,12 +132,20 @@ public class FinderPath {
 		return _columnNames;
 	}
 
+	public String getEntityClassName() {
+		return _entityClassName;
+	}
+
 	public String getFinderName() {
 		return _finderName;
 	}
 
 	public boolean isBaseModelResult() {
 		return _baseModelResult;
+	}
+
+	public boolean isCountResult() {
+		return _countResult;
 	}
 
 	public boolean isTouched() {
@@ -209,6 +244,10 @@ public class FinderPath {
 	private static final Function<Object, Object[]>
 		_EMPTY_ARGS_EXTRACTOR_FUNCTION = baseModel -> new Object[0];
 
+	private static final String _LIST_WITH_PAGINATION_SUFFIX = ".List1";
+
+	private static final String _LIST_WITHOUT_PAGINATION_SUFFIX = ".List2";
+
 	private static final String _PARAMS_SEPARATOR = "_P_";
 
 	private static final String _TABLE_SEPARATOR = "_T_";
@@ -222,6 +261,8 @@ public class FinderPath {
 	private final int _caseInsensitiveBitmask;
 	private final String[] _columnNames;
 	private final int _convertNullBitmask;
+	private final boolean _countResult;
+	private final String _entityClassName;
 	private final String _finderName;
 	private final boolean _singleResult;
 	private volatile long _timestamp;

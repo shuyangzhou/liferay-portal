@@ -133,7 +133,7 @@ describe('ToolbarActionsDropdown', () => {
 
 			await userEvent.click(screen.getByText('undo'));
 
-			expect(onUndo).toBeCalled();
+			expect(onUndo).toHaveBeenCalled();
 		});
 
 		it('disables Undo option when useDisabledUndo returns true', () => {
@@ -153,7 +153,7 @@ describe('ToolbarActionsDropdown', () => {
 
 			await userEvent.click(screen.getByText('redo'));
 
-			expect(onRedo).toBeCalled();
+			expect(onRedo).toHaveBeenCalled();
 		});
 
 		it('disables Redo option when useDisabledRedo returns true', () => {
@@ -182,7 +182,7 @@ describe('ToolbarActionsDropdown', () => {
 
 			const {onHistoryItemClick} = useOnHistoryItemClick();
 
-			expect(onHistoryItemClick).toBeCalled();
+			expect(onHistoryItemClick).toHaveBeenCalled();
 		});
 
 		it('calls onHistoryItemClick when a history item is selected', async () => {
@@ -203,7 +203,7 @@ describe('ToolbarActionsDropdown', () => {
 
 			await userEvent.click(screen.getByText('update-editable-values'));
 
-			expect(onHistoryItemClick).toBeCalled();
+			expect(onHistoryItemClick).toHaveBeenCalled();
 		});
 
 		it('disables History option when there are no history items', () => {
@@ -223,7 +223,7 @@ describe('ToolbarActionsDropdown', () => {
 
 			await userEvent.click(screen.getByText('show-sidebars'));
 
-			expect(onToggleSidebars).toBeCalled();
+			expect(onToggleSidebars).toHaveBeenCalled();
 		});
 
 		it('changes the label to Hide Sidebars when the sidebars are opened', () => {

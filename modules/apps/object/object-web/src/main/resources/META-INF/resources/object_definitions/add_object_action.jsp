@@ -24,6 +24,8 @@ ObjectDefinitionsActionsDisplayContext objectDefinitionsActionsDisplayContext = 
 		).put(
 			"apiURL", objectDefinitionsActionsDisplayContext.getAPIURL()
 		).put(
+			"companyAdmin", permissionChecker.isCompanyAdmin()
+		).put(
 			"hasUserNotificationHandler", objectDefinitionsActionsDisplayContext.hasUserNotificationHandler(objectDefinition.getClassName())
 		).put(
 			"objectActionCodeEditorElements", objectDefinitionsActionsDisplayContext.getObjectActionCodeEditorElements()

@@ -9,7 +9,7 @@ tests:
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
-                    pattern: "splitList \":\" \\(\\$backup\\.timeOfDay \\| default \"05:00\"\\)"
+                    pattern: "splitList \":\" \\$backup\\.timeOfDay"
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
@@ -19,11 +19,11 @@ tests:
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
-                    pattern: "if eq \\(\\$backup\\.frequency \\| default \"Daily\"\\) \"Weekly\""
+                    pattern: "if eq \\$backup\\.frequency \"Weekly\""
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
-                    pattern: "printf \"cron\\(%s %s \\? \\* %s \\*\\)\" \\(index \\$[A-Za-z]+ 1\\) \\(index \\$[A-Za-z]+ 0\\) \\(index \\$[A-Za-z]+ \\(\\$backup\\.dayOfWeek \\| default \"Sunday\"\\)\\)"
+                    pattern: "printf \"cron\\(%s %s \\? \\* %s \\*\\)\" \\(index \\$[A-Za-z]+ 1\\) \\(index \\$[A-Za-z]+ 0\\) \\(index \\$[A-Za-z]+ \\$backup\\.dayOfWeek\\)"
         it: Builds a weekly backup schedule on the chosen day of the week
     -   asserts:
             -   documentIndex: 0
@@ -35,7 +35,7 @@ tests:
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
-                    pattern: "deleteAfter: \\{\\{ \\$backup\\.retentionDays \\| default 30 \\}\\}"
+                    pattern: "deleteAfter: \\{\\{ \\$backup\\.retentionDays \\}\\}"
         it: Deletes each recovery point after the retention period
     -   asserts:
             -   documentIndex: 0
@@ -77,10 +77,50 @@ tests:
         it: Implements the shared Liferay APIs through the packaged function pipeline
     -   asserts:
             -   documentIndex: 0
+                equal:
+                    path: spec.pipeline[2].input.addTags[0].fromFieldPath
+                    value: defaultTags
+            -   documentIndex: 1
+                equal:
+                    path: spec.pipeline[2].input.addTags[0].fromFieldPath
+                    value: defaultTags
+        it: Lets the derived tags win over the common tags
+    -   asserts:
+            -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
-                    pattern: "scheduleExpressionTimezone: \\{\\{ \\$backup\\.timeZone \\| default \"UTC\" \\| quote \\}\\}"
+                    pattern: "engineVersion: \\{\\{ \\$database\\.version \\| quote \\}\\}"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "instanceClass: \\{\\{ \\$database\\.instanceType \\| default \"db\\.t3\\.medium\" \\}\\}"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "multiAz: \\{\\{ \\$database\\.highAvailability \\}\\}"
+        it: Maps the shared database fields onto the RDS instance
+    -   asserts:
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "scheduleExpressionTimezone: \\{\\{ \\$backup\\.timeZone \\| quote \\}\\}"
         it: Passes the backup time zone through to the AWS Backup plan rule
+    -   asserts:
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "engineVersion: \\{\\{ printf \"OpenSearch_%s\" \\$opensearch\\.version \\| quote \\}\\}"
+        it: Prefixes the OpenSearch version with the engine name AWS expects
+    -   asserts:
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "\\$opensearchEnabled := eq \\$xr\\.spec\\.search\\.engine \"opensearch\""
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "\\{\\{- if \\$opensearchEnabled \\}\\}\\s+\\{\\{- \\$clusterSubnetIdsCount := len \\$clusterSubnetIds \\}\\}[\\s\\S]+?apiVersion: opensearch\\.aws\\.m\\.upbound\\.io/v1beta1\\s+kind: Domain"
+        it: Provisions OpenSearch only when the search engine is OpenSearch
     -   asserts:
             -   documentIndex: 0
                 matchRegex:
@@ -91,8 +131,38 @@ tests:
             -   documentIndex: 0
                 matchRegex:
                     path: spec.pipeline[1].input.inline.template
+                    pattern: "if and \\(gt \\$clusterSubnetIdsCount 1\\) \\(mod \\(int \\$opensearch\\.instanceCount\\) \\$clusterSubnetIdsCount\\)"
+        it: Rejects an OpenSearch node count the cluster zones cannot spread evenly
+    -   asserts:
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "\\$restore := \\$database\\.restore \\| default dict"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "\\$restoreSnapshotId := dig \"snapshot\" \"id\" \"\" \\$restore"
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "\\{\\{- if and \\(eq \\$restorePhase \"provisioning\"\\) \\(not \\$restoreSnapshotId\\) \\}\\}\\s+\\{\\{- fail \""
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "\\{\\{- if and \\(eq \\$restorePhase \"provisioning\"\\) \\(eq \\$dataPlane \\$targetActiveDataPlane\\) \\}\\}\\s+snapshotIdentifier: \\{\\{ \\$restoreSnapshotId \\}\\}"
+        it: Restores the target data plane from the database restore snapshot
+    -   asserts:
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
                     pattern: "key: aws:ResourceTag/Active\\s+value: \"true\"\\s+-\\s+key: aws:ResourceTag/Backup\\s+value: \"true\"\\s+-\\s+key: aws:ResourceTag/DeploymentName\\s+value: \\{\\{ \\$env\\.deploymentName \\}\\}\\s+-\\s+key: aws:ResourceTag/EnvironmentId\\s+value: \\{\\{ \\$environmentId \\}\\}\\s+-\\s+key: aws:ResourceTag/ProjectId\\s+value: \\{\\{ \\$projectId \\}\\}"
         it: Selects only the active resources of this environment for backup
+    -   asserts:
+            -   documentIndex: 0
+                matchRegex:
+                    path: spec.pipeline[1].input.inline.template
+                    pattern: "tags:\\s+\\{\\{- with \\$storage\\.tags \\}\\}\\s+\\{\\{- \\. \\| toYaml \\| nindent 12 \\}\\}\\s+\\{\\{- end \\}\\}\\s+Active: [^\\n]+\\s+Backup: \"true\""
+        it: Tags each bucket with its backup selection over the custom storage tags
     -   asserts:
             -   documentIndex: 0
                 matchRegex:

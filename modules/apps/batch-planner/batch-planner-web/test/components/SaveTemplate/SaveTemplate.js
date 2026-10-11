@@ -90,7 +90,7 @@ describe('SaveTemplateModal', () => {
 			);
 		});
 
-		expect(evaluate).toBeCalled();
+		expect(evaluate).toHaveBeenCalled();
 	});
 
 	it('must not show modal when the button is clicked and the form has no errors', async () => {

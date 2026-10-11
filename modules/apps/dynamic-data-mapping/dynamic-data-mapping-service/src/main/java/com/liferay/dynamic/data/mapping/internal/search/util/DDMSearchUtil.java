@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -51,7 +52,9 @@ public class DDMSearchUtil {
 		searchContext.setGroupIds(groupIds);
 
 		if (orderByComparator != null) {
-			searchContext.setSorts(_getSortsFromComparator(orderByComparator));
+			searchContext.setSorts(
+				_getSortsFromComparator(
+					searchContext.getLanguageId(), orderByComparator));
 		}
 
 		searchContext.setStart(start);
@@ -88,7 +91,9 @@ public class DDMSearchUtil {
 		}
 
 		if (orderByComparator != null) {
-			searchContext.setSorts(_getSortsFromComparator(orderByComparator));
+			searchContext.setSorts(
+				_getSortsFromComparator(
+					searchContext.getLanguageId(), orderByComparator));
 		}
 
 		return searchContext;
@@ -175,7 +180,9 @@ public class DDMSearchUtil {
 		}
 
 		if (orderByComparator != null) {
-			searchContext.setSorts(_getSortsFromComparator(orderByComparator));
+			searchContext.setSorts(
+				_getSortsFromComparator(
+					searchContext.getLanguageId(), orderByComparator));
 		}
 
 		return searchContext;
@@ -236,6 +243,7 @@ public class DDMSearchUtil {
 	}
 
 	private static Sort[] _getSortsFromComparator(
+		String languageId,
 		OrderByComparator<? extends BaseModel<?>> orderByComparator) {
 
 		return TransformUtil.transform(
@@ -243,6 +251,11 @@ public class DDMSearchUtil {
 			orderByFieldName -> {
 				String fieldName = _fieldNameOrderByCols.getOrDefault(
 					orderByFieldName, orderByFieldName);
+
+				if (StringUtil.equals(fieldName, Field.NAME)) {
+					fieldName = Field.getSortableFieldName(
+						Field.getLocalizedName(languageId, "localized_name"));
+				}
 
 				int sortType = _fieldNameSortTypes.getOrDefault(
 					fieldName, Sort.STRING_TYPE);

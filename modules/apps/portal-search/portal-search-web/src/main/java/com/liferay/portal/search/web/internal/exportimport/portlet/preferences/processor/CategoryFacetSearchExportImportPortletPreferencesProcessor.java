@@ -10,6 +10,7 @@ import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataException;
 import com.liferay.exportimport.portlet.preferences.processor.ExportImportPortletPreferencesProcessor;
+import com.liferay.exportimport.portlet.preferences.processor.ExportImportPortletPreferencesProcessorHelper;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -24,10 +25,12 @@ import com.liferay.portal.search.web.internal.category.facet.constants.CategoryF
 import com.liferay.portal.search.web.internal.category.facet.portlet.CategoryFacetPortletPreferences;
 
 import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.ReadOnlyException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -43,6 +46,40 @@ public class CategoryFacetSearchExportImportPortletPreferencesProcessor
 	extends BaseSearchExportImportPortletPreferencesProcessor {
 
 	@Override
+	public void processExportPortletPreferences(
+			long companyId, PortletPreferences portletPreferences)
+		throws PortletDataException {
+
+		try {
+			_updateGroupVocabularyExternalReferenceCodes(
+				portletPreferences,
+				groupExternalReferenceCode -> {
+					Group group =
+						_groupLocalService.fetchGroupByExternalReferenceCode(
+							groupExternalReferenceCode, companyId);
+
+					if (group == null) {
+						return groupExternalReferenceCode;
+					}
+
+					if (group.isCompany()) {
+						return _COMPANY_GROUP_EXTERNAL_REFERENCE_CODE;
+					}
+
+					return _exportImportPortletPreferencesProcessorHelper.
+						getGroupExportPortletPreferencesExternalReferenceCode(
+							companyId, groupExternalReferenceCode);
+				});
+		}
+		catch (Exception exception) {
+			throw new PortletDataException(
+				"Unable to update category facet portlet preferences during " +
+					"export",
+				exception);
+		}
+	}
+
+	@Override
 	public PortletPreferences processExportPortletPreferences(
 			PortletDataContext portletDataContext,
 			PortletPreferences portletPreferences)
@@ -55,8 +92,36 @@ public class CategoryFacetSearchExportImportPortletPreferencesProcessor
 		}
 		catch (Exception exception) {
 			throw new PortletDataException(
-				"Unable to update asset categories navigation portlet " +
-					"preferences during export",
+				"Unable to update category facet portlet preferences during " +
+					"export",
+				exception);
+		}
+	}
+
+	@Override
+	public void processImportPortletPreferences(
+			long companyId, PortletPreferences portletPreferences)
+		throws PortletDataException {
+
+		try {
+			Group companyGroup = _groupLocalService.getCompanyGroup(companyId);
+
+			_updateGroupVocabularyExternalReferenceCodes(
+				portletPreferences,
+				groupExternalReferenceCode -> {
+					if (groupExternalReferenceCode.equals(
+							_COMPANY_GROUP_EXTERNAL_REFERENCE_CODE)) {
+
+						return companyGroup.getExternalReferenceCode();
+					}
+
+					return groupExternalReferenceCode;
+				});
+		}
+		catch (Exception exception) {
+			throw new PortletDataException(
+				"Unable to update category facet portlet preferences during " +
+					"import",
 				exception);
 		}
 	}
@@ -73,8 +138,8 @@ public class CategoryFacetSearchExportImportPortletPreferencesProcessor
 		}
 		catch (Exception exception) {
 			throw new PortletDataException(
-				"Unable to update asset categories navigation portlet " +
-					"preferences during import",
+				"Unable to update category facet portlet preferences during " +
+					"import",
 				exception);
 		}
 	}
@@ -309,6 +374,44 @@ public class CategoryFacetSearchExportImportPortletPreferencesProcessor
 		return portletPreferences;
 	}
 
+	private void _updateGroupVocabularyExternalReferenceCodes(
+			PortletPreferences portletPreferences,
+			Function<String, String> groupExternalReferenceCodeFunction)
+		throws ReadOnlyException {
+
+		String[] groupVocabularyExternalReferenceCodes =
+			portletPreferences.getValues(
+				CategoryFacetPortletPreferences.
+					PREFERENCE_GROUP_VOCABULARY_EXTERNAL_REFERENCE_CODES,
+				null);
+
+		if (groupVocabularyExternalReferenceCodes == null) {
+			return;
+		}
+
+		for (int i = 0; i < groupVocabularyExternalReferenceCodes.length; i++) {
+			String[] externalReferenceCodeParts = StringUtil.split(
+				groupVocabularyExternalReferenceCodes[i], "&&");
+
+			if (externalReferenceCodeParts.length != 2) {
+				continue;
+			}
+
+			String groupExternalReferenceCode =
+				groupExternalReferenceCodeFunction.apply(
+					externalReferenceCodeParts[0]);
+
+			groupVocabularyExternalReferenceCodes[i] =
+				groupExternalReferenceCode + "&&" +
+					externalReferenceCodeParts[1];
+		}
+
+		portletPreferences.setValues(
+			CategoryFacetPortletPreferences.
+				PREFERENCE_GROUP_VOCABULARY_EXTERNAL_REFERENCE_CODES,
+			groupVocabularyExternalReferenceCodes);
+	}
+
 	private PortletPreferences _updateImportPortletPreferences(
 			PortletDataContext portletDataContext,
 			PortletPreferences portletPreferences)
@@ -350,11 +453,18 @@ public class CategoryFacetSearchExportImportPortletPreferencesProcessor
 		return portletPreferences;
 	}
 
+	private static final String _COMPANY_GROUP_EXTERNAL_REFERENCE_CODE =
+		"[$COMPANY_GROUP_EXTERNAL_REFERENCE_CODE$]";
+
 	@Reference
 	private AssetVocabularyLocalService _assetVocabularyLocalService;
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	@Reference
+	private ExportImportPortletPreferencesProcessorHelper
+		_exportImportPortletPreferencesProcessorHelper;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

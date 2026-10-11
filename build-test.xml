@@ -8369,7 +8369,7 @@ ${docker.start.error}</fail>
 						<equals arg1="${database.type}" arg2="mariadb" />
 					</and>
 					<then>
-						<property name="docker.database.wait.condition">mariadb-admin ping > /dev/null 2>&amp;1</property>
+						<property name="docker.database.wait.condition">mariadb-admin --host=${database.host} --protocol=TCP ping > /dev/null 2>&amp;1</property>
 					</then>
 				</elseif>
 				<elseif>
@@ -8378,7 +8378,7 @@ ${docker.start.error}</fail>
 						<equals arg1="${database.type}" arg2="mysql" />
 					</or>
 					<then>
-						<property name="docker.database.wait.condition">mysqladmin ping > /dev/null 2>&amp;1</property>
+						<property name="docker.database.wait.condition">mysqladmin --host=${database.host} --protocol=TCP ping > /dev/null 2>&amp;1</property>
 					</then>
 				</elseif>
 				<elseif>
@@ -15154,7 +15154,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 	<target depends="build-sql-file" name="rebuild-database">
 		<trycatch property="rebuild.database.error">
 			<try>
-				<retry retrycount="2">
+				<retry retrycount="2" retrydelay="10000">
 					<sequential>
 						<if>
 							<equals arg1="${skip.delete.liferay.home}" arg2="true" />
@@ -15182,7 +15182,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 	<target depends="build-sql-file-playwright" name="rebuild-database-playwright">
 		<trycatch property="rebuild.database.error">
 			<try>
-				<retry retrycount="2">
+				<retry retrycount="2" retrydelay="10000">
 					<sequential>
 						<rebuild-database skip.delete.liferay.home="true" />
 					</sequential>

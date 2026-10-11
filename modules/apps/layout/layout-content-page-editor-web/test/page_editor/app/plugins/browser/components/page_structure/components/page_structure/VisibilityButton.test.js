@@ -45,7 +45,7 @@ describe('VisibilityButton', () => {
 
 		await userEvent.click(screen.getByLabelText('show-Test Fragment'));
 
-		expect(updateItemStyle).toBeCalledWith(
+		expect(updateItemStyle).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemIds: ['fragment01'],
 				selectedViewportSize: 'tablet',

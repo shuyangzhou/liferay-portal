@@ -12,14 +12,10 @@ html:root {
 	@include clay-css($c-root);
 }
 
-@media (prefers-color-scheme: dark) {
-	html:root {
-		@include clay-css($c-dark);
-	}
-}
+html[data-color-scheme='dark']:root {
+	@include clay-css($c-dark);
 
-@media (prefers-color-scheme: dark) and (prefers-contrast: more) {
-	html:root {
+	@media (prefers-contrast: more) {
 		@include clay-css($c-dark-high-contrast);
 	}
 }

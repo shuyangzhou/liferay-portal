@@ -107,9 +107,7 @@ public abstract class BaseStandaloneBuildTestrayCaseResult
 		return null;
 	}
 
-	public void recordTestrayCaseResult(Job job) {
-		TestrayBuild testrayBuild = getTestrayBuild();
-
+	public void initTestrayRun(Job job) {
 		String testSuiteName = null;
 
 		if (job instanceof TestSuiteJob) {
@@ -118,17 +116,24 @@ public abstract class BaseStandaloneBuildTestrayCaseResult
 			testSuiteName = testSuiteJob.getTestSuiteName();
 		}
 
-		TestrayRun testrayRun = TestrayFactory.newTestrayRun(
-			testrayBuild, getBatchName(), testSuiteName,
-			job.getJobProperties());
+		setTestrayRun(
+			TestrayFactory.newTestrayRun(
+				getTestrayBuild(), getBatchName(), testSuiteName,
+				job.getJobProperties()));
+	}
 
-		setTestrayRun(testrayRun);
+	public void recordTestrayCaseResult(Job job) {
+		initTestrayRun(job);
+
+		TestrayBuild testrayBuild = getTestrayBuild();
 
 		long start = JenkinsResultsParserUtil.getCurrentTimeMillis();
 
 		Document document = DocumentHelper.createDocument();
 
 		Element rootElement = document.addElement("testsuite");
+
+		TestrayRun testrayRun = getTestrayRun();
 
 		rootElement.add(testrayRun.getEnvironmentsElement());
 

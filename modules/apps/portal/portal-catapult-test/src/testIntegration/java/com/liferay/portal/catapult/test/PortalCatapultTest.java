@@ -10,6 +10,7 @@ import com.liferay.oauth2.provider.constants.ClientProfile;
 import com.liferay.oauth2.provider.constants.GrantType;
 import com.liferay.oauth2.provider.model.OAuth2Application;
 import com.liferay.oauth2.provider.service.OAuth2ApplicationLocalService;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.catapult.PortalCatapult;
 import com.liferay.portal.catapult.PortalCatapultHeaderContributor;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -25,10 +26,14 @@ import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.test.log.LogCapture;
+import com.liferay.portal.test.log.LogEntry;
+import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import com.sun.net.httpserver.Headers;
+import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -67,7 +72,74 @@ public class PortalCatapultTest {
 		new LiferayIntegrationTestRule();
 
 	@Test
-	public void testLaunchWithContributedHeaders() throws Exception {
+	public void testLaunch() throws Exception {
+		_testLaunchWithContributedHeaders();
+		_testLaunchWithCrossOriginRedirect();
+		_testLaunchWithErrorResponse();
+		_testLaunchWithSameOriginRedirect();
+		_testLaunchWithoutContributedHeaders();
+	}
+
+	private OAuth2Application _addOrUpdateOAuth2Application(String homePageURL)
+		throws Exception {
+
+		User user = UserTestUtil.getAdminUser(TestPropsValues.getCompanyId());
+
+		return _oAuth2ApplicationLocalService.addOrUpdateOAuth2Application(
+			RandomTestUtil.randomString(), user.getUserId(), user.getLogin(),
+			ListUtil.fromArray(
+				GrantType.CLIENT_CREDENTIALS, GrantType.JWT_BEARER),
+			"client_secret_post", user.getUserId(),
+			RandomTestUtil.randomString(), ClientProfile.HEADLESS_SERVER.id(),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			ListUtil.fromArray("token.introspection"), homePageURL, 0, null,
+			RandomTestUtil.randomString(),
+			"http://" + RandomTestUtil.randomString() + ".com",
+			Collections.emptyList(), false, Collections.emptyList(), true,
+			new ServiceContext());
+	}
+
+	private void _launch(
+			ClientExtensionHttpServer clientExtensionHttpServer,
+			Http.Method method, JSONObject payloadJSONObject,
+			PortalCatapultHeaderContributor portalCatapultHeaderContributor)
+		throws Exception {
+
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+		ServiceRegistration<PortalCatapultHeaderContributor>
+			serviceRegistration = bundleContext.registerService(
+				PortalCatapultHeaderContributor.class,
+				portalCatapultHeaderContributor, null);
+
+		try {
+			OAuth2Application oAuth2Application = _addOrUpdateOAuth2Application(
+				clientExtensionHttpServer._getURL());
+
+			try {
+				Future<byte[]> future = _portalCatapult.launch(
+					oAuth2Application.getCompanyId(), method,
+					oAuth2Application.getExternalReferenceCode(),
+					payloadJSONObject, "/resource",
+					TestPropsValues.getUserId());
+
+				Assert.assertEquals(
+					"{}",
+					new String(
+						future.get(1, TimeUnit.MINUTES),
+						StandardCharsets.UTF_8));
+			}
+			finally {
+				_oAuth2ApplicationLocalService.deleteOAuth2Application(
+					oAuth2Application);
+			}
+		}
+		finally {
+			serviceRegistration.unregister();
+		}
+	}
+
+	private void _testLaunchWithContributedHeaders() throws Exception {
 		try (ClientExtensionHttpServer clientExtensionHttpServer =
 				new ClientExtensionHttpServer()) {
 
@@ -120,13 +192,59 @@ public class PortalCatapultTest {
 		}
 	}
 
-	@Test
-	public void testLaunchWithErrorResponse() throws Exception {
+	private void _testLaunchWithCrossOriginRedirect() throws Exception {
+		try (ClientExtensionHttpServer redirectClientExtensionHttpServer =
+				new ClientExtensionHttpServer();
+
+			ClientExtensionHttpServer clientExtensionHttpServer =
+				new ClientExtensionHttpServer(
+					redirectClientExtensionHttpServer._getURL() + "/resource",
+					RandomTestUtil.randomString(),
+					HttpURLConnection.HTTP_MOVED_TEMP);
+
+			LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				"com.liferay.portal.catapult.internal.PortalCatapultImpl",
+				LoggerTestUtil.WARN)) {
+
+			String value = RandomTestUtil.randomString();
+
+			Assert.assertThrows(
+				ExecutionException.class,
+				() -> _launch(
+					clientExtensionHttpServer, Http.Method.GET, null,
+					(companyId, headers, homePageURL, location,
+					 oAuth2ApplicationFeatures, userId) -> headers.put(
+						_HEADER_NAME, value)));
+
+			List<String> headerValues = clientExtensionHttpServer._getHeaders(
+				_HEADER_NAME);
+
+			Assert.assertEquals(value, headerValues.get(0));
+
+			Assert.assertFalse(redirectClientExtensionHttpServer._hasHeaders());
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
+
+			LogEntry logEntry = logEntries.get(0);
+
+			Assert.assertEquals(
+				StringBundler.concat(
+					"Unable to follow the redirect to ",
+					redirectClientExtensionHttpServer._getURL(),
+					"/resource because it leaves the origin of ",
+					clientExtensionHttpServer._getURL(), "/resource"),
+				logEntry.getMessage());
+		}
+	}
+
+	private void _testLaunchWithErrorResponse() throws Exception {
 		String responseBody = RandomTestUtil.randomString();
 
 		try (ClientExtensionHttpServer clientExtensionHttpServer =
 				new ClientExtensionHttpServer(
-					responseBody, HttpURLConnection.HTTP_CONFLICT)) {
+					null, responseBody, HttpURLConnection.HTTP_CONFLICT)) {
 
 			ExecutionException executionException = Assert.assertThrows(
 				ExecutionException.class,
@@ -142,8 +260,37 @@ public class PortalCatapultTest {
 		}
 	}
 
-	@Test
-	public void testLaunchWithoutContributedHeaders() throws Exception {
+	private void _testLaunchWithSameOriginRedirect() throws Exception {
+		try (ClientExtensionHttpServer clientExtensionHttpServer =
+				new ClientExtensionHttpServer(
+					"/" + RandomTestUtil.randomString(),
+					RandomTestUtil.randomString(),
+					HttpURLConnection.HTTP_MOVED_TEMP)) {
+
+			String value = RandomTestUtil.randomString();
+
+			_launch(
+				clientExtensionHttpServer, Http.Method.GET, null,
+				(companyId, headers, homePageURL, location,
+				 oAuth2ApplicationFeatures, userId) -> headers.put(
+					_HEADER_NAME, value));
+
+			List<String> headerValues = clientExtensionHttpServer._getHeaders(
+				_HEADER_NAME);
+
+			Assert.assertEquals(value, headerValues.get(0));
+
+			Assert.assertThrows(
+				ExecutionException.class,
+				() -> _launch(
+					clientExtensionHttpServer, Http.Method.POST, null,
+					(companyId, headers, homePageURL, location,
+					 oAuth2ApplicationFeatures, userId) -> {
+					}));
+		}
+	}
+
+	private void _testLaunchWithoutContributedHeaders() throws Exception {
 		try (ClientExtensionHttpServer clientExtensionHttpServer =
 				new ClientExtensionHttpServer()) {
 
@@ -169,65 +316,6 @@ public class PortalCatapultTest {
 		}
 	}
 
-	private OAuth2Application _addOrUpdateOAuth2Application(String homePageURL)
-		throws Exception {
-
-		User user = UserTestUtil.getAdminUser(TestPropsValues.getCompanyId());
-
-		return _oAuth2ApplicationLocalService.addOrUpdateOAuth2Application(
-			RandomTestUtil.randomString(), user.getUserId(), user.getLogin(),
-			ListUtil.fromArray(
-				GrantType.CLIENT_CREDENTIALS, GrantType.JWT_BEARER),
-			"client_secret_post", user.getUserId(),
-			RandomTestUtil.randomString(), ClientProfile.HEADLESS_SERVER.id(),
-			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
-			ListUtil.fromArray("token.introspection"), homePageURL, 0, null,
-			RandomTestUtil.randomString(),
-			"http://" + RandomTestUtil.randomString() + ".liferay.com/privacy",
-			Collections.emptyList(), false, Collections.emptyList(), true,
-			new ServiceContext());
-	}
-
-	private void _launch(
-			ClientExtensionHttpServer clientExtensionHttpServer,
-			Http.Method method, JSONObject payloadJSONObject,
-			PortalCatapultHeaderContributor portalCatapultHeaderContributor)
-		throws Exception {
-
-		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
-
-		ServiceRegistration<PortalCatapultHeaderContributor>
-			serviceRegistration = bundleContext.registerService(
-				PortalCatapultHeaderContributor.class,
-				portalCatapultHeaderContributor, null);
-
-		try {
-			OAuth2Application oAuth2Application = _addOrUpdateOAuth2Application(
-				clientExtensionHttpServer._getURL());
-
-			try {
-				Future<byte[]> future = _portalCatapult.launch(
-					oAuth2Application.getCompanyId(), method,
-					oAuth2Application.getExternalReferenceCode(),
-					payloadJSONObject, "/resource",
-					TestPropsValues.getUserId());
-
-				Assert.assertEquals(
-					"{}",
-					new String(
-						future.get(1, TimeUnit.MINUTES),
-						StandardCharsets.UTF_8));
-			}
-			finally {
-				_oAuth2ApplicationLocalService.deleteOAuth2Application(
-					oAuth2Application);
-			}
-		}
-		finally {
-			serviceRegistration.unregister();
-		}
-	}
-
 	private static final String _HEADER_NAME = RandomTestUtil.randomString();
 
 	@Inject
@@ -239,10 +327,11 @@ public class PortalCatapultTest {
 	private static class ClientExtensionHttpServer implements AutoCloseable {
 
 		public ClientExtensionHttpServer() throws IOException {
-			this("{}", HttpURLConnection.HTTP_OK);
+			this(null, "{}", HttpURLConnection.HTTP_OK);
 		}
 
-		public ClientExtensionHttpServer(String responseBody, int statusCode)
+		public ClientExtensionHttpServer(
+				String redirectURL, String responseBody, int statusCode)
 			throws IOException {
 
 			_httpServer = HttpServer.create(
@@ -250,33 +339,12 @@ public class PortalCatapultTest {
 
 			_httpServer.createContext(
 				"/",
-				httpExchange -> {
-					_headers = httpExchange.getRequestHeaders();
-
-					try (InputStream inputStream =
-							httpExchange.getRequestBody()) {
-
-						_requestBody = new String(
-							inputStream.readAllBytes(), StandardCharsets.UTF_8);
-					}
-
-					byte[] bytes = responseBody.getBytes(
-						StandardCharsets.UTF_8);
-
-					Headers responseHeaders = httpExchange.getResponseHeaders();
-
-					responseHeaders.set(
-						HttpHeaders.CONTENT_TYPE,
-						ContentTypes.APPLICATION_JSON);
-
-					httpExchange.sendResponseHeaders(statusCode, bytes.length);
-
-					try (OutputStream outputStream =
-							httpExchange.getResponseBody()) {
-
-						outputStream.write(bytes);
-					}
-				});
+				httpExchange -> _handle(
+					httpExchange, null, "{}", HttpURLConnection.HTTP_OK));
+			_httpServer.createContext(
+				"/resource",
+				httpExchange -> _handle(
+					httpExchange, redirectURL, responseBody, statusCode));
 
 			_httpServer.start();
 
@@ -304,6 +372,44 @@ public class PortalCatapultTest {
 
 		private String _getURL() {
 			return _url;
+		}
+
+		private void _handle(
+				HttpExchange httpExchange, String redirectURL,
+				String responseBody, int statusCode)
+			throws IOException {
+
+			_headers = httpExchange.getRequestHeaders();
+
+			try (InputStream inputStream = httpExchange.getRequestBody()) {
+				_requestBody = new String(
+					inputStream.readAllBytes(), StandardCharsets.UTF_8);
+			}
+
+			byte[] bytes = responseBody.getBytes(StandardCharsets.UTF_8);
+
+			Headers responseHeaders = httpExchange.getResponseHeaders();
+
+			responseHeaders.set(
+				HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON);
+
+			if (redirectURL != null) {
+				responseHeaders.set(HttpHeaders.LOCATION, redirectURL);
+			}
+
+			httpExchange.sendResponseHeaders(statusCode, bytes.length);
+
+			try (OutputStream outputStream = httpExchange.getResponseBody()) {
+				outputStream.write(bytes);
+			}
+		}
+
+		private boolean _hasHeaders() {
+			if (_headers != null) {
+				return true;
+			}
+
+			return false;
 		}
 
 		private volatile Headers _headers;

@@ -196,7 +196,7 @@ describe('AdvancedSelectField', () => {
 		fireEvent.change(input, {target: {value: 'initial'}});
 		fireEvent.blur(input);
 
-		expect(onValueSelect).toBeCalledWith(FIELD.name, 'initial');
+		expect(onValueSelect).toHaveBeenCalledWith(FIELD.name, 'initial');
 		expect(input).toHaveValue('initial');
 	});
 
@@ -212,7 +212,7 @@ describe('AdvancedSelectField', () => {
 		await userEvent.type(input, 'initial');
 		await userEvent.type(input, '{Enter}');
 
-		expect(onValueSelect).toBeCalledWith(FIELD.name, 'initial');
+		expect(onValueSelect).toHaveBeenCalledWith(FIELD.name, 'initial');
 		expect(input).toHaveValue('initial');
 	});
 

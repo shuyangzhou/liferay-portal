@@ -8,12 +8,15 @@ package com.liferay.portal.cache.internal.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
+import com.liferay.portal.kernel.dao.orm.Session;
+import com.liferay.portal.kernel.dao.orm.SessionWrapper;
 import com.liferay.portal.kernel.model.Ticket;
 import com.liferay.portal.kernel.model.TicketConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.TicketLocalService;
+import com.liferay.portal.kernel.service.persistence.TicketPersistence;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -22,12 +25,15 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.FutureTask;
@@ -50,7 +56,7 @@ public class FinderCacheTest {
 		new LiferayIntegrationTestRule();
 
 	@Test
-	public void testPutResult() throws Exception {
+	public void testPutResult() throws Throwable {
 		long classPK = RandomTestUtil.randomLong();
 
 		List<Ticket> tickets = _ticketLocalService.getTickets(
@@ -77,6 +83,149 @@ public class FinderCacheTest {
 			TestPropsValues.getCompanyId(), User.class.getName(), classPK);
 
 		Assert.assertEquals(tickets.toString(), 2, tickets.size());
+
+		Assert.assertNull(
+			_finderCache.getResult(
+				_countFinderPath, finderArgs, _ticketPersistence));
+
+		TransactionInvokerUtil.invoke(
+			TransactionConfig.Factory.create(
+				Propagation.REQUIRED, new Class<?>[] {Exception.class}),
+			(Callable<Void>)() -> {
+				Assert.assertNull(
+					_finderCache.getResult(
+						_countFinderPath, finderArgs, _ticketPersistence));
+
+				_finderCache.putResult(_countFinderPath, finderArgs, 2L);
+
+				return null;
+			});
+
+		_addTicket(classPK, serviceContext);
+
+		_finderCache.putResult(_countFinderPath, finderArgs, 2L);
+
+		Assert.assertEquals(
+			3L,
+			_finderCache.getResult(
+				_countFinderPath, finderArgs, _ticketPersistence));
+
+		Object[] countFinderArgs = _getFinderArgs(RandomTestUtil.randomLong());
+
+		Assert.assertNull(
+			_finderCache.getResult(
+				_countFinderPath, countFinderArgs, _ticketPersistence));
+
+		_finderCache.putResult(_countFinderPath, countFinderArgs, 0L);
+
+		List<Set<String>> autoFlushQuerySpaces = new ArrayList<>();
+
+		TicketPersistence ticketPersistence =
+			ProxyUtil.newDelegateProxyInstance(
+				TicketPersistence.class.getClassLoader(),
+				TicketPersistence.class,
+				new Object() {
+
+					public Session getCurrentSession() {
+						return new SessionWrapper(
+							_ticketPersistence.getCurrentSession()) {
+
+							@Override
+							public boolean autoFlushIfRequired(
+								Set<String> querySpaces) {
+
+								autoFlushQuerySpaces.add(querySpaces);
+
+								return super.autoFlushIfRequired(querySpaces);
+							}
+
+						};
+					}
+
+				},
+				_ticketPersistence);
+
+		TransactionInvokerUtil.invoke(
+			TransactionConfig.Factory.create(
+				Propagation.REQUIRED, new Class<?>[] {Exception.class}),
+			(Callable<Void>)() -> {
+				Assert.assertEquals(
+					0L,
+					_finderCache.getResult(
+						_countFinderPath, countFinderArgs, ticketPersistence));
+				Assert.assertTrue(
+					autoFlushQuerySpaces.toString(),
+					autoFlushQuerySpaces.isEmpty());
+
+				_ticketLocalService.deleteTicket(ticket);
+
+				Assert.assertEquals(
+					0L,
+					_finderCache.getResult(
+						_countFinderPath, countFinderArgs, ticketPersistence));
+				Assert.assertEquals(
+					Collections.singletonList(Collections.singleton("Ticket")),
+					autoFlushQuerySpaces);
+				Assert.assertEquals(
+					2L,
+					_finderCache.getResult(
+						_countFinderPath, finderArgs, _ticketPersistence));
+
+				Ticket newTicket = _addTicket(classPK, serviceContext);
+
+				long newClassPK = RandomTestUtil.randomLong();
+
+				Object[] newFinderArgs = _getFinderArgs(newClassPK);
+
+				Assert.assertNull(
+					_finderCache.getResult(
+						_countFinderPath, newFinderArgs, _ticketPersistence));
+
+				_finderCache.putResult(_countFinderPath, newFinderArgs, 0L);
+
+				_addTicket(newClassPK, serviceContext);
+
+				Assert.assertEquals(
+					1L,
+					_finderCache.getResult(
+						_countFinderPath, newFinderArgs, ticketPersistence));
+				Assert.assertEquals(
+					Collections.nCopies(2, Collections.singleton("Ticket")),
+					autoFlushQuerySpaces);
+
+				newTicket.setClassPK(newClassPK);
+
+				_ticketLocalService.updateTicket(newTicket);
+
+				Assert.assertEquals(
+					2L,
+					_finderCache.getResult(
+						_countFinderPath, newFinderArgs, ticketPersistence));
+				Assert.assertEquals(
+					Collections.nCopies(3, Collections.singleton("Ticket")),
+					autoFlushQuerySpaces);
+
+				return null;
+			});
+
+		autoFlushQuerySpaces.clear();
+
+		TransactionInvokerUtil.invoke(
+			TransactionConfig.Factory.create(
+				Propagation.REQUIRED, new Class<?>[] {Exception.class}),
+			(Callable<Void>)() -> {
+				_addTicket(RandomTestUtil.randomLong(), serviceContext);
+
+				Assert.assertEquals(
+					0L,
+					_finderCache.getResult(
+						_countFinderPath, countFinderArgs, ticketPersistence));
+				Assert.assertEquals(
+					Collections.singletonList(Collections.singleton("Ticket")),
+					autoFlushQuerySpaces);
+
+				return null;
+			});
 	}
 
 	@Test
@@ -163,6 +312,51 @@ public class FinderCacheTest {
 		}
 
 		Assert.assertNull(_finderCache.getResult(finderPath, finderArgs, null));
+
+		FinderPath countFinderPath = new FinderPath(
+			"com.liferay.portal.model.impl.TicketImpl.List2", "countByC_C_C_T",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				Long.class.getName(), Integer.class.getName()
+			},
+			new String[] {"companyId", "classNameId", "classPK", "type_"},
+			false);
+
+		Object[] countFinderArgs = ArrayUtil.append(
+			finderArgs, TicketConstants.TYPE_PASSWORD);
+
+		TransactionInvokerUtil.invoke(
+			TransactionConfig.Factory.create(
+				Propagation.REQUIRED, new Class<?>[] {Exception.class}),
+			(Callable<Void>)() -> {
+				_addTicket(classPK, serviceContext);
+
+				try {
+					TransactionInvokerUtil.invoke(
+						TransactionConfig.Factory.create(
+							Propagation.NOT_SUPPORTED,
+							new Class<?>[] {Exception.class}),
+						(Callable<Void>)() -> {
+							Assert.assertNull(
+								_finderCache.getResult(
+									countFinderPath, countFinderArgs,
+									_ticketPersistence));
+
+							return null;
+						});
+				}
+				catch (Throwable throwable) {
+					throw new Exception(throwable);
+				}
+
+				return null;
+			});
+
+		_finderCache.putResult(countFinderPath, countFinderArgs, 0L);
+
+		Assert.assertNull(
+			_finderCache.getResult(
+				countFinderPath, countFinderArgs, _ticketPersistence));
 	}
 
 	@Test
@@ -181,6 +375,8 @@ public class FinderCacheTest {
 
 		Object[] finderArgs = _getFinderArgs(classPK);
 
+		Object[] countFinderArgs = _getFinderArgs(RandomTestUtil.randomLong());
+
 		TransactionConfig.Builder builder = new TransactionConfig.Builder();
 
 		builder.setReadOnly(true);
@@ -191,6 +387,18 @@ public class FinderCacheTest {
 			(Callable<Void>)() -> {
 				Assert.assertNull(
 					_finderCache.getResult(_finderPath, finderArgs, null));
+
+				Assert.assertNull(
+					_finderCache.getResult(
+						_countFinderPath, finderArgs, _ticketPersistence));
+
+				_finderCache.putResult(_countFinderPath, finderArgs, 1L);
+
+				Assert.assertNull(
+					_finderCache.getResult(
+						_countFinderPath, countFinderArgs, _ticketPersistence));
+
+				_finderCache.putResult(_countFinderPath, countFinderArgs, 0L);
 
 				try {
 					TransactionInvokerUtil.invoke(
@@ -209,6 +417,14 @@ public class FinderCacheTest {
 
 				return null;
 			});
+
+		Assert.assertNull(
+			_finderCache.getResult(
+				_countFinderPath, finderArgs, _ticketPersistence));
+		Assert.assertEquals(
+			0L,
+			_finderCache.getResult(
+				_countFinderPath, countFinderArgs, _ticketPersistence));
 
 		tickets = _ticketLocalService.getTickets(
 			TestPropsValues.getCompanyId(), User.class.getName(), classPK);
@@ -235,6 +451,12 @@ public class FinderCacheTest {
 		};
 	}
 
+	private static final FinderPath _countFinderPath = new FinderPath(
+		"com.liferay.portal.model.impl.TicketImpl.List2", "countByC_C_C",
+		new String[] {
+			Long.class.getName(), Long.class.getName(), Long.class.getName()
+		},
+		new String[] {"companyId", "classNameId", "classPK"}, false);
 	private static final FinderPath _finderPath = new FinderPath(
 		"com.liferay.portal.model.impl.TicketImpl.List2", "findByC_C_C",
 		new String[] {
@@ -250,6 +472,9 @@ public class FinderCacheTest {
 
 	@Inject
 	private TicketLocalService _ticketLocalService;
+
+	@Inject
+	private TicketPersistence _ticketPersistence;
 
 	@DeleteAfterTestRun
 	private final List<Ticket> _tickets = new ArrayList<>();

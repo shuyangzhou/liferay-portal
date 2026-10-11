@@ -79,8 +79,8 @@ describe('parseFile', () => {
 			},
 		});
 
-		expect(onComplete).not.toBeCalledWith(fileSchema);
-		expect(onError).toBeCalled();
+		expect(onComplete).not.toHaveBeenCalledWith(fileSchema);
+		expect(onError).toHaveBeenCalled();
 	});
 
 	it('must correctly call onComplete', () => {
@@ -113,13 +113,13 @@ describe('parseFile', () => {
 			},
 		});
 
-		expect(onComplete).toBeCalledWith({
+		expect(onComplete).toHaveBeenCalledWith({
 			extension: 'csv',
 			fileContent: parsedCSV,
 			schema: fileSchema,
 		});
 
-		expect(onError).not.toBeCalled();
+		expect(onError).not.toHaveBeenCalled();
 	});
 });
 

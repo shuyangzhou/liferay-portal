@@ -54,7 +54,7 @@ describe('Storage Utils', () => {
 
 			expect(
 				window.Liferay?.Util?.LocalStorage?.removeItem
-			).not.toBeCalled();
+			).not.toHaveBeenCalled();
 			expect(removeItem(STORAGE_KEY)).toEqual(expected);
 		});
 
@@ -70,7 +70,9 @@ describe('Storage Utils', () => {
 
 			removeItem(STORAGE_KEY);
 
-			expect(window.Liferay?.Util?.LocalStorage?.removeItem).toBeCalled();
+			expect(
+				window.Liferay?.Util?.LocalStorage?.removeItem
+			).toHaveBeenCalled();
 		});
 	});
 
@@ -82,7 +84,7 @@ describe('Storage Utils', () => {
 
 			expect(
 				window.Liferay?.Util?.LocalStorage?.getItem
-			).not.toBeCalled();
+			).not.toHaveBeenCalled();
 
 			expect(getItem(STORAGE_KEY)).toEqual(expected);
 		});
@@ -99,7 +101,9 @@ describe('Storage Utils', () => {
 
 			getItem(STORAGE_KEY);
 
-			expect(window.Liferay?.Util?.LocalStorage?.getItem).toBeCalled();
+			expect(
+				window.Liferay?.Util?.LocalStorage?.getItem
+			).toHaveBeenCalled();
 		});
 	});
 
@@ -119,7 +123,7 @@ describe('Storage Utils', () => {
 
 			expect(
 				window.Liferay?.Util?.LocalStorage?.setItem
-			).not.toBeCalled();
+			).not.toHaveBeenCalled();
 
 			expect(
 				JSON.parse(localStorage.getItem(STORAGE_KEY) as string)
@@ -138,7 +142,9 @@ describe('Storage Utils', () => {
 
 			setItem(STORAGE_KEY, {name: 'foo'});
 
-			expect(window.Liferay?.Util?.LocalStorage?.setItem).toBeCalled();
+			expect(
+				window.Liferay?.Util?.LocalStorage?.setItem
+			).toHaveBeenCalled();
 		});
 	});
 

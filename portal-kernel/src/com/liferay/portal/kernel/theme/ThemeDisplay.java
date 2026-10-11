@@ -615,6 +615,10 @@ public class ThemeDisplay
 		return _contextPath;
 	}
 
+	public String getPathControlPanelEmptyStatesSpritemap() {
+		return _pathControlPanelEmptyStatesSpritemap;
+	}
+
 	/**
 	 * Returns the URL for the control panel's spritemap.
 	 *
@@ -694,6 +698,10 @@ public class ThemeDisplay
 	 */
 	public String getPathThemeCss() {
 		return _pathThemeCss;
+	}
+
+	public String getPathThemeEmptyStatesSpritemap() {
+		return _pathThemeEmptyStatesSpritemap;
 	}
 
 	/**
@@ -1520,6 +1528,10 @@ public class ThemeDisplay
 				_company.getCompanyId(),
 				PropsKeys.CONTROL_PANEL_LAYOUT_REGULAR_THEME_ID));
 
+		setPathControlPanelEmptyStatesSpritemap(
+			StringBundler.concat(
+				cdnBaseURL, controlPanelTheme.getStaticResourcePath(),
+				controlPanelTheme.getImagesPath(), "/clay/empty_states.svg"));
 		setPathControlPanelSpritemap(
 			StringBundler.concat(
 				cdnBaseURL, controlPanelTheme.getStaticResourcePath(),
@@ -1558,6 +1570,10 @@ public class ThemeDisplay
 			setPathThemeRoot(themeStaticResourcePath + rootPath);
 		}
 
+		setPathThemeEmptyStatesSpritemap(
+			StringBundler.concat(
+				cdnBaseURL, themeStaticResourcePath, theme.getImagesPath(),
+				"/clay/empty_states.svg"));
 		setPathThemeSpritemap(
 			StringBundler.concat(
 				cdnBaseURL, themeStaticResourcePath, theme.getImagesPath(),
@@ -1588,6 +1604,13 @@ public class ThemeDisplay
 
 	public void setPathContext(String contextPath) {
 		_contextPath = contextPath;
+	}
+
+	public void setPathControlPanelEmptyStatesSpritemap(
+		String pathControlPanelEmptyStatesSpritemap) {
+
+		_pathControlPanelEmptyStatesSpritemap =
+			pathControlPanelEmptyStatesSpritemap;
 	}
 
 	public void setPathControlPanelSpritemap(String pathControlPanelSpritemap) {
@@ -1628,6 +1651,12 @@ public class ThemeDisplay
 
 	public void setPathThemeCss(String pathThemeCss) {
 		_pathThemeCss = pathThemeCss;
+	}
+
+	public void setPathThemeEmptyStatesSpritemap(
+		String pathThemeEmptyStatesSpritemap) {
+
+		_pathThemeEmptyStatesSpritemap = pathThemeEmptyStatesSpritemap;
 	}
 
 	public void setPathThemeImages(String pathThemeImages) {
@@ -2086,6 +2115,7 @@ public class ThemeDisplay
 	private long _parentSiteGroupId;
 	private String _pathApplet = StringPool.BLANK;
 	private String _pathColorSchemeImages = StringPool.BLANK;
+	private String _pathControlPanelEmptyStatesSpritemap = StringPool.BLANK;
 	private String _pathControlPanelSpritemap = StringPool.BLANK;
 	private String _pathFriendlyURLPrivateGroup = StringPool.BLANK;
 	private String _pathFriendlyURLPrivateUser = StringPool.BLANK;
@@ -2095,6 +2125,7 @@ public class ThemeDisplay
 	private String _pathMain = StringPool.BLANK;
 	private String _pathSound = StringPool.BLANK;
 	private String _pathThemeCss = StringPool.BLANK;
+	private String _pathThemeEmptyStatesSpritemap = StringPool.BLANK;
 	private String _pathThemeImages = StringPool.BLANK;
 	private String _pathThemeJavaScript = StringPool.BLANK;
 	private String _pathThemeRoot = StringPool.BLANK;

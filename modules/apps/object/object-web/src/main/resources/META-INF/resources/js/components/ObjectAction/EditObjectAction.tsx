@@ -10,6 +10,7 @@ import {ObjectActionContainer} from './ObjectActionContainer';
 
 interface EditObjectActionProps {
 	allowScriptContentToBeExecutedOrIncluded: boolean;
+	companyAdmin: boolean;
 	hasUserNotificationHandler: boolean;
 	isApproved: boolean;
 	objectAction: ObjectAction;
@@ -28,6 +29,7 @@ interface EditObjectActionProps {
 
 export default function EditObjectAction({
 	allowScriptContentToBeExecutedOrIncluded,
+	companyAdmin,
 	hasUserNotificationHandler,
 	isApproved,
 	objectAction: {id, ...values},
@@ -48,6 +50,7 @@ export default function EditObjectAction({
 			allowScriptContentToBeExecutedOrIncluded={
 				allowScriptContentToBeExecutedOrIncluded
 			}
+			companyAdmin={companyAdmin}
 			editingObjectAction
 			hasUserNotificationHandler={hasUserNotificationHandler}
 			isApproved={isApproved}

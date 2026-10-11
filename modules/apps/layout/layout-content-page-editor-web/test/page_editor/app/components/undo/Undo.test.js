@@ -71,7 +71,7 @@ describe('Undo', () => {
 
 		await userEvent.click(screen.getByTitle('undo'));
 
-		expect(onUndo).toBeCalled();
+		expect(onUndo).toHaveBeenCalled();
 	});
 
 	it('calls onRedo when the Redo button is pressed', async () => {
@@ -81,7 +81,7 @@ describe('Undo', () => {
 
 		await userEvent.click(screen.getByTitle('redo'));
 
-		expect(onRedo).toBeCalled();
+		expect(onRedo).toHaveBeenCalled();
 	});
 
 	it('disables the Undo button when there are no undo history items', () => {

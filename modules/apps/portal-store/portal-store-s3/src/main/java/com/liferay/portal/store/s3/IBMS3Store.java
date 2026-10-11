@@ -264,7 +264,7 @@ public class IBMS3Store implements Store {
 				s3ObjectSummary.getKey());
 		}
 
-		return fileNames;
+		return ArrayUtil.distinct(fileNames);
 	}
 
 	@Override

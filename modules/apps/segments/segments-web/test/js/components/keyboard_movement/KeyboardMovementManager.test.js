@@ -88,7 +88,7 @@ describe('KeyboardMovementManager', () => {
 			})
 		);
 
-		expect(setTarget).toBeCalledWith(
+		expect(setTarget).toHaveBeenCalledWith(
 			expect.objectContaining({
 				groupId: 'group_1',
 				index: 0,
@@ -108,7 +108,7 @@ describe('KeyboardMovementManager', () => {
 			})
 		);
 
-		expect(setTarget).toBeCalledWith(
+		expect(setTarget).toHaveBeenCalledWith(
 			expect.objectContaining({
 				groupId: 'group_1',
 				index: 0,
@@ -128,7 +128,7 @@ describe('KeyboardMovementManager', () => {
 			})
 		);
 
-		expect(disableMovement).toBeCalled();
+		expect(disableMovement).toHaveBeenCalled();
 	});
 
 	it('calls onMove when pressing enter', () => {
@@ -158,6 +158,6 @@ describe('KeyboardMovementManager', () => {
 			],
 		};
 
-		expect(onMove).toBeCalledWith(createdGroup, 'user');
+		expect(onMove).toHaveBeenCalledWith(createdGroup, 'user');
 	});
 });

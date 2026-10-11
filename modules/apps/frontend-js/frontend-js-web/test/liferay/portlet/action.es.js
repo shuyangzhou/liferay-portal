@@ -61,7 +61,7 @@ describe('PortletHub', () => {
 				hubA.action(parameters, element, 'param3');
 			};
 
-			expect(testFn).toThrowError(TypeError);
+			expect(testFn).toThrow(TypeError);
 		});
 
 		it('throws a TypeError if a single argument is null', () => {
@@ -77,7 +77,7 @@ describe('PortletHub', () => {
 				hubA.action({}, null);
 			};
 
-			expect(testFn).toThrowError(TypeError);
+			expect(testFn).toThrow(TypeError);
 		});
 
 		it('throws a TypeError if action parameters is null', () => {

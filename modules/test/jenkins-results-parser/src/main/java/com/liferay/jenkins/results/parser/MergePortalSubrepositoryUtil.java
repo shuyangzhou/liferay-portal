@@ -431,7 +431,7 @@ public class MergePortalSubrepositoryUtil {
 
 		if (!matcher.find()) {
 			_reportError(
-				"Invalid subrepository github url " + subrepositoryGitHubURL,
+				"Invalid subrepository GitHub URL " + subrepositoryGitHubURL,
 				jenkinsBuildURL, portalPullRequest);
 
 			return;

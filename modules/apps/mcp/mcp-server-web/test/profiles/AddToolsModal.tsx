@@ -322,10 +322,7 @@ describe('AddToolsModal', () => {
 
 		renderModal();
 
-		expect(await screen.findByText('no-tools-were-found')).toHaveAttribute(
-			'role',
-			'status'
-		);
+		expect(await screen.findByText('no-tools-were-found')).toBeVisible();
 		expect(screen.getByRole('button', {name: 'add'})).toBeDisabled();
 		expect(screen.queryByRole('tree')).not.toBeInTheDocument();
 	});

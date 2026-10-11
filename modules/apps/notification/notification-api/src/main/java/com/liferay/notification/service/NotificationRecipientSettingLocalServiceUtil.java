@@ -78,6 +78,17 @@ public class NotificationRecipientSettingLocalServiceUtil {
 
 	public static List<NotificationRecipientSetting>
 		createNotificationRecipientSettings(
+			long notificationRecipientId,
+			com.liferay.notification.model.NotificationTemplate
+				notificationTemplate,
+			Object[] recipients, com.liferay.portal.kernel.model.User user) {
+
+		return getService().createNotificationRecipientSettings(
+			notificationRecipientId, notificationTemplate, recipients, user);
+	}
+
+	public static List<NotificationRecipientSetting>
+		createNotificationRecipientSettings(
 			long notificationRecipientId, Object[] recipients,
 			com.liferay.portal.kernel.model.User user) {
 
@@ -398,4 +409,4 @@ public class NotificationRecipientSettingLocalServiceUtil {
 			NotificationRecipientSettingLocalService.class);
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-262354628
+// LIFERAY-SERVICE-BUILDER-HASH:1942942686

@@ -1780,7 +1780,7 @@ public class EditableFragmentEntryProcessorTest {
 	}
 
 	@Test
-	@TestInfo("LPD-73556")
+	@TestInfo({"LPD-73556", "LPD-107399"})
 	public void testFragmentEntryProcessorEditableMappedDLImage()
 		throws Exception {
 
@@ -1841,10 +1841,13 @@ public class EditableFragmentEntryProcessorTest {
 		String src = element.attr("src");
 
 		Assert.assertFalse(src.contains("imagePreview=1"));
+		Assert.assertTrue(
+			src.startsWith(_portal.getPathContext() + "/documents/"));
 		Assert.assertEquals(
 			_dlURLHelper.getPreviewURL(
 				fileEntry, fileEntry.getFileVersion(),
-				_serviceContext.getThemeDisplay(), StringPool.BLANK),
+				_serviceContext.getThemeDisplay(), StringPool.BLANK, true,
+				false),
 			src);
 	}
 

@@ -76,7 +76,7 @@ describe('HideFromSearchField', () => {
 			fireEvent.click(checkbox);
 		});
 
-		expect(updateItemConfig).toBeCalledWith(
+		expect(updateItemConfig).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemConfig: {
 					indexed: false,
@@ -102,6 +102,6 @@ describe('HideFromSearchField', () => {
 
 		fireEvent.click(button);
 
-		expect(selectItem).toBeCalledWith('parent-id');
+		expect(selectItem).toHaveBeenCalledWith('parent-id');
 	});
 });

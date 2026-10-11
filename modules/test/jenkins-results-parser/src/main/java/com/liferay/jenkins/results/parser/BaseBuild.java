@@ -2100,7 +2100,7 @@ public abstract class BaseBuild implements Build {
 		}
 		catch (IOException ioException) {
 			throw new RuntimeException(
-				"Unable to format github message", ioException);
+				"Unable to format GitHub message", ioException);
 		}
 
 		for (String highPriorityContentToken : _TOKENS_HIGH_PRIORITY_CONTENT) {
@@ -3257,7 +3257,7 @@ public abstract class BaseBuild implements Build {
 
 				content = JenkinsResultsParserUtil.toString(
 					JenkinsResultsParserUtil.getLocalURL(urlString), false,
-					maxRetries, retryPeriodSeconds, 0, true);
+					maxRetries, retryPeriodSeconds, 0, false);
 			}
 			catch (IOException ioException) {
 				if (required) {

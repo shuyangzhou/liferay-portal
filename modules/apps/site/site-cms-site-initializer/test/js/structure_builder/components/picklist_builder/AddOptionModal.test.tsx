@@ -178,7 +178,7 @@ describe('AddOptionModal', () => {
 				name: {en_US: expect.stringContaining('Large')},
 			});
 
-			expect(onCloseModal).toBeCalled();
+			expect(onCloseModal).toHaveBeenCalled();
 		});
 	});
 
@@ -205,7 +205,7 @@ describe('AddOptionModal', () => {
 		await userEvent.click(screen.getByText('save-and-add-another'));
 
 		await waitFor(() => {
-			expect(onCloseModal).not.toBeCalled();
+			expect(onCloseModal).not.toHaveBeenCalled();
 
 			expect(mockAddOption).toHaveBeenCalledWith({
 				erc,
@@ -227,7 +227,7 @@ describe('AddOptionModal', () => {
 		await userEvent.click(screen.getByText('save-and-add-another'));
 
 		await waitFor(() => {
-			expect(onCloseModal).not.toBeCalled();
+			expect(onCloseModal).not.toHaveBeenCalled();
 
 			expect(mockAddOption).toHaveBeenCalledWith({
 				erc: nextErc,
@@ -247,7 +247,7 @@ describe('AddOptionModal', () => {
 		await userEvent.click(screen.getByText('cancel'));
 
 		await waitFor(() => {
-			expect(onCloseModal).toBeCalled();
+			expect(onCloseModal).toHaveBeenCalled();
 		});
 	});
 });

@@ -159,7 +159,7 @@ describe('KeyboardMovementManager', () => {
 			})
 		);
 
-		expect(setTarget).toBeCalledWith(
+		expect(setTarget).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemId: 'item-1',
 				name: 'fragment',
@@ -179,7 +179,7 @@ describe('KeyboardMovementManager', () => {
 			})
 		);
 
-		expect(setTarget).toBeCalledWith(
+		expect(setTarget).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemId: 'item-3',
 				name: 'Item 3',
@@ -199,7 +199,7 @@ describe('KeyboardMovementManager', () => {
 			})
 		);
 
-		expect(disableMovement).toBeCalled();
+		expect(disableMovement).toHaveBeenCalled();
 	});
 
 	it('calls move item thunk when pressing enter', () => {
@@ -217,7 +217,7 @@ describe('KeyboardMovementManager', () => {
 			})
 		);
 
-		expect(moveItems).toBeCalledWith(
+		expect(moveItems).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemIds: ['item-3'],
 				parentItemIds: ['root-id'],
@@ -260,7 +260,7 @@ describe('KeyboardMovementManager', () => {
 			})
 		);
 
-		expect(moveItems).toBeCalledWith(
+		expect(moveItems).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemIds: ['item-3', 'item-1'],
 				parentItemIds: ['root-id'],
@@ -303,7 +303,7 @@ describe('KeyboardMovementManager', () => {
 			})
 		);
 
-		expect(moveItems).toBeCalledTimes(0);
+		expect(moveItems).toHaveBeenCalledTimes(0);
 	});
 
 	it('looks for initial target recursively', () => {

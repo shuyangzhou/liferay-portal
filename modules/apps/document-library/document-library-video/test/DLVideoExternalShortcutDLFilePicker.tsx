@@ -186,7 +186,7 @@ describe('DLVideoExternalShortcutDLFilePicker', () => {
 		});
 
 		it('does not call the onFilePickCallback', () => {
-			expect(window.onFilePickCallback).not.toBeCalled();
+			expect(window.onFilePickCallback).not.toHaveBeenCalled();
 		});
 	});
 });

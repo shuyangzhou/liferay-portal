@@ -150,6 +150,27 @@ public class DBPartitionUtil {
 		return true;
 	}
 
+	public static boolean existsExportedPartition(long companyId)
+		throws PortalException {
+
+		DataSource dataSource = InfrastructureUtil.getDataSource();
+
+		_initializeDBPartitionDB(dataSource);
+
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					_defaultCompanyId);
+
+			Connection connection = ConnectionUtil.getConnection(dataSource)) {
+
+			return _dbPartitionDB.existsPartition(
+				connection, getExportedPartitionName(companyId));
+		}
+		catch (SQLException sqlException) {
+			throw new PortalException(sqlException);
+		}
+	}
+
 	public static boolean exportCompany(long companyId) throws PortalException {
 		if (PropsValues.DATABASE_PARTITION_ENABLED ||
 			(companyId == _defaultCompanyId)) {
@@ -1013,22 +1034,7 @@ public class DBPartitionUtil {
 
 		Connection connection = CurrentConnectionUtil.getConnection(dataSource);
 
-		if (_dbPartitionDB == null) {
-			DB db = DBManagerUtil.getDB();
-
-			try {
-				_initializeDBPartitionDB(db, dataSource);
-			}
-			catch (Throwable throwable) {
-				if (throwable instanceof Error) {
-					throw new PortalException(
-						"Export of companies is not supported for " +
-							db.getDBType());
-				}
-
-				throw new PortalException(throwable);
-			}
-		}
+		_initializeDBPartitionDB(dataSource);
 
 		String exportedPartitionName = getExportedPartitionName(companyId);
 
@@ -1619,6 +1625,29 @@ public class DBPartitionUtil {
 			}
 
 			throw new PortalException(exception1);
+		}
+	}
+
+	private static void _initializeDBPartitionDB(DataSource dataSource)
+		throws PortalException {
+
+		if (_dbPartitionDB != null) {
+			return;
+		}
+
+		DB db = DBManagerUtil.getDB();
+
+		try {
+			_initializeDBPartitionDB(db, dataSource);
+		}
+		catch (Throwable throwable) {
+			if (throwable instanceof Error) {
+				throw new PortalException(
+					"Export of companies is not supported for " +
+						db.getDBType());
+			}
+
+			throw new PortalException(throwable);
 		}
 	}
 

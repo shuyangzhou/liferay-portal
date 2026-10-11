@@ -23,6 +23,7 @@ import {ConditionContainer} from './ConditionContainer';
 import './ActionBuilder.scss';
 
 interface ActionBuilderProps {
+	companyAdmin: boolean;
 	disableGroovyAction: boolean;
 	errors: ActionError;
 	hasUserNotificationHandler: boolean;
@@ -58,6 +59,7 @@ const triggerKeys = [
 ];
 
 export default function ActionBuilder({
+	companyAdmin,
 	disableGroovyAction,
 	errors,
 	hasUserNotificationHandler,
@@ -344,6 +346,7 @@ export default function ActionBuilder({
 				</ClayAlert>
 			)}
 			<ActionContainer
+				companyAdmin={companyAdmin}
 				currentObjectDefinitionFields={currentObjectDefinitionFields}
 				disableGroovyAction={disableGroovyAction}
 				errors={errors}

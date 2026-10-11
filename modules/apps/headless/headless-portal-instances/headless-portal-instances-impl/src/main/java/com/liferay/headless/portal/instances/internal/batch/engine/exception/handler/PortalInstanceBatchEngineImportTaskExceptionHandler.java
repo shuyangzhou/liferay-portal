@@ -13,9 +13,9 @@ import com.liferay.headless.portal.instances.dto.v1_0.PortalInstance;
 import com.liferay.headless.portal.instances.dto.v1_0.PortalInstanceCopy;
 import com.liferay.headless.portal.instances.dto.v1_0.PortalInstanceExport;
 import com.liferay.headless.portal.instances.dto.v1_0.PortalInstanceImport;
+import com.liferay.headless.portal.instances.internal.notifications.PortalInstanceNotificationUtil;
 import com.liferay.portal.db.partition.util.DBPartitionUtil;
 import com.liferay.portal.instances.constants.PortalInstancesNotificationConstants;
-import com.liferay.portal.instances.constants.PortalInstancesPortletKeys;
 import com.liferay.portal.kernel.exception.CompanyMaxUsersException;
 import com.liferay.portal.kernel.exception.CompanyMxException;
 import com.liferay.portal.kernel.exception.CompanyNameException;
@@ -31,9 +31,7 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
-import com.liferay.portal.kernel.model.UserNotificationDeliveryConstants;
 import com.liferay.portal.kernel.service.CompanyLocalService;
-import com.liferay.portal.kernel.service.UserNotificationEventLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 
 import java.util.Objects;
@@ -52,7 +50,7 @@ public class PortalInstanceBatchEngineImportTaskExceptionHandler
 	public void handle(
 		BatchEngineImportTask batchEngineImportTask,
 		BatchEngineTaskItemDelegate<?> batchEngineTaskItemDelegate,
-		Exception exception1, Object item, String message) {
+		Exception exception, Object item, String message) {
 
 		String operationType = _getOperationType(batchEngineImportTask, item);
 
@@ -62,35 +60,24 @@ public class PortalInstanceBatchEngineImportTaskExceptionHandler
 
 		String portalInstanceId = _getPortalInstanceId(item);
 
-		try {
-			_userNotificationEventLocalService.sendUserNotificationEvents(
-				batchEngineImportTask.getUserId(),
-				PortalInstancesPortletKeys.PORTAL_INSTANCES,
-				UserNotificationDeliveryConstants.TYPE_WEBSITE,
-				JSONUtil.put(
-					"errorMessage", message
-				).put(
-					"errorMessageKey",
-					_getErrorMessageKey(exception1, operationType)
-				).put(
-					"operationType", operationType
-				).put(
-					"portalInstanceId", portalInstanceId
-				).put(
-					"schemaName",
-					_getSchemaName(item, operationType, portalInstanceId)
-				).put(
-					"sourcePortalInstanceId", _getSourcePortalInstanceId(item)
-				).put(
-					"status", PortalInstancesNotificationConstants.STATUS_FAILED
-				));
-		}
-		catch (Exception exception2) {
-			_log.error(
-				"Unable to send the user notification event for portal " +
-					"instance " + portalInstanceId,
-				exception2);
-		}
+		PortalInstanceNotificationUtil.sendUserNotificationEvent(
+			batchEngineImportTask.getUserId(),
+			JSONUtil.put(
+				"errorMessage", message
+			).put(
+				"errorMessageKey", _getErrorMessageKey(exception, operationType)
+			).put(
+				"operationType", operationType
+			).put(
+				"portalInstanceId", portalInstanceId
+			).put(
+				"schemaName",
+				_getSchemaName(item, operationType, portalInstanceId)
+			).put(
+				"sourcePortalInstanceId", _getSourcePortalInstanceId(item)
+			).put(
+				"status", PortalInstancesNotificationConstants.STATUS_FAILED
+			));
 	}
 
 	private String _getCopyErrorMessageKey(Exception exception) {
@@ -107,9 +94,7 @@ public class PortalInstanceBatchEngineImportTaskExceptionHandler
 		if (exception instanceof UnsupportedOperationException) {
 			String message = GetterUtil.getString(exception.getMessage());
 
-			if (message.equals(
-					"Company in copy process company ID is not null")) {
-
+			if (message.equals("Copying an instance is already in progress")) {
 				return "copying-an-instance-is-already-in-progress";
 			}
 
@@ -207,6 +192,16 @@ public class PortalInstanceBatchEngineImportTaskExceptionHandler
 			return "please-enter-a-valid-first-middle-and-last-name";
 		}
 
+		if (throwable instanceof IllegalArgumentException) {
+			String message = GetterUtil.getString(throwable.getMessage());
+
+			if (message.startsWith("Site initializer ")) {
+				return "please-select-a-valid-virtual-instance-initializer";
+			}
+
+			return null;
+		}
+
 		if (throwable instanceof RequiredCompanyException) {
 			return "the-default-instance-cannot-be-deleted";
 		}
@@ -265,7 +260,7 @@ public class PortalInstanceBatchEngineImportTaskExceptionHandler
 			String message = GetterUtil.getString(exception.getMessage());
 
 			if (message.equals(
-					"Company in import process company ID is not null")) {
+					"Importing an instance is already in progress")) {
 
 				return "importing-an-instance-is-already-in-progress";
 			}
@@ -410,9 +405,5 @@ public class PortalInstanceBatchEngineImportTaskExceptionHandler
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
-
-	@Reference
-	private UserNotificationEventLocalService
-		_userNotificationEventLocalService;
 
 }

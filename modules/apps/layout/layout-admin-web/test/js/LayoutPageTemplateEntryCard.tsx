@@ -84,7 +84,7 @@ describe('LayoutPageTemplateEntryCard', () => {
 
 		await user.click(screen.getByTitle('title'));
 
-		expect(openModalMock).toBeCalled();
+		expect(openModalMock).toHaveBeenCalled();
 	});
 
 	it('shows a modal when clicking the preview button', async () => {
@@ -118,7 +118,7 @@ describe('LayoutPageTemplateEntryCard', () => {
 
 		await user.click(button);
 
-		expect(openModalMock).toBeCalled();
+		expect(openModalMock).toHaveBeenCalled();
 	});
 });
 jest.fn();

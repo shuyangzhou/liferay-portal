@@ -1,14 +1,19 @@
 # Java Unit Tests
 
-Runs the unit tests that exercise a changed class.
+Runs the unit tests that exercise a changed class. An integration test under `src/testIntegration` selects nothing, since **Cross-Module Compile** compiles it and no unit test runs it.
 
 ## Match
 
-`^modules/.+\.java$|^portal-(impl|kernel)/.+\.java$`
+`^modules/.+\.java$|^portal-(impl|kernel)/.+\.java$ &! /src/testIntegration/`
+
+## Preconditions
+
+- Portal Classpath
+- Portal Snapshots
 
 ## Command
 
-A change with no behavior intent, such as a rename, formatting, a comment, or Javadoc, needs no unit test, since the compile step and Structural Smoke cover it. When every changed Java file is such a change, run nothing and report **NOT VERIFIED**, naming the change as surface only.
+A change with no behavior intent, such as a rename, formatting, a comment, or Javadoc, needs no unit test, since the compile step and Structural Smoke cover it. When every changed Java file is such a change, run nothing and report **NOT APPLICABLE**, naming the change as surface only.
 
 Take the changed Java files:
 
@@ -18,19 +23,28 @@ bash "${SKILL_DIR}/select_paths.sh" "${MERGE_BASE}" "${VALIDATION_FILE}"
 
 Locate the counterpart test by parallel name: `Foo.java` → `FooTest.java` in the same module's `src/test/java/**` (for OSGi modules) or `portal-impl/test/unit/**` / `portal-kernel/test/unit/**` (for portal-core).
 
+A changed file already under one of those test trees is a test itself, so look for no counterpart. When it declares a `@Test` method, schedule it. When it declares none, it is a base class, rule, or utility that other tests run through, and a change to it alters every one of them, so schedule each test class in the same tree that references it and declares a `@Test` method. Find the references the way **Cross-Module Compile** does, by the fully qualified name outside the package and by the simple name inside it, since a simple name such as `Test` also matches every `import org.junit.Test`:
+
+```bash
+(cd "${REPO_ROOT}" && git grep --cached --files-with-matches --fixed-strings --word-regexp '<FullyQualifiedName>' -- '<test tree>/*.java')
+(cd "${REPO_ROOT}" && git grep --all-match --cached --files-with-matches --fixed-strings --word-regexp -e 'package <package>;' -e '<TypeName>' -- '<test tree>/*.java')
+```
+
+Keep the files either search lists that declare a `@Test` method:
+
+```bash
+printf '%s\n' <referencing file>... \
+	| sort --unique \
+	| (cd "${REPO_ROOT}" && xargs grep --files-with-matches --fixed-strings --word-regexp '@Test')
+```
+
 Do not select `Log4jConfigUtilTest` or `SampleSQLBuilderTest`, even when their counterpart source changes. Both are in `test.batch.class.names.excludes.permanent` and neither runs in the normal CI flow, so pr-check does not run them either.
 
 Verify each counterpart file exists before scheduling it.
 
-When no counterpart exists, nothing here can exercise the change, whatever the module costs to build. Report **NOT VERIFIED** and name the changed class as having no unit test, rather than as uncovered. The same name often exists as an integration test in the sibling `-test` module, which this validation does not run but which does cover the class, so name that file when it exists or the report sends a developer to write a test that is already there. Running a suite that never touches the changed class establishes no more than declining to run it, so module size must not decide the verdict.
+When a changed class has no counterpart, nothing here can exercise it, whatever the module costs to build. Name it as having no unit test. The same name often exists as an integration test in the sibling `-test` module, which this validation does not run but which does cover the class, so name that file when it exists or the report sends a developer to write a test that is already there. When nothing was scheduled at all, neither a counterpart nor a changed test, report **NO COVERAGE**. Otherwise the scheduled runs decide the verdict, and a PASS names the uncovered classes in its note. Running a suite that never touches the changed class establishes no more than declining to run it, so module size must not decide the verdict.
 
-Running the suite anyway is worth doing when it is cheap, since it can catch an unrelated break. It cannot change the verdict either way, because a green suite that never loaded the changed class does not make it a PASS and a red one does not make it a FAIL. Report what the suite did alongside the **NOT VERIFIED**.
-
-Install the portal snapshot before running any module test, since the module compiles against it. Without it the run fails resolving `com.liferay.portal.kernel` and writes no `TEST-*.xml`, which the rule below would otherwise read as a FAIL against the branch.
-
-```bash
-(cd "${REPO_ROOT}" && ant compile install-portal-snapshots)
-```
+Running the suite anyway is worth doing when it is cheap, since it can catch an unrelated break. It cannot change the verdict either way, because a green suite that never loaded the changed class does not make it a PASS and a red one does not make it a FAIL. Report what the suite did alongside the **NO COVERAGE**.
 
 For OSGi modules, run only the specific test class, batching counterparts within the same module. Take the Gradle project path of each changed module:
 
@@ -75,9 +89,9 @@ A run that executed no test is a FAIL, since a suite that ran nothing is not a s
 
 A run can die before any test method executes, as when a test rule's static initializer throws `NoClassDefFoundError`. JUnit still writes a results file, recording a synthesized `classMethod` entry carrying `failures="1"`, so the counts alone read as an ordinary failing test.
 
-Read the module's own build file for the missing class's module, which separates the two cases mechanically. When the module declares it, the branch broke a dependency that used to resolve, so FAIL and name it. When the module never declared it, the run fails on every branch alike and says nothing about this one, so report **NOT VERIFIED** with that finding as the reason. Charging it to the branch sends a developer hunting a regression that is not there, and the sibling module usually shows the declaration that is missing.
+Read the module's own build file for the missing class's module, which separates the two cases mechanically. When the module declares it, the branch broke a dependency that used to resolve, so FAIL and name it. When the module never declared it and the portal jars the runner deploys before this validation do not carry it either, the run fails on every branch alike and says nothing about this one, so report **NOT VERIFIED** with that finding as the reason. Charging it to the branch sends a developer hunting a regression that is not there, and the sibling module usually shows the declaration that is missing.
 
-Selecting by parallel name reaches tests no CI batch runs, since `modules-unit` takes a curated class name list per suite rather than every `*Test.java`. A module's test classpath is built from that module's own declared dependencies, so a test whose rule needs classes the module never declares cannot run whatever the branch does. Tests extending `LiferayUnitTestRule` are the common instance, needing a chain that reaches `com.liferay.petra.process` and beyond.
+Selecting by parallel name reaches tests no CI batch runs, since `modules-unit` takes a curated class name list per suite rather than every `*Test.java`. A module's test runtime classpath is its own declared dependencies plus those portal jars, which is how a test extending `LiferayUnitTestRule` reaches `com.liferay.petra.process` and `log4j` without declaring either.
 
 ## Checklist
 

@@ -165,7 +165,7 @@ describe('CommentsPanel', () => {
 		await userEvent.click(screen.getAllByText('delete')[1]);
 
 		await waitFor(() => {
-			expect(CommentService.deleteComment).toBeCalledWith(
+			expect(CommentService.deleteComment).toHaveBeenCalledWith(
 				expect.objectContaining({
 					commentId: '2',
 					url: 'deleteCommentURL',
@@ -196,7 +196,7 @@ describe('CommentsPanel', () => {
 		await userEvent.click(screen.getAllByText('delete')[0]);
 
 		await waitFor(() => {
-			expect(CommentService.deleteComment).toBeCalledWith(
+			expect(CommentService.deleteComment).toHaveBeenCalledWith(
 				expect.objectContaining({
 					commentId: '1',
 					url: 'deleteCommentURL',
@@ -226,7 +226,7 @@ describe('CommentsPanel', () => {
 		await userEvent.click(screen.getAllByText('delete')[0]);
 
 		await waitFor(() => {
-			expect(CommentService.deleteComment).toBeCalledWith(
+			expect(CommentService.deleteComment).toHaveBeenCalledWith(
 				expect.objectContaining({
 					commentId: '1',
 					url: 'deleteCommentURL',
@@ -246,7 +246,7 @@ describe('CommentsPanel', () => {
 
 		await userEvent.click(thumbUpButton);
 
-		expect(mockFetch).toBeCalledWith('/c/portal/rate_entry', {
+		expect(mockFetch).toHaveBeenCalledWith('/c/portal/rate_entry', {
 			body: expect.objectContaining({score: 1}),
 			method: 'POST',
 		});
@@ -259,7 +259,7 @@ describe('CommentsPanel', () => {
 
 		await userEvent.click(thumbDownButton);
 
-		expect(mockFetch).toBeCalledWith('/c/portal/rate_entry', {
+		expect(mockFetch).toHaveBeenCalledWith('/c/portal/rate_entry', {
 			body: expect.objectContaining({score: 0}),
 			method: 'POST',
 		});
@@ -302,7 +302,7 @@ describe('CommentsPanel', () => {
 		await userEvent.click(screen.getByRole('button', {name: /save/i}));
 
 		await waitFor(() => {
-			expect(addCommentSpy).toBeCalledWith(
+			expect(addCommentSpy).toHaveBeenCalledWith(
 				expect.objectContaining({
 					content: 'mocked data',
 					url: addCommentURL,

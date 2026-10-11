@@ -243,7 +243,7 @@ describe('TextField', () => {
 		fireEvent.blur(input);
 
 		expect(getByText('this-field-is-required')).toBeInTheDocument();
-		expect(onValueSelect).not.toBeCalled();
+		expect(onValueSelect).not.toHaveBeenCalled();
 	});
 
 	it('calls the onValueSelect callback when the input changes', async () => {
@@ -257,7 +257,7 @@ describe('TextField', () => {
 
 		fireEvent.blur(input, {event: {target: {checkValidity: () => true}}});
 
-		expect(onValueSelect).toBeCalledWith(INPUT_NAME, 'something');
+		expect(onValueSelect).toHaveBeenCalledWith(INPUT_NAME, 'something');
 	});
 
 	it('calls the onValueSelect callback when Enter key is pressed', async () => {
@@ -276,7 +276,7 @@ describe('TextField', () => {
 			},
 		});
 
-		expect(onValueSelect).toBeCalledWith(INPUT_NAME, 'something');
+		expect(onValueSelect).toHaveBeenCalledWith(INPUT_NAME, 'something');
 	});
 
 	it('does not call the onValueSelect callback when the input is not valid', async () => {
@@ -293,6 +293,6 @@ describe('TextField', () => {
 
 		fireEvent.blur(input);
 
-		expect(onValueSelect).not.toBeCalled();
+		expect(onValueSelect).not.toHaveBeenCalled();
 	});
 });

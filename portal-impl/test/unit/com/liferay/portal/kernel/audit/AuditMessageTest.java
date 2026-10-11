@@ -32,18 +32,18 @@ public class AuditMessageTest {
 
 	@Test
 	public void testConstructor() throws Exception {
-		AuditRequestThreadLocal auditRequestThreadLocal =
-			AuditRequestThreadLocal.getAuditThreadLocal();
+		AuditRequestContext auditRequestContext =
+			AuditRequestContextThreadLocal.getAuditRequestContext();
 
 		String correlationId = RandomTestUtil.randomString();
 
-		auditRequestThreadLocal.setCorrelationId(correlationId);
+		auditRequestContext.setCorrelationId(correlationId);
 
 		String requestId = RandomTestUtil.randomString();
 
-		auditRequestThreadLocal.setRequestId(requestId);
+		auditRequestContext.setRequestId(requestId);
 
-		auditRequestThreadLocal.setRequestIdGenerated(true);
+		auditRequestContext.setRequestIdGenerated(true);
 
 		AuditMessage auditMessage = new AuditMessage(
 			RandomTestUtil.randomLong(), RandomTestUtil.randomLong(),
@@ -56,7 +56,7 @@ public class AuditMessageTest {
 		Assert.assertEquals(requestId, auditMessage.getRequestId());
 		Assert.assertTrue(auditMessage.isRequestIdGenerated());
 
-		AuditRequestThreadLocal.removeAuditThreadLocal();
+		AuditRequestContextThreadLocal.removeAuditRequestContext();
 	}
 
 	@Test

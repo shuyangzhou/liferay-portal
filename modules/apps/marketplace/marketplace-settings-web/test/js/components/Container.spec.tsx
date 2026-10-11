@@ -31,5 +31,5 @@ test('render container', async () => {
 
 	fireEvent.click(button as HTMLButtonElement);
 
-	expect(onClickMock).toBeCalledTimes(1);
+	expect(onClickMock).toHaveBeenCalledTimes(1);
 });

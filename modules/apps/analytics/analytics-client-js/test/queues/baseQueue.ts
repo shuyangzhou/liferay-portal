@@ -89,7 +89,7 @@ describe('BaseQueue', () => {
 	});
 
 	it('onFlush', async () => {
-		expect(baseQueue.onFlush).toThrowError(
+		expect(baseQueue.onFlush).toThrow(
 			'onFlush should be implemented on the new class'
 		);
 	});

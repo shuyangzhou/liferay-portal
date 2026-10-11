@@ -89,7 +89,7 @@ describe('ItemConfiguration', () => {
 
 		fireEvent.click(backButton);
 
-		expect(selectItem).toBeCalledWith('fragmentItemId1');
+		expect(selectItem).toHaveBeenCalledWith('fragmentItemId1');
 	});
 
 	it('does not show back button when active item is not an editable', async () => {

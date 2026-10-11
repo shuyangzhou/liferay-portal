@@ -17,7 +17,7 @@ describe('throttle()', () => {
 	it('does nothing if the throttled function is not called', () => {
 		throttle(mockFunction, 100);
 
-		expect(mockFunction).not.toBeCalled();
+		expect(mockFunction).not.toHaveBeenCalled();
 	});
 
 	it('calls the throttled function as soon as it is invoked', () => {
@@ -25,7 +25,7 @@ describe('throttle()', () => {
 
 		throttled(1);
 
-		expect(mockFunction).toBeCalledWith(1);
+		expect(mockFunction).toHaveBeenCalledWith(1);
 	});
 
 	it('calls the throttled function only once', () => {
@@ -34,7 +34,7 @@ describe('throttle()', () => {
 		throttled(1);
 		throttled(2);
 
-		expect(mockFunction).toBeCalledWith(1);
+		expect(mockFunction).toHaveBeenCalledWith(1);
 		expect(mockFunction.mock.calls.length).toBe(1);
 	});
 
@@ -49,7 +49,7 @@ describe('throttle()', () => {
 
 		jest.runAllTimers();
 
-		expect(mockFunction).toBeCalledWith(2);
+		expect(mockFunction).toHaveBeenCalledWith(2);
 	});
 
 	it('uses the last-passed arguments when throttling multiple calls', () => {
@@ -64,7 +64,7 @@ describe('throttle()', () => {
 
 		jest.runAllTimers();
 
-		expect(mockFunction).toBeCalledWith(3);
+		expect(mockFunction).toHaveBeenCalledWith(3);
 	});
 
 	it('uses the last-employed context when throttling multiple calls', () => {

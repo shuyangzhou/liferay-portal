@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service.persistence.impl;
 
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dao.orm.CountFinderPathRegistry;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
@@ -51,6 +52,10 @@ public class CollectionPersistenceFinder
 		_defaultOrderByJpql = defaultOrderByJpql;
 		_orderByEntityAlias = orderByEntityAlias;
 		_uniquePersistenceFinder = uniquePersistenceFinder;
+
+		if (countFinderPath.isCountResult()) {
+			CountFinderPathRegistry.register(countFinderPath);
+		}
 
 		List<Integer> arrayableIndexes = new ArrayList<>();
 
@@ -226,44 +231,19 @@ public class CollectionPersistenceFinder
 	private String _buildFindSql(
 		Object[] values, OrderByComparator<T> orderByComparator) {
 
-		StringBundler sb = null;
+		String sqlWhere = buildSQLWhere(sqlSelectWhere, values, false);
 
 		if (orderByComparator == null) {
-			sb = new StringBundler((finderColumns.length * 2) + 3);
-		}
-		else {
-			sb = new StringBundler(
-				(finderColumns.length * 2) + 3 +
-					(orderByComparator.getOrderByFields().length * 2));
+			return sqlWhere + _defaultOrderByJpql;
 		}
 
-		sb.append(sqlSelectWhere);
+		StringBundler sb = new StringBundler(
+			(orderByComparator.getOrderByFields().length * 2) + 2);
 
-		for (int i = 0; i < finderColumns.length; i++) {
-			String fragment = finderColumns[i].getSqlFragment(values[i], false);
+		sb.append(sqlWhere);
 
-			if (fragment.isEmpty()) {
-				continue;
-			}
-
-			sb.append(fragment);
-			sb.append(" AND ");
-		}
-
-		if (!where.isEmpty()) {
-			sb.append(where);
-		}
-		else if (sb.index() > 1) {
-			sb.setIndex(sb.index() - 1);
-		}
-
-		if (orderByComparator == null) {
-			sb.append(_defaultOrderByJpql);
-		}
-		else {
-			basePersistenceImpl.appendOrderByComparator(
-				sb, _orderByEntityAlias, orderByComparator);
-		}
+		basePersistenceImpl.appendOrderByComparator(
+			sb, _orderByEntityAlias, orderByComparator);
 
 		return sb.toString();
 	}
