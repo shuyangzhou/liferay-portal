@@ -212,6 +212,10 @@ public class FragmentCollectionContributorTest {
 				fragmentEntries.get("test-section-fragment-entry"));
 			Assert.assertNull(
 				fragmentEntries.get("test-unsupported-fragment-entry"));
+
+			Assert.assertNotNull(
+				_fragmentCollectionContributorRegistry.getFragmentEntry(
+					"test-component-fragment-entry"));
 		}
 		finally {
 			serviceRegistration.unregister();
