@@ -408,16 +408,13 @@ public class GCSStore implements Store {
 
 		Bucket bucket = _gcsStore.get(_gcsStoreConfiguration.bucketName());
 
-		String path = null;
-
 		if (Validator.isNull(dirName) ||
 			dirName.equals(StringPool.FORWARD_SLASH)) {
 
-			path = _getDirectoryKey(companyId, repositoryId, StringPool.BLANK);
+			dirName = StringPool.BLANK;
 		}
-		else {
-			path = _getDirectoryKey(companyId, repositoryId, dirName);
-		}
+
+		String path = _getDirectoryKey(companyId, repositoryId, dirName);
 
 		Page<Blob> blobPage = bucket.list(Storage.BlobListOption.prefix(path));
 
