@@ -13,6 +13,7 @@ import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMStructureService;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMStructureUtil;
 import com.liferay.dynamic.data.mapping.storage.StorageType;
+import com.liferay.dynamic.data.mapping.util.comparator.StructureNameComparator;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -487,6 +488,19 @@ public class DDMStructureServiceTest extends BaseDDMServiceTestCase {
 	}
 
 	@Test
+	public void testSearchOrderByName() throws Exception {
+		_ddmStructures.add(
+			addStructure(_classNameId, StringUtil.randomString()));
+		_ddmStructures.add(
+			addStructure(_classNameId, StringUtil.randomString()));
+		_ddmStructures.add(
+			addStructure(_classNameId, StringUtil.randomString()));
+
+		_testSearchOrderByName(false);
+		_testSearchOrderByName(true);
+	}
+
+	@Test
 	public void testSearchWithSiteAdminPermission() throws Exception {
 		_ddmStructures.add(
 			addStructure(_classNameId, StringUtil.randomString()));
@@ -563,6 +577,22 @@ public class DDMStructureServiceTest extends BaseDDMServiceTestCase {
 			structure.getStructureKey(), structure.getNameMap(),
 			structure.getDescriptionMap(), structure.getDefinition(),
 			ServiceContextTestUtil.getServiceContext(structure.getGroupId()));
+	}
+
+	private void _testSearchOrderByName(boolean ascending) throws Exception {
+		StructureNameComparator structureNameComparator =
+			new StructureNameComparator(ascending);
+
+		_ddmStructures.sort(structureNameComparator);
+
+		Assert.assertEquals(
+			_ddmStructures,
+			_ddmStructureService.search(
+				TestPropsValues.getCompanyId(), new long[] {group.getGroupId()},
+				_classNameId, StringPool.BLANK,
+				DDMStructureConstants.TYPE_DEFAULT,
+				WorkflowConstants.STATUS_ANY, QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS, structureNameComparator));
 	}
 
 	private long _classNameId;

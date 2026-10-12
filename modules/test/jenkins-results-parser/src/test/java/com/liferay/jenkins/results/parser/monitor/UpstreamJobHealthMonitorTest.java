@@ -8,7 +8,6 @@ package com.liferay.jenkins.results.parser.monitor;
 import com.liferay.jenkins.results.parser.JenkinsMasterTestUtil;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.RandomTestUtil;
-import com.liferay.jenkins.results.parser.UrlReader;
 
 import java.io.IOException;
 
@@ -79,11 +78,11 @@ public class UpstreamJobHealthMonitorTest
 	public void testExecuteHeadIsUnreadable() throws Exception {
 		String sha = _newSHA();
 
-		UrlReader urlReader = _setURLReaderOutput(
+		_setURLReaderOutput(
 			null, _newBuildJSONObject(0, _newInvocationDescription(sha)));
 
-		setUrlReaderException(
-			new IOException("Unable to read"), _HEAD_COMMIT_API_URL, urlReader);
+		setURLReaderException(
+			new IOException("Unable to read"), _HEAD_COMMIT_API_URL);
 
 		MonitorResult monitorResult = _execute(_newMonitorProperties());
 
@@ -275,7 +274,7 @@ public class UpstreamJobHealthMonitorTest
 		return new UpstreamJobHealthMonitor(monitorConfigs.get(0));
 	}
 
-	private UrlReader _setURLReaderOutput(
+	private void _setURLReaderOutput(
 			JSONObject headCommitJSONObject, JSONObject... buildJSONObjects)
 		throws Exception {
 
@@ -285,22 +284,19 @@ public class UpstreamJobHealthMonitorTest
 			buildsJSONArray.put(buildJSONObject);
 		}
 
-		UrlReader urlReader = mockUrlReader();
+		mockURLReaders();
 
 		JSONObject jobJSONObject = new JSONObject(
 		).put(
 			"builds", buildsJSONArray
 		);
 
-		setUrlReaderOutput(jobJSONObject.toString(), _JOB_API_URL, urlReader);
+		setURLReaderOutput(jobJSONObject.toString(), _JOB_API_URL);
 
 		if (headCommitJSONObject != null) {
-			setUrlReaderOutput(
-				headCommitJSONObject.toString(), _HEAD_COMMIT_API_URL,
-				urlReader);
+			setURLReaderOutput(
+				headCommitJSONObject.toString(), _HEAD_COMMIT_API_URL);
 		}
-
-		return urlReader;
 	}
 
 	private void _testUpstreamJobHealthMonitorInvalidProperty(

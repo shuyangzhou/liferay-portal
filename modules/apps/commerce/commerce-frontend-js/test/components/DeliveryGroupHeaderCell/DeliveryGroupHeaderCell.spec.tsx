@@ -186,14 +186,14 @@ describe('DeliveryGroupHeaderCell', () => {
 		});
 
 		expect(window.confirm).toHaveBeenCalled();
-		expect(handleDelete).not.toBeCalled();
+		expect(handleDelete).not.toHaveBeenCalled();
 
 		await act(async () => {
 			deleteMenuItem.click();
 		});
 
-		expect(window.confirm).toBeCalled();
-		expect(handleDelete).toBeCalledWith(deliveryGroup);
+		expect(window.confirm).toHaveBeenCalled();
+		expect(handleDelete).toHaveBeenCalledWith(deliveryGroup);
 	});
 
 	it('Must update the delivery group', async () => {
@@ -240,7 +240,7 @@ describe('DeliveryGroupHeaderCell', () => {
 			saveButton.click();
 		});
 
-		expect(handleSubmit).toBeCalledWith({
+		expect(handleSubmit).toHaveBeenCalledWith({
 			address: {
 				addressCountry: 'United States',
 				addressLocality: 'addressLocality1',

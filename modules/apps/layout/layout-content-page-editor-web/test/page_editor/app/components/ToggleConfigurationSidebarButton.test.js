@@ -49,7 +49,7 @@ describe('ToggleConfigurationSidebarButton', () => {
 
 		await userEvent.click(button);
 
-		expect(switchSidebarPanel).toBeCalledWith({
+		expect(switchSidebarPanel).toHaveBeenCalledWith({
 			itemConfigurationOpen: true,
 		});
 	});

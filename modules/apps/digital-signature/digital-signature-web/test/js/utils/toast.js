@@ -26,7 +26,7 @@ describe('toast', () => {
 	it('executes success toast with default values', () => {
 		successToast();
 
-		expect(openToast).toBeCalledWith({
+		expect(openToast).toHaveBeenCalledWith({
 			message: Liferay.Language.get(
 				'your-request-completed-successfully'
 			),
@@ -38,7 +38,7 @@ describe('toast', () => {
 	it('executes success toast with values', () => {
 		successToast('message', 'title');
 
-		expect(openToast).toBeCalledWith({
+		expect(openToast).toHaveBeenCalledWith({
 			message: 'message',
 			title: 'title',
 			type: 'success',
@@ -48,7 +48,7 @@ describe('toast', () => {
 	it('executes error toast with default values', () => {
 		errorToast();
 
-		expect(openToast).toBeCalledWith({
+		expect(openToast).toHaveBeenCalledWith({
 			message: Liferay.Language.get('an-unexpected-error-occurred'),
 			title: Liferay.Language.get('error'),
 			type: 'danger',
@@ -58,7 +58,7 @@ describe('toast', () => {
 	it('executes error toast with values', () => {
 		errorToast('message', 'title');
 
-		expect(openToast).toBeCalledWith({
+		expect(openToast).toHaveBeenCalledWith({
 			message: 'message',
 			title: 'title',
 			type: 'danger',

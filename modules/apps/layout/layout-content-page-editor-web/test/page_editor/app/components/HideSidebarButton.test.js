@@ -41,6 +41,6 @@ describe('HideSidebarButton', () => {
 			screen.getByLabelText('toggle-sidebars', {exact: false})
 		);
 
-		expect(onToggleSidebars).toBeCalled();
+		expect(onToggleSidebars).toHaveBeenCalled();
 	});
 });

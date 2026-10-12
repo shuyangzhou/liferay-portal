@@ -72,8 +72,12 @@ function getJestConfig({rootDir = '<rootDir>'}) {
 			'.+': [
 				'babel-jest',
 				{
+					plugins: [
+						'@babel/plugin-transform-dynamic-import',
+						'@babel/plugin-transform-export-namespace-from',
+						'@babel/plugin-transform-modules-commonjs',
+					],
 					presets: [
-						'@babel/preset-env',
 						'@babel/preset-react',
 						'@babel/preset-typescript',
 					],

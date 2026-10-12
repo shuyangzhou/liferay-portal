@@ -113,7 +113,7 @@ describe('UndoHistory', () => {
 			if (!button.disabled) {
 				await act(async () => userEvent.click(button));
 
-				expect(multipleUndo).toBeCalledWith(
+				expect(multipleUndo).toHaveBeenCalledWith(
 					expect.objectContaining({
 						numberOfActions: mockState.redoHistory.length - i,
 						type: UNDO_TYPES.redo,
@@ -132,7 +132,7 @@ describe('UndoHistory', () => {
 			if (!button.disabled) {
 				await act(async () => userEvent.click(button));
 
-				expect(multipleUndo).toBeCalledWith(
+				expect(multipleUndo).toHaveBeenCalledWith(
 					expect.objectContaining({
 						numberOfActions: j,
 						type: UNDO_TYPES.undo,

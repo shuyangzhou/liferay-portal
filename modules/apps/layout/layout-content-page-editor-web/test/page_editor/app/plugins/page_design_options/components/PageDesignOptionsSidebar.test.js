@@ -109,7 +109,7 @@ describe('PageDesignOptionsSidebar', () => {
 			await userEvent.click(button);
 		});
 
-		expect(changeMasterLayout).toBeCalledWith(
+		expect(changeMasterLayout).toHaveBeenCalledWith(
 			expect.objectContaining({masterLayoutPageTemplateEntryERC: '15'})
 		);
 	});

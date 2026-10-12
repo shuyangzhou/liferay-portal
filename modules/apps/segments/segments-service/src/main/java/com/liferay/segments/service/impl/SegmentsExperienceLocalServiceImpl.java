@@ -151,8 +151,9 @@ public class SegmentsExperienceLocalServiceImpl
 			segmentsEntryERC, segmentsExperienceKey);
 		_validateLayout(plid, segmentsExperienceKey);
 		_validateName(nameMap);
-		_validatePriority(groupId, plid, priority);
 		_validateSegmentsExperienceKey(groupId, plid, segmentsExperienceKey);
+
+		_validatePriority(groupId, plid, priority);
 
 		long segmentsExperienceId = counterLocalService.increment();
 
@@ -891,11 +892,18 @@ public class SegmentsExperienceLocalServiceImpl
 		SegmentsExperience segmentsExperience =
 			segmentsExperiencePersistence.fetchByG_P_P(groupId, plid, priority);
 
-		if (segmentsExperience != null) {
-			throw new SegmentsExperiencePriorityException(
-				"A segments experience with the priority " + priority +
-					" already exists");
+		if (segmentsExperience == null) {
+			return;
 		}
+
+		if (priority == 0) {
+			throw new SegmentsExperiencePriorityException(
+				"Only the default segments experience can have priority 0");
+		}
+
+		throw new SegmentsExperiencePriorityException(
+			"A segments experience with the priority " + priority +
+				" already exists");
 	}
 
 	private void _validateSegmentsExperienceKey(

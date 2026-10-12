@@ -150,7 +150,7 @@ describe('LayoutReports renders proper component', () => {
 
 		userEvent.click(button);
 
-		expect(loadIssues).toBeCalled();
+		expect(loadIssues).toHaveBeenCalled();
 	});
 
 	it('does not render relaunch button if it is private page', () => {

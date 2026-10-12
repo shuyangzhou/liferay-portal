@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import ApiHelper from '../../../common/services/ApiHelper';
+import ApiHelper, {RequestResult} from '../../../common/services/ApiHelper';
+import {WORKFLOW_STATUS} from '../../../common/utils/constants';
 
 export type AssetStatistics = {
 	approvedCount: number;
@@ -12,11 +13,22 @@ export type AssetStatistics = {
 	expiredCount: number;
 	expiringSoonCount: number;
 	inDraftCount: number;
+	longStandingDraftsCount: number;
 	pendingCount: number;
 	reviewDateOverdueCount: number;
 	scheduledCount: number;
 	totalCount: number;
 	upcomingReviewCount: number;
+};
+
+export type Contributor = {
+	frequency: number;
+	name: string | null;
+};
+
+export type Contributors = {
+	contributors: Contributor[];
+	totalCount: number;
 };
 
 export type DuplicateTitle = {
@@ -31,21 +43,27 @@ export type DuplicateTopicAsset = {
 	title: string;
 };
 
-export type StatusFacetBucket = {
+export type FacetBucket = {
 	displayName: string;
 	frequency: number;
 	term: string;
 };
 
+const CONTRIBUTORS_AGGREGATION_NAME = 'contributors';
+
 const DUPLICATE_TITLES_AGGREGATION_NAME = 'duplicateTitles';
+
+const LONG_STANDING_DRAFT_DAYS = 30;
+
+export const LONG_STANDING_DRAFTS_PAGE_SIZE = 8;
+
+const MAX_CONTRIBUTORS = 7;
 
 const MAX_FACET_TERMS = 10000;
 
-const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
+export const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
 
 const MINIMUM_DUPLICATE_FREQUENCY = 2;
-
-const NEEDS_REVIEW_PAGE_SIZE = 8;
 
 const NESTED_FIELDS = 'embedded,systemProperties.objectDefinitionBrief';
 
@@ -81,6 +99,64 @@ async function getAssetStatistics(
 	};
 }
 
+async function getContributors(
+	filter: string,
+	groupId?: number
+): Promise<RequestResult<Contributors>> {
+	const searchParams = new URLSearchParams({
+		filter: getScopedFilter(filter, groupId),
+		pageSize: '1',
+	});
+
+	const {data, error} = await ApiHelper.post<{
+		searchFacets?: Record<string, FacetBucket[]>;
+		totalCount: number;
+	}>(`${SEARCH_URL}?${searchParams}`, {
+		attributes: {'search.empty.search': true},
+		facetConfigurations: [
+			{
+				aggregationName: CONTRIBUTORS_AGGREGATION_NAME,
+				frequencyThreshold: 1,
+				maxTerms: MAX_CONTRIBUTORS,
+				name: 'user',
+			},
+		],
+	});
+
+	if (!data) {
+		return {data: null, error};
+	}
+
+	const buckets = data.searchFacets?.[CONTRIBUTORS_AGGREGATION_NAME] ?? [];
+
+	const userAccounts = await Promise.all(
+		buckets.map(({term}) =>
+			ApiHelper.get<{name: string}>(
+				`/o/headless-admin-user/v1.0/user-accounts/${term}`
+			)
+		)
+	);
+
+	const failedUserAccount = userAccounts.find(
+		({error, status}) => error && status !== 'NOT_FOUND'
+	);
+
+	if (failedUserAccount?.error) {
+		return {data: null, error: failedUserAccount.error};
+	}
+
+	return {
+		data: {
+			contributors: buckets.map(({frequency}, index) => ({
+				frequency,
+				name: userAccounts[index].data?.name ?? null,
+			})),
+			totalCount: data.totalCount,
+		},
+		error: null,
+	};
+}
+
 function getContentProgress(
 	filter: string,
 	groupId?: number,
@@ -102,7 +178,7 @@ function getContentProgress(
 	// switch must travel as an attribute (the query parameter is ignored).
 
 	return ApiHelper.post<{
-		searchFacets?: {statusFacet?: StatusFacetBucket[]};
+		searchFacets?: {statusFacet?: FacetBucket[]};
 	}>(`${SEARCH_URL}?${searchParams}`, {
 		attributes: {'search.empty.search': true},
 		facetConfigurations: [
@@ -125,13 +201,22 @@ function getScopedFilter(filter: string, groupId?: number) {
 	return `${filter} and groupIds/any(g:g eq ${Number(groupId)})`;
 }
 
-function getSearchURL(filter: string, sort: string, groupId?: number) {
+function getLongStandingDraftsThresholdDate() {
+	return new Date(
+		Date.now() - LONG_STANDING_DRAFT_DAYS * MILLISECONDS_PER_DAY
+	);
+}
+
+function getLongStandingDraftsURL(filter: string, groupId?: number) {
 	const searchParams = new URLSearchParams({
 		emptySearch: 'true',
-		filter: getScopedFilter(filter, groupId),
+		filter: getScopedFilter(
+			`${filter} and status eq ${WORKFLOW_STATUS.DRAFT} and dateModified lt ${getLongStandingDraftsThresholdDate().toISOString()}`,
+			groupId
+		),
 		nestedFields: NESTED_FIELDS,
-		pageSize: String(NEEDS_REVIEW_PAGE_SIZE),
-		sort,
+		pageSize: String(LONG_STANDING_DRAFTS_PAGE_SIZE),
+		sort: 'dateModified:asc',
 	});
 
 	return `${SEARCH_URL}?${searchParams}`;
@@ -226,7 +311,9 @@ export default {
 	getAssetStatistics,
 	getCMSEntryClassNames,
 	getContentProgress,
+	getContributors,
 	getDuplicateTitles,
 	getDuplicateTopicsCount,
-	getSearchURL,
+	getLongStandingDraftsThresholdDate,
+	getLongStandingDraftsURL,
 };

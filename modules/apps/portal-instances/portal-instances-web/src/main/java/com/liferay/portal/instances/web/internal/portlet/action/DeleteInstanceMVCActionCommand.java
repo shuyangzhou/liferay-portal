@@ -8,6 +8,8 @@ package com.liferay.portal.instances.web.internal.portlet.action;
 import com.liferay.batch.engine.jaxrs.uri.BatchEngineUriInfo;
 import com.liferay.headless.portal.instances.resource.v1_0.PortalInstanceResource;
 import com.liferay.portal.instances.constants.PortalInstancesPortletKeys;
+import com.liferay.portal.instances.web.internal.util.PortalInstancesResourceContextUtil;
+import com.liferay.portal.kernel.exception.NoSuchCompanyException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.Language;
@@ -16,25 +18,16 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
-import com.liferay.portal.kernel.servlet.HttpHeaders;
-import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.batch.engine.resource.VulcanBatchEngineImportTaskResourceFactory;
 
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletRequestWrapper;
-
 import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
 
 import org.osgi.service.component.ComponentServiceObjects;
 import org.osgi.service.component.annotations.Component;
@@ -62,8 +55,24 @@ public class DeleteInstanceMVCActionCommand extends BaseMVCActionCommand {
 
 		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
+		String portalInstanceId = ParamUtil.getString(
+			actionRequest, "portalInstanceId");
+
 		try {
+			_companyLocalService.getCompanyByWebId(portalInstanceId);
+
 			_deletePortalInstance(actionRequest);
+		}
+		catch (NoSuchCompanyException noSuchCompanyException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(noSuchCompanyException);
+			}
+
+			jsonObject.put(
+				"error",
+				_language.format(
+					actionRequest.getLocale(),
+					"the-instance-x-is-no-longer-available", portalInstanceId));
 		}
 		catch (Exception exception) {
 			_log.error(exception);
@@ -86,11 +95,13 @@ public class DeleteInstanceMVCActionCommand extends BaseMVCActionCommand {
 
 		try {
 			portalInstanceResource.setContextAcceptLanguage(
-				_getAcceptLanguage(actionRequest));
+				PortalInstancesResourceContextUtil.getAcceptLanguage(
+					_portal.getLocale(actionRequest)));
 			portalInstanceResource.setContextCompany(
 				_portal.getCompany(actionRequest));
 			portalInstanceResource.setContextHttpServletRequest(
-				_getHttpServletRequest(actionRequest));
+				PortalInstancesResourceContextUtil.getHttpServletRequest(
+					_portal.getHttpServletRequest(actionRequest)));
 			portalInstanceResource.setContextUriInfo(
 				new BatchEngineUriInfo.Builder(
 				).build());
@@ -112,51 +123,11 @@ public class DeleteInstanceMVCActionCommand extends BaseMVCActionCommand {
 		}
 	}
 
-	private AcceptLanguage _getAcceptLanguage(ActionRequest actionRequest) {
-		Locale locale = _portal.getLocale(actionRequest);
-
-		return new AcceptLanguage() {
-
-			@Override
-			public List<Locale> getLocales() {
-				return Collections.singletonList(locale);
-			}
-
-			@Override
-			public String getPreferredLanguageId() {
-				return LocaleUtil.toLanguageId(locale);
-			}
-
-			@Override
-			public Locale getPreferredLocale() {
-				return locale;
-			}
-
-		};
-	}
-
-	private HttpServletRequest _getHttpServletRequest(
-		ActionRequest actionRequest) {
-
-		return new HttpServletRequestWrapper(
-			_portal.getHttpServletRequest(actionRequest)) {
-
-			@Override
-			public String getHeader(String name) {
-				if (StringUtil.equalsIgnoreCase(
-						name, HttpHeaders.CONTENT_TYPE)) {
-
-					return ContentTypes.APPLICATION_JSON;
-				}
-
-				return super.getHeader(name);
-			}
-
-		};
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		DeleteInstanceMVCActionCommand.class);
+
+	@Reference
+	private CompanyLocalService _companyLocalService;
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<PortalInstanceResource>

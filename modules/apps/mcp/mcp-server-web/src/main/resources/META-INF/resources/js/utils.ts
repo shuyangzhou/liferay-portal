@@ -13,6 +13,8 @@ import {
 	ToolSet,
 	ToolSummary,
 	ToolTreeItem,
+	TreeFilter,
+	TreeItem,
 } from './types';
 
 type ToastMessageOptions = {
@@ -98,28 +100,39 @@ export function buildToolWaves<T extends {toolName: string}>(
 export function filterDataMaskTree(
 	tree: DataMaskTreeItem[],
 	query: string
-): {expandedKeys: string[]; items: DataMaskTreeItem[]} {
-	if (!query) {
+): TreeFilter {
+	const loweredQuery = query.trim().toLowerCase();
+
+	if (!loweredQuery) {
 		return {
-			expandedKeys: tree.map((group) => group.id),
-			items: tree,
+			expandedKeys: new Set(tree.map((group) => group.id)),
+			matchCount: 0,
+			visibleKeys: new Set<string>(),
 		};
 	}
 
-	const loweredQuery = query.toLowerCase();
+	return filterTree(
+		tree,
+		(item) =>
+			!item.children && item.name.toLowerCase().includes(loweredQuery)
+	);
+}
 
-	const items = tree.flatMap((group) => {
-		const children = (group.children ?? []).filter((child) =>
-			child.name.toLowerCase().includes(loweredQuery)
-		);
+export function filterTree<T extends TreeItem<T>>(
+	tree: T[],
+	matches: (item: T) => boolean
+): TreeFilter {
+	const expandedKeys = new Set<string>();
+	const visibleKeys = new Set<string>();
 
-		return children.length ? [{...group, children}] : [];
-	});
+	const matchCount = collectVisibleKeys(
+		tree,
+		matches,
+		expandedKeys,
+		visibleKeys
+	);
 
-	return {
-		expandedKeys: items.map((group) => group.id),
-		items,
-	};
+	return {expandedKeys, matchCount, visibleKeys};
 }
 
 export function getAssignedToolIds(profileTools: ProfileTool[]): Set<string> {
@@ -222,6 +235,38 @@ export function toODataStringLiteral(value: string): string {
 
 export function toToolId(toolSetName: string, toolName: string): string {
 	return `${toolSetName}${TOOL_ID_SEPARATOR}${toolName}`;
+}
+
+function collectVisibleKeys<T extends TreeItem<T>>(
+	tree: T[],
+	matches: (item: T) => boolean,
+	expandedKeys: Set<string>,
+	visibleKeys: Set<string>
+): number {
+	let matchCount = 0;
+
+	for (const item of tree) {
+		const childMatchCount = collectVisibleKeys(
+			item.children ?? [],
+			matches,
+			expandedKeys,
+			visibleKeys
+		);
+
+		if (childMatchCount) {
+			expandedKeys.add(item.id);
+		}
+
+		const itemMatches = matches(item);
+
+		if (itemMatches || childMatchCount) {
+			visibleKeys.add(item.id);
+		}
+
+		matchCount += childMatchCount + Number(itemMatches);
+	}
+
+	return matchCount;
 }
 
 function fromToolId(id: string): {toolName: string; toolSetName: string} {

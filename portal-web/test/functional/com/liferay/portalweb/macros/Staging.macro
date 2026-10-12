@@ -612,7 +612,17 @@ definition {
 	macro deactivateStagingCP(siteName = null) {
 		LexiconEntry.gotoHeaderMenuItem(menuItem = "Staging Configuration");
 
-		if (IsVisible(key_fieldLabel = "Enabled", locator1 = "Checkbox#CHECKBOX_LABEL")) {
+		var stagingEnabled = "false";
+
+		if (IsElementPresent(locator1 = "SiteSettingsStaging#ENABLED_ON_LOCAL_LIVE_CHECKBOX")) {
+			var stagingEnabled = "true";
+		}
+
+		if (IsElementPresent(locator1 = "SiteSettingsStaging#ENABLED_ON_REMOTE_LIVE_CHECKBOX")) {
+			var stagingEnabled = "true";
+		}
+
+		if (${stagingEnabled} == "true") {
 			Check.checkHiddenToggleSwitch(locator1 = "SiteSettingsStaging#NONE_RADIO");
 
 			AssertClickNoError(
@@ -626,9 +636,13 @@ definition {
 				value1 = "Staging is successfully disabled.");
 		}
 
-		AssertNotVisible(
-			key_fieldLabel = "Enabled",
-			locator1 = "Checkbox#CHECKBOX_LABEL");
+		// The Staging Configuration page offers a None, Local Live and
+		// Remote Live radio group, so staging is off when neither the Local
+		// Live nor the Remote Live radio is checked. See LPD-107515.
+
+		AssertElementNotPresent(locator1 = "SiteSettingsStaging#ENABLED_ON_LOCAL_LIVE_CHECKBOX");
+
+		AssertElementNotPresent(locator1 = "SiteSettingsStaging#ENABLED_ON_REMOTE_LIVE_CHECKBOX");
 	}
 
 	@summary = "Default summary"

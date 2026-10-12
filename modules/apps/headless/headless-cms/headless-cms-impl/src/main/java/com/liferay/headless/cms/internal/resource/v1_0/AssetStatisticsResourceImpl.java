@@ -8,7 +8,8 @@ package com.liferay.headless.cms.internal.resource.v1_0;
 import com.liferay.depot.service.DepotEntryLocalService;
 import com.liferay.depot.service.DepotEntryService;
 import com.liferay.headless.cms.dto.v1_0.AssetStatistics;
-import com.liferay.headless.cms.internal.links.BrokenLinkAssetSearcher;
+import com.liferay.headless.cms.internal.link.BrokenLinkAssetSearcher;
+import com.liferay.headless.cms.internal.link.BrokenLinkTarget;
 import com.liferay.headless.cms.internal.util.CMSGroupUtil;
 import com.liferay.headless.cms.resource.v1_0.AssetStatisticsResource;
 import com.liferay.object.constants.ObjectFolderConstants;
@@ -26,6 +27,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.search.aggregation.Aggregations;
 import com.liferay.portal.search.searcher.SearchRequestBuilderFactory;
 import com.liferay.portal.search.searcher.Searcher;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskInstanceTokenTable;
@@ -199,21 +201,21 @@ public class AssetStatisticsResourceImpl
 		try {
 			BrokenLinkAssetSearcher brokenLinkAssetSearcher =
 				new BrokenLinkAssetSearcher(
-					_objectEntryLocalService, _searcher,
+					_aggregations, _objectEntryLocalService, _searcher,
 					_searchRequestBuilderFactory);
 
-			Map<String, Long> expiredAssetObjectEntryIdsMap =
-				brokenLinkAssetSearcher.getExpiredAssetObjectEntryIdsMap(
+			Map<String, BrokenLinkTarget> brokenLinkTargetsMap =
+				brokenLinkAssetSearcher.getBrokenLinkTargetsMap(
 					contextCompany.getCompanyId(), objectDefinitionIds,
-					spaceGroupIds);
+					selectedSpaceGroupIds, spaceGroupIds);
 
-			if (expiredAssetObjectEntryIdsMap.isEmpty()) {
+			if (brokenLinkTargetsMap.isEmpty()) {
 				return 0;
 			}
 
 			return brokenLinkAssetSearcher.getCount(
 				contextCompany.getCompanyId(), selectedSpaceGroupIds,
-				expiredAssetObjectEntryIdsMap.keySet());
+				brokenLinkTargetsMap.keySet());
 		}
 		catch (Exception exception) {
 			if (_log.isWarnEnabled()) {
@@ -290,6 +292,9 @@ public class AssetStatisticsResourceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AssetStatisticsResourceImpl.class);
+
+	@Reference
+	private Aggregations _aggregations;
 
 	@Reference
 	private DepotEntryLocalService _depotEntryLocalService;

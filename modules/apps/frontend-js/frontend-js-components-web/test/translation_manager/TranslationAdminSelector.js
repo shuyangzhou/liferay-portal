@@ -399,6 +399,6 @@ describe('TranslationAdminSelector', () => {
 
 		fireEvent.click(trigger);
 
-		expect(onSelectorActiveChange).toBeCalled();
+		expect(onSelectorActiveChange).toHaveBeenCalled();
 	});
 });

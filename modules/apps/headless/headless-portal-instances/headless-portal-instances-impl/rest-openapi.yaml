@@ -41,7 +41,7 @@ components:
             properties:
                 active:
                     description:
-                        whether the portal instance is active.
+                        whether the portal instance is active. PATCH ignores it; use the activate and deactivate endpoints to change it.
                     type: boolean
                 admin:
                     $ref: "#/components/schemas/Admin"
@@ -60,7 +60,7 @@ components:
                     type: string
                 maxUsers:
                     description:
-                        maximum number of users, or 0 for unlimited.
+                        maximum number of users, or 0 for unlimited. PATCH ignores it.
                     format: int32
                     type: integer
                 portalInstanceId:
@@ -333,7 +333,7 @@ paths:
         patch:
             # @review
             description:
-                Updates the portal instance with information sent in the request body. Only the provided fields are updated.
+                Updates the portal instance's domain and virtual host with the values sent in the request body. Only the provided fields are updated.
             operationId: patchPortalInstance
             parameters:
                 -   in: path

@@ -32,6 +32,7 @@ const TABS = [
 
 interface ObjectActionContainerProps {
 	allowScriptContentToBeExecutedOrIncluded: boolean;
+	companyAdmin: boolean;
 	editingObjectAction?: boolean;
 	hasUserNotificationHandler: boolean;
 	isApproved?: boolean;
@@ -61,6 +62,7 @@ export type ActionError = FormError<ObjectAction & ObjectActionParameters> & {
 
 export function ObjectActionContainer({
 	allowScriptContentToBeExecutedOrIncluded,
+	companyAdmin,
 	editingObjectAction = false,
 	hasUserNotificationHandler,
 	isApproved,
@@ -197,6 +199,7 @@ export function ObjectActionContainer({
 
 				<ClayTabs.TabPane>
 					<ActionBuilder
+						companyAdmin={companyAdmin}
 						disableGroovyAction={disableGroovyAction}
 						errors={
 							Object.keys(errors).length ? errors : backEndErrors

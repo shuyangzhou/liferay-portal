@@ -41,7 +41,6 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -49,7 +48,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
@@ -186,7 +184,7 @@ public class FeatureFlagsBagProviderImpl
 	}
 
 	private FeatureFlagsBag _createFeatureFlagsBag(long companyId) {
-		Map<String, FeatureFlag> featureFlags = new TreeMap<>();
+		Map<String, FeatureFlag> featureFlags = new HashMap<>();
 
 		Map<String, FeatureFlag> systemFeatureFlags = new HashMap<>();
 
@@ -203,8 +201,7 @@ public class FeatureFlagsBagProviderImpl
 
 		_populateFeatureFlagsMap(companyId, featureFlags, systemFeatureFlags);
 
-		return new FeatureFlagsBag(
-			companyId, Collections.unmodifiableMap(featureFlags));
+		return new FeatureFlagsBag(companyId, featureFlags);
 	}
 
 	private List<String> _getFeatureFlagKeys(

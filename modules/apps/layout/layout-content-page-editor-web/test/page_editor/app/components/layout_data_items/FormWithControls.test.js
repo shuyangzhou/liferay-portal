@@ -289,7 +289,7 @@ describe('FormWithControls', () => {
 		await userEvent.selectOptions(select, '33333');
 		fireEvent.change(select);
 
-		expect(openInfoFieldSelector).toBeCalledWith(
+		expect(openInfoFieldSelector).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemType: '33333-className',
 			})

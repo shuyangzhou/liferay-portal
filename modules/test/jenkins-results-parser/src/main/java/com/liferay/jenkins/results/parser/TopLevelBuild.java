@@ -5,7 +5,11 @@
 
 package com.liferay.jenkins.results.parser;
 
+import com.liferay.jenkins.results.parser.testray.TestrayContext;
+
 import java.io.File;
+
+import java.net.URL;
 
 import java.util.List;
 import java.util.Map;
@@ -49,6 +53,10 @@ public interface TopLevelBuild extends ParentBuild {
 	public List<String> getProjectNames();
 
 	public String getStatusSummary();
+
+	public URL getTestrayCaseResultURL();
+
+	public TestrayContext getTestrayContext();
 
 	public TopLevelBuildReport getTopLevelBuildReport();
 

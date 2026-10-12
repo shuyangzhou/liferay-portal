@@ -1113,8 +1113,6 @@ definition {
 	@description = "This is a test for LPS-166045. The site designer could see the usages of Collections from asset library."
 	@priority = 5
 	test ViewUsagesOfCollectionFromAssetLibrary {
-		property portal.acceptance = "quarantine";
-
 		task ("Given the site designer has collections from asset library") {
 			JSONDepot.addDepot(depotName = "Test Depot Name");
 
@@ -1151,6 +1149,8 @@ definition {
 
 		task ("Then the site designer could directly see usages on the dynamic collection") {
 			DepotNavigator.openDepotAssetListsAdmin(depotName = "Test Depot Name");
+
+			LexiconEntry.changeDisplayStyle(displayStyle = "table");
 
 			LexiconTable.viewTableEntryInfo(
 				columnName = "usages",
@@ -1228,6 +1228,8 @@ definition {
 
 		task ("Then the site designer could directly see usages on the dynamic collection") {
 			AssetListsAdmin.openAssetListsAdmin(siteURLKey = "test-site-name");
+
+			LexiconEntry.changeDisplayStyle(displayStyle = "table");
 
 			LexiconTable.viewTableEntryInfo(
 				columnName = "usages",

@@ -38,7 +38,7 @@ describe('isValidEvent()', () => {
 		};
 
 		expect(isValidEvent(event)).toBe(true);
-		expect(console.error).not.toBeCalled();
+		expect(console.error).not.toHaveBeenCalled();
 	});
 
 	it('returns false if an event id has more than 255 chars', () => {
@@ -51,7 +51,7 @@ describe('isValidEvent()', () => {
 		};
 
 		expect(isValidEvent(event)).toBe(false);
-		expect(console.error).toBeCalled();
+		expect(console.error).toHaveBeenCalled();
 	});
 
 	it('returns false if an event id is empty', () => {
@@ -64,7 +64,7 @@ describe('isValidEvent()', () => {
 		};
 
 		expect(isValidEvent(event)).toBe(false);
-		expect(console.error).toBeCalled();
+		expect(console.error).toHaveBeenCalled();
 	});
 
 	it('returns false if an event prop key has more than 255 chars', () => {
@@ -77,7 +77,7 @@ describe('isValidEvent()', () => {
 		};
 
 		expect(isValidEvent(event)).toBe(false);
-		expect(console.error).toBeCalled();
+		expect(console.error).toHaveBeenCalled();
 	});
 
 	it('returns false if an event prop key is empty', () => {
@@ -90,7 +90,7 @@ describe('isValidEvent()', () => {
 		};
 
 		expect(isValidEvent(event)).toBe(false);
-		expect(console.error).toBeCalled();
+		expect(console.error).toHaveBeenCalled();
 	});
 
 	it('returns false if an event prop value has more than 1024 chars and application id is from DXP', () => {
@@ -103,7 +103,7 @@ describe('isValidEvent()', () => {
 		};
 
 		expect(isValidEvent(event as unknown as Analytics.Event)).toBe(false);
-		expect(console.error).toBeCalled();
+		expect(console.error).toHaveBeenCalled();
 	});
 
 	it('returns true if an event prop value has more than 1024 chars and application id is from DXP', () => {
@@ -116,7 +116,7 @@ describe('isValidEvent()', () => {
 		};
 
 		expect(isValidEvent(event)).toBe(true);
-		expect(console.error).not.toBeCalled();
+		expect(console.error).not.toHaveBeenCalled();
 	});
 
 	it('returns false if eventProps has more than 25 items', () => {
@@ -129,7 +129,7 @@ describe('isValidEvent()', () => {
 		};
 
 		expect(isValidEvent(event)).toBe(false);
-		expect(console.error).toBeCalled();
+		expect(console.error).toHaveBeenCalled();
 	});
 
 	it('show all errors in console', () => {
@@ -142,7 +142,7 @@ describe('isValidEvent()', () => {
 		};
 
 		expect(isValidEvent(event as unknown as Analytics.Event)).toBe(false);
-		expect(console.error).toBeCalledTimes(2);
+		expect(console.error).toHaveBeenCalledTimes(2);
 	});
 });
 

@@ -219,7 +219,7 @@ describe('MiniCart Item', () => {
 			fireEvent.click(getByRole('spinbutton'));
 			fireEvent.change(getByRole('spinbutton'), {target: {value: '12'}});
 
-			expect(mockClick).not.toBeCalled();
+			expect(mockClick).not.toHaveBeenCalled();
 		});
 
 		it('does not redirect to the product page when the remove button is clicked', () => {
@@ -231,7 +231,7 @@ describe('MiniCart Item', () => {
 
 			fireEvent.click(getAllByRole('button')[0]);
 
-			expect(mockClick).not.toBeCalled();
+			expect(mockClick).not.toHaveBeenCalled();
 		});
 	});
 

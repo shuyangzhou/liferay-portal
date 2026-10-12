@@ -20,7 +20,7 @@ describe('DateTimeProcessor', () => {
 
 			DateTimeProcessor.createEditor(element, () => {}, destroyFn);
 
-			expect(destroyFn).toBeCalled();
+			expect(destroyFn).toHaveBeenCalled();
 		});
 	});
 });

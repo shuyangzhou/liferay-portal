@@ -52,7 +52,7 @@ describe('ItemConfiguration', () => {
 
 		await userEvent.click(closeButton);
 
-		expect(switchSidebarPanel).toBeCalledWith({
+		expect(switchSidebarPanel).toHaveBeenCalledWith({
 			itemConfigurationOpen: false,
 		});
 	});

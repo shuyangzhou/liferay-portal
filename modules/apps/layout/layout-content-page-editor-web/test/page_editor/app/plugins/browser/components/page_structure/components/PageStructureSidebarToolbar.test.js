@@ -142,7 +142,7 @@ describe('PageStructureSidebarToolbar', () => {
 
 		await userEvent.click(screen.getByText('delete'));
 
-		expect(deleteItem).toBeCalledWith(
+		expect(deleteItem).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemIds: ['fragment01', 'fragment02'],
 			})
@@ -156,7 +156,7 @@ describe('PageStructureSidebarToolbar', () => {
 
 		await userEvent.click(screen.getByText('duplicate'));
 
-		expect(duplicateItem).toBeCalledWith(
+		expect(duplicateItem).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemIds: ['fragment01', 'fragment03'],
 			})
@@ -170,7 +170,7 @@ describe('PageStructureSidebarToolbar', () => {
 
 		await userEvent.click(screen.getByText('hide-fragments'));
 
-		expect(updateItemStyle).toBeCalledWith(
+		expect(updateItemStyle).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemIds: ['fragment03', 'fragment02'],
 				styleName: 'display',
@@ -186,7 +186,7 @@ describe('PageStructureSidebarToolbar', () => {
 
 		await userEvent.click(screen.getByText('move-2-items'));
 
-		expect(useSetMovementSources()).toBeCalledWith([
+		expect(useSetMovementSources()).toHaveBeenCalledWith([
 			{isWidget: false, itemId: 'fragment01', type: 'fragment'},
 			{isWidget: false, itemId: 'fragment02', type: 'fragment'},
 		]);
@@ -218,7 +218,7 @@ describe('PageStructureSidebarToolbar', () => {
 
 		await userEvent.click(screen.getByText('delete'));
 
-		expect(deleteItem).toBeCalledWith(
+		expect(deleteItem).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemIds: ['fragment01', 'fragment02'],
 			})
@@ -234,13 +234,13 @@ describe('PageStructureSidebarToolbar', () => {
 
 		await userEvent.click(screen.getByText('cut'));
 
-		expect(deleteItem).toBeCalledWith(
+		expect(deleteItem).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemIds: ['fragment01', 'fragment02'],
 			})
 		);
 
-		expect(setClipboard).toBeCalledWith(
+		expect(setClipboard).toHaveBeenCalledWith(
 			expect.objectContaining(['fragment01', 'fragment02'])
 		);
 	});
@@ -254,7 +254,7 @@ describe('PageStructureSidebarToolbar', () => {
 
 		await userEvent.click(screen.getByText('copy'));
 
-		expect(setClipboard).toBeCalledWith(
+		expect(setClipboard).toHaveBeenCalledWith(
 			expect.objectContaining(['fragment01', 'fragment02'])
 		);
 	});

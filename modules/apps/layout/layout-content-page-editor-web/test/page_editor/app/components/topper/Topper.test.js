@@ -209,7 +209,7 @@ describe('Topper', () => {
 
 			await userEvent.click(screen.getByLabelText('options'));
 
-			expect(selectItem).not.toBeCalled();
+			expect(selectItem).not.toHaveBeenCalled();
 		});
 
 		it('clicks in an options action', async () => {
@@ -219,7 +219,7 @@ describe('Topper', () => {
 
 			await userEvent.click(screen.getByText('duplicate'));
 
-			expect(selectItem).not.toBeCalled();
+			expect(selectItem).not.toHaveBeenCalled();
 		});
 
 		it('clicks on comments button', async () => {
@@ -229,7 +229,7 @@ describe('Topper', () => {
 
 			await userEvent.click(screen.getByLabelText('comments'));
 
-			expect(selectItem).not.toBeCalled();
+			expect(selectItem).not.toHaveBeenCalled();
 		});
 	});
 

@@ -8,8 +8,6 @@ package com.liferay.jenkins.results.parser;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpServer;
 
-import java.io.ByteArrayInputStream;
-
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -128,10 +126,9 @@ public class JenkinsStopBuildUtilTest
 
 	@Test
 	public void testAbortBuildResultAbsent() throws Exception {
-		UrlReader urlReader = mockUrlReader();
+		mockURLReaders();
 
-		setUrlReaderOutput(
-			String.valueOf(new JSONObject()), "tree=result", urlReader);
+		setURLReaderOutput(String.valueOf(new JSONObject()), "tree=result");
 
 		try {
 			_abortBuild();
@@ -155,15 +152,15 @@ public class JenkinsStopBuildUtilTest
 					"ABORTED", "FAILURE", "NOT_BUILT", "SUCCESS", "UNSTABLE"
 				}) {
 
-			UrlReader urlReader = mockUrlReader();
+			mockURLReaders();
 
-			setUrlReaderOutput(
+			setURLReaderOutput(
 				String.valueOf(
 					new JSONObject(
 					).put(
 						"result", result
 					)),
-				"tree=result", urlReader);
+				"tree=result");
 
 			Assert.assertEquals(
 				result, JenkinsStopBuildUtil.AbortResult.ALREADY_FINISHED,
@@ -301,35 +298,51 @@ public class JenkinsStopBuildUtilTest
 	private void _setUpResultOutputs(int buildingResultsCount)
 		throws Exception {
 
-		UrlReader urlReader = mockUrlReader();
+		mockURLReaders();
 
 		AtomicInteger readsCount = new AtomicInteger();
 
-		Mockito.doAnswer(
-			invocation -> {
-				_readURLs.add(invocation.getArgument(7));
+		for (BaseURLReader<?> baseURLReader : getBaseURLReaders()) {
+			Mockito.doAnswer(
+				invocation -> {
+					_readURLs.add(invocation.getArgument(8));
 
-				JSONObject jsonObject = new JSONObject();
-
-				if (readsCount.getAndIncrement() < buildingResultsCount) {
-					jsonObject.put("result", JSONObject.NULL);
+					return invocation.callRealMethod();
 				}
-				else {
-					jsonObject.put("result", "ABORTED");
+			).when(
+				baseURLReader
+			).read(
+				Mockito.anyBoolean(), Mockito.anyBoolean(), Mockito.any(),
+				Mockito.any(), Mockito.anyInt(), Mockito.any(),
+				Mockito.anyInt(), Mockito.anyInt(),
+				Mockito.argThat(
+					readURL ->
+						(readURL != null) && readURL.contains("tree=result"))
+			);
+
+			Mockito.doAnswer(
+				invocation -> {
+					JSONObject jsonObject = new JSONObject();
+
+					if (readsCount.getAndIncrement() < buildingResultsCount) {
+						jsonObject.put("result", JSONObject.NULL);
+					}
+					else {
+						jsonObject.put("result", "ABORTED");
+					}
+
+					return mockURLConnection(String.valueOf(jsonObject), 200);
 				}
-
-				String string = String.valueOf(jsonObject);
-
-				return new ByteArrayInputStream(string.getBytes());
-			}
-		).when(
-			urlReader
-		).doRead(
-			Mockito.anyBoolean(), Mockito.any(), Mockito.any(),
-			Mockito.anyInt(), Mockito.any(), Mockito.anyInt(), Mockito.anyInt(),
-			Mockito.argThat(
-				readURL -> (readURL != null) && readURL.contains("tree=result"))
-		);
+			).when(
+				baseURLReader
+			).openURLConnection(
+				Mockito.any(), Mockito.anyBoolean(), Mockito.any(),
+				Mockito.any(), Mockito.anyBoolean(), Mockito.anyInt(),
+				Mockito.argThat(
+					readURL ->
+						(readURL != null) && readURL.contains("tree=result"))
+			);
+		}
 	}
 
 	private static final int _MAXIMUM_RESULT_READS = 7;

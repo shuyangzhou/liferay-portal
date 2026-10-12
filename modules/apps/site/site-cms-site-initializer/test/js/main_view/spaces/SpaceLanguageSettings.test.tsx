@@ -140,7 +140,7 @@ describe('SpaceLanguageSettings', () => {
 				space: {externalReferenceCode, settings},
 			} = mockProps;
 
-			expect(SpaceService.updateSpace).toBeCalledWith(
+			expect(SpaceService.updateSpace).toHaveBeenCalledWith(
 				externalReferenceCode,
 				{
 					externalReferenceCode,
@@ -201,7 +201,7 @@ describe('SpaceLanguageSettings', () => {
 		await userEvent.click(screen.getByRole('button', {name: 'save'}));
 
 		await waitFor(() => {
-			expect(SpaceService.updateSpace).toBeCalled();
+			expect(SpaceService.updateSpace).toHaveBeenCalled();
 
 			expect(
 				screen.queryByText('My Space-was-saved-successfully')

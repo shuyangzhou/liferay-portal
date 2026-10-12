@@ -205,7 +205,7 @@ describe('AddDeliveryGroupButton', () => {
 			saveButton.click();
 		});
 
-		expect(handleSubmit).toBeCalledTimes(1);
+		expect(handleSubmit).toHaveBeenCalledTimes(1);
 		await waitFor(() => {
 			expect(screen.queryByText('cancel')).not.toBeInTheDocument();
 		});

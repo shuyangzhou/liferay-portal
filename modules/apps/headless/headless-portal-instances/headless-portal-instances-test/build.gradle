@@ -9,6 +9,7 @@ dependencies {
 	testIntegrationImplementation project(":apps:headless:headless-batch-engine:headless-batch-engine-client")
 	testIntegrationImplementation project(":apps:headless:headless-portal-instances:headless-portal-instances-api")
 	testIntegrationImplementation project(":apps:headless:headless-portal-instances:headless-portal-instances-client")
+	testIntegrationImplementation project(":apps:portal-instances:portal-instances-api")
 	testIntegrationImplementation project(":apps:portal-odata:portal-odata-api")
 	testIntegrationImplementation project(":apps:portal-vulcan:portal-vulcan-api")
 	testIntegrationImplementation project(":apps:static:portal-configuration:portal-configuration-metatype-api")

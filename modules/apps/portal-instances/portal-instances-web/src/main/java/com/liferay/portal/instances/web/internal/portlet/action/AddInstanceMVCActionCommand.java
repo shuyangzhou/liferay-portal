@@ -8,6 +8,7 @@ package com.liferay.portal.instances.web.internal.portlet.action;
 import com.liferay.batch.engine.jaxrs.uri.BatchEngineUriInfo;
 import com.liferay.headless.portal.instances.resource.v1_0.PortalInstanceResource;
 import com.liferay.portal.instances.constants.PortalInstancesPortletKeys;
+import com.liferay.portal.instances.web.internal.util.PortalInstancesResourceContextUtil;
 import com.liferay.portal.kernel.exception.CompanyMaxUsersException;
 import com.liferay.portal.kernel.exception.CompanyMxException;
 import com.liferay.portal.kernel.exception.CompanyVirtualHostException;
@@ -24,28 +25,22 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.security.auth.EmailAddressValidator;
+import com.liferay.portal.kernel.security.auth.ScreenNameValidator;
 import com.liferay.portal.kernel.service.CompanyLocalService;
-import com.liferay.portal.kernel.servlet.HttpHeaders;
-import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropsValues;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
+import com.liferay.portal.security.auth.EmailAddressValidatorFactory;
+import com.liferay.portal.security.auth.ScreenNameValidatorFactory;
 import com.liferay.portal.vulcan.batch.engine.resource.VulcanBatchEngineImportTaskResourceFactory;
 
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletRequestWrapper;
-
 import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.osgi.service.component.ComponentServiceObjects;
@@ -103,11 +98,13 @@ public class AddInstanceMVCActionCommand extends BaseMVCActionCommand {
 
 		try {
 			portalInstanceResource.setContextAcceptLanguage(
-				_getAcceptLanguage(actionRequest));
+				PortalInstancesResourceContextUtil.getAcceptLanguage(
+					_portal.getLocale(actionRequest)));
 			portalInstanceResource.setContextCompany(
 				_portal.getCompany(actionRequest));
 			portalInstanceResource.setContextHttpServletRequest(
-				_getHttpServletRequest(actionRequest));
+				PortalInstancesResourceContextUtil.getHttpServletRequest(
+					_portal.getHttpServletRequest(actionRequest)));
 			portalInstanceResource.setContextUriInfo(
 				new BatchEngineUriInfo.Builder(
 				).build());
@@ -124,29 +121,6 @@ public class AddInstanceMVCActionCommand extends BaseMVCActionCommand {
 		finally {
 			_componentServiceObjects.ungetService(portalInstanceResource);
 		}
-	}
-
-	private AcceptLanguage _getAcceptLanguage(ActionRequest actionRequest) {
-		Locale locale = _portal.getLocale(actionRequest);
-
-		return new AcceptLanguage() {
-
-			@Override
-			public List<Locale> getLocales() {
-				return Collections.singletonList(locale);
-			}
-
-			@Override
-			public String getPreferredLanguageId() {
-				return LocaleUtil.toLanguageId(locale);
-			}
-
-			@Override
-			public Locale getPreferredLocale() {
-				return locale;
-			}
-
-		};
 	}
 
 	private Map<String, String> _getAdminMap(ActionRequest actionRequest) {
@@ -206,27 +180,9 @@ public class AddInstanceMVCActionCommand extends BaseMVCActionCommand {
 			return "please-enter-a-valid-screen-name";
 		}
 
+		_log.error(exception);
+
 		return "an-unexpected-error-occurred";
-	}
-
-	private HttpServletRequest _getHttpServletRequest(
-		ActionRequest actionRequest) {
-
-		return new HttpServletRequestWrapper(
-			_portal.getHttpServletRequest(actionRequest)) {
-
-			@Override
-			public String getHeader(String name) {
-				if (StringUtil.equalsIgnoreCase(
-						name, HttpHeaders.CONTENT_TYPE)) {
-
-					return ContentTypes.APPLICATION_JSON;
-				}
-
-				return super.getHeader(name);
-			}
-
-		};
 	}
 
 	private Map<String, Object> _getPortalInstanceMap(
@@ -267,11 +223,19 @@ public class AddInstanceMVCActionCommand extends BaseMVCActionCommand {
 			return;
 		}
 
-		if (Validator.isNull(
-				ParamUtil.getString(
-					actionRequest, "defaultAdminEmailAddress"))) {
+		String emailAddress = ParamUtil.getString(
+			actionRequest, "defaultAdminEmailAddress");
 
+		if (Validator.isNull(emailAddress)) {
 			throw new UserEmailAddressException.MustNotBeNull();
+		}
+
+		EmailAddressValidator emailAddressValidator =
+			EmailAddressValidatorFactory.getInstance();
+
+		if (!emailAddressValidator.validate(0, emailAddress)) {
+			throw new UserEmailAddressException.MustValidate(
+				emailAddress, emailAddressValidator);
 		}
 
 		if (Validator.isNull(
@@ -280,10 +244,19 @@ public class AddInstanceMVCActionCommand extends BaseMVCActionCommand {
 			throw new UserPasswordException.MustNotBeNull(0);
 		}
 
-		if (Validator.isNull(
-				ParamUtil.getString(actionRequest, "defaultAdminScreenName"))) {
+		String screenName = ParamUtil.getString(
+			actionRequest, "defaultAdminScreenName");
 
+		if (Validator.isNull(screenName)) {
 			throw new UserScreenNameException.MustNotBeNull();
+		}
+
+		ScreenNameValidator screenNameValidator =
+			ScreenNameValidatorFactory.getInstance();
+
+		if (!screenNameValidator.validate(0, screenName)) {
+			throw new UserScreenNameException.MustValidate(
+				0, screenName, screenNameValidator);
 		}
 	}
 

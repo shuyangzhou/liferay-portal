@@ -45,7 +45,7 @@ describe('SidebarPanelHeader', () => {
 
 		await userEvent.click(screen.getByTitle('close'));
 
-		expect(dispatch).toBeCalledWith(
+		expect(dispatch).toHaveBeenCalledWith(
 			switchSidebarPanel({
 				itemConfigurationOpen: true,
 				sidebarOpen: false,

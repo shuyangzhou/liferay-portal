@@ -67,7 +67,7 @@ describe('ContainerAdvancedPanel', () => {
 			target: {value: 'section'},
 		});
 
-		expect(updateItemConfig).toBeCalledWith(
+		expect(updateItemConfig).toHaveBeenCalledWith(
 			expect.objectContaining({
 				itemConfig: {
 					htmlTag: 'section',

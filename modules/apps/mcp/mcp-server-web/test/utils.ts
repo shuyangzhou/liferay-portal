@@ -109,33 +109,32 @@ describe('filterDataMaskTree', () => {
 		createDataMask('custom', 'Project Codename', 'CUSTOM_1'),
 	]);
 
-	it('returns every group expanded when the query is empty', () => {
+	it('returns every group expanded and nothing hidden when the query is empty', () => {
 		expect(filterDataMaskTree(tree, '')).toEqual({
-			expandedKeys: ['maskType:system', 'maskType:custom'],
-			items: tree,
+			expandedKeys: new Set(['maskType:system', 'maskType:custom']),
+			matchCount: 0,
+			visibleKeys: new Set(),
 		});
 	});
 
-	it('keeps only the children matching the query, case-insensitively', () => {
-		const {items} = filterDataMaskTree(tree, 'EMAIL');
+	it('keeps visible only the children matching the query, case-insensitively', () => {
+		const {matchCount, visibleKeys} = filterDataMaskTree(tree, 'EMAIL');
 
-		expect(items).toEqual([
-			{
-				children: [{id: 'SYSTEM_1', name: 'Email Address'}],
-				id: 'maskType:system',
-				name: 'System',
-			},
-		]);
+		expect(visibleKeys).toEqual(new Set(['maskType:system', 'SYSTEM_1']));
+		expect(matchCount).toBe(1);
 	});
 
 	it('expands only the groups with matches', () => {
-		expect(filterDataMaskTree(tree, 'codename').expandedKeys).toEqual([
-			'maskType:custom',
-		]);
+		expect(filterDataMaskTree(tree, 'codename').expandedKeys).toEqual(
+			new Set(['maskType:custom'])
+		);
 	});
 
-	it('returns no items when nothing matches', () => {
-		expect(filterDataMaskTree(tree, 'iban').items).toEqual([]);
+	it('leaves nothing visible when nothing matches', () => {
+		const {matchCount, visibleKeys} = filterDataMaskTree(tree, 'iban');
+
+		expect(visibleKeys.size).toBe(0);
+		expect(matchCount).toBe(0);
 	});
 });
 

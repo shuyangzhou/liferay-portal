@@ -52,7 +52,7 @@ public class PortalInstance implements Serializable {
 	}
 
 	@io.swagger.v3.oas.annotations.media.Schema(
-		description = "whether the portal instance is active."
+		description = "whether the portal instance is active. PATCH ignores it; use the activate and deactivate endpoints to change it."
 	)
 	public Boolean getActive() {
 		if (_activeSupplier != null) {
@@ -87,7 +87,9 @@ public class PortalInstance implements Serializable {
 		};
 	}
 
-	@GraphQLField(description = "whether the portal instance is active.")
+	@GraphQLField(
+		description = "whether the portal instance is active. PATCH ignores it; use the activate and deactivate endpoints to change it."
+	)
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Boolean active;
 
@@ -225,7 +227,7 @@ public class PortalInstance implements Serializable {
 	private Supplier<String> _domainSupplier;
 
 	@io.swagger.v3.oas.annotations.media.Schema(
-		description = "maximum number of users, or 0 for unlimited."
+		description = "maximum number of users, or 0 for unlimited. PATCH ignores it."
 	)
 	public Integer getMaxUsers() {
 		if (_maxUsersSupplier != null) {
@@ -260,7 +262,9 @@ public class PortalInstance implements Serializable {
 		};
 	}
 
-	@GraphQLField(description = "maximum number of users, or 0 for unlimited.")
+	@GraphQLField(
+		description = "maximum number of users, or 0 for unlimited. PATCH ignores it."
+	)
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Integer maxUsers;
 
@@ -655,4 +659,4 @@ public class PortalInstance implements Serializable {
 	private Map<String, Serializable> _extendedProperties;
 
 }
-// LIFERAY-REST-BUILDER-HASH:2094342589
+// LIFERAY-REST-BUILDER-HASH:12675613

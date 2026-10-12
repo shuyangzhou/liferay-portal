@@ -41,7 +41,9 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.template.info.item.provider.TemplateInfoItemFieldSetProvider;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
@@ -92,7 +94,8 @@ public class ObjectEntryInfoItemFormProviderUtil {
 				if (objectDefinitionId != 0) {
 					unsafeConsumer.accept(
 						_getInfoFieldSet(
-							true, false, currentObjectDefinition.getLabelMap(),
+							Collections.emptySet(), true, false,
+							currentObjectDefinition.getLabelMap(),
 							currentObjectDefinition.getName(),
 							ObjectField.class.getSimpleName(),
 							currentObjectDefinition,
@@ -261,6 +264,8 @@ public class ObjectEntryInfoItemFormProviderUtil {
 
 					unsafeConsumer.accept(
 						_getInfoFieldSet(
+							Collections.singleton(
+								objectDefinition.getObjectDefinitionId()),
 							true, false, fieldSetLabelMap,
 							objectRelationship.getName(),
 							ObjectEntryInfoItemUtil.getInfoFieldNamespace(
@@ -327,8 +332,9 @@ public class ObjectEntryInfoItemFormProviderUtil {
 	}
 
 	private static InfoFieldSet _getInfoFieldSet(
-		boolean editable, boolean friendlyURL, Map<Locale, String> labelMap,
-		String name, String namespace, ObjectDefinition objectDefinition,
+		Set<Long> ancestorObjectDefinitionIds, boolean editable,
+		boolean friendlyURL, Map<Locale, String> labelMap, String name,
+		String namespace, ObjectDefinition objectDefinition,
 		ObjectDefinitionLocalService objectDefinitionLocalService,
 		ObjectFieldInfoFieldConverter objectFieldInfoFieldConverter,
 		ObjectRelationshipLocalService objectRelationshipLocalService,
@@ -443,14 +449,19 @@ public class ObjectEntryInfoItemFormProviderUtil {
 			}
 		).infoFieldSetEntry(
 			unsafeConsumer -> {
+				Set<Long> objectDefinitionIds = new HashSet<>(
+					ancestorObjectDefinitionIds);
+
+				objectDefinitionIds.add(
+					objectDefinition.getObjectDefinitionId());
+
 				for (ObjectRelationship objectRelationship :
 						objectRelationshipLocalService.getObjectRelationships(
 							objectDefinition.getObjectDefinitionId(),
 							ObjectRelationshipConstants.TYPE_ONE_TO_MANY)) {
 
 					if (objectRelationship.isSelf() ||
-						Objects.equals(
-							objectDefinition.getObjectDefinitionId(),
+						objectDefinitionIds.contains(
 							objectRelationship.getObjectDefinitionId2()) ||
 						(!objectRelationship.isEdge() &&
 						 FeatureFlagManagerUtil.isEnabled(
@@ -507,7 +518,7 @@ public class ObjectEntryInfoItemFormProviderUtil {
 
 					unsafeConsumer.accept(
 						_getInfoFieldSet(
-							true, false, fieldSetLabelMap,
+							objectDefinitionIds, true, false, fieldSetLabelMap,
 							objectRelationship.getName(),
 							ObjectEntryInfoItemUtil.getInfoFieldNamespace(
 								relatedObjectDefinition, objectRelationship),

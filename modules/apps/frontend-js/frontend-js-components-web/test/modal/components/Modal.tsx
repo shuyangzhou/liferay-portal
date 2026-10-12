@@ -73,7 +73,7 @@ describe('Modal', () => {
 			document.getElementById('myButton') as HTMLButtonElement
 		);
 
-		expect(onCloseCallback).toBeCalled();
+		expect(onCloseCallback).toHaveBeenCalled();
 	});
 
 	it('keeps modal-open on the body when one of two open modals closes', () => {

@@ -3,12 +3,14 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
+import ClayForm from '@clayui/form';
 import {
 	API,
 	Card,
 	CodeEditor,
 	Input,
 	SidebarCategory,
+	Toggle,
 } from '@liferay/object-js-components-web';
 import React, {useCallback, useEffect, useState} from 'react';
 
@@ -21,6 +23,7 @@ import {
 import {WarningStates} from '../ActionBuilder';
 import {ThenContainer} from './ThenContainer';
 interface ActionContainerProps {
+	companyAdmin: boolean;
 	currentObjectDefinitionFields: ObjectField[];
 	disableGroovyAction: boolean;
 	errors: ActionError;
@@ -41,6 +44,7 @@ interface ActionContainerProps {
 }
 
 export function ActionContainer({
+	companyAdmin,
 	currentObjectDefinitionFields,
 	disableGroovyAction,
 	errors,
@@ -292,7 +296,11 @@ export function ActionContainer({
 			{values.objectActionExecutorKey === 'webhook' && (
 				<>
 					<Input
-						disabled={values.system}
+						disabled={
+							values.system ||
+							(!companyAdmin &&
+								values.parameters?.urlLocalNetworkAccessEnabled)
+						}
 						error={errors.url}
 						id="urlInput"
 						label={Liferay.Language.get('url')}
@@ -323,6 +331,55 @@ export function ActionContainer({
 							});
 						}}
 						value={values.parameters?.secret}
+					/>
+
+					<ClayForm.Group>
+						<Toggle
+							disabled={values.system || !companyAdmin}
+							label={Liferay.Language.get(
+								'allow-local-network-access'
+							)}
+							name="urlLocalNetworkAccessEnabled"
+							onToggle={(urlLocalNetworkAccessEnabled) =>
+								setValues({
+									parameters: {
+										...values.parameters,
+										urlLocalNetworkAccessEnabled,
+									},
+								})
+							}
+							toggled={
+								!!values.parameters
+									?.urlLocalNetworkAccessEnabled
+							}
+							tooltip={Liferay.Language.get(
+								'send-the-webhook-to-a-local-network-address'
+							)}
+						/>
+					</ClayForm.Group>
+
+					<Input
+						disabled={
+							values.system ||
+							!companyAdmin ||
+							!values.parameters?.urlLocalNetworkAccessEnabled
+						}
+						error={errors.urlHostsAllowed}
+						feedbackMessage={Liferay.Language.get(
+							'enter-a-comma-delimited-list-of-the-host-names-the-webhook-may-request'
+						)}
+						id="urlHostsAllowedInput"
+						label={Liferay.Language.get('hosts-allowed')}
+						name="urlHostsAllowed"
+						onChange={({target: {value}}) => {
+							setValues({
+								parameters: {
+									...values.parameters,
+									urlHostsAllowed: value,
+								},
+							});
+						}}
+						value={values.parameters?.urlHostsAllowed}
 					/>
 				</>
 			)}

@@ -930,7 +930,16 @@ public class BaseTopLevelBuildReportTest
 			String expectedBuildURLString)
 		throws Exception {
 
-		UrlReader urlReader = mockUrlReader();
+		Properties buildProperties = new Properties();
+
+		buildProperties.setProperty(
+			"jenkins.admin.user.name", RandomTestUtil.randomString());
+		buildProperties.setProperty(
+			"jenkins.admin.user.token", RandomTestUtil.randomString());
+
+		JenkinsResultsParserUtil.setBuildProperties(buildProperties);
+
+		mockURLReaders();
 
 		JSONObject controllerJobJSONObject = new JSONObject();
 
@@ -938,11 +947,10 @@ public class BaseTopLevelBuildReportTest
 			controllerJobJSONObject.put("builds", buildsJSONArray);
 		}
 
-		setUrlReaderOutput("{}", "previous-job/", urlReader);
+		setURLReaderOutput("{}", "previous-job/");
 
-		setUrlReaderOutput(
-			String.valueOf(controllerJobJSONObject),
-			"http://test-1-1/job/controller-job", urlReader);
+		setURLReaderOutput(
+			String.valueOf(controllerJobJSONObject), "/job/controller-job");
 
 		BaseTopLevelBuildReport baseTopLevelBuildReport =
 			_newBaseTopLevelBuildReport();

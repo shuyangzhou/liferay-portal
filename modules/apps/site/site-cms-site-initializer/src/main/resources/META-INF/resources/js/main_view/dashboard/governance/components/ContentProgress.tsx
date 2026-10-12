@@ -17,7 +17,7 @@ import {getStatusSelectedData} from '../../../quick_filters/quickFilterUpdates';
 import {BaseCard} from '../../common/BaseCard';
 import PickerTrigger from '../../common/PickerTrigger';
 import {GovernanceContext} from '../GovernanceContext';
-import GovernanceService, {StatusFacetBucket} from '../GovernanceService';
+import GovernanceService, {FacetBucket} from '../GovernanceService';
 import getAllSectionHref, {getSpaceFilters} from '../getAllSectionHref';
 import {GovernanceAdditionalProps} from '../types';
 
@@ -49,7 +49,7 @@ const CONTENT_STATUSES: WorkflowStatus[] = [
 ];
 
 function getSegments(
-	buckets: StatusFacetBucket[],
+	buckets: FacetBucket[],
 	getStatusHref: (statuses: WorkflowStatus[]) => string
 ): BarDatum[] {
 	const frequencies = new Map(
@@ -90,7 +90,7 @@ export function ContentProgress({
 }: {
 	additionalProps: GovernanceAdditionalProps;
 }) {
-	const [buckets, setBuckets] = useState<StatusFacetBucket[] | null>(null);
+	const [buckets, setBuckets] = useState<FacetBucket[] | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [timeRangeDays, setTimeRangeDays] = useState(DEFAULT_TIME_RANGE_DAYS);
 	const {space} = useContext(GovernanceContext);

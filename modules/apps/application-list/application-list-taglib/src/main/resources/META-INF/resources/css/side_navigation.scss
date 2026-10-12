@@ -56,7 +56,7 @@ $side-navigation-scope-item-height: 2.5rem;
 		background-size: 16px;
 		padding-left: 40px;
 
-		@media (prefers-color-scheme: dark) {
+		[data-color-scheme='dark']:root & {
 			background-image: clay-icon(search, #a2a2b9);
 		}
 	}

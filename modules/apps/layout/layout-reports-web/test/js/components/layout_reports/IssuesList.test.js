@@ -246,7 +246,7 @@ describe('IssuesList', () => {
 
 		userEvent.click(button);
 
-		expect(loadIssues).toBeCalled();
+		expect(loadIssues).toHaveBeenCalled();
 	});
 
 	it('does not show launch button when there is cached data', () => {

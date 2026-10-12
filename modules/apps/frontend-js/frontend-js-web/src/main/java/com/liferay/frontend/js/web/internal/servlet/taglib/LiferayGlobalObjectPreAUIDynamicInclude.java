@@ -634,6 +634,9 @@ public class LiferayGlobalObjectPreAUIDynamicInclude
 			"getPathJavaScript", sb, themeDisplay.getPathJavaScript());
 		_renderMethod("getPathMain", sb, themeDisplay.getPathMain());
 		_renderMethod(
+			"getPathThemeEmptyStatesSpritemap", sb,
+			themeDisplay.getPathThemeEmptyStatesSpritemap());
+		_renderMethod(
 			"getPathThemeImages", sb, themeDisplay.getPathThemeImages());
 		_renderMethod("getPathThemeRoot", sb, themeDisplay.getPathThemeRoot());
 		_renderMethod("getPlid", sb, themeDisplay.getPlid());

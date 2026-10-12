@@ -34,7 +34,7 @@ git diff "${MERGE_BASE}...HEAD" -- <file> \
 		--regexp='srcdoc'
 ```
 
-When no file remains to scan, because every selected path was deleted on the branch or is generated, nothing was examined. Report **NOT VERIFIED** naming what was left out, since a pass over an empty set reads as a branch that was checked. When files remain and none produces output, the validation passes.
+When no file remains to scan, because every selected path was deleted on the branch or is generated, nothing was examined. Report **NOT APPLICABLE** naming what was left out, since a pass over an empty set reads as a branch that was checked. When files remain and none produces output, the validation passes.
 
 Otherwise, each printed line is a candidate, not a finding. Read the file to classify it and find the line number.
 

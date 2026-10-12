@@ -160,11 +160,7 @@ public class CTAwarePortalCache
 		portalCache.remove(key);
 
 		if (CTCollectionThreadLocal.isProductionMode()) {
-			for (PortalCache<Serializable, Serializable> ctPortalCache :
-					_ctPortalCaches.values()) {
-
-				ctPortalCache.remove(key);
-			}
+			removeFromCTPortalCaches(key);
 		}
 	}
 
@@ -176,11 +172,23 @@ public class CTAwarePortalCache
 		portalCache.removeAll();
 
 		if (CTCollectionThreadLocal.isProductionMode()) {
-			for (PortalCache<Serializable, Serializable> ctPortalCache :
-					_ctPortalCaches.values()) {
+			removeAllFromCTPortalCaches();
+		}
+	}
 
-				ctPortalCache.removeAll();
-			}
+	public void removeAllFromCTPortalCaches() {
+		for (PortalCache<Serializable, Serializable> ctPortalCache :
+				_ctPortalCaches.values()) {
+
+			ctPortalCache.removeAll();
+		}
+	}
+
+	public void removeFromCTPortalCaches(Serializable key) {
+		for (PortalCache<Serializable, Serializable> ctPortalCache :
+				_ctPortalCaches.values()) {
+
+			ctPortalCache.remove(key);
 		}
 	}
 

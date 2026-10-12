@@ -52,7 +52,7 @@ describe('Polling Export Status Process', () => {
 			requestTaskStatus: exportStatus,
 		});
 
-		expect(onProgress).toBeCalledWith('CSV', 50);
+		expect(onProgress).toHaveBeenCalledWith('CSV', 50);
 	});
 
 	it.skip('must call onFail when status is FAILED', async () => {
@@ -78,7 +78,7 @@ describe('Polling Export Status Process', () => {
 			requestTaskStatus: exportStatus,
 		});
 
-		expect(onFail).toBeCalledWith(mockErrorMessage);
+		expect(onFail).toHaveBeenCalledWith(mockErrorMessage);
 	});
 
 	it.skip('must call onSuccess when status is COMPLETED', async () => {
@@ -103,6 +103,6 @@ describe('Polling Export Status Process', () => {
 			requestTaskStatus: exportStatus,
 		});
 
-		expect(onSuccess).toBeCalledWith('CSV');
+		expect(onSuccess).toHaveBeenCalledWith('CSV');
 	});
 });

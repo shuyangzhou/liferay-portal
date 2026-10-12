@@ -6,9 +6,11 @@
 package com.liferay.portal.instances.web.internal.portlet.action;
 
 import com.liferay.headless.portal.instances.resource.v1_0.PortalInstanceImportResource;
+import com.liferay.portal.db.partition.util.DBPartitionUtil;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -27,6 +29,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -49,6 +52,15 @@ public class AddDBPartitionCompanyMVCActionCommandTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_dbPartitionUtilMockedStatic = Mockito.mockStatic(
+			DBPartitionUtil.class);
+
+		_dbPartitionUtilMockedStatic.when(
+			() -> DBPartitionUtil.existsExportedPartition(_COMPANY_ID)
+		).thenReturn(
+			true
+		);
+
 		_setParameter("name", _NAME);
 		_setParameter("schemaName", _SCHEMA_NAME);
 		_setParameter("virtualHostname", _VIRTUAL_HOST);
@@ -60,6 +72,9 @@ public class AddDBPartitionCompanyMVCActionCommandTest {
 			_portalInstanceImportResource
 		);
 
+		ReflectionTestUtil.setFieldValue(
+			_addDBPartitionCompanyMVCActionCommand, "_companyLocalService",
+			_companyLocalService);
 		ReflectionTestUtil.setFieldValue(
 			_addDBPartitionCompanyMVCActionCommand, "_componentServiceObjects",
 			_componentServiceObjects);
@@ -101,14 +116,29 @@ public class AddDBPartitionCompanyMVCActionCommandTest {
 		);
 	}
 
+	@After
+	public void tearDown() {
+		_dbPartitionUtilMockedStatic.close();
+	}
+
 	@Test
 	public void testGetErrorMessageKey() {
+		Assert.assertEquals(
+			"an-instance-for-this-schema-already-exists",
+			_getErrorMessageKey(
+				new IllegalArgumentException(
+					"Company ID " + _COMPANY_ID + " already exists")));
 		Assert.assertEquals(
 			"an-unexpected-error-occurred",
 			_getErrorMessageKey(new Exception()));
 		Assert.assertEquals(
 			"please-enter-a-valid-schema-name",
 			_getErrorMessageKey(new IllegalArgumentException()));
+		Assert.assertEquals(
+			"the-exported-schema-does-not-exist",
+			_getErrorMessageKey(
+				new IllegalArgumentException(
+					"Schema \"" + _SCHEMA_NAME + "\" does not exist")));
 	}
 
 	@Test
@@ -249,8 +279,38 @@ public class AddDBPartitionCompanyMVCActionCommandTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
+	public void testValidateSchemaNameWithAMissingSchema() {
+		_dbPartitionUtilMockedStatic.when(
+			() -> DBPartitionUtil.existsExportedPartition(_COMPANY_ID)
+		).thenReturn(
+			false
+		);
+
+		try (MockedStatic<PortalInstancePool> portalInstancePoolMockedStatic =
+				_mockDefaultCompanyId(RandomTestUtil.randomLong())) {
+
+			_validateSchemaName(_SCHEMA_NAME);
+		}
+	}
+
+	@Test(expected = IllegalArgumentException.class)
 	public void testValidateSchemaNameWithANonnumericCompanyId() {
 		_validateSchemaName("lexported_abc");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testValidateSchemaNameWithAnExistingCompany() {
+		Mockito.when(
+			_companyLocalService.fetchCompany(_COMPANY_ID)
+		).thenReturn(
+			Mockito.mock(Company.class)
+		);
+
+		try (MockedStatic<PortalInstancePool> portalInstancePoolMockedStatic =
+				_mockDefaultCompanyId(RandomTestUtil.randomLong())) {
+
+			_validateSchemaName(_SCHEMA_NAME);
+		}
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -329,8 +389,11 @@ public class AddDBPartitionCompanyMVCActionCommandTest {
 	private final AddDBPartitionCompanyMVCActionCommand
 		_addDBPartitionCompanyMVCActionCommand =
 			new AddDBPartitionCompanyMVCActionCommand();
+	private final CompanyLocalService _companyLocalService = Mockito.mock(
+		CompanyLocalService.class);
 	private final ComponentServiceObjects<PortalInstanceImportResource>
 		_componentServiceObjects = Mockito.mock(ComponentServiceObjects.class);
+	private MockedStatic<DBPartitionUtil> _dbPartitionUtilMockedStatic;
 	private final HttpServletRequest _httpServletRequest = Mockito.mock(
 		HttpServletRequest.class);
 	private final Portal _portal = Mockito.mock(Portal.class);

@@ -319,6 +319,19 @@ public class DBPartitionUtilTest extends BaseDBPartitionTestCase {
 	}
 
 	@Test
+	@TestInfo("LPD-93376")
+	public void testExistsExportedPartition() throws Exception {
+		long companyId = RandomTestUtil.randomLong();
+
+		Assert.assertFalse(DBPartitionUtil.existsExportedPartition(companyId));
+
+		_assertConnectionClosed(
+			DBPartitionUtil.getExportedPartitionName(companyId),
+			() -> Assert.assertTrue(
+				DBPartitionUtil.existsExportedPartition(companyId)));
+	}
+
+	@Test
 	@TestInfo("LPS-200849")
 	public void testExportAndImportDBPartition() throws Exception {
 		try {

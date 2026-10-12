@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -48,12 +49,26 @@ public class ElasticsearchIndexWriterExceptionsTest
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
 
+	@After
+	@Override
+	public void tearDown() throws Exception {
+		super.tearDown();
+
+		IndexWriter indexWriter = getIndexWriter();
+
+		if (indexWriter == null) {
+			return;
+		}
+
+		indexWriter.deleteDocument(createSearchContext(), _UID);
+	}
+
 	@Test
-	public void testAddDocument() throws SearchException {
+	public void testAddDocument() {
 		try {
 			addDocument(
 				DocumentCreationHelpers.singleKeyword(
-					Field.EXPIRATION_DATE, "text"));
+					Field.EXPIRATION_DATE, _INVALID_DATE));
 
 			Assert.fail();
 		}
@@ -78,7 +93,7 @@ public class ElasticsearchIndexWriterExceptionsTest
 
 			Document document = new DocumentImpl();
 
-			document.addKeyword(Field.EXPIRATION_DATE, "text");
+			document.addKeyword(Field.EXPIRATION_DATE, _INVALID_DATE);
 
 			IndexWriter indexWriter = getIndexWriter();
 
@@ -147,7 +162,7 @@ public class ElasticsearchIndexWriterExceptionsTest
 						": [es/delete] failed: [index_not_found_exception] no ",
 						"such index [", _COMPANY_ID, "]"),
 					message),
-				logCapture, LoggerTestUtil.INFO);
+				logCapture, LoggerTestUtil.INFO, ElasticsearchException.class);
 		}
 	}
 
@@ -217,14 +232,35 @@ public class ElasticsearchIndexWriterExceptionsTest
 
 	@Test
 	public void testPartiallyUpdateDocuments() throws SearchException {
-		Document document = new DocumentImpl();
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				BulkDocumentRequestExecutor.class.getName(),
+				LoggerTestUtil.ERROR)) {
 
-		document.addKeyword(Field.UID, _UID);
+			Document document = new DocumentImpl();
 
-		IndexWriter indexWriter = getIndexWriter();
+			document.addKeyword(Field.UID, _UID);
 
-		indexWriter.partiallyUpdateDocuments(
-			createSearchContext(), Arrays.asList(document));
+			IndexWriter indexWriter = getIndexWriter();
+
+			try {
+				indexWriter.partiallyUpdateDocuments(
+					createSearchContext(), Arrays.asList(document));
+
+				Assert.fail();
+			}
+			catch (SystemException systemException) {
+				Assert.assertEquals(
+					"Bulk partial update failed", systemException.getMessage());
+			}
+
+			String expectedMessage = "[" + _UID + "]: document missing";
+
+			_assertLogCapture(
+				message -> Assert.assertTrue(
+					message + " does not contain " + expectedMessage,
+					message.contains(expectedMessage)),
+				logCapture, LoggerTestUtil.ERROR);
+		}
 	}
 
 	@Test
@@ -235,7 +271,7 @@ public class ElasticsearchIndexWriterExceptionsTest
 
 			Document document = new DocumentImpl();
 
-			document.addKeyword(Field.EXPIRATION_DATE, "text");
+			document.addKeyword(Field.EXPIRATION_DATE, _INVALID_DATE);
 			document.addKeyword(Field.UID, _UID);
 
 			IndexWriter indexWriter = getIndexWriter();
@@ -250,9 +286,10 @@ public class ElasticsearchIndexWriterExceptionsTest
 					"Update failed", systemException.getMessage());
 			}
 
-			String expectedMessage =
-				"failed to parse field [expirationDate] of type [date] in " +
-					"document with id";
+			String expectedMessage = StringBundler.concat(
+				"failed to parse field [expirationDate] of type [date] in ",
+				"document with id '", _UID, "'. Preview of field's value: '",
+				_INVALID_DATE, "'");
 
 			_assertLogCapture(
 				message -> Assert.assertTrue(
@@ -270,7 +307,7 @@ public class ElasticsearchIndexWriterExceptionsTest
 
 			Document document = new DocumentImpl();
 
-			document.addKeyword(Field.EXPIRATION_DATE, "text");
+			document.addKeyword(Field.EXPIRATION_DATE, _INVALID_DATE);
 			document.addKeyword(Field.UID, _UID);
 
 			IndexWriter indexWriter = getIndexWriter();
@@ -286,9 +323,10 @@ public class ElasticsearchIndexWriterExceptionsTest
 					"Bulk update failed", systemException.getMessage());
 			}
 
-			String expectedMessage =
-				"failed to parse field [expirationDate] of type [date] in " +
-					"document with id";
+			String expectedMessage = StringBundler.concat(
+				"failed to parse field [expirationDate] of type [date] in ",
+				"document with id '", _UID, "'. Preview of field's value: '",
+				_INVALID_DATE, "'");
 
 			_assertLogCapture(
 				message -> Assert.assertTrue(
@@ -316,6 +354,13 @@ public class ElasticsearchIndexWriterExceptionsTest
 	private void _assertLogCapture(
 		Consumer<String> consumer, LogCapture logCapture, String logLevel) {
 
+		_assertLogCapture(consumer, logCapture, logLevel, null);
+	}
+
+	private void _assertLogCapture(
+		Consumer<String> consumer, LogCapture logCapture, String logLevel,
+		Class<?> throwableClass) {
+
 		List<LogEntry> logEntries = logCapture.getLogEntries();
 
 		Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
@@ -323,10 +368,22 @@ public class ElasticsearchIndexWriterExceptionsTest
 		LogEntry logEntry = logEntries.get(0);
 
 		Assert.assertEquals(logLevel, logEntry.getPriority());
+
+		Throwable throwable = logEntry.getThrowable();
+
+		if (throwableClass == null) {
+			Assert.assertNull(throwable);
+		}
+		else {
+			Assert.assertSame(throwableClass, throwable.getClass());
+		}
+
 		consumer.accept(logEntry.getMessage());
 	}
 
 	private static final long _COMPANY_ID = RandomTestUtil.randomLong();
+
+	private static final String _INVALID_DATE = "text";
 
 	private static final String _UID = "1";
 

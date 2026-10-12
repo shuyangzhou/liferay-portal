@@ -1172,7 +1172,7 @@ describe('PortletHub', () => {
 				const count = hubA.dispatchClientEvent(type, payload);
 
 				expect(count).toEqual(1);
-				expect(listener).toBeCalledWith(type, payload);
+				expect(listener).toHaveBeenCalledWith(type, payload);
 
 				hubA.removeEventListener(handle);
 			});

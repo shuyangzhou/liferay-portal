@@ -232,7 +232,7 @@ describe('MappingSelector', () => {
 				});
 			});
 
-			expect(onMappingSelect).toBeCalledWith({
+			expect(onMappingSelect).toHaveBeenCalledWith({
 				className: 'InfoItemClassName',
 				classNameId: 'InfoItemClassNameId',
 				classPK: 'infoItemClassPK',
@@ -256,7 +256,7 @@ describe('MappingSelector', () => {
 				});
 			});
 
-			expect(onMappingSelect).toBeCalledWith({});
+			expect(onMappingSelect).toHaveBeenCalledWith({});
 		});
 
 		it('renders correct selects when using Collection context', async () => {
@@ -468,7 +468,7 @@ describe('MappingSelector', () => {
 				});
 			});
 
-			expect(onMappingSelect).toBeCalledWith({
+			expect(onMappingSelect).toHaveBeenCalledWith({
 				mappedField: 'structure-field-1',
 			});
 		});

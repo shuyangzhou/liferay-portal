@@ -59,6 +59,8 @@ import com.liferay.commerce.product.service.CommerceChannelRelService;
 import com.liferay.commerce.product.service.CommerceChannelService;
 import com.liferay.commerce.product.type.CPType;
 import com.liferay.commerce.product.type.CPTypeRegistry;
+import com.liferay.commerce.product.type.grouped.constants.GroupedCPTypeConstants;
+import com.liferay.commerce.product.type.grouped.service.CPDefinitionGroupedEntryService;
 import com.liferay.commerce.product.type.virtual.constants.VirtualCPTypeConstants;
 import com.liferay.commerce.product.type.virtual.service.CPDVirtualSettingFileEntryService;
 import com.liferay.commerce.product.type.virtual.service.CPDefinitionVirtualSettingService;
@@ -82,6 +84,7 @@ import com.liferay.friendly.url.service.FriendlyURLEntryLocalService;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.Attachment;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.Category;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.Diagram;
+import com.liferay.headless.commerce.admin.catalog.dto.v1_0.GroupedProduct;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.MappedProduct;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.Pin;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.Product;
@@ -103,6 +106,7 @@ import com.liferay.headless.commerce.admin.catalog.internal.odata.entity.v1_0.Pr
 import com.liferay.headless.commerce.admin.catalog.internal.util.DateConfigUtil;
 import com.liferay.headless.commerce.admin.catalog.internal.util.v1_0.AttachmentUtil;
 import com.liferay.headless.commerce.admin.catalog.internal.util.v1_0.DiagramUtil;
+import com.liferay.headless.commerce.admin.catalog.internal.util.v1_0.GroupedProductUtil;
 import com.liferay.headless.commerce.admin.catalog.internal.util.v1_0.MappedProductUtil;
 import com.liferay.headless.commerce.admin.catalog.internal.util.v1_0.PinUtil;
 import com.liferay.headless.commerce.admin.catalog.internal.util.v1_0.ProductConfigurationUtil;
@@ -413,8 +417,8 @@ public class ProductResourceImpl
 			@Override
 			public List<String> getNestedFields() {
 				return List.of(
-					"attachments", "creator", "diagram", "images",
-					"mappedProducts", "pins", "productAccountGroups",
+					"attachments", "creator", "diagram", "groupedProducts",
+					"images", "mappedProducts", "pins", "productAccountGroups",
 					"productChannels", "productConfiguration", "productGroups",
 					"productOptions", "productOptions.productOptionValues",
 					"productSpecifications", "productVirtualSettings",
@@ -1592,31 +1596,6 @@ public class ProductResourceImpl
 			}
 		}
 
-		// Images
-
-		Attachment[] images = product.getImages();
-
-		if (images != null) {
-			for (Attachment attachment : images) {
-				serviceContext.setAssetTagNames(attachment.getTags());
-				serviceContext.setExpandoBridgeAttributes(
-					_getExpandoBridgeAttributes(
-						CPAttachmentFileEntry.class.getName(),
-						attachment.getCustomFields()));
-
-				AttachmentUtil.addOrUpdateCPAttachmentFileEntry(
-					cpDefinition.getGroupId(), _cpAttachmentFileEntryService,
-					_cpDefinitionOptionRelService,
-					_cpDefinitionOptionValueRelService, _cpOptionService,
-					_dlAppLocalService, _dlFileEntryModelResourcePermission,
-					_groupLocalService, _uniqueFileNameProvider, attachment,
-					_classNameLocalService.getClassNameId(
-						cpDefinition.getModelClassName()),
-					cpDefinition.getCPDefinitionId(),
-					CPAttachmentFileEntryConstants.TYPE_IMAGE, serviceContext);
-			}
-		}
-
 		// Attachments
 
 		Attachment[] attachments = product.getAttachments();
@@ -1639,6 +1618,31 @@ public class ProductResourceImpl
 						cpDefinition.getModelClassName()),
 					cpDefinition.getCPDefinitionId(),
 					CPAttachmentFileEntryConstants.TYPE_OTHER, serviceContext);
+			}
+		}
+
+		// Images
+
+		Attachment[] imageAttachments = product.getImages();
+
+		if (imageAttachments != null) {
+			for (Attachment attachment : imageAttachments) {
+				serviceContext.setAssetTagNames(attachment.getTags());
+				serviceContext.setExpandoBridgeAttributes(
+					_getExpandoBridgeAttributes(
+						CPAttachmentFileEntry.class.getName(),
+						attachment.getCustomFields()));
+
+				AttachmentUtil.addOrUpdateCPAttachmentFileEntry(
+					cpDefinition.getGroupId(), _cpAttachmentFileEntryService,
+					_cpDefinitionOptionRelService,
+					_cpDefinitionOptionValueRelService, _cpOptionService,
+					_dlAppLocalService, _dlFileEntryModelResourcePermission,
+					_groupLocalService, _uniqueFileNameProvider, attachment,
+					_classNameLocalService.getClassNameId(
+						cpDefinition.getModelClassName()),
+					cpDefinition.getCPDefinitionId(),
+					CPAttachmentFileEntryConstants.TYPE_IMAGE, serviceContext);
 			}
 		}
 
@@ -1810,7 +1814,7 @@ public class ProductResourceImpl
 			return cpDefinition;
 		}
 
-		// Diagram
+		// Product types
 
 		Diagram diagram = product.getDiagram();
 		MappedProduct[] mappedProducts = product.getMappedProducts();
@@ -1862,7 +1866,22 @@ public class ProductResourceImpl
 			}
 		}
 
-		// Virtual
+		GroupedProduct[] groupedProducts = product.getGroupedProducts();
+
+		if (groupedProducts != null) {
+			if (GroupedCPTypeConstants.NAME.equals(cpType.getName())) {
+				for (GroupedProduct groupedProduct : groupedProducts) {
+					GroupedProductUtil.addOrUpdateCPDefinitionGroupedEntry(
+						cpDefinition, _cpDefinitionGroupedEntryService,
+						_cpDefinitionService, groupedProduct,
+						_serviceContextHelper.getServiceContext(
+							cpDefinition.getGroupId()));
+				}
+			}
+			else {
+				throw new CPDefinitionProductTypeNameException();
+			}
+		}
 
 		ProductVirtualSettings productVirtualSettings =
 			product.getProductVirtualSettings();
@@ -2180,6 +2199,9 @@ public class ProductResourceImpl
 
 	@Reference
 	private CPConfigurationEntryService _cpConfigurationEntryService;
+
+	@Reference
+	private CPDefinitionGroupedEntryService _cpDefinitionGroupedEntryService;
 
 	@Reference
 	private CPDefinitionInventoryService _cpDefinitionInventoryService;
