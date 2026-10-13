@@ -54,23 +54,6 @@ public final class AMAsyncProcessorImpl<M, T>
 
 	@Override
 	public void triggerCleanUp(M model, String modelId) throws PortalException {
-		if (Validator.isNotNull(modelId)) {
-			if (!_cleanUpModelIds.add(modelId)) {
-				if (_log.isInfoEnabled()) {
-					_log.info(
-						"Omitted clean up for model ID " + modelId +
-							" because it is already in progress");
-				}
-
-				return;
-			}
-
-			if (_log.isInfoEnabled()) {
-				_log.info(
-					"Added clean up for model ID " + modelId + " to the queue");
-			}
-		}
-
 		Message message = new Message();
 
 		message.put("className", _clazz.getName());
@@ -85,6 +68,24 @@ public final class AMAsyncProcessorImpl<M, T>
 
 		TransactionCallbackUtil.registerCommitCallback(
 			() -> {
+				if (Validator.isNotNull(modelId)) {
+					if (!_cleanUpModelIds.add(modelId)) {
+						if (_log.isInfoEnabled()) {
+							_log.info(
+								"Omitted clean up for model ID " + modelId +
+									" because it is already in progress");
+						}
+
+						return null;
+					}
+
+					if (_log.isInfoEnabled()) {
+						_log.info(
+							"Added clean up for model ID " + modelId +
+								" to the queue");
+					}
+				}
+
 				_messageBus.sendMessage(
 					AMDestinationNames.ADAPTIVE_MEDIA_PROCESSOR, message);
 
@@ -94,23 +95,6 @@ public final class AMAsyncProcessorImpl<M, T>
 
 	@Override
 	public void triggerProcess(M model, String modelId) throws PortalException {
-		if (Validator.isNotNull(modelId)) {
-			if (!_processModelIds.add(modelId)) {
-				if (_log.isInfoEnabled()) {
-					_log.info(
-						"Omitted process for model ID " + modelId +
-							" because it is already in progress");
-				}
-
-				return;
-			}
-
-			if (_log.isInfoEnabled()) {
-				_log.info(
-					"Added process for model ID " + modelId + " to the queue");
-			}
-		}
-
 		Message message = new Message();
 
 		message.put("className", _clazz.getName());
@@ -125,6 +109,24 @@ public final class AMAsyncProcessorImpl<M, T>
 
 		TransactionCallbackUtil.registerCommitCallback(
 			() -> {
+				if (Validator.isNotNull(modelId)) {
+					if (!_processModelIds.add(modelId)) {
+						if (_log.isInfoEnabled()) {
+							_log.info(
+								"Omitted process for model ID " + modelId +
+									" because it is already in progress");
+						}
+
+						return null;
+					}
+
+					if (_log.isInfoEnabled()) {
+						_log.info(
+							"Added process for model ID " + modelId +
+								" to the queue");
+					}
+				}
+
 				_messageBus.sendMessage(
 					AMDestinationNames.ADAPTIVE_MEDIA_PROCESSOR, message);
 
