@@ -5,11 +5,13 @@
 
 package com.liferay.portal.util;
 
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
-import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
-import com.liferay.portal.kernel.cluster.ClusterRequest;
+import com.liferay.portal.kernel.cache.PortalCache;
+import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
+import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
+import com.liferay.portal.kernel.cache.transactional.TransactionalPortalCacheUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -19,17 +21,17 @@ import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.PortalPreferenceValue;
 import com.liferay.portal.kernel.model.PortalPreferences;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
-import com.liferay.portal.kernel.service.PortalPreferenceValueLocalService;
 import com.liferay.portal.kernel.service.PortalPreferencesLocalService;
-import com.liferay.portal.kernel.transaction.TransactionCallbackUtil;
+import com.liferay.portal.kernel.service.persistence.PortalPreferenceValuePersistence;
+import com.liferay.portal.kernel.service.persistence.PortalPreferencesPersistence;
+import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.MethodHandler;
-import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PrefsProps;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.service.impl.PortalPreferenceValueLocalServiceImpl;
 import com.liferay.portlet.PortalPreferencesImpl;
 import com.liferay.portlet.PortalPreferencesWrapper;
 import com.liferay.portlet.PortletPreferencesImpl;
@@ -43,7 +45,6 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 import org.osgi.framework.BundleContext;
@@ -467,73 +468,74 @@ public class PrefsPropsImpl implements PrefsProps {
 		return null;
 	}
 
-	private static void _removePortletPreference(long companyId) {
-		_portletPreferences.remove(companyId);
-
-		if (ClusterExecutorUtil.isEnabled() &&
-			ClusterInvokeThreadLocal.isEnabled()) {
-
-			ClusterRequest clusterRequest =
-				ClusterRequest.createMulticastRequest(
-					new MethodHandler(
-						_removePortletPreferenceMethodKey, companyId),
-					true);
-
-			clusterRequest.setFireAndForget(true);
-
-			ClusterExecutorUtil.execute(clusterRequest);
-		}
-	}
-
 	private PortletPreferences _fetchPreferences() {
 		return _fetchPreferences(PortletKeys.PREFS_OWNER_ID_DEFAULT);
 	}
 
 	private PortletPreferences _fetchPreferences(long companyId) {
-		if (_skipCache.get()) {
-			return _getPortletPreferences(companyId);
+		PortletPreferences portletPreferences = _portalCache.get(companyId);
+
+		if (portletPreferences != null) {
+			return portletPreferences;
 		}
 
-		return _portletPreferences.computeIfAbsent(
-			companyId, this::_getPortletPreferences);
+		TransactionalPortalCacheUtil.preparePut(_portalCache, companyId);
+
+		portletPreferences = _getPortletPreferences(companyId);
+
+		TransactionalPortalCacheUtil.completePut(
+			_portalCache, companyId, portletPreferences);
+
+		return portletPreferences;
 	}
 
 	private PortletPreferences _getPortletPreferences(long companyId) {
-		PortalPreferences portalPreferences =
-			_portalPreferencesLocalService.fetchPortalPreferences(
-				companyId, PortletKeys.PREFS_OWNER_TYPE_COMPANY);
+		try {
+			return TransactionInvokerUtil.invoke(
+				PortalPreferencesImpl.SUPPORTS_TRANSACTION_CONFIG,
+				() -> {
+					PortalPreferences portalPreferences =
+						_portalPreferencesPersistence.fetchByO_O(
+							companyId, PortletKeys.PREFS_OWNER_TYPE_COMPANY,
+							false);
 
-		if (portalPreferences == null) {
-			return _emptyPortletPreferences;
+					if (portalPreferences == null) {
+						return _emptyPortletPreferences;
+					}
+
+					return new PortalPreferencesWrapper(
+						new PortalPreferencesImpl(
+							companyId, PortletKeys.PREFS_OWNER_TYPE_COMPANY,
+							PortalPreferenceValueLocalServiceImpl.
+								getPreferenceMap(
+									_portalPreferenceValuePersistence,
+									portalPreferences.getPortalPreferencesId(),
+									false),
+							false));
+				});
 		}
-
-		PortalPreferencesImpl portalPreferencesImpl =
-			(PortalPreferencesImpl)
-				_portalPreferenceValueLocalService.getPortalPreferences(
-					portalPreferences, false);
-
-		return new PortalPreferencesWrapper(portalPreferencesImpl);
+		catch (Throwable throwable) {
+			return ReflectionUtil.throwException(throwable);
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(PrefsPropsImpl.class);
 
-	private static final Map<Long, PortletPreferences> _portletPreferences =
-		new ConcurrentHashMap<>();
-	private static final MethodKey _removePortletPreferenceMethodKey =
-		new MethodKey(
-			PrefsPropsImpl.class, "_removePortletPreference", long.class);
-	private static final ThreadLocal<Boolean> _skipCache =
-		ThreadLocal.withInitial(() -> false);
+	private static final PortalCache<Long, PortletPreferences> _portalCache =
+		PortalCacheHelperUtil.getPortalCache(
+			PortalCacheManagerNames.MULTI_VM, PrefsPropsImpl.class.getName());
 
 	private final PortletPreferences _emptyPortletPreferences =
 		new PortletPreferencesImpl();
 
-	@BeanReference(type = PortalPreferenceValueLocalService.class)
-	private PortalPreferenceValueLocalService
-		_portalPreferenceValueLocalService;
+	@BeanReference(type = PortalPreferenceValuePersistence.class)
+	private PortalPreferenceValuePersistence _portalPreferenceValuePersistence;
 
 	@BeanReference(type = PortalPreferencesLocalService.class)
 	private PortalPreferencesLocalService _portalPreferencesLocalService;
+
+	@BeanReference(type = PortalPreferencesPersistence.class)
+	private PortalPreferencesPersistence _portalPreferencesPersistence;
 
 	private ServiceRegistration<?> _serviceRegistration;
 
@@ -652,10 +654,6 @@ public class PrefsPropsImpl implements PrefsProps {
 		private void _clearPortletPreferencce(
 			PortalPreferenceValue portalPreferenceValue) {
 
-			if (_skipCache.get()) {
-				return;
-			}
-
 			try {
 				PortalPreferences portalPreferences =
 					_portalPreferencesLocalService.getPortalPreferences(
@@ -664,17 +662,7 @@ public class PrefsPropsImpl implements PrefsProps {
 				if (portalPreferences.getOwnerType() ==
 						PortletKeys.PREFS_OWNER_TYPE_COMPANY) {
 
-					_skipCache.set(true);
-
-					TransactionCallbackUtil.registerCommitCallback(
-						() -> {
-							_removePortletPreference(
-								portalPreferenceValue.getCompanyId());
-
-							_skipCache.set(false);
-
-							return null;
-						});
+					_portalCache.remove(portalPreferenceValue.getCompanyId());
 				}
 			}
 			catch (PortalException portalException) {
