@@ -1165,14 +1165,12 @@ public abstract class BaseStagedModelDataHandlerTestCase {
 		List<RatingsEntry> ratingsEntries =
 			RatingsEntryLocalServiceUtil.getEntries(
 				ExportImportClassedModelUtil.getClassName(stagedModel),
-				ExportImportClassedModelUtil.getClassPK(stagedModel),
-				WorkflowConstants.STATUS_ANY);
+				ExportImportClassedModelUtil.getClassPK(stagedModel));
 
 		List<RatingsEntry> importedRatingsEntries =
 			RatingsEntryLocalServiceUtil.getEntries(
 				ExportImportClassedModelUtil.getClassName(importedStagedModel),
-				ExportImportClassedModelUtil.getClassPK(importedStagedModel),
-				WorkflowConstants.STATUS_ANY);
+				ExportImportClassedModelUtil.getClassPK(importedStagedModel));
 
 		Assert.assertEquals(
 			importedRatingsEntries.toString(), ratingsEntries.size(),
