@@ -62,7 +62,6 @@ import net.bytebuddy.implementation.FixedValue;
 import net.bytebuddy.matcher.ElementMatchers;
 
 import org.junit.Assert;
-import org.junit.Assume;
 import org.junit.ClassRule;
 import org.junit.Rule;
 
@@ -81,35 +80,64 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		new AggregateTestRule(
 			new AssumeTestRule("assume"), new LiferayIntegrationTestRule());
 
-	public static void assume() {
-		Assume.assumeTrue(isReleaseBundle());
+	public static File deployEnterprisePortalLicense(long validityPeriod)
+		throws Exception {
+
+		return deployEnterprisePortalLicense(StringPool.BLANK, validityPeriod);
+	}
+
+	public static File deployEnterprisePortalLicense(
+			String key, int maxClusterNodes, long validityPeriod)
+		throws Exception {
+
+		return deployEnterprisePortalLicense(
+			key, maxClusterNodes, _getEnterpriseProductName(), validityPeriod);
+	}
+
+	public static File deployEnterprisePortalLicense(
+			String key, int maxClusterNodes, String productName,
+			long validityPeriod)
+		throws Exception {
+
+		String licenseType = ENTERPRISE_LICENSE_TYPE;
+
+		if (maxClusterNodes > 0) {
+			licenseType = "virtual-cluster";
+		}
+
+		_registerLicense(
+			_buildEnterprisePortalLicenseXML(
+				key, licenseType, maxClusterNodes, productName,
+				validityPeriod));
+
+		return _buildBinaryFile(
+			_ENTERPRISE_ACCOUNT_NAME, licenseType, getPortalProductId(),
+			productName);
+	}
+
+	public static File deployEnterprisePortalLicense(
+			String key, long validityPeriod)
+		throws Exception {
+
+		return deployEnterprisePortalLicense(key, 0, validityPeriod);
 	}
 
 	public static File deployFreeTierPortalLicense(long validityPeriod)
 		throws Exception {
 
-		return deployFreeTierPortalLicense(
-			_FREE_TIER_DOMAIN, StringPool.BLANK, validityPeriod);
+		return deployFreeTierPortalLicense(_FREE_TIER_DOMAIN, validityPeriod);
 	}
 
 	public static File deployFreeTierPortalLicense(
 			String domain, long validityPeriod)
 		throws Exception {
 
-		return deployFreeTierPortalLicense(
-			domain, StringPool.BLANK, validityPeriod);
-	}
-
-	public static File deployFreeTierPortalLicense(
-			String domain, String key, long validityPeriod)
-		throws Exception {
-
 		_registerLicense(
-			_buildFreeTierPortalLicenseXML(domain, key, validityPeriod));
+			_buildFreeTierPortalLicenseXML(domain, validityPeriod));
 
 		return _buildBinaryFile(
-			getPortalProductId(), _FREE_TIER_ACCOUNT_NAME,
-			_FREE_TIER_PRODUCT_NAME, FREE_TIER_LICENSE_TYPE);
+			_FREE_TIER_ACCOUNT_NAME, FREE_TIER_LICENSE_TYPE,
+			getPortalProductId(), _FREE_TIER_PRODUCT_NAME);
 	}
 
 	public static void deployLicenses(String[][] licenses) throws Exception {
@@ -120,13 +148,14 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		for (String[] license : licenses) {
 			if (Objects.equals(license[0], ENTERPRISE_LICENSE_TYPE)) {
 				sb.append(
-					_buildEnterprisePortalLicenseXML(Long.valueOf(license[1])));
+					_buildEnterprisePortalLicenseXML(
+						StringPool.BLANK, ENTERPRISE_LICENSE_TYPE, 0,
+						_getEnterpriseProductName(), Long.valueOf(license[1])));
 			}
 			else if (Objects.equals(license[0], FREE_TIER_LICENSE_TYPE)) {
 				sb.append(
 					_buildFreeTierPortalLicenseXML(
-						_FREE_TIER_DOMAIN, StringPool.BLANK,
-						Long.valueOf(license[1])));
+						_FREE_TIER_DOMAIN, Long.valueOf(license[1])));
 			}
 			else {
 				App app = App.valueOf(license[0]);
@@ -146,6 +175,18 @@ public abstract class BaseLicenseTestCase implements Serializable {
 	public static SafeCloseable disableValidateWithSafeCloseable() {
 		return setReturnValueWithSafeCloseable(
 			ReflectionsHolder._validateMethod, true);
+	}
+
+	public static boolean isCMS() {
+		Method nameMethod = ReflectionsHolder._nameMethod;
+
+		try {
+			return Objects.equals(
+				getProperty("cms.name"), nameMethod.invoke(null));
+		}
+		catch (Exception exception) {
+			throw new RuntimeException(exception);
+		}
 	}
 
 	public static boolean isReleaseBundle() {
@@ -263,18 +304,8 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		_registerLicense(_buildAppLicenseXML(app, startTime, validityPeriod));
 
 		return _buildBinaryFile(
-			getProductId(app), StringPool.BLANK, app.toString(),
-			_APP_LICENSE_TYPE);
-	}
-
-	public File deployEnterprisePortalLicense(long validityPeriod)
-		throws Exception {
-
-		_registerLicense(_buildEnterprisePortalLicenseXML(validityPeriod));
-
-		return _buildBinaryFile(
-			getPortalProductId(), _ENTERPRISE_ACCOUNT_NAME,
-			_ENTERPRISE_PRODUCT_NAME, ENTERPRISE_LICENSE_TYPE);
+			StringPool.BLANK, _APP_LICENSE_TYPE, getProductId(app),
+			app.toString());
 	}
 
 	public void resetCheckInterval() throws Exception {
@@ -543,6 +574,12 @@ public abstract class BaseLicenseTestCase implements Serializable {
 
 	protected static final String ENTERPRISE_LICENSE_TYPE = "enterprise";
 
+	protected static final String ENTERPRISE_PRODUCT_NAME_CMS =
+		"CMS Enterprise";
+
+	protected static final String ENTERPRISE_PRODUCT_NAME_DXP =
+		"DXP Enterprise";
+
 	protected static final String FREE_TIER_LICENSE_TYPE = "free";
 
 	private static String _buildAppLicenseXML(
@@ -586,8 +623,8 @@ public abstract class BaseLicenseTestCase implements Serializable {
 	}
 
 	private static File _buildBinaryFile(
-		String productId, String accountName, String productEntryName,
-		String licenseType) {
+		String accountName, String licenseType, String productId,
+		String productName) {
 
 		StringBundler sb = new StringBundler(6);
 
@@ -596,7 +633,7 @@ public abstract class BaseLicenseTestCase implements Serializable {
 			sb.append("_");
 		}
 
-		sb.append(StringUtil.extractChars(productEntryName));
+		sb.append(StringUtil.extractChars(productName));
 		sb.append("_");
 		sb.append(StringUtil.extractChars(licenseType));
 		sb.append(".li");
@@ -605,21 +642,22 @@ public abstract class BaseLicenseTestCase implements Serializable {
 	}
 
 	private static String _buildEnterprisePortalLicenseXML(
+		String key, String licenseType, int maxClusterNodes, String productName,
 		long validityPeriod) {
 
 		long currentTimeMillis = System.currentTimeMillis();
 
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(23);
 
 		sb.append("<license><account-name>");
 		sb.append(_ENTERPRISE_ACCOUNT_NAME);
 		sb.append("</account-name><product-id>");
 		sb.append(getPortalProductId());
 		sb.append("</product-id><product-name>");
-		sb.append(_ENTERPRISE_PRODUCT_NAME);
+		sb.append(productName);
 		sb.append("</product-name><product-version>2026.Q1</product-version>");
 		sb.append("<license-type>");
-		sb.append(ENTERPRISE_LICENSE_TYPE);
+		sb.append(licenseType);
 		sb.append("</license-type><license-version>6</license-version>");
 		sb.append("<start-date>");
 		sb.append(_DATE_FORMAT.format(new Date(currentTimeMillis)));
@@ -627,18 +665,26 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		sb.append(
 			_DATE_FORMAT.format(new Date(currentTimeMillis + validityPeriod)));
 		sb.append("</expiration-date>");
+
+		if (maxClusterNodes > 0) {
+			sb.append("<max-cluster-nodes>");
+			sb.append(maxClusterNodes);
+			sb.append("</max-cluster-nodes>");
+		}
+
 		sb.append("<domains><domain>");
 		sb.append(_ENTERPRISE_DOMAIN);
-		sb.append("</domain><domain>localhost</domain></domains>");
-		sb.append("<key></key></license>");
+		sb.append("</domain><domain>localhost</domain></domains><key>");
+		sb.append(key);
+		sb.append("</key></license>");
 
 		return sb.toString();
 	}
 
 	private static String _buildFreeTierPortalLicenseXML(
-		String domain, String key, long validityPeriod) {
+		String domain, long validityPeriod) {
 
-		StringBundler sb = new StringBundler(20);
+		StringBundler sb = new StringBundler(19);
 
 		sb.append("<license><account-name>");
 		sb.append(_FREE_TIER_ACCOUNT_NAME);
@@ -661,11 +707,18 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		sb.append("</expiration-date>");
 		sb.append("<max-cluster-nodes>3</max-cluster-nodes><domains><domain>");
 		sb.append(domain);
-		sb.append("</domain><domain>localhost</domain></domains><key>");
-		sb.append(key);
-		sb.append("</key></license>");
+		sb.append("</domain><domain>localhost</domain></domains><key></key>");
+		sb.append("</license>");
 
 		return sb.toString();
+	}
+
+	private static String _getEnterpriseProductName() {
+		if (isCMS()) {
+			return ENTERPRISE_PRODUCT_NAME_CMS;
+		}
+
+		return ENTERPRISE_PRODUCT_NAME_DXP;
 	}
 
 	private static void _registerLicense(String licenseXML) throws Exception {
@@ -744,8 +797,6 @@ public abstract class BaseLicenseTestCase implements Serializable {
 
 	private static final String _ENTERPRISE_DOMAIN = "enterprise.com";
 
-	private static final String _ENTERPRISE_PRODUCT_NAME = "DXP Enterprise";
-
 	private static final String _EXPIRED_LICENSE_KEY =
 		"This instance is expired.";
 
@@ -778,6 +829,7 @@ public abstract class BaseLicenseTestCase implements Serializable {
 
 		private static Instrumentation _instrumentation;
 		private static Class<?> _licenseManagerHelperClass;
+		private static Method _nameMethod;
 		private static Class<?> _validateClass;
 		private static Method _validateMethod;
 		private static Method _versionMethod;
@@ -816,6 +868,7 @@ public abstract class BaseLicenseTestCase implements Serializable {
 						}
 					}
 
+					_nameMethod = findMethod("name.method");
 					_versionMethod = findMethod("version.method");
 
 					Field field = findField("lifecycle.action.field");

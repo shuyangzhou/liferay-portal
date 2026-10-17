@@ -5,18 +5,10 @@
 
 package com.liferay.portal.license.test;
 
-import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.license.util.App;
 import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
 import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.util.LicenseUtil;
-
-import java.io.InputStream;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -24,13 +16,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /**
  * @author Tina Tian
  */
-@RunWith(Arquillian.class)
-public class CheckLicenseTest extends BaseLicenseTestCase {
+public abstract class BaseCheckLicenseTestCase extends BaseLicenseTestCase {
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -54,21 +44,21 @@ public class CheckLicenseTest extends BaseLicenseTestCase {
 
 	@Test
 	public void testCheckLicenseForApp() throws Exception {
-		for (App app : App.values()) {
+		for (App app : getApps()) {
 			_testCheckLicenseForApp(app);
 		}
 	}
 
 	@Test
 	public void testCheckLicenseWithBinaryFile2026_Q1_0() throws Exception {
-		_testCheckLicense("binary_file_2026_Q1_0.li");
+		testCheckLicense("binary_file_2026_Q1_0.li");
 	}
 
 	@Test
 	public void testCheckLicenseWithBinaryFileAfter2026_Q1_0()
 		throws Exception {
 
-		_testCheckLicense("binary_file_after_2026_Q1_0.li");
+		testCheckLicense("binary_file_after_2026_Q1_0.li");
 	}
 
 	@Test
@@ -76,45 +66,13 @@ public class CheckLicenseTest extends BaseLicenseTestCase {
 		throws Exception {
 
 		try (SafeCloseable safeCloseable = disableValidateWithSafeCloseable()) {
-			_testCheckLicense("binary_file_before_2026_Q1_0.li");
+			testCheckLicense("binary_file_before_2026_Q1_0.li");
 		}
 	}
 
-	@Test
-	public void testCheckLicenseWithFreeTierBinaryFile2026_Q1_0()
-		throws Exception {
+	protected abstract App[] getApps();
 
-		_testCheckLicense("free_tier_binary_file_2026_Q1_0.li");
-	}
-
-	@Test
-	public void testCheckLicenseWithFreeTierBinaryFileAfter2026_Q1_0()
-		throws Exception {
-
-		_testCheckLicense("free_tier_binary_file_after_2026_Q1_0.li");
-	}
-
-	private void _testCheckLicense(String fileName) throws Exception {
-		Path target = Path.of(LicenseUtil.LICENSE_REPOSITORY_DIR, fileName);
-
-		try (InputStream inputStream =
-				CheckLicenseTest.class.getResourceAsStream(
-					"dependencies/" + fileName)) {
-
-			Files.createDirectories(target.getParent());
-
-			Files.copy(
-				inputStream, target, StandardCopyOption.REPLACE_EXISTING);
-		}
-
-		assertLicensePropertiesNotExisted(getPortalProductId());
-
-		checkLicense(getPortalProductId());
-
-		assertLicensePropertiesExisted(getPortalProductId());
-
-		assertPortalLicenseRegistered();
-	}
+	protected abstract void testCheckLicense(String fileName) throws Exception;
 
 	private void _testCheckLicenseForApp(App app) throws Exception {
 		try (SafeCloseable safeCloseable1 = disableValidateWithSafeCloseable();

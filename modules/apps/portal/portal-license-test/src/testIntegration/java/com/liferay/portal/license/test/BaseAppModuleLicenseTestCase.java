@@ -5,7 +5,6 @@
 
 package com.liferay.portal.license.test;
 
-import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.license.util.App;
 import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
@@ -19,13 +18,11 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /**
  * @author Kevin Lee
  */
-@RunWith(Arquillian.class)
-public class AppModuleLicenseTest extends BaseLicenseTestCase {
+public abstract class BaseAppModuleLicenseTestCase extends BaseLicenseTestCase {
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -41,7 +38,7 @@ public class AppModuleLicenseTest extends BaseLicenseTestCase {
 
 	@Test
 	public void testAppLicenses() throws Exception {
-		for (App app : App.values()) {
+		for (App app : getApps()) {
 			try (SafeCloseable safeCloseable =
 					resetLicenseDataWithSafeCloseble()) {
 
@@ -73,6 +70,8 @@ public class AppModuleLicenseTest extends BaseLicenseTestCase {
 			}
 		}
 	}
+
+	protected abstract App[] getApps();
 
 	private static SafeCloseable _disableKeyValidatorSafeCloseable;
 	private static SafeCloseable _setVersionSafeCloseable;

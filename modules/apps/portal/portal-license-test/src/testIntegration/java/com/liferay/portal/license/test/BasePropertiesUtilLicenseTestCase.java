@@ -5,7 +5,6 @@
 
 package com.liferay.portal.license.test;
 
-import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.license.util.App;
 
@@ -18,13 +17,12 @@ import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /**
  * @author Tina Tian
  */
-@RunWith(Arquillian.class)
-public class PropertiesUtilLicenseTest extends BaseLicenseTestCase {
+public abstract class BasePropertiesUtilLicenseTestCase
+	extends BaseLicenseTestCase {
 
 	@Test
 	public void test() throws Exception {
@@ -42,7 +40,7 @@ public class PropertiesUtilLicenseTest extends BaseLicenseTestCase {
 			String key = (String)field.get(null);
 
 			if (key.contains(".app.product.")) {
-				for (App app : App.values()) {
+				for (App app : getApps()) {
 					keys.add(key + StringPool.PERIOD + app.toString());
 				}
 			}
@@ -55,5 +53,7 @@ public class PropertiesUtilLicenseTest extends BaseLicenseTestCase {
 
 		Assert.assertEquals(keys, properties.stringPropertyNames());
 	}
+
+	protected abstract App[] getApps();
 
 }

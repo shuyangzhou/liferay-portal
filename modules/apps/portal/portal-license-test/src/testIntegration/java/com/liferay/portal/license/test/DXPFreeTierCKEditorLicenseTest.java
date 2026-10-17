@@ -30,6 +30,7 @@ import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -43,7 +44,11 @@ import org.osgi.service.cm.ConfigurationAdmin;
  * @author Kevin Lee
  */
 @RunWith(Arquillian.class)
-public class CKEditorLicenseTest extends BaseLicenseTestCase {
+public class DXPFreeTierCKEditorLicenseTest extends BaseLicenseTestCase {
+
+	public static void assume() {
+		Assume.assumeTrue(isReleaseBundle() && !isCMS());
+	}
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -257,7 +262,7 @@ public class CKEditorLicenseTest extends BaseLicenseTestCase {
 
 	private static final File _CKEDITOR_CONFIG_FILE = new File(
 		PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
-		CKEditorLicenseTest._CKEDITOR_CONFIG_ID + ".config");
+		DXPFreeTierCKEditorLicenseTest._CKEDITOR_CONFIG_ID + ".config");
 
 	private static final String _CKEDITOR_CONFIG_ID =
 		"com.liferay.frontend.editor.ckeditor.web.internal.configuration." +
