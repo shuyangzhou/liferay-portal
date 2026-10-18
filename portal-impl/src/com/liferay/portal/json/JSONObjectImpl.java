@@ -6,6 +6,7 @@
 package com.liferay.portal.json;
 
 import com.liferay.petra.function.UnsafeSupplier;
+import com.liferay.petra.io.unsync.UnsyncCharArrayWriter;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
@@ -403,17 +404,22 @@ public class JSONObjectImpl implements JSONObject {
 
 	@Override
 	public String toString() {
-		return _jsonObject.toString();
+		UnsyncCharArrayWriter unsyncCharArrayWriter =
+			new UnsyncCharArrayWriter();
+
+		_jsonObject.write(unsyncCharArrayWriter);
+
+		return unsyncCharArrayWriter.toString();
 	}
 
 	@Override
 	public String toString(int indentFactor) throws JSONException {
-		try {
-			return _jsonObject.toString(indentFactor);
-		}
-		catch (Exception exception) {
-			throw new JSONException(exception);
-		}
+		UnsyncCharArrayWriter unsyncCharArrayWriter =
+			new UnsyncCharArrayWriter();
+
+		_jsonObject.write(unsyncCharArrayWriter, indentFactor, 0);
+
+		return unsyncCharArrayWriter.toString();
 	}
 
 	@Override
