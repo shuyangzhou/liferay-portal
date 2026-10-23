@@ -1,0 +1,7 @@
+Bundle-Name: Liferay Foo Web
+Bundle-SymbolicName: com.liferay.foo.web
+Bundle-Version: 1.0.0
+Web-ContextPath: /foo-web
+-includeresource:\
+	META-INF/resources/package.json=package.json,\
+	package.json

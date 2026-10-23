@@ -1,0 +1,7 @@
+dependencies {
+	testIntegrationImplementation project(":apps:bar:bar-api")
+}
+
+jar {
+	enabled = true
+}

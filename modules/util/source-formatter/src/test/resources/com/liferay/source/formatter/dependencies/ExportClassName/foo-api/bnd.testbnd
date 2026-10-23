@@ -1,0 +1,9 @@
+Bundle-Name: Liferay Foo API
+Bundle-SymbolicName: com.liferay.foo.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.foo,\
+	com.liferay.foo.FooUtil,\
+	com.liferay.foo.Model,\
+	\
+	org.apache.xml.security.Init;version="2.0.0"

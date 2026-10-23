@@ -1,0 +1,3 @@
+dependencies {
+	testIntegrationImplementation project(":apps:foo:foo-api")
+}

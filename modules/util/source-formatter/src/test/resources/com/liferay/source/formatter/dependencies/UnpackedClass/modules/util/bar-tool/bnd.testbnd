@@ -1,0 +1,4 @@
+Bundle-Name: Liferay Bar Tool
+Bundle-SymbolicName: com.liferay.bar.tool
+Bundle-Version: 1.0.0
+-includeresource: @com.liferay.baz.api-*.jar!/com/liferay/baz/BazUtil.class

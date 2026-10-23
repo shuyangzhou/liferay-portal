@@ -13,3 +13,5 @@ or
 * a Liferay specific definition key defined in `_APP_BND_DEFINITION_KEYS`,
  `_APP_BND_DEFINITION_KEYS` or `_APP_BND_DEFINITION_KEYS` in
 [BNDSourceUtil](https://github.com/liferay/liferay-portal/blob/master/modules/util/source-formatter/src/main/java/com/liferay/source/formatter/check/util/BNDSourceUtil.java)
+
+A `bnd.bnd` outside a `src` directory must not use `-donotcopy`. It filters only the directories that `-includeresource` copies, so it rarely filters anything in a module, and in a core module the `-donotcopy` of `common.bnd` overrides it.

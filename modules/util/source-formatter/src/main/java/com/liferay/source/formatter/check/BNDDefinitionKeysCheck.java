@@ -33,6 +33,12 @@ public class BNDDefinitionKeysCheck extends BaseDefinitionKeysCheck {
 		content = sortDefinitionKeys(
 			content, definitions, new DefinitionComparator());
 
+		if (fileName.endsWith("/bnd.bnd") && !absolutePath.contains("/src/") &&
+			(isPortalSource() || isSubrepository())) {
+
+			_checkForbiddenDefinitionKeys(fileName, content, definitions);
+		}
+
 		Map<String, Map<String, String>> fileSpecificDefinitionKeysMap =
 			BNDSourceUtil.getFileSpecificDefinitionKeysMap();
 		Map<String, String> generalDefinitionKeysMap =
@@ -45,6 +51,33 @@ public class BNDDefinitionKeysCheck extends BaseDefinitionKeysCheck {
 		}
 
 		return content;
+	}
+
+	private void _checkForbiddenDefinitionKeys(
+		String fileName, String content, List<String> definitions) {
+
+		for (String definition : definitions) {
+			Matcher matcher = _definitionKeyPattern.matcher(definition);
+
+			if (!matcher.lookingAt()) {
+				continue;
+			}
+
+			String definitionKey = matcher.group(1);
+
+			if (definitionKey.contains(StringPool.PERIOD)) {
+				definitionKey = StringUtil.extractFirst(
+					definitionKey, StringPool.PERIOD);
+			}
+
+			if (!definitionKey.equals("-donotcopy")) {
+				continue;
+			}
+
+			addMessage(
+				fileName, "Do not use \"" + definitionKey + "\" in bnd.bnd",
+				getLineNumber(content, content.indexOf(definition)));
+		}
 	}
 
 	private String _formatDefinitionKey(

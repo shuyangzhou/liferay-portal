@@ -10,7 +10,6 @@
 		<suppress checks="ReferenceAnnotationCheck" files="scr-reference-dynamic-greedy-test-impl/src/main/java/com/liferay/scr/reference/dynamic/greedy/test/internal/DynamicGreedyOptionalComponent\.java" />
 	</checkstyle>
 	<source-check>
-		<suppress checks="BNDIncludeResourceCheck" files="external-data-source-test/bnd.bnd" />
 		<suppress checks="BNDSchemaVersionCheck" files="external-data-source-test-service/bnd.bnd" />
 		<suppress checks="CDNCheck" files="maven-executor/src/main/java/com/liferay/maven/executor/MavenExecutor.java" />
 		<suppress checks="JavaModuleTestCheck" files="arquillian-extension-junit-bridge-test/src/testIntegration/java/com/liferay/arquillian/extension/junit/bridge/junit/test/item/.*" />

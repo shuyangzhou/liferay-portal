@@ -116,8 +116,7 @@
 		</check>
 		<check name="BNDIncludeResourceCheck">
 			<category name="Bug Prevention" />
-			<description name="Checks for unnecessary including of `test-classes/integration`." />
-			<property name="checkTestIncludeResource" value="true" />
+			<description name="Checks `-includeresource` instructions in `.bnd` files." />
 		</check>
 		<check name="BNDLiferayEnterpriseAppCheck">
 			<category name="Bug Prevention" />

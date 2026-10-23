@@ -1,0 +1,4 @@
+Bundle-Name: Liferay Qux Implementation
+Bundle-SymbolicName: com.liferay.qux.impl
+Bundle-Version: 1.0.0
+-includeresource: @lib/qux.jar

@@ -5,11 +5,15 @@
 
 package com.liferay.source.formatter.check;
 
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.tools.ImportsFormatter;
 import com.liferay.source.formatter.BNDImportsFormatter;
+import com.liferay.source.formatter.check.util.BNDSourceUtil;
 
+import java.io.File;
 import java.io.IOException;
 
 import java.util.regex.Matcher;
@@ -29,6 +33,15 @@ public class BNDImportsCheck extends BaseFileCheck {
 	protected String doProcess(
 			String fileName, String absolutePath, String content)
 		throws IOException {
+
+		if (!absolutePath.contains("/src/")) {
+			_checkClassNameExports(
+				fileName, absolutePath, content, "-exportcontents",
+				_exportContentsPattern);
+			_checkClassNameExports(
+				fileName, absolutePath, content, "Export-Package",
+				_exportsPattern);
+		}
 
 		_checkWildcardImports(
 			fileName, absolutePath, content, "-conditionalpackage",
@@ -54,6 +67,63 @@ public class BNDImportsCheck extends BaseFileCheck {
 		}
 
 		return content;
+	}
+
+	private void _checkClassNameExports(
+		String fileName, String absolutePath, String content,
+		String instruction, Pattern pattern) {
+
+		Matcher matcher = pattern.matcher(content);
+
+		if (!matcher.find()) {
+			return;
+		}
+
+		File file = new File(absolutePath);
+
+		File moduleDir = file.getParentFile();
+
+		for (String clause : BNDSourceUtil.getClauses(matcher.group(3))) {
+			String exportName = clause;
+
+			int index = exportName.indexOf(CharPool.SEMICOLON);
+
+			if (index != -1) {
+				exportName = StringUtil.trim(exportName.substring(0, index));
+			}
+
+			if (exportName.startsWith(StringPool.EXCLAMATION) ||
+				exportName.contains("${")) {
+
+				continue;
+			}
+
+			if (exportName.endsWith(StringPool.STAR)) {
+				exportName = exportName.substring(0, exportName.length() - 1);
+			}
+
+			if (exportName.endsWith(StringPool.PERIOD)) {
+				exportName = exportName.substring(0, exportName.length() - 1);
+			}
+
+			String lastSegment = exportName.substring(
+				exportName.lastIndexOf(CharPool.PERIOD) + 1);
+
+			if (lastSegment.isEmpty() ||
+				!Character.isUpperCase(lastSegment.charAt(0)) ||
+				_isPackageName(moduleDir, exportName)) {
+
+				continue;
+			}
+
+			addMessage(
+				fileName,
+				StringBundler.concat(
+					"\"", exportName, "\" in ", instruction,
+					" is a class name, use its package name"),
+				getLineNumber(
+					content, content.indexOf(exportName, matcher.start())));
+		}
 	}
 
 	private String _checkImportPackageVersionRanges(String content) {
@@ -113,6 +183,32 @@ public class BNDImportsCheck extends BaseFileCheck {
 
 			addMessage(fileName, message);
 		}
+	}
+
+	private boolean _isPackageName(File moduleDir, String exportName) {
+		for (String dirName : new String[] {"wsdl", "xsd"}) {
+			File dir = new File(moduleDir, dirName);
+
+			if (dir.isDirectory()) {
+				return true;
+			}
+		}
+
+		String packagePath = StringUtil.replace(
+			exportName, CharPool.PERIOD, CharPool.SLASH);
+
+		for (String dirName :
+				new String[] {"src", "src/main/java", "src/main/resources"}) {
+
+			File dir = new File(
+				moduleDir, dirName + StringPool.SLASH + packagePath);
+
+			if (dir.isDirectory()) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private String _removeInternalPrivatePackages(String content) {

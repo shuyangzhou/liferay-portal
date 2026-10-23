@@ -14,7 +14,7 @@ BNDBreakingChangeCommitMessageCheck | .bnd | Checks that commit message should c
 [BNDDefinitionKeysCheck](check/bnd_definition_keys_check.md#bnddefinitionkeyscheck) | .bnd | Validates definition keys in `.bnd` files. |
 [BNDDirectoryNameCheck](check/bnd_directory_name_check.md#bnddirectorynamecheck) | .bnd | Checks if the directory names of the submodules match the parent module name. |
 [BNDExportsCheck](check/bnd_exports_check.md#bndexportscheck) | .bnd | Checks that modules not ending with `-api`, `-client`, `-spi`, `-taglib`, `-test-util` do not export packages. |
-[BNDIncludeResourceCheck](check/bnd_include_resource_check.md#bndincluderesourcecheck) | .bnd | Checks for unnecessary including of `test-classes/integration`. |
+[BNDIncludeResourceCheck](check/bnd_include_resource_check.md#bndincluderesourcecheck) | .bnd | Checks `-includeresource` instructions in `.bnd` files. |
 [BNDLiferayEnterpriseAppCheck](check/bnd_liferay_enterprise_app_check.md#bndliferayenterpriseappcheck) | .bnd | Checks for correct use of property `Liferay-Enterprise-App`. |
 [BNDLiferayRelengBundleCheck](check/bnd_liferay_releng_bundle_check.md#bndliferayrelengbundlecheck) | .bnd | Checks if `.lfrbuild-release-src` file exists for DXP module with `Liferay-Releng-Bundle: true`. |
 [BNDLiferayRelengCategoryCheck](check/bnd_liferay_releng_category_check.md#bndliferayrelengcategorycheck) | .bnd | Validates `Liferay-Releng-Category` properties. |

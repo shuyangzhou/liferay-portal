@@ -1,0 +1,4 @@
+Bundle-Name: Liferay Foo Implementation
+Bundle-SymbolicName: com.liferay.foo.impl
+Bundle-Version: 1.0.0
+-donotcopy: (\.touch)

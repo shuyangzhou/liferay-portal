@@ -7,6 +7,7 @@ package com.liferay.source.formatter.check.util;
 
 import aQute.bnd.osgi.Constants;
 
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -109,6 +110,44 @@ public class BNDSourceUtil {
 		}
 
 		return bundleSymbolicNamesMap;
+	}
+
+	public static List<String> getClauses(String definitionValue) {
+		List<String> clauses = new ArrayList<>();
+
+		definitionValue = definitionValue.replaceAll("\\\\\n\\s*", "");
+
+		int braceLevel = 0;
+		char quote = 0;
+		int x = 0;
+
+		for (int i = 0; i < definitionValue.length(); i++) {
+			char c = definitionValue.charAt(i);
+
+			if (quote != 0) {
+				if (c == quote) {
+					quote = 0;
+				}
+			}
+			else if ((c == CharPool.APOSTROPHE) || (c == CharPool.QUOTE)) {
+				quote = c;
+			}
+			else if (c == CharPool.OPEN_CURLY_BRACE) {
+				braceLevel++;
+			}
+			else if (c == CharPool.CLOSE_CURLY_BRACE) {
+				braceLevel--;
+			}
+			else if ((c == CharPool.COMMA) && (braceLevel == 0)) {
+				_addClause(clauses, definitionValue.substring(x, i));
+
+				x = i + 1;
+			}
+		}
+
+		_addClause(clauses, definitionValue.substring(x));
+
+		return clauses;
 	}
 
 	public static String getDefinition(String content, String key) {
@@ -234,6 +273,14 @@ public class BNDSourceUtil {
 		}
 
 		return content;
+	}
+
+	private static void _addClause(List<String> clauses, String clause) {
+		clause = StringUtil.trim(clause);
+
+		if (Validator.isNotNull(clause)) {
+			clauses.add(clause);
+		}
 	}
 
 	private static Map<String, String> _populateDefinitionKeysMap(

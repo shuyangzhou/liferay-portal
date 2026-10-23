@@ -1,0 +1,11 @@
+package com.liferay.foo.internal;
+
+import com.liferay.baz.Baz;
+
+public class FooImpl {
+
+	public Baz getBaz() {
+		return new Baz();
+	}
+
+}

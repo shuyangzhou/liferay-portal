@@ -1,0 +1,10 @@
+Bundle-Name: Liferay Foo Implementation
+Bundle-SymbolicName: com.liferay.foo.impl
+Bundle-Version: 1.0.0
+-includeresource:\
+	@com.liferay.baz.api-*.jar!/com/liferay/baz/Baz.class,\
+	@com.liferay.baz.api-*.jar!/com/liferay/baz/Baz$Inner.class,\
+	@com.liferay.baz.api-*.jar!/com/liferay/baz/BazUtil.class,\
+	@com.liferay.baz.api-*.jar!/com/liferay/baz/Missing.class,\
+	@com.liferay.baz.api-*.jar!/com/liferay/baz/internal/*,\
+	@com.liferay.baz.api-*.jar!/META-INF/baz.tld

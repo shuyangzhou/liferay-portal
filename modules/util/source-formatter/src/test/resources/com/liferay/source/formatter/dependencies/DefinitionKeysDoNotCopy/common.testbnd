@@ -1,0 +1,3 @@
+Bundle-Vendor: ${release.info.vendor}
+-donotcopy: (\.touch)
+-sources: false

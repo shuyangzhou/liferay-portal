@@ -1,0 +1,6 @@
+task copyLibs(type: Copy)
+
+copyLibs {
+	from configurations.runtimeClasspath
+	into "lib"
+}

@@ -1,0 +1,5 @@
+Bundle-Name: Liferay Bar Web
+Bundle-SymbolicName: com.liferay.bar.web
+Bundle-Version: 1.0.0
+Web-ContextPath: /bar-web
+-includeresource: package.json

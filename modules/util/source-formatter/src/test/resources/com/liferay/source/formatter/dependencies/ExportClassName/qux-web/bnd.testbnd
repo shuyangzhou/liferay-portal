@@ -1,0 +1,4 @@
+Bundle-Name: Liferay Qux Web
+Bundle-SymbolicName: com.liferay.qux.web
+Bundle-Version: 1.0.0
+-exportcontents: com.liferay.qux.web.QuxUtil

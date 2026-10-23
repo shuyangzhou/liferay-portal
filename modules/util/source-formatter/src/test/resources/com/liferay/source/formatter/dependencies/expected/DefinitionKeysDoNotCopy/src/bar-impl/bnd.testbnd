@@ -1,0 +1,4 @@
+Bundle-Name: Liferay Bar Implementation
+Bundle-SymbolicName: com.liferay.bar.impl
+Bundle-Version: 1.0.0
+-donotcopy: (\.touch)

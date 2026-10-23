@@ -1,0 +1,15 @@
+Bundle-Name: Liferay Foo Implementation
+Bundle-SymbolicName: com.liferay.foo.impl
+Bundle-Version: 1.0.0
+-includeresource:\
+	-optional.properties,\
+	${project.dir}/macro.properties,\
+	@../baz/baz.jar,\
+	bar.properties=../bar-impl/build/libs/bar.properties,\
+	lib/foo-ws.jar;lib:=true,\
+	lib/frutilla.jar;lib:=true,\
+	META-INF/bar.properties=src/main/resources/META-INF/foo.properties,\
+	META-INF/foo.properties=src/main/resources/META-INF/foo.properties,\
+	META-INF/resources=tmp/META-INF/resources,\
+	missing.properties,\
+	OSGI-INF/configurator=configurator
