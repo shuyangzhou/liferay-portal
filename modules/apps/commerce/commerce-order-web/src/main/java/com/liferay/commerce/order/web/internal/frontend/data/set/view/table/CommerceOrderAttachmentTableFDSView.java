@@ -6,6 +6,7 @@
 package com.liferay.commerce.order.web.internal.frontend.data.set.view.table;
 
 import com.liferay.commerce.order.web.internal.constants.CommerceOrderFDSNames;
+import com.liferay.commerce.order.web.internal.util.DSCommerceOrderAttachmentUtil;
 import com.liferay.frontend.data.set.constants.FDSTimeZoneBehaviorConstants;
 import com.liferay.frontend.data.set.view.FDSView;
 import com.liferay.frontend.data.set.view.table.BaseTableFDSView;
@@ -13,6 +14,7 @@ import com.liferay.frontend.data.set.view.table.DateTimeFDSTableSchemaField;
 import com.liferay.frontend.data.set.view.table.FDSTableSchema;
 import com.liferay.frontend.data.set.view.table.FDSTableSchemaBuilder;
 import com.liferay.frontend.data.set.view.table.FDSTableSchemaBuilderFactory;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 
 import java.util.Locale;
 
@@ -33,7 +35,7 @@ public class CommerceOrderAttachmentTableFDSView extends BaseTableFDSView {
 		FDSTableSchemaBuilder fdsTableSchemaBuilder =
 			_fdsTableSchemaBuilderFactory.create();
 
-		return fdsTableSchemaBuilder.add(
+		fdsTableSchemaBuilder.add(
 			"title", "title",
 			fdsTableSchemaField -> fdsTableSchemaField.setContentRenderer(
 				"commerceOrderAttachmentTitleDataRenderer"
@@ -47,7 +49,18 @@ public class CommerceOrderAttachmentTableFDSView extends BaseTableFDSView {
 		).add(
 			"priority", "priority",
 			fdsTableSchemaField -> fdsTableSchemaField.setSortable(true)
-		).add(
+		);
+
+		if (DSCommerceOrderAttachmentUtil.isEnabled(
+				CompanyThreadLocal.getCompanyId(), 0)) {
+
+			fdsTableSchemaBuilder.add(
+				"dsRequestStatus", "signature-status",
+				fdsTableSchemaField -> fdsTableSchemaField.setContentRenderer(
+					"dsRequestStatusDataRenderer"));
+		}
+
+		return fdsTableSchemaBuilder.add(
 			_getDateFDSTableSchemaField("dateModified", "modified-date")
 		).add(
 			"restricted", "restricted",

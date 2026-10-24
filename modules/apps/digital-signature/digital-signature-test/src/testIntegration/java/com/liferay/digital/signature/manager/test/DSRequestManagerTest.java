@@ -362,6 +362,37 @@ public class DSRequestManagerTest {
 	}
 
 	@Test
+	public void testGetFileEntryDSRequests() throws Exception {
+		DSEnvelope dsEnvelope = _createDSEnvelope();
+
+		dsEnvelope.setStatus(DSRequestConstants.STATUS_VOIDED);
+
+		long fileEntryId = RandomTestUtil.randomInt();
+
+		_addDSRequestWithoutValidation(
+			dsEnvelope, TestPropsValues.getUserId(), fileEntryId);
+		_addDSRequestWithoutValidation(
+			_createDSEnvelope(), TestPropsValues.getUserId(), fileEntryId);
+		_addDSRequestWithoutValidation(
+			_createDSEnvelope(), TestPropsValues.getUserId(), fileEntryId + 1);
+
+		List<DSRequest> dsRequests = _dsRequestManager.getFileEntryDSRequests(
+			TestPropsValues.getCompanyId(), fileEntryId);
+
+		Assert.assertEquals(dsRequests.toString(), 2, dsRequests.size());
+
+		DSRequest dsRequest1 = dsRequests.get(0);
+
+		Assert.assertEquals(
+			DSRequestConstants.STATUS_SENT, dsRequest1.getStatus());
+
+		DSRequest dsRequest2 = dsRequests.get(1);
+
+		Assert.assertEquals(
+			DSRequestConstants.STATUS_VOIDED, dsRequest2.getStatus());
+	}
+
+	@Test
 	public void testGetLatestFileEntryDSRequests() throws Exception {
 		long fileEntryId1 = RandomTestUtil.randomInt();
 		long fileEntryId2 = RandomTestUtil.randomInt();
@@ -546,6 +577,7 @@ public class DSRequestManagerTest {
 		_testUpdateDSRequestWithDifferentDSRecipientStatuses();
 		_testUpdateDSRequestWithDSRequestDocumentObjectEntry();
 		_testUpdateDSRequestWithInvalidSignedDocument();
+		_testUpdateDSRequestWithSentDSRecipient();
 		_testUpdateDSRequestWithWorkflowFolder();
 	}
 
@@ -2002,6 +2034,61 @@ public class DSRequestManagerTest {
 
 		Assert.assertEquals(fileName, fileEntry2.getFileName());
 		Assert.assertEquals("2.0", fileEntry2.getVersion());
+	}
+
+	private void _testUpdateDSRequestWithSentDSRecipient() throws Exception {
+		DSRecipient dsRecipient1 = _createDSRecipient(UserTestUtil.addUser());
+
+		dsRecipient1.setStatus(DSRequestConstants.STATUS_SENT);
+
+		User user = UserTestUtil.addUser();
+
+		DSRecipient dsRecipient2 = _createDSRecipient(user);
+
+		dsRecipient2.setStatus(DSRequestConstants.STATUS_CREATED);
+
+		DSEnvelope dsEnvelope = _createDSEnvelope(dsRecipient1, dsRecipient2);
+
+		DSRequest dsRequest = _addDSRequestWithoutValidation(
+			dsEnvelope, TestPropsValues.getUserId(),
+			RandomTestUtil.randomInt());
+
+		dsRecipient1.setStatus(DSRequestConstants.STATUS_COMPLETED);
+		dsRecipient2.setStatus(DSRequestConstants.STATUS_SENT);
+
+		DSEnvelopeManager dsEnvelopeManager =
+			(DSEnvelopeManager)ReflectionTestUtil.getAndSetFieldValue(
+				_dsRequestManager, "_dsEnvelopeManager",
+				ProxyUtil.newProxyInstance(
+					DSEnvelopeManager.class.getClassLoader(),
+					new Class<?>[] {DSEnvelopeManager.class},
+					(proxy, method, arguments) -> dsEnvelope));
+
+		try {
+			_dsRequestManager.updateDSRequest(dsRequest.getDSRequestId());
+			_dsRequestManager.updateDSRequest(dsRequest.getDSRequestId());
+		}
+		finally {
+			ReflectionTestUtil.setFieldValue(
+				_dsRequestManager, "_dsEnvelopeManager", dsEnvelopeManager);
+		}
+
+		List<NotificationQueueEntry> notificationQueueEntries =
+			_getNotificationQueueEntries(dsRequest);
+
+		Map<String, Object> notificationRecipientSettingsMap =
+			NotificationRecipientSettingUtil.
+				getNotificationRecipientSettingsMap(
+					notificationQueueEntries.get(0));
+
+		Assert.assertEquals(
+			user.getEmailAddress(),
+			notificationRecipientSettingsMap.get(
+				NotificationRecipientSettingConstants.NAME_TO));
+
+		Assert.assertEquals(
+			notificationQueueEntries.toString(), 1,
+			notificationQueueEntries.size());
 	}
 
 	private void _testUpdateDSRequestWithWorkflowFolder() throws Exception {

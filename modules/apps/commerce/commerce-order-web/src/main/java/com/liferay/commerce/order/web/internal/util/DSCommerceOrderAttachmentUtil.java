@@ -1,0 +1,153 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.liferay.commerce.order.web.internal.util;
+
+import com.liferay.account.constants.AccountActionKeys;
+import com.liferay.account.model.AccountEntry;
+import com.liferay.commerce.model.CommerceOrder;
+import com.liferay.commerce.order.web.internal.exception.DSCommerceOrderAttachmentException;
+import com.liferay.commerce.product.model.CommerceChannel;
+import com.liferay.commerce.product.service.CommerceChannelLocalServiceUtil;
+import com.liferay.digital.signature.configuration.DigitalSignatureConfiguration;
+import com.liferay.digital.signature.configuration.DigitalSignatureConfigurationUtil;
+import com.liferay.digital.signature.exception.DSRequestException;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.UserConstants;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.Validator;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+/**
+ * @author Brian I. Kim
+ */
+public class DSCommerceOrderAttachmentUtil {
+
+	public static List<User> getAccountEntryUsers(
+			ModelResourcePermission<AccountEntry>
+				accountEntryModelResourcePermission,
+			CommerceOrder commerceOrder, PermissionChecker permissionChecker)
+		throws PortalException {
+
+		AccountEntry accountEntry = commerceOrder.getAccountEntry();
+
+		if (!accountEntryModelResourcePermission.contains(
+				permissionChecker, accountEntry,
+				AccountActionKeys.VIEW_USERS)) {
+
+			return Collections.emptyList();
+		}
+
+		return ListUtil.filter(
+			accountEntry.fetchUsers(),
+			user -> isValidDSRecipient(commerceOrder.getCompanyId(), user));
+	}
+
+	public static String getErrorMessage(
+		Language language, Locale locale, PortalException portalException) {
+
+		String key = _errorMessageKeys.get(portalException.getClass());
+
+		if (Validator.isNull(key)) {
+			return portalException.getMessage();
+		}
+
+		return language.get(locale, key);
+	}
+
+	public static boolean isEnabled(long companyId, long groupId) {
+		if (!FeatureFlagManagerUtil.isEnabled(companyId, "LPD-69290")) {
+			return false;
+		}
+
+		long siteGroupId = 0;
+
+		if (groupId > 0) {
+			CommerceChannel commerceChannel =
+				CommerceChannelLocalServiceUtil.
+					fetchCommerceChannelByGroupClassPK(groupId);
+
+			if (commerceChannel == null) {
+				return false;
+			}
+
+			siteGroupId = commerceChannel.getSiteGroupId();
+		}
+
+		DigitalSignatureConfiguration digitalSignatureConfiguration =
+			DigitalSignatureConfigurationUtil.getDigitalSignatureConfiguration(
+				companyId, siteGroupId);
+
+		if (digitalSignatureConfiguration.embeddedViewEnabled() &&
+			digitalSignatureConfiguration.enabled()) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public static boolean isValidDSRecipient(long companyId, User user) {
+		if ((user.getCompanyId() == companyId) &&
+			(user.getType() == UserConstants.TYPE_REGULAR) && user.isActive()) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public static JSONObject toJSONObject(User user) {
+		return JSONUtil.put(
+			"emailAddress", user.getEmailAddress()
+		).put(
+			"name", user.getFullName()
+		).put(
+			"userId", user.getUserId()
+		);
+	}
+
+	private static final Map<Class<?>, String> _errorMessageKeys =
+		HashMapBuilder.<Class<?>, String>put(
+			DSCommerceOrderAttachmentException.MustHaveDSRequest.class,
+			"no-signature-request-was-found-for-this-document"
+		).put(
+			DSCommerceOrderAttachmentException.MustHaveRecipient.class,
+			"at-least-one-recipient-is-required"
+		).put(
+			DSCommerceOrderAttachmentException.MustHaveSupportedFileExtension.
+				class,
+			"this-file-extension-is-not-supported-by-docusign"
+		).put(
+			DSCommerceOrderAttachmentException.
+				MustNotHaveMultipleCountersigners.class,
+			"only-one-internal-countersigner-is-allowed"
+		).put(
+			DSRequestException.MustBeActive.class,
+			"this-signature-request-is-no-longer-active"
+		).put(
+			DSRequestException.MustHaveEmbeddedViewEnabled.class,
+			"digital-signature-is-not-enabled-for-this-order"
+		).put(
+			DSRequestException.MustHaveReplaceableFileEntry.class,
+			"this-document-already-has-an-active-or-completed-signature-request"
+		).put(
+			DSRequestException.MustHaveValidRecipient.class,
+			"one-or-more-recipients-cannot-sign-this-order"
+		).build();
+
+}

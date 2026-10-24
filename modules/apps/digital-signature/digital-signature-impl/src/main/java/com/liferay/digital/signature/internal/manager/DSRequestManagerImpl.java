@@ -91,6 +91,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -282,6 +283,80 @@ public class DSRequestManagerImpl implements DSRequestManager {
 	}
 
 	@Override
+	public DSRequest fetchLatestFileEntryDSRequest(
+		long companyId, long fileEntryId) {
+
+		Map<Long, DSRequest> dsRequests = getLatestFileEntryDSRequests(
+			companyId, new long[] {fileEntryId});
+
+		return dsRequests.get(fileEntryId);
+	}
+
+	@Override
+	public List<DSRequest> getFileEntryDSRequests(
+		long companyId, long fileEntryId) {
+
+		if (!FeatureFlagManagerUtil.isEnabled(companyId, "LPD-69290")) {
+			return new ArrayList<>();
+		}
+
+		ObjectDefinition objectDefinition =
+			_objectDefinitionLocalService.
+				fetchObjectDefinitionByExternalReferenceCode(
+					DSObjectDefinitionConstants.
+						EXTERNAL_REFERENCE_CODE_REQUEST_DOCUMENT,
+					companyId);
+
+		if (objectDefinition == null) {
+			return new ArrayList<>();
+		}
+
+		try {
+			Set<Long> dsRequestIds = new LinkedHashSet<>(
+				TransformUtil.transform(
+					_getValuesList(
+						companyId, "(fileEntryId eq " + fileEntryId + ")",
+						objectDefinition,
+						new Sort[] {
+							new Sort(Field.CREATE_DATE, Sort.LONG_TYPE, true),
+							new Sort("id", Sort.LONG_TYPE, true)
+						}),
+					values -> MapUtil.getLong(
+						values,
+						"r_dsRequestToDSRequestDocuments_l_dsRequestId")));
+
+			if (dsRequestIds.isEmpty()) {
+				return new ArrayList<>();
+			}
+
+			Map<Long, DSRequest> dsRequests = _getDSRequests(
+				companyId, dsRequestIds);
+
+			return TransformUtil.transform(
+				dsRequestIds,
+				dsRequestId -> {
+					DSRequest dsRequest = dsRequests.get(dsRequestId);
+
+					if ((dsRequest == null) ||
+						!_isEnabled(companyId, dsRequest.getSiteGroupId())) {
+
+						return null;
+					}
+
+					return dsRequest;
+				});
+		}
+		catch (Exception exception) {
+			_log.error(
+				"Unable to get digital signature requests for file entry " +
+					fileEntryId,
+				exception);
+		}
+
+		return new ArrayList<>();
+	}
+
+	@Override
 	public List<DSRequest> getGroupDSRequests(
 		long companyId, long groupId, String search, int start, int end) {
 
@@ -457,21 +532,8 @@ public class DSRequestManagerImpl implements DSRequestManager {
 			return;
 		}
 
-		for (DSRequestRecipient dsRequestRecipient :
-				dsRequest.getDSRequestRecipients()) {
-
-			if ((dsRequestRecipient.getUserId() <= 0) ||
-				!Objects.equals(
-					DSRequestConstants.STATUS_SENT,
-					dsRequestRecipient.getStatus()) ||
-				!Validator.isEmailAddress(
-					dsRequestRecipient.getEmailAddress())) {
-
-				continue;
-			}
-
-			_sendDSRequestNotification(dsRequest, dsRequestRecipient);
-		}
+		_sendDSRequestNotifications(
+			dsRequest, dsRequest.getDSRequestRecipients());
 	}
 
 	@Override
@@ -485,7 +547,39 @@ public class DSRequestManagerImpl implements DSRequestManager {
 			return;
 		}
 
-		_updateDSRequest(objectEntry);
+		DSRequest dsRequest = fetchDSRequest(
+			objectEntry.getCompanyId(), dsRequestId);
+
+		if (dsRequest == null) {
+			return;
+		}
+
+		Set<Long> userIds = new HashSet<>(
+			TransformUtil.transform(
+				dsRequest.getDSRequestRecipients(),
+				dsRequestRecipient -> {
+					if (!Objects.equals(
+							DSRequestConstants.STATUS_CREATED,
+							dsRequestRecipient.getStatus())) {
+
+						return null;
+					}
+
+					return dsRequestRecipient.getUserId();
+				}));
+
+		dsRequest = _updateDSRequest(objectEntry);
+
+		if ((dsRequest == null) || dsRequest.isTerminal()) {
+			return;
+		}
+
+		_sendDSRequestNotifications(
+			dsRequest,
+			ListUtil.filter(
+				dsRequest.getDSRequestRecipients(),
+				dsRequestRecipient -> userIds.contains(
+					dsRequestRecipient.getUserId())));
 	}
 
 	@Override
@@ -1200,6 +1294,24 @@ public class DSRequestManagerImpl implements DSRequestManager {
 		}
 	}
 
+	private void _sendDSRequestNotifications(
+		DSRequest dsRequest, List<DSRequestRecipient> dsRequestRecipients) {
+
+		for (DSRequestRecipient dsRequestRecipient : dsRequestRecipients) {
+			if ((dsRequestRecipient.getUserId() <= 0) ||
+				!Objects.equals(
+					DSRequestConstants.STATUS_SENT,
+					dsRequestRecipient.getStatus()) ||
+				!Validator.isEmailAddress(
+					dsRequestRecipient.getEmailAddress())) {
+
+				continue;
+			}
+
+			_sendDSRequestNotification(dsRequest, dsRequestRecipient);
+		}
+	}
+
 	private DSDocument _toDSDocument(long fileEntryId) throws Exception {
 		FileEntry fileEntry = _dlAppLocalService.getFileEntry(fileEntryId);
 
@@ -1223,12 +1335,12 @@ public class DSRequestManagerImpl implements DSRequestManager {
 		return Date.from(localDateTime.toInstant(ZoneOffset.UTC));
 	}
 
-	private void _updateDSRequest(ObjectEntry objectEntry) {
+	private DSRequest _updateDSRequest(ObjectEntry objectEntry) {
 		if (ArrayUtil.contains(
 				DSRequestConstants.STATUSES_REQUEST_TERMINAL,
 				MapUtil.getString(objectEntry.getValues(), "requestStatus"))) {
 
-			return;
+			return null;
 		}
 
 		long companyId = objectEntry.getCompanyId();
@@ -1271,11 +1383,15 @@ public class DSRequestManagerImpl implements DSRequestManager {
 				).build(),
 				_getServiceContext(
 					companyId, groupId, objectEntry.getUserId()));
+
+			return fetchDSRequest(companyId, dsRequestId);
 		}
 		catch (Exception exception) {
 			_log.error(
 				"Unable to update digital signature request " + dsRequestId,
 				exception);
+
+			return null;
 		}
 	}
 
