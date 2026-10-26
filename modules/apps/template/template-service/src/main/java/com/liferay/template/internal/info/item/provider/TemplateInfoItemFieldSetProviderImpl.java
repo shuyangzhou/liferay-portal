@@ -177,20 +177,29 @@ public class TemplateInfoItemFieldSetProviderImpl
 
 		Set<Long> groupIds = new HashSet<>();
 
-		Company company = _companyLocalService.fetchCompany(
-			serviceContext.getCompanyId());
+		ThemeDisplay themeDisplay = serviceContext.getThemeDisplay();
 
-		if (company != null) {
-			groupIds.add(company.getGroupId());
+		if (themeDisplay == null) {
+			Company company = _companyLocalService.fetchCompany(
+				serviceContext.getCompanyId());
+
+			if (company != null) {
+				groupIds.add(company.getGroupId());
+			}
+		}
+		else {
+			groupIds.add(themeDisplay.getCompanyGroupId());
 		}
 
 		long ddmStructureKey = GetterUtil.getLong(infoItemFormVariationKey);
 
-		DDMStructure ddmStructure = _ddmStructureLocalService.fetchStructure(
-			ddmStructureKey);
+		if (ddmStructureKey > 0) {
+			DDMStructure ddmStructure =
+				_ddmStructureLocalService.fetchStructure(ddmStructureKey);
 
-		if (ddmStructure != null) {
-			groupIds.add(ddmStructure.getGroupId());
+			if (ddmStructure != null) {
+				groupIds.add(ddmStructure.getGroupId());
+			}
 		}
 
 		groupIds.add(
