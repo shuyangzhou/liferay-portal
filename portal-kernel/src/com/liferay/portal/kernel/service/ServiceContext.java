@@ -671,6 +671,16 @@ public class ServiceContext implements Cloneable, Serializable {
 	}
 
 	public Group getScopeGroup() throws PortalException {
+		ThemeDisplay themeDisplay = getThemeDisplay();
+
+		if (themeDisplay != null) {
+			Group group = themeDisplay.getScopeGroup();
+
+			if ((group != null) && (group.getGroupId() == _scopeGroupId)) {
+				return group;
+			}
+		}
+
 		return GroupLocalServiceUtil.getGroup(_scopeGroupId);
 	}
 
