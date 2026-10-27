@@ -2125,17 +2125,21 @@ public class PortalImpl implements Portal {
 	public List<Group> getCurrentAndAncestorSiteGroups(
 		long groupId, boolean checkContentSharingWithChildrenEnabled) {
 
+		Group siteGroup = _getSiteGroup(groupId);
+
+		if (siteGroup == null) {
+			return new ArrayList<>();
+		}
+
 		Set<Group> groups = new LinkedHashSet<>();
 
-		Group siteGroup = getCurrentSiteGroup(groupId);
-
-		if (siteGroup != null) {
+		if (!siteGroup.isLayoutPrototype()) {
 			groups.add(siteGroup);
 		}
 
 		groups.addAll(
-			getAncestorSiteGroups(
-				groupId, checkContentSharingWithChildrenEnabled));
+			_getAncestorSiteGroups(
+				siteGroup, checkContentSharingWithChildrenEnabled));
 
 		return new ArrayList<>(groups);
 	}
@@ -6811,53 +6815,8 @@ public class PortalImpl implements Portal {
 			return Collections.emptySet();
 		}
 
-		Set<Group> groups = null;
-
-		for (Group group : siteGroup.getAncestors()) {
-			if (checkContentSharingWithChildrenEnabled &&
-				!group.isContentSharingWithChildrenEnabled()) {
-
-				continue;
-			}
-
-			if (groups == null) {
-				groups = new LinkedHashSet<>();
-			}
-
-			groups.add(group);
-		}
-
-		if (!siteGroup.isCompany()) {
-			Group companyGroup = null;
-
-			Company company = CompanyLocalServiceUtil.fetchCompany(
-				siteGroup.getCompanyId());
-
-			if (company != null) {
-				try {
-					companyGroup = company.getGroup();
-				}
-				catch (PortalException portalException) {
-					_log.error(portalException);
-				}
-			}
-
-			if (companyGroup != null) {
-				if (groups == null) {
-					return Collections.singleton(companyGroup);
-				}
-
-				groups.add(companyGroup);
-
-				return groups;
-			}
-		}
-
-		if (groups == null) {
-			return Collections.emptySet();
-		}
-
-		return groups;
+		return _getAncestorSiteGroups(
+			siteGroup, checkContentSharingWithChildrenEnabled);
 	}
 
 	protected Locale getAvailableLocale(long groupId, Locale locale) {
@@ -7614,6 +7573,58 @@ public class PortalImpl implements Portal {
 		}
 
 		return localizedAlternateURLsMap;
+	}
+
+	private Set<Group> _getAncestorSiteGroups(
+		Group siteGroup, boolean checkContentSharingWithChildrenEnabled) {
+
+		Set<Group> groups = null;
+
+		for (Group group : siteGroup.getAncestors()) {
+			if (checkContentSharingWithChildrenEnabled &&
+				!group.isContentSharingWithChildrenEnabled()) {
+
+				continue;
+			}
+
+			if (groups == null) {
+				groups = new LinkedHashSet<>();
+			}
+
+			groups.add(group);
+		}
+
+		if (!siteGroup.isCompany()) {
+			Group companyGroup = null;
+
+			Company company = CompanyLocalServiceUtil.fetchCompany(
+				siteGroup.getCompanyId());
+
+			if (company != null) {
+				try {
+					companyGroup = company.getGroup();
+				}
+				catch (PortalException portalException) {
+					_log.error(portalException);
+				}
+			}
+
+			if (companyGroup != null) {
+				if (groups == null) {
+					return Collections.singleton(companyGroup);
+				}
+
+				groups.add(companyGroup);
+
+				return groups;
+			}
+		}
+
+		if (groups == null) {
+			return Collections.emptySet();
+		}
+
+		return groups;
 	}
 
 	private Map<Locale, String> _getChangeLanguageURLs(
