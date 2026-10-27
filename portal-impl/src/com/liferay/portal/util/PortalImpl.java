@@ -5814,6 +5814,10 @@ public class PortalImpl implements Portal {
 		Group group, LayoutTypePortlet layoutTypePortlet,
 		PortletDisplay portletDisplay, String portletName) {
 
+		if (!group.isLayoutPrototype()) {
+			return false;
+		}
+
 		Portlet portlet = PortletLocalServiceUtil.getPortletById(
 			group.getCompanyId(), portletDisplay.getId());
 
@@ -5821,8 +5825,7 @@ public class PortalImpl implements Portal {
 			return false;
 		}
 
-		if (group.isLayoutPrototype() &&
-			layoutTypePortlet.hasPortletId(portletDisplay.getId()) &&
+		if (layoutTypePortlet.hasPortletId(portletDisplay.getId()) &&
 			portletDisplay.isModeView() && !portletDisplay.isStatePopUp() &&
 			!portletName.equals(PortletKeys.NESTED_PORTLETS)) {
 
