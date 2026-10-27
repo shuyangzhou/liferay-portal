@@ -1037,9 +1037,9 @@ public class LanguageImpl implements Language, Serializable {
 		}
 
 		try {
-			if (isInheritLocales(groupId)) {
-				Group group = GroupLocalServiceUtil.getGroup(groupId);
+			Group group = GroupLocalServiceUtil.getGroup(groupId);
 
+			if (_isInheritLocales(group)) {
 				CompanyLocalesBag companyLocalesBag = _getCompanyLocalesBag(
 					group.getCompanyId());
 
@@ -1558,9 +1558,9 @@ public class LanguageImpl implements Language, Serializable {
 		}
 
 		try {
-			if (isInheritLocales(groupId)) {
-				Group group = GroupLocalServiceUtil.getGroup(groupId);
+			Group group = GroupLocalServiceUtil.getGroup(groupId);
 
+			if (_isInheritLocales(group)) {
 				CompanyLocalesBag companyLocalesBag = _getCompanyLocalesBag(
 					group.getCompanyId());
 
@@ -1618,20 +1618,7 @@ public class LanguageImpl implements Language, Serializable {
 
 	@Override
 	public boolean isInheritLocales(long groupId) throws PortalException {
-		Group group = GroupLocalServiceUtil.getGroup(groupId);
-
-		if (group.isStagingGroup()) {
-			group = group.getLiveGroup();
-		}
-
-		if ((!group.isSite() && !group.isDepot()) || group.isCompany()) {
-			return true;
-		}
-
-		return GetterUtil.getBoolean(
-			group.getTypeSettingsProperty(
-				GroupConstants.TYPE_SETTINGS_KEY_INHERIT_LOCALES),
-			true);
+		return _isInheritLocales(GroupLocalServiceUtil.getGroup(groupId));
 	}
 
 	@Override
@@ -2010,6 +1997,21 @@ public class LanguageImpl implements Language, Serializable {
 		}
 
 		return locale;
+	}
+
+	private boolean _isInheritLocales(Group group) {
+		if (group.isStagingGroup()) {
+			group = group.getLiveGroup();
+		}
+
+		if ((!group.isSite() && !group.isDepot()) || group.isCompany()) {
+			return true;
+		}
+
+		return GetterUtil.getBoolean(
+			group.getTypeSettingsProperty(
+				GroupConstants.TYPE_SETTINGS_KEY_INHERIT_LOCALES),
+			true);
 	}
 
 	private void _resetAvailableGroupLocales(long groupId) {
