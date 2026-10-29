@@ -76,7 +76,8 @@ public class BndBundleUtil {
 							attributes.getValue("Import-Package"))),
 					","));
 
-			if (Boolean.valueOf(
+			if (ClientState.DUMP_ONLY ||
+				Boolean.valueOf(
 					System.getProperty("liferay.arquillian.copy.jar"))) {
 
 				String symbolicName = attributes.getValue(

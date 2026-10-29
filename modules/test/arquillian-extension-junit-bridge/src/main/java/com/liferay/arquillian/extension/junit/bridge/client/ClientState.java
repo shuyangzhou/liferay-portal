@@ -44,6 +44,9 @@ import org.junit.runner.RunWith;
  */
 public class ClientState {
 
+	public static final boolean DUMP_ONLY = Boolean.getBoolean(
+		"liferay.arquillian.dump.only");
+
 	public void filterTestClasses(
 		Class<?> testClass, Predicate<Class<?>> predicate) {
 
@@ -56,6 +59,17 @@ public class ClientState {
 			Class<?> testClass,
 			Map<String, List<String>> filteredMethodNamesMap)
 		throws Throwable {
+
+		if (DUMP_ONLY) {
+			if (!_dumped) {
+				BndBundleUtil.createBundle(
+					filteredMethodNamesMap, "127.0.0.1", 0, 0);
+
+				_dumped = true;
+			}
+
+			return _dummyConnection;
+		}
 
 		if (_bundleId == 0) {
 			ServerSocket serverSocket = _socketState.getServerSocket();
@@ -240,6 +254,21 @@ public class ClientState {
 	}
 
 	private static long _bundleId;
+
+	private static final Connection _dummyConnection = new Connection() {
+
+		@Override
+		public void close() {
+		}
+
+		@Override
+		public void execute(
+			String testClassName, Consumer<RunNotifierCommand> consumer) {
+		}
+
+	};
+
+	private static boolean _dumped;
 	private static final FrameworkState _frameworkState = new FrameworkState();
 	private static final SocketState _socketState = new SocketState();
 	private static Set<Class<?>> _testClasses;
