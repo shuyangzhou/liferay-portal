@@ -172,7 +172,8 @@ for (Portlet portlet : portletTreeSet) {
 
 		portlet.data = portlet.data || {};
 
-		portlet.data.pageRenderState = <%= RenderStateUtil.generateJSON(request, themeDisplay) %>;
+		portlet.data.pageRenderState =
+			<%= RenderStateUtil.generateJSON(request, themeDisplay) %>;
 	</aui:script>
 </c:if>
 
