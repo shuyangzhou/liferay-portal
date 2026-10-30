@@ -7057,6 +7057,65 @@ public class ObjectEntryLocalServiceTest {
 	}
 
 	@Test
+	public void testGetValuesListCount() throws Exception {
+		ObjectField localizedObjectField = ObjectFieldUtil.createObjectField(
+			ObjectFieldConstants.BUSINESS_TYPE_TEXT,
+			ObjectFieldConstants.DB_TYPE_STRING, RandomTestUtil.randomString(),
+			"a" + RandomTestUtil.randomString());
+
+		localizedObjectField.setLocalized(true);
+
+		ObjectDefinition objectDefinition =
+			ObjectDefinitionTestUtil.publishObjectDefinition(
+				Collections.singletonList(localizedObjectField),
+				ObjectDefinitionConstants.SCOPE_COMPANY);
+
+		Locale originalThemeDisplayLocale =
+			LocaleThreadLocal.getThemeDisplayLocale();
+
+		try {
+			LocaleThreadLocal.setThemeDisplayLocale(LocaleUtil.US);
+
+			String localizedValue = RandomTestUtil.randomString();
+
+			_addObjectEntry(
+				0, objectDefinition,
+				HashMapBuilder.<String, Serializable>put(
+					localizedObjectField.getName() + "_i18n",
+					(Serializable)Collections.singletonMap(
+						LocaleUtil.toLanguageId(LocaleUtil.US), localizedValue)
+				).build(),
+				ServiceContextTestUtil.getServiceContext());
+
+			_addObjectEntry(
+				0, objectDefinition,
+				HashMapBuilder.<String, Serializable>put(
+					localizedObjectField.getName() + "_i18n",
+					(Serializable)Collections.singletonMap(
+						LocaleUtil.toLanguageId(LocaleUtil.US),
+						RandomTestUtil.randomString())
+				).build(),
+				ServiceContextTestUtil.getServiceContext());
+
+			Column<?, String> localizedColumn =
+				(Column<?, String>)_objectFieldLocalService.getColumn(
+					objectDefinition.getObjectDefinitionId(),
+					localizedObjectField.getName());
+
+			Assert.assertEquals(
+				1,
+				_getValuesListCount(
+					objectDefinition, localizedColumn.eq(localizedValue)));
+		}
+		finally {
+			LocaleThreadLocal.setThemeDisplayLocale(originalThemeDisplayLocale);
+
+			_objectDefinitionLocalService.deleteObjectDefinition(
+				objectDefinition);
+		}
+	}
+
+	@Test
 	public void testGetValuesListCountByObjectDefinitionIds() throws Exception {
 
 		// Add object entry on irrelevant group
@@ -11716,6 +11775,16 @@ public class ObjectEntryLocalServiceTest {
 		}
 
 		return values;
+	}
+
+	private int _getValuesListCount(
+			ObjectDefinition objectDefinition, Predicate predicate)
+		throws Exception {
+
+		return _objectEntryLocalService.getValuesListCount(
+			new Long[] {0L}, TestPropsValues.getCompanyId(),
+			TestPropsValues.getUserId(),
+			objectDefinition.getObjectDefinitionId(), predicate, false, null);
 	}
 
 	private boolean _hasResourcePermission(
