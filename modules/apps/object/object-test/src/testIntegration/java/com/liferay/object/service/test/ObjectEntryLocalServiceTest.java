@@ -7076,11 +7076,25 @@ public class ObjectEntryLocalServiceTest {
 		try {
 			LocaleThreadLocal.setThemeDisplayLocale(LocaleUtil.US);
 
+			ObjectField extensionObjectField = _addCustomObjectField(
+				new TextObjectFieldBuilder(
+				).labelMap(
+					LocalizedMapUtil.getLocalizedMap(
+						RandomTestUtil.randomString())
+				).name(
+					"a" + RandomTestUtil.randomString()
+				).objectDefinitionId(
+					objectDefinition.getObjectDefinitionId()
+				).build());
+
+			String extensionValue = RandomTestUtil.randomString();
 			String localizedValue = RandomTestUtil.randomString();
 
 			_addObjectEntry(
 				0, objectDefinition,
 				HashMapBuilder.<String, Serializable>put(
+					extensionObjectField.getName(), extensionValue
+				).put(
 					localizedObjectField.getName() + "_i18n",
 					(Serializable)Collections.singletonMap(
 						LocaleUtil.toLanguageId(LocaleUtil.US), localizedValue)
@@ -7090,12 +7104,32 @@ public class ObjectEntryLocalServiceTest {
 			_addObjectEntry(
 				0, objectDefinition,
 				HashMapBuilder.<String, Serializable>put(
+					extensionObjectField.getName(),
+					RandomTestUtil.randomString()
+				).put(
 					localizedObjectField.getName() + "_i18n",
 					(Serializable)Collections.singletonMap(
 						LocaleUtil.toLanguageId(LocaleUtil.US),
 						RandomTestUtil.randomString())
 				).build(),
 				ServiceContextTestUtil.getServiceContext());
+
+			Assert.assertEquals(2, _getValuesListCount(objectDefinition, null));
+			Assert.assertEquals(
+				2,
+				_getValuesListCount(
+					objectDefinition,
+					ObjectEntryTable.INSTANCE.objectEntryId.isNotNull()));
+
+			Column<?, String> extensionColumn =
+				(Column<?, String>)_objectFieldLocalService.getColumn(
+					objectDefinition.getObjectDefinitionId(),
+					extensionObjectField.getName());
+
+			Assert.assertEquals(
+				1,
+				_getValuesListCount(
+					objectDefinition, extensionColumn.eq(extensionValue)));
 
 			Column<?, String> localizedColumn =
 				(Column<?, String>)_objectFieldLocalService.getColumn(
