@@ -1663,10 +1663,8 @@ public class ObjectEntryLocalServiceImpl
 			groupIds,
 			DSLQueryFactoryUtil.select(ObjectEntryTable.INSTANCE.objectEntryId),
 			objectDefinition,
-			SetUtil.fromArray(
-				objectDefinition.getDBTableName(),
-				objectDefinition.getExtensionDBTableName(),
-				objectDefinition.getLocalizationDBTableName()),
+			_getOrderByTableNames(
+				objectDefinition, _getSorts(end, sorts, start)),
 			predicate, preferApproved, search
 		).limit(
 			start, end
@@ -5601,6 +5599,38 @@ public class ObjectEntryLocalServiceImpl
 					_fillPredicate(objectDefinition, predicate, search))
 			)
 		);
+	}
+
+	private Set<String> _getOrderByTableNames(
+		ObjectDefinition objectDefinition, Sort[] sorts) {
+
+		if (sorts == null) {
+			return Collections.emptySet();
+		}
+
+		Set<String> tableNames = new HashSet<>();
+
+		for (Sort sort : sorts) {
+			String fieldName = sort.getFieldName();
+
+			if (!Objects.equals(fieldName, sort.getFieldPath()) ||
+				fieldName.contains(StringPool.SLASH)) {
+
+				return SetUtil.fromArray(
+					objectDefinition.getDBTableName(),
+					objectDefinition.getExtensionDBTableName(),
+					objectDefinition.getLocalizationDBTableName());
+			}
+
+			Column<?, ?> column = _objectFieldLocalService.getColumn(
+				objectDefinition.getObjectDefinitionId(), fieldName);
+
+			Table<?> table = column.getTable();
+
+			tableNames.add(table.getTableName());
+		}
+
+		return tableNames;
 	}
 
 	private Predicate _getPermissionWherePredicate(
