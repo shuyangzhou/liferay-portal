@@ -7648,6 +7648,70 @@ public class ObjectEntryLocalServiceTest {
 	}
 
 	@Test
+	public void testGetValuesListCountWithObjectEntryDraft() throws Exception {
+		ObjectField objectField = ObjectFieldUtil.createObjectField(
+			ObjectFieldConstants.BUSINESS_TYPE_TEXT,
+			ObjectFieldConstants.DB_TYPE_STRING, RandomTestUtil.randomString(),
+			"a" + RandomTestUtil.randomString());
+
+		ObjectDefinition objectDefinition =
+			ObjectDefinitionTestUtil.publishObjectDefinition(
+				true, false, false, Collections.singletonList(objectField),
+				ObjectDefinitionConstants.SCOPE_COMPANY);
+
+		try {
+			ObjectEntry objectEntry1 = _addObjectEntry(
+				objectDefinition,
+				HashMapBuilder.<String, Serializable>put(
+					objectField.getName(), RandomTestUtil.randomString()
+				).build(),
+				ServiceContextTestUtil.getServiceContext());
+
+			ServiceContext serviceContext =
+				ServiceContextTestUtil.getServiceContext();
+
+			serviceContext.setWorkflowAction(
+				WorkflowConstants.ACTION_SAVE_DRAFT);
+
+			ObjectEntry objectEntry2 = _addObjectEntry(
+				objectDefinition,
+				HashMapBuilder.<String, Serializable>put(
+					objectField.getName(), RandomTestUtil.randomString()
+				).build(),
+				serviceContext);
+
+			ObjectEntry objectEntry3 = _addObjectEntry(
+				objectDefinition,
+				HashMapBuilder.<String, Serializable>put(
+					objectField.getName(), RandomTestUtil.randomString()
+				).build(),
+				ServiceContextTestUtil.getServiceContext());
+
+			_objectEntryLocalService.moveObjectEntryToTrash(
+				TestPropsValues.getUserId(), objectEntry3,
+				ServiceContextTestUtil.getServiceContext());
+
+			_assertPrimaryKeysAndValuesListCount(
+				Arrays.asList(objectEntry1, objectEntry2), objectDefinition,
+				null);
+
+			Assert.assertEquals(
+				Arrays.asList(objectEntry1.getObjectEntryId()),
+				_objectEntryLocalService.getPrimaryKeys(
+					new Long[] {0L}, TestPropsValues.getCompanyId(),
+					TestPropsValues.getUserId(),
+					objectDefinition.getObjectDefinitionId(), null, true, null,
+					0, 20, null));
+
+			_assertValuesListCount(1, objectDefinition, true);
+		}
+		finally {
+			_objectDefinitionLocalService.deleteObjectDefinition(
+				objectDefinition);
+		}
+	}
+
+	@Test
 	public void testGetValuesListCountWithObjectEntryInTrash()
 		throws Exception {
 
