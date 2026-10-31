@@ -7482,6 +7482,81 @@ public class ObjectEntryLocalServiceTest {
 	}
 
 	@Test
+	public void testGetValuesListCountWithObjectDefinitionTree()
+		throws Exception {
+
+		TreeTestUtil.createObjectDefinitionTree(
+			_objectDefinitionLocalService, _objectRelationshipLocalService,
+			true,
+			LinkedHashMapBuilder.put(
+				"A", new String[] {"AA"}
+			).put(
+				"AA", new String[0]
+			).build());
+
+		try {
+			ObjectDefinition objectDefinitionA =
+				_objectDefinitionLocalService.getObjectDefinition(
+					TestPropsValues.getCompanyId(), "C_A");
+
+			TreeTestUtil.createObjectEntryTree(
+				"1", _objectDefinitionLocalService, _objectEntryLocalService,
+				_objectFieldLocalService, _objectRelationshipLocalService,
+				objectDefinitionA.getObjectDefinitionId());
+
+			ObjectEntry objectEntryA = _objectEntryLocalService.getObjectEntry(
+				"A1", ObjectDefinitionConstants.GROUP_ID_DEFAULT,
+				objectDefinitionA.getObjectDefinitionId());
+
+			ObjectDefinition objectDefinitionAA =
+				_objectDefinitionLocalService.getObjectDefinition(
+					TestPropsValues.getCompanyId(), "C_AA");
+
+			ObjectEntry objectEntryAA1 =
+				_objectEntryLocalService.getObjectEntry(
+					"AA1", ObjectDefinitionConstants.GROUP_ID_DEFAULT,
+					objectDefinitionAA.getObjectDefinitionId());
+
+			ObjectEntry objectEntryAA2 = _addObjectEntry(
+				objectDefinitionAA, Collections.emptyMap(),
+				ServiceContextTestUtil.getServiceContext());
+
+			Assert.assertEquals(
+				Arrays.asList(objectEntryA.getObjectEntryId()),
+				_getPrimaryKeys(objectDefinitionA, null, null));
+			Assert.assertEquals(
+				1, _getValuesListCount(objectDefinitionA, null));
+			Assert.assertEquals(
+				Arrays.asList(objectEntryAA2.getObjectEntryId()),
+				_getPrimaryKeys(objectDefinitionAA, null, null));
+			Assert.assertEquals(
+				1, _getValuesListCount(objectDefinitionAA, null));
+
+			TreeTestUtil.unbind(
+				objectDefinitionA.getObjectDefinitionId(),
+				_objectRelationshipLocalService);
+
+			Assert.assertEquals(
+				Arrays.asList(objectEntryA.getObjectEntryId()),
+				_getPrimaryKeys(objectDefinitionA, null, null));
+			Assert.assertEquals(
+				1, _getValuesListCount(objectDefinitionA, null));
+			Assert.assertEquals(
+				Arrays.asList(
+					objectEntryAA1.getObjectEntryId(),
+					objectEntryAA2.getObjectEntryId()),
+				_getPrimaryKeys(objectDefinitionAA, null, null));
+			Assert.assertEquals(
+				2, _getValuesListCount(objectDefinitionAA, null));
+		}
+		finally {
+			TreeTestUtil.deleteObjectDefinitionHierarchy(
+				_objectDefinitionLocalService, new String[] {"C_A", "C_AA"},
+				_objectEntryLocalService, _objectRelationshipLocalService);
+		}
+	}
+
+	@Test
 	public void testGetValuesWithFirstExtensionTableAggregationObjectField()
 		throws Exception {
 
