@@ -165,6 +165,7 @@ import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.petra.sql.dsl.query.FromStep;
 import com.liferay.petra.sql.dsl.query.GroupByStep;
 import com.liferay.petra.sql.dsl.query.JoinStep;
+import com.liferay.petra.sql.dsl.query.LimitStep;
 import com.liferay.petra.sql.dsl.spi.expression.Scalar;
 import com.liferay.petra.sql.dsl.spi.query.QueryExpression;
 import com.liferay.petra.string.CharPool;
@@ -1585,7 +1586,7 @@ public class ObjectEntryLocalServiceImpl
 				dslQuery,
 				_objectDefinitionPersistence.findByPrimaryKey(
 					objectRelationship.getObjectDefinitionId2()),
-				start, end, sorts));
+				sorts));
 	}
 
 	@Override
@@ -1659,13 +1660,12 @@ public class ObjectEntryLocalServiceImpl
 		ObjectDefinition objectDefinition =
 			_objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId);
 
-		DSLQuery dslQuery = _getObjectEntriesGroupByStep(
+		DSLQuery dslQuery = _getObjectEntriesLimitStep(
 			groupIds,
 			DSLQueryFactoryUtil.select(ObjectEntryTable.INSTANCE.objectEntryId),
-			objectDefinition,
-			_getOrderByTableNames(
-				objectDefinition, _getSorts(end, sorts, start)),
-			predicate, preferApproved, search
+			objectDefinition, _isDefaultSort(end, sorts, start),
+			_getOrderByTableNames(objectDefinition, sorts), predicate,
+			preferApproved, search
 		).limit(
 			start, end
 		);
@@ -1676,7 +1676,7 @@ public class ObjectEntryLocalServiceImpl
 
 		return TransformUtil.transform(
 			objectEntryPersistence.dslQuery(
-				_applyOrderBy(dslQuery, objectDefinition, start, end, sorts)),
+				_applyOrderBy(dslQuery, objectDefinition, sorts)),
 			value -> (Long)_getResult(
 				value, objectFieldBag,
 				dynamicObjectDefinitionTable.getPrimaryKeyColumn()));
@@ -2029,11 +2029,12 @@ public class ObjectEntryLocalServiceImpl
 		throws PortalException {
 
 		return objectEntryPersistence.dslQueryCount(
-			_getObjectEntriesGroupByStep(
+			_getObjectEntriesLimitStep(
 				groupIds, DSLQueryFactoryUtil.count(),
 				_objectDefinitionPersistence.findByPrimaryKey(
 					objectDefinitionId),
-				Collections.emptySet(), predicate, preferApproved, search));
+				false, Collections.emptySet(), predicate, preferApproved,
+				search));
 	}
 
 	@Override
@@ -3397,11 +3398,8 @@ public class ObjectEntryLocalServiceImpl
 	}
 
 	private DSLQuery _applyOrderBy(
-			DSLQuery dslQuery, ObjectDefinition objectDefinition, int start,
-			int end, Sort[] sorts)
+			DSLQuery dslQuery, ObjectDefinition objectDefinition, Sort[] sorts)
 		throws PortalException {
-
-		sorts = _getSorts(end, sorts, start);
 
 		if (sorts == null) {
 			return dslQuery;
@@ -5350,10 +5348,11 @@ public class ObjectEntryLocalServiceImpl
 		);
 	}
 
-	private GroupByStep _getObjectEntriesGroupByStep(
+	private LimitStep _getObjectEntriesLimitStep(
 			Long[] groupIds, FromStep fromStep,
-			ObjectDefinition objectDefinition, Set<String> orderByTableNames,
-			Predicate predicate, boolean preferApproved, String search)
+			ObjectDefinition objectDefinition, boolean orderByPrimaryKey,
+			Set<String> orderByTableNames, Predicate predicate,
+			boolean preferApproved, String search)
 		throws PortalException {
 
 		DynamicObjectDefinitionTable dynamicObjectDefinitionTable =
@@ -5450,6 +5449,17 @@ public class ObjectEntryLocalServiceImpl
 			}
 		).where(
 			wherePredicate
+		).orderBy(
+			orderByStep -> {
+				if (!orderByPrimaryKey) {
+					return null;
+				}
+
+				Column<DynamicObjectDefinitionTable, Long> primaryKeyColumn =
+					fromDynamicObjectDefinitionTable.getPrimaryKeyColumn();
+
+				return orderByStep.orderBy(primaryKeyColumn.ascending());
+			}
 		);
 	}
 
@@ -6191,16 +6201,6 @@ public class ObjectEntryLocalServiceImpl
 		return selectExpressions.toArray(new Expression<?>[0]);
 	}
 
-	private Sort[] _getSorts(int end, Sort[] sorts, int start) {
-		if (((end != QueryUtil.ALL_POS) || (start != QueryUtil.ALL_POS)) &&
-			(sorts == null)) {
-
-			return new Sort[] {new Sort("id", Sort.LONG_TYPE, false)};
-		}
-
-		return sorts;
-	}
-
 	private int _getStatus(int status) {
 		if (status == WorkflowConstants.STATUS_PENDING) {
 			return WorkflowConstants.STATUS_DRAFT;
@@ -6764,6 +6764,16 @@ public class ObjectEntryLocalServiceImpl
 		}
 
 		return staticValues;
+	}
+
+	private boolean _isDefaultSort(int end, Sort[] sorts, int start) {
+		if (((end != QueryUtil.ALL_POS) || (start != QueryUtil.ALL_POS)) &&
+			(sorts == null)) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private List<Object[]> _list(
