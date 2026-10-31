@@ -7104,9 +7104,6 @@ public class ObjectEntryLocalServiceTest {
 			_addObjectEntry(
 				0, objectDefinition,
 				HashMapBuilder.<String, Serializable>put(
-					extensionObjectField.getName(),
-					RandomTestUtil.randomString()
-				).put(
 					localizedObjectField.getName() + "_i18n",
 					(Serializable)Collections.singletonMap(
 						LocaleUtil.toLanguageId(LocaleUtil.US),
@@ -7130,6 +7127,14 @@ public class ObjectEntryLocalServiceTest {
 				1,
 				_getValuesListCount(
 					objectDefinition, extensionColumn.eq(extensionValue)));
+			Assert.assertEquals(
+				1,
+				_getValuesListCount(
+					objectDefinition, extensionColumn.isNull()));
+			Assert.assertEquals(
+				0,
+				_getValuesListCount(
+					objectDefinition, extensionColumn.neq(extensionValue)));
 
 			Column<?, String> localizedColumn =
 				(Column<?, String>)_objectFieldLocalService.getColumn(
