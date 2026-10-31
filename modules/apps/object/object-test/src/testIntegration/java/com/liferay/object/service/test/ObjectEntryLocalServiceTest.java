@@ -9502,15 +9502,19 @@ public class ObjectEntryLocalServiceTest {
 					ObjectFieldConstants.BUSINESS_TYPE_TEXT,
 					ObjectFieldConstants.DB_TYPE_STRING, "Name", "name")));
 
-		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+		try (LogCapture logCapture1 = LoggerTestUtil.configureLog4JLogger(
 				"com.liferay.object.service.impl.ObjectEntryLocalServiceImpl",
+				LoggerTestUtil.DEBUG);
+			LogCapture logCapture2 = LoggerTestUtil.configureLog4JLogger(
+				"com.liferay.object.petra.sql.dsl." +
+					"DynamicObjectDefinitionTableUtil",
 				LoggerTestUtil.DEBUG)) {
 
 			ObjectEntry objectEntry = _addObjectEntry(
 				0, objectDefinition1.getObjectDefinitionId(),
 				Collections.emptyMap());
 
-			_assertExtensionTableInsertSQLs(1, logCapture, objectDefinition1);
+			_assertExtensionTableInsertSQLs(1, logCapture1, objectDefinition1);
 
 			ObjectField textObjectField = _addCustomObjectField(
 				new TextObjectFieldBuilder(
@@ -9526,6 +9530,8 @@ public class ObjectEntryLocalServiceTest {
 			Assert.assertEquals(
 				objectDefinition1.getExtensionDBTableName(),
 				textObjectField.getDBTableName());
+
+			_assertExtensionTableInsertSQLs(0, logCapture2, objectDefinition1);
 
 			Assert.assertEquals(
 				Collections.singletonList(objectEntry.getObjectEntryId()),
@@ -9558,7 +9564,7 @@ public class ObjectEntryLocalServiceTest {
 				).build(),
 				ServiceContextTestUtil.getServiceContext());
 
-			_assertExtensionTableInsertSQLs(1, logCapture, objectDefinition1);
+			_assertExtensionTableInsertSQLs(1, logCapture1, objectDefinition1);
 
 			Assert.assertEquals(
 				value,
@@ -9618,11 +9624,13 @@ public class ObjectEntryLocalServiceTest {
 				objectDefinition2.getExtensionDBTableName(),
 				relationshipObjectField.getDBTableName());
 
+			_assertExtensionTableInsertSQLs(0, logCapture2, objectDefinition2);
+
 			_addObjectEntry(
 				0, objectDefinition2.getObjectDefinitionId(),
 				Collections.emptyMap());
 
-			_assertExtensionTableInsertSQLs(1, logCapture, objectDefinition2);
+			_assertExtensionTableInsertSQLs(1, logCapture1, objectDefinition2);
 		}
 		finally {
 			_objectDefinitionLocalService.deleteObjectDefinition(
