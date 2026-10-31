@@ -7997,6 +7997,63 @@ public class ObjectEntryLocalServiceTest {
 	}
 
 	@Test
+	public void testMoveObjectEntry() throws Exception {
+		ObjectField objectField = ObjectFieldUtil.createObjectField(
+			ObjectFieldConstants.BUSINESS_TYPE_TEXT,
+			ObjectFieldConstants.DB_TYPE_STRING, RandomTestUtil.randomString(),
+			"a" + RandomTestUtil.randomString());
+
+		ObjectDefinition objectDefinition =
+			ObjectDefinitionTestUtil.publishObjectDefinition(
+				Collections.singletonList(objectField),
+				ObjectDefinitionConstants.SCOPE_COMPANY);
+
+		try {
+			ObjectEntry objectEntry1 = _addObjectEntry(
+				objectDefinition,
+				HashMapBuilder.<String, Serializable>put(
+					objectField.getName(), RandomTestUtil.randomString()
+				).build(),
+				ServiceContextTestUtil.getServiceContext());
+
+			DepotEntry depotEntry = _addDepotEntry(
+				DepotConstants.TYPE_ASSET_LIBRARY);
+
+			for (long groupId :
+					new long[] {
+						depotEntry.getGroupId(), TestPropsValues.getGroupId()
+					}) {
+
+				ObjectEntryFolder objectEntryFolder =
+					ObjectEntryFolderTestUtil.addObjectEntryFolder(groupId);
+
+				AssertUtils.assertFailure(
+					ObjectEntryGroupIdException.InvalidGroupIdForScope.class,
+					StringBundler.concat(
+						"Group ID ", groupId, " is not valid for scope \"",
+						ObjectDefinitionConstants.SCOPE_COMPANY, "\""),
+					() -> _objectEntryLocalService.moveObjectEntry(
+						TestPropsValues.getUserId(),
+						objectEntry1.getObjectEntryId(),
+						objectEntryFolder.getObjectEntryFolderId(),
+						objectEntry1.getValues(),
+						ServiceContextTestUtil.getServiceContext()));
+
+				ObjectEntry objectEntry2 =
+					_objectEntryLocalService.getObjectEntry(
+						objectEntry1.getObjectEntryId());
+
+				Assert.assertEquals(0, objectEntry2.getGroupId());
+				Assert.assertEquals(0, objectEntry2.getObjectEntryFolderId());
+			}
+		}
+		finally {
+			_objectDefinitionLocalService.deleteObjectDefinition(
+				objectDefinition);
+		}
+	}
+
+	@Test
 	public void testMoveObjectEntryToTrashWithComments() throws Exception {
 		Group group = GroupTestUtil.addGroup();
 
@@ -8169,6 +8226,59 @@ public class ObjectEntryLocalServiceTest {
 
 		Assert.assertEquals(
 			WorkflowConstants.STATUS_DRAFT, trashEntry.getStatus());
+	}
+
+	@Test
+	public void testMoveObjectEntryWithDomain() throws Exception {
+		_domainObjectDefinition =
+			ObjectDefinitionTestUtil.publishObjectDefinition(
+				Collections.singletonList(
+					new TextObjectFieldBuilder(
+					).labelMap(
+						RandomTestUtil.randomLocaleStringMap()
+					).name(
+						"a" + RandomTestUtil.randomString()
+					).build()),
+				ObjectDefinitionConstants.SCOPE_DEPOT);
+
+		_objectDefinitionSettingLocalService.addObjectDefinitionSetting(
+			_domainObjectDefinition.getUserId(),
+			_domainObjectDefinition.getObjectDefinitionId(),
+			ObjectDefinitionSettingConstants.NAME_ACCEPT_ALL_GROUPS,
+			StringPool.TRUE);
+
+		ObjectDefinitionSetting objectDefinitionSetting =
+			_objectDefinitionSettingLocalService.addObjectDefinitionSetting(
+				_domainObjectDefinition.getUserId(),
+				_domainObjectDefinition.getObjectDefinitionId(),
+				ObjectDefinitionSettingConstants.NAME_DOMAIN,
+				DepotRolesConstants.SUBTYPE_PROJECT);
+
+		DepotEntry depotEntry = _addDepotEntry(DepotConstants.TYPE_PROJECT);
+
+		ObjectEntry objectEntry = _addObjectEntry(
+			depotEntry.getGroupId(),
+			_domainObjectDefinition.getObjectDefinitionId(),
+			Collections.emptyMap());
+
+		objectDefinitionSetting.setValue(DepotRolesConstants.SUBTYPE_SPACE);
+
+		_objectDefinitionSettingLocalService.updateObjectDefinitionSetting(
+			objectDefinitionSetting);
+
+		ObjectEntryFolder objectEntryFolder =
+			ObjectEntryFolderTestUtil.addObjectEntryFolder(
+				depotEntry.getGroupId());
+
+		objectEntry = _objectEntryLocalService.moveObjectEntry(
+			TestPropsValues.getUserId(), objectEntry.getObjectEntryId(),
+			objectEntryFolder.getObjectEntryFolderId(), objectEntry.getValues(),
+			ServiceContextTestUtil.getServiceContext());
+
+		Assert.assertEquals(depotEntry.getGroupId(), objectEntry.getGroupId());
+		Assert.assertEquals(
+			objectEntryFolder.getObjectEntryFolderId(),
+			objectEntry.getObjectEntryFolderId());
 	}
 
 	@Test
