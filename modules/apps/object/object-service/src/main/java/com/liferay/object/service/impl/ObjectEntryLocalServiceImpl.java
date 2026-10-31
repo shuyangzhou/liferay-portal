@@ -1670,8 +1670,7 @@ public class ObjectEntryLocalServiceImpl
 		LimitStep limitStep = null;
 
 		if (_isObjectEntryTableRequired(
-				objectDefinition, orderByTableNames, predicate,
-				preferApproved)) {
+				objectDefinition, orderByTableNames, predicate)) {
 
 			limitStep = _getObjectEntriesLimitStep(
 				groupIds,
@@ -1700,7 +1699,8 @@ public class ObjectEntryLocalServiceImpl
 						).from(
 							ObjectEntryTable.INSTANCE
 						).where(
-							_getInTrashPredicate(objectDefinition)
+							_getUnlistedPredicate(
+								objectDefinition, preferApproved)
 						))));
 		}
 
@@ -2071,8 +2071,7 @@ public class ObjectEntryLocalServiceImpl
 			_fillPredicate(objectDefinition, predicate, search));
 
 		if (_isObjectEntryTableRequired(
-				objectDefinition, Collections.emptySet(), predicate,
-				preferApproved)) {
+				objectDefinition, Collections.emptySet(), predicate)) {
 
 			return objectEntryPersistence.dslQueryCount(
 				_getObjectEntriesLimitStep(
@@ -2091,8 +2090,8 @@ public class ObjectEntryLocalServiceImpl
 				_getObjectEntriesLimitStep(
 					groupIds, DSLQueryFactoryUtil.count(),
 					fromDynamicObjectDefinitionTable, objectDefinition,
-					_getInTrashPredicate(objectDefinition), false,
-					Collections.emptySet(), predicate)));
+					_getUnlistedPredicate(objectDefinition, preferApproved),
+					false, Collections.emptySet(), predicate)));
 
 		return objectEntryPersistence.dslQueryCount(
 			_getObjectEntriesLimitStep(
@@ -5069,15 +5068,6 @@ public class ObjectEntryLocalServiceImpl
 			ObjectEntryTable.INSTANCE.headObjectEntryId);
 	}
 
-	private Predicate _getInTrashPredicate(ObjectDefinition objectDefinition) {
-		return ObjectEntryTable.INSTANCE.objectDefinitionId.eq(
-			objectDefinition.getObjectDefinitionId()
-		).and(
-			ObjectEntryTable.INSTANCE.status.eq(
-				WorkflowConstants.STATUS_IN_TRASH)
-		);
-	}
-
 	private Map<Long, Map<String, Serializable>> _getIndexedValuesMap(
 		ObjectEntry objectEntry, ObjectDefinition objectDefinition,
 		List<ObjectField> indexedObjectFields) {
@@ -6431,6 +6421,23 @@ public class ObjectEntryLocalServiceImpl
 		return tableNames;
 	}
 
+	private Predicate _getUnlistedPredicate(
+		ObjectDefinition objectDefinition, boolean preferApproved) {
+
+		Predicate predicate = ObjectEntryTable.INSTANCE.objectDefinitionId.eq(
+			objectDefinition.getObjectDefinitionId());
+
+		if (preferApproved) {
+			return predicate.and(
+				ObjectEntryTable.INSTANCE.status.neq(
+					WorkflowConstants.STATUS_APPROVED));
+		}
+
+		return predicate.and(
+			ObjectEntryTable.INSTANCE.status.eq(
+				WorkflowConstants.STATUS_IN_TRASH));
+	}
+
 	private String _getUrlTitle(
 		long classNameId, long groupId, String languageId,
 		ObjectEntry objectEntry, ObjectField objectField,
@@ -6949,10 +6956,9 @@ public class ObjectEntryLocalServiceImpl
 
 	private boolean _isObjectEntryTableRequired(
 		ObjectDefinition objectDefinition, Set<String> orderByTableNames,
-		Predicate predicate, boolean preferApproved) {
+		Predicate predicate) {
 
-		if (preferApproved ||
-			!StringUtil.equals(
+		if (!StringUtil.equals(
 				objectDefinition.getScope(),
 				ObjectDefinitionConstants.SCOPE_COMPANY) ||
 			objectDefinition.isEnableObjectEntryVersioning() ||
