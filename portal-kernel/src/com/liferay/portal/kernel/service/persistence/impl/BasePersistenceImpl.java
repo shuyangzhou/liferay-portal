@@ -882,6 +882,10 @@ public class BasePersistenceImpl
 			PropsUtil.get(
 				PropsKeys.DATABASE_IN_MAX_PARAMETERS,
 				new Filter(dbType.getName())));
+		databaseKeysetPaginationOffsetThreshold = GetterUtil.getInteger(
+			PropsUtil.get(
+				"database.keyset.pagination.offset.threshold",
+				new Filter(dbType.getName())));
 	}
 
 	@Override
@@ -1351,6 +1355,7 @@ public class BasePersistenceImpl
 	protected static final NullModel nullModel = new NullModel();
 
 	protected int databaseInMaxParameters;
+	protected int databaseKeysetPaginationOffsetThreshold;
 	protected Map<String, String> dbColumnNames;
 
 	/**

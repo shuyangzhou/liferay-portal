@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.service.persistence.impl;
 
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.CountFinderPathRegistry;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -22,9 +23,13 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.lang.reflect.Array;
 
+import java.sql.Types;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Shuyang Zhou
@@ -302,6 +307,48 @@ public class CollectionPersistenceFinder
 		return equalityCountFinderPath;
 	}
 
+	private KeysetQueries _createKeysetQueries() {
+		Map<String, Integer> tableColumnsMap =
+			basePersistenceImpl.getTableColumnsMap();
+
+		String selectEntityFrom = StringBundler.concat(
+			"SELECT ", basePersistenceImpl.getEntityAlias(), " FROM ");
+
+		if (!Objects.equals(
+				tableColumnsMap.get(basePersistenceImpl.getPKDBName()),
+				Types.BIGINT) ||
+			!sqlSelectWhere.startsWith(selectEntityFrom)) {
+
+			return _NO_KEYSET_QUERIES;
+		}
+
+		String pkFieldName = basePersistenceImpl.getPKFieldName();
+
+		String pkColumn = _orderByEntityAlias.concat(pkFieldName);
+
+		String probeSqlSelectWhere = StringBundler.concat(
+			"SELECT ", pkColumn, " FROM ",
+			sqlSelectWhere.substring(selectEntityFrom.length()));
+
+		KeysetQuery ascendingKeysetQuery = new KeysetQuery(
+			true, pkColumn, probeSqlSelectWhere);
+		KeysetQuery descendingKeysetQuery = new KeysetQuery(
+			false, pkColumn, probeSqlSelectWhere);
+
+		KeysetQuery defaultKeysetQuery = null;
+
+		if (_defaultOrderByJpql.equals(ascendingKeysetQuery._orderBy)) {
+			defaultKeysetQuery = ascendingKeysetQuery;
+		}
+		else if (_defaultOrderByJpql.equals(descendingKeysetQuery._orderBy)) {
+			defaultKeysetQuery = descendingKeysetQuery;
+		}
+
+		return new KeysetQueries(
+			ascendingKeysetQuery, defaultKeysetQuery, descendingKeysetQuery,
+			pkFieldName);
+	}
+
 	private List<T> _findChunked(
 		List<Object[]> valuesList, int start, int end,
 		OrderByComparator<T> orderByComparator) {
@@ -325,6 +372,43 @@ public class CollectionPersistenceFinder
 
 		return Collections.unmodifiableList(
 			ListUtil.subList(result, start, end));
+	}
+
+	private KeysetQuery _getKeysetQuery(
+		int start, int end, OrderByComparator<T> orderByComparator) {
+
+		int threshold =
+			basePersistenceImpl.databaseKeysetPaginationOffsetThreshold;
+
+		if ((threshold <= 0) || (start < threshold) || (end <= start)) {
+			return null;
+		}
+
+		KeysetQueries keysetQueries = _keysetQueries;
+
+		if (keysetQueries == null) {
+			keysetQueries = _createKeysetQueries();
+
+			_keysetQueries = keysetQueries;
+		}
+
+		if (orderByComparator == null) {
+			return keysetQueries._defaultKeysetQuery;
+		}
+
+		String[] orderByFields = orderByComparator.getOrderByFields();
+
+		if ((orderByFields.length != 1) ||
+			!Objects.equals(orderByFields[0], keysetQueries._pkFieldName)) {
+
+			return null;
+		}
+
+		if (orderByComparator.isAscending(orderByFields[0])) {
+			return keysetQueries._ascendingKeysetQuery;
+		}
+
+		return keysetQueries._descendingKeysetQuery;
 	}
 
 	private boolean _isAllArrayableLengthOne(Object[] values) {
@@ -432,6 +516,13 @@ public class CollectionPersistenceFinder
 		Object[] values, int start, int end,
 		OrderByComparator<T> orderByComparator) {
 
+		KeysetQuery keysetQuery = _getKeysetQuery(
+			start, end, orderByComparator);
+
+		if (keysetQuery != null) {
+			return _runKeysetFindSql(keysetQuery, values, start, end);
+		}
+
 		String sql = _buildFindSql(values, orderByComparator);
 
 		Session session = null;
@@ -456,6 +547,56 @@ public class CollectionPersistenceFinder
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	private List<T> _runKeysetFindSql(
+		KeysetQuery keysetQuery, Object[] values, int start, int end) {
+
+		String sqlWhere = buildSQLWhere(
+			StringPool.OPEN_PARENTHESIS, values, false);
+
+		Session session = null;
+
+		try {
+			session = basePersistenceImpl.openSession();
+
+			Query query = session.createQuery(
+				StringBundler.concat(
+					keysetQuery._probeSqlSelectWhere, sqlWhere,
+					StringPool.CLOSE_PARENTHESIS, keysetQuery._orderBy));
+
+			QueryPos queryPos = QueryPos.getInstance(query);
+
+			bindQueryParams(queryPos, values);
+
+			List<?> primaryKeys = QueryUtil.list(
+				query, basePersistenceImpl.getDialect(), start, start + 1);
+
+			if (primaryKeys.isEmpty()) {
+				return Collections.emptyList();
+			}
+
+			query = session.createQuery(
+				StringBundler.concat(
+					sqlSelectWhere, sqlWhere, keysetQuery._seekSqlWhere,
+					keysetQuery._orderBy));
+
+			queryPos = QueryPos.getInstance(query);
+
+			bindQueryParams(queryPos, values);
+
+			queryPos.add((Long)primaryKeys.get(0));
+
+			return (List<T>)QueryUtil.list(
+				query, basePersistenceImpl.getDialect(), 0, end - start);
+		}
+		catch (Exception exception) {
+			throw basePersistenceImpl.processException(exception);
+		}
+		finally {
+			basePersistenceImpl.closeSession(session);
+		}
+	}
+
 	private boolean _unwrapIfAllArrayableLengthOne(Object[] values) {
 		if (!_isAllArrayableLengthOne(values)) {
 			return false;
@@ -468,14 +609,63 @@ public class CollectionPersistenceFinder
 		return true;
 	}
 
+	private static final KeysetQueries _NO_KEYSET_QUERIES = new KeysetQueries(
+		null, null, null, null);
+
 	private final int[] _arrayableIndexes;
 	private final FinderPath _countFinderPath;
 	private final String _defaultOrderByJpql;
 	private final FinderPath _equalityCountFinderPath;
+	private KeysetQueries _keysetQueries;
 	private final String _orderByEntityAlias;
 	private final FinderPath _paginatedFindPath;
 	private final String _sqlCountWhere;
 	private final UniquePersistenceFinder<T, E> _uniquePersistenceFinder;
 	private final FinderPath _unpaginatedFindPath;
+
+	private static class KeysetQueries {
+
+		private KeysetQueries(
+			KeysetQuery ascendingKeysetQuery, KeysetQuery defaultKeysetQuery,
+			KeysetQuery descendingKeysetQuery, String pkFieldName) {
+
+			_ascendingKeysetQuery = ascendingKeysetQuery;
+			_defaultKeysetQuery = defaultKeysetQuery;
+			_descendingKeysetQuery = descendingKeysetQuery;
+			_pkFieldName = pkFieldName;
+		}
+
+		private final KeysetQuery _ascendingKeysetQuery;
+		private final KeysetQuery _defaultKeysetQuery;
+		private final KeysetQuery _descendingKeysetQuery;
+		private final String _pkFieldName;
+
+	}
+
+	private static class KeysetQuery {
+
+		private KeysetQuery(
+			boolean ascending, String pkColumn, String probeSqlSelectWhere) {
+
+			_probeSqlSelectWhere = probeSqlSelectWhere;
+
+			if (ascending) {
+				_orderBy = StringBundler.concat(" ORDER BY ", pkColumn, " ASC");
+				_seekSqlWhere = StringBundler.concat(
+					") AND ", pkColumn, " >= ?");
+			}
+			else {
+				_orderBy = StringBundler.concat(
+					" ORDER BY ", pkColumn, " DESC");
+				_seekSqlWhere = StringBundler.concat(
+					") AND ", pkColumn, " <= ?");
+			}
+		}
+
+		private final String _orderBy;
+		private final String _probeSqlSelectWhere;
+		private final String _seekSqlWhere;
+
+	}
 
 }
