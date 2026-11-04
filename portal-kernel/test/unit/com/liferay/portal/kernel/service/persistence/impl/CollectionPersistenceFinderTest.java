@@ -6,15 +6,30 @@
 package com.liferay.portal.kernel.service.persistence.impl;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dao.orm.Dialect;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
+import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.dao.orm.Session;
+import com.liferay.portal.kernel.dao.orm.SessionWrapper;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 
+import java.sql.Types;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Deque;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,6 +44,90 @@ public class CollectionPersistenceFinderTest {
 		_testBuildSQLWhereArrayable();
 		_testBuildSQLWhereOneBlank();
 		_testBuildSQLWhereTwoBlanks();
+	}
+
+	@Test
+	public void testFindDeepPageByOffset() {
+		Assert.assertEquals(
+			Arrays.asList(
+				"SELECT t FROM TestModel t WHERE t.groupId = ? ORDER BY " +
+					"t.testModelId ASC",
+				"setLong[1, 7]", "setMaxResults[5]", "setFirstResult[9]",
+				"list[true]", "[1]"),
+			_find(10, _ORDER_BY_PK_ASC, 9, 14, null, Arrays.asList(1L)));
+		Assert.assertEquals(
+			Arrays.asList(
+				"SELECT t FROM TestModel t WHERE t.groupId = ? ORDER BY " +
+					"t.testModelId ASC",
+				"setLong[1, 7]", "setMaxResults[5]", "setFirstResult[10]",
+				"list[true]", "[1]"),
+			_find(0, _ORDER_BY_PK_ASC, 10, 15, null, Arrays.asList(1L)));
+		Assert.assertEquals(
+			Arrays.asList(
+				"SELECT t FROM TestModel t WHERE t.groupId = ? ORDER BY " +
+					"t.name ASC",
+				"setLong[1, 7]", "setMaxResults[5]", "setFirstResult[10]",
+				"list[true]", "[1]"),
+			_find(10, " ORDER BY t.name ASC", 10, 15, null, Arrays.asList(1L)));
+		Assert.assertEquals(
+			Arrays.asList(
+				"SELECT t FROM TestModel t WHERE t.groupId = ? ORDER BY " +
+					"t.name DESC",
+				"setLong[1, 7]", "setMaxResults[5]", "setFirstResult[10]",
+				"list[true]", "[1]"),
+			_find(
+				10, _ORDER_BY_PK_ASC, 10, 15,
+				_createOrderByComparator("TestModel.name DESC"),
+				Arrays.asList(1L)));
+		Assert.assertEquals(
+			Arrays.asList(
+				"SELECT t FROM TestModel t WHERE t.groupId = ? ORDER BY " +
+					"t.testModelId ASC, t.name ASC",
+				"setLong[1, 7]", "setMaxResults[5]", "setFirstResult[10]",
+				"list[true]", "[1]"),
+			_find(
+				10, _ORDER_BY_PK_ASC, 10, 15,
+				_createOrderByComparator(
+					"TestModel.testModelId ASC, TestModel.name ASC"),
+				Arrays.asList(1L)));
+	}
+
+	@Test
+	public void testFindDeepPageByPrimaryKey() {
+		Assert.assertEquals(
+			Arrays.asList(
+				"SELECT t.testModelId FROM TestModel t WHERE (t.groupId = ?) " +
+					"ORDER BY t.testModelId ASC",
+				"setLong[1, 7]", "setMaxResults[1]", "setFirstResult[10]",
+				"list[true]",
+				"SELECT t FROM TestModel t WHERE (t.groupId = ?) AND " +
+					"t.testModelId >= ? ORDER BY t.testModelId ASC",
+				"setLong[1, 7]", "setLong[2, 42]", "setMaxResults[5]",
+				"setFirstResult[0]", "list[true]", "[42, 43]"),
+			_find(
+				10, _ORDER_BY_PK_ASC, 10, 15, null, Arrays.asList(42L),
+				Arrays.asList(42L, 43L)));
+		Assert.assertEquals(
+			Arrays.asList(
+				"SELECT t.testModelId FROM TestModel t WHERE (t.groupId = ?) " +
+					"ORDER BY t.testModelId DESC",
+				"setLong[1, 7]", "setMaxResults[1]", "setFirstResult[12]",
+				"list[true]",
+				"SELECT t FROM TestModel t WHERE (t.groupId = ?) AND " +
+					"t.testModelId <= ? ORDER BY t.testModelId DESC",
+				"setLong[1, 7]", "setLong[2, 42]", "setMaxResults[3]",
+				"setFirstResult[0]", "list[true]", "[42, 41]"),
+			_find(
+				10, " ORDER BY t.name ASC", 12, 15,
+				_createOrderByComparator("TestModel.testModelId DESC"),
+				Arrays.asList(42L), Arrays.asList(42L, 41L)));
+		Assert.assertEquals(
+			Arrays.asList(
+				"SELECT t.testModelId FROM TestModel t WHERE (t.groupId = ?) " +
+					"ORDER BY t.testModelId ASC",
+				"setLong[1, 7]", "setMaxResults[1]", "setFirstResult[10]",
+				"list[true]", "[]"),
+			_find(10, _ORDER_BY_PK_ASC, 10, 15, null, Collections.emptyList()));
 	}
 
 	@Test
@@ -98,6 +197,24 @@ public class CollectionPersistenceFinderTest {
 			testModel -> 0L);
 	}
 
+	private OrderByComparator<TestModel> _createOrderByComparator(
+		String orderBy) {
+
+		return new OrderByComparator<TestModel>() {
+
+			@Override
+			public int compare(TestModel testModel1, TestModel testModel2) {
+				return 0;
+			}
+
+			@Override
+			public String getOrderBy() {
+				return orderBy;
+			}
+
+		};
+	}
+
 	private FinderCache _createRecordingFinderCache(
 		FinderPath[] recordedFinderPath) {
 
@@ -157,6 +274,98 @@ public class CollectionPersistenceFinderTest {
 			true, true, testModel -> null);
 	}
 
+	private List<String> _find(
+		int threshold, String defaultOrderByJpql, int start, int end,
+		OrderByComparator<TestModel> orderByComparator, List<?>... results) {
+
+		List<String> events = new ArrayList<>();
+		Deque<List<?>> resultsDeque = new ArrayDeque<>(Arrays.asList(results));
+
+		CollectionPersistenceFinder<TestModel, NoSuchModelException>
+			collectionPersistenceFinder = new CollectionPersistenceFinder<>(
+				new BasePersistenceImpl<TestModel, NoSuchModelException>() {
+					{
+						databaseKeysetPaginationOffsetThreshold = threshold;
+
+						setDBColumnNames(Collections.emptyMap());
+					}
+
+					@Override
+					public void cacheResult(List<TestModel> models) {
+					}
+
+					@Override
+					public void closeSession(Session session) {
+					}
+
+					@Override
+					public Dialect getDialect() {
+						return () -> true;
+					}
+
+					@Override
+					public String getEntityAlias() {
+						return "t";
+					}
+
+					@Override
+					public Session openSession() {
+						return new SessionWrapper(null) {
+
+							@Override
+							public Query createQuery(String queryString) {
+								events.add(queryString);
+
+								return (Query)ProxyUtil.newProxyInstance(
+									CollectionPersistenceFinderTest.class.
+										getClassLoader(),
+									new Class<?>[] {Query.class},
+									(proxy, method, args) -> {
+										events.add(
+											method.getName() +
+												Arrays.toString(args));
+
+										if (Objects.equals(
+												method.getName(), "list")) {
+
+											return resultsDeque.pop();
+										}
+
+										return null;
+									});
+							}
+
+						};
+					}
+
+					@Override
+					protected String getPKDBName() {
+						return "testModelId";
+					}
+
+					@Override
+					protected Map<String, Integer> getTableColumnsMap() {
+						return HashMapBuilder.put(
+							"name", Types.VARCHAR
+						).put(
+							"testModelId", Types.BIGINT
+						).build();
+					}
+
+				},
+				_PAGINATED_FIND_PATH, _UNPAGINATED_FIND_PATH, _COUNT_FIND_PATH,
+				"SELECT t FROM TestModel t WHERE ", "", defaultOrderByJpql,
+				"t.", "", "", null, _createFinderColumn("groupId"));
+
+		events.add(
+			String.valueOf(
+				collectionPersistenceFinder.find(
+					null, new Object[] {7L}, start, end, orderByComparator,
+					false)));
+
+		return events;
+	}
+
 	private void _testBuildSQLWhereArrayable() {
 		Assert.assertEquals(
 			"WHERE ((t.name IS NULL AND t.path IS NULL) OR (t.name IS NULL " +
@@ -208,6 +417,9 @@ public class CollectionPersistenceFinderTest {
 	private static final FinderPath _COUNT_FIND_PATH = new FinderPath(
 		"TestModel", "countByCol", new String[] {Long.class.getName()},
 		new String[] {"col"}, false);
+
+	private static final String _ORDER_BY_PK_ASC =
+		" ORDER BY t.testModelId ASC";
 
 	private static final FinderPath _PAGINATED_FIND_PATH = new FinderPath(
 		"TestModel.List1", "findByCol",
