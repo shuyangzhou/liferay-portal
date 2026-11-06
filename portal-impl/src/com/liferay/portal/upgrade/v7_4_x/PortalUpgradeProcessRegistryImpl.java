@@ -875,6 +875,12 @@ public class PortalUpgradeProcessRegistryImpl
 				"Layout", "name", "TEXT null"),
 			UpgradeProcessFactory.alterColumnType(
 				"Role_", "title", "TEXT null"));
+
+		upgradeVersionTreeMap.put(
+			new Version(39, 4, 0),
+			UpgradeModulesFactory.create(
+				new String[] {"com.liferay.portal.remote.jaxrs.whiteboard"},
+				null));
 	}
 
 }
