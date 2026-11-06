@@ -1011,6 +1011,27 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 	}
 
 	@Test
+	public void testPersistenceCall() throws Exception {
+		String message =
+			"Illegal call to class " +
+				"\"com.liferay.portal.kernel.service.persistence.UserUtil\", " +
+					"see LPS-68923";
+
+		test(
+			"modules/src/testIntegration/java/com/liferay/persistence/call" +
+				"/PersistenceCall.testjava",
+			message, 20);
+		test(
+			SourceProcessorTestParameters.create(
+				"modules/PersistenceCall.testjava"
+			).addExpectedMessage(
+				message, 19
+			).addExpectedMessage(
+				message, 24
+			));
+	}
+
+	@Test
 	public void testProxyUsage() throws Exception {
 		test(
 			"ProxyUsage.testjava",
