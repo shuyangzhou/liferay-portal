@@ -371,6 +371,12 @@ public class ProjectFaroControllerTest {
 		);
 
 		Mockito.when(
+			faroProject.isDataPlatform()
+		).thenReturn(
+			true
+		);
+
+		Mockito.when(
 			_faroProjectLocalService.getFaroProjects(0, 20)
 		).thenReturn(
 			Collections.singletonList(faroProject)
@@ -382,16 +388,18 @@ public class ProjectFaroControllerTest {
 			Collections.emptyList()
 		);
 
-		Page<ProjectUsageMetricDisplay> page =
+		Page<ProjectUsageMetricDisplay> projectUsageMetricDisplaysPage =
 			_projectFaroController.getProjectUsageMetricDisplays(
 				null, 1, 20, null);
 
 		List<ProjectUsageMetricDisplay> projectUsageMetricDisplays =
-			new ArrayList<>(page.getItems());
+			new ArrayList<>(projectUsageMetricDisplaysPage.getItems());
 
 		ProjectUsageMetricDisplay projectUsageMetricDisplay =
 			projectUsageMetricDisplays.get(0);
 
+		Assert.assertTrue(projectUsageMetricDisplay.isDataPlatform());
+		Assert.assertTrue(projectUsageMetricDisplay.isOffline());
 		Assert.assertEquals(
 			ProductConstants.PRODUCT_ENTRY_ID_ENTERPRISE,
 			projectUsageMetricDisplay.getProductEntryId());
@@ -399,7 +407,6 @@ public class ProjectFaroControllerTest {
 			ProductConstants.getProductName(
 				ProductConstants.PRODUCT_ENTRY_ID_ENTERPRISE),
 			projectUsageMetricDisplay.getProductName());
-		Assert.assertTrue(projectUsageMetricDisplay.isOffline());
 
 		Assert.assertEquals(
 			projectUsageMetricDisplays.toString(), 1,
