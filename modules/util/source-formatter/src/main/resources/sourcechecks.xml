@@ -780,6 +780,11 @@
 
 		<!-- Liferay Source Checks -->
 
+		<check name="BeanParamUtilGetterCheck">
+			<category name="Performance" />
+			<description name="Passes the getter of the bean to `BeanParamUtil` instead of the reflective property lookup." />
+			<property name="enabled" value="false" />
+		</check>
 		<check name="CopyrightCheck">
 			<category name="Styling" />
 			<description name="Validates `copyright` header." />
@@ -1441,6 +1446,11 @@
 
 		<!-- Liferay Source Checks -->
 
+		<check name="BeanParamUtilGetterCheck">
+			<category name="Performance" />
+			<description name="Passes the getter of the bean to `BeanParamUtil` instead of the reflective property lookup." />
+			<property name="enabled" value="false" />
+		</check>
 		<check name="CopyrightCheck">
 			<category name="Styling" />
 			<description name="Validates `copyright` header." />

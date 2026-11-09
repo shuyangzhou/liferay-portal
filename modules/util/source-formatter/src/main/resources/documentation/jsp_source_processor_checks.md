@@ -7,6 +7,7 @@ AppendCheck | [Styling](styling_checks.md#styling-checks) | Checks instances whe
 [ArrayTypeStyleCheck](https://checkstyle.sourceforge.io/checks/misc/arraytypestyle.html) | [Styling](styling_checks.md#styling-checks) | Checks the style of array type definitions. |
 ArrayUtilCheck | [Styling](styling_checks.md#styling-checks) | Checks for utilization of class `ArrayUtil`. |
 [AvoidNestedBlocksCheck](https://checkstyle.sourceforge.io/checks/blocks/avoidnestedblocks.html) | [Styling](styling_checks.md#styling-checks) | Finds nested blocks (blocks that are used freely in the code). |
+[BeanParamUtilGetterCheck](check/bean_param_util_getter_check.md#beanparamutilgettercheck) | [Performance](performance_checks.md#performance-checks) | Passes the getter of the bean to `BeanParamUtil` instead of the reflective property lookup. |
 BrandNameCheck | [Naming Conventions](naming_conventions_checks.md#naming-conventions-checks) | Checks the correct brand name. |
 [CamelCaseNameCheck](check/camel_case_name_check.md#camelcasenamecheck) | [Naming Conventions](naming_conventions_checks.md#naming-conventions-checks) | Checks variable names for correct use of `CamelCase`. |
 CapsNameCheck | [Naming Conventions](naming_conventions_checks.md#naming-conventions-checks) | Checks the correct caps name. |
