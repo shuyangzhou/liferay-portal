@@ -1,0 +1,124 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.liferay.source.formatter.dependencies;
+
+import com.liferay.portal.kernel.bean.BeanParamUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+import java.math.BigDecimal;
+
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.ToLongFunction;
+
+/**
+ * @author Shuyang Zhou
+ */
+public class BeanParamUtilGetter {
+
+	public void method1(
+		Entry entry, HttpServletRequest httpServletRequest,
+		List<Object> values) {
+
+		values.add(
+			BeanParamUtil.getLong(
+				entry, httpServletRequest, "entryId", Entry::getEntryId));
+		values.add(
+			BeanParamUtil.getString(
+				entry, httpServletRequest, "title", Entry::getTitle,
+				"untitled"));
+		values.add(
+			BeanParamUtil.getBoolean(
+				entry, httpServletRequest, "active", Entry::isActive));
+		values.add(
+			BeanParamUtil.getDouble(
+				getEntry(), httpServletRequest, "priority",
+				Entry::getPriority));
+		values.add(
+			BeanParamUtil.getInteger(
+				(Entry)httpServletRequest.getAttribute("entry"),
+				httpServletRequest, "count", Entry::getCount));
+		values.add(
+			BeanParamUtil.getLong(
+				entry, httpServletRequest, "folderId", Entry::getFolderId));
+	}
+
+	public void method2(
+		Object bean, Entry entry, HttpServletRequest httpServletRequest,
+		String name, List<Object> values) {
+
+		values.add(
+			BeanParamUtil.getDouble(entry, httpServletRequest, "quantity"));
+		values.add(
+			BeanParamUtil.getString(entry, httpServletRequest, "version"));
+		values.add(BeanParamUtil.getString(entry, httpServletRequest, "name"));
+		values.add(BeanParamUtil.getString(bean, httpServletRequest, name));
+		values.add(BeanParamUtil.getLong(bean, httpServletRequest, "beanId"));
+	}
+
+	public void method3(
+		Object bean, HttpServletRequest httpServletRequest, String name,
+		ToLongFunction<Object> toLongFunction, List<Object> values) {
+
+		values.add(
+			BeanParamUtil.getLong(
+				bean, httpServletRequest, name, toLongFunction));
+		values.add(
+			BeanParamUtil.getString(
+				bean, httpServletRequest, name, getStringFunction(name),
+				"untitled"));
+	}
+
+	protected Entry getEntry() {
+		return null;
+	}
+
+	protected Function<Object, String> getStringFunction(String name) {
+		return null;
+	}
+
+	private static class Entry {
+
+		public boolean getActive() {
+			return true;
+		}
+
+		public int getCount() {
+			return 0;
+		}
+
+		public long getEntryId() {
+			return 0;
+		}
+
+		public long getFolderId() {
+			return 0;
+		}
+
+		public String getName() throws Exception {
+			return null;
+		}
+
+		public double getPriority() {
+			return 0;
+		}
+
+		public BigDecimal getQuantity() {
+			return null;
+		}
+
+		public String getTitle() {
+			return null;
+		}
+
+		public boolean isActive() {
+			return true;
+		}
+
+	}
+
+}

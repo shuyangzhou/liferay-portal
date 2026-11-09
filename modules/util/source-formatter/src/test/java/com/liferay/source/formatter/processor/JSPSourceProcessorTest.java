@@ -13,6 +13,16 @@ import org.junit.Test;
 public class JSPSourceProcessorTest extends BaseSourceProcessorTestCase {
 
 	@Test
+	public void testBeanParamUtilGetter() throws Exception {
+		test(
+			"BeanParamUtilGetter.testjsp",
+			"\"Entry\" has no getter for \"version\", so " +
+				"\"BeanParamUtil.getString\" always returns the default " +
+					"value, use \"ParamUtil\" instead",
+			17);
+	}
+
+	@Test
 	public void testCombineJavaSourceBlocks() throws Exception {
 		test(
 			"CombineJavaSourceBlocks1.testjsp",

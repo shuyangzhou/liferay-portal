@@ -69,6 +69,36 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 	}
 
 	@Test
+	public void testBeanParamUtilGetter() throws Exception {
+		test(
+			SourceProcessorTestParameters.create(
+				"BeanParamUtilGetter.testjava"
+			).addExpectedMessage(
+				"\"Entry.getQuantity\" returns \"BigDecimal\", which does " +
+					"not fit \"BeanParamUtil.getDouble\", pass a function by " +
+						"hand",
+				55
+			).addExpectedMessage(
+				"\"Entry\" has no getter for \"version\", so " +
+					"\"BeanParamUtil.getString\" always returns the default " +
+						"value, use \"ParamUtil\" instead",
+				57
+			).addExpectedMessage(
+				"\"Entry.getName\" throws \"Exception\", pass a function to " +
+					"\"BeanParamUtil.getString\" by hand",
+				58
+			).addExpectedMessage(
+				"Pass the getter to \"BeanParamUtil.getString\" by hand when " +
+					"the parameter name is not a string literal",
+				59
+			).addExpectedMessage(
+				"Unable to resolve the type of \"bean\" in " +
+					"\"BeanParamUtil.getLong\", pass the getter by hand",
+				60
+			));
+	}
+
+	@Test
 	public void testBouncyCastleFIPS() throws Exception {
 		test(
 			SourceProcessorTestParameters.create(

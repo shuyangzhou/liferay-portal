@@ -1,0 +1,39 @@
+<%--
+/**
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+--%>
+
+<%@ include file="/init.jsp" %>
+
+<%
+Entry entry = (Entry)request.getAttribute("entry");
+%>
+
+<span><%= BeanParamUtil.getLong(entry, request, "entryId") %></span>
+<span><%= BeanParamUtil.getBoolean(entry, request, "active", true) %></span>
+<span><%= BeanParamUtil.getString(entry, request, "title") %></span>
+<span><%= BeanParamUtil.getString(entry, request, "version") %></span>
+
+<%!
+private static class Entry {
+
+	public boolean getActive() {
+		return true;
+	}
+
+	public long getEntryId() {
+		return 0;
+	}
+
+	public String getTitle() {
+		return null;
+	}
+
+	public boolean isActive() {
+		return true;
+	}
+
+}
+%>
