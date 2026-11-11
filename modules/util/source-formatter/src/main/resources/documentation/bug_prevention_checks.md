@@ -2,6 +2,7 @@
 
 Check | File Extensions | Description
 ----- | --------------- | -----------
+[AUIValueFunctionCheck](check/aui_value_function_check.md#auivaluefunctioncheck) | .jsp, .jspf, .jspx, .tag, .tpl, or .vm | Passes the getter of the bean to `aui:input` and `aui:select` as `valueFunction`. |
 [AnonymousClassCheck](check/anonymous_class_check.md#anonymousclasscheck) | .java | Checks for serialization issue when using anonymous class. |
 ArquillianCheck | .java | Checks for correct use of `com.liferay.arquillian.extension.junit.bridge.junit.Arquillian`. |
 AssertFailCheck | .java | Checks that calls to `Assert.fail` can be only used inside a try block as the last statement. |

@@ -1441,6 +1441,11 @@
 
 		<!-- Liferay Source Checks -->
 
+		<check name="AUIValueFunctionCheck">
+			<category name="Bug Prevention" />
+			<description name="Passes the getter of the bean to `aui:input` and `aui:select` as `valueFunction`." />
+			<property name="enabled" value="false" />
+		</check>
 		<check name="CopyrightCheck">
 			<category name="Styling" />
 			<description name="Validates `copyright` header." />

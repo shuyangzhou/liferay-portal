@@ -2,6 +2,7 @@
 
 Check | Category | Description
 ----- | -------- | -----------
+[AUIValueFunctionCheck](check/aui_value_function_check.md#auivaluefunctioncheck) | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | Passes the getter of the bean to `aui:input` and `aui:select` as `valueFunction`. |
 AppendCheck | [Styling](styling_checks.md#styling-checks) | Checks instances where literal Strings are appended. |
 [ArrayCheck](check/array_check.md#arraycheck) | [Performance](performance_checks.md#performance-checks) | Checks if performance can be improved by using different methods that can be used by collections. |
 [ArrayTypeStyleCheck](https://checkstyle.sourceforge.io/checks/misc/arraytypestyle.html) | [Styling](styling_checks.md#styling-checks) | Checks the style of array type definitions. |

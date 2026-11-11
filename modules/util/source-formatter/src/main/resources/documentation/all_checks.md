@@ -2,6 +2,7 @@
 
 Check | Category | File Extensions | Description
 ----- | -------- | --------------- | -----------
+[AUIValueFunctionCheck](check/aui_value_function_check.md#auivaluefunctioncheck) | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | .jsp, .jspf, .jspx, .tag, .tpl, or .vm | Passes the getter of the bean to `aui:input` and `aui:select` as `valueFunction`. |
 [AnnotationUseStyleCheck](https://checkstyle.sourceforge.io/checks/annotation/annotationusestyle.html) | [Styling](styling_checks.md#styling-checks) | .java | Checks the style of elements in annotations. |
 [AnonymousClassCheck](check/anonymous_class_check.md#anonymousclasscheck) | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | .java | Checks for serialization issue when using anonymous class. |
 AppendCheck | [Styling](styling_checks.md#styling-checks) | .java, .jsp, .jspf, .jspx, .tag, .tpl, or .vm | Checks instances where literal Strings are appended. |
