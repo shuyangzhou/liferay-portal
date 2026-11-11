@@ -1,0 +1,129 @@
+<%--
+/**
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+--%>
+
+<%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %>
+
+<%
+Entry entry = (Entry)request.getAttribute("entry");
+Folder parentFolder = (Folder)request.getAttribute("parentFolder");
+%>
+
+<aui:model-context bean="<%= entry %>" model="<%= Entry.class %>" />
+
+<aui:input name="title" type="text" />
+
+<aui:input name="description" type="textarea" value="<%= (entry != null) ? entry.getDescription() : \"\" %>" wrapperCssClass="hide" />
+
+<aui:input
+	name="content"
+	type="textarea"
+	value='<%=
+		JSONUtil.put(
+			"key", "value"
+		).put(
+			"name", "content"
+		)
+	%>'
+/>
+
+<aui:input name="name" type="text" />
+
+<aui:input name="comments" type="text" />
+
+<aui:input name="title" type="hidden" />
+
+<aui:input name="comments" type="hidden" />
+
+<aui:input name="description" type="hidden" value="<%= entry.getListTypeId() %>" />
+
+<aui:input name="content" type="hidden" value="<%= entry.getTitle() %>" />
+
+<aui:input name="title" type="hidden" value="<%= entry.getTitle() %>" />
+
+<aui:input name="description" type="hidden" value="<%= (entry == null) ? StringPool.BLANK : entry.getDescription() %>" />
+
+<aui:input field="title" name="timeZone" type="timeZone" />
+
+<aui:input field="title" name="timeZone" type="timeZone" value="<%= entry.getTitle() %>" />
+
+<aui:input name="title" type="hidden" value="<%= entry.getTitle() %>" valueFunction="<%= Entry::getTitle %>" />
+
+<aui:input ignoreRequestValue="<%= true %>" name="title" type="text" />
+
+<aui:input name="title" type="text" valueFunction="<%= Entry::getTitle %>" />
+
+<aui:input name="size" type="number" />
+
+<aui:select listType="<%= Entry.class.getName() %>" name="type" />
+
+<aui:select listType="<%= Entry.class.getName() %>" listTypeFieldName="statusListTypeId" name="status" />
+
+<aui:select listType="<%= Entry.class.getName() %>" listTypeFieldName="title" name="priority" />
+
+<aui:select listType="<%= Entry.class.getName() %>" listTypeFieldName="typeId" name="type" />
+
+<aui:select name="description" />
+
+<aui:select name="comments" />
+
+<aui:input bean="<%= parentFolder %>" name="name" type="text" />
+
+<aui:input bean="<%= parentFolder %>" name="keywords" type="text" />
+
+<aui:input bean='<%= request.getAttribute("draft") %>' model="<%= Entry.class %>" name="title" type="text" />
+
+<aui:input bean='<%= request.getAttribute("draft") %>' name="title" type="text" />
+
+<%!
+private static class Entry {
+
+	public String getContent() {
+		return null;
+	}
+
+	public String getDescription() {
+		return null;
+	}
+
+	public long getListTypeId() {
+		return 0;
+	}
+
+	public String getName() {
+		return null;
+	}
+
+	public String getName(String languageId) {
+		return languageId;
+	}
+
+	public long getSize() throws Exception {
+		return 0;
+	}
+
+	public long getStatusListTypeId() {
+		return 0;
+	}
+
+	public String getTitle() {
+		return null;
+	}
+
+}
+
+private static class Folder {
+
+	public String getName() {
+		return null;
+	}
+
+	public String getName(String languageId) {
+		return languageId;
+	}
+
+}
+%>

@@ -13,6 +13,36 @@ import org.junit.Test;
 public class JSPSourceProcessorTest extends BaseSourceProcessorTestCase {
 
 	@Test
+	public void testAUIValueFunction() throws Exception {
+		test(
+			SourceProcessorTestParameters.create(
+				"AUIValueFunction.testjsp"
+			).addExpectedMessage(
+				"A hidden or time zone \"aui:input\" with a \"value\" does " +
+					"not read its \"valueFunction\", remove one of them",
+				54
+			).addExpectedMessage(
+				"\"Entry.getSize\" throws \"Exception\", set " +
+					"\"valueFunction\" on the \"aui:input\" by hand",
+				60
+			).addExpectedMessage(
+				"\"Entry.getTitle\" returns \"String\", which does not fit " +
+					"the \"valueFunction\" of \"aui:select\", set it by hand",
+				66
+			).addExpectedMessage(
+				"\"Entry\" has no \"getTypeId\" for the list type of the " +
+					"\"aui:select\", set \"listTypeFieldName\" to the list " +
+						"type property of the bean",
+				68
+			).addExpectedMessage(
+				"Unable to resolve the type of \"request.getAttribute(" +
+					"\"draft\")\", set \"valueFunction\" on the " +
+						"\"aui:input\" for \"title\" by hand",
+				80
+			));
+	}
+
+	@Test
 	public void testCombineJavaSourceBlocks() throws Exception {
 		test(
 			"CombineJavaSourceBlocks1.testjsp",
