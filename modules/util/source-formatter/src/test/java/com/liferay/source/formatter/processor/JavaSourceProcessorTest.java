@@ -234,6 +234,42 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 	}
 
 	@Test
+	public void testEmptySafeCloseable() throws Exception {
+		String message =
+			"Use \"SafeCloseable.EMPTY\" instead of an empty lambda";
+		String notRequireThisMessage =
+			"Reference to variable \"_safeCloseable\" does not need \".this\"";
+		String ternaryOperatorMessage =
+			"Use if-else-statement instead of ternary conditional operator " +
+				"for better readability";
+
+		test(
+			SourceProcessorTestParameters.create(
+				"EmptySafeCloseable.testjava"
+			).addExpectedMessage(
+				message, 19
+			).addExpectedMessage(
+				ternaryOperatorMessage, 24
+			).addExpectedMessage(
+				message, 25
+			).addExpectedMessage(
+				message, 30
+			).addExpectedMessage(
+				ternaryOperatorMessage, 35
+			).addExpectedMessage(
+				message, 36
+			).addExpectedMessage(
+				message, 43
+			).addExpectedMessage(
+				notRequireThisMessage, 96
+			).addExpectedMessage(
+				message, 96
+			).addExpectedMessage(
+				message, 104
+			));
+	}
+
+	@Test
 	public void testExceedMaxLineLength() throws Exception {
 		test("ExceedMaxLineLength.testjava", "> 80", 27);
 	}
@@ -1155,6 +1191,26 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 			"Do not use @Reference on method testMethod, use @Reference on " +
 				"field or ServiceTracker/ServiceTrackerList" +
 					"/ServiceTrackerMap instead");
+	}
+
+	@Test
+	public void testRegisterServiceProperties() throws Exception {
+		String message =
+			"Pass \"null\" instead of an empty dictionary as the service " +
+				"properties";
+
+		test(
+			SourceProcessorTestParameters.create(
+				"RegisterServiceProperties.testjava"
+			).addExpectedMessage(
+				message, 23
+			).addExpectedMessage(
+				message, 28
+			).addExpectedMessage(
+				message, 34
+			).addExpectedMessage(
+				message, 71
+			));
 	}
 
 	@Test

@@ -28,11 +28,17 @@ public class OriginClientHttpRequestInterceptor
 			ClientHttpRequestExecution clientHttpRequestExecution)
 		throws IOException {
 
+		String operationId = FaroThreadLocal.getOperationId();
+
+		HttpHeaders httpHeaders = httpRequest.getHeaders();
+
+		if (operationId != null) {
+			httpHeaders.set(OSBAsahHeaderConstants.OPERATION_ID, operationId);
+		}
+
 		String origin = FaroThreadLocal.getOrigin();
 
 		if (origin != null) {
-			HttpHeaders httpHeaders = httpRequest.getHeaders();
-
 			httpHeaders.set(OSBAsahHeaderConstants.ORIGIN, origin);
 		}
 

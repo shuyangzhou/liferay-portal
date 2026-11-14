@@ -12,11 +12,8 @@ import com.liferay.portal.kernel.cache.SingleVMPool;
 
 import java.io.Serializable;
 
-import java.util.Map;
-
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -51,8 +48,7 @@ public class SingleVMPoolImpl implements SingleVMPool {
 	}
 
 	@Activate
-	@Modified
-	protected void activate(Map<String, Object> properties) {
+	protected void activate() {
 		_portalCacheManager.clearAll();
 	}
 

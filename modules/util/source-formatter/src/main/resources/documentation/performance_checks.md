@@ -34,6 +34,7 @@ RecordClassCheck | .java | Finds usage of `record`. |
 RecordPatternCheck | .java | Finds usage of record patterns. |
 RedundantBranchingStatementCheck | .java | Finds unnecessary branching (`break`, `continue` or `return`) statements. |
 [RedundantLogCheck](check/redundant_log_check.md#redundantlogcheck) | .java | Finds unnecessary logs. |
+[RegisterServicePropertiesCheck](check/register_service_properties_check.md#registerservicepropertiescheck) | .java | Finds `registerService` calls that pass an empty `HashMapDictionary` or `Hashtable` as the service properties, which should pass `null` instead. |
 [ResourcePermissionFactoryCheck](check/resource_permission_factory_check.md#resourcepermissionfactorycheck) | .java | Checks usage of `*ResourcePermissionFactory` classes. |
 SealedAndNonsealedModifierCheck | .java | Finds usage of `sealed` and `non-sealed`. |
 SetUtilMethodsCheck | .java, .jsp, .jspf, .jspx, .tag, .tpl, or .vm | Finds cases of inefficient SetUtil operations. |

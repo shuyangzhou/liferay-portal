@@ -1640,6 +1640,71 @@ test.describe('SEO configuration', () => {
 			).toHaveValue(title);
 		}
 	);
+
+	test(
+		'Shows the sitemap URL and the search engine tool links',
+		{
+			tag: '@LPD-75629',
+		},
+		async ({page, pagesAdminPage, site}) => {
+
+			// Go to the pages SEO configuration
+
+			await pagesAdminPage.gotoPagesConfiguration(site.friendlyUrlPath);
+
+			await pagesAdminPage.clickOnTab('SEO');
+
+			// Check the sitemap URL
+
+			await expect(page.getByLabel('Sitemap URL')).toHaveValue(
+				new RegExp(
+					`/sitemap\\.xml\\?groupId=${site.id}&privateLayout=false$`
+				)
+			);
+
+			// Check the search engine tool links
+
+			await expect(
+				page.getByRole('link', {name: 'Bing Webmaster Tools'})
+			).toHaveAttribute('href', 'https://www.bing.com/webmasters');
+
+			await expect(
+				page.getByRole('link', {name: 'Google Search Console'})
+			).toHaveAttribute(
+				'href',
+				'https://search.google.com/search-console'
+			);
+
+			// Check the sitemaps.org link opens safely in a new tab
+
+			const sitemapsLink = page.getByRole('link', {
+				name: 'For more information, visit www.sitemaps.org.',
+			});
+
+			await expect(sitemapsLink).toHaveAttribute(
+				'href',
+				'https://www.sitemaps.org'
+			);
+			await expect(sitemapsLink).toHaveAttribute(
+				'rel',
+				'noreferrer noopener'
+			);
+
+			// Check the deprecated sitemap ping links are gone
+
+			await expect(
+				page.locator(
+					'a[href*="/webmasters/sitemaps/ping"], a[href*="siteexplorer.search.yahoo.com"]'
+				)
+			).toHaveCount(0);
+
+			// Copy the sitemap URL
+
+			await page.getByRole('button', {name: 'Copy Link'}).click();
+
+			await waitForAlert(page, 'Success:Copied link to the clipboard.');
+		}
+	);
 });
 
 test.describe('Page types configuration', () => {
@@ -1850,6 +1915,58 @@ test.describe('Page types configuration', () => {
 			await expect(
 				page.getByRole('menuitem', {name: linkToURLTitle})
 			).toHaveAttribute('target', '_blank');
+		}
+	);
+
+	test(
+		'Canceling the configuration of a Link to URL page stays in Pages',
+		{
+			tag: '@LPS-76981',
+		},
+		async ({
+			apiHelpers,
+			page,
+			pageConfigurationPage,
+			pagesAdminPage,
+			site,
+		}) => {
+			await apiHelpers.jsonWebServicesLayout.addLayout({
+				groupId: site.id,
+				title: getRandomString(),
+			});
+
+			const linkToURLTitle = getRandomString();
+
+			await apiHelpers.jsonWebServicesLayout.addLayout({
+				groupId: site.id,
+				options: {
+					type: 'url',
+				},
+				title: linkToURLTitle,
+			});
+
+			await pagesAdminPage.goto(site.friendlyUrlPath);
+
+			await pageConfigurationPage.setInputValueAndSave(
+				page.getByLabel('URL').first(),
+				linkToURLTitle,
+				'General',
+				'https://www.liferay.com'
+			);
+
+			// Cancel the configuration
+
+			await pagesAdminPage.goto(site.friendlyUrlPath);
+
+			await pagesAdminPage.clickOnAction('Configure', linkToURLTitle);
+
+			await page
+				.getByRole('button', {exact: true, name: 'Cancel'})
+				.click();
+
+			await expect(page).toHaveURL(
+				/com_liferay_layout_admin_web_portlet_GroupPagesPortlet/
+			);
 		}
 	);
 });

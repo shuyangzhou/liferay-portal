@@ -6,7 +6,8 @@
 package com.liferay.depot.web.internal.item.selector;
 
 import com.liferay.depot.item.selector.DepotGroupItemSelectorCriterion;
-import com.liferay.depot.web.internal.util.DepotEntryAdminSearchProvider;
+import com.liferay.depot.service.DepotEntryService;
+import com.liferay.depot.web.internal.dao.search.GroupSearchContainerFactory;
 import com.liferay.item.selector.ItemSelectorReturnType;
 import com.liferay.item.selector.ItemSelectorView;
 import com.liferay.item.selector.ItemSelectorViewDescriptor;
@@ -19,6 +20,7 @@ import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -103,11 +105,14 @@ public class DepotGroupItemSelectorView
 			new GroupItemSelectorReturnType());
 
 	@Reference
-	private DepotEntryAdminSearchProvider _depotEntryAdminSearchProvider;
+	private DepotEntryService _depotEntryService;
 
 	@Reference
 	private ItemSelectorViewDescriptorRenderer<DepotGroupItemSelectorCriterion>
 		_itemSelectorViewDescriptorRenderer;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;
@@ -264,9 +269,10 @@ public class DepotGroupItemSelectorView
 							setCTCollectionIdWithSafeCloseable(
 								ctCollectionId)) {
 
-					return _depotEntryAdminSearchProvider.getGroupSearch(
-						_depotGroupItemSelectorCriterion, portletRequest,
-						portletResponse, _portletURL);
+					return GroupSearchContainerFactory.create(
+						_depotEntryService, _depotGroupItemSelectorCriterion,
+						_language, portletRequest, portletResponse,
+						_portletURL);
 				}
 			}
 			catch (PortalException portalException) {

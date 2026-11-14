@@ -5,6 +5,7 @@
 
 package com.liferay.jenkins.results.parser.test.clazz.group;
 
+import com.liferay.jenkins.results.parser.AntException;
 import com.liferay.jenkins.results.parser.AntUtil;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.NotificationUtil;
@@ -17,6 +18,8 @@ import com.liferay.jenkins.results.parser.test.clazz.TestClass;
 import com.liferay.jenkins.results.parser.test.clazz.TestClassMethod;
 
 import java.io.File;
+
+import java.lang.reflect.InvocationTargetException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,6 +34,8 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -64,6 +69,59 @@ public class PlaywrightBatchTestClassGroupTest
 
 		ReflectionTestUtil.setFieldValue(
 			PlaywrightBatchTestClassGroup.class, "_playwrightJSONObject", null);
+		ReflectionTestUtil.setFieldValue(
+			PlaywrightBatchTestClassGroup.class,
+			"_playwrightJSONObjectRuntimeException", null);
+	}
+
+	@Test
+	public void testGetPlaywrightJSONObjectMissingReport() throws Exception {
+		PlaywrightBatchTestClassGroup playwrightBatchTestClassGroup =
+			Mockito.mock(PlaywrightBatchTestClassGroup.class);
+
+		ReflectionTestUtil.setFieldValue(
+			playwrightBatchTestClassGroup, "portalGitWorkingDirectory",
+			Mockito.mock(PortalGitWorkingDirectory.class));
+
+		String standardErrorTail = StringUtils.repeat("1", 5000);
+
+		String standardError =
+			RandomTestUtil.randomString() + standardErrorTail;
+
+		String standardOutTail = StringUtils.repeat("0", 5000);
+
+		String standardOut = RandomTestUtil.randomString() + standardOutTail;
+
+		Shell.setInstance(
+			Mockito.mock(
+				Shell.class,
+				invocation -> new Shell.ExecutionResult(
+					1, standardError, standardOut)));
+
+		String playwrightArgs = RandomTestUtil.randomString();
+
+		try {
+			ReflectionTestUtil.invoke(
+				playwrightBatchTestClassGroup, "_getPlaywrightJSONObject",
+				new Class<?>[] {String.class, File.class}, playwrightArgs,
+				null);
+
+			Assert.fail();
+		}
+		catch (RuntimeException runtimeException) {
+			InvocationTargetException invocationTargetException =
+				(InvocationTargetException)runtimeException.getCause();
+
+			Throwable throwable = invocationTargetException.getCause();
+
+			Assert.assertEquals(
+				JenkinsResultsParserUtil.combine(
+					"Playwright test listing \"", playwrightArgs,
+					"\" did not write a JSON report (exit code 1)\n",
+					"Standard output:\n", standardOutTail,
+					"\nStandard error:\n", standardErrorTail),
+				throwable.getMessage());
+		}
 	}
 
 	@Test
@@ -136,16 +194,72 @@ public class PlaywrightBatchTestClassGroupTest
 
 		String reportJSON = reportJSONObject.toString();
 
-		_testLoadPlaywrightJSONObjects(1, false, reportJSONObject, reportJSON);
+		_testLoadPlaywrightJSONObjects(1, reportJSONObject, reportJSON);
+		_testLoadPlaywrightJSONObjects(2, reportJSONObject, "", reportJSON);
 		_testLoadPlaywrightJSONObjects(
-			2, false, reportJSONObject, "", reportJSON);
+			2, reportJSONObject, RandomTestUtil.randomString(), reportJSON);
+		_testLoadPlaywrightJSONObjects(2, reportJSONObject, null, reportJSON);
 		_testLoadPlaywrightJSONObjects(
-			2, false, reportJSONObject, RandomTestUtil.randomString(),
-			reportJSON);
-		_testLoadPlaywrightJSONObjects(
-			2, false, reportJSONObject, null, reportJSON);
+			3, reportJSONObject, null, "", reportJSON);
+	}
 
-		_testLoadPlaywrightJSONObjects(2, true, new JSONObject(), null, null);
+	@Test
+	public void testLoadPlaywrightJSONObjectsFailure() throws Exception {
+		_testLoadPlaywrightJSONObjects(
+			3, null, null, RandomTestUtil.randomString(), "");
+		_testLoadPlaywrightJSONObjects(3, null, null, null, null);
+	}
+
+	@Test
+	public void testLoadPlaywrightJSONObjectsSetupYarnFailure() {
+		PlaywrightBatchTestClassGroup playwrightBatchTestClassGroup =
+			Mockito.mock(PlaywrightBatchTestClassGroup.class);
+
+		ReflectionTestUtil.setFieldValue(
+			playwrightBatchTestClassGroup, "portalGitWorkingDirectory",
+			Mockito.mock(PortalGitWorkingDirectory.class));
+
+		AntException antException = new AntException();
+
+		List<Throwable> throwables = new ArrayList<>();
+
+		try (MockedStatic<AntUtil> antUtilMockedStatic = Mockito.mockStatic(
+				AntUtil.class)) {
+
+			antUtilMockedStatic.when(
+				() -> AntUtil.callTarget(null, "build.xml", "setup-yarn")
+			).thenThrow(
+				antException
+			);
+
+			for (int i = 0; i < 2; i++) {
+				try {
+					ReflectionTestUtil.invoke(
+						playwrightBatchTestClassGroup,
+						"_loadPlaywrightJSONObjects", new Class<?>[0]);
+
+					Assert.fail();
+				}
+				catch (RuntimeException runtimeException) {
+					InvocationTargetException invocationTargetException =
+						(InvocationTargetException)runtimeException.getCause();
+
+					throwables.add(invocationTargetException.getCause());
+				}
+			}
+
+			antUtilMockedStatic.verify(
+				() -> AntUtil.callTarget(null, "build.xml", "setup-yarn"));
+		}
+
+		Throwable throwable = throwables.get(0);
+
+		Assert.assertSame(antException, throwable.getCause());
+		Assert.assertEquals(
+			"Unable to list Playwright tests because the \"setup-yarn\" " +
+				"target failed",
+			throwable.getMessage());
+		Assert.assertSame(throwable, throwables.get(1));
 	}
 
 	@Test
@@ -290,6 +404,41 @@ public class PlaywrightBatchTestClassGroupTest
 		TestClassMethod testClassMethod = testClassMethods.get(0);
 
 		Assert.assertTrue(testClassMethod.isIgnored());
+	}
+
+	@Test
+	public void testSetTestClassesMissingConfig() {
+		ReflectionTestUtil.setFieldValue(
+			PlaywrightBatchTestClassGroup.class, "_playwrightJSONObject",
+			new JSONObject());
+
+		AtomicBoolean playwrightJSONObjectsLoaded =
+			ReflectionTestUtil.getFieldValue(
+				PlaywrightBatchTestClassGroup.class,
+				"_playwrightJSONObjectsLoaded");
+
+		playwrightJSONObjectsLoaded.set(true);
+
+		PlaywrightBatchTestClassGroup playwrightBatchTestClassGroup =
+			Mockito.mock(PlaywrightBatchTestClassGroup.class);
+
+		Mockito.doCallRealMethod(
+		).when(
+			playwrightBatchTestClassGroup
+		).setTestClasses();
+
+		try {
+			playwrightBatchTestClassGroup.setTestClasses();
+
+			Assert.fail();
+		}
+		catch (RuntimeException runtimeException) {
+			Assert.assertEquals(
+				"Unable to set test classes because the Playwright test " +
+					"listing \"test --list --reporter=json\" did not return " +
+						"a \"config\"",
+				runtimeException.getMessage());
+		}
 	}
 
 	@Rule
@@ -500,7 +649,7 @@ public class PlaywrightBatchTestClassGroupTest
 	}
 
 	private void _testLoadPlaywrightJSONObjects(
-			int expectedExecutionRequestsCount, boolean expectedNotified,
+			int expectedExecutionRequestsCount,
 			JSONObject expectedPlaywrightJSONObject, String... reports)
 		throws Exception {
 
@@ -511,10 +660,10 @@ public class PlaywrightBatchTestClassGroupTest
 
 		playwrightJSONObjectsLoaded.set(false);
 
-		File portalWorkingDirectory = temporaryFolder.newFolder();
-
 		PortalGitWorkingDirectory portalGitWorkingDirectory = Mockito.mock(
 			PortalGitWorkingDirectory.class);
+
+		File portalWorkingDirectory = temporaryFolder.newFolder();
 
 		Mockito.doReturn(
 			portalWorkingDirectory
@@ -594,6 +743,8 @@ public class PlaywrightBatchTestClassGroupTest
 					RandomTestUtil.randomString(), "(release)/",
 					String.valueOf(RandomTestUtil.randomInt()))));
 
+		List<RuntimeException> runtimeExceptions = new ArrayList<>();
+
 		try (MockedStatic<AntUtil> antUtilMockedStatic = Mockito.mockStatic(
 				AntUtil.class);
 			MockedStatic<JenkinsResultsParserUtil>
@@ -611,17 +762,30 @@ public class PlaywrightBatchTestClassGroupTest
 			for (PlaywrightBatchTestClassGroup playwrightBatchTestClassGroup :
 					playwrightBatchTestClassGroups) {
 
-				ReflectionTestUtil.invoke(
-					playwrightBatchTestClassGroup, "_loadPlaywrightJSONObjects",
-					new Class<?>[0]);
+				try {
+					ReflectionTestUtil.invoke(
+						playwrightBatchTestClassGroup,
+						"_loadPlaywrightJSONObjects", new Class<?>[0]);
+				}
+				catch (RuntimeException runtimeException) {
+					InvocationTargetException invocationTargetException =
+						(InvocationTargetException)runtimeException.getCause();
+
+					runtimeExceptions.add(
+						(RuntimeException)invocationTargetException.getCause());
+				}
 			}
+
+			jenkinsResultsParserUtilMockedStatic.verify(
+				() -> JenkinsResultsParserUtil.sleep(1000 * 60),
+				Mockito.times(expectedExecutionRequestsCount - 1));
 
 			notificationUtilMockedStatic.verify(
 				() -> NotificationUtil.sendSlackNotification(
 					Mockito.anyString(), Mockito.anyString(),
 					Mockito.anyString(), Mockito.anyString(),
 					Mockito.anyString()),
-				getVerificationMode(expectedNotified));
+				getVerificationMode(expectedPlaywrightJSONObject == null));
 		}
 
 		Assert.assertEquals(
@@ -629,6 +793,15 @@ public class PlaywrightBatchTestClassGroupTest
 			executionRequests.size());
 
 		for (Shell.ExecutionRequest executionRequest : executionRequests) {
+			String[] commands = executionRequest.getCommands();
+
+			Assert.assertTrue(
+				commands[0].contains(
+					JenkinsResultsParserUtil.combine(
+						"export npm_config_fetch_retries=5\n",
+						"export npm_config_fetch_retry_maxtimeout=120000\n",
+						"export npm_config_fetch_retry_mintimeout=20000\n")));
+
 			Assert.assertEquals(1000 * 60 * 30, executionRequest.getTimeout());
 		}
 
@@ -648,6 +821,31 @@ public class PlaywrightBatchTestClassGroupTest
 				reportFilePath,
 				reportFilePath.startsWith(portalWorkingDirectoryPath));
 		}
+
+		if (expectedPlaywrightJSONObject == null) {
+			Assert.assertEquals(
+				runtimeExceptions.toString(), 2, runtimeExceptions.size());
+
+			RuntimeException runtimeException = runtimeExceptions.get(0);
+
+			if (reports[reports.length - 1] == null) {
+				Assert.assertTrue(
+					runtimeException.getCause() instanceof TimeoutException);
+			}
+			else {
+				Assert.assertEquals(
+					"Playwright test listing \"test --list --reporter=json\" " +
+						"did not write a JSON report (exit code 0)\nStandard " +
+							"output:\n\nStandard error:\n",
+					runtimeException.getMessage());
+			}
+
+			Assert.assertSame(runtimeException, runtimeExceptions.get(1));
+
+			return;
+		}
+
+		Assert.assertTrue(runtimeExceptions.isEmpty());
 
 		JSONObject playwrightJSONObject = ReflectionTestUtil.getFieldValue(
 			PlaywrightBatchTestClassGroup.class, "_playwrightJSONObject");

@@ -56,7 +56,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
-import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.spring.orm.LastSessionRecorderHelperUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -149,7 +148,7 @@ public class BatchEngineImportTaskExecutorImpl
 
 			_updateBatchEngineImportTask(
 				BatchEngineTaskExecuteStatus.FAILED, batchEngineImportTask,
-				throwable);
+				batchEngineTaskItemDelegate, throwable);
 
 			return;
 		}
@@ -174,7 +173,7 @@ public class BatchEngineImportTaskExecutorImpl
 
 			batchEngineImportTask =
 				_batchEngineImportTaskLocalService.updateBatchEngineImportTask(
-					batchEngineImportTask);
+					batchEngineImportTask, batchEngineTaskItemDelegate);
 
 			User user = _userLocalService.getUser(
 				batchEngineImportTask.getUserId());
@@ -193,7 +192,7 @@ public class BatchEngineImportTaskExecutorImpl
 
 			_updateBatchEngineImportTask(
 				BatchEngineTaskExecuteStatus.COMPLETED, batchEngineImportTask,
-				null);
+				batchEngineTaskItemDelegate, null);
 		}
 		catch (Throwable throwable) {
 			_log.error(
@@ -203,7 +202,7 @@ public class BatchEngineImportTaskExecutorImpl
 
 			_updateBatchEngineImportTask(
 				BatchEngineTaskExecuteStatus.FAILED, batchEngineImportTask,
-				throwable);
+				batchEngineTaskItemDelegate, throwable);
 		}
 		finally {
 			file.delete();
@@ -224,9 +223,7 @@ public class BatchEngineImportTaskExecutorImpl
 	}
 
 	@Activate
-	protected void activate(
-		BundleContext bundleContext, Map<String, Object> properties) {
-
+	protected void activate(BundleContext bundleContext) {
 		_batchEngineImportTaskExceptionHandlers =
 			ServiceTrackerListFactory.open(
 				bundleContext, BatchEngineImportTaskExceptionHandler.class);
@@ -333,7 +330,7 @@ public class BatchEngineImportTaskExecutorImpl
 		batchEngineImportTask.setProcessedItemsCount(processedItemsCount);
 
 		return _batchEngineImportTaskLocalService.updateBatchEngineImportTask(
-			batchEngineImportTask);
+			batchEngineImportTask, batchEngineTaskItemDelegate);
 	}
 
 	private BatchEngineImportTaskItemReader _getBatchEngineImportTaskItemReader(
@@ -755,7 +752,9 @@ public class BatchEngineImportTaskExecutorImpl
 
 	private void _updateBatchEngineImportTask(
 		BatchEngineTaskExecuteStatus batchEngineTaskExecuteStatus,
-		BatchEngineImportTask batchEngineImportTask, Throwable throwable) {
+		BatchEngineImportTask batchEngineImportTask,
+		BatchEngineTaskItemDelegate<?> batchEngineTaskItemDelegate,
+		Throwable throwable) {
 
 		batchEngineImportTask.setEndTime(new Date());
 		batchEngineImportTask.setErrorMessage(
@@ -766,7 +765,7 @@ public class BatchEngineImportTaskExecutorImpl
 
 		batchEngineImportTask =
 			_batchEngineImportTaskLocalService.updateBatchEngineImportTask(
-				batchEngineImportTask);
+				batchEngineImportTask, batchEngineTaskItemDelegate);
 
 		BatchEngineTaskCallbackUtil.sendCallback(
 			batchEngineImportTask.getCallbackURL(),
@@ -803,9 +802,6 @@ public class BatchEngineImportTaskExecutorImpl
 
 	private final BatchEngineTaskProgressFactory
 		_batchEngineTaskProgressFactory = new BatchEngineTaskProgressFactory();
-
-	@Reference
-	private CompanyLocalService _companyLocalService;
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;

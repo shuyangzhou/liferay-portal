@@ -114,6 +114,7 @@ import com.liferay.portal.kernel.security.auth.FullNameValidator;
 import com.liferay.portal.kernel.security.auth.PasswordModificationThreadLocal;
 import com.liferay.portal.kernel.security.auth.ScreenNameGenerator;
 import com.liferay.portal.kernel.security.auth.ScreenNameValidator;
+import com.liferay.portal.kernel.security.fips.FIPSModeValidator;
 import com.liferay.portal.kernel.security.ldap.LDAPSettingsUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
@@ -3365,9 +3366,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	}
 
 	@Override
-	public List<User> getUsersByRoleId(long roleId, int start, int end)
-		throws PortalException {
-
+	public List<User> getUsersByRoleId(long roleId, int start, int end) {
 		return dslQuery(
 			DSLQueryFactoryUtil.select(
 				UserTable.INSTANCE
@@ -5113,8 +5112,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public User updateExternalReferenceCode(
-			User user, String externalReferenceCode)
-		throws PortalException {
+		User user, String externalReferenceCode) {
 
 		user.setExternalReferenceCode(externalReferenceCode);
 
@@ -5376,9 +5374,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	)
 	@Override
 	@Transactional(enabled = false)
-	public User updateLastLogin(User user, String loginIP)
-		throws PortalException {
-
+	public User updateLastLogin(User user, String loginIP) {
 		user.setLoginIP(loginIP);
 		user.setLastLoginIP(user.getLoginIP());
 		user.setFailedLoginAttempts(0);
@@ -5571,6 +5567,14 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			boolean passwordReset, boolean silentUpdate)
 		throws PortalException {
 
+		if (!silentUpdate) {
+			validatePassword(userId, password1, password2);
+		}
+		else if (FIPSModeValidator.isNotAllowedPassword(password1)) {
+			throw new UserPasswordException.MustBeLonger(
+				userId, FIPSModeValidator.PASSWORDS_MIN_LENGTH);
+		}
+
 		User user = userPersistence.findByPrimaryKey(userId);
 
 		String newEncPwd = null;
@@ -5590,8 +5594,6 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		user = userPersistence.findByPrimaryKey(userId);
 
 		if (!silentUpdate) {
-			validatePassword(userId, password1, password2);
-
 			trackPassword(user);
 		}
 
@@ -6457,6 +6459,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		// Authenticate against the User_ table
 
+		boolean passwordReset = false;
+
 		if (authResult == Authenticator.SKIP_LIFERAY_CHECK) {
 			authResult = Authenticator.SUCCESS;
 		}
@@ -6467,11 +6471,14 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 				login, password, user.getPassword());
 
 			if (authenticated) {
-				if (!StringUtil.equalsIgnoreCase(
-						PasswordEncryptorUtil.
-							getEncryptedPasswordAlgorithmSettings(
-								user.getPassword()),
-						_PASSWORDS_ENCRYPTION_ALGORITHM)) {
+				if (FIPSModeValidator.isNotAllowedPassword(password)) {
+					passwordReset = true;
+				}
+				else if (!StringUtil.equalsIgnoreCase(
+							PasswordEncryptorUtil.
+								getEncryptedPasswordAlgorithmSettings(
+									user.getPassword()),
+							_PASSWORDS_ENCRYPTION_ALGORITHM)) {
 
 					user.setPassword(
 						PasswordEncryptorUtil.encrypt(
@@ -6516,6 +6523,10 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 					companyId, authType, login, user, headerMap, parameterMap);
 
 				throw portalException;
+			}
+
+			if (passwordReset) {
+				user.setPasswordReset(true);
 			}
 		}
 

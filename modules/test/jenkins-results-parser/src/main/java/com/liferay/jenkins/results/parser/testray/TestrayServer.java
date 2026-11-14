@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -63,6 +66,16 @@ public class TestrayServer {
 			throw new RuntimeException(
 				requestJSONObject.toString(), ioException);
 		}
+	}
+
+	public void deleteCaseResultFile(String fileName) {
+		if (JenkinsResultsParserUtil.isNullOrEmpty(fileName)) {
+			return;
+		}
+
+		File resultFile = new File(getResultsDir(), fileName);
+
+		resultFile.delete();
 	}
 
 	public JenkinsResultsParserUtil.HTTPAuthorization getHTTPAuthorization() {
@@ -325,6 +338,21 @@ public class TestrayServer {
 		}
 	}
 
+	public boolean isCaseResultFileAvailable(String fileName) {
+		if (JenkinsResultsParserUtil.isNullOrEmpty(fileName)) {
+			return false;
+		}
+
+		File resultFile = new File(getResultsDir(), fileName);
+
+		return resultFile.exists();
+	}
+
+	public String readCaseResultFile(String fileName) throws IOException {
+		return JenkinsResultsParserUtil.read(
+			new File(getResultsDir(), fileName));
+	}
+
 	public String requestGet(String urlPath) throws IOException {
 		try {
 			return JenkinsResultsParserUtil.toString(
@@ -375,11 +403,21 @@ public class TestrayServer {
 			return;
 		}
 
+		File resultFile = new File(getResultsDir(), fileName);
+
+		File tempResultFile = new File(
+			resultFile.getParentFile(), fileName + ".tmp");
+
 		try {
-			JenkinsResultsParserUtil.write(
-				new File(getResultsDir(), fileName), fileContent);
+			JenkinsResultsParserUtil.write(tempResultFile, fileContent);
+
+			Files.move(
+				tempResultFile.toPath(), resultFile.toPath(),
+				StandardCopyOption.ATOMIC_MOVE,
+				StandardCopyOption.REPLACE_EXISTING);
 		}
 		catch (IOException ioException) {
+			tempResultFile.delete();
 		}
 	}
 

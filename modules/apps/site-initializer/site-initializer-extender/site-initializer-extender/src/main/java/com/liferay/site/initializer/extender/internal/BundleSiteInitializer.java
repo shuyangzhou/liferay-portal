@@ -567,7 +567,6 @@ public class BundleSiteInitializer implements SiteInitializer {
 		}
 		finally {
 			BatchEngineUnitThreadLocal.setFileName(StringPool.BLANK);
-			ServiceContextThreadLocal.popServiceContext();
 		}
 
 		if (_log.isInfoEnabled()) {
@@ -4838,7 +4837,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 			return;
 		}
 
-		List<Long> roleIds = new ArrayList<>();
+		List<String> roleExternalReferenceCodes = new ArrayList<>();
 
 		for (int i = 0; i < accessToControlMenuRoleNamesJSONArray.length();
 			 i++) {
@@ -4857,11 +4856,12 @@ public class BundleSiteInitializer implements SiteInitializer {
 				continue;
 			}
 
-			roleIds.add(role.getRoleId());
+			roleExternalReferenceCodes.add(role.getExternalReferenceCode());
 		}
 
 		_menuAccessConfigurationManager.updateMenuAccessConfiguration(
-			serviceContext.getScopeGroupId(), ArrayUtil.toStringArray(roleIds),
+			serviceContext.getScopeGroupId(),
+			ArrayUtil.toStringArray(roleExternalReferenceCodes),
 			jsonObject.getBoolean("showControlMenuByRole"));
 	}
 
@@ -6140,39 +6140,46 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 		ServiceContextThreadLocal.pushServiceContext(serviceContext);
 
-		List<R> rList = new ArrayList<>();
-		Map<R, List<R>> rMap = _createRMap(serviceContext);
+		try {
+			List<R> rList = new ArrayList<>();
+			Map<R, List<R>> rMap = _createRMap(serviceContext);
 
-		while (rList.size() != rMap.size()) {
-			int size = rList.size();
+			while (rList.size() != rMap.size()) {
+				int size = rList.size();
 
-			for (Map.Entry<R, List<R>> entry : rMap.entrySet()) {
-				R r = entry.getKey();
+				for (Map.Entry<R, List<R>> entry : rMap.entrySet()) {
+					R r = entry.getKey();
 
-				if (rList.contains(r) || !rList.containsAll(entry.getValue())) {
-					continue;
+					if (rList.contains(r) ||
+						!rList.containsAll(entry.getValue())) {
+
+						continue;
+					}
+
+					long startTime = System.currentTimeMillis();
+
+					r._unsafeRunnable.run();
+
+					if (_log.isInfoEnabled()) {
+						_log.info(
+							StringBundler.concat(
+								"Invoking ", r._name, " took ",
+								System.currentTimeMillis() - startTime, " ms"));
+					}
+
+					rList.add(r);
 				}
 
-				long startTime = System.currentTimeMillis();
-
-				r._unsafeRunnable.run();
-
-				if (_log.isInfoEnabled()) {
-					_log.info(
-						StringBundler.concat(
-							"Invoking ", r._name, " took ",
-							System.currentTimeMillis() - startTime, " ms"));
+				if (size == rList.size()) {
+					throw new InitializationException("Circular dependency");
 				}
-
-				rList.add(r);
 			}
 
-			if (size == rList.size()) {
-				throw new InitializationException("Circular dependency");
-			}
+			_updateGroupSiteInitializerKey(groupId);
 		}
-
-		_updateGroupSiteInitializerKey(groupId);
+		finally {
+			ServiceContextThreadLocal.popServiceContext();
+		}
 	}
 
 	private void _publishObjectDefinitions(

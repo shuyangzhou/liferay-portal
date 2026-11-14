@@ -8,7 +8,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-DepotAdminDisplayContext depotAdminDisplayContext = new DepotAdminDisplayContext(request, liferayPortletRequest, liferayPortletResponse);
+DepotAdminDisplayContext depotAdminDisplayContext = (DepotAdminDisplayContext)request.getAttribute(DepotAdminDisplayContext.class.getName());
 
 DepotAdminManagementToolbarDisplayContext depotAdminManagementToolbarDisplayContext = new DepotAdminManagementToolbarDisplayContext(request, liferayPortletRequest, liferayPortletResponse, depotAdminDisplayContext);
 %>
@@ -37,7 +37,7 @@ DepotAdminManagementToolbarDisplayContext depotAdminManagementToolbarDisplayCont
 				<liferay-ui:search-container-row
 					className="com.liferay.depot.model.DepotEntry"
 					escapedModel="<%= true %>"
-					keyProperty="depotEntryId"
+					keyPropertyName="depotEntryId"
 					rowIdProperty="depotEntryId"
 				>
 

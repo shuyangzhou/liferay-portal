@@ -141,6 +141,9 @@ public interface ContactsEngineClient {
 	public void clearChannel(
 		FaroProject faroProject, FaroUser faroUser, List<String> ids);
 
+	public void deleteAccountLifecycle(FaroProject faroProject, String id)
+		throws FaroEngineClientException;
+
 	public void deleteBlockedKeywords(FaroProject faroProject, List<String> ids)
 		throws FaroEngineClientException;
 
@@ -634,6 +637,11 @@ public interface ContactsEngineClient {
 			Map<String, List<String>> queryParameters,
 			OutputStream outputStream)
 		throws Exception;
+
+	public List<Campaign> getTopCampaigns(
+			FaroProject faroProject, long channelId, String filterString,
+			String rangeEnd, Integer rangeKey, String rangeStart, int size)
+		throws FaroEngineClientException;
 
 	public Results<IndividualSegment> getUnassignedIndividualSegments(
 		FaroProject faroProject, int cur, int delta,

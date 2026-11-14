@@ -46,6 +46,28 @@ import org.xml.sax.SAXException;
  */
 public class Dom4JUtil {
 
+	public static void addPropertyElements(
+		Element propertiesElement, Map<String, String> propertiesMap) {
+
+		for (Map.Entry<String, String> propertyEntry :
+				propertiesMap.entrySet()) {
+
+			Element propertyElement = propertiesElement.addElement("property");
+
+			String propertyName = propertyEntry.getKey();
+			String propertyValue = propertyEntry.getValue();
+
+			if (JenkinsResultsParserUtil.isNullOrEmpty(propertyName) ||
+				JenkinsResultsParserUtil.isNullOrEmpty(propertyValue)) {
+
+				continue;
+			}
+
+			propertyElement.addAttribute("name", propertyName);
+			propertyElement.addAttribute("value", propertyValue);
+		}
+	}
+
 	public static void addRawXMLToElement(Element element, String xml)
 		throws DocumentException {
 
@@ -233,60 +255,6 @@ public class Dom4JUtil {
 		return getOrderedListElement(itemElements, null, maxItems);
 	}
 
-	public static void insertElementAfter(
-		Element parentElement, Element targetElement, Element newElement) {
-
-		List<Element> elements = parentElement.elements();
-
-		int targetElementIndex = -1;
-
-		if (targetElement != null) {
-			if (!elements.contains(targetElement)) {
-				try {
-					throw new IllegalArgumentException(
-						"Invalid target element\n" + format(targetElement));
-				}
-				catch (IOException ioException) {
-					throw new IllegalArgumentException(
-						"Invalid target element");
-				}
-			}
-
-			targetElementIndex = elements.indexOf(targetElement);
-		}
-
-		elements.add(targetElementIndex + 1, newElement);
-
-		setElements(parentElement, elements);
-	}
-
-	public static void insertElementBefore(
-		Element parentElement, Element targetElement, Element newElement) {
-
-		List<Element> elements = parentElement.elements();
-
-		int targetElementIndex = elements.size();
-
-		if (targetElement != null) {
-			if (!elements.contains(targetElement)) {
-				try {
-					throw new IllegalArgumentException(
-						"Invalid target element\n" + format(targetElement));
-				}
-				catch (IOException ioException) {
-					throw new IllegalArgumentException(
-						"Invalid target element");
-				}
-			}
-
-			targetElementIndex = elements.indexOf(targetElement);
-		}
-
-		elements.add(targetElementIndex, newElement);
-
-		setElements(parentElement, elements);
-	}
-
 	public static Document parse(String xml) throws DocumentException {
 		if (xml != null) {
 			xml = xml.replaceAll("&#27;", "");
@@ -401,22 +369,6 @@ public class Dom4JUtil {
 			else if ((node instanceof Element) && cascade) {
 				replace((Element)node, cascade, replacementText, targetText);
 			}
-		}
-	}
-
-	public static void setElements(
-		Element parentElement, List<Element> elements) {
-
-		if (parentElement == null) {
-			throw new IllegalArgumentException("Parent is null");
-		}
-
-		for (Element element : parentElement.elements()) {
-			parentElement.remove(element);
-		}
-
-		for (Element element : elements) {
-			parentElement.add(element);
 		}
 	}
 

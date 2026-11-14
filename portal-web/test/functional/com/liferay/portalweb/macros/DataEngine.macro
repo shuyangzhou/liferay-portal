@@ -1972,25 +1972,6 @@ definition {
 	}
 
 	@summary = "Default summary"
-	macro viewFieldLabel(fieldName = null, fieldFieldLabel = null) {
-		if (${fieldName} == "Boolean") {
-			AssertElementPresent(
-				key_fieldLabel = ${fieldFieldLabel},
-				locator1 = "Checkbox#CHECKBOX_LABEL");
-		}
-		else {
-			if (!(isSet(index))) {
-				var index = 1;
-			}
-
-			AssertElementPresent(
-				key_fieldFieldLabel = ${fieldFieldLabel},
-				key_index = ${index},
-				locator1 = "DDMEditStructure#FORM_FIELD_CONTAINER_LABEL_ANY");
-		}
-	}
-
-	@summary = "Default summary"
 	macro viewFieldSearchable(fieldFieldLabel = null, searchableType = null) {
 		AssertClick.assertPartialTextClickAt(
 			key_fieldFieldLabel = ${fieldFieldLabel},
@@ -2062,15 +2043,6 @@ definition {
 			locator1 = "WCEditWebContent#SELECTION_OPTION");
 
 		Click(locator1 = "Sidebar#BACK");
-	}
-
-	@summary = "Default summary"
-	macro viewNestedField(fieldName = null, nestedField = null, nestedFieldData = null) {
-		AssertTextEquals.assertValue(
-			key_fieldName = ${fieldName},
-			key_nestedFieldName = ${nestedField},
-			locator1 = "DDMField#NESTED_INPUT",
-			value1 = ${nestedFieldData});
 	}
 
 	@summary = "Default summary"

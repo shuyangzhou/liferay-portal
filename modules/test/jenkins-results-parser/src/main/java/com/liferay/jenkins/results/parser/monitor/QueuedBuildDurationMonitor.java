@@ -55,34 +55,49 @@ public class QueuedBuildDurationMonitor extends BaseMonitor {
 				MonitorResult.Status.CRITICAL, currentTimeMillis);
 		}
 
+		List<JenkinsMaster> activeJenkinsMasters = new ArrayList<>();
+
+		for (JenkinsMaster jenkinsMaster : jenkinsMasters) {
+			if (jenkinsMaster.isBlacklisted()) {
+				continue;
+			}
+
+			activeJenkinsMasters.add(jenkinsMaster);
+		}
+
+		if (activeJenkinsMasters.isEmpty()) {
+			Map<String, String> metrics = new LinkedHashMap<>();
+
+			metrics.put("queued.builds.count", "0");
+			metrics.put("stuck.queued.builds.count", "0");
+
+			return new MonitorResult(
+				JenkinsResultsParserUtil.combine(
+					"Every master in cohort ", _cohortName, " is blacklisted"),
+				metrics, MonitorResult.Status.OK, currentTimeMillis);
+		}
+
 		Map<String, String> queueExceptionMessages = new ConcurrentHashMap<>();
 
 		List<List<JenkinsMaster.QueueItem>> queueItemsList = _readQueueItems(
-			queueExceptionMessages, jenkinsMasters);
+			queueExceptionMessages, activeJenkinsMasters);
 
 		Map<String, String> runningBuildExceptionMessages =
 			new ConcurrentHashMap<>();
 
 		List<List<JenkinsMaster.RunningBuild>> runningBuildsList =
-			_readRunningBuilds(runningBuildExceptionMessages, jenkinsMasters);
+			_readRunningBuilds(
+				runningBuildExceptionMessages, activeJenkinsMasters);
 
 		List<String> messages = new ArrayList<>();
 		int queuedBuildsCount = 0;
 		List<MonitorResult.Status> statuses = new ArrayList<>();
 		List<JenkinsMaster.QueueItem> stuckQueueItems = new ArrayList<>();
 
-		for (int i = 0; i < jenkinsMasters.size(); i++) {
-			JenkinsMaster jenkinsMaster = jenkinsMasters.get(i);
+		for (int i = 0; i < activeJenkinsMasters.size(); i++) {
+			JenkinsMaster jenkinsMaster = activeJenkinsMasters.get(i);
 
 			List<JenkinsMaster.QueueItem> queueItems = queueItemsList.get(i);
-			List<JenkinsMaster.RunningBuild> runningBuilds =
-				runningBuildsList.get(i);
-
-			if (((queueItems == null) || (runningBuilds == null)) &&
-				jenkinsMaster.isBlacklisted()) {
-
-				continue;
-			}
 
 			if (queueItems == null) {
 				messages.add(
@@ -93,6 +108,9 @@ public class QueuedBuildDurationMonitor extends BaseMonitor {
 
 				statuses.add(MonitorResult.Status.CRITICAL);
 			}
+
+			List<JenkinsMaster.RunningBuild> runningBuilds =
+				runningBuildsList.get(i);
 
 			if (runningBuilds == null) {
 				messages.add(

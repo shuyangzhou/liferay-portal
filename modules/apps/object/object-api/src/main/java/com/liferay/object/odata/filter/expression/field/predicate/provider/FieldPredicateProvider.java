@@ -22,29 +22,34 @@ import org.osgi.annotation.versioning.ProviderType;
 public interface FieldPredicateProvider {
 
 	public Predicate getBinaryExpressionPredicate(
+			Object left,
 			Function<String, Column<?, ?>> objectDefinitionColumnSupplier,
-			Object left, long objectDefinitionId,
-			BinaryExpression.Operation operation, Object right)
+			long objectDefinitionId, BinaryExpression.Operation operation,
+			Object right)
 		throws ExpressionVisitException;
 
 	public Predicate getContainsPredicate(
+			String fieldName, Object fieldValue,
 			Function<String, Column<?, ?>> objectDefinitionColumnSupplier,
-			String fieldName, Object fieldValue)
+			long objectDefinitionId)
 		throws ExpressionVisitException;
 
 	public Predicate getInPredicate(
+			Object left,
 			Function<String, Column<?, ?>> objectDefinitionColumnSupplier,
-			Object left, List<Object> rights)
+			long objectDefinitionId, List<Object> rights)
 		throws ExpressionVisitException;
 
 	public Predicate getIsNotEmptyPredicate(
 			String fieldName,
-			Function<String, Column<?, ?>> objectDefinitionColumnSupplier)
+			Function<String, Column<?, ?>> objectDefinitionColumnSupplier,
+			long objectDefinitionId)
 		throws ExpressionVisitException;
 
 	public Predicate getStartsWithPredicate(
+			String fieldName, Object fieldValue,
 			Function<String, Column<?, ?>> objectDefinitionColumnSupplier,
-			String fieldName, Object fieldValue)
+			long objectDefinitionId)
 		throws ExpressionVisitException;
 
 }

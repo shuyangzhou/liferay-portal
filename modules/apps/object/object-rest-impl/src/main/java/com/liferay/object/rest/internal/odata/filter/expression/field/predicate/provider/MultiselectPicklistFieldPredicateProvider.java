@@ -36,9 +36,10 @@ public class MultiselectPicklistFieldPredicateProvider
 
 	@Override
 	public Predicate getBinaryExpressionPredicate(
+		Object left,
 		Function<String, Column<?, ?>> objectDefinitionColumnSupplier,
-		Object left, long objectDefinitionId,
-		BinaryExpression.Operation operation, Object right) {
+		long objectDefinitionId, BinaryExpression.Operation operation,
+		Object right) {
 
 		Expression<String> expression =
 			(Expression<String>)objectDefinitionColumnSupplier.apply(
@@ -60,8 +61,9 @@ public class MultiselectPicklistFieldPredicateProvider
 
 	@Override
 	public Predicate getContainsPredicate(
+		String fieldName, Object fieldValue,
 		Function<String, Column<?, ?>> objectDefinitionColumnSupplier,
-		String fieldName, Object fieldValue) {
+		long objectDefinitionId) {
 
 		return objectDefinitionColumnSupplier.apply(
 			fieldName
@@ -73,8 +75,9 @@ public class MultiselectPicklistFieldPredicateProvider
 
 	@Override
 	public Predicate getInPredicate(
+		Object left,
 		Function<String, Column<?, ?>> objectDefinitionColumnSupplier,
-		Object left, List<Object> rights) {
+		long objectDefinitionId, List<Object> rights) {
 
 		if (ListUtil.isEmpty(rights)) {
 			return null;
@@ -85,14 +88,15 @@ public class MultiselectPicklistFieldPredicateProvider
 		for (Object right : rights) {
 			if (predicate == null) {
 				predicate = getBinaryExpressionPredicate(
-					objectDefinitionColumnSupplier, left, 0,
+					left, objectDefinitionColumnSupplier, objectDefinitionId,
 					BinaryExpression.Operation.EQ, right);
 			}
 			else {
 				predicate = predicate.or(
 					getBinaryExpressionPredicate(
-						objectDefinitionColumnSupplier, left, 0,
-						BinaryExpression.Operation.EQ, right));
+						left, objectDefinitionColumnSupplier,
+						objectDefinitionId, BinaryExpression.Operation.EQ,
+						right));
 			}
 		}
 
@@ -102,7 +106,8 @@ public class MultiselectPicklistFieldPredicateProvider
 	@Override
 	public Predicate getIsNotEmptyPredicate(
 		String fieldName,
-		Function<String, Column<?, ?>> objectDefinitionColumnSupplier) {
+		Function<String, Column<?, ?>> objectDefinitionColumnSupplier,
+		long objectDefinitionId) {
 
 		return objectDefinitionColumnSupplier.apply(
 			fieldName
@@ -111,8 +116,9 @@ public class MultiselectPicklistFieldPredicateProvider
 
 	@Override
 	public Predicate getStartsWithPredicate(
+		String fieldName, Object fieldValue,
 		Function<String, Column<?, ?>> objectDefinitionColumnSupplier,
-		String fieldName, Object fieldValue) {
+		long objectDefinitionId) {
 
 		return _getDelimitedLikePredicate(
 			(Expression<String>)objectDefinitionColumnSupplier.apply(fieldName),

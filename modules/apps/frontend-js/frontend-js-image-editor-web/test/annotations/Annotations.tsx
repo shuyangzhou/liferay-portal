@@ -350,11 +350,11 @@ describe('text annotations', () => {
 	it('selects on focus and clears the selection on a click elsewhere', () => {
 		const {container} = render(<AnnotationHarness start={withCaption} />);
 
-		fireEvent.focus(hit(container));
+		act(() => hit(container).focus());
 
 		expect(container.querySelector('.focus-ring-outer')).not.toBeNull();
 
-		fireEvent.blur(hit(container));
+		act(() => hit(container).blur());
 
 		expect(container.querySelector('.selection-ring')).not.toBeNull();
 
@@ -451,7 +451,7 @@ describe('shapes and arrows', () => {
 		expect(shape(container)).toHaveAttribute('height', '120');
 		expect(hit(container)).toHaveAttribute('aria-label', 'rectangle');
 
-		addShape('square');
+		addShape('square[shape]');
 
 		const squares = container.querySelectorAll(
 			'.editor-workspace rect[fill]:not([class])'
@@ -1242,7 +1242,7 @@ describe('groups and the clipboard', () => {
 
 		expect(screen.getByRole('status')).not.toBeEmptyDOMElement();
 
-		addShape('square');
+		addShape('square[shape]');
 
 		const third = container.querySelectorAll('.overlay-hit')[2];
 

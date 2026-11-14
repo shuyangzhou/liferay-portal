@@ -25,10 +25,8 @@ import com.liferay.portal.kernel.scheduler.StorageType;
 import com.liferay.portal.kernel.scheduler.TriggerState;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
-import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.scheduler.quartz.internal.job.MessageSenderJob;
 
@@ -334,29 +332,8 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 				message);
 		}
 		catch (RuntimeException runtimeException) {
-			if (PortalRunMode.isTestMode()) {
-				StackTraceElement[] stackTraceElements =
-					runtimeException.getStackTrace();
-
-				for (StackTraceElement stackTraceElement : stackTraceElements) {
-					String className = stackTraceElement.getClassName();
-
-					if (className.contains(ServerDetector.class.getName())) {
-						if (_log.isInfoEnabled()) {
-							_log.info(runtimeException);
-						}
-
-						return;
-					}
-
-					throw new SchedulerException(
-						"Unable to schedule job", runtimeException);
-				}
-			}
-			else {
-				throw new SchedulerException(
-					"Unable to schedule job", runtimeException);
-			}
+			throw new SchedulerException(
+				"Unable to schedule job", runtimeException);
 		}
 		catch (Exception exception) {
 			throw new SchedulerException("Unable to schedule job", exception);
@@ -615,41 +592,6 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 					"Message is already scheduled",
 					objectAlreadyExistsException);
 			}
-		}
-	}
-
-	protected void update(
-			Scheduler scheduler,
-			com.liferay.portal.kernel.scheduler.Trigger trigger,
-			StorageType storageType)
-		throws Exception {
-
-		Trigger quartzTrigger = (Trigger)trigger.getWrappedTrigger();
-
-		if (quartzTrigger == null) {
-			return;
-		}
-
-		TriggerKey triggerKey = quartzTrigger.getKey();
-
-		if (scheduler.getTrigger(triggerKey) != null) {
-			scheduler.rescheduleJob(triggerKey, quartzTrigger);
-		}
-		else {
-			JobKey jobKey = quartzTrigger.getJobKey();
-
-			JobDetail jobDetail = scheduler.getJobDetail(jobKey);
-
-			if (jobDetail == null) {
-				return;
-			}
-
-			synchronized (this) {
-				scheduler.deleteJob(jobKey);
-				scheduler.scheduleJob(jobDetail, quartzTrigger);
-			}
-
-			_updateJobState(scheduler, jobKey, TriggerState.NORMAL);
 		}
 	}
 

@@ -2186,6 +2186,128 @@ public class JournalArticleLocalServiceTest {
 	}
 
 	@Test
+	@TestInfo("LPD-115170")
+	public void testGetArticleDisplayWithMedia() throws Exception {
+		FileEntry audioFileEntry = _dlAppLocalService.addFileEntry(
+			null, TestPropsValues.getUserId(), _group.getGroupId(),
+			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
+			RandomTestUtil.randomString() + ".mp3", "audio/mpeg",
+			RandomTestUtil.randomBytes(), null, null, null,
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
+
+		String audioURL =
+			_getDownloadURL(audioFileEntry) + "?audioPreview=1&amp;type=mp3";
+
+		FileEntry imageFileEntry = _dlAppLocalService.addFileEntry(
+			null, TestPropsValues.getUserId(), _group.getGroupId(),
+			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
+			RandomTestUtil.randomString() + ".png", ContentTypes.IMAGE_PNG,
+			FileUtil.getBytes(getClass(), "dependencies/liferay.png"), null,
+			null, null,
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
+
+		String imageURL = _getDownloadURL(imageFileEntry);
+
+		DDMStructure ddmStructure = DDMStructureTestUtil.addStructure(
+			_group.getGroupId(), JournalArticle.class.getName(),
+			DDMStructureTestUtil.getSampleDDMForm(
+				"content", "string", "text", false, "rich_text",
+				new Locale[] {LocaleUtil.US}, LocaleUtil.US));
+
+		DDMTemplate ddmTemplate = DDMTemplateTestUtil.addTemplate(
+			_group.getGroupId(), ddmStructure.getStructureId(),
+			PortalUtil.getClassNameId(JournalArticle.class),
+			TemplateConstants.LANG_TYPE_FTL, "${content.getData()}",
+			LocaleUtil.US);
+
+		JournalArticle journalArticle =
+			JournalTestUtil.addArticleWithXMLContent(
+				_group.getGroupId(),
+				DDMStructureTestUtil.getSampleStructuredContent(
+					"content",
+					StringBundler.concat(
+						"<audio controls><source src=\"", audioURL,
+						"\" type=\"audio/mpeg\"></audio><img ",
+						"data-fileentryid=\"", imageFileEntry.getFileEntryId(),
+						"\" src=\"", imageURL, "\" />")),
+				ddmStructure.getStructureKey(), ddmTemplate.getTemplateKey());
+
+		JournalArticleDisplay journalArticleDisplay =
+			_journalArticleLocalService.getArticleDisplay(
+				journalArticle.getGroupId(), journalArticle.getArticleId(),
+				ddmTemplate.getTemplateKey(), null, null, _themeDisplay);
+
+		String content = journalArticleDisplay.getContent();
+
+		Assert.assertTrue(content.contains("<source src=\"" + audioURL + "\""));
+		Assert.assertTrue(content.contains("src=\"" + imageURL + "\""));
+	}
+
+	@Test
+	@TestInfo("LPD-115170")
+	public void testGetArticleDisplayWithPageBreak() throws Exception {
+		JournalArticle journalArticle = JournalTestUtil.addArticle(
+			_group.getGroupId(),
+			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
+			RandomTestUtil.randomString(), "@page_break@ Home @page_break@");
+
+		JournalArticleDisplay journalArticleDisplay =
+			_journalArticleLocalService.getArticleDisplay(
+				journalArticle, journalArticle.getDDMTemplateKey(),
+				Constants.VIEW,
+				LocaleUtil.toLanguageId(LocaleUtil.getSiteDefault()), 2, null,
+				_themeDisplay);
+
+		Assert.assertEquals(
+			"Home", StringUtil.trim(journalArticleDisplay.getContent()));
+		Assert.assertTrue(journalArticleDisplay.isPaginate());
+	}
+
+	@Test
+	@TestInfo({"LPS-58698", "LPS-64814", "LPS-83798"})
+	public void testGetArticleDisplayWithRestrictedTemplate() throws Exception {
+		DDMStructure ddmStructure = DDMStructureTestUtil.addStructure(
+			_group.getGroupId(), JournalArticle.class.getName());
+
+		JournalArticle journalArticle =
+			JournalTestUtil.addArticleWithXMLContent(
+				_group.getGroupId(),
+				DDMStructureTestUtil.getSampleStructuredContent(),
+				ddmStructure.getStructureKey(), null);
+
+		_assertGetArticleDisplayWithTemplateError(
+			ddmStructure, journalArticle,
+			"${company.setKey(\"rO0ABXVyABNbTGphdmEubGFuZy5PYmplY3Q7kM5Y" +
+				"nxBzKWwCAAB4cH////c=\")}${company.getKeyObj()}");
+		_assertGetArticleDisplayWithTemplateError(
+			ddmStructure, journalArticle,
+			"${objectUtil(\"com.liferay.portal.kernel.service." +
+				"UserLocalServiceUtil\").getService()}");
+		_assertGetArticleDisplayWithTemplateError(
+			ddmStructure, journalArticle,
+			"${staticUtil[\"com.liferay.portal.kernel.service." +
+				"UserLocalServiceUtil\"].getService()}");
+		_assertGetArticleDisplayWithTemplateError(
+			ddmStructure, journalArticle,
+			"${staticUtil[\"java.lang.Runtime\"].getRuntime()}");
+		_assertGetArticleDisplayWithTemplateError(
+			ddmStructure, journalArticle,
+			StringBundler.concat(
+				"${httpUtil.URLtoString(request.getAttribute(\"CTX\").",
+				"getResource(\".\").toURI().create(\"file:///etc/hosts\").",
+				"toURL())}"));
+		_assertGetArticleDisplayWithTemplateError(
+			ddmStructure, journalArticle,
+			StringBundler.concat(
+				"<#assign velocityBeanHandler = expandoRowLocalService.",
+				"getInvocationHandler(expandoRowLocalService)>",
+				"<#assign getRuntime = velocityBeanHandler.getClassLoader().",
+				"loadClass(\"java.lang.Runtime\").getMethod(\"getRuntime\", ",
+				"null)><#assign runtimeInstance = velocityBeanHandler.invoke(",
+				"null, getRuntime, null)>${runtimeInstance}"));
+	}
+
+	@Test
 	public void testGetArticleDisplayWithSimpleData() throws Exception {
 		JournalArticle journalArticle = JournalTestUtil.addArticle(
 			_group.getGroupId(),
@@ -2233,6 +2355,79 @@ public class JournalArticleLocalServiceTest {
 		Assert.assertNotNull(articleDisplayImageURL);
 		Assert.assertTrue(
 			articleDisplayImageURL.contains(fileEntry.getFileName()));
+	}
+
+	@Test
+	@TestInfo({"LPS-52248", "LPS-86223"})
+	public void testGetArticleDisplayWithoutDDMTemplate() throws Exception {
+		DDMForm ddmForm = DDMFormTestUtil.createDDMForm();
+
+		ddmForm.addDDMFormField(
+			DDMFormTestUtil.createDDMFormField(
+				"Color", "Color", DDMFormFieldTypeConstants.COLOR, "string",
+				false, false, false));
+		ddmForm.addDDMFormField(
+			DDMFormTestUtil.createDDMFormField(
+				"RichText", "Rich Text", DDMFormFieldTypeConstants.RICH_TEXT,
+				"html", false, true, false));
+		ddmForm.addDDMFormField(
+			DDMFormTestUtil.createDDMFormField(
+				"Separator", "Separator", DDMFormFieldTypeConstants.SEPARATOR,
+				StringPool.BLANK, false, false, false));
+		ddmForm.addDDMFormField(
+			DDMFormTestUtil.createDDMFormField(
+				"Text", "Text", DDMFormFieldTypeConstants.TEXT, "string", false,
+				false, false));
+
+		DDMStructure ddmStructure = DDMStructureTestUtil.addStructure(
+			_group.getGroupId(), JournalArticle.class.getName(), ddmForm);
+
+		JournalArticle journalArticle =
+			JournalTestUtil.addArticleWithXMLContent(
+				_group.getGroupId(),
+				StringBundler.concat(
+					"<?xml version=\"1.0\"?><root available-locales=\"en_US\" ",
+					"default-locale=\"en_US\"><dynamic-element ",
+					"index-type=\"keyword\" instance-id=\"pgbvxbin\" ",
+					"name=\"Color\" type=\"color\"><dynamic-content ",
+					"language-id=\"en_US\"><![CDATA[#FF0D0D]]>",
+					"</dynamic-content></dynamic-element><dynamic-element ",
+					"index-type=\"text\" instance-id=\"kqsmrgea\" ",
+					"name=\"RichText\" type=\"rich_text\"><dynamic-content ",
+					"language-id=\"en_US\"><![CDATA[First Rich Text]]>",
+					"</dynamic-content></dynamic-element><dynamic-element ",
+					"index-type=\"text\" instance-id=\"zdxwqlbo\" ",
+					"name=\"RichText\" type=\"rich_text\"><dynamic-content ",
+					"language-id=\"en_US\"><![CDATA[Second Rich Text]]>",
+					"</dynamic-content></dynamic-element><dynamic-element ",
+					"index-type=\"\" instance-id=\"hnvmtyca\" ",
+					"name=\"Separator\" type=\"separator\"><dynamic-content ",
+					"language-id=\"en_US\"><![CDATA[]]></dynamic-content>",
+					"</dynamic-element><dynamic-element ",
+					"index-type=\"keyword\" instance-id=\"wjrfkuso\" ",
+					"name=\"Text\" type=\"text\"><dynamic-content ",
+					"language-id=\"en_US\"><![CDATA[Text Value]]>",
+					"</dynamic-content></dynamic-element></root>"),
+				ddmStructure.getStructureKey(), null);
+
+		JournalArticleDisplay journalArticleDisplay =
+			_journalArticleLocalService.getArticleDisplay(
+				journalArticle.getGroupId(), journalArticle.getArticleId(),
+				null, null, _themeDisplay);
+
+		String content = journalArticleDisplay.getContent();
+
+		Assert.assertTrue(content.contains("#FF0D0D"));
+		Assert.assertTrue(
+			content.contains("<dt class=\"text-capitalize\">Color"));
+		Assert.assertTrue(
+			content.contains("<dt class=\"text-capitalize\">Rich Text"));
+		Assert.assertTrue(
+			content.contains("<dt class=\"text-capitalize\">Text"));
+		Assert.assertTrue(content.contains("First Rich Text"));
+		Assert.assertTrue(content.contains("Second Rich Text"));
+		Assert.assertFalse(content.contains("Separator"));
+		Assert.assertTrue(content.contains("Text Value"));
 	}
 
 	@Test
@@ -3197,6 +3392,29 @@ public class JournalArticleLocalServiceTest {
 			dymanicContentElement.attributeValue("language-id"));
 	}
 
+	private void _assertGetArticleDisplayWithTemplateError(
+			DDMStructure ddmStructure, JournalArticle journalArticle,
+			String script)
+		throws Exception {
+
+		DDMTemplate ddmTemplate = DDMTemplateTestUtil.addTemplate(
+			_group.getGroupId(), ddmStructure.getStructureId(),
+			PortalUtil.getClassNameId(JournalArticle.class),
+			TemplateConstants.LANG_TYPE_FTL, script,
+			LocaleUtil.getSiteDefault());
+
+		JournalArticleDisplay journalArticleDisplay =
+			_journalArticleLocalService.getArticleDisplay(
+				journalArticle, ddmTemplate.getTemplateKey(), Constants.VIEW,
+				LocaleUtil.toLanguageId(LocaleUtil.getSiteDefault()), 1, null,
+				_themeDisplay);
+
+		String content = journalArticleDisplay.getContent();
+
+		Assert.assertFalse(content.contains("java.lang.Runtime@"));
+		Assert.assertTrue(content.contains("journal-template-error"));
+	}
+
 	private Tuple _createJournalArticleWithPredefinedValues(long groupId)
 		throws Exception {
 
@@ -3284,6 +3502,13 @@ public class JournalArticleLocalServiceTest {
 			ZoneId.systemDefault());
 
 		return Date.from(zonedDateTime.toInstant());
+	}
+
+	private String _getDownloadURL(FileEntry fileEntry) {
+		return StringBundler.concat(
+			"/documents/", fileEntry.getGroupId(), StringPool.SLASH,
+			fileEntry.getFolderId(), StringPool.SLASH, fileEntry.getFileName(),
+			StringPool.SLASH, fileEntry.getUuid());
 	}
 
 	private String _getNewTitle(String title) {

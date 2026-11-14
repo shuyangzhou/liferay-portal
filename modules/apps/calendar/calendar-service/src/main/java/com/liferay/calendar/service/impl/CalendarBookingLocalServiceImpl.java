@@ -1208,8 +1208,9 @@ public class CalendarBookingLocalServiceImpl
 
 			calendarBooking.setStatus(WorkflowConstants.STATUS_DRAFT);
 		}
-		else if ((oldStartTime != calendarBooking.getStartTime()) ||
-				 (oldEndTime != calendarBooking.getEndTime())) {
+		else if (!calendarBooking.isDenied() &&
+				 ((oldStartTime != calendarBooking.getStartTime()) ||
+				  (oldEndTime != calendarBooking.getEndTime()))) {
 
 			if (isStagingCalendarBooking(calendarBooking)) {
 				calendarBooking.setStatus(
@@ -1566,17 +1567,21 @@ public class CalendarBookingLocalServiceImpl
 		if (calendarBooking.isMasterBooking()) {
 			Date createDate = calendarBooking.getCreateDate();
 
-			NotificationTemplateType notificationTemplateType =
+			NotificationTemplateType defaultNotificationTemplateType =
 				NotificationTemplateType.INVITE;
 
 			if (!DateUtil.equals(createDate, oldModifiedDate)) {
-				notificationTemplateType = NotificationTemplateType.UPDATE;
+				defaultNotificationTemplateType =
+					NotificationTemplateType.UPDATE;
 			}
 
 			for (CalendarBooking childCalendarBooking : childCalendarBookings) {
 				if (childCalendarBooking.equals(calendarBooking)) {
 					continue;
 				}
+
+				NotificationTemplateType notificationTemplateType =
+					defaultNotificationTemplateType;
 
 				if (DateUtil.equals(
 						childCalendarBooking.getCreateDate(),
@@ -1607,6 +1612,18 @@ public class CalendarBookingLocalServiceImpl
 						childCalendarBooking, notificationTemplateType,
 						serviceContext);
 				}
+			}
+		}
+		else if ((oldStatus == WorkflowConstants.STATUS_DENIED) &&
+				 (status == WorkflowConstants.STATUS_PENDING)) {
+
+			CalendarBooking parentCalendarBooking =
+				calendarBooking.getParentCalendarBooking();
+
+			if (parentCalendarBooking.isApproved()) {
+				_sendNotification(
+					calendarBooking, NotificationTemplateType.INVITE,
+					serviceContext);
 			}
 		}
 
@@ -2556,10 +2573,6 @@ public class CalendarBookingLocalServiceImpl
 
 				deleteCalendarBooking(
 					childCalendarBooking.getCalendarBookingId());
-			}
-
-			if (childCalendarBooking.isDenied()) {
-				continue;
 			}
 
 			childCalendarBookingMap.put(

@@ -14,13 +14,7 @@ import com.liferay.fragment.input.template.parser.InputTemplateNode;
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.processor.FragmentEntryProcessor;
 import com.liferay.fragment.processor.FragmentEntryProcessorContext;
-import com.liferay.fragment.util.configuration.FragmentConfigurationField;
 import com.liferay.fragment.util.configuration.FragmentEntryConfigurationParser;
-import com.liferay.info.exception.NoSuchInfoItemException;
-import com.liferay.info.item.InfoItemIdentifier;
-import com.liferay.info.item.InfoItemReference;
-import com.liferay.info.item.InfoItemServiceRegistry;
-import com.liferay.info.item.provider.InfoItemObjectProvider;
 import com.liferay.petra.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.configuration.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -38,7 +32,6 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -166,8 +159,9 @@ public class FreeMarkerFragmentEntryProcessor
 			).putAll(
 				_fragmentEntryConfigurationParser.getContextObjects(
 					configurationValuesJSONObject, configurationJSONObject,
-					_getInfoItem(
-						configurationJSONObject, fragmentEntryProcessorContext),
+					editableValuesJSONObject,
+					fragmentEntryProcessorContext.getContextInfoItem(),
+					fragmentEntryProcessorContext.getContextInfoItemReference(),
 					fragmentEntryProcessorContext.getSegmentsEntryIds())
 			).build());
 
@@ -199,7 +193,7 @@ public class FreeMarkerFragmentEntryProcessor
 
 		template.prepare(fragmentEntryProcessorContext.getHttpServletRequest());
 
-		if (fragmentEntryProcessorContext.isDisablePortletRender()) {
+		if (fragmentEntryProcessorContext.isDisableRESTClient()) {
 			template.put("restClient", new DummyRESTClient());
 		}
 
@@ -215,48 +209,6 @@ public class FreeMarkerFragmentEntryProcessor
 		}
 
 		return unsyncStringWriter.toString();
-	}
-
-	private Object _getInfoItem(
-		JSONObject configurationJSONObject,
-		FragmentEntryProcessorContext fragmentEntryProcessorContext) {
-
-		Object infoItem = fragmentEntryProcessorContext.getContextInfoItem();
-
-		if (infoItem != null) {
-			return infoItem;
-		}
-
-		InfoItemReference infoItemReference =
-			fragmentEntryProcessorContext.getContextInfoItemReference();
-
-		if ((infoItemReference == null) ||
-			!_hasItemSelectorFragmentConfigurationField(
-				configurationJSONObject)) {
-
-			return null;
-		}
-
-		InfoItemIdentifier infoItemIdentifier =
-			infoItemReference.getInfoItemIdentifier();
-
-		InfoItemObjectProvider<Object> infoItemObjectProvider =
-			_infoItemServiceRegistry.getFirstInfoItemService(
-				InfoItemObjectProvider.class, infoItemReference.getClassName(),
-				infoItemIdentifier.getInfoItemServiceFilter());
-
-		try {
-			return infoItemObjectProvider.getInfoItem(
-				fragmentEntryProcessorContext.getScopeGroupId(),
-				infoItemIdentifier);
-		}
-		catch (NoSuchInfoItemException noSuchInfoItemException) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(noSuchInfoItemException);
-			}
-		}
-
-		return null;
 	}
 
 	private String _getLayoutMode(HttpServletRequest httpServletRequest) {
@@ -292,23 +244,6 @@ public class FreeMarkerFragmentEntryProcessor
 			"liferay_portlet = liferay_portlet + {\"runtime\": __noop}]" + html;
 	}
 
-	private boolean _hasItemSelectorFragmentConfigurationField(
-		JSONObject configurationJSONObject) {
-
-		for (FragmentConfigurationField fragmentConfigurationField :
-				_fragmentEntryConfigurationParser.
-					getFragmentConfigurationFields(configurationJSONObject)) {
-
-			if (StringUtil.equalsIgnoreCase(
-					fragmentConfigurationField.getType(), "itemSelector")) {
-
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		FreeMarkerFragmentEntryProcessor.class);
 
@@ -324,9 +259,6 @@ public class FreeMarkerFragmentEntryProcessor
 
 	@Reference
 	private FragmentEntryLinkHelper _fragmentEntryLinkHelper;
-
-	@Reference
-	private InfoItemServiceRegistry _infoItemServiceRegistry;
 
 	@Reference
 	private Language _language;

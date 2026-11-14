@@ -1,0 +1,78 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.liferay.source.formatter.dependencies;
+
+import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+
+import java.util.Dictionary;
+import java.util.Hashtable;
+
+import org.osgi.framework.BundleContext;
+
+/**
+ * @author Shuyang Zhou
+ */
+public class RegisterServiceProperties {
+
+	public void method1(BundleContext bundleContext) {
+		bundleContext.registerService(
+			Object.class, new Object(), new HashMapDictionary<>());
+	}
+
+	public void method2(BundleContext bundleContext) {
+		bundleContext.registerService(
+			Object.class, new Object(), new Hashtable<String, Object>());
+	}
+
+	public void method3(BundleContext bundleContext) {
+		Dictionary<String, Object> properties = new Hashtable<>();
+
+		bundleContext.registerService(Object.class, new Object(), properties);
+	}
+
+	public void method4(BundleContext bundleContext) {
+		Dictionary<String, Object> properties = new Hashtable<>();
+
+		properties.put("key", "value");
+
+		bundleContext.registerService(Object.class, new Object(), properties);
+	}
+
+	public void method5(BundleContext bundleContext) {
+		bundleContext.registerService(
+			Object.class, new Object(),
+			HashMapDictionaryBuilder.<String, Object>put(
+				"key", "value"
+			).build());
+	}
+
+	public void method6(BundleContext bundleContext) {
+		bundleContext.registerService(Object.class, new Object(), null);
+	}
+
+	public void method7() {
+		registerService(Object.class, new Object(), new Hashtable<>());
+	}
+
+	public void method8(BundleContext bundleContext) {
+		Dictionary<String, Object> properties = new HashMapDictionary<>();
+
+		bundleContext.registerService(Object.class, new Object(), properties);
+
+		properties.put("key", "value");
+	}
+
+	public void method9(BundleContext bundleContext) {
+		bundleContext.registerService(
+			Object.class, new Object(), new java.util.Hashtable<>());
+	}
+
+	protected void registerService(
+		Class<?> clazz, Object object, Dictionary<String, Object> properties) {
+	}
+
+}

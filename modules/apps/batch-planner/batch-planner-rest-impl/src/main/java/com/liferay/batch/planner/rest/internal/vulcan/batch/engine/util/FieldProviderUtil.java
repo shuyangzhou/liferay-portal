@@ -6,7 +6,6 @@
 package com.liferay.batch.planner.rest.internal.vulcan.batch.engine.util;
 
 import com.liferay.batch.planner.batch.engine.task.TaskItemUtil;
-import com.liferay.batch.planner.rest.internal.vulcan.yaml.openapi.OpenAPIYAMLProvider;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.rest.openapi.v1_0.ObjectEntryOpenAPIResource;
 import com.liferay.object.rest.openapi.v1_0.ObjectEntryOpenAPIResourceProvider;
@@ -16,8 +15,9 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.batch.engine.Field;
+import com.liferay.portal.vulcan.batch.engine.VulcanBatchEngineTaskItemDelegateRegistry;
+import com.liferay.portal.vulcan.resource.OpenAPIResource;
 import com.liferay.portal.vulcan.util.OpenAPIUtil;
-import com.liferay.portal.vulcan.yaml.openapi.OpenAPIYAML;
 
 import jakarta.ws.rs.core.UriInfo;
 
@@ -51,19 +51,20 @@ public class FieldProviderUtil {
 			ObjectDefinitionLocalService objectDefinitionLocalService,
 			ObjectEntryOpenAPIResourceProvider
 				objectEntryOpenAPIResourceProvider,
-			OpenAPIYAMLProvider openAPIYAMLProvider, UriInfo uriInfo)
+			OpenAPIResource openAPIResource, UriInfo uriInfo,
+			VulcanBatchEngineTaskItemDelegateRegistry
+				vulcanBatchEngineTaskItemDelegateRegistry)
 		throws Exception {
 
 		int index = internalClassNameKey.indexOf(StringPool.POUND);
 
 		if (index < 0) {
-			OpenAPIYAML openAPIYAML = openAPIYAMLProvider.getOpenAPIYAML(
-				companyId, internalClassNameKey);
-
 			return ListUtil.fromMapValues(
 				OpenAPIUtil.getDTOEntityFields(
 					TaskItemUtil.getSimpleClassName(internalClassNameKey),
-					openAPIYAML));
+					OpenAPIYAMLUtil.getOpenAPIYAML(
+						companyId, internalClassNameKey, openAPIResource,
+						vulcanBatchEngineTaskItemDelegateRegistry)));
 		}
 
 		ObjectDefinition objectDefinition =

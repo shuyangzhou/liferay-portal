@@ -12,6 +12,7 @@ import com.liferay.jenkins.results.parser.PortalHotfixRelease;
 import com.liferay.jenkins.results.parser.PortalRelease;
 import com.liferay.jenkins.results.parser.PullRequest;
 import com.liferay.jenkins.results.parser.job.property.JobProperty;
+import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
 
 import java.io.File;
 
@@ -24,6 +25,9 @@ import java.util.Set;
  * @author Michael Hashimoto
  */
 public interface TestrayContext {
+
+	public void deleteTestrayCaseResultFile(
+		AxisTestClassGroup axisTestClassGroup);
 
 	public BuildDatabase getBuildDatabase();
 
@@ -70,8 +74,18 @@ public interface TestrayContext {
 
 	public TestrayServer getTestrayServer(File testBaseDir);
 
+	public boolean hasTestrayCaseResultFile(
+		AxisTestClassGroup axisTestClassGroup);
+
+	public void recordTestrayCaseResultFile(
+		AxisTestClassGroup axisTestClassGroup,
+		TestrayCaseResult buildTestrayCaseResult);
+
 	public String replace(String string);
 
 	public String replaceSlack(String string, TestrayBuild testrayBuild);
+
+	public void updateTestrayCaseResultFileDurations(
+		AxisTestClassGroup axisTestClassGroup);
 
 }

@@ -1,0 +1,161 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.liferay.depot.internal.roles;
+
+import com.liferay.depot.constants.DepotRolesConstants;
+import com.liferay.depot.model.DepotEntry;
+import com.liferay.depot.security.permission.contributor.DepotRolePermission;
+import com.liferay.depot.security.permission.contributor.DepotRolePermissionsContributor;
+import com.liferay.depot.util.DepotRoleUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
+import com.liferay.portal.kernel.service.ResourceLocalService;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
+import com.liferay.portal.kernel.service.RoleLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
+
+import java.util.List;
+
+/**
+ * @author Gabriel Prates
+ */
+public class DepotDesignLibraryRolesUtil {
+
+	public static void setUpDesignLibraryRoles(
+			long companyId, Language language,
+			ResourceLocalService resourceLocalService,
+			ResourcePermissionLocalService resourcePermissionLocalService,
+			RoleLocalService roleLocalService,
+			UserLocalService userLocalService)
+		throws PortalException {
+
+		Role administratorRole = _getOrCreateRole(
+			companyId, language,
+			DepotRolesConstants.DESIGN_LIBRARY_ADMINISTRATOR, roleLocalService,
+			userLocalService);
+
+		List<String> administratorResourceActions =
+			ResourceActionsUtil.getResourceActions(DepotEntry.class.getName());
+
+		administratorResourceActions.remove(ActionKeys.ASSIGN_USER_ROLES);
+
+		resourcePermissionLocalService.setResourcePermissions(
+			companyId, DepotEntry.class.getName(),
+			ResourceConstants.SCOPE_COMPANY, String.valueOf(companyId),
+			administratorRole.getRoleId(),
+			administratorResourceActions.toArray(new String[0]));
+
+		resourcePermissionLocalService.addResourcePermission(
+			companyId, "com.liferay.asset.tags",
+			ResourceConstants.SCOPE_COMPANY, String.valueOf(companyId),
+			administratorRole.getRoleId(), ActionKeys.MANAGE_TAG);
+
+		Role contentReviewerRole = _getOrCreateRole(
+			companyId, language,
+			DepotRolesConstants.DESIGN_LIBRARY_CONTENT_REVIEWER,
+			roleLocalService, userLocalService);
+
+		resourcePermissionLocalService.addResourcePermission(
+			companyId, "com.liferay.asset.tags",
+			ResourceConstants.SCOPE_COMPANY, String.valueOf(companyId),
+			contentReviewerRole.getRoleId(), ActionKeys.MANAGE_TAG);
+
+		Role memberRole = _getOrCreateRole(
+			companyId, language, DepotRolesConstants.DESIGN_LIBRARY_MEMBER,
+			roleLocalService, userLocalService);
+
+		resourcePermissionLocalService.addResourcePermission(
+			companyId, DepotEntry.class.getName(),
+			ResourceConstants.SCOPE_COMPANY, String.valueOf(companyId),
+			memberRole.getRoleId(), ActionKeys.VIEW);
+
+		for (String name : DepotRolesConstants.DESIGN_LIBRARY_ROLE_NAMES) {
+			Role role = _getOrCreateRole(
+				companyId, language, name, roleLocalService, userLocalService);
+
+			resourceLocalService.addResources(
+				companyId, 0, 0, Role.class.getName(), role.getRoleId(), false,
+				false, false);
+
+			resourcePermissionLocalService.setResourcePermissions(
+				companyId, Role.class.getName(),
+				ResourceConstants.SCOPE_INDIVIDUAL,
+				String.valueOf(role.getRoleId()), administratorRole.getRoleId(),
+				new String[] {ActionKeys.VIEW});
+		}
+	}
+
+	public static void setUpResourcePermissions(
+			long companyId,
+			List<DepotRolePermissionsContributor>
+				depotRolePermissionsContributors,
+			ResourcePermissionLocalService resourcePermissionLocalService,
+			RoleLocalService roleLocalService)
+		throws PortalException {
+
+		for (DepotRolePermissionsContributor depotRolePermissionsContributor :
+				depotRolePermissionsContributors) {
+
+			for (DepotRolePermission depotRolePermission :
+					depotRolePermissionsContributor.getDepotRolePermissions()) {
+
+				Role role = roleLocalService.fetchRole(
+					companyId, depotRolePermission.getRoleName());
+
+				if (role == null) {
+					continue;
+				}
+
+				for (String actionKey : depotRolePermission.getActionKeys()) {
+					resourcePermissionLocalService.addResourcePermission(
+						companyId, depotRolePermission.getResourceName(),
+						ResourceConstants.SCOPE_COMPANY,
+						String.valueOf(companyId), role.getRoleId(), actionKey);
+				}
+			}
+		}
+	}
+
+	private static Role _getOrCreateRole(
+			long companyId, Language language, String name,
+			RoleLocalService roleLocalService,
+			UserLocalService userLocalService)
+		throws PortalException {
+
+		Role role = roleLocalService.fetchRole(companyId, name);
+
+		if (role != null) {
+			return role;
+		}
+
+		boolean addResource = PermissionThreadLocal.isAddResource();
+
+		try {
+			PermissionThreadLocal.setAddResource(false);
+
+			User user = userLocalService.getGuestUser(companyId);
+
+			return roleLocalService.addRole(
+				RoleConstants.toSystemRoleExternalReferenceCode(name),
+				user.getUserId(), null, 0, name,
+				DepotRoleUtil.getTitleMap(language, name),
+				DepotRoleUtil.getDescriptionMap(language, name),
+				RoleConstants.TYPE_DEPOT,
+				DepotRolesConstants.SUBTYPE_DESIGN_LIBRARY, null);
+		}
+		finally {
+			PermissionThreadLocal.setAddResource(addResource);
+		}
+	}
+
+}

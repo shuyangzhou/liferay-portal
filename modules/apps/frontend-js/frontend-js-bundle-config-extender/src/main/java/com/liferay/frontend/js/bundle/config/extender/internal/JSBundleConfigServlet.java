@@ -25,12 +25,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import java.util.Collection;
-import java.util.Map;
 
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -56,9 +54,7 @@ public class JSBundleConfigServlet extends HttpServlet {
 	}
 
 	@Activate
-	@Modified
-	protected void activate(
-			ComponentContext componentContext, Map<String, Object> properties)
+	protected void activate(ComponentContext componentContext)
 		throws Exception {
 
 		_componentContext = componentContext;

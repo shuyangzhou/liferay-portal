@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.test.TestInfo;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -97,6 +99,12 @@ public class ViewHomeWorkflowTasksDisplayContextTest
 				externalReferenceCodes.contains(
 					objectDefinition.getExternalReferenceCode()));
 		}
+
+		String workflowTaskURL = (String)reactData.get("workflowTaskURL");
+
+		Assert.assertEquals(
+			PortletKeys.MY_WORKFLOW_TASK,
+			HttpComponentsUtil.getParameter(workflowTaskURL, "p_p_id", false));
 	}
 
 	@Inject(

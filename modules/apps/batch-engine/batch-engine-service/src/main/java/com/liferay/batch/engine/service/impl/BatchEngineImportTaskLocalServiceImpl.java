@@ -137,7 +137,9 @@ public class BatchEngineImportTaskLocalServiceImpl
 		batchEngineImportTask.setTaskItemDelegateName(taskItemDelegateName);
 
 		return _updateBatchEngineImportTask(
-			batchEngineImportTask, _getBlob(batchEngineImportTask, content));
+			batchEngineImportTask,
+			_getBlob(
+				batchEngineImportTask, batchEngineTaskItemDelegate, content));
 	}
 
 	@Override
@@ -164,56 +166,33 @@ public class BatchEngineImportTaskLocalServiceImpl
 	public BatchEngineImportTask updateBatchEngineImportTask(
 		BatchEngineImportTask batchEngineImportTask) {
 
-		if (!StringUtil.equals(
-				batchEngineImportTask.getExecuteStatus(),
-				BatchEngineTaskExecuteStatus.COMPLETED.toString()) &&
-			!StringUtil.equals(
-				batchEngineImportTask.getExecuteStatus(),
-				BatchEngineTaskExecuteStatus.FAILED.toString())) {
+		return _updateBatchEngineImportTask(
+			batchEngineImportTask,
+			() -> _itemClassRegistry.getItemClass(
+				batchEngineImportTask.getClassName()));
+	}
 
-			return super.updateBatchEngineImportTask(batchEngineImportTask);
-		}
+	@Override
+	@Transactional(propagation = Propagation.NESTED)
+	public BatchEngineImportTask updateBatchEngineImportTask(
+		BatchEngineImportTask batchEngineImportTask,
+		BatchEngineTaskItemDelegate<?> batchEngineTaskItemDelegate) {
 
-		Blob blob = null;
-
-		try {
-			blob = _getBatchEngineImportTaskSanitizedContentBlob(
-				batchEngineImportTask,
-				() -> openContentInputStream(
-					batchEngineImportTask.getBatchEngineImportTaskId()),
-				value -> null);
-		}
-		catch (Exception exception) {
-			Class<?> clazz = exception.getClass();
-
-			_log.error(
-				StringBundler.concat(
-					"Unable to remove password fields from batch engine ",
-					"import task ",
-					batchEngineImportTask.getBatchEngineImportTaskId(), ": ",
-					clazz.getName()));
-
-			batchEngineImportTask.setContent(null);
-		}
-
-		if (blob == null) {
-			return super.updateBatchEngineImportTask(batchEngineImportTask);
-		}
-
-		return _updateBatchEngineImportTask(batchEngineImportTask, blob);
+		return _updateBatchEngineImportTask(
+			batchEngineImportTask,
+			() -> _itemClassRegistry.getItemClass(batchEngineTaskItemDelegate));
 	}
 
 	private Blob _getBatchEngineImportTaskSanitizedContentBlob(
 			BatchEngineImportTask batchEngineImportTask,
 			UnsafeSupplier<InputStream, Exception> inputStreamUnsafeSupplier,
+			Class<?> itemClass,
 			UnsafeFunction<String, String, Exception>
 				passwordFieldValueUnsafeFunction)
 		throws Exception {
 
 		Set<String> passwordFieldNames =
-			PasswordFieldUtil.getPasswordFieldNames(
-				_itemClassRegistry.getItemClass(
-					batchEngineImportTask.getClassName()));
+			PasswordFieldUtil.getPasswordFieldNames(itemClass);
 
 		if (passwordFieldNames.isEmpty()) {
 			return null;
@@ -242,7 +221,9 @@ public class BatchEngineImportTaskLocalServiceImpl
 	}
 
 	private Blob _getBlob(
-			BatchEngineImportTask batchEngineImportTask, byte[] content)
+			BatchEngineImportTask batchEngineImportTask,
+			BatchEngineTaskItemDelegate<?> batchEngineTaskItemDelegate,
+			byte[] content)
 		throws PortalException {
 
 		if (Validator.isNull(PropsValues.BATCH_ENGINE_ENCRYPTION_KEY)) {
@@ -254,6 +235,7 @@ public class BatchEngineImportTaskLocalServiceImpl
 			Blob blob = _getBatchEngineImportTaskSanitizedContentBlob(
 				batchEngineImportTask,
 				() -> new UnsyncByteArrayInputStream(content),
+				_itemClassRegistry.getItemClass(batchEngineTaskItemDelegate),
 				PasswordFieldUtil::encrypt);
 
 			if (blob == null) {
@@ -288,6 +270,49 @@ public class BatchEngineImportTaskLocalServiceImpl
 				_log.error(sqlException);
 			}
 		}
+	}
+
+	private BatchEngineImportTask _updateBatchEngineImportTask(
+		BatchEngineImportTask batchEngineImportTask,
+		UnsafeSupplier<Class<?>, Exception> itemClassUnsafeSupplier) {
+
+		if (!StringUtil.equals(
+				batchEngineImportTask.getExecuteStatus(),
+				BatchEngineTaskExecuteStatus.COMPLETED.toString()) &&
+			!StringUtil.equals(
+				batchEngineImportTask.getExecuteStatus(),
+				BatchEngineTaskExecuteStatus.FAILED.toString())) {
+
+			return super.updateBatchEngineImportTask(batchEngineImportTask);
+		}
+
+		Blob blob = null;
+
+		try {
+			blob = _getBatchEngineImportTaskSanitizedContentBlob(
+				batchEngineImportTask,
+				() -> openContentInputStream(
+					batchEngineImportTask.getBatchEngineImportTaskId()),
+				itemClassUnsafeSupplier.get(), value -> null);
+		}
+		catch (Exception exception) {
+			Class<?> clazz = exception.getClass();
+
+			_log.error(
+				StringBundler.concat(
+					"Unable to remove password fields from batch engine ",
+					"import task ",
+					batchEngineImportTask.getBatchEngineImportTaskId(), ": ",
+					clazz.getName()));
+
+			batchEngineImportTask.setContent(null);
+		}
+
+		if (blob == null) {
+			return super.updateBatchEngineImportTask(batchEngineImportTask);
+		}
+
+		return _updateBatchEngineImportTask(batchEngineImportTask, blob);
 	}
 
 	private void _validateDelimiter(String delimiter)

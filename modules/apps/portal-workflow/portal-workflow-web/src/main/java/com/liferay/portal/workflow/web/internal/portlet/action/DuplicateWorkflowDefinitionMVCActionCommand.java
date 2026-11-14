@@ -55,7 +55,7 @@ public class DuplicateWorkflowDefinitionMVCActionCommand
 		Map<Locale, String> titleMap = localization.getLocalizationMap(
 			actionRequest, randomNamespace + "title");
 
-		validateTitle(actionRequest, titleMap);
+		validateTitle(titleMap);
 
 		String name = ParamUtil.getString(actionRequest, "name");
 		String content = ParamUtil.getString(actionRequest, "content");
@@ -64,15 +64,13 @@ public class DuplicateWorkflowDefinitionMVCActionCommand
 			workflowDefinition =
 				workflowDefinitionManager.deployWorkflowDefinition(
 					content.getBytes(), themeDisplay.getCompanyId(), null, name,
-					getTitle(actionRequest, titleMap),
-					themeDisplay.getUserId());
+					getTitle(titleMap), themeDisplay.getUserId());
 		}
 		else {
 			workflowDefinition =
 				workflowDefinitionManager.saveWorkflowDefinition(
 					content.getBytes(), themeDisplay.getCompanyId(), null, name,
-					getTitle(actionRequest, titleMap),
-					themeDisplay.getUserId());
+					getTitle(titleMap), themeDisplay.getUserId());
 		}
 
 		setRedirectAttribute(actionRequest, workflowDefinition);

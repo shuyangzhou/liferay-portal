@@ -9,6 +9,7 @@ import com.liferay.jenkins.results.parser.Build;
 import com.liferay.jenkins.results.parser.BuildDatabase;
 import com.liferay.jenkins.results.parser.JenkinsMaster;
 import com.liferay.jenkins.results.parser.TopLevelBuild;
+import com.liferay.jenkins.results.parser.TopLevelBuildReport;
 
 import java.net.URL;
 
@@ -85,6 +86,11 @@ public class BuildTestrayContext extends BaseTestrayContext {
 	}
 
 	@Override
+	protected TopLevelBuildReport getTopLevelBuildReport() {
+		return _topLevelBuild.getTopLevelBuildReport();
+	}
+
+	@Override
 	protected JenkinsMaster getTopLevelJenkinsMaster() {
 		return _topLevelBuild.getJenkinsMaster();
 	}
@@ -122,6 +128,11 @@ public class BuildTestrayContext extends BaseTestrayContext {
 		}
 
 		return true;
+	}
+
+	@Override
+	protected boolean isTopLevelBuildCompleted() {
+		return _topLevelBuild.isCompleted();
 	}
 
 	private Map<String, String> _buildParameters;

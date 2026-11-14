@@ -75,7 +75,7 @@ public class DLPortletToolbarContributor extends BasePortletToolbarContributor {
 		}
 
 		Folder folder = DLPortletToolbarContributorUtil.getFolder(
-			_dlAppLocalService, themeDisplay, portletRequest);
+			_dlAppLocalService, portletRequest);
 
 		List<MenuItem> menuItems = new ArrayList<>();
 
@@ -121,8 +121,7 @@ public class DLPortletToolbarContributor extends BasePortletToolbarContributor {
 
 		_add(
 			menuItems,
-			_menuItemProvider.getAICreatorMenuItem(
-				folder, themeDisplay, portletRequest));
+			_menuItemProvider.getAICreatorMenuItem(folder, themeDisplay));
 
 		MenuItem lastExtensionMenuItem = null;
 

@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleModel;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -43,9 +42,10 @@ public class AssigneeFieldPredicateProvider implements FieldPredicateProvider {
 
 	@Override
 	public Predicate getBinaryExpressionPredicate(
+		Object left,
 		Function<String, Column<?, ?>> objectDefinitionColumnSupplier,
-		Object left, long objectDefinitionId,
-		BinaryExpression.Operation operation, Object right) {
+		long objectDefinitionId, BinaryExpression.Operation operation,
+		Object right) {
 
 		if (!Objects.equals(operation, BinaryExpression.Operation.EQ)) {
 			throw new UnsupportedOperationException(
@@ -89,8 +89,9 @@ public class AssigneeFieldPredicateProvider implements FieldPredicateProvider {
 
 	@Override
 	public Predicate getContainsPredicate(
+		String fieldName, Object fieldValue,
 		Function<String, Column<?, ?>> objectDefinitionColumnSupplier,
-		String fieldName, Object fieldValue) {
+		long objectDefinitionId) {
 
 		throw new UnsupportedOperationException(
 			"Unsupported method getContainsPredicate for assignee fields");
@@ -98,8 +99,9 @@ public class AssigneeFieldPredicateProvider implements FieldPredicateProvider {
 
 	@Override
 	public Predicate getInPredicate(
+		Object left,
 		Function<String, Column<?, ?>> objectDefinitionColumnSupplier,
-		Object left, List<Object> rights) {
+		long objectDefinitionId, List<Object> rights) {
 
 		throw new UnsupportedOperationException(
 			"Unsupported method getInPredicate for assignee fields");
@@ -108,15 +110,17 @@ public class AssigneeFieldPredicateProvider implements FieldPredicateProvider {
 	@Override
 	public Predicate getIsNotEmptyPredicate(
 		String fieldName,
-		Function<String, Column<?, ?>> objectDefinitionColumnSupplier) {
+		Function<String, Column<?, ?>> objectDefinitionColumnSupplier,
+		long objectDefinitionId) {
 
 		throw new UnsupportedOperationException(
 			"Unsupported method getIsNotEmptyPredicate for assignee fields");
 	}
 
 	public Predicate getStartsWithPredicate(
+		String fieldName, Object fieldValue,
 		Function<String, Column<?, ?>> objectDefinitionColumnSupplier,
-		String fieldName, Object fieldValue) {
+		long objectDefinitionId) {
 
 		throw new UnsupportedOperationException(
 			"Unsupported method getStartsWithPredicate for assignee fields");
@@ -141,9 +145,6 @@ public class AssigneeFieldPredicateProvider implements FieldPredicateProvider {
 
 	@Reference
 	private Portal _portal;
-
-	@Reference
-	private UserGroupRoleLocalService _userGroupRoleLocalService;
 
 	@Reference
 	private UserLocalService _userLocalService;

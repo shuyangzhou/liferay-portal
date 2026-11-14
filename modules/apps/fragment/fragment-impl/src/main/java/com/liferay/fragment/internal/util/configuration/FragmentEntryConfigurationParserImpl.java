@@ -15,8 +15,11 @@ import com.liferay.frontend.token.definition.FrontendToken;
 import com.liferay.frontend.token.definition.FrontendTokenDefinition;
 import com.liferay.frontend.token.definition.FrontendTokenDefinitionRegistry;
 import com.liferay.frontend.token.definition.FrontendTokenMapping;
+import com.liferay.info.exception.NoSuchInfoItemException;
 import com.liferay.info.item.ClassPKInfoItemIdentifier;
 import com.liferay.info.item.ERCInfoItemIdentifier;
+import com.liferay.info.item.InfoItemIdentifier;
+import com.liferay.info.item.InfoItemReference;
 import com.liferay.info.item.InfoItemServiceRegistry;
 import com.liferay.info.item.provider.InfoItemObjectProvider;
 import com.liferay.info.pagination.InfoPage;
@@ -158,10 +161,13 @@ public class FragmentEntryConfigurationParserImpl
 	@Override
 	public Map<String, Object> getContextObjects(
 		JSONObject configurationValuesJSONObject,
-		JSONObject configurationJSONObject, Object displayObject,
+		JSONObject configurationJSONObject, JSONObject editableValuesJSONObject,
+		Object displayObject, InfoItemReference fallbackInfoItemReference,
 		long[] segmentsEntryIds) {
 
-		HashMap<String, Object> contextObjects = new HashMap<>();
+		Map<String, Object> contextObjects = new HashMap<>();
+
+		Object fallbackInfoItem = null;
 
 		List<FragmentConfigurationField> fragmentConfigurationFields =
 			getFragmentConfigurationFields(configurationJSONObject);
@@ -179,6 +185,26 @@ public class FragmentEntryConfigurationParserImpl
 				if (displayObject == null) {
 					contextObject = _getInfoDisplayObjectEntry(
 						configurationValuesJSONObject.getString(name));
+
+					if ((fallbackInfoItemReference != null) &&
+						((contextObject == null) ||
+						 Validator.isNull(
+							 getConfigurationFieldValue(
+								 editableValuesJSONObject, name,
+								 FragmentConfigurationFieldDataType.STRING))) &&
+						_isItemType(
+							fallbackInfoItemReference.getClassName(),
+							fragmentConfigurationField)) {
+
+						if (fallbackInfoItem == null) {
+							fallbackInfoItem = _getInfoItem(
+								fallbackInfoItemReference);
+						}
+
+						if (fallbackInfoItem != null) {
+							contextObject = fallbackInfoItem;
+						}
+					}
 				}
 
 				if (contextObject != null) {
@@ -725,6 +751,39 @@ public class FragmentEntryConfigurationParserImpl
 		return null;
 	}
 
+	private Object _getInfoItem(InfoItemReference infoItemReference) {
+		InfoItemIdentifier infoItemIdentifier =
+			infoItemReference.getInfoItemIdentifier();
+
+		InfoItemObjectProvider<?> infoItemObjectProvider =
+			_infoItemServiceRegistry.getFirstInfoItemService(
+				InfoItemObjectProvider.class, infoItemReference.getClassName(),
+				infoItemIdentifier.getInfoItemServiceFilter());
+
+		if (infoItemObjectProvider == null) {
+			return null;
+		}
+
+		try {
+			ServiceContext serviceContext =
+				ServiceContextThreadLocal.getServiceContext();
+
+			if (serviceContext == null) {
+				return infoItemObjectProvider.getInfoItem(infoItemIdentifier);
+			}
+
+			return infoItemObjectProvider.getInfoItem(
+				serviceContext.getScopeGroupId(), infoItemIdentifier);
+		}
+		catch (NoSuchInfoItemException noSuchInfoItemException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(noSuchInfoItemException);
+			}
+		}
+
+		return null;
+	}
+
 	private Object _getInfoListObjectEntry(
 		long companyId, long scopeGroupId, long[] segmentsEntryIds,
 		JSONObject typeOptionsJSONObject, String value) {
@@ -878,6 +937,26 @@ public class FragmentEntryConfigurationParserImpl
 
 			return null;
 		}
+	}
+
+	private boolean _isItemType(
+		String className,
+		FragmentConfigurationField fragmentConfigurationField) {
+
+		JSONObject typeOptionsJSONObject =
+			fragmentConfigurationField.getTypeOptionsJSONObject();
+
+		if (typeOptionsJSONObject == null) {
+			return true;
+		}
+
+		String itemType = typeOptionsJSONObject.getString("itemType");
+
+		if (Validator.isNull(itemType) || Objects.equals(itemType, className)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private void _translateConfigurationField(

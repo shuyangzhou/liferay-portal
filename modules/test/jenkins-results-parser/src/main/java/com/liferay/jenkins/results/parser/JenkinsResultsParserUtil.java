@@ -2754,6 +2754,91 @@ public class JenkinsResultsParserUtil {
 		return getJobVariant(new JSONObject(json));
 	}
 
+	public static String getLatestPortalBundleS3ObjectPath(
+		String portalBranchName) {
+
+		String s3BucketPath = null;
+		String s3FilesOutput = null;
+
+		try {
+			s3BucketPath = getBuildProperty("cloud.ci.s3.bucket.path");
+
+			Process process = executeBashCommands(
+				true,
+				combine(
+					"aws s3 ls --recursive \"", _getPortalBundlesS3ObjectPath(),
+					"/", portalBranchName, "_\""));
+
+			s3FilesOutput = readInputStream(process.getInputStream());
+		}
+		catch (IOException | TimeoutException exception) {
+			System.out.println(
+				combine(
+					"WARNING: Unable to list portal bundles\n",
+					String.valueOf(exception)));
+
+			return null;
+		}
+
+		List<String> dataS3ObjectLines = new ArrayList<>();
+
+		for (String s3FilesOutputLine : s3FilesOutput.split("\n")) {
+			Matcher matcher = _portalBundleDataS3ObjectPattern.matcher(
+				s3FilesOutputLine.trim());
+
+			if (!matcher.matches()) {
+				continue;
+			}
+
+			dataS3ObjectLines.add(matcher.group());
+		}
+
+		Collections.sort(dataS3ObjectLines, Collections.reverseOrder());
+
+		long latestCompletedTime = Long.MIN_VALUE;
+		String latestPortalBundleS3ObjectPath = null;
+
+		for (int index = 0; index < dataS3ObjectLines.size(); index++) {
+			if ((index >= 10) && (latestPortalBundleS3ObjectPath != null)) {
+				break;
+			}
+
+			Matcher matcher = _portalBundleDataS3ObjectPattern.matcher(
+				dataS3ObjectLines.get(index));
+
+			if (!matcher.matches()) {
+				continue;
+			}
+
+			String portalBundleS3ObjectPath = combine(
+				s3BucketPath, "/", matcher.group("s3ObjectKey"));
+
+			JSONObject dataJSONObject = _getPortalBundleDataJSONObject(
+				portalBundleS3ObjectPath);
+
+			if ((dataJSONObject == null) ||
+				!Objects.equals(
+					dataJSONObject.optString("status"), "SUCCESS") ||
+				isNullOrEmpty(dataJSONObject.optString("portal_git_commit"))) {
+
+				continue;
+			}
+
+			long completedTime = dataJSONObject.optLong("completed_time");
+
+			if ((latestPortalBundleS3ObjectPath != null) &&
+				(completedTime <= latestCompletedTime)) {
+
+				continue;
+			}
+
+			latestCompletedTime = completedTime;
+			latestPortalBundleS3ObjectPath = portalBundleS3ObjectPath;
+		}
+
+		return latestPortalBundleS3ObjectPath;
+	}
+
 	public static LocalDate getLocalDate(Date date) {
 		Instant instant = date.toInstant();
 
@@ -3014,6 +3099,60 @@ public class JenkinsResultsParserUtil {
 			throw new RuntimeException(
 				"Unable to get relative path", runtimeException);
 		}
+	}
+
+	public static String getPortalBundleGitCommit(
+		String portalBundleS3ObjectPath) {
+
+		JSONObject dataJSONObject = _getPortalBundleDataJSONObject(
+			portalBundleS3ObjectPath);
+
+		if (dataJSONObject == null) {
+			return null;
+		}
+
+		String portalGitCommit = dataJSONObject.optString("portal_git_commit");
+
+		if (isNullOrEmpty(portalGitCommit)) {
+			return null;
+		}
+
+		return portalGitCommit;
+	}
+
+	public static String getPortalBundleS3ObjectPath(
+			String portalBranchName, String portalGitCommit)
+		throws IOException {
+
+		if (isNullOrEmpty(portalGitCommit) || (portalGitCommit.length() < 7)) {
+			return null;
+		}
+
+		String portalGitCommitShort = portalGitCommit.substring(0, 7);
+
+		String portalBundleS3ObjectPath = combine(
+			_getPortalBundlesS3ObjectPath(), "/", portalBranchName, "_",
+			portalGitCommitShort, "_", portalGitCommitShort);
+
+		JSONObject dataJSONObject = _getPortalBundleDataJSONObject(
+			portalBundleS3ObjectPath);
+
+		if ((dataJSONObject == null) ||
+			!Objects.equals(dataJSONObject.optString("status"), "SUCCESS")) {
+
+			return null;
+		}
+
+		String dataPortalGitCommit = dataJSONObject.optString(
+			"portal_git_commit");
+
+		if (!isNullOrEmpty(dataPortalGitCommit) &&
+			!dataPortalGitCommit.equals(portalGitCommit)) {
+
+			return null;
+		}
+
+		return portalBundleS3ObjectPath;
 	}
 
 	public static Properties getProperties(File... propertiesFiles) {
@@ -6791,6 +6930,36 @@ public class JenkinsResultsParserUtil {
 		return orderedOptSet;
 	}
 
+	private static JSONObject _getPortalBundleDataJSONObject(
+		String portalBundleS3ObjectPath) {
+
+		String dataS3ObjectPath = portalBundleS3ObjectPath + "/data.json.gz";
+
+		if (!CloudBucketUtil.isS3ObjectPathAvailable(dataS3ObjectPath)) {
+			return null;
+		}
+
+		try {
+			return new JSONObject(
+				CloudBucketUtil.readS3Object(dataS3ObjectPath));
+		}
+		catch (IOException | JSONException exception) {
+			System.out.println(
+				combine(
+					"WARNING: Unable to read ", dataS3ObjectPath, "\n",
+					String.valueOf(exception)));
+
+			return null;
+		}
+	}
+
+	private static String _getPortalBundlesS3ObjectPath() throws IOException {
+		return combine(
+			getBuildProperty(
+				"cloud.ci.s3.bucket.persistent.resources.archives.path"),
+			"/portal-bundle");
+	}
+
 	private static Properties _getProperties(File basePropertiesFile) {
 		if (!basePropertiesFile.exists()) {
 			throw new RuntimeException(
@@ -7318,6 +7487,12 @@ public class JenkinsResultsParserUtil {
 		"\\$\\{([^\\}]+)\\}");
 	private static final PercentEscaper _percentEscaper = new PercentEscaper(
 		"", false);
+	private static final Pattern _portalBundleDataS3ObjectPattern =
+		Pattern.compile(
+			"\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} +\\d+ " +
+				"(?<s3ObjectKey>.+/portal-bundle/[^/]+_" +
+					"(?<portalGitCommitShort>[0-9a-f]{7})_" +
+						"\\k<portalGitCommitShort>)/data\\.json\\.gz");
 	private static final Pattern _poshiFileNamePattern = Pattern.compile(
 		".*\\.(function|macro|path|prose|testcase)");
 	private static final Set<String> _redactTokens = new HashSet<>();

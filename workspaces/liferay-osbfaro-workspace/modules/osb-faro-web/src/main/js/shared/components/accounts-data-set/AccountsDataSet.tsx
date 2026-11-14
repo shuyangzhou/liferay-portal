@@ -1,4 +1,3 @@
-import * as API from 'shared/api';
 import Card from 'shared/components/Card';
 import DataValue from 'shared/components/DataValue';
 import Loading from 'shared/components/Loading';
@@ -13,17 +12,17 @@ import {
 } from 'shared/components/FrontendDataSet';
 import {
 	isLifecycleStage,
-	LifecycleStages,
 	lifecycleStagesLabelMap,
 } from 'contacts/pages/account/utils/constants';
 import {buildViews} from './utils';
 import {ICatalogField} from 'shared/api/catalog';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {Routes} from 'shared/util/router';
-import {useRequest} from 'shared/hooks/useRequest';
+import {useLifecycleStageFilterItems} from 'shared/hooks/useLifecycleStageFilterItems';
 
 interface IAccountsDataSetProps {
 	accountLifecycleId?: string;
+	allLifecycles?: boolean;
 	apiURL: string;
 	channelId: string;
 	countryFilter?: string;
@@ -38,11 +37,10 @@ interface IAccountsDataSetProps {
 	stageSelectionNonce?: number;
 }
 
-interface ILifecycleStageFieldValue {
-	externalReferenceCode: string;
-	id: string;
-	stageName?: string;
-	stageType?: LifecycleStages;
+interface IAccountLifecycleStage {
+	lifecycleName: string;
+	name: string;
+	stageExternalReferenceCode: string;
 }
 
 export const buildSelectionPreloadedData = (value?: string, label?: string) =>
@@ -55,6 +53,7 @@ export const buildSelectionPreloadedData = (value?: string, label?: string) =>
 
 const AccountsDataSet: React.FC<IAccountsDataSetProps> = ({
 	accountLifecycleId,
+	allLifecycles = false,
 	apiURL,
 	channelId,
 	countryFilter,
@@ -68,29 +67,16 @@ const AccountsDataSet: React.FC<IAccountsDataSetProps> = ({
 	segmentName,
 	stageSelectionNonce,
 }) => {
-	const {data: lifecycleStageFieldValues, loading: lifecycleStagesLoading} =
-		useRequest({
-			dataSourceFn: API.accounts.fetchLifecycleStageFieldValues,
-			skipRequest: !accountLifecycleId,
-			variables: {
-				accountLifecycleId,
-				channelId,
-				groupId,
-			},
-		});
-
-	const lifecycleStages: ILifecycleStageFieldValue[] =
-		lifecycleStageFieldValues?.items ?? [];
-
-	const lifecycleStageItems = lifecycleStages.map(
-		({externalReferenceCode, stageName, stageType}) => ({
-			label:
-				stageName ??
-				(stageType && lifecycleStagesLabelMap[stageType]?.label) ??
-				externalReferenceCode,
-			value: externalReferenceCode,
-		})
-	);
+	const {
+		items: lifecycleStageItems,
+		lifecycleStages,
+		loading: lifecycleStagesLoading,
+	} = useLifecycleStageFilterItems({
+		accountLifecycleId,
+		allLifecycles,
+		channelId,
+		groupId,
+	});
 
 	const preloadedRangeSelector = rangeSelectors.find(
 		({value}) => value === rangeKeyFilter
@@ -104,7 +90,7 @@ const AccountsDataSet: React.FC<IAccountsDataSetProps> = ({
 	// mount, so hold it back until the lifecycle stage values are in. Mounting
 	// early and remounting once they arrive is what made the table flash.
 
-	if (accountLifecycleId && lifecycleStagesLoading) {
+	if ((accountLifecycleId || allLifecycles) && lifecycleStagesLoading) {
 		return (
 			<Card minHeight={300}>
 				<Loading />
@@ -118,24 +104,56 @@ const AccountsDataSet: React.FC<IAccountsDataSetProps> = ({
 				apiURL={apiURL}
 				customDataRenderers={{
 					accountLifecycleStageRenderer: ({
+						itemData,
 						value,
 					}: {
+						itemData: {lifecycleStages?: IAccountLifecycleStage[]};
 						value: string;
-					}) => (
-						<DataValue
-							format={(stage: string) =>
-								columns.cmsLabelRenderer(
-									isLifecycleStage(stage)
-										? lifecycleStagesLabelMap[stage]
-										: {
-												displayType: 'secondary',
-												label: stage,
-											}
-								)
-							}
-							value={value}
-						/>
-					),
+					}) =>
+						allLifecycles ? (
+							<DataValue
+								format={(
+									accountLifecycleStages: IAccountLifecycleStage[]
+								) =>
+									accountLifecycleStages.map(
+										({
+											lifecycleName,
+											name,
+											stageExternalReferenceCode,
+										}) => (
+											<span
+												className="mr-1"
+												key={stageExternalReferenceCode}
+											>
+												{columns.cmsLabelRenderer({
+													displayType: 'secondary',
+													label: `${lifecycleName}: ${name}`,
+												})}
+											</span>
+										)
+									)
+								}
+								value={
+									itemData.lifecycleStages?.length
+										? itemData.lifecycleStages
+										: undefined
+								}
+							/>
+						) : (
+							<DataValue
+								format={(stage: string) =>
+									columns.cmsLabelRenderer(
+										isLifecycleStage(stage)
+											? lifecycleStagesLabelMap[stage]
+											: {
+													displayType: 'secondary',
+													label: stage,
+												}
+									)
+								}
+								value={value}
+							/>
+						),
 					accountNameRenderer: ({
 						itemData,
 						value,
@@ -180,13 +198,17 @@ const AccountsDataSet: React.FC<IAccountsDataSetProps> = ({
 						),
 						type: 'selection',
 					},
-					...(accountLifecycleId
+					...(accountLifecycleId || allLifecycles
 						? [
 								{
 									entityFieldType: 'string',
 									id: 'lifecycleStatus',
 									items: lifecycleStageItems,
-									label: Liferay.Language.get('status'),
+									label: allLifecycles
+										? Liferay.Language.get(
+												'lifecycle-stage'
+											)
+										: Liferay.Language.get('status'),
 									multiple: true,
 									name: 'status',
 									preloadedData: buildSelectionPreloadedData(

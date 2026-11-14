@@ -49,6 +49,8 @@ interface IField {
 	name: string;
 }
 
+type TOnRowClick = ({item}: {item: any}) => void;
+
 const Row = ({
 	actions,
 	fields,
@@ -56,6 +58,7 @@ const Row = ({
 	item,
 	onDragCrossover,
 	onDrop,
+	onRowClick,
 	query,
 }: {
 	actions?: Array<IAction>;
@@ -64,6 +67,7 @@ const Row = ({
 	item: any;
 	onDragCrossover: Function;
 	onDrop: Function;
+	onRowClick?: TOnRowClick;
 	query: string;
 }) => {
 	const tableRowRef = useRef<HTMLTableRowElement>(null);
@@ -178,11 +182,26 @@ const Row = ({
 
 	dragRef(dropRef(tableRowRef));
 
+	const onClick = (event: React.MouseEvent<HTMLTableRowElement>) => {
+		if (
+			!onRowClick ||
+			(event.target as HTMLElement).closest(
+				'a, button, input, label, .dropdown-menu'
+			)
+		) {
+			return;
+		}
+
+		onRowClick({item});
+	};
+
 	return (
 		<ClayTable.Row
 			className={classNames('orderable-table-row', {
-				dragging: isDragging,
+				'dragging': isDragging,
+				'orderable-table-row-clickable': onRowClick,
 			})}
+			onClick={onClick}
 			ref={tableRowRef}
 		>
 			<ClayTable.Cell className="drag-handle-cell">
@@ -312,6 +331,7 @@ const Table = ({
 	items,
 	onDragCrossover,
 	onDrop,
+	onRowClick,
 	query,
 }: {
 	actions?: Array<IAction>;
@@ -319,6 +339,7 @@ const Table = ({
 	items: Array<any>;
 	onDragCrossover: Function;
 	onDrop: Function;
+	onRowClick?: TOnRowClick;
 	query: string;
 }) => {
 	const [, dropRef] = useDrop({
@@ -358,6 +379,7 @@ const Table = ({
 						key={item.externalReferenceCode || item.id || index}
 						onDragCrossover={onDragCrossover}
 						onDrop={onDrop}
+						onRowClick={onRowClick}
 						query={query}
 					/>
 				))}
@@ -379,8 +401,35 @@ interface IOrderableTableProps {
 	noItemsDescription: string;
 	noItemsTitle: string;
 	onOrderChange: (args: {order: string}) => void;
+	onRowClick?: TOnRowClick;
 	title?: string;
 }
+
+const filterItems = ({
+	fields,
+	items,
+	query,
+}: {
+	fields: IOrderableTableProps['fields'];
+	items: IOrderableTableProps['items'];
+	query: string;
+}) => {
+	if (!query) {
+		return items;
+	}
+
+	const lowerCaseQuery = query.toLowerCase();
+
+	return items.filter((item) =>
+		fields.some((field) => {
+			const text = field.contentRenderer?.textMatch
+				? field.contentRenderer.textMatch(item)
+				: item[field.name];
+
+			return String(text).toLowerCase().includes(lowerCaseQuery);
+		})
+	);
+};
 
 const OrderableTable = ({
 	actions,
@@ -393,6 +442,7 @@ const OrderableTable = ({
 	noItemsDescription,
 	noItemsTitle,
 	onOrderChange,
+	onRowClick,
 	title,
 }: IOrderableTableProps) => {
 	const [items, setItems] = useState(initialItems);
@@ -401,29 +451,12 @@ const OrderableTable = ({
 	);
 	const [query, setQuery] = useState('');
 
-	useEffect(() => setItems(initialItems), [initialItems]);
+	// Keep the search applied when the items change, e.g. after reordering
 
-	const onSearch = (query: string) => {
-		setQuery(query);
-
-		const regexp = new RegExp(query, 'i');
-
-		setItems(
-			query
-				? initialItems.filter((item) =>
-						fields.some((field) => {
-							if (field.contentRenderer?.textMatch) {
-								return String(
-									field.contentRenderer.textMatch(item)
-								).match(regexp);
-							}
-
-							return String(item[field.name]).match(regexp);
-						})
-					) || []
-				: initialItems
-		);
-	};
+	useEffect(
+		() => setItems(filterItems({fields, items: initialItems, query})),
+		[fields, initialItems, query]
+	);
 
 	return (
 		<ClayLayout.Sheet
@@ -439,7 +472,7 @@ const OrderableTable = ({
 				<ManagementToolbar.Container>
 					<ManagementToolbar.ItemList expand>
 						<ManagementToolbar.Item className="nav-item-expand">
-							<Search onSearch={onSearch} query={query} />
+							<Search onSearch={setQuery} query={query} />
 						</ManagementToolbar.Item>
 
 						{creationMenuItems?.length && (
@@ -480,7 +513,7 @@ const OrderableTable = ({
 
 					// @ts-ignore
 
-					<DndProvider backend={HTML5Backend}>
+					<DndProvider backend={HTML5Backend} context={window}>
 						<Table
 							actions={actions}
 							fields={fields}
@@ -517,6 +550,7 @@ const OrderableTable = ({
 									onOrderChange({order: newOrder});
 								}
 							}}
+							onRowClick={onRowClick}
 							query={query}
 						/>
 					</DndProvider>

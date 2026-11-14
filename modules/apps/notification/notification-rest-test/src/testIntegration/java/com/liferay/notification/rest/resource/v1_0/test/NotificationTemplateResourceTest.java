@@ -28,21 +28,23 @@ import com.liferay.object.model.ObjectField;
 import com.liferay.object.test.util.ObjectDefinitionTestUtil;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.feature.flag.constants.FeatureFlagConstants;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.RoleLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.HTTPTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.RoleTestUtil;
+import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserGroupTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
@@ -50,12 +52,9 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.odata.entity.EntityField;
-import com.liferay.portal.props.test.util.PropsTemporarySwapper;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
-import com.liferay.portal.test.rule.FeatureFlag;
-import com.liferay.portal.test.rule.FeatureFlags;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 
@@ -79,7 +78,6 @@ import org.skyscreamer.jsonassert.JSONCompareMode;
 /**
  * @author Gabriel Albuquerque
  */
-@FeatureFlags(featureFlags = @FeatureFlag(value = "LPD-49854"))
 @RunWith(Arquillian.class)
 public class NotificationTemplateResourceTest
 	extends BaseNotificationTemplateResourceTestCase {
@@ -110,7 +108,6 @@ public class NotificationTemplateResourceTest
 		super.testGetNotificationTemplate();
 
 		_testGetNotificationTemplateWithRecipientsAndEmailType();
-		_testGetNotificationTemplateWithRecipientsAndFeatureFlagDisabled();
 		_testGetNotificationTemplateWithRecipientsAndUserNotificationType();
 	}
 
@@ -213,9 +210,7 @@ public class NotificationTemplateResourceTest
 		_testPostNotificationTemplateWithNameWithoutDefaultLanguage();
 		_testPostNotificationTemplateWithObjectDefinition();
 		_testPostNotificationTemplateWithPermissions();
-		_testPostNotificationTemplateWithPermissionsAndFeatureFlagDisabled();
 		_testPostNotificationTemplateWithRecipientsAndEmailType();
-		_testPostNotificationTemplateWithRecipientsAndFeatureFlagDisabled();
 		_testPostNotificationTemplateWithRecipientsAndUserNotificationType();
 	}
 
@@ -256,6 +251,7 @@ public class NotificationTemplateResourceTest
 		_testPutNotificationTemplateWithNameTranslations();
 		_testPutNotificationTemplateWithObjectDefinition();
 		_testPutNotificationTemplateWithPermissions();
+		_testPutNotificationTemplateWithRecipientsWithoutViewPermission();
 	}
 
 	@Override
@@ -481,7 +477,13 @@ public class NotificationTemplateResourceTest
 		).put(
 			"name", RandomTestUtil.randomString()
 		).put(
-			"permissions", JSONUtil.putAll(_getPermissionJSONObject(roleName))
+			"permissions",
+			JSONUtil.putAll(
+				JSONUtil.put(
+					"actionIds", new String[] {ActionKeys.VIEW}
+				).put(
+					"roleName", roleName
+				))
 		).put(
 			"recipients", JSONUtil.putAll()
 		).put(
@@ -491,14 +493,6 @@ public class NotificationTemplateResourceTest
 				RandomTestUtil.randomString())
 		).put(
 			"type", NotificationConstants.TYPE_USER_NOTIFICATION
-		);
-	}
-
-	private JSONObject _getPermissionJSONObject(String roleName) {
-		return JSONUtil.put(
-			"actionIds", new String[] {ActionKeys.VIEW}
-		).put(
-			"roleName", roleName
 		);
 	}
 
@@ -556,19 +550,6 @@ public class NotificationTemplateResourceTest
 		return jsonObject;
 	}
 
-	private JSONObject _putNotificationTemplateWithPermissions(
-			long notificationTemplateId, String roleName)
-		throws Exception {
-
-		return HTTPTestUtil.invokeToJSONObject(
-			_getNotificationTemplateJSONObject(
-				roleName
-			).toString(),
-			"notification/v1.0/notification-templates/" +
-				notificationTemplateId + "?nestedFields=permissions",
-			Http.Method.PUT);
-	}
-
 	private void _testDeleteNotificationTemplateByExternalReferenceCodeNotFound()
 		throws Exception {
 
@@ -615,49 +596,6 @@ public class NotificationTemplateResourceTest
 				)),
 			NotificationRecipientConstants.TYPE_EMAIL,
 			NotificationConstants.TYPE_EMAIL);
-	}
-
-	private void _testGetNotificationTemplateWithRecipientsAndFeatureFlagDisabled()
-		throws Exception {
-
-		try (PropsTemporarySwapper propsTemporarySwapper =
-				new PropsTemporarySwapper(
-					FeatureFlagConstants.getKey("LPD-49854"),
-					Boolean.FALSE.toString())) {
-
-			_testGetNotificationTemplate(
-				JSONUtil.putAll(
-					_toEmailRecipientJSONObject(
-						RandomTestUtil.randomString() + "@liferay.com",
-						JSONUtil.put("en_US", RandomTestUtil.randomString()),
-						JSONUtil.putAll(
-							JSONUtil.put(
-								NotificationRecipientSettingConstants.
-									NAME_ROLE_NAME,
-								_role.getName())),
-						NotificationRecipientConstants.TYPE_ROLE
-					).put(
-						NotificationRecipientSettingConstants.NAME_BCC,
-						JSONUtil.putAll(
-							JSONUtil.put(
-								NotificationRecipientSettingConstants.
-									NAME_USER_GROUP_NAME,
-								_userGroup.getName()))
-					).put(
-						NotificationRecipientSettingConstants.NAME_BCC_TYPE,
-						NotificationRecipientConstants.TYPE_USER_GROUP
-					)),
-				NotificationRecipientConstants.TYPE_EMAIL,
-				NotificationConstants.TYPE_EMAIL);
-			_testGetNotificationTemplate(
-				JSONUtil.putAll(
-					JSONUtil.put(
-						NotificationRecipientSettingConstants.
-							NAME_USER_SCREEN_NAME,
-						_user.getScreenName())),
-				NotificationRecipientConstants.TYPE_USER,
-				NotificationConstants.TYPE_USER_NOTIFICATION);
-		}
 	}
 
 	private void _testGetNotificationTemplateWithRecipientsAndUserNotificationType()
@@ -1341,28 +1279,6 @@ public class NotificationTemplateResourceTest
 			RoleConstants.ADMINISTRATOR);
 	}
 
-	private void _testPostNotificationTemplateWithPermissionsAndFeatureFlagDisabled()
-		throws Exception {
-
-		try (PropsTemporarySwapper propsTemporarySwapper =
-				new PropsTemporarySwapper(
-					FeatureFlagConstants.getKey("LPD-49854"),
-					Boolean.FALSE.toString())) {
-
-			Assert.assertEquals(
-				400,
-				HTTPTestUtil.invokeToHttpCode(
-					JSONUtil.put(
-						"permissions",
-						JSONUtil.putAll(
-							_getPermissionJSONObject(
-								RoleConstants.ADMINISTRATOR))
-					).toString(),
-					"notification/v1.0/notification-templates",
-					Http.Method.POST));
-		}
-	}
-
 	private void _testPostNotificationTemplateWithRecipient(
 			JSONArray expectedRecipientsJSONArray,
 			JSONObject recipientJSONObject, String recipientType)
@@ -1491,46 +1407,6 @@ public class NotificationTemplateResourceTest
 				NotificationRecipientSettingConstants.NAME_TO_TYPE,
 				NotificationRecipientConstants.TYPE_USER_GROUP
 			));
-	}
-
-	private void _testPostNotificationTemplateWithRecipientsAndFeatureFlagDisabled()
-		throws Exception {
-
-		try (PropsTemporarySwapper propsTemporarySwapper =
-				new PropsTemporarySwapper(
-					FeatureFlagConstants.getKey("LPD-49854"),
-					Boolean.FALSE.toString())) {
-
-			_testPostNotificationTemplateWithRecipient(
-				JSONUtil.putAll(
-					JSONUtil.put(
-						NotificationRecipientSettingConstants.NAME_ROLE_NAME,
-						_role.getName())),
-				_toRoleJSONObject(
-					RandomTestUtil.randomString(), _role.getName()),
-				NotificationRecipientConstants.TYPE_ROLE);
-
-			String screenName = RandomTestUtil.randomString();
-
-			_testPostNotificationTemplateWithRecipient(
-				JSONUtil.putAll(
-					JSONUtil.put(
-						NotificationRecipientSettingConstants.
-							NAME_USER_SCREEN_NAME,
-						screenName)),
-				_toUserJSONObject(RandomTestUtil.randomString(), screenName),
-				NotificationRecipientConstants.TYPE_USER);
-
-			_testPostNotificationTemplateWithRecipient(
-				JSONUtil.putAll(
-					JSONUtil.put(
-						NotificationRecipientSettingConstants.
-							NAME_USER_GROUP_NAME,
-						_userGroup.getName())),
-				_toUserGroupJSONObject(
-					RandomTestUtil.randomString(), _userGroup.getName()),
-				NotificationRecipientConstants.TYPE_USER_GROUP);
-		}
 	}
 
 	private void _testPostNotificationTemplateWithRecipientsAndUserNotificationType()
@@ -1736,9 +1612,92 @@ public class NotificationTemplateResourceTest
 			RoleConstants.ADMINISTRATOR);
 
 		_assertPermissions(
-			_putNotificationTemplateWithPermissions(
-				jsonObject.getLong("id"), RoleConstants.GUEST),
+			HTTPTestUtil.invokeToJSONObject(
+				_getNotificationTemplateJSONObject(
+					RoleConstants.GUEST
+				).toString(),
+				"notification/v1.0/notification-templates/" +
+					jsonObject.getLong("id") + "?nestedFields=permissions",
+				Http.Method.PUT),
 			RoleConstants.GUEST);
+	}
+
+	private void _testPutNotificationTemplateWithRecipientsWithoutViewPermission()
+		throws Exception {
+
+		Role role = RoleTestUtil.addRole(RoleConstants.TYPE_REGULAR);
+
+		_roles.add(role);
+
+		RoleTestUtil.addResourcePermission(
+			role,
+			com.liferay.notification.model.NotificationTemplate.class.getName(),
+			ResourceConstants.SCOPE_COMPANY,
+			String.valueOf(TestPropsValues.getCompanyId()), ActionKeys.UPDATE);
+		RoleTestUtil.addResourcePermission(
+			role,
+			com.liferay.notification.model.NotificationTemplate.class.getName(),
+			ResourceConstants.SCOPE_COMPANY,
+			String.valueOf(TestPropsValues.getCompanyId()), ActionKeys.VIEW);
+
+		String password = RandomTestUtil.randomString();
+
+		User user = UserTestUtil.addUser(
+			TestPropsValues.getCompanyId(), TestPropsValues.getUserId(),
+			password, RandomTestUtil.randomString() + "@liferay.com",
+			RandomTestUtil.randomString(), LocaleUtil.getDefault(),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(), null,
+			ServiceContextTestUtil.getServiceContext());
+
+		user.setEmailAddressVerified(true);
+
+		user = _userLocalService.updateUser(user);
+
+		_users.add(user);
+
+		_userLocalService.addRoleUser(role.getRoleId(), user.getUserId());
+
+		JSONObject notificationTemplateJSONObject =
+			_postNotificationTemplateJSONObject(
+				JSONUtil.putAll(
+					_toEmailRecipientJSONObject(
+						RandomTestUtil.randomString() + "@liferay.com",
+						JSONUtil.put("en_US", RandomTestUtil.randomString()),
+						JSONUtil.put("en_US", RandomTestUtil.randomString()),
+						NotificationRecipientConstants.TYPE_EMAIL)),
+				NotificationRecipientConstants.TYPE_EMAIL,
+				NotificationConstants.TYPE_EMAIL);
+
+		String from = RandomTestUtil.randomString() + "@liferay.com";
+		JSONObject fromNameJSONObject = JSONUtil.put(
+			"en_US", RandomTestUtil.randomString());
+
+		JSONArray recipientsJSONArray = JSONUtil.putAll(
+			_toEmailRecipientJSONObject(
+				from, fromNameJSONObject,
+				JSONUtil.putAll(_toRoleJSONObject(_role.getName())),
+				NotificationRecipientConstants.TYPE_ROLE
+			).put(
+				NotificationRecipientSettingConstants.NAME_BCC,
+				JSONUtil.putAll(_toUserGroupJSONObject(_userGroup))
+			).put(
+				NotificationRecipientSettingConstants.NAME_BCC_TYPE,
+				NotificationRecipientConstants.TYPE_USER_GROUP
+			));
+
+		HTTPTestUtil.customize(
+		).withCredentials(
+			user.getEmailAddress(), password
+		).apply(
+			() -> _assertNotificationTemplateRecipients(
+				recipientsJSONArray,
+				_patchPutNotificationTemplateJSONObject(
+					Http.Method.PUT,
+					notificationTemplateJSONObject.getLong("id"),
+					recipientsJSONArray,
+					NotificationRecipientConstants.TYPE_EMAIL,
+					NotificationConstants.TYPE_EMAIL))
+		);
 	}
 
 	private JSONObject _toEmailRecipientJSONObject(
@@ -1858,9 +1817,18 @@ public class NotificationTemplateResourceTest
 	private RoleLocalService _roleLocalService;
 
 	@DeleteAfterTestRun
+	private List<Role> _roles = new ArrayList<>();
+
+	@DeleteAfterTestRun
 	private User _user;
 
 	@DeleteAfterTestRun
 	private UserGroup _userGroup;
+
+	@Inject
+	private UserLocalService _userLocalService;
+
+	@DeleteAfterTestRun
+	private List<User> _users = new ArrayList<>();
 
 }

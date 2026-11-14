@@ -5,7 +5,6 @@
 
 package com.liferay.multi.factor.authentication.fido2.web.internal;
 
-import com.liferay.multi.factor.authentication.fido2.web.internal.audit.MFAFIDO2AuditMessageBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.audit.AuditMessage;
@@ -15,9 +14,7 @@ import com.liferay.portal.kernel.audit.AuditRouter;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
-import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -27,9 +24,6 @@ import org.junit.Assert;
 import org.junit.Before;
 
 import org.mockito.Mockito;
-
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
 
 /**
  * @author Rafael Praxedes
@@ -56,15 +50,6 @@ public abstract class BaseMFAFIDO2WebTestCase {
 			AuditRequestContextThreadLocal.getAuditRequestContext();
 
 		auditRequestContext.setRealUserId(REAL_USER_ID);
-
-		ReflectionTestUtil.setFieldValue(
-			mfaFIDO2AuditMessageBuilder, "_auditRouter", auditRouter);
-
-		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
-
-		_serviceRegistration = bundleContext.registerService(
-			MFAFIDO2AuditMessageBuilder.class, mfaFIDO2AuditMessageBuilder,
-			null);
 	}
 
 	@After
@@ -72,8 +57,6 @@ public abstract class BaseMFAFIDO2WebTestCase {
 		AuditRequestContextThreadLocal.removeAuditRequestContext();
 
 		PrincipalThreadLocal.setName(null);
-
-		_serviceRegistration.unregister();
 	}
 
 	protected void assertAuditMessage(
@@ -99,11 +82,6 @@ public abstract class BaseMFAFIDO2WebTestCase {
 		RandomTestUtil.randomString();
 
 	protected final AuditRouter auditRouter = Mockito.mock(AuditRouter.class);
-	protected final MFAFIDO2AuditMessageBuilder mfaFIDO2AuditMessageBuilder =
-		new MFAFIDO2AuditMessageBuilder();
 	protected final Portal portal = Mockito.mock(Portal.class);
-
-	private ServiceRegistration<MFAFIDO2AuditMessageBuilder>
-		_serviceRegistration;
 
 }

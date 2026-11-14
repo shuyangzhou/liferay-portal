@@ -17,28 +17,30 @@ export interface UserSessionEvent {
 	name: string;
 	pageDescription: string;
 	pageGroupId?: string | null;
+	pageKeywords: string;
 	pageTitle: string;
 	properties: Array<{name: string; value: string}>;
 	referrer: string;
 	url: string;
 }
 
-export interface UserSession {
-	becameKnown: boolean;
+export interface BaseUserSession {
 	browserName: string;
-	completeDate: Date;
-	contentLanguageID: string;
+	completeDate: string | null;
+	contentLanguageId: string;
 	createDate: string;
-	description: string;
-	devicePixelRatioz: number;
+	devicePixelRatio: number;
 	deviceType: string;
-	events: Event[];
-	keywords: string;
-	languageID: string;
+	events: UserSessionEvent[] | null;
+	languageId: string;
 	screenHeight: number;
 	screenWidth: number;
 	timezoneOffset: string;
 	userAgent: string;
+}
+
+export interface UserSession extends BaseUserSession {
+	becameKnown: boolean;
 }
 
 export interface UserSessionData {

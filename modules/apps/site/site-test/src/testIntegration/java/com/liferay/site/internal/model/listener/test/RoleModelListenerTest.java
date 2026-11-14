@@ -62,7 +62,7 @@ public class RoleModelListenerTest {
 			MenuAccessConfiguration.class, _group.getCompanyId(),
 			_group.getGroupId(),
 			HashMapDictionaryBuilder.<String, Object>put(
-				"accessToControlMenuRoleIds", new String[0]
+				"accessToControlMenuRoleExternalReferenceCodes", new String[0]
 			).put(
 				"showControlMenuByRole", true
 			).build());
@@ -115,14 +115,31 @@ public class RoleModelListenerTest {
 			null, _serviceContext);
 
 		_menuAccessConfigurationManager.updateMenuAccessConfiguration(
-			_group.getGroupId(),
-			new String[] {String.valueOf(role.getRoleId())}, true);
+			_group.getGroupId(), new String[] {role.getExternalReferenceCode()},
+			true);
 
-		_assertConfiguration(new String[] {String.valueOf(role.getRoleId())});
+		_assertConfiguration(new String[] {role.getExternalReferenceCode()});
 
 		_roleLocalService.deleteRole(role);
 
 		_assertConfiguration(new String[0]);
+	}
+
+	@Test
+	public void testOnAfterUpdate() throws Exception {
+		Role role = _roleLocalService.addRole(
+			RandomTestUtil.randomString(), TestPropsValues.getUserId(), null, 0,
+			StringUtil.randomString(), null, null, RoleConstants.TYPE_SITE,
+			null, _serviceContext);
+
+		_menuAccessConfigurationManager.updateMenuAccessConfiguration(
+			_group.getGroupId(), new String[] {role.getExternalReferenceCode()},
+			true);
+
+		role = _roleLocalService.updateExternalReferenceCode(
+			role, RandomTestUtil.randomString());
+
+		_assertConfiguration(new String[] {role.getExternalReferenceCode()});
 	}
 
 	private void _assertConfiguration(String[] expectedRolesCanSeeControlMenu)
@@ -141,12 +158,14 @@ public class RoleModelListenerTest {
 
 		Dictionary<String, Object> properties = configuration.getProperties();
 
-		String[] accessToControlMenuRoleIds = (String[])properties.get(
-			"accessToControlMenuRoleIds");
+		String[] accessToControlMenuRoleExternalReferenceCodes =
+			(String[])properties.get(
+				"accessToControlMenuRoleExternalReferenceCodes");
 
 		Assert.assertArrayEquals(
-			Arrays.toString(accessToControlMenuRoleIds),
-			expectedRolesCanSeeControlMenu, accessToControlMenuRoleIds);
+			Arrays.toString(accessToControlMenuRoleExternalReferenceCodes),
+			expectedRolesCanSeeControlMenu,
+			accessToControlMenuRoleExternalReferenceCodes);
 
 		Assert.assertTrue(
 			GetterUtil.getBoolean(properties.get("showControlMenuByRole")));

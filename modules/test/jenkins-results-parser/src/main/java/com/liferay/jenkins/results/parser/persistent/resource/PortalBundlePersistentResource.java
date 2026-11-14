@@ -14,6 +14,8 @@ import com.liferay.jenkins.results.parser.WorkspaceGitRepository;
 
 import java.io.IOException;
 
+import org.json.JSONObject;
+
 /**
  * @author Michael Hashimoto
  */
@@ -59,6 +61,40 @@ public class PortalBundlePersistentResource
 		PortalWorkspace portalWorkspace = _getPortalWorkspace();
 
 		return portalWorkspace.getPortalWorkspaceGitRepository();
+	}
+
+	@Override
+	protected void populateDataJSONObject(JSONObject dataJSONObject) {
+		super.populateDataJSONObject(dataJSONObject);
+
+		if (getStatus() == Status.SUCCESS) {
+			dataJSONObject.put("completed_time", _getCompletedTime());
+		}
+
+		WorkspaceGitRepository workspaceGitRepository =
+			getBundleWorkspaceGitRepository();
+
+		dataJSONObject.put(
+			"portal_git_commit", workspaceGitRepository.getSenderBranchSHA());
+	}
+
+	private long _getCompletedTime() {
+		try {
+			JSONObject dataJSONObject = getDataJSONObject();
+
+			if ((dataJSONObject != null) &&
+				dataJSONObject.has("completed_time")) {
+
+				return dataJSONObject.getLong("completed_time");
+			}
+		}
+		catch (RuntimeException runtimeException) {
+			print(
+				"WARNING: Unable to read the completed time\n" +
+					runtimeException);
+		}
+
+		return JenkinsResultsParserUtil.getCurrentTimeMillis();
 	}
 
 	private PortalWorkspace _getPortalWorkspace() {

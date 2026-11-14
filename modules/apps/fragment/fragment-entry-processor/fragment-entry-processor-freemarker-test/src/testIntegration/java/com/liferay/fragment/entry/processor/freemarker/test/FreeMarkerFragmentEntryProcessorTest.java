@@ -23,6 +23,7 @@ import com.liferay.fragment.processor.FragmentEntryProcessorRegistry;
 import com.liferay.fragment.service.FragmentCollectionService;
 import com.liferay.fragment.service.FragmentEntryLinkLocalService;
 import com.liferay.fragment.service.FragmentEntryService;
+import com.liferay.info.item.InfoItemReference;
 import com.liferay.item.selector.criteria.InfoListItemSelectorReturnType;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalService;
@@ -762,6 +763,182 @@ public class FreeMarkerFragmentEntryProcessorTest {
 	}
 
 	@Test
+	@TestInfo("LPD-111585")
+	public void testProcessFragmentEntryLinkHTMLWithContextInfoItemReference()
+		throws Exception {
+
+		// Default value
+
+		JournalArticle journalArticle1 = JournalTestUtil.addArticle(
+			_group.getGroupId(), RandomTestUtil.randomString(),
+			RandomTestUtil.randomString());
+
+		DefaultFragmentEntryProcessorContext
+			defaultFragmentEntryProcessorContext =
+				new DefaultFragmentEntryProcessorContext(
+					_serviceContext.getCompanyId(),
+					_serviceContext.getRequest(), new MockHttpServletResponse(),
+					null, null, _serviceContext.getScopeGroupId());
+
+		defaultFragmentEntryProcessorContext.setContextInfoItemReference(
+			new InfoItemReference(
+				JournalArticle.class.getName(),
+				journalArticle1.getResourcePrimKey()));
+
+		FragmentEntryLink fragmentEntryLink =
+			_fragmentEntryLinkLocalService.createFragmentEntryLink(0);
+
+		fragmentEntryLink.setHtml(
+			"<div class=\"fragment_name\">[#if itemSelector1Object??]" +
+				"${itemSelector1Object}[/#if]</div>");
+
+		JournalArticle journalArticle2 = JournalTestUtil.addArticle(
+			_group.getGroupId(), RandomTestUtil.randomString(),
+			RandomTestUtil.randomString());
+
+		fragmentEntryLink.setConfiguration(
+			_readJSONFileToString(
+				"configuration_itemselector.json",
+				HashMapBuilder.put(
+					"className", JournalArticle.class.getName()
+				).put(
+					"classNameId",
+					String.valueOf(
+						_portal.getClassNameId(JournalArticle.class.getName()))
+				).put(
+					"classPK",
+					String.valueOf(journalArticle2.getResourcePrimKey())
+				).build()));
+
+		String html = _getProcessedHTML(
+			fragmentEntryLink, JSONFactoryUtil.createJSONObject(),
+			defaultFragmentEntryProcessorContext);
+
+		_assertContainsJournalArticleInfo(html, journalArticle1);
+
+		Assert.assertFalse(
+			html.contains(journalArticle2.getExternalReferenceCode()));
+
+		// No selected item
+
+		fragmentEntryLink.setConfiguration(
+			_readJSONFileToString(
+				"configuration_itemselector.json",
+				HashMapBuilder.put(
+					"className", StringPool.BLANK
+				).put(
+					"classNameId", StringPool.BLANK
+				).put(
+					"classPK", StringPool.BLANK
+				).build()));
+
+		html = _getProcessedHTML(
+			fragmentEntryLink, JSONFactoryUtil.createJSONObject(),
+			defaultFragmentEntryProcessorContext);
+
+		_assertContainsJournalArticleInfo(html, journalArticle1);
+
+		Assert.assertFalse(
+			html.contains(journalArticle2.getExternalReferenceCode()));
+
+		// Selected item
+
+		html = _getProcessedHTML(
+			fragmentEntryLink,
+			JSONUtil.put(
+				"itemSelector1",
+				JSONUtil.put(
+					"className", JournalArticle.class.getName()
+				).put(
+					"classPK",
+					String.valueOf(journalArticle2.getResourcePrimKey())
+				)),
+			defaultFragmentEntryProcessorContext);
+
+		_assertContainsJournalArticleInfo(html, journalArticle2);
+
+		Assert.assertFalse(
+			html.contains(journalArticle1.getExternalReferenceCode()));
+	}
+
+	@Test
+	@TestInfo("LPD-111585")
+	public void testProcessFragmentEntryLinkHTMLWithContextInfoItemReferenceAndItemType()
+		throws Exception {
+
+		JournalArticle journalArticle = JournalTestUtil.addArticle(
+			_group.getGroupId(), RandomTestUtil.randomString(),
+			RandomTestUtil.randomString());
+
+		DefaultFragmentEntryProcessorContext
+			defaultFragmentEntryProcessorContext =
+				new DefaultFragmentEntryProcessorContext(
+					_serviceContext.getCompanyId(),
+					_serviceContext.getRequest(), new MockHttpServletResponse(),
+					null, null, _serviceContext.getScopeGroupId());
+
+		defaultFragmentEntryProcessorContext.setContextInfoItemReference(
+			new InfoItemReference(
+				JournalArticle.class.getName(),
+				journalArticle.getResourcePrimKey()));
+
+		FragmentEntryLink fragmentEntryLink =
+			_fragmentEntryLinkLocalService.createFragmentEntryLink(0);
+
+		fragmentEntryLink.setHtml(
+			"<div class=\"fragment_name\">[#if itemSelector1Object??]" +
+				"${itemSelector1Object}[/#if]</div>");
+		fragmentEntryLink.setConfiguration(
+			JSONUtil.put(
+				"fieldSets",
+				JSONUtil.putAll(
+					JSONUtil.put(
+						"fields",
+						JSONUtil.putAll(
+							JSONUtil.put(
+								"name", "itemSelector1"
+							).put(
+								"type", "itemSelector"
+							).put(
+								"typeOptions",
+								JSONUtil.put(
+									"itemType", JournalArticle.class.getName())
+							))))
+			).toString());
+
+		_assertContainsJournalArticleInfo(
+			_getProcessedHTML(
+				fragmentEntryLink, JSONFactoryUtil.createJSONObject(),
+				defaultFragmentEntryProcessorContext),
+			journalArticle);
+
+		fragmentEntryLink.setConfiguration(
+			JSONUtil.put(
+				"fieldSets",
+				JSONUtil.putAll(
+					JSONUtil.put(
+						"fields",
+						JSONUtil.putAll(
+							JSONUtil.put(
+								"name", "itemSelector1"
+							).put(
+								"type", "itemSelector"
+							).put(
+								"typeOptions",
+								JSONUtil.put(
+									"itemType", FileEntry.class.getName())
+							))))
+			).toString());
+
+		String html = _getProcessedHTML(
+			fragmentEntryLink, JSONFactoryUtil.createJSONObject(),
+			defaultFragmentEntryProcessorContext);
+
+		Assert.assertFalse(
+			html.contains(journalArticle.getExternalReferenceCode()));
+	}
+
+	@Test
 	@TestInfo("LPD-107496")
 	public void testProcessFragmentEntryLinkHTMLWithDisablePortletRender()
 		throws Exception {
@@ -818,6 +995,44 @@ public class FreeMarkerFragmentEntryProcessorTest {
 			CoreMatchers.containsString(
 				"<lfr-drop-zone data-lfr-drop-zone-id=\"static\">" +
 					"</lfr-drop-zone>"));
+	}
+
+	@Test
+	@TestInfo("LPD-114036")
+	public void testProcessFragmentEntryLinkHTMLWithDisablePortletRenderAndEnableRESTClient()
+		throws Exception {
+
+		FragmentEntryLink fragmentEntryLink =
+			_fragmentEntryLinkLocalService.createFragmentEntryLink(0);
+
+		fragmentEntryLink.setHtml(
+			_readFileToString(
+				"fragment_entry_with_disable_portlet_render_and_enable_rest_" +
+					"client.html"));
+
+		DefaultFragmentEntryProcessorContext
+			defaultFragmentEntryProcessorContext =
+				new DefaultFragmentEntryProcessorContext(
+					_serviceContext.getCompanyId(),
+					_serviceContext.getRequest(), new MockHttpServletResponse(),
+					LocaleUtil.getDefault(), null,
+					_serviceContext.getScopeGroupId());
+
+		defaultFragmentEntryProcessorContext.setDisablePortletRender(true);
+		defaultFragmentEntryProcessorContext.setDisableRESTClient(false);
+
+		String html =
+			_fragmentEntryProcessorRegistry.processFragmentEntryLinkHTML(
+				fragmentEntryLink, defaultFragmentEntryProcessorContext);
+
+		Assert.assertThat(
+			html,
+			CoreMatchers.containsString(
+				"<div id=\"dummy-rest-client\">false</div>"));
+		Assert.assertThat(
+			html,
+			CoreMatchers.containsString(
+				"<div id=\"runtime-portlet\">disabled</div>"));
 	}
 
 	@Test

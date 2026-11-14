@@ -67,8 +67,7 @@ public class WabGenerator
 			Map<String, String[]> parameters)
 		throws IOException {
 
-		WabProcessor wabProcessor = new WabProcessor(
-			classLoader, file, parameters);
+		WabProcessor wabProcessor = new WabProcessor(file, parameters);
 
 		return wabProcessor.getProcessedFile();
 	}
@@ -160,7 +159,7 @@ public class WabGenerator
 	}
 
 	@Deactivate
-	protected void deactivate(BundleContext bundleContext) throws Exception {
+	protected void deactivate() throws Exception {
 		_serviceRegistration.unregister();
 
 		_serviceRegistration = null;

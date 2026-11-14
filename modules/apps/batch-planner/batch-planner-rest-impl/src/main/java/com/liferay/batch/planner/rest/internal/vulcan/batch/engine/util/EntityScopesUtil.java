@@ -6,10 +6,11 @@
 package com.liferay.batch.planner.rest.internal.vulcan.batch.engine.util;
 
 import com.liferay.batch.planner.batch.engine.task.TaskItemUtil;
-import com.liferay.batch.planner.rest.internal.vulcan.yaml.openapi.OpenAPIYAMLProvider;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.vulcan.batch.engine.VulcanBatchEngineTaskItemDelegateRegistry;
+import com.liferay.portal.vulcan.resource.OpenAPIResource;
 import com.liferay.portal.vulcan.util.OpenAPIUtil;
 import com.liferay.portal.vulcan.yaml.openapi.OpenAPIYAML;
 
@@ -24,7 +25,9 @@ public class EntityScopesUtil {
 	public static List<String> getEntityScopes(
 			long companyId, boolean export, String internalClassNameKey,
 			ObjectDefinitionLocalService objectDefinitionLocalService,
-			OpenAPIYAMLProvider openAPIYAMLProvider)
+			OpenAPIResource openAPIResource,
+			VulcanBatchEngineTaskItemDelegateRegistry
+				vulcanBatchEngineTaskItemDelegateRegistry)
 		throws Exception {
 
 		if (internalClassNameKey.contains(StringPool.POUND)) {
@@ -36,8 +39,9 @@ public class EntityScopesUtil {
 			return Collections.singletonList(objectDefinition.getScope());
 		}
 
-		OpenAPIYAML openAPIYAML = openAPIYAMLProvider.getOpenAPIYAML(
-			companyId, internalClassNameKey);
+		OpenAPIYAML openAPIYAML = OpenAPIYAMLUtil.getOpenAPIYAML(
+			companyId, internalClassNameKey, openAPIResource,
+			vulcanBatchEngineTaskItemDelegateRegistry);
 
 		if (export) {
 			return OpenAPIUtil.getReadEntityScopes(

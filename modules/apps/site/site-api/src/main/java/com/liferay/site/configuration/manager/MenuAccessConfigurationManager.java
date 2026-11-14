@@ -14,14 +14,19 @@ public interface MenuAccessConfigurationManager {
 
 	public void deleteRoleAccessToControlMenu(Role role) throws Exception;
 
-	public String[] getAccessToControlMenuRoleIds(long groupId)
+	public String[] getAccessToControlMenuRoleExternalReferenceCodes(
+			long groupId)
 		throws Exception;
 
 	public boolean isShowControlMenuByRole(long groupId) throws Exception;
 
 	public void updateMenuAccessConfiguration(
-			long groupId, String[] roleIdsCanSeeControlMenu,
+			long groupId,
+			String[] accessToControlMenuRoleExternalReferenceCodes,
 			boolean showControlMenuByRole)
+		throws Exception;
+
+	public void updateRoleAccessToControlMenu(Role originalRole, Role role)
 		throws Exception;
 
 }

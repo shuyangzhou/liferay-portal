@@ -475,6 +475,13 @@ public class ContactsEngineClientImpl
 	}
 
 	@Override
+	public void deleteAccountLifecycle(FaroProject faroProject, String id)
+		throws FaroEngineClientException {
+
+		delete(faroProject, Rels.ACCOUNT_LIFECYCLE, id);
+	}
+
+	@Override
 	public void deleteBlockedKeywords(FaroProject faroProject, List<String> ids)
 		throws FaroEngineClientException {
 
@@ -3614,6 +3621,41 @@ public class ContactsEngineClientImpl
 		restTemplate.execute(
 			getUriString(faroProject, path, queryParameters), HttpMethod.GET,
 			requestCallback, responseExtractor, getUriVariables(faroProject));
+	}
+
+	@Override
+	public List<Campaign> getTopCampaigns(
+			FaroProject faroProject, long channelId, String filterString,
+			String rangeEnd, Integer rangeKey, String rangeStart, int size)
+		throws FaroEngineClientException {
+
+		Map<String, Object> uriVariables = getUriVariables(faroProject);
+
+		uriVariables.put("channelId", channelId);
+
+		if (Validator.isNotNull(filterString)) {
+			uriVariables.put("filter", filterString);
+		}
+
+		if (Validator.isNotNull(rangeEnd)) {
+			uriVariables.put("rangeEnd", rangeEnd);
+		}
+
+		if (rangeKey != null) {
+			uriVariables.put("rangeKey", rangeKey);
+		}
+
+		if (Validator.isNotNull(rangeStart)) {
+			uriVariables.put("rangeStart", rangeStart);
+		}
+
+		uriVariables.put("size", size);
+
+		return get(
+			faroProject, Rels.CAMPAIGNS_TOP,
+			new ParameterizedTypeReference<List<Campaign>>() {
+			},
+			uriVariables);
 	}
 
 	@Override

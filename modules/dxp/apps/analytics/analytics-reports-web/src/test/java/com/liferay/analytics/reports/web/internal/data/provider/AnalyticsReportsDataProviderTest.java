@@ -432,8 +432,6 @@ public class AnalyticsReportsDataProviderTest {
 				RandomTestUtil.randomString());
 
 		Assert.assertEquals(
-			trafficChannels.toString(), 3, trafficChannels.size());
-		Assert.assertEquals(
 			String.valueOf(
 				TrafficChannel.newInstance(
 					3849L, 86.0D, TrafficChannel.Type.ORGANIC)),
@@ -448,6 +446,8 @@ public class AnalyticsReportsDataProviderTest {
 				TrafficChannel.newInstance(
 					389L, 8.7D, TrafficChannel.Type.SOCIAL)),
 			String.valueOf(trafficChannels.get(TrafficChannel.Type.SOCIAL)));
+		Assert.assertEquals(
+			trafficChannels.toString(), 3, trafficChannels.size());
 	}
 
 	@Test(expected = PortalException.class)
@@ -465,6 +465,39 @@ public class AnalyticsReportsDataProviderTest {
 		analyticsReportsDataProvider.getTrafficChannels(
 			RandomTestUtil.randomLong(), null, timeRange,
 			RandomTestUtil.randomString());
+	}
+
+	@Test
+	public void testGetTrafficChannelsWithUnknownChannel() throws Exception {
+		AnalyticsReportsDataProvider analyticsReportsDataProvider =
+			new AnalyticsReportsDataProvider(
+				_getAnalyticsSettingsManager(),
+				_getHttp(
+					HashMapBuilder.put(
+						"/acquisition-channels",
+						JSONUtil.put(
+							"chatbot", 100L
+						).put(
+							"unknown", 100L
+						).toString()
+					).build()));
+
+		TimeSpan timeSpan = TimeSpan.of("last-7-days");
+
+		TimeRange timeRange = timeSpan.toTimeRange(0);
+
+		Map<TrafficChannel.Type, TrafficChannel> trafficChannels =
+			analyticsReportsDataProvider.getTrafficChannels(
+				RandomTestUtil.randomLong(), null, timeRange,
+				RandomTestUtil.randomString());
+
+		Assert.assertEquals(
+			String.valueOf(
+				TrafficChannel.newInstance(
+					100, 50.0D, TrafficChannel.Type.CHATBOT)),
+			String.valueOf(trafficChannels.get(TrafficChannel.Type.CHATBOT)));
+		Assert.assertEquals(
+			trafficChannels.toString(), 1, trafficChannels.size());
 	}
 
 	@Test(expected = IllegalArgumentException.class)

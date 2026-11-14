@@ -96,6 +96,11 @@ public class BuildReportTestrayContext extends BaseTestrayContext {
 	}
 
 	@Override
+	protected TopLevelBuildReport getTopLevelBuildReport() {
+		return _topLevelBuildReport;
+	}
+
+	@Override
 	protected JenkinsMaster getTopLevelJenkinsMaster() {
 		return _topLevelBuildReport.getJenkinsMaster();
 	}
@@ -121,6 +126,11 @@ public class BuildReportTestrayContext extends BaseTestrayContext {
 			return false;
 		}
 
+		return true;
+	}
+
+	@Override
+	protected boolean isTopLevelBuildCompleted() {
 		return true;
 	}
 

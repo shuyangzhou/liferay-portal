@@ -28,7 +28,7 @@ RedirectNotFoundEntriesDisplayContext redirectNotFoundEntriesDisplayContext = (R
 			>
 				<liferay-ui:search-container-row
 					className="com.liferay.redirect.model.RedirectNotFoundEntry"
-					keyProperty="redirectNotFoundEntryId"
+					keyPropertyName="redirectNotFoundEntryId"
 					modelVar="redirectNotFoundEntry"
 				>
 
@@ -81,7 +81,7 @@ RedirectNotFoundEntriesDisplayContext redirectNotFoundEntriesDisplayContext = (R
 		</c:when>
 		<c:otherwise>
 			<liferay-frontend:empty-result-message
-				animationType="<%= EmptyResultMessageKeys.AnimationType.SEARCH %>"
+				animationType="<%= AnimationType.SEARCH %>"
 				description="<%= LanguageUtil.get(request, redirectNotFoundEntriesDisplayContext.getEmptyResultsMessage()) %>"
 				title='<%= LanguageUtil.get(request, "all-is-in-order") %>'
 			/>

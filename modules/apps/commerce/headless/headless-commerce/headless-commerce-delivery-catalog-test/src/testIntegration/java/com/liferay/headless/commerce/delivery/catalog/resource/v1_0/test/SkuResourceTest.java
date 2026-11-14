@@ -34,6 +34,7 @@ import com.liferay.commerce.test.util.price.list.CommercePriceEntryTestUtil;
 import com.liferay.commerce.test.util.price.list.CommercePriceListTestUtil;
 import com.liferay.commerce.test.util.price.list.CommerceTierPriceEntryTestUtil;
 import com.liferay.headless.commerce.delivery.catalog.client.dto.v1_0.Availability;
+import com.liferay.headless.commerce.delivery.catalog.client.dto.v1_0.DDMOption;
 import com.liferay.headless.commerce.delivery.catalog.client.dto.v1_0.Price;
 import com.liferay.headless.commerce.delivery.catalog.client.dto.v1_0.Sku;
 import com.liferay.headless.commerce.delivery.catalog.client.dto.v1_0.SkuOption;
@@ -41,6 +42,7 @@ import com.liferay.headless.commerce.delivery.catalog.client.dto.v1_0.SkuUnitOfM
 import com.liferay.headless.commerce.delivery.catalog.client.dto.v1_0.TierPrice;
 import com.liferay.headless.commerce.delivery.catalog.client.pagination.Page;
 import com.liferay.headless.commerce.delivery.catalog.client.pagination.Pagination;
+import com.liferay.headless.commerce.delivery.catalog.client.problem.Problem;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -65,7 +67,6 @@ import java.util.Objects;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -118,36 +119,19 @@ public class SkuResourceTest extends BaseSkuResourceTestCase {
 		_testGetChannelProductSkusPageWithUnitOfMeasurePrice();
 	}
 
-	@Ignore
 	@Override
 	@Test
-	public void testGraphQLGetChannelByExternalReferenceCodeChannelExternalReferenceCodeProductByExternalReferenceCodeProductExternalReferenceCodeSkuByExternalReferenceCodeSkuExternalReferenceCode()
-		throws Exception {
-	}
+	public void testPostChannelProductSku() throws Exception {
+		try {
+			super.testPostChannelProductSku();
 
-	@Ignore
-	@Override
-	@Test
-	public void testGraphQLGetChannelByExternalReferenceCodeChannelExternalReferenceCodeProductByExternalReferenceCodeProductExternalReferenceCodeSkuByExternalReferenceCodeSkuExternalReferenceCodeNotFound()
-		throws Exception {
-	}
+			Assert.fail();
+		}
+		catch (Problem.ProblemException problemException) {
+			Problem problem = problemException.getProblem();
 
-	@Ignore
-	@Override
-	@Test
-	public void testGraphQLGetChannelProductSku() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testGraphQLGetChannelProductSkuNotFound() throws Exception {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testPostChannelProductSku() {
+			Assert.assertEquals("BAD_REQUEST", problem.getStatus());
+		}
 	}
 
 	@Override
@@ -252,10 +236,35 @@ public class SkuResourceTest extends BaseSkuResourceTestCase {
 	}
 
 	@Override
+	protected String
+			testGraphQLGetChannelByExternalReferenceCodeChannelExternalReferenceCodeProductByExternalReferenceCodeProductExternalReferenceCodeSkuByExternalReferenceCodeSkuExternalReferenceCode_getChannelExternalReferenceCode()
+		throws Exception {
+
+		return _commerceChannel.getExternalReferenceCode();
+	}
+
+	@Override
+	protected String
+			testGraphQLGetChannelByExternalReferenceCodeChannelExternalReferenceCodeProductByExternalReferenceCodeProductExternalReferenceCodeSkuByExternalReferenceCodeSkuExternalReferenceCode_getProductExternalReferenceCode()
+		throws Exception {
+
+		CProduct cProduct = _cpDefinition.getCProduct();
+
+		return cProduct.getExternalReferenceCode();
+	}
+
+	@Override
 	protected Long testGraphQLGetChannelProductSku_getChannelId()
 		throws Exception {
 
 		return _commerceChannel.getCommerceChannelId();
+	}
+
+	@Override
+	protected Long testGraphQLGetChannelProductSku_getProductId(Sku sku)
+		throws Exception {
+
+		return sku.getProductId();
 	}
 
 	@Override
@@ -279,6 +288,13 @@ public class SkuResourceTest extends BaseSkuResourceTestCase {
 		throws Exception {
 
 		return _addCPInstance(sku);
+	}
+
+	@Override
+	protected Sku testPostChannelProductSku_addSku(Sku sku) throws Exception {
+		return skuResource.postChannelProductSku(
+			_commerceChannel.getCommerceChannelId(),
+			_cpDefinition.getCProductId(), null, null, new DDMOption[0]);
 	}
 
 	@Override

@@ -208,24 +208,30 @@ public class LayoutImplTest {
 	}
 
 	@Test
-	public void testIsSupportsEmbeddedPortletsWithTypeEmbedded() {
-		_layout.setType(LayoutConstants.TYPE_EMBEDDED);
+	@TestInfo("LPD-115482")
+	public void testIsSupportsEmbeddedPortlets() {
+		for (String type :
+				new String[] {
+					LayoutConstants.TYPE_LINK_TO_LAYOUT,
+					LayoutConstants.TYPE_NODE, LayoutConstants.TYPE_URL
+				}) {
 
-		Assert.assertTrue(_layout.isSupportsEmbeddedPortlets());
-	}
+			_layout.setType(type);
 
-	@Test
-	public void testIsSupportsEmbeddedPortletsWithTypePanel() {
-		_layout.setType(LayoutConstants.TYPE_PANEL);
+			Assert.assertFalse(_layout.isSupportsEmbeddedPortlets());
+		}
 
-		Assert.assertTrue(_layout.isSupportsEmbeddedPortlets());
-	}
+		for (String type :
+				new String[] {
+					LayoutConstants.TYPE_CONTENT, LayoutConstants.TYPE_EMBEDDED,
+					LayoutConstants.TYPE_PANEL, LayoutConstants.TYPE_PORTLET,
+					LayoutConstants.TYPE_UTILITY
+				}) {
 
-	@Test
-	public void testIsSupportsEmbeddedPortletsWithTypePortlet() {
-		_layout.setType(LayoutConstants.TYPE_PORTLET);
+			_layout.setType(type);
 
-		Assert.assertTrue(_layout.isSupportsEmbeddedPortlets());
+			Assert.assertTrue(_layout.isSupportsEmbeddedPortlets());
+		}
 	}
 
 	@Test

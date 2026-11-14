@@ -9,7 +9,7 @@ import {
 	formatUTCDate,
 	getCustomDateFormat,
 } from 'shared/util/date';
-import {getSafeDecodedURIComponent} from './util';
+import {getSafeDecodedURIComponent, isBlank} from './util';
 import {AssetTypes, TimeIntervals} from 'shared/util/constants';
 import {PayloadLayout} from 'shared/util/payloadTables';
 import {RangeSelectors} from 'shared/types';
@@ -45,19 +45,6 @@ export type SessionEvent = {
 	subtitle: string | undefined;
 	time: moment.Moment;
 	title: string;
-};
-
-export type UserSessionAttributes = {
-	contentLanguageID: string;
-	description: string;
-	devicePixelRatioz: number;
-	header: string;
-	keywords: string;
-	languageID: string;
-	screenHeight: number;
-	screenWidth: number;
-	timezoneOffset: string;
-	userAgent: string;
 };
 
 export type VerticalTimelineHeader = {
@@ -213,6 +200,37 @@ const toAttributeMap = (
 	Object.fromEntries(attributes.map(({name, value}) => [name, value]));
 
 /**
+ * The fields a payload table can show as rows: every field the source carries
+ * with a plain value, in the order the API returned them, so a field added to
+ * the query shows up without a change here. Apollo's metadata, empty values and
+ * nested values (an event's properties and acquisition parameters get tables of
+ * their own) are left out.
+ */
+export const getDisplayableFields = (
+	source: object
+): Record<string, unknown> => {
+	const isApolloMetadata = (key: string) => key.startsWith('__');
+
+	const isNested = (value: unknown) => typeof value === 'object';
+
+	return Object.fromEntries(
+		Object.entries(source).filter(
+			([key, value]) =>
+				!isApolloMetadata(key) && !isBlank(value) && !isNested(value)
+		)
+	);
+};
+
+/**
+ * How the timeline lays out a session's attributes when its row is expanded:
+ * a single table of every field the session carries.
+ */
+export const SESSION_PAYLOAD_LAYOUT: PayloadLayout = {
+	groups: [],
+	title: Liferay.Language.get('session-attributes'),
+};
+
+/**
  * How the timeline lays out the payload `formatEvents` builds when a row is
  * expanded. The event's own properties join its attributes, while the campaign
  * the touch carried and its acquisition parameters each get a table, with the
@@ -249,15 +267,10 @@ export const formatEvents = (
 	return events.map((event) => {
 		const {
 			acquisitionProperties,
-			applicationId,
 			assetTitle,
 			campaignEntityId,
 			canonicalUrl,
 			createDate,
-			eventDate,
-			eventId,
-			experienceId,
-			experienceName,
 			name,
 			pageTitle,
 			properties,
@@ -269,11 +282,7 @@ export const formatEvents = (
 
 		return {
 			attributes: {
-				applicationId,
-				...(eventDate && {eventDate}),
-				eventId,
-				...(experienceId && {experienceId}),
-				...(experienceName && {experienceName}),
+				...getDisplayableFields(event),
 				...(properties?.length && {
 					properties: toAttributeMap(properties),
 				}),
@@ -283,13 +292,10 @@ export const formatEvents = (
 					),
 				}),
 
-				// The campaign is its own group rather than an event attribute,
-				// and only an event that carried one has it, so the details of
-				// an event without a campaign show no campaign at all. The
-				// group carries the campaign's page too, which the details
-				// link the name to. The page is keyed by the campaign's own
-				// id rather than the utm_cid the touch carried, and only a
-				// resolved campaign has one.
+				// The campaign also gets a group of its own, which links the
+				// name to the campaign's page. The page is keyed by the
+				// campaign's own id rather than the utm_cid the touch carried,
+				// and only a resolved campaign has one.
 
 				...(campaign && {
 					campaign: {
@@ -673,21 +679,11 @@ export const formatSessions = (
 			const items: VerticalTimelineSession[] = [];
 
 			daySessions.forEach((session) => {
-				const events = (session.events ??
-					[]) as unknown as UserSessionEvent[];
+				const events = session.events ?? [];
 
 				items.push({
 					applicationId: events[0]?.applicationId ?? '',
-					attributes: {
-						contentLanguageID: session.contentLanguageID,
-						devicePixelRatioz: session.devicePixelRatioz,
-						header: Liferay.Language.get('session-attributes'),
-						languageID: session.languageID,
-						screenHeight: session.screenHeight,
-						screenWidth: session.screenWidth,
-						timezoneOffset: session.timezoneOffset,
-						userAgent: session.userAgent,
-					},
+					attributes: getDisplayableFields(session),
 					becameKnown: session.becameKnown,
 					browserName: session.browserName,
 					device: session.deviceType,

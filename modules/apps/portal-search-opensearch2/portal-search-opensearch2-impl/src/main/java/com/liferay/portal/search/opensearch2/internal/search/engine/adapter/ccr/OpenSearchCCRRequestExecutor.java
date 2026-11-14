@@ -24,37 +24,28 @@ public class OpenSearchCCRRequestExecutor implements CCRRequestExecutor {
 	public FollowInfoCCRResponse executeCCRRequest(
 		FollowInfoCCRRequest followInfoCCRRequest) {
 
-		return _followInfoCCRRequestExecutor.execute(followInfoCCRRequest);
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public PauseFollowCCRResponse executeCCRRequest(
 		PauseFollowCCRRequest pauseFollowCCRRequest) {
 
-		return _pauseFollowCCRRequestExecutor.execute(pauseFollowCCRRequest);
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public PutFollowCCRResponse executeCCRRequest(
 		PutFollowCCRRequest putFollowCCRRequest) {
 
-		return _putFollowCCRRequestExecutor.execute(putFollowCCRRequest);
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public UnfollowCCRResponse executeCCRRequest(
 		UnfollowCCRRequest unfollowCCRRequest) {
 
-		return _unfollowCCRRequestExecutor.execute(unfollowCCRRequest);
+		throw new UnsupportedOperationException();
 	}
-
-	private final FollowInfoCCRRequestExecutor _followInfoCCRRequestExecutor =
-		new FollowInfoCCRRequestExecutor();
-	private final PauseFollowCCRRequestExecutor _pauseFollowCCRRequestExecutor =
-		new PauseFollowCCRRequestExecutor();
-	private final PutFollowCCRRequestExecutor _putFollowCCRRequestExecutor =
-		new PutFollowCCRRequestExecutor();
-	private final UnfollowCCRRequestExecutor _unfollowCCRRequestExecutor =
-		new UnfollowCCRRequestExecutor();
 
 }

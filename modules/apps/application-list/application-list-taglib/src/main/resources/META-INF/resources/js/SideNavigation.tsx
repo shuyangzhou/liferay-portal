@@ -9,19 +9,26 @@ import {SearchResultsMessage} from '@liferay/layout-js-components-web';
 import classNames from 'classnames';
 import {
 	UnifiedSidebar,
+	UnifiedSidebarItemContent,
+	UnifiedSidebarResultsSkeleton,
+	UnifiedSidebarSearchInput,
 	UnifiedSidebarSiteSelector,
+	countUnifiedSidebarItems,
 	useId,
+	useUnifiedSidebarExpandedKeys,
+	useUnifiedSidebarFilter,
+	useUnifiedSidebarItems,
+	useUnifiedSidebarStuck,
+	useUnifiedSidebarVisibility,
 } from 'frontend-js-components-web';
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useMemo, useRef} from 'react';
 
-import SideNavigationItemContent from './SideNavigationItemContent';
-import SideNavigationResultsSkeleton from './SideNavigationResultsSkeleton';
 import SideNavigationScopeItem from './SideNavigationScopeItem';
-import SideNavigationSearchInput from './SideNavigationSearchInput';
+import {
+	filterSideNavigationItems,
+	isScopeMarker,
+} from './filterSideNavigationItems';
 import {SideNavigationItem} from './types/SideNavigation';
-import {useSideNavigationFilter} from './useSideNavigationFilter';
-import {useSideNavigationItems} from './useSideNavigationItems';
-import {useSideNavigationStuck} from './useSideNavigationStuck';
 
 interface Props {
 	canonicalName: string;
@@ -38,20 +45,6 @@ interface Props {
 	siteAdministrationItemSelectorUrl: string;
 	visible: boolean;
 	visibleSessionKey: string;
-}
-
-function countNavigableItems(
-	navigationItems: Array<SideNavigationItem>
-): number {
-	return navigationItems.reduce(
-		(count, navigationItem) =>
-			count +
-			(navigationItem.href ? 1 : 0) +
-			(navigationItem.items
-				? countNavigableItems(navigationItem.items)
-				: 0),
-		0
-	);
 }
 
 function SideNavigation({
@@ -76,15 +69,6 @@ function SideNavigation({
 		)
 	);
 
-	const [initialExpandedKeys] = useState<Set<React.Key>>(
-		() => new Set(externalExpandedKeys)
-	);
-
-	const [userExpandedKeys, setUserExpandedKeys] =
-		useState<Set<React.Key>>(initialExpandedKeys);
-
-	const [visible, setVisible] = useState(initialVisible);
-
 	const baseId = useId();
 
 	const scrollRef = useRef<HTMLDivElement>(null);
@@ -93,75 +77,36 @@ function SideNavigation({
 		items: navigationItems,
 		loading,
 		prefetchFilterOnlyItems,
-	} = useSideNavigationItems(externalItems, navigationItemsURL);
+	} = useUnifiedSidebarItems(externalItems, navigationItemsURL);
 
-	const {expandedKeys, isFilterActive, items, numberOfMatches, setQuery} =
-		useSideNavigationFilter(navigationItems);
+	const {
+		expandedKeys: filterExpandedKeys,
+		isFilterActive,
+		items,
+		numberOfMatches,
+		setQuery,
+	} = useUnifiedSidebarFilter(navigationItems, filterSideNavigationItems);
 
-	const [filterCollapse, setFilterCollapse] = useState<{
-		appliesTo: Set<React.Key>;
-		expandedKeys: Set<React.Key>;
-	}>();
+	const {expandedKeys, initialExpandedKeys, updateExpandedKeys} =
+		useUnifiedSidebarExpandedKeys({
+			expandedKeys: externalExpandedKeys,
+			expandedKeysSessionKey,
+			filterExpandedKeys,
+			isFilterActive,
+		});
 
-	const effectiveExpandedKeys =
-		filterCollapse && filterCollapse.appliesTo === expandedKeys
-			? filterCollapse.expandedKeys
-			: expandedKeys ?? userExpandedKeys;
-
-	const updateExpandedKeys = useCallback(
-		async (updatedExpandedKeys: Set<React.Key>) => {
-			if (isFilterActive && expandedKeys) {
-				setFilterCollapse({
-					appliesTo: expandedKeys,
-					expandedKeys: updatedExpandedKeys,
-				});
-
-				return;
-			}
-
-			await Liferay.Util.Session.set(
-				expandedKeysSessionKey,
-				Array.from(updatedExpandedKeys).join(',')
-			);
-
-			setUserExpandedKeys(updatedExpandedKeys);
-		},
-		[expandedKeys, expandedKeysSessionKey, isFilterActive]
-	);
-
-	const updateVisible = useCallback(
-		async (visible: boolean) => {
-			await Liferay.Util.Session.set(
-				visibleSessionKey,
-				visible ? 'visible' : 'hidden'
-			);
-
-			setVisible(visible);
-
-			Liferay.fire('sideNavigationStateChanged', {visible});
-		},
-		[visibleSessionKey]
-	);
-
-	useEffect(
-		function setupVisibilityRequestHandler() {
-			async function handleStateRequest({visible}: {visible: boolean}) {
-				await updateVisible(visible);
-			}
-
-			Liferay.on('sideNavigationStateRequested', handleStateRequest);
-
-			return () =>
-				Liferay.detach(
-					'sideNavigationStateRequested',
-					handleStateRequest
-				);
-		},
-		[updateVisible]
-	);
+	const {updateVisible, visible} = useUnifiedSidebarVisibility({
+		hiddenSessionValue: 'hidden',
+		initialVisible,
+		sessionKey: visibleSessionKey,
+		stateChangedEventName: 'sideNavigationStateChanged',
+		stateRequestedEventName: 'sideNavigationStateRequested',
+		visibleSessionValue: 'visible',
+	});
 
 	const numberOfResults = useMemo(
-		() => (isFilterActive ? numberOfMatches : countNavigableItems(items)),
+		() =>
+			isFilterActive ? numberOfMatches : countUnifiedSidebarItems(items),
 		[isFilterActive, items, numberOfMatches]
 	);
 
@@ -170,7 +115,11 @@ function SideNavigation({
 
 	const showResultsSkeleton = isFilterActive && loading && !numberOfResults;
 
-	const stuck = useSideNavigationStuck(scrollRef, items);
+	const stuck = useUnifiedSidebarStuck(
+		scrollRef,
+		items,
+		'.side-navigation-scope-item'
+	);
 
 	return (
 		<UnifiedSidebar
@@ -195,7 +144,7 @@ function SideNavigation({
 			testId="sideNavigation"
 		>
 			<UnifiedSidebar.Top>
-				<SideNavigationSearchInput
+				<UnifiedSidebarSearchInput
 					onChange={setQuery}
 					onFocus={prefetchFilterOnlyItems}
 				/>
@@ -209,20 +158,20 @@ function SideNavigation({
 			</UnifiedSidebar.Top>
 
 			<div
-				className={classNames('side-navigation-scroll', {
-					'side-navigation-scroll-stuck': stuck,
+				className={classNames('unified-sidebar-scroll', {
+					'unified-sidebar-scroll-stuck': stuck,
 				})}
 				ref={scrollRef}
 			>
 				<UnifiedSidebar.Body className="c-px-0">
 					{showResultsSkeleton ? (
-						<SideNavigationResultsSkeleton />
+						<UnifiedSidebarResultsSkeleton />
 					) : numberOfResults ? (
 						<ClayVerticalNav
 							active={selectedPortletId}
 							defaultExpandedKeys={initialExpandedKeys}
 							displayType="primary"
-							expandedKeys={effectiveExpandedKeys}
+							expandedKeys={expandedKeys}
 							itemAriaCurrent={true}
 							items={items}
 							onExpandedChange={updateExpandedKeys}
@@ -237,7 +186,7 @@ function SideNavigation({
 									collectionItem as SideNavigationItem;
 								const scopeItemId = `${baseId}-${item.scope}`;
 
-								if (item.scopeMarker && item.scope) {
+								if (isScopeMarker(item)) {
 									return (
 										<SideNavigationScopeItem
 											id={scopeItemId}
@@ -258,7 +207,7 @@ function SideNavigation({
 												item.scope,
 											[`side-navigation-scope-zone-${item.scope}`]:
 												item.scope,
-											'side-navigation-section-item':
+											'unified-sidebar-section-item':
 												item.parentLabel,
 										})}
 										data-canonical-name={item.canonicalName}
@@ -267,7 +216,7 @@ function SideNavigation({
 										key={item.id}
 										textValue={item.label}
 									>
-										<SideNavigationItemContent
+										<UnifiedSidebarItemContent
 											item={item}
 										/>
 									</ClayVerticalNav.Item>
@@ -286,7 +235,7 @@ function SideNavigation({
 					)}
 				</UnifiedSidebar.Body>
 
-				<div className="side-navigation-scroll-shadow" />
+				<div className="unified-sidebar-scroll-shadow" />
 			</div>
 		</UnifiedSidebar>
 	);

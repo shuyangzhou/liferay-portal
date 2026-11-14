@@ -61,7 +61,6 @@ import java.util.Objects;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -72,7 +71,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Eduardo Lundgren
  */
 @Component(
-	configurationPid = "com.liferay.portal.workflow.kaleo.forms.web.internal.configuration.KaleoFormsWebConfiguration",
 	property = {
 		"com.liferay.portlet.css-class-wrapper=kaleo-forms-admin-portlet",
 		"com.liferay.portlet.display-category=category.hidden",
@@ -196,8 +194,7 @@ public class KaleoFormsAdminPortlet extends MVCPortlet {
 	}
 
 	@Activate
-	@Modified
-	protected void activate(Map<String, Object> properties) {
+	protected void activate() {
 		for (Locale availableLocale : _language.getAvailableLocales()) {
 			_parameterNames.add(
 				"description" + LocaleUtil.toLanguageId(availableLocale));

@@ -10,6 +10,7 @@ import com.liferay.asset.util.AssetRendererFactoryLookup;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.portal.kernel.dao.search.DisplayTerms;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
@@ -137,9 +138,9 @@ public class SearchResultsPortlet extends MVCPortlet {
 	}
 
 	protected PortletURLFactory getPortletURLFactory(
-		RenderRequest renderRequest, RenderResponse renderResponse) {
+		RenderRequest renderRequest) {
 
-		return new PortletURLFactoryImpl(renderRequest, renderResponse);
+		return new PortletURLFactoryImpl(renderRequest);
 	}
 
 	protected boolean isRenderNothing(
@@ -224,22 +225,35 @@ public class SearchResultsPortlet extends MVCPortlet {
 		searchResultsPortletDisplayContext.setRenderNothing(
 			isRenderNothing(renderRequest, searchRequest));
 
-		searchResultsPortletDisplayContext.setSearchContainer(
-			_buildSearchContainer(
-				documents, searchResponse.getTotalHits(),
-				GetterUtil.getInteger(
-					portletSharedSearchResponse.getParameter(
-						searchResultsPortletPreferences.
-							getPaginationStartParameterName(),
-						renderRequest)),
+		int paginationDelta = GetterUtil.getInteger(
+			portletSharedSearchResponse.getParameter(
+				searchResultsPortletPreferences.
+					getPaginationDeltaParameterName(),
+				renderRequest),
+			searchResultsPortletPreferences.getPaginationDelta());
+		int paginationStart = GetterUtil.getInteger(
+			portletSharedSearchResponse.getParameter(
 				searchResultsPortletPreferences.
 					getPaginationStartParameterName(),
-				GetterUtil.getInteger(
-					portletSharedSearchResponse.getParameter(
-						searchResultsPortletPreferences.
-							getPaginationDeltaParameterName(),
-						renderRequest),
-					searchResultsPortletPreferences.getPaginationDelta()),
+				renderRequest));
+		ThemeDisplay themeDisplay = portletSharedSearchResponse.getThemeDisplay(
+			renderRequest);
+
+		if (FeatureFlagManagerUtil.isEnabled(
+				themeDisplay.getCompanyId(), "LPD-114635") &&
+			(paginationDelta > 0)) {
+
+			int from = GetterUtil.getInteger(searchRequest.getFrom());
+
+			paginationStart = (from / paginationDelta) + 1;
+		}
+
+		searchResultsPortletDisplayContext.setSearchContainer(
+			_buildSearchContainer(
+				documents, searchResponse.getTotalHits(), paginationStart,
+				searchResultsPortletPreferences.
+					getPaginationStartParameterName(),
+				paginationDelta,
 				searchResultsPortletPreferences.
 					getPaginationDeltaParameterName(),
 				renderRequest));
@@ -402,7 +416,7 @@ public class SearchResultsPortlet extends MVCPortlet {
 			new SearchResultsSummariesHolder(documents.size());
 
 		PortletURLFactory portletURLFactory = getPortletURLFactory(
-			renderRequest, renderResponse);
+			renderRequest);
 
 		SearchResultPreferences searchResultPreferences =
 			new SearchResultPreferencesImpl(

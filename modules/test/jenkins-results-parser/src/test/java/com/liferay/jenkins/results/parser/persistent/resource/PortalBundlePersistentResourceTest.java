@@ -14,9 +14,12 @@ import com.liferay.jenkins.results.parser.Workspace;
 
 import java.util.Properties;
 
+import org.json.JSONObject;
+
 import org.junit.Assert;
 import org.junit.Test;
 
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 /**
@@ -101,6 +104,101 @@ public class PortalBundlePersistentResourceTest
 		_testGetBundleWorkspaceGitRepositoryThrows(
 			Mockito.mock(Workspace.class));
 		_testGetBundleWorkspaceGitRepositoryThrows(null);
+	}
+
+	@Test
+	public void testPopulateDataJSONObject() {
+		PortalWorkspace portalWorkspace = Mockito.mock(PortalWorkspace.class);
+
+		PortalWorkspaceGitRepository portalWorkspaceGitRepository =
+			Mockito.mock(PortalWorkspaceGitRepository.class);
+
+		Mockito.doReturn(
+			portalWorkspaceGitRepository
+		).when(
+			portalWorkspace
+		).getPortalWorkspaceGitRepository();
+
+		String senderBranchSHA = RandomTestUtil.randomSHA();
+
+		Mockito.doReturn(
+			senderBranchSHA
+		).when(
+			portalWorkspaceGitRepository
+		).getSenderBranchSHA();
+
+		PortalBundlePersistentResource portalBundlePersistentResource =
+			_newPortalBundlePersistentResource(portalWorkspace);
+
+		JSONObject dataJSONObject = new JSONObject();
+
+		Mockito.doCallRealMethod(
+		).when(
+			portalBundlePersistentResource
+		).populateDataJSONObject(
+			dataJSONObject
+		);
+
+		portalBundlePersistentResource.populateDataJSONObject(dataJSONObject);
+
+		testEquals(false, dataJSONObject.has("completed_time"));
+		testEquals(
+			senderBranchSHA, dataJSONObject.getString("portal_git_commit"));
+		testEquals(0, dataJSONObject.getInt("redispatch_attempts"));
+
+		Mockito.doReturn(
+			PersistentResource.Status.SUCCESS
+		).when(
+			portalBundlePersistentResource
+		).getStatus();
+
+		long currentTimeMillis = RandomTestUtil.randomLong();
+
+		try (MockedStatic<JenkinsResultsParserUtil>
+				jenkinsResultsParserUtilMockedStatic = Mockito.mockStatic(
+					JenkinsResultsParserUtil.class,
+					Mockito.CALLS_REAL_METHODS)) {
+
+			jenkinsResultsParserUtilMockedStatic.when(
+				JenkinsResultsParserUtil::getCurrentTimeMillis
+			).thenReturn(
+				currentTimeMillis
+			);
+
+			portalBundlePersistentResource.populateDataJSONObject(
+				dataJSONObject);
+
+			testEquals(
+				currentTimeMillis, dataJSONObject.getLong("completed_time"));
+
+			long completedTime = RandomTestUtil.randomLong();
+
+			Mockito.doReturn(
+				new JSONObject(
+				).put(
+					"completed_time", completedTime
+				)
+			).when(
+				portalBundlePersistentResource
+			).getDataJSONObject();
+
+			portalBundlePersistentResource.populateDataJSONObject(
+				dataJSONObject);
+
+			testEquals(completedTime, dataJSONObject.getLong("completed_time"));
+
+			Mockito.doThrow(
+				new RuntimeException(RandomTestUtil.randomString())
+			).when(
+				portalBundlePersistentResource
+			).getDataJSONObject();
+
+			portalBundlePersistentResource.populateDataJSONObject(
+				dataJSONObject);
+
+			testEquals(
+				currentTimeMillis, dataJSONObject.getLong("completed_time"));
+		}
 	}
 
 	private PortalBundlePersistentResource _newPortalBundlePersistentResource(

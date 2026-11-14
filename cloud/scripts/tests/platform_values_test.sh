@@ -24,6 +24,7 @@ function main {
 	_run_test _test_gcp_admits_api_server_and_konnectivity_agent
 	_run_test _test_gcp_enables_keda_with_namespace
 	_run_test _test_gcp_enables_observability_from_configuration
+	_run_test _test_names_the_cluster_secret_store_after_the_deployment
 
 	echo ""
 	echo "Results: ${pass} passed, ${fail} failed."
@@ -67,7 +68,7 @@ function _get_azure_outputs {
 		--argjson extra_outputs "${1:-{\}}" \
 		--null-input \
 		'{
-			cluster_secret_store_provider: {value: {azurekv: {vaultUrl: "https://liferay-test.vault.azure.net/"}}},
+			cluster_secret_store_provider: {value: {azurekv: {vaultUrl: "https://liferay-test.vault.azure.net"}}},
 			deployment_context: {value: {deploymentName: "liferay-test", region: "eastus2", resourceGroupName: "liferay-test", subscriptionId: "subscription-id", tenantId: "tenant-id"}},
 			external_secrets_client_id: {value: "external-secrets-client-id"}
 		} + $extra_outputs'
@@ -178,6 +179,12 @@ function _test_gcp_enables_keda_with_namespace {
 function _test_gcp_enables_observability_from_configuration {
 	_assert "$(_render "gcp" "$(_get_gcp_outputs)")" '.observability | has("enabled") | not' &&
 	_assert "$(_render "gcp" "$(_get_gcp_outputs)" '{"terraform": {"platform": {"observability_config": {"enabled": true}}}}')" '.observability.enabled and any(.observability.parameters[]; .name == "gcp.clusterName" and .value == "liferay-test-cluster")'
+}
+
+function _test_names_the_cluster_secret_store_after_the_deployment {
+	_assert "$(_render "aws" "$(_get_aws_outputs)")" '.clusterSecretStores == {"liferay-test-secret-store": {spec: {provider: {aws: {region: "us-east-1", service: "SecretsManager"}}}}}' &&
+	_assert "$(_render "azure" "$(_get_azure_outputs)")" '.clusterSecretStores == {"liferay-test-secret-store": {spec: {provider: {azurekv: {vaultUrl: "https://liferay-test.vault.azure.net"}}}}}' &&
+	_assert "$(_render "gcp" "$(_get_gcp_outputs)")" '.clusterSecretStores == {"liferay-test-secret-store": {spec: {provider: {gcpsm: {projectID: "liferay-test-project"}}}}}'
 }
 
 main "${@}"
