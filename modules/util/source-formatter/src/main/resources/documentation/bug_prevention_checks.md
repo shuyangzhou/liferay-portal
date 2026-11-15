@@ -107,7 +107,7 @@ JavaCleanUpMethodSuperCleanUpCheck | .java | Checks that `cleanUp` method in `*T
 [JavaCollatorUtilCheck](check/java_collator_util_check.md#javacollatorutilcheck) | .java | Checks for correct use of `Collator`. |
 JavaCompanyScopedIdsCheck | .java | Finds cases where company scoped ids are used, see LPD-45118. |
 JavaCompanyThreadLocalCheck | .java | Checks that `CompanyThreadLocal.lock` and `CompanyThreadLocal.setCompanyId*` methods are not used. |
-JavaComponentAnnotationsCheck | .java | Performs several checks on classes with `@Component` annotation. |
+[JavaComponentAnnotationsCheck](check/java_component_annotations_check.md#javacomponentannotationscheck) | .java | Performs several checks on classes with `@Component` annotation. |
 [JavaConfigurationAdminCheck](check/java_configuration_admin_check.md#javaconfigurationadmincheck) | .java | Checks for correct use of `location == ?` when calling `org.osgi.service.cm.ConfigurationAdmin#createFactoryConfiguration`. |
 [JavaConfigurationCategoryCheck](check/java_configuration_category_check.md#javaconfigurationcategorycheck) | .java | Checks that the value of `category` in `@ExtendedObjectClassDefinition` matches the `categoryKey` of the corresponding class that implements `ConfigurationCategory`. |
 [JavaConnectionTransactionCheck](check/java_connection_transaction_check.md#javaconnectiontransactioncheck) | .java | Checks that `commit`, `rollback`, and `setAutoCommit` are not called on a `java.sql.Connection`, see LPD-98668. |
