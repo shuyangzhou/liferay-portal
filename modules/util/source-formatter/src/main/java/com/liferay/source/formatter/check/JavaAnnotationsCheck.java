@@ -60,7 +60,7 @@ public class JavaAnnotationsCheck extends BaseJavaTermCheck {
 			return;
 		}
 
-		JavaClass componentJavaClass = _getJavaClass(
+		JavaClass componentJavaClass = getJavaClass(
 			absolutePath, componentName);
 
 		if (componentJavaClass != null) {
@@ -180,6 +180,28 @@ public class JavaAnnotationsCheck extends BaseJavaTermCheck {
 	@Override
 	protected String[] getCheckableJavaTermNames() {
 		return new String[] {JAVA_CLASS};
+	}
+
+	protected JavaClass getJavaClass(
+			String absolutePath, String fullyQualifiedName)
+		throws Exception {
+
+		JavaClass javaClass = _javaClassMap.get(fullyQualifiedName);
+
+		if (javaClass == null) {
+			File javaFile = JavaSourceUtil.getJavaFile(
+				fullyQualifiedName, _getRootDirName(absolutePath),
+				getBundleSymbolicNamesMap(absolutePath));
+
+			if (javaFile != null) {
+				javaClass = JavaClassParser.parseJavaClass(
+					javaFile.getName(), FileUtil.read(javaFile));
+
+				_javaClassMap.put(fullyQualifiedName, javaClass);
+			}
+		}
+
+		return javaClass;
 	}
 
 	private String _fixAnnotationLineBreaks(String annotation) {
@@ -320,7 +342,7 @@ public class JavaAnnotationsCheck extends BaseJavaTermCheck {
 			}
 
 			classConstantName = classConstantMatcher.group(2);
-			classConstantJavaClass = _getJavaClass(
+			classConstantJavaClass = getJavaClass(
 				absolutePath, fullyQualifiedName);
 		}
 
@@ -349,28 +371,6 @@ public class JavaAnnotationsCheck extends BaseJavaTermCheck {
 		}
 
 		return null;
-	}
-
-	private JavaClass _getJavaClass(
-			String absolutePath, String fullyQualifiedName)
-		throws Exception {
-
-		JavaClass javaClass = _javaClassMap.get(fullyQualifiedName);
-
-		if (javaClass == null) {
-			File javaFile = JavaSourceUtil.getJavaFile(
-				fullyQualifiedName, _getRootDirName(absolutePath),
-				getBundleSymbolicNamesMap(absolutePath));
-
-			if (javaFile != null) {
-				javaClass = JavaClassParser.parseJavaClass(
-					javaFile.getName(), FileUtil.read(javaFile));
-
-				_javaClassMap.put(fullyQualifiedName, javaClass);
-			}
-		}
-
-		return javaClass;
 	}
 
 	private String _getRootDirName(String absolutePath) {

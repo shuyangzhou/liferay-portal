@@ -1,0 +1,33 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.liferay.portal.requireconfigurationpolicy;
+
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+
+import java.util.Map;
+
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Modified;
+
+/**
+ * @author Shuyang Zhou
+ */
+public abstract class BaseProvider {
+
+	public String getLabel(String languageId) {
+		return languageId + "-provider";
+	}
+
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties) {
+		enabledConfiguration = ConfigurableUtil.createConfigurable(
+			EnabledConfiguration.class, properties);
+	}
+
+	protected volatile EnabledConfiguration enabledConfiguration;
+
+}

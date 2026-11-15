@@ -29,8 +29,10 @@ import java.io.File;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -247,6 +249,93 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 		}
 	}
 
+	private void _checkRequireConfigurationPolicy(
+			String fileName, String absolutePath, JavaClass javaClass,
+			String annotation, String configurationPid)
+		throws Exception {
+
+		if (absolutePath.contains("-test/") ||
+			absolutePath.contains("-test-util/") ||
+			absolutePath.contains("/src/test/") ||
+			absolutePath.contains("/testIntegration/") ||
+			StringUtil.startsWith(configurationPid, '{') ||
+			!isAttributeValue(
+				_CHECK_REQUIRE_CONFIGURATION_POLICY_KEY, absolutePath)) {
+
+			return;
+		}
+
+		String configurationPolicy = getAnnotationAttributeValue(
+			annotation, "configurationPolicy");
+
+		if ((configurationPolicy != null) &&
+			!configurationPolicy.equals("ConfigurationPolicy.OPTIONAL")) {
+
+			return;
+		}
+
+		List<String> allowedOptionalConfigurationPolicyClassNames =
+			getAttributeValues(
+				_ALLOWED_OPTIONAL_CONFIGURATION_POLICY_CLASS_NAMES_KEY,
+				absolutePath);
+
+		for (String allowedOptionalConfigurationPolicyClassName :
+				allowedOptionalConfigurationPolicyClassNames) {
+
+			if (absolutePath.contains(
+					allowedOptionalConfigurationPolicyClassName)) {
+
+				return;
+			}
+		}
+
+		configurationPid = StringUtil.unquote(configurationPid);
+
+		if (!configurationPid.startsWith("com.liferay") ||
+			configurationPid.endsWith(".scoped")) {
+
+			return;
+		}
+
+		JavaClass configurationJavaClass = getJavaClass(
+			absolutePath, configurationPid);
+
+		if (configurationJavaClass == null) {
+			return;
+		}
+
+		List<JavaClass> javaClasses = new ArrayList<>();
+		Set<String> javaClassNames = new HashSet<>();
+
+		while ((javaClass != null) &&
+			   javaClassNames.add(javaClass.getName(true))) {
+
+			javaClasses.add(javaClass);
+
+			javaClass = _getExtendedJavaClass(absolutePath, javaClass);
+		}
+
+		for (String switchName : _getSwitchNames(configurationJavaClass)) {
+			if (!_isGatedBy(
+					javaClasses,
+					_getSwitchReadPattern(javaClasses, switchName))) {
+
+				continue;
+			}
+
+			addMessage(
+				fileName,
+				StringBundler.concat(
+					"Add \"configurationPolicy = ConfigurationPolicy.",
+					"REQUIRE\", the component does nothing unless \"",
+					switchName, "\" of system scoped configuration \"",
+					configurationPid,
+					"\" is enabled, and it is off by default"));
+
+			return;
+		}
+	}
+
 	private void _checkUsesInternalService(
 			String fileName, String absolutePath, JavaClass javaClass,
 			String serviceAttributeValue)
@@ -401,13 +490,18 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 	}
 
 	private String _formatConfigurationAttributes(
-		String fileName, String absolutePath, JavaClass javaClass,
-		String annotation) {
+			String fileName, String absolutePath, JavaClass javaClass,
+			String annotation)
+		throws Exception {
 
 		String configurationPid = getAnnotationAttributeValue(
 			annotation, "configurationPid");
 
 		if (configurationPid != null) {
+			_checkRequireConfigurationPolicy(
+				fileName, absolutePath, javaClass, annotation,
+				configurationPid);
+
 			return _formatConfigurationPid(
 				fileName, absolutePath, javaClass, annotation,
 				configurationPid);
@@ -782,6 +876,70 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 		return annotation;
 	}
 
+	private String _getBody(JavaTerm javaTerm) {
+		String content = javaTerm.getContent();
+
+		int x = content.indexOf(
+			StringBundler.concat(
+				StringPool.TAB, javaTerm.getAccessModifier(),
+				StringPool.SPACE));
+
+		if (x == -1) {
+			return StringPool.BLANK;
+		}
+
+		x = content.indexOf(CharPool.OPEN_PARENTHESIS, x);
+
+		int y = x;
+
+		while (true) {
+			y = content.indexOf(CharPool.CLOSE_PARENTHESIS, y + 1);
+
+			if (y == -1) {
+				return StringPool.BLANK;
+			}
+
+			if (getLevel(content.substring(x, y + 1)) == 0) {
+				break;
+			}
+		}
+
+		y = content.indexOf(CharPool.OPEN_CURLY_BRACE, y);
+
+		if (y == -1) {
+			return StringPool.BLANK;
+		}
+
+		return StringUtil.trim(content.substring(y));
+	}
+
+	private List<String> _getConditionParts(String condition, String operator) {
+		List<String> conditionParts = new ArrayList<>();
+
+		int level = 0;
+		int x = 0;
+
+		for (int i = 0; i < condition.length(); i++) {
+			char c = condition.charAt(i);
+
+			if (c == CharPool.OPEN_PARENTHESIS) {
+				level++;
+			}
+			else if (c == CharPool.CLOSE_PARENTHESIS) {
+				level--;
+			}
+			else if ((level == 0) && condition.startsWith(operator, i)) {
+				conditionParts.add(StringUtil.trim(condition.substring(x, i)));
+
+				x = i + operator.length();
+			}
+		}
+
+		conditionParts.add(StringUtil.trim(condition.substring(x)));
+
+		return conditionParts;
+	}
+
 	private String _getExpectedServiceAttributeValue(
 		List<String> implementedClassNames) {
 
@@ -809,6 +967,31 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 		sb.append("}");
 
 		return sb.toString();
+	}
+
+	private JavaClass _getExtendedJavaClass(
+			String absolutePath, JavaClass javaClass)
+		throws Exception {
+
+		List<String> extendedClassNames = javaClass.getExtendedClassNames(true);
+
+		if (extendedClassNames.isEmpty()) {
+			return null;
+		}
+
+		String extendedClassName = extendedClassNames.get(0);
+
+		int index = extendedClassName.indexOf(CharPool.LESS_THAN);
+
+		if (index != -1) {
+			extendedClassName = extendedClassName.substring(0, index);
+		}
+
+		if (extendedClassName.equals(javaClass.getName(true))) {
+			return null;
+		}
+
+		return getJavaClass(absolutePath, extendedClassName);
 	}
 
 	private List<JavaMethod> _getJavaMethods(
@@ -859,6 +1042,255 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 		}
 
 		return _rootDirName;
+	}
+
+	private List<String> _getSwitchNames(JavaClass configurationJavaClass) {
+		String content = configurationJavaClass.getContent();
+
+		Matcher factoryMatcher = _factoryPattern.matcher(content);
+		Matcher scopeMatcher = _scopePattern.matcher(content);
+
+		if (factoryMatcher.find() ||
+			(scopeMatcher.find() &&
+			 !Objects.equals(scopeMatcher.group(1), "SYSTEM"))) {
+
+			return Collections.emptyList();
+		}
+
+		List<String> switchNames = new ArrayList<>();
+
+		for (JavaTerm javaTerm : configurationJavaClass.getChildJavaTerms()) {
+			String name = javaTerm.getName();
+
+			String lowerCaseName = StringUtil.toLowerCase(name);
+
+			if (!javaTerm.isJavaMethod() || !lowerCaseName.contains("enable")) {
+				continue;
+			}
+
+			Pattern pattern = Pattern.compile(
+				"deflt = \"false\"[\\s\\S]*\\sboolean\\s+" + name + "\\(\\);");
+
+			Matcher matcher = pattern.matcher(javaTerm.getContent());
+
+			if (!matcher.find()) {
+				continue;
+			}
+
+			switchNames.add(name);
+		}
+
+		return switchNames;
+	}
+
+	private Pattern _getSwitchReadPattern(
+		List<JavaClass> javaClasses, String switchName) {
+
+		String switchReadRegex = StringBundler.concat(
+			"(?:\\w*[Cc]onfiguration\\s*\\.\\s*", switchName,
+			"\\(\\)|GetterUtil\\s*\\.\\s*getBoolean\\(\\s*\\w+\\s*\\.\\s*",
+			"get\\(\\s*\"", switchName, "\"\\s*\\)\\s*\\))");
+
+		StringBundler sb = new StringBundler();
+
+		sb.append(switchReadRegex);
+
+		Pattern pattern = Pattern.compile(
+			"\n\t+(\\w+)\\s*=\\s*" + switchReadRegex + ";");
+
+		for (JavaClass javaClass : javaClasses) {
+			Matcher matcher = pattern.matcher(javaClass.getContent());
+
+			while (matcher.find()) {
+				sb.append("|(?<![\\w$.])");
+				sb.append(matcher.group(1));
+				sb.append("(?![\\w$(])");
+			}
+		}
+
+		return Pattern.compile(sb.toString());
+	}
+
+	private boolean _isGatedBy(
+		List<JavaClass> javaClasses, Pattern switchReadPattern) {
+
+		boolean behavior = false;
+		List<String> componentClassBodies = new ArrayList<>();
+		boolean configurationFacade = false;
+		Set<String> signatures = new HashSet<>();
+		boolean switchGetter = false;
+
+		for (JavaClass javaClass : javaClasses) {
+			for (JavaTerm javaTerm : javaClass.getChildJavaTerms()) {
+				if (!javaTerm.isJavaMethod() || !javaTerm.isPublic() ||
+					javaTerm.isStatic() ||
+					javaTerm.hasAnnotation(
+						"Activate", "Deactivate", "Modified", "Reference")) {
+
+					continue;
+				}
+
+				String body = _getBody(javaTerm);
+				String name = javaTerm.getName();
+
+				if (body.isEmpty() ||
+					!signatures.add(name + javaTerm.getSignature())) {
+
+					continue;
+				}
+
+				if (javaClass == javaClasses.get(0)) {
+					componentClassBodies.add(body);
+				}
+
+				Matcher matcher = _returnPattern.matcher(body);
+
+				if (matcher.matches()) {
+					Matcher switchReadMatcher = switchReadPattern.matcher(
+						matcher.group(1));
+
+					if (!switchGetter && name.startsWith("is") &&
+						switchReadMatcher.matches()) {
+
+						switchGetter = true;
+
+						continue;
+					}
+				}
+
+				Matcher configurationReadMatcher =
+					_configurationReadPattern.matcher(body);
+
+				if (configurationReadMatcher.find()) {
+					configurationFacade = true;
+
+					continue;
+				}
+
+				if (!matcher.matches()) {
+					behavior = true;
+
+					continue;
+				}
+
+				matcher = _trivialReturnValuePattern.matcher(matcher.group(1));
+
+				if (matcher.matches()) {
+					continue;
+				}
+
+				behavior = true;
+			}
+		}
+
+		if (switchGetter) {
+			if (configurationFacade) {
+				return false;
+			}
+
+			return behavior;
+		}
+
+		if (componentClassBodies.isEmpty()) {
+			return false;
+		}
+
+		for (String body : componentClassBodies) {
+			if (!_isGuardedBy(body, switchReadPattern)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private boolean _isGuardedBy(String body, Pattern switchReadPattern) {
+		String s = StringUtil.trim(body.substring(1));
+
+		if (!s.startsWith("if (")) {
+			return false;
+		}
+
+		int x = s.indexOf(CharPool.OPEN_PARENTHESIS);
+
+		int y = x;
+
+		while (true) {
+			y = s.indexOf(CharPool.CLOSE_PARENTHESIS, y + 1);
+
+			if (y == -1) {
+				return false;
+			}
+
+			if (getLevel(s.substring(x, y + 1)) == 0) {
+				break;
+			}
+		}
+
+		String condition = s.substring(x + 1, y);
+
+		if (!s.startsWith(" {", y + 1)) {
+			return false;
+		}
+
+		x = y + 2;
+
+		while (true) {
+			y = s.indexOf(CharPool.CLOSE_CURLY_BRACE, y + 1);
+
+			if (y == -1) {
+				return false;
+			}
+
+			if (getLevel(s.substring(x, y + 1), "{", "}") == 0) {
+				break;
+			}
+		}
+
+		String block = StringUtil.trim(s.substring(x + 1, y));
+
+		String remainder = StringUtil.trim(s.substring(y + 1));
+
+		if (remainder.startsWith("else")) {
+			return false;
+		}
+
+		if (block.startsWith("return") &&
+			(block.indexOf(CharPool.SEMICOLON) == (block.length() - 1))) {
+
+			for (String conditionPart : _getConditionParts(condition, "||")) {
+				if (!conditionPart.startsWith("!")) {
+					continue;
+				}
+
+				Matcher matcher = switchReadPattern.matcher(
+					StringUtil.trim(conditionPart.substring(1)));
+
+				if (matcher.matches()) {
+					return true;
+				}
+			}
+		}
+
+		if (!remainder.equals("}")) {
+			return false;
+		}
+
+		List<String> conditionParts = _getConditionParts(condition, "||");
+
+		if (conditionParts.size() > 1) {
+			return false;
+		}
+
+		for (String conditionPart : _getConditionParts(condition, "&&")) {
+			Matcher matcher = switchReadPattern.matcher(conditionPart);
+
+			if (matcher.matches()) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private boolean _isInternalPackageName(
@@ -937,6 +1369,10 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 		_ALLOWED_MULTIPLE_SERVICE_TYPES_CLASS_NAMES_KEY =
 			"allowedMultipleServiceTypesClassNames";
 
+	private static final String
+		_ALLOWED_OPTIONAL_CONFIGURATION_POLICY_CLASS_NAMES_KEY =
+			"allowedOptionalConfigurationPolicyClassNames";
+
 	private static final String _ALLOWED_SELF_REGISTRATION_CLASS_NAMES_KEY =
 		"allowedSelfRegistrationClassNames";
 
@@ -964,6 +1400,9 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 	private static final String _CHECK_PORTLET_VERSION_KEY =
 		"checkPortletVersion";
 
+	private static final String _CHECK_REQUIRE_CONFIGURATION_POLICY_KEY =
+		"checkRequireConfigurationPolicy";
+
 	private static final String _CHECK_RESOURCE_IMPL_KEY = "checkResourceImpl";
 
 	private static final String _CHECK_SELF_REGISTRATION_KEY =
@@ -979,6 +1418,16 @@ public class JavaComponentAnnotationsCheck extends JavaAnnotationsCheck {
 		Pattern.compile("\\s(\\w+) = \\{");
 	private static final Pattern _attributePattern = Pattern.compile(
 		"\\W(\\w+)\\s*=");
+	private static final Pattern _configurationReadPattern = Pattern.compile(
+		"[Cc]onfiguration\\s*\\.\\s*\\w+\\(\\)");
+	private static final Pattern _factoryPattern = Pattern.compile(
+		"@Meta\\.OCD\\([^)]*\\Wfactory = true");
+	private static final Pattern _returnPattern = Pattern.compile(
+		"\\{\\s*return\\s+([^;]+);\\s*\\}");
+	private static final Pattern _scopePattern = Pattern.compile(
+		"\\Wscope = ExtendedObjectClassDefinition\\.Scope\\.(\\w+)");
+	private static final Pattern _trivialReturnValuePattern = Pattern.compile(
+		"(?:\\w+\\s*\\.\\s*)?\\w+(?:\\(\\))?");
 
 	private String _rootDirName;
 

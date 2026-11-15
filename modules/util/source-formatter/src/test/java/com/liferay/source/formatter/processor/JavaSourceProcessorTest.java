@@ -1214,6 +1214,62 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 	}
 
 	@Test
+	public void testRequireConfigurationPolicy() throws Exception {
+		test(
+			_createRequireConfigurationPolicyTestParameters(
+				"RequireConfigurationPolicyAllowlisted"));
+		test(
+			_createRequireConfigurationPolicyTestParameters(
+				"RequireConfigurationPolicyCompanyScoped"));
+		test(
+			_createRequireConfigurationPolicyTestParameters(
+				"RequireConfigurationPolicyConfigurationFacade"));
+		test(
+			_createRequireConfigurationPolicyTestParameters(
+				"RequireConfigurationPolicyDefaultOn"));
+		test(
+			_createRequireConfigurationPolicyTestParameters(
+				"RequireConfigurationPolicyEarlyReturn"
+			).addExpectedMessage(
+				_getRequireConfigurationPolicyMessage(
+					"enabled", "EnabledConfiguration")
+			));
+		test(
+			_createRequireConfigurationPolicyTestParameters(
+				"RequireConfigurationPolicyElseBranch"));
+		test(
+			_createRequireConfigurationPolicyTestParameters(
+				"RequireConfigurationPolicyEnclosingIf"
+			).addExpectedMessage(
+				_getRequireConfigurationPolicyMessage(
+					"debugEnabled", "DebugEnabledConfiguration")
+			));
+		test(
+			_createRequireConfigurationPolicyTestParameters(
+				"RequireConfigurationPolicyInheritedBehavior"
+			).addExpectedMessage(
+				_getRequireConfigurationPolicyMessage(
+					"enabled", "EnabledConfiguration")
+			));
+		test(
+			_createRequireConfigurationPolicyTestParameters(
+				"RequireConfigurationPolicyRequired"));
+		test(
+			_createRequireConfigurationPolicyTestParameters(
+				"RequireConfigurationPolicySwitchFacade"));
+		test(
+			_createRequireConfigurationPolicyTestParameters(
+				"RequireConfigurationPolicySwitchGetter"
+			).addExpectedMessage(
+				_getRequireConfigurationPolicyMessage(
+					"enabled", "EnabledConfiguration")
+			));
+		test(
+			_createRequireConfigurationPolicyTestParameters(
+				"RequireConfigurationPolicyUngatedMethod"));
+	}
+
+	@Test
 	public void testResultSetGetCall() throws Exception {
 		test(
 			SourceProcessorTestParameters.create(
@@ -1721,6 +1777,41 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 	@Test
 	public void testUsePassedInVariable() throws Exception {
 		test("UsePassedInVariable.testjava");
+	}
+
+	private SourceProcessorTestParameters
+		_createRequireConfigurationPolicyTestParameters(String fileName) {
+
+		SourceProcessorTestParameters sourceProcessorTestParameters =
+			SourceProcessorTestParameters.create(
+				"requireconfigurationpolicy/" + fileName + ".testjava");
+
+		for (String dependentFileName :
+				new String[] {
+					"BaseProvider", "CompanyEnabledConfiguration",
+					"DebugEnabledConfiguration", "DefaultOnConfiguration",
+					"EnabledConfiguration"
+				}) {
+
+			sourceProcessorTestParameters.addDependentFileName(
+				StringBundler.concat(
+					"requireconfigurationpolicy/portal-impl/src/com/liferay",
+					"/portal/requireconfigurationpolicy/", dependentFileName,
+					".testjava"));
+		}
+
+		return sourceProcessorTestParameters;
+	}
+
+	private String _getRequireConfigurationPolicyMessage(
+		String switchName, String configurationName) {
+
+		return StringBundler.concat(
+			"Add \"configurationPolicy = ConfigurationPolicy.REQUIRE\", the ",
+			"component does nothing unless \"", switchName,
+			"\" of system scoped configuration \"",
+			"com.liferay.portal.requireconfigurationpolicy.", configurationName,
+			"\" is enabled, and it is off by default");
 	}
 
 }

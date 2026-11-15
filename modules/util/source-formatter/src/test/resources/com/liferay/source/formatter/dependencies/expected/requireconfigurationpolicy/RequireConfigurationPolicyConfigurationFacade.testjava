@@ -1,0 +1,47 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.liferay.source.formatter.dependencies.requireconfigurationpolicy;
+
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.requireconfigurationpolicy.EnabledConfiguration;
+
+import java.util.Map;
+
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
+
+/**
+ * @author Shuyang Zhou
+ */
+@Component(
+	configurationPid = "com.liferay.portal.requireconfigurationpolicy.EnabledConfiguration",
+	service = {}
+)
+public class RequireConfigurationPolicyConfigurationFacade {
+
+	public String getLevel(String name) {
+		if (_enabledConfiguration.verbose()) {
+			return name + "-verbose";
+		}
+
+		return name;
+	}
+
+	public boolean isEnabled() {
+		return _enabledConfiguration.enabled();
+	}
+
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties) {
+		_enabledConfiguration = ConfigurableUtil.createConfigurable(
+			EnabledConfiguration.class, properties);
+	}
+
+	private volatile EnabledConfiguration _enabledConfiguration;
+
+}
