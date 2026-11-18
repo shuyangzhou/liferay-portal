@@ -25,11 +25,11 @@ import com.liferay.portal.dao.orm.common.SQLTransformer;
 import com.liferay.portal.db.partition.db.DBPartitionDB;
 import com.liferay.portal.db.partition.test.util.BaseDBPartitionTestCase;
 import com.liferay.portal.db.partition.util.DBPartitionUtil;
-import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
 import com.liferay.portal.kernel.audit.AuditMessage;
 import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.db.partition.DBPartition;
+import com.liferay.portal.kernel.db.partition.DBPartitionCopyContributor;
 import com.liferay.portal.kernel.exception.CompanyVirtualHostException;
 import com.liferay.portal.kernel.exception.CompanyWebIdException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -830,11 +830,10 @@ public class CompanyLocalServiceDBPartitionTest
 
 		try (AutoCloseable autoCloseable =
 				ReflectionTestUtil.setFieldValueWithAutoCloseable(
-					_portalInstanceLifecycleListener,
-					"_classNameColumnNamesMap",
+					_dbPartitionCopyContributor, "_classNameColumnNamesMap",
 					HashMapBuilder.putAll(
 						ReflectionTestUtil.<Map<String, String>>getFieldValue(
-							_portalInstanceLifecycleListener,
+							_dbPartitionCopyContributor,
 							"_classNameColumnNamesMap")
 					).put(
 						RandomTestUtil.randomString(),
@@ -2034,6 +2033,11 @@ public class CompanyLocalServiceDBPartitionTest
 	@Inject
 	private CounterLocalService _counterLocalService;
 
+	@Inject(
+		filter = "component.name=com.liferay.object.internal.db.partition.ObjectDefinitionDBPartitionCopyContributor"
+	)
+	private DBPartitionCopyContributor _dbPartitionCopyContributor;
+
 	@Inject
 	private GroupLocalService _groupLocalService;
 
@@ -2045,11 +2049,6 @@ public class CompanyLocalServiceDBPartitionTest
 
 	@Inject
 	private Portal _portal;
-
-	@Inject(
-		filter = "component.name=com.liferay.object.internal.instance.lifecycle.CompanyObjectDefinitionPortalInstanceLifecycleListener"
-	)
-	private PortalInstanceLifecycleListener _portalInstanceLifecycleListener;
 
 	@Inject
 	private PortletLocalService _portletLocalService;
