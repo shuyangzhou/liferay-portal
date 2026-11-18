@@ -112,6 +112,21 @@ public class ObjectDefinitionResourcePermissionUtil {
 		resourceActions.removePortletResources(document);
 	}
 
+	public static void removeResourceActions(
+		ObjectDefinition objectDefinition, ResourceActions resourceActions) {
+
+		Document document = _objectDefinitionResourceActionDocumentsMap.remove(
+			_getKey(objectDefinition));
+
+		if (document == null) {
+			return;
+		}
+
+		resourceActions.removeModelResources(document);
+
+		resourceActions.removePortletResources(document);
+	}
+
 	public static void updateResourcePermissions(
 			long companyId, long groupId, String permissionName, long primKey,
 			ServiceContext serviceContext)
