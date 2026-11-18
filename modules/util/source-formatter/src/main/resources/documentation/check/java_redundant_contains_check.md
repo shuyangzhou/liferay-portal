@@ -45,6 +45,32 @@ those types the `contains` guard is the deduplication itself and cannot be
 folded into the `add`. The `remove` forms apply to lists as well, since
 `List.remove(Object)` does report presence.
 
+On a receiver that other threads change, the check and the operation race:
+the value can disappear, or another thread can add the same element, between
+the two calls. A receiver counts as such when it is a `ServiceTrackerMap` or a
+`ScopedServiceTrackerMap`, when its declared type starts with `Concurrent` or
+`CopyOnWrite`, or when it is assigned from `Collections.synchronized*`,
+`new Concurrent*`, `new CopyOnWrite*`, or `ConcurrentHashMap.newKeySet()`. A
+`containsKey` and `getService` pair on a receiver declared outside the file is
+treated as a `ServiceTrackerMap`. For these receivers the check also finds:
+
+- A `get` or `getService` anywhere in the `if` body, or later in the same
+`&&` condition, with no change to the receiver or the key in between.
+- A `contains`, `containsKey`, or `get(key) != null` check joined to other
+conditions with `&&`.
+- A guard, `if (!map.containsKey(key)) { return ...; }` or
+`if (map.get(key) == null) { return ...; }`, also as one of several `||`
+conditions, followed by a `get` or `getService` later in the same block.
+- A guard on a set, `if (set.contains(element)) { return ...; }` followed by
+`set.add(element);`, or `if (!set.contains(element)) { return ...; }` followed by
+`set.remove(element);`.
+
+Source Formatter rewrites the set forms into the boolean result of the single
+`add` or `remove` when the call is a statement of its own and the check is the
+last condition. The map forms need a new local variable, and `List.remove` has
+an index overload, so those forms are reported only. Plain maps, sets, and
+lists keep the narrower rules above.
+
 #### Example 1
 
 Instead of:
@@ -188,5 +214,59 @@ We should do:
 ```java
 protected void method6(List<String> list, String name) {
     list.remove(name);
+}
+```
+
+#### Example 7
+
+Instead of:
+
+```java
+protected Value method7(String key) {
+    if (!_serviceTrackerMap.containsKey(key)) {
+        return null;
+    }
+
+    return _serviceTrackerMap.getService(key);
+}
+```
+
+We should do:
+
+```java
+protected Value method7(String key) {
+    return _serviceTrackerMap.getService(key);
+}
+```
+
+#### Example 8
+
+Instead of:
+
+```java
+protected void method8(List<String> keys) {
+    for (String key : keys) {
+        if (_concurrentSet.contains(key)) {
+            continue;
+        }
+
+        _concurrentSet.add(key);
+
+        _process(key);
+    }
+}
+```
+
+We should do:
+
+```java
+protected void method8(List<String> keys) {
+    for (String key : keys) {
+        if (!_concurrentSet.add(key)) {
+            continue;
+        }
+
+        _process(key);
+    }
 }
 ```
