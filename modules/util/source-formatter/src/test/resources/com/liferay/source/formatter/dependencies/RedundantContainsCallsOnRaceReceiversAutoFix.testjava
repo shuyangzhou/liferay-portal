@@ -1,0 +1,78 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.liferay.source.formatter.dependencies;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
+
+/**
+ * @author Shuyang Zhou
+ */
+public class RedundantContainsCallsOnRaceReceiversAutoFix {
+
+	protected void method1(String key) {
+		if (!_concurrentSet.contains(key)) {
+			_concurrentSet.add(key);
+		}
+	}
+
+	protected boolean method2(String key) {
+		if (!_concurrentSet.contains(key)) {
+			_concurrentSet.add(key);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	protected void method3(String key) {
+		if (_synchronizedSet.contains(key)) {
+			_synchronizedSet.remove(key);
+		}
+	}
+
+	protected void method4(List<String> keys, List<String> values) {
+		for (String key : keys) {
+			if (_concurrentSet.contains(key)) {
+				continue;
+			}
+
+			_concurrentSet.add(key);
+
+			values.add(key);
+		}
+	}
+
+	protected void method5(String key, List<String> values) {
+		if ((key == null) || !_copyOnWriteArraySet.contains(key)) {
+			return;
+		}
+
+		_copyOnWriteArraySet.remove(key);
+
+		values.add(key);
+	}
+
+	protected void method6(String key, boolean add, List<String> values) {
+		if (add && !_concurrentSet.contains(key)) {
+			_concurrentSet.add(key);
+
+			values.add(key);
+		}
+	}
+
+	private final Set<String> _concurrentSet = ConcurrentHashMap.newKeySet();
+	private final Set<String> _copyOnWriteArraySet =
+		new CopyOnWriteArraySet<>();
+	private final Set<String> _synchronizedSet = Collections.synchronizedSet(
+		new HashSet<>());
+
+}

@@ -1180,6 +1180,81 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 	}
 
 	@Test
+	public void testRedundantContainsCallsOnRaceReceivers() throws Exception {
+		test(
+			SourceProcessorTestParameters.create(
+				"RedundantContainsCallsOnRaceReceivers.testjava"
+			).addExpectedMessage(
+				"Race condition on \"_serviceTrackerMap\": the value can " +
+					"disappear between \"containsKey\" and \"getService\", " +
+						"use a single \"getService\" with a null check",
+				26
+			).addExpectedMessage(
+				"Race condition on \"_concurrentMap\": the value can " +
+					"disappear between \"containsKey\" and \"get\", use a " +
+						"single \"get\" with a null check",
+				34
+			).addExpectedMessage(
+				"Race condition on \"_serviceTrackerMap\": the value can " +
+					"disappear between \"containsKey\" and \"getService\", " +
+						"use a single \"getService\" with a null check",
+				44
+			).addExpectedMessage(
+				"Race condition on \"_synchronizedMap\": the value can " +
+					"disappear between \"containsKey\" and \"get\", use a " +
+						"single \"get\" with a null check",
+				52
+			).addExpectedMessage(
+				"Race condition on \"_concurrentMap\": the value can " +
+					"disappear between \"containsKey\" and \"get\", use a " +
+						"single \"get\" with a null check",
+				60
+			).addExpectedMessage(
+				"Race condition on \"_concurrentMap\": the value can " +
+					"disappear between the null check and \"get\", use a " +
+						"single \"get\" with a null check",
+				70
+			).addExpectedMessage(
+				"Race condition on \"_concurrentMap\": the value can " +
+					"disappear between \"containsKey\" and \"get\", use a " +
+						"single \"get\" with a null check",
+				78
+			).addExpectedMessage(
+				"Race condition on \"_concurrentMap\": another thread can " +
+					"put the key between \"containsKey\" and \"put\", use a " +
+						"single \"putIfAbsent\" or \"computeIfAbsent\"",
+				86
+			).addExpectedMessage(
+				"Race condition on \"_scopedMap\": the value can disappear " +
+					"between the null check and \"getService\", use a single " +
+						"\"getService\" with a null check",
+				92
+			).addExpectedMessage(
+				"Race condition on \"_serviceTrackerMap\": the value can " +
+					"disappear between the null check and \"getService\", " +
+						"use a single \"getService\" with a null check",
+				100
+			).addExpectedMessage(
+				"Race condition on \"_concurrentSet\": the element can " +
+					"disappear between \"contains\" and \"remove\", use the " +
+						"boolean result of a single \"remove\"",
+				108
+			).addExpectedMessage(
+				"Race condition on \"_concurrentSet\": another thread can " +
+					"add the element between \"contains\" and \"add\", use " +
+						"the boolean result of a single \"add\"",
+				114
+			));
+	}
+
+	@Test
+	public void testRedundantContainsCallsOnRaceReceiversAutoFix()
+		throws Exception {
+
+		test("RedundantContainsCallsOnRaceReceiversAutoFix.testjava");
+	}
+
+	@Test
 	public void testRedundantLog() throws Exception {
 		test(
 			"RedundantLog.testjava",

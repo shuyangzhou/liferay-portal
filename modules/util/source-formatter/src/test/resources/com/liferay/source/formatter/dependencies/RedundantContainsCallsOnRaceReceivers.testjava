@@ -1,0 +1,174 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.liferay.source.formatter.dependencies;
+
+import com.liferay.osgi.service.tracker.collections.map.ScopedServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+/**
+ * @author Shuyang Zhou
+ */
+public class RedundantContainsCallsOnRaceReceivers {
+
+	protected String method1(String key) {
+		if (_serviceTrackerMap.containsKey(key)) {
+			return _serviceTrackerMap.getService(key);
+		}
+
+		return null;
+	}
+
+	protected String method2(String key) {
+		if (!_concurrentMap.containsKey(key)) {
+			return null;
+		}
+
+		String value = _concurrentMap.get(key);
+
+		return value.trim();
+	}
+
+	protected String method3(String key) {
+		if ((key == null) || !_serviceTrackerMap.containsKey(key)) {
+			return null;
+		}
+
+		return _serviceTrackerMap.getService(key);
+	}
+
+	protected String method4(String key) {
+		if ((key != null) && _synchronizedMap.containsKey(key)) {
+			return _synchronizedMap.get(key);
+		}
+
+		return null;
+	}
+
+	protected String method5(String key, List<String> values) {
+		if (_concurrentMap.containsKey(key)) {
+			values.add(key);
+
+			return _concurrentMap.get(key);
+		}
+
+		return null;
+	}
+
+	protected String method6(String key) {
+		if (_concurrentMap.get(key) != null) {
+			return _concurrentMap.get(key);
+		}
+
+		return null;
+	}
+
+	protected void method7(String key, String value, List<String> values) {
+		if (_concurrentMap.containsKey(key) &&
+			Objects.equals(_concurrentMap.get(key), value)) {
+
+			values.add(key);
+		}
+	}
+
+	protected void method8(String key, String value) {
+		if (!_concurrentMap.containsKey(key)) {
+			_concurrentMap.put(key, value);
+		}
+	}
+
+	protected String method9(long companyId, String key) {
+		if (_scopedMap.getService(companyId, key) != null) {
+			return _scopedMap.getService(companyId, key);
+		}
+
+		return null;
+	}
+
+	protected String method10(String key) {
+		if (_serviceTrackerMap.getService(key) == null) {
+			return null;
+		}
+
+		return _serviceTrackerMap.getService(key);
+	}
+
+	protected void method11(String key, boolean remove) {
+		if (_concurrentSet.contains(key) && remove) {
+			_concurrentSet.remove(key);
+		}
+	}
+
+	protected void method12(String key) {
+		if (_concurrentSet.contains(key) || key.isEmpty()) {
+			return;
+		}
+
+		_concurrentSet.add(key);
+	}
+
+	protected String method13(String key) {
+		if (_concurrentMap.containsKey(key)) {
+			_concurrentMap.remove(key + "_");
+
+			return _concurrentMap.get(key);
+		}
+
+		return null;
+	}
+
+	protected String method14(String key) {
+		if (!_hashMap.containsKey(key)) {
+			return null;
+		}
+
+		return _hashMap.get(key);
+	}
+
+	protected void method15(String key, List<String> values) {
+		if (_concurrentSet.contains(key)) {
+			return;
+		}
+
+		values.add(key);
+
+		_concurrentSet.add(key);
+	}
+
+	protected void method16(String key) {
+		if (!_copyOnWriteArrayList.contains(key)) {
+			_copyOnWriteArrayList.add(key);
+		}
+	}
+
+	protected String method17(String key, String defaultKey) {
+		if (!_serviceTrackerMap.containsKey(key)) {
+			key = defaultKey;
+		}
+
+		return _serviceTrackerMap.getService(key);
+	}
+
+	private final Map<String, String> _concurrentMap =
+		new ConcurrentHashMap<>();
+	private final Set<String> _concurrentSet = ConcurrentHashMap.newKeySet();
+	private final List<String> _copyOnWriteArrayList =
+		new CopyOnWriteArrayList<>();
+	private final Map<String, String> _hashMap = new HashMap<>();
+	private ScopedServiceTrackerMap<String> _scopedMap;
+	private ServiceTrackerMap<String, String> _serviceTrackerMap;
+	private final Map<String, String> _synchronizedMap =
+		Collections.synchronizedMap(new HashMap<>());
+
+}
