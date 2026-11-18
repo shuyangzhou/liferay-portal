@@ -204,6 +204,8 @@ public interface ObjectDefinitionLocalService
 
 	public void deployObjectDefinition(ObjectDefinition objectDefinition);
 
+	public void deployObjectDefinitions(long companyId);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public <T> T dslQuery(DSLQuery dslQuery);
 
@@ -469,6 +471,8 @@ public interface ObjectDefinitionLocalService
 
 	public void undeployObjectDefinition(ObjectDefinition objectDefinition);
 
+	public void undeployObjectDefinitions(long companyId);
+
 	@Indexable(type = IndexableType.REINDEX)
 	public ObjectDefinition updateClassName(long objectDefinitionId)
 		throws PortalException;
@@ -538,4 +542,4 @@ public interface ObjectDefinitionLocalService
 		throws PortalException;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-166599418
+// LIFERAY-SERVICE-BUILDER-HASH:-1388891295

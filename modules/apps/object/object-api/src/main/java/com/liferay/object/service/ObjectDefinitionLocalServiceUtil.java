@@ -244,6 +244,10 @@ public class ObjectDefinitionLocalServiceUtil {
 		getService().deployObjectDefinition(objectDefinition);
 	}
 
+	public static void deployObjectDefinitions(long companyId) {
+		getService().deployObjectDefinitions(companyId);
+	}
+
 	public static <T> T dslQuery(DSLQuery dslQuery) {
 		return getService().dslQuery(dslQuery);
 	}
@@ -621,6 +625,10 @@ public class ObjectDefinitionLocalServiceUtil {
 		getService().undeployObjectDefinition(objectDefinition);
 	}
 
+	public static void undeployObjectDefinitions(long companyId) {
+		getService().undeployObjectDefinitions(companyId);
+	}
+
 	public static ObjectDefinition updateClassName(long objectDefinitionId)
 		throws PortalException {
 
@@ -739,4 +747,4 @@ public class ObjectDefinitionLocalServiceUtil {
 			ObjectDefinitionLocalService.class);
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1077460860
+// LIFERAY-SERVICE-BUILDER-HASH:1492980378
