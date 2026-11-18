@@ -11,6 +11,8 @@ import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
 import com.liferay.expando.kernel.service.ExpandoTableLocalService;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
@@ -32,6 +34,7 @@ import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.db.partition.DBPartition;
+import com.liferay.portal.kernel.db.partition.DBPartitionCopyContributor;
 import com.liferay.portal.kernel.encryptor.CompanyKeyResolverUtil;
 import com.liferay.portal.kernel.encryptor.EncryptorException;
 import com.liferay.portal.kernel.exception.CompanyMaxUsersException;
@@ -656,7 +659,17 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 							_companyInfoPersistence.update(companyInfo);
 
-							return _addDBPartitionCompany(company);
+							preregisterCompany(company);
+
+							for (DBPartitionCopyContributor
+									dbPartitionCopyContributor :
+										_dbPartitionCopyContributors) {
+
+								dbPartitionCopyContributor.copy(
+									fromCompanyId, companyId);
+							}
+
+							return _checkDBPartitionCompany(company);
 						}
 					});
 
@@ -2289,13 +2302,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		preregisterCompany(company);
 
-		_classNameLocalService.checkClassNames();
-
-		_resourceActionLocalService.checkResourceActions();
-
-		_portletLocalService.checkPortlets(company.getCompanyId());
-
-		return company;
+		return _checkDBPartitionCompany(company);
 	}
 
 	private void _addDemoSettings(Company company) throws PortalException {
@@ -2399,6 +2406,18 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		_contactPersistence.update(guestContact);
 
 		return guestUser;
+	}
+
+	private Company _checkDBPartitionCompany(Company company)
+		throws PortalException {
+
+		_classNameLocalService.checkClassNames();
+
+		_resourceActionLocalService.checkResourceActions();
+
+		_portletLocalService.checkPortlets(company.getCompanyId());
+
+		return company;
 	}
 
 	private void _deletePortalInstance(Company company) throws PortalException {
@@ -2671,6 +2690,10 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	private static final Log _log = LogFactoryUtil.getLog(
 		CompanyLocalServiceImpl.class);
 
+	private static final ServiceTrackerList<DBPartitionCopyContributor>
+		_dbPartitionCopyContributors = ServiceTrackerListFactory.open(
+			SystemBundleUtil.getBundleContext(),
+			DBPartitionCopyContributor.class);
 	private static final MethodHandler _methodHandler = new MethodHandler(
 		new MethodKey(
 			CompanyLocalServiceImpl.class, "_doSynchronizePortalInstances"));
