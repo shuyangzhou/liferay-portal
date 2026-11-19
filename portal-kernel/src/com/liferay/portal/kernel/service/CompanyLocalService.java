@@ -579,4 +579,4 @@ public interface CompanyLocalService
 		throws PortalException;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1012762733
+// LIFERAY-SERVICE-BUILDER-HASH:-1908067789
