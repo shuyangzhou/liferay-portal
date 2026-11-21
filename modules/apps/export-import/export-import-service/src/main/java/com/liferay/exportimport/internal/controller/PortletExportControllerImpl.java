@@ -14,6 +14,7 @@ import com.liferay.exportimport.constants.ExportImportConstants;
 import com.liferay.exportimport.controller.PortletExportController;
 import com.liferay.exportimport.internal.data.handler.BatchEnginePortletDataHandler;
 import com.liferay.exportimport.internal.lar.PermissionExporter;
+import com.liferay.exportimport.internal.lar.RemoteStagingGroupExporter;
 import com.liferay.exportimport.kernel.controller.ExportImportController;
 import com.liferay.exportimport.kernel.exception.ExportImportIOException;
 import com.liferay.exportimport.kernel.exception.LayoutImportException;
@@ -38,6 +39,7 @@ import com.liferay.exportimport.portlet.element.handler.PortletElementHandler;
 import com.liferay.exportimport.portlet.element.handler.PortletElementHandlerFactory;
 import com.liferay.exportimport.portlet.preferences.processor.Capability;
 import com.liferay.exportimport.portlet.preferences.processor.ExportImportPortletPreferencesProcessor;
+import com.liferay.exportimport.portlet.preferences.processor.ExportImportPortletPreferencesProcessorHelper;
 import com.liferay.exportimport.portlet.preferences.processor.ExportImportPortletPreferencesProcessorRegistryUtil;
 import com.liferay.layout.admin.constants.LayoutAdminPortletKeys;
 import com.liferay.petra.string.CharPool;
@@ -864,6 +866,15 @@ public class PortletExportControllerImpl implements PortletExportController {
 				companyGroup.getExternalReferenceCode());
 		}
 
+		RemoteStagingGroupExporter remoteStagingGroupExporter =
+			new RemoteStagingGroupExporter(
+				_exportImportPortletPreferencesProcessorHelper,
+				_groupLocalService);
+
+		remoteStagingGroupExporter.addGroupExternalReferenceCodeMappingsElement(
+			_groupLocalService.getGroup(portletDataContext.getGroupId()),
+			headerElement);
+
 		headerElement.addAttribute("group-id", String.valueOf(scopeGroupId));
 		headerElement.addAttribute(
 			"user-personal-site-group-id",
@@ -1404,6 +1415,10 @@ public class PortletExportControllerImpl implements PortletExportController {
 
 	@Reference
 	private ExportImportLifecycleManager _exportImportLifecycleManager;
+
+	@Reference
+	private ExportImportPortletPreferencesProcessorHelper
+		_exportImportPortletPreferencesProcessorHelper;
 
 	@Reference
 	private ExportImportProcessCallbackRegistry

@@ -1,4 +1,8 @@
-{{- with .Values.clientExtensions.policy.allowedNamespaces -}}
+{{- $allowedNamespaces := .Values.clientExtensions.policy.allowedNamespaces -}}
+{{- with .Values.clientExtensions.policy.separateNamespace -}}
+{{- $allowedNamespaces = append $allowedNamespaces . -}}
+{{- end -}}
+{{- with $allowedNamespaces -}}
 apiVersion: v1
 data:
     allowedNamespaces: {{ . | uniq | sortAlpha | join "," | quote }}

@@ -353,6 +353,9 @@ public class SystemObjectRelatedObjectEntriesTest {
 
 		// Nested fields depth 2 with updated title object field ID
 
+		long titleObjectFieldId =
+			_userSystemObjectDefinition.getTitleObjectFieldId();
+
 		ObjectField titleObjectField = ObjectFieldTestUtil.addCustomObjectField(
 			TestPropsValues.getUserId(),
 			ObjectFieldConstants.BUSINESS_TYPE_TEXT,
@@ -394,6 +397,10 @@ public class SystemObjectRelatedObjectEntriesTest {
 				{_SYSTEM_OBJECT_FIELD_NAME, _SYSTEM_OBJECT_FIELD_VALUE}
 			},
 			Type.ONE_TO_MANY);
+
+		_objectDefinitionLocalService.updateTitleObjectFieldId(
+			_userSystemObjectDefinition.getObjectDefinitionId(),
+			titleObjectFieldId);
 	}
 
 	@Test

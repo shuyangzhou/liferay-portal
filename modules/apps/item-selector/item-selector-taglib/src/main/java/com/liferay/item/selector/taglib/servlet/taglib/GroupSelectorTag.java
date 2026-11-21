@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -64,6 +65,7 @@ public class GroupSelectorTag extends IncludeTag {
 		_groups = null;
 		_groupsCount = -1;
 		_keywords = null;
+		_scopeGroupOnly = null;
 		_scopeGroupType = null;
 	}
 
@@ -74,13 +76,13 @@ public class GroupSelectorTag extends IncludeTag {
 
 	@Override
 	protected void setAttributes(HttpServletRequest httpServletRequest) {
-		boolean scopeGroupTypeAndSiteGroupType =
-			_isScopeGroupTypeAndSiteGroupType(httpServletRequest);
+		boolean scopeGroupOnlyOrTypeAndSiteGroupType =
+			_isScopeGroupOnlyOrTypeAndSiteGroupType(httpServletRequest);
 
 		_groups = _getGroups(
-			httpServletRequest, scopeGroupTypeAndSiteGroupType);
+			httpServletRequest, scopeGroupOnlyOrTypeAndSiteGroupType);
 
-		_groupsCount = scopeGroupTypeAndSiteGroupType ? _groups.size() :
+		_groupsCount = scopeGroupOnlyOrTypeAndSiteGroupType ? _groups.size() :
 			_getGroupSelectorProviderGroupsCount(httpServletRequest);
 
 		httpServletRequest.setAttribute(
@@ -132,7 +134,7 @@ public class GroupSelectorTag extends IncludeTag {
 
 	private List<Group> _getGroups(
 		HttpServletRequest httpServletRequest,
-		boolean scopeGroupTypeAndSiteGroupType) {
+		boolean scopeGroupOnlyOrTypeAndSiteGroupType) {
 
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)httpServletRequest.getAttribute(
@@ -140,7 +142,11 @@ public class GroupSelectorTag extends IncludeTag {
 
 		Group group = _getGroup(themeDisplay);
 
-		if (scopeGroupTypeAndSiteGroupType) {
+		if (scopeGroupOnlyOrTypeAndSiteGroupType) {
+			if (_isScopeGroupOnly(httpServletRequest)) {
+				return ListUtil.fromArray(group);
+			}
+
 			return _getScopeGroupTypeAndSiteGroupTypeGroups(group);
 		}
 
@@ -218,6 +224,30 @@ public class GroupSelectorTag extends IncludeTag {
 		return groups;
 	}
 
+	private boolean _isScopeGroupOnly(HttpServletRequest httpServletRequest) {
+		if (_scopeGroupOnly != null) {
+			return _scopeGroupOnly;
+		}
+
+		_scopeGroupOnly = ParamUtil.getBoolean(
+			httpServletRequest, "scopeGroupOnly");
+
+		return _scopeGroupOnly;
+	}
+
+	private boolean _isScopeGroupOnlyOrTypeAndSiteGroupType(
+		HttpServletRequest httpServletRequest) {
+
+		if ((_isScopeGroupOnly(httpServletRequest) ||
+			 _isScopeGroupType(httpServletRequest)) &&
+			Objects.equals(_getGroupType(httpServletRequest), "site")) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	private boolean _isScopeGroupType(HttpServletRequest httpServletRequest) {
 		if (_scopeGroupType != null) {
 			return _scopeGroupType;
@@ -229,18 +259,6 @@ public class GroupSelectorTag extends IncludeTag {
 		return _scopeGroupType;
 	}
 
-	private boolean _isScopeGroupTypeAndSiteGroupType(
-		HttpServletRequest httpServletRequest) {
-
-		if (_isScopeGroupType(httpServletRequest) &&
-			Objects.equals(_getGroupType(httpServletRequest), "site")) {
-
-			return true;
-		}
-
-		return false;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		GroupSelectorTag.class);
 
@@ -248,6 +266,7 @@ public class GroupSelectorTag extends IncludeTag {
 	private List<Group> _groups;
 	private int _groupsCount = -1;
 	private String _keywords;
+	private Boolean _scopeGroupOnly;
 	private Boolean _scopeGroupType;
 
 }

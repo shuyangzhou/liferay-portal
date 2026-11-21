@@ -1,10 +1,15 @@
+{{- $databaseAdminLogin := "liferay_database_admin" -}}
 {{- $databaseName := "lportal" -}}
 {{- $env := index .context "apiextensions.crossplane.io/environment" -}}
 {{- $observedResources := .observed.resources | default dict -}}
 {{- $xr := .observed.composite.resource -}}
 
 {{- if eq $xr.spec.search.engine "opensearch" -}}
-{{- fail "Azure has no managed OpenSearch, so search.engine must be elasticsearch" -}}
+{{- fail "Azure has no managed OpenSearch, so \"search.engine\" must be \"elasticsearch\"" -}}
+{{- end -}}
+
+{{- if dig "search" "snapshots" "enabled" false $xr.spec -}}
+{{- fail "Search snapshots are only available on GCP, so \"search.snapshots.enabled\" must be false" -}}
 {{- end -}}
 
 {{- $backup := $xr.spec.backup -}}
@@ -23,7 +28,11 @@
 {{- $activeDataPlane := $targetActiveDataPlane -}}
 {{- $backupRetentionDays := max 7 (min 35 (int $backup.retentionDays)) -}}
 {{- $dataPlanes := list $targetActiveDataPlane -}}
-{{- $databaseServerType := get (dict "mysql" "Microsoft.DBforMySQL/flexibleServers" "postgresql" "Microsoft.DBforPostgreSQL/flexibleServers") $env.databaseEngine -}}
+{{- $databaseEngineValues := get (dict
+    "mysql" (dict "apiVersion" "dbformysql.azure.m.upbound.io/v1beta1" "databaseKind" "FlexibleDatabase" "serverType" "Microsoft.DBforMySQL/flexibleServers" "skuName" "GP_Standard_D2ds_v4" "version" "8.4")
+    "postgresql" (dict "apiVersion" "dbforpostgresql.azure.m.upbound.io/v1beta1" "databaseKind" "FlexibleServerDatabase" "serverType" "Microsoft.DBforPostgreSQL/flexibleServers" "skuName" "GP_Standard_D2s_v3" "version" "18")) $env.databaseEngine -}}
+{{- $databaseSKUName := $xr.spec.database.instanceType | default $databaseEngineValues.skuName -}}
+{{- $databaseVersion := $xr.spec.database.version | default $databaseEngineValues.version -}}
 {{- $overlayStorageAccountName := printf "%.9s%.6sovl%s" ($env.deploymentName | replace "-" "" | lower) ($projectId | replace "-" "" | lower) (printf "%s-%s" $env.deploymentName $projectId | sha256sum | trunc 6) -}}
 {{- $projectIdFull := printf "%s-%s" $projectId $environmentId -}}
 {{- $targetInactiveDataPlane := (eq $targetActiveDataPlane "blue") | ternary "green" "blue" -}}

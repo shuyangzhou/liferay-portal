@@ -1,0 +1,185 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.liferay.content.marketing.platform.site.cms.site.initializer.util.test;
+
+import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.content.marketing.platform.test.util.CMPTestUtil;
+import com.liferay.object.model.ObjectDefinition;
+import com.liferay.object.model.ObjectEntry;
+import com.liferay.object.service.ObjectDefinitionLocalService;
+import com.liferay.portal.kernel.license.util.App;
+import com.liferay.portal.kernel.license.util.LicenseManager;
+import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
+import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.service.LayoutLocalService;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.test.rule.Inject;
+import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
+import com.liferay.site.cms.site.initializer.util.CMPLicenseUtil;
+
+import java.util.Date;
+import java.util.Objects;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+/**
+ * @author Fábio Alves
+ */
+@RunWith(Arquillian.class)
+public class CMPLicenseUtilTest {
+
+	@ClassRule
+	@Rule
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(),
+			PermissionCheckerMethodTestRule.INSTANCE);
+
+	@Before
+	public void setUp() throws Exception {
+		_group = CMPTestUtil.getOrAddGroup(CMPLicenseUtilTest.class);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		_checkResources();
+	}
+
+	@Test
+	public void testCheckResources() throws Exception {
+		_testCheckResourcesWhenAppIsDisabled();
+		_testCheckResourcesWhenExpired();
+		_testCheckResourcesWhenLicenseIsUnlimited();
+		_testCheckResourcesWhenNotExpired();
+	}
+
+	private void _assertLayout(boolean appEnabled, String friendlyURL)
+		throws Exception {
+
+		Layout layout = _layoutLocalService.getFriendlyURLLayout(
+			_group.getGroupId(), false, friendlyURL);
+
+		Assert.assertEquals(!appEnabled, layout.isHidden());
+	}
+
+	private void _assertObjectDefinition(
+			boolean appEnabled, String externalReferenceCode)
+		throws Exception {
+
+		ObjectDefinition objectDefinition =
+			_objectDefinitionLocalService.
+				getObjectDefinitionByExternalReferenceCode(
+					externalReferenceCode, _group.getCompanyId());
+
+		Assert.assertEquals(appEnabled, objectDefinition.isActive());
+
+		ModelResourcePermission<ObjectEntry> modelResourcePermission =
+			ModelResourcePermissionRegistryUtil.getModelResourcePermission(
+				objectDefinition.getClassName());
+
+		if (appEnabled) {
+			Assert.assertNotNull(modelResourcePermission);
+		}
+		else {
+			Assert.assertNull(modelResourcePermission);
+		}
+	}
+
+	private void _checkResources() {
+		CMPLicenseUtil.checkResources(
+			_group.getCompanyId(), _groupLocalService, _layoutLocalService,
+			_objectDefinitionLocalService);
+	}
+
+	private void _testCheckResources(
+			boolean appEnabled, boolean expectedAppEnabled, Date expirationDate)
+		throws Exception {
+
+		// Read before the stub replaces it
+
+		LicenseManager licenseManager = LicenseManagerUtil.getLicenseManager();
+
+		try (AutoCloseable autoCloseable =
+				ReflectionTestUtil.setFieldValueWithAutoCloseable(
+					LicenseManagerUtil.class, "_licenseManager",
+					ProxyUtil.newProxyInstance(
+						LicenseManager.class.getClassLoader(),
+						new Class<?>[] {LicenseManager.class},
+						(proxy, method, arguments) -> {
+							String methodName = method.getName();
+
+							if (Objects.equals(
+									methodName, "getAppExpirationDate") &&
+								Objects.equals(arguments[0], App.CMP)) {
+
+								return expirationDate;
+							}
+
+							if (Objects.equals(methodName, "isAppEnabled") &&
+								Objects.equals(arguments[0], App.CMP)) {
+
+								return appEnabled;
+							}
+
+							return method.invoke(licenseManager, arguments);
+						}))) {
+
+			_checkResources();
+
+			_assertLayout(true, "/planning");
+			_assertLayout(expectedAppEnabled, "/projects");
+			_assertLayout(true, "/tasks");
+			_assertObjectDefinition(expectedAppEnabled, "L_CMP_PROJECT");
+			_assertObjectDefinition(expectedAppEnabled, "L_CMP_PROJECT_LINK");
+			_assertObjectDefinition(expectedAppEnabled, "L_CMP_TASK");
+			_assertObjectDefinition(expectedAppEnabled, "L_CMP_TASK_LINK");
+		}
+	}
+
+	private void _testCheckResourcesWhenAppIsDisabled() throws Exception {
+		_testCheckResources(false, false, null);
+	}
+
+	private void _testCheckResourcesWhenExpired() throws Exception {
+		_testCheckResources(
+			true, false, new Date(System.currentTimeMillis() - Time.DAY));
+	}
+
+	private void _testCheckResourcesWhenLicenseIsUnlimited() throws Exception {
+		_testCheckResources(true, true, null);
+	}
+
+	private void _testCheckResourcesWhenNotExpired() throws Exception {
+		_testCheckResources(
+			true, true, new Date(System.currentTimeMillis() + Time.DAY));
+	}
+
+	private Group _group;
+
+	@Inject
+	private GroupLocalService _groupLocalService;
+
+	@Inject
+	private LayoutLocalService _layoutLocalService;
+
+	@Inject
+	private ObjectDefinitionLocalService _objectDefinitionLocalService;
+
+}

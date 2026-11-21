@@ -5,6 +5,7 @@
 
 package com.liferay.portal.kernel.cache.transactional;
 
+import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringPool;
@@ -20,9 +21,6 @@ import com.liferay.portal.kernel.transaction.TransactionAttribute;
 import com.liferay.portal.kernel.transaction.TransactionDefinition;
 import com.liferay.portal.kernel.transaction.TransactionLifecycleListener;
 import com.liferay.portal.kernel.transaction.TransactionStatus;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
 
 import java.io.Serializable;
 
@@ -46,10 +44,6 @@ public class TransactionalPortalCacheUtil {
 			public void committed(
 				TransactionAttribute transactionAttribute,
 				TransactionStatus transactionStatus) {
-
-				if (!_isTransactionalCacheEnabled()) {
-					return;
-				}
 
 				Propagation propagation = transactionAttribute.getPropagation();
 
@@ -81,10 +75,6 @@ public class TransactionalPortalCacheUtil {
 				TransactionAttribute transactionAttribute,
 				TransactionStatus transactionStatus) {
 
-				if (!_isTransactionalCacheEnabled()) {
-					return;
-				}
-
 				Propagation propagation = transactionAttribute.getPropagation();
 
 				if (propagation == Propagation.NESTED) {
@@ -109,10 +99,6 @@ public class TransactionalPortalCacheUtil {
 			public void rollbacked(
 				TransactionAttribute transactionAttribute,
 				TransactionStatus transactionStatus, Throwable throwable) {
-
-				if (!_isTransactionalCacheEnabled()) {
-					return;
-				}
 
 				Propagation propagation = transactionAttribute.getPropagation();
 
@@ -280,6 +266,31 @@ public class TransactionalPortalCacheUtil {
 		}
 	}
 
+	public static <K extends Serializable, V, E extends Exception> V get(
+			PortalCache<K, V> portalCache, K key,
+			UnsafeFunction<K, V, E> loadUnsafeFunction)
+		throws E {
+
+		V value = portalCache.get(key);
+
+		if (value != null) {
+			return value;
+		}
+
+		if (isEnabled()) {
+			return _load(portalCache, key, loadUnsafeFunction);
+		}
+
+		begin();
+
+		try {
+			return _load(portalCache, key, loadUnsafeFunction);
+		}
+		finally {
+			commit(true);
+		}
+	}
+
 	public static Serializable getNullHolder() {
 		return _NULL_HOLDER;
 	}
@@ -300,6 +311,14 @@ public class TransactionalPortalCacheUtil {
 		}
 	}
 
+	public static void invalidate(
+		PortalCache<?, ?> portalCache, boolean removeAll,
+		Collection<Serializable> keys) {
+
+		_invalidationSequence.invalidate(
+			_getRegionName(portalCache), 0, removeAll, keys);
+	}
+
 	public static <K extends Serializable> void invalidate(
 		PortalCache<K, ?> portalCache, K key) {
 
@@ -307,10 +326,6 @@ public class TransactionalPortalCacheUtil {
 	}
 
 	public static boolean isEnabled() {
-		if (!_isTransactionalCacheEnabled()) {
-			return false;
-		}
-
 		List<PortalCacheMap> portalCacheMaps = _portalCacheMaps.get();
 
 		return !portalCacheMaps.isEmpty();
@@ -318,10 +333,6 @@ public class TransactionalPortalCacheUtil {
 
 	public static <K extends Serializable> void preparePut(
 		PortalCache<K, ?> portalCache, K key) {
-
-		if (!_isTransactionalCacheEnabled()) {
-			return;
-		}
 
 		List<PortalCacheMap> portalCacheMaps = _portalCacheMaps.get();
 
@@ -436,13 +447,20 @@ public class TransactionalPortalCacheUtil {
 		return uncommittedBuffer;
 	}
 
-	private static boolean _isTransactionalCacheEnabled() {
-		if (_transactionalCacheEnabled == null) {
-			_transactionalCacheEnabled = GetterUtil.getBoolean(
-				PropsUtil.get(PropsKeys.TRANSACTIONAL_CACHE_ENABLED));
+	private static <K extends Serializable, V, E extends Exception> V _load(
+			PortalCache<K, V> portalCache, K key,
+			UnsafeFunction<K, V, E> loadUnsafeFunction)
+		throws E {
+
+		V value = loadUnsafeFunction.apply(key);
+
+		if (value != null) {
+			completePut(
+				portalCache, key, value, getStartSequence(),
+				PortalCache.DEFAULT_TIME_TO_LIVE);
 		}
 
-		return _transactionalCacheEnabled;
+		return value;
 	}
 
 	private static PortalCacheMap _peekPortalCacheMap() {
@@ -476,7 +494,6 @@ public class TransactionalPortalCacheUtil {
 		new CentralizedThreadLocal<>(
 			TransactionalPortalCacheUtil.class.getName() + "._portalCacheMaps",
 			ArrayList::new, false);
-	private static volatile Boolean _transactionalCacheEnabled;
 	private static final CentralizedThreadLocal<boolean[]>
 		_uncommittedBufferMissMarker = new CentralizedThreadLocal<>(
 			TransactionalPortalCacheUtil.class.getName() +

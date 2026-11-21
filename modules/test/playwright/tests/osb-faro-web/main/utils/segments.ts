@@ -21,8 +21,11 @@ export async function addNestedSegmentField({
 	nestedSegmentField: string;
 	page: Page;
 }) {
-	await page.locator('button.dropdown-toggle.btn-outline-secondary').click();
-	await page.getByRole('menuitem', {name: criterionType}).click();
+	await clickAndExpectToBeVisible({
+		autoClick: true,
+		target: page.getByRole('option', {name: criterionType}),
+		trigger: page.getByRole('combobox', {name: 'Condition Type'}),
+	});
 
 	await dragAndDropCriteriaItem({
 		nestedSegmentField,
@@ -66,11 +69,6 @@ export async function createBatchSegment(page: Page) {
 			.getByRole('button', {name: 'Menu'})
 			.filter({hasText: 'New Segment'}),
 	});
-}
-
-export async function createDynamicSegment(page: Page) {
-	await page.getByRole('banner').getByLabel('Menu').click();
-	await page.getByRole('menuitem', {name: 'Dynamic Segment'}).click();
 }
 
 export async function deleteSegment({
@@ -230,7 +228,7 @@ export async function selectBehaviorAsset({
 
 	await page
 		.getByRole('dialog')
-		.getByRole('button', {exact: true, name: 'Select'})
+		.getByRole('button', {exact: true, name: 'Add'})
 		.click();
 }
 
@@ -257,7 +255,7 @@ export async function selectBehaviorPage({
 
 	await page
 		.getByRole('dialog')
-		.getByRole('button', {exact: true, name: 'Select'})
+		.getByRole('button', {exact: true, name: 'Add'})
 		.click();
 }
 

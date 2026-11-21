@@ -11,6 +11,7 @@ import com.liferay.map.test.util.GeocoderTestUtil;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.field.builder.LocationObjectFieldBuilder;
 import com.liferay.object.model.ObjectDefinition;
+import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.test.util.ObjectDefinitionTestUtil;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
@@ -22,10 +23,10 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.HTTPTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.test.rule.FeatureFlag;
 import com.liferay.portal.test.rule.FeatureFlags;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -70,57 +71,43 @@ public class ObjectEntryResourceLocalizationTest
 	public void testGetObjectEntriesPageWithLocalizedObjectField()
 		throws Exception {
 
-		JSONObject jsonObject = HTTPTestUtil.invokeToJSONObject(
-			null,
-			getObjectDefinition4().getRESTContextPath() + "/?search=textEng",
-			Http.Method.GET);
-
-		JSONArray itemsJSONArray = jsonObject.getJSONArray("items");
-
-		Assert.assertEquals(1, itemsJSONArray.length());
-
-		jsonObject = HTTPTestUtil.invokeToJSONObject(
-			null,
-			getObjectDefinition4().getRESTContextPath() + "/?search=textEng",
+		_testGetObjectEntriesPageWithLocalizedObjectField(
+			0,
 			HashMapBuilder.put(
 				"Accept-Language", "es-ES"
 			).build(),
-			Http.Method.GET);
-
-		itemsJSONArray = jsonObject.getJSONArray("items");
-
-		Assert.assertEquals(0, itemsJSONArray.length());
-
-		jsonObject = HTTPTestUtil.invokeToJSONObject(
-			null,
-			getObjectDefinition4().getRESTContextPath() + "/?search=textEsp",
+			"textEng");
+		_testGetObjectEntriesPageWithLocalizedObjectField(
+			1,
 			HashMapBuilder.put(
 				"Accept-Language", "es-ES"
 			).build(),
-			Http.Method.GET);
-
-		itemsJSONArray = jsonObject.getJSONArray("items");
-
-		Assert.assertEquals(1, itemsJSONArray.length());
+			"textEsp");
+		_testGetObjectEntriesPageWithLocalizedObjectField(1, null, "textEng");
 	}
 
 	@Test
 	public void testGetObjectEntryTranslation() throws Exception {
+		ObjectDefinition objectDefinition = getObjectDefinition4();
+		ObjectEntry objectEntry = getLocalizedObjectEntry();
+
 		_testGetObjectEntryTranslation(
 			StringBundler.concat(
-				getObjectDefinition4().getRESTContextPath(), StringPool.SLASH,
-				getObjectEntry5().getObjectEntryId(),
-				"/translations?sourceLanguageId=en_US",
-				"&targetLanguageIds=es_ES"),
+				objectDefinition.getRESTContextPath(), StringPool.SLASH,
+				objectEntry.getObjectEntryId(),
+				"/translations?sourceLanguageId=en_US&targetLanguageIds=es_ES"),
 			null);
 	}
 
 	@Test
 	public void testGetObjectEntryTranslationLanguage() throws Exception {
+		ObjectDefinition objectDefinition = getObjectDefinition4();
+		ObjectEntry objectEntry = getLocalizedObjectEntry();
+
 		_testGetObjectEntryTranslation(
 			StringBundler.concat(
-				getObjectDefinition4().getRESTContextPath(), StringPool.SLASH,
-				getObjectEntry5().getObjectEntryId(),
+				objectDefinition.getRESTContextPath(), StringPool.SLASH,
+				objectEntry.getObjectEntryId(),
 				"/translations/en_US?targetLanguageId=es_ES"),
 			HashMapBuilder.put(
 				HttpHeaders.ACCEPT, "application/xliff+xml"
@@ -129,98 +116,24 @@ public class ObjectEntryResourceLocalizationTest
 
 	@Test
 	public void testGetObjectEntryWithLocalizedObjectField() throws Exception {
-
-		// "Accept-Language" header
-
-		JSONAssert.assertEquals(
-			JSONUtil.put(
-				OBJECT_FIELD_NAME_LOCALIZED_LONG_TEXT, "longTextEsp"
-			).put(
-				OBJECT_FIELD_NAME_LOCALIZED_RICH_TEXT, "<p>richTextEsp</p>"
-			).put(
-				OBJECT_FIELD_NAME_LOCALIZED_RICH_TEXT + "RawText", "richTextEsp"
-			).put(
-				OBJECT_FIELD_NAME_LOCALIZED_TEXT, "textEsp"
-			).toString(),
-			HTTPTestUtil.invokeToJSONObject(
-				null,
-				getObjectDefinition4().getRESTContextPath() + StringPool.SLASH +
-					getObjectEntry5().getObjectEntryId(),
-				HashMapBuilder.put(
-					"Accept-Language", "es-ES"
-				).build(),
-				Http.Method.GET
-			).toString(),
-			JSONCompareMode.LENIENT);
-
-		// Empty "Accept-Language" header
-
-		JSONAssert.assertEquals(
-			JSONUtil.put(
-				OBJECT_FIELD_NAME_LOCALIZED_LONG_TEXT, "longTextEng"
-			).put(
-				OBJECT_FIELD_NAME_LOCALIZED_RICH_TEXT, "<p>richTextEng</p>"
-			).put(
-				OBJECT_FIELD_NAME_LOCALIZED_RICH_TEXT + "RawText", "richTextEng"
-			).put(
-				OBJECT_FIELD_NAME_LOCALIZED_TEXT, "textEng"
-			).toString(),
-			HTTPTestUtil.invokeToJSONObject(
-				null,
-				getObjectDefinition4().getRESTContextPath() + StringPool.SLASH +
-					getObjectEntry5().getObjectEntryId(),
-				HashMapBuilder.put(
-					"Accept-Language", ""
-				).build(),
-				Http.Method.GET
-			).toString(),
-			JSONCompareMode.LENIENT);
-
-		// Nonexistent "Accept-Language" header
-
-		JSONAssert.assertEquals(
-			JSONUtil.put(
-				OBJECT_FIELD_NAME_LOCALIZED_LONG_TEXT, "longTextEng"
-			).put(
-				OBJECT_FIELD_NAME_LOCALIZED_RICH_TEXT, "<p>richTextEng</p>"
-			).put(
-				OBJECT_FIELD_NAME_LOCALIZED_RICH_TEXT + "RawText", "richTextEng"
-			).put(
-				OBJECT_FIELD_NAME_LOCALIZED_TEXT, "textEng"
-			).toString(),
-			HTTPTestUtil.invokeToJSONObject(
-				null,
-				getObjectDefinition4().getRESTContextPath() + StringPool.SLASH +
-					getObjectEntry5().getObjectEntryId(),
-				HashMapBuilder.put(
-					"Accept-Language", "de-DE"
-				).build(),
-				Http.Method.GET
-			).toString(),
-			JSONCompareMode.LENIENT);
-
-		// Without "Accept-Language" header
-
-		JSONAssert.assertEquals(
-			JSONUtil.put(
-				OBJECT_FIELD_NAME_LOCALIZED_LONG_TEXT, "longTextEng"
-			).put(
-				OBJECT_FIELD_NAME_LOCALIZED_RICH_TEXT, "<p>richTextEng</p>"
-			).put(
-				OBJECT_FIELD_NAME_LOCALIZED_RICH_TEXT + "RawText", "richTextEng"
-			).put(
-				OBJECT_FIELD_NAME_LOCALIZED_TEXT, "textEng"
-			).toString(),
-			HTTPTestUtil.invokeToJSONObject(
-				null,
-				getObjectDefinition4().getRESTContextPath() + StringPool.SLASH +
-					getObjectEntry5().getObjectEntryId(),
-				Http.Method.GET
-			).toString(),
-			JSONCompareMode.LENIENT);
+		_testGetObjectEntryWithLocalizedObjectField(
+			"Eng",
+			HashMapBuilder.put(
+				"Accept-Language", ""
+			).build());
+		_testGetObjectEntryWithLocalizedObjectField(
+			"Eng",
+			HashMapBuilder.put(
+				"Accept-Language", "de-DE"
+			).build());
+		_testGetObjectEntryWithLocalizedObjectField("Eng", null);
+		_testGetObjectEntryWithLocalizedObjectField(
+			"Esp",
+			HashMapBuilder.put(
+				"Accept-Language", "es-ES"
+			).build());
 	}
 
-	@FeatureFlag("LPD-11388")
 	@Test
 	public void testPostCustomObjectEntryWithLocalizedLocationObjectField()
 		throws Exception {
@@ -283,11 +196,24 @@ public class ObjectEntryResourceLocalizationTest
 	}
 
 	private int _getTempFilesCount() {
-		File tempFile = FileUtil.createTempFile();
+		File tempDir = new File(SystemProperties.get(SystemProperties.TMP_DIR));
 
-		File parentFile = tempFile.getParentFile();
+		return ArrayUtil.getLength(tempDir.listFiles());
+	}
 
-		return ArrayUtil.getLength(parentFile.listFiles());
+	private void _testGetObjectEntriesPageWithLocalizedObjectField(
+			int expectedItemsCount, Map<String, String> headers, String search)
+		throws Exception {
+
+		ObjectDefinition objectDefinition = getObjectDefinition4();
+
+		JSONObject jsonObject = HTTPTestUtil.invokeToJSONObject(
+			null, objectDefinition.getRESTContextPath() + "/?search=" + search,
+			headers, Http.Method.GET);
+
+		JSONArray itemsJSONArray = jsonObject.getJSONArray("items");
+
+		Assert.assertEquals(expectedItemsCount, itemsJSONArray.length());
 	}
 
 	private void _testGetObjectEntryTranslation(
@@ -297,20 +223,45 @@ public class ObjectEntryResourceLocalizationTest
 		int tempFilesCount = _getTempFilesCount();
 
 		try (InputStream inputStream = HTTPTestUtil.invokeToInputStream(
-				null, endpoint, headers, Http.Method.GET)) {
+				null, endpoint, headers, Http.Method.GET);
 
-			Assert.assertNotNull(inputStream);
+			ZipInputStream zipInputStream = new ZipInputStream(inputStream)) {
 
-			try (ZipInputStream zipInputStream = new ZipInputStream(
-					inputStream)) {
+			zipInputStream.getNextEntry();
 
-				zipInputStream.getNextEntry();
-
-				Assert.assertNotNull(StringUtil.read(zipInputStream));
-			}
+			Assert.assertNotNull(StringUtil.read(zipInputStream));
 		}
 
 		Assert.assertEquals(tempFilesCount, _getTempFilesCount());
+	}
+
+	private void _testGetObjectEntryWithLocalizedObjectField(
+			String expectedValueSuffix, Map<String, String> headers)
+		throws Exception {
+
+		ObjectDefinition objectDefinition = getObjectDefinition4();
+		ObjectEntry objectEntry = getLocalizedObjectEntry();
+
+		JSONAssert.assertEquals(
+			JSONUtil.put(
+				OBJECT_FIELD_NAME_LOCALIZED_LONG_TEXT,
+				"longText" + expectedValueSuffix
+			).put(
+				OBJECT_FIELD_NAME_LOCALIZED_RICH_TEXT,
+				"<p>richText" + expectedValueSuffix + "</p>"
+			).put(
+				OBJECT_FIELD_NAME_LOCALIZED_RICH_TEXT + "RawText",
+				"richText" + expectedValueSuffix
+			).put(
+				OBJECT_FIELD_NAME_LOCALIZED_TEXT, "text" + expectedValueSuffix
+			).toString(),
+			HTTPTestUtil.invokeToJSONObject(
+				null,
+				objectDefinition.getRESTContextPath() + StringPool.SLASH +
+					objectEntry.getObjectEntryId(),
+				headers, Http.Method.GET
+			).toString(),
+			JSONCompareMode.LENIENT);
 	}
 
 }

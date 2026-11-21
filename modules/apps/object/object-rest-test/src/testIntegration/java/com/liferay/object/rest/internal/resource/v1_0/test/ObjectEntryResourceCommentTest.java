@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.lazy.referencing.LazyReferencingThreadLocal;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.test.randomizerbumpers.UniqueStringRandomizerBumper;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.HTTPTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -119,6 +120,21 @@ public class ObjectEntryResourceCommentTest
 
 	@FeatureFlag("LPD-43996")
 	@Test
+	public void testPatchPostPutObjectEntryWithMissingParentCommentReference()
+		throws Exception {
+
+		_enableComments(getObjectDefinition1());
+
+		_testPatchPostPutObjectEntryWithMissingParentCommentReference(
+			Http.Method.PATCH);
+		_testPatchPostPutObjectEntryWithMissingParentCommentReference(
+			Http.Method.POST);
+		_testPatchPostPutObjectEntryWithMissingParentCommentReference(
+			Http.Method.PUT);
+	}
+
+	@FeatureFlag("LPD-43996")
+	@Test
 	public void testPatchPutObjectEntryWithComments() throws Exception {
 
 		// Company scope
@@ -150,97 +166,23 @@ public class ObjectEntryResourceCommentTest
 
 	@FeatureFlag("LPD-43996")
 	@Test
-	public void testPatchPutObjectEntryWithMissingParentCommentReference()
-		throws Exception {
-
-		_enableComments(getObjectDefinition1());
-
-		_testPatchPutObjectEntryWithMissingParentCommentReference(
-			Http.Method.PATCH);
-		_testPatchPutObjectEntryWithMissingParentCommentReference(
-			Http.Method.PUT);
-	}
-
-	@FeatureFlag("LPD-43996")
-	@Test
-	public void testPostObjectEntriesWithComments() throws Exception {
+	public void testPostObjectEntryWithComments() throws Exception {
 
 		// Company scope
 
-		_testPostObjectEntriesWithComments(0, getObjectDefinition1());
+		_testPostObjectEntryWithComments(0, getObjectDefinition1());
 
 		// Site scope
 
 		PropsUtil.set("feature.flag.LPD-43996", "false");
 
 		try {
-			_testPostObjectEntriesWithComments(
+			_testPostObjectEntryWithComments(
 				testGroupId, getSiteScopedObjectDefinition1());
 		}
 		finally {
 			PropsUtil.set("feature.flag.LPD-43996", "true");
 		}
-	}
-
-	@FeatureFlag("LPD-43996")
-	@Test
-	public void testPostObjectEntriesWithMissingParentCommentReference()
-		throws Exception {
-
-		_enableComments(getObjectDefinition1());
-
-		String parentExternalReferenceCode = RandomTestUtil.randomString();
-
-		com.liferay.object.rest.dto.v1_0.ObjectEntry objectEntry =
-			new com.liferay.object.rest.dto.v1_0.ObjectEntry() {
-				{
-					systemProperties = new SystemProperties() {
-						{
-							comments = new Comment[] {
-								new Comment() {
-									{
-										externalReferenceCode =
-											RandomTestUtil.randomString();
-										parentCommentExternalReferenceCode =
-											parentExternalReferenceCode;
-										text = RandomTestUtil.randomString();
-									}
-								}
-							};
-						}
-					};
-				}
-			};
-
-		Company company = companyLocalService.getCompany(
-			TestPropsValues.getCompanyId());
-
-		Assert.assertNull(
-			_commentManager.fetchComment(
-				company.getGroupId(), parentExternalReferenceCode));
-
-		ObjectEntryResource objectEntryResource = getObjectEntryResource(
-			getObjectDefinition1(), TestPropsValues.getUser());
-
-		try (SafeCloseable safeCloseable =
-				LazyReferencingThreadLocal.setEnabledWithSafeCloseable(true)) {
-
-			objectEntryResource.postObjectEntry(objectEntry);
-		}
-
-		com.liferay.portal.kernel.comment.Comment serviceBuilderComment =
-			_commentManager.getComment(
-				company.getGroupId(), parentExternalReferenceCode);
-
-		Assert.assertTrue(serviceBuilderComment instanceof WorkflowableComment);
-
-		WorkflowableComment workflowableComment =
-			(WorkflowableComment)serviceBuilderComment;
-
-		Assert.assertEquals(
-			WorkflowConstants.STATUS_EMPTY, workflowableComment.getStatus());
-
-		_commentManager.deleteComment(serviceBuilderComment.getCommentId());
 	}
 
 	@FeatureFlag("LPD-43996")
@@ -252,20 +194,20 @@ public class ObjectEntryResourceCommentTest
 					ObjectFieldUtil.createObjectField(
 						ObjectFieldConstants.BUSINESS_TYPE_TEXT,
 						ObjectFieldConstants.DB_TYPE_STRING, true, true, null,
-						"comments", "comments", false)),
+						RandomTestUtil.randomString(), "comments", false)),
 				ObjectDefinitionConstants.SCOPE_COMPANY);
 
 		_enableComments(objectDefinition);
 
-		String value = RandomTestUtil.randomString();
+		String comments = RandomTestUtil.randomString();
 
 		JSONObject jsonObject = HTTPTestUtil.invokeToJSONObject(
 			JSONUtil.put(
-				"comments", value
+				"comments", comments
 			).toString(),
 			objectDefinition.getRESTContextPath(), Http.Method.POST);
 
-		Assert.assertEquals(value, jsonObject.getString("comments"));
+		Assert.assertEquals(comments, jsonObject.getString("comments"));
 
 		objectDefinitionLocalService.deleteObjectDefinition(
 			objectDefinition.getObjectDefinitionId());
@@ -277,27 +219,7 @@ public class ObjectEntryResourceCommentTest
 		objectDefinitionLocalService.updateObjectDefinition(objectDefinition);
 	}
 
-	private JSONArray _getCommentsJSONArray(
-			long groupId, ObjectDefinition objectDefinition)
-		throws Exception {
-
-		JSONObject jsonObject = HTTPTestUtil.invokeToJSONObject(
-			null,
-			getEndpoint(objectDefinition, groupId) +
-				"?nestedFields=systemProperties.comments",
-			Http.Method.GET);
-
-		JSONArray jsonArray = jsonObject.getJSONArray("items");
-
-		jsonObject = jsonArray.getJSONObject(0);
-
-		JSONObject systemPropertiesJSONObject = jsonObject.getJSONObject(
-			"systemProperties");
-
-		return systemPropertiesJSONObject.getJSONArray("comments");
-	}
-
-	private String _getDeletePatchPutEndpoint(
+	private String _getObjectEntryEndpoint(
 		long groupId, ObjectDefinition objectDefinition,
 		JSONObject objectEntryJSONObject) {
 
@@ -307,7 +229,7 @@ public class ObjectEntryResourceCommentTest
 			objectScopeProviderRegistry.getObjectScopeProvider(
 				objectDefinition.getScope());
 
-		if (objectScopeProvider.isGroupAware() && (groupId != 0)) {
+		if (objectScopeProvider.isGroupAware()) {
 			return StringBundler.concat(
 				endpoint, "/by-external-reference-code/",
 				objectEntryJSONObject.getString("externalReferenceCode"));
@@ -322,23 +244,20 @@ public class ObjectEntryResourceCommentTest
 			ObjectDefinition objectDefinition, JSONObject objectEntryJSONObject)
 		throws Exception {
 
-		String endpoint = _getDeletePatchPutEndpoint(
+		String endpoint = _getObjectEntryEndpoint(
 			groupId, objectDefinition, objectEntryJSONObject);
 
-		endpoint = endpoint + "?nestedFields=systemProperties.comments";
-
-		JSONObject jsonObject = HTTPTestUtil.invokeToJSONObject(
-			JSONUtil.put(
-				OBJECT_FIELD_NAME_1, RandomTestUtil.randomString()
-			).put(
-				"systemProperties", JSONUtil.put("comments", commentsJSONArray)
-			).toString(),
-			endpoint, httpMethod);
-
-		JSONObject systemPropertiesJSONObject = jsonObject.getJSONObject(
-			"systemProperties");
-
-		return systemPropertiesJSONObject.getJSONArray("comments");
+		return JSONUtil.getValueAsJSONArray(
+			HTTPTestUtil.invokeToJSONObject(
+				JSONUtil.put(
+					OBJECT_FIELD_NAME_1, RandomTestUtil.randomString()
+				).put(
+					"systemProperties",
+					JSONUtil.put("comments", commentsJSONArray)
+				).toString(),
+				endpoint + "?nestedFields=systemProperties.comments",
+				httpMethod),
+			"JSONObject/systemProperties", "JSONArray/comments");
 	}
 
 	private JSONArray _postObjectEntryWithComments(
@@ -346,28 +265,22 @@ public class ObjectEntryResourceCommentTest
 			ObjectDefinition objectDefinition)
 		throws Exception {
 
-		JSONArray jsonArray = null;
-
 		String endpoint = getEndpoint(objectDefinition, groupId);
 
 		if (nestedFields) {
-			endpoint = endpoint + "?nestedFields=systemProperties.comments";
+			endpoint += "?nestedFields=systemProperties.comments";
 		}
 
-		JSONObject jsonObject = HTTPTestUtil.invokeToJSONObject(
-			JSONUtil.put(
-				OBJECT_FIELD_NAME_1, RandomTestUtil.randomString()
-			).put(
-				"systemProperties", JSONUtil.put("comments", commentsJSONArray)
-			).toString(),
-			endpoint, Http.Method.POST);
-
-		JSONObject systemPropertiesJSONObject = jsonObject.getJSONObject(
-			"systemProperties");
-
-		if (systemPropertiesJSONObject != null) {
-			jsonArray = systemPropertiesJSONObject.getJSONArray("comments");
-		}
+		JSONArray jsonArray = JSONUtil.getValueAsJSONArray(
+			HTTPTestUtil.invokeToJSONObject(
+				JSONUtil.put(
+					OBJECT_FIELD_NAME_1, RandomTestUtil.randomString()
+				).put(
+					"systemProperties",
+					JSONUtil.put("comments", commentsJSONArray)
+				).toString(),
+				endpoint, Http.Method.POST),
+			"JSONObject/systemProperties", "JSONArray/comments");
 
 		if (jsonArray == null) {
 			return JSONFactoryUtil.createJSONArray();
@@ -382,7 +295,8 @@ public class ObjectEntryResourceCommentTest
 
 		_enableComments(objectDefinition);
 
-		String externalReferenceCode = RandomTestUtil.randomString();
+		String externalReferenceCode = RandomTestUtil.randomString(
+			UniqueStringRandomizerBumper.INSTANCE);
 
 		JSONArray commentsJSONArray = JSONUtil.putAll(
 			JSONUtil.put(
@@ -391,14 +305,14 @@ public class ObjectEntryResourceCommentTest
 				"text", RandomTestUtil.randomString()
 			),
 			JSONUtil.put(
-				"externalReferenceCode", RandomTestUtil.randomString()
+				"externalReferenceCode",
+				RandomTestUtil.randomString(
+					UniqueStringRandomizerBumper.INSTANCE)
 			).put(
 				"parentCommentExternalReferenceCode", externalReferenceCode
 			).put(
 				"text", RandomTestUtil.randomString()
 			));
-
-		String endpoint = getEndpoint(objectDefinition, groupId);
 
 		JSONObject objectEntryJSONObject = HTTPTestUtil.invokeToJSONObject(
 			JSONUtil.put(
@@ -406,29 +320,31 @@ public class ObjectEntryResourceCommentTest
 			).put(
 				"systemProperties", JSONUtil.put("comments", commentsJSONArray)
 			).toString(),
-			endpoint + "?nestedFields=systemProperties.comments",
+			getEndpoint(objectDefinition, groupId) +
+				"?nestedFields=systemProperties.comments",
 			Http.Method.POST);
 
 		long objectEntryId = objectEntryJSONObject.getLong("id");
 
-		List<com.liferay.portal.kernel.comment.Comment> serviceBuilderComment =
+		List<com.liferay.portal.kernel.comment.Comment> serviceBuilderComments =
 			_commentManager.getComments(
 				objectDefinition.getClassName(), objectEntryId,
 				WorkflowConstants.STATUS_ANY, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS);
 
-		Assert.assertFalse(serviceBuilderComment.isEmpty());
+		Assert.assertFalse(serviceBuilderComments.isEmpty());
 
-		endpoint = _getDeletePatchPutEndpoint(
-			groupId, objectDefinition, objectEntryJSONObject);
+		HTTPTestUtil.invokeToJSONObject(
+			null,
+			_getObjectEntryEndpoint(
+				groupId, objectDefinition, objectEntryJSONObject),
+			Http.Method.DELETE);
 
-		HTTPTestUtil.invokeToJSONObject(null, endpoint, Http.Method.DELETE);
-
-		serviceBuilderComment = _commentManager.getComments(
+		serviceBuilderComments = _commentManager.getComments(
 			objectDefinition.getClassName(), objectEntryId,
 			WorkflowConstants.STATUS_ANY, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-		Assert.assertTrue(serviceBuilderComment.isEmpty());
+		Assert.assertTrue(serviceBuilderComments.isEmpty());
 	}
 
 	private void _testGetObjectEntriesPageWithComments(
@@ -437,7 +353,8 @@ public class ObjectEntryResourceCommentTest
 
 		_enableComments(objectDefinition);
 
-		String externalReferenceCode = RandomTestUtil.randomString();
+		String externalReferenceCode = RandomTestUtil.randomString(
+			UniqueStringRandomizerBumper.INSTANCE);
 
 		JSONArray commentsJSONArray = JSONUtil.putAll(
 			JSONUtil.put(
@@ -446,14 +363,18 @@ public class ObjectEntryResourceCommentTest
 				"text", RandomTestUtil.randomString()
 			),
 			JSONUtil.put(
-				"externalReferenceCode", RandomTestUtil.randomString()
+				"externalReferenceCode",
+				RandomTestUtil.randomString(
+					UniqueStringRandomizerBumper.INSTANCE)
 			).put(
 				"parentCommentExternalReferenceCode", externalReferenceCode
 			).put(
 				"text", RandomTestUtil.randomString()
 			),
 			JSONUtil.put(
-				"externalReferenceCode", RandomTestUtil.randomString()
+				"externalReferenceCode",
+				RandomTestUtil.randomString(
+					UniqueStringRandomizerBumper.INSTANCE)
 			).put(
 				"text", RandomTestUtil.randomString()
 			));
@@ -465,84 +386,28 @@ public class ObjectEntryResourceCommentTest
 			_toExpectedCommentsJSONArray(
 				commentsJSONArray
 			).toString(),
-			_getCommentsJSONArray(
-				groupId, objectDefinition
+			JSONUtil.getValueAsJSONArray(
+				HTTPTestUtil.invokeToJSONObject(
+					null,
+					getEndpoint(objectDefinition, groupId) +
+						"?nestedFields=systemProperties.comments",
+					Http.Method.GET),
+				"JSONArray/items", "JSONObject/0",
+				"JSONObject/systemProperties", "JSONArray/comments"
 			).toString(),
 			JSONCompareMode.LENIENT);
 	}
 
-	private void _testPatchPutObjectEntryWithComments(
-			long groupId, Http.Method httpMethod,
-			ObjectDefinition objectDefinition)
-		throws Exception {
-
-		JSONObject objectEntryJSONObject = postObjectEntry(
-			groupId, objectDefinition);
-
-		String externalReferenceCode = RandomTestUtil.randomString();
-
-		JSONArray commentsJSONArray = JSONUtil.putAll(
-			JSONUtil.put(
-				"externalReferenceCode", externalReferenceCode
-			).put(
-				"text", RandomTestUtil.randomString()
-			),
-			JSONUtil.put(
-				"externalReferenceCode", RandomTestUtil.randomString()
-			).put(
-				"parentCommentExternalReferenceCode", externalReferenceCode
-			).put(
-				"text", RandomTestUtil.randomString()
-			));
-
-		JSONAssert.assertEquals(
-			_toExpectedCommentsJSONArray(
-				commentsJSONArray
-			).toString(),
-			_patchPutObjectEntryWithComments(
-				commentsJSONArray, groupId, httpMethod, objectDefinition,
-				objectEntryJSONObject
-			).toString(),
-			JSONCompareMode.LENIENT);
-
-		commentsJSONArray = JSONUtil.putAll(
-			JSONUtil.put(
-				"externalReferenceCode", externalReferenceCode
-			).put(
-				"text", RandomTestUtil.randomString()
-			),
-			JSONUtil.put(
-				"externalReferenceCode", RandomTestUtil.randomString()
-			).put(
-				"parentCommentExternalReferenceCode", externalReferenceCode
-			).put(
-				"text", RandomTestUtil.randomString()
-			),
-			JSONUtil.put(
-				"externalReferenceCode", RandomTestUtil.randomString()
-			).put(
-				"text", RandomTestUtil.randomString()
-			));
-
-		JSONAssert.assertEquals(
-			_toExpectedCommentsJSONArray(
-				commentsJSONArray
-			).toString(),
-			_patchPutObjectEntryWithComments(
-				commentsJSONArray, groupId, httpMethod, objectDefinition,
-				objectEntryJSONObject
-			).toString(),
-			JSONCompareMode.LENIENT);
-	}
-
-	private void _testPatchPutObjectEntryWithMissingParentCommentReference(
+	private void _testPatchPostPutObjectEntryWithMissingParentCommentReference(
 			Http.Method httpMethod)
 		throws Exception {
+
+		ObjectDefinition objectDefinition = getObjectDefinition1();
 
 		ObjectEntry serviceBuilderObjectEntry =
 			objectEntryLocalService.addObjectEntry(
 				0, TestPropsValues.getUserId(),
-				getObjectDefinition1().getObjectDefinitionId(),
+				objectDefinition.getObjectDefinitionId(),
 				ObjectEntryFolderConstants.
 					PARENT_OBJECT_ENTRY_FOLDER_ID_DEFAULT,
 				null,
@@ -551,7 +416,14 @@ public class ObjectEntryResourceCommentTest
 				).build(),
 				ServiceContextTestUtil.getServiceContext());
 
-		String parentExternalReferenceCode = RandomTestUtil.randomString();
+		Company company = companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+		String parentExternalReferenceCode = RandomTestUtil.randomString(
+			UniqueStringRandomizerBumper.INSTANCE);
+
+		Assert.assertNull(
+			_commentManager.fetchComment(
+				company.getGroupId(), parentExternalReferenceCode));
 
 		com.liferay.object.rest.dto.v1_0.ObjectEntry objectEntry =
 			new com.liferay.object.rest.dto.v1_0.ObjectEntry() {
@@ -565,7 +437,9 @@ public class ObjectEntryResourceCommentTest
 								new Comment() {
 									{
 										externalReferenceCode =
-											RandomTestUtil.randomString();
+											RandomTestUtil.randomString(
+												UniqueStringRandomizerBumper.
+													INSTANCE);
 										parentCommentExternalReferenceCode =
 											parentExternalReferenceCode;
 										text = RandomTestUtil.randomString();
@@ -577,15 +451,8 @@ public class ObjectEntryResourceCommentTest
 				}
 			};
 
-		Company company = companyLocalService.getCompany(
-			TestPropsValues.getCompanyId());
-
-		Assert.assertNull(
-			_commentManager.fetchComment(
-				company.getGroupId(), parentExternalReferenceCode));
-
 		ObjectEntryResource objectEntryResource = getObjectEntryResource(
-			getObjectDefinition1(), TestPropsValues.getUser());
+			objectDefinition, TestPropsValues.getUser());
 
 		try (SafeCloseable safeCloseable =
 				LazyReferencingThreadLocal.setEnabledWithSafeCloseable(true)) {
@@ -593,6 +460,9 @@ public class ObjectEntryResourceCommentTest
 			if (httpMethod == Http.Method.PATCH) {
 				objectEntryResource.patchObjectEntry(
 					serviceBuilderObjectEntry.getObjectEntryId(), objectEntry);
+			}
+			else if (httpMethod == Http.Method.POST) {
+				objectEntryResource.postObjectEntry(objectEntry);
 			}
 			else if (httpMethod == Http.Method.PUT) {
 				objectEntryResource.putObjectEntry(
@@ -615,13 +485,86 @@ public class ObjectEntryResourceCommentTest
 		_commentManager.deleteComment(serviceBuilderComment.getCommentId());
 	}
 
-	private void _testPostObjectEntriesWithComments(
+	private void _testPatchPutObjectEntryWithComments(
+			long groupId, Http.Method httpMethod,
+			ObjectDefinition objectDefinition)
+		throws Exception {
+
+		String externalReferenceCode = RandomTestUtil.randomString(
+			UniqueStringRandomizerBumper.INSTANCE);
+
+		JSONArray commentsJSONArray = JSONUtil.putAll(
+			JSONUtil.put(
+				"externalReferenceCode", externalReferenceCode
+			).put(
+				"text", RandomTestUtil.randomString()
+			),
+			JSONUtil.put(
+				"externalReferenceCode",
+				RandomTestUtil.randomString(
+					UniqueStringRandomizerBumper.INSTANCE)
+			).put(
+				"parentCommentExternalReferenceCode", externalReferenceCode
+			).put(
+				"text", RandomTestUtil.randomString()
+			));
+
+		JSONObject objectEntryJSONObject = postObjectEntry(
+			groupId, objectDefinition);
+
+		JSONAssert.assertEquals(
+			_toExpectedCommentsJSONArray(
+				commentsJSONArray
+			).toString(),
+			_patchPutObjectEntryWithComments(
+				commentsJSONArray, groupId, httpMethod, objectDefinition,
+				objectEntryJSONObject
+			).toString(),
+			JSONCompareMode.LENIENT);
+
+		commentsJSONArray = JSONUtil.putAll(
+			JSONUtil.put(
+				"externalReferenceCode", externalReferenceCode
+			).put(
+				"text", RandomTestUtil.randomString()
+			),
+			JSONUtil.put(
+				"externalReferenceCode",
+				RandomTestUtil.randomString(
+					UniqueStringRandomizerBumper.INSTANCE)
+			).put(
+				"parentCommentExternalReferenceCode", externalReferenceCode
+			).put(
+				"text", RandomTestUtil.randomString()
+			),
+			JSONUtil.put(
+				"externalReferenceCode",
+				RandomTestUtil.randomString(
+					UniqueStringRandomizerBumper.INSTANCE)
+			).put(
+				"text", RandomTestUtil.randomString()
+			));
+
+		JSONAssert.assertEquals(
+			_toExpectedCommentsJSONArray(
+				commentsJSONArray
+			).toString(),
+			_patchPutObjectEntryWithComments(
+				commentsJSONArray, groupId, httpMethod, objectDefinition,
+				objectEntryJSONObject
+			).toString(),
+			JSONCompareMode.LENIENT);
+	}
+
+	private void _testPostObjectEntryWithComments(
 			long groupId, ObjectDefinition objectDefinition)
 		throws Exception {
 
-		JSONArray commentsJSONArray = JSONUtil.put(
+		JSONArray commentsJSONArray = JSONUtil.putAll(
 			JSONUtil.put(
-				"externalReferenceCode", RandomTestUtil.randomString()
+				"externalReferenceCode",
+				RandomTestUtil.randomString(
+					UniqueStringRandomizerBumper.INSTANCE)
 			).put(
 				"text", RandomTestUtil.randomString()
 			));
@@ -643,7 +586,8 @@ public class ObjectEntryResourceCommentTest
 			).toString(),
 			JSONCompareMode.LENIENT);
 
-		String externalReferenceCode = RandomTestUtil.randomString();
+		String externalReferenceCode = RandomTestUtil.randomString(
+			UniqueStringRandomizerBumper.INSTANCE);
 
 		commentsJSONArray = JSONUtil.putAll(
 			JSONUtil.put(
@@ -652,7 +596,9 @@ public class ObjectEntryResourceCommentTest
 				"text", RandomTestUtil.randomString()
 			),
 			JSONUtil.put(
-				"externalReferenceCode", RandomTestUtil.randomString()
+				"externalReferenceCode",
+				RandomTestUtil.randomString(
+					UniqueStringRandomizerBumper.INSTANCE)
 			).put(
 				"parentCommentExternalReferenceCode", externalReferenceCode
 			).put(

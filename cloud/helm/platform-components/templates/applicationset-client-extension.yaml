@@ -1,4 +1,4 @@
-{{- $dxpOperator := .Values.operatorApplications.dxpOperator -}}
+{{- $dxpOperator := .Values.dxpOperator -}}
 {{- if and .Values.liferay.enabled $dxpOperator.enabled (dig "clientExtensions" "enabled" false ($dxpOperator.values | default dict)) -}}
 {{- $gitops := .Values.gitops -}}
 {{- $layout := $gitops.layout -}}
@@ -7,13 +7,10 @@
 {{- fail "The value \"gitops.layout.base\" may only use {{path[n]}} placeholders for the client extension ApplicationSet" -}}
 {{- end -}}
 {{- $segmentPattern := "^\\{\\{path\\[(\\d+)\\]\\}\\}$" -}}
-{{- range $layoutKey := list "environmentId" "projectId" -}}
-{{- if not (regexMatch $segmentPattern (get $layout $layoutKey)) -}}
-{{- fail (printf "The value \"gitops.layout.%s\" must have the form {{path[n]}} for the client extension ApplicationSet" $layoutKey) -}}
-{{- end -}}
-{{- end -}}
 {{- $environmentId := regexReplaceAll $segmentPattern $layout.environmentId "index .path.segments $1" -}}
 {{- $projectId := regexReplaceAll $segmentPattern $layout.projectId "index .path.segments $1" -}}
+{{- $dxpNamespace := printf "liferay-{{ %s }}-{{ %s }}" $projectId $environmentId -}}
+{{- $separateNamespaceCondition := `eq (toString (get . "separateNamespace")) "true"` -}}
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
@@ -56,13 +53,16 @@ spec:
             name: {{ printf "{{ %s }}-{{ %s }}-{{ .name }}" $projectId $environmentId | quote }}
         spec:
             destination:
-                namespace: {{ printf "liferay-{{ %s }}-{{ %s }}" $projectId $environmentId | quote }}
+                namespace: {{ printf "{{ if %s }}%s{{ else }}%s{{ end }}" $separateNamespaceCondition (include "liferay-platform.clientExtensionNamespace" $dxpNamespace) $dxpNamespace | quote }}
                 server: https://kubernetes.default.svc
             project: liferay-client-extension
             source:
                 {{- include "liferay-platform.chartSource" .Values.clientExtensions | nindent 16 }}
                 helm:
                     parameters:
+                        -   forceString: true
+                            name: clientExtension.dxpNamespace
+                            value: {{ $dxpNamespace | quote }}
                         -   forceString: true
                             name: clientExtension.serviceId
                             value: {{ `{{ .name }}` | quote }}
@@ -75,6 +75,15 @@ spec:
                         -   forceString: true
                             name: network.gatewayName
                             value: {{ printf "{{ %s }}-{{ %s }}-gateway" $projectId $environmentId | quote }}
+                        -   forceString: true
+                            name: network.gatewayNamespace
+                            value: {{ $dxpNamespace | quote }}
+                        -   forceString: true
+                            name: operatorServiceAccount.name
+                            value: {{ include "liferay-platform.dxpOperatorServiceAccountName" . | quote }}
+                        -   forceString: true
+                            name: operatorServiceAccount.namespace
+                            value: {{ $dxpOperator.namespace | quote }}
                     releaseName: {{ `{{ .name }}` | quote }}
                     valueFiles:
                         -   {{ `cxdescriptor://{{ trimPrefix "oci://" .descriptor }}:{{ .version }}` | quote }}

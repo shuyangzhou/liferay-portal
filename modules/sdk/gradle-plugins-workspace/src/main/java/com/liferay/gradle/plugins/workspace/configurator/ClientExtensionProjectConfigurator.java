@@ -25,6 +25,7 @@ import com.liferay.gradle.plugins.node.task.ExecuteNodeTask;
 import com.liferay.gradle.plugins.workspace.WorkspaceExtension;
 import com.liferay.gradle.plugins.workspace.WorkspacePlugin;
 import com.liferay.gradle.plugins.workspace.internal.client.extension.ClientExtension;
+import com.liferay.gradle.plugins.workspace.internal.client.extension.ClientExtensionDescriptor;
 import com.liferay.gradle.plugins.workspace.internal.client.extension.NodeBuildConfigurer;
 import com.liferay.gradle.plugins.workspace.internal.client.extension.ThemeCSSTypeConfigurer;
 import com.liferay.gradle.plugins.workspace.internal.util.GradleUtil;
@@ -32,6 +33,8 @@ import com.liferay.gradle.plugins.workspace.internal.util.JsonNodeUtil;
 import com.liferay.gradle.plugins.workspace.internal.util.StringUtil;
 import com.liferay.gradle.plugins.workspace.internal.util.copy.HashifyAction;
 import com.liferay.gradle.plugins.workspace.task.CreateClientExtensionConfigTask;
+import com.liferay.gradle.plugins.workspace.task.CreateClientExtensionDescriptorTask;
+import com.liferay.gradle.plugins.workspace.task.PushClientExtensionImageTask;
 import com.liferay.gradle.plugins.workspace.task.WriteLanguageBatchEngineDataTask;
 import com.liferay.gradle.util.ArrayUtil;
 import com.liferay.gradle.util.Validator;
@@ -77,6 +80,7 @@ import org.gradle.api.file.CopySpec;
 import org.gradle.api.file.Directory;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.ProjectLayout;
+import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.initialization.Settings;
 import org.gradle.api.invocation.Gradle;
 import org.gradle.api.logging.Logger;
@@ -85,7 +89,9 @@ import org.gradle.api.plugins.ExtensionAware;
 import org.gradle.api.plugins.PluginManager;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
+import org.gradle.api.provider.ProviderFactory;
 import org.gradle.api.provider.SetProperty;
+import org.gradle.api.publish.plugins.PublishingPlugin;
 import org.gradle.api.tasks.Copy;
 import org.gradle.api.tasks.Delete;
 import org.gradle.api.tasks.JavaExec;
@@ -107,6 +113,10 @@ public class ClientExtensionProjectConfigurator
 	public static final String ASSEMBLE_CLIENT_EXTENSION_TASK_NAME =
 		"assembleClientExtension";
 
+	public static final String
+		BUILD_CLIENT_EXTENSION_DESCRIPTOR_IMAGE_TASK_NAME =
+			"buildClientExtensionDescriptorImage";
+
 	public static final String BUILD_CLIENT_EXTENSION_ZIP_TASK_NAME =
 		"buildClientExtensionZip";
 
@@ -115,6 +125,19 @@ public class ClientExtensionProjectConfigurator
 
 	public static final String CREATE_CLIENT_EXTENSION_CONFIG_TASK_NAME =
 		"createClientExtensionConfig";
+
+	public static final String CREATE_CLIENT_EXTENSION_DESCRIPTOR_TASK_NAME =
+		"createClientExtensionDescriptor";
+
+	public static final String PUBLISH_CLIENT_EXTENSION_TASK_NAME =
+		"publishClientExtension";
+
+	public static final String
+		PUSH_CLIENT_EXTENSION_DESCRIPTOR_IMAGE_TASK_NAME =
+			"pushClientExtensionDescriptorImage";
+
+	public static final String PUSH_CLIENT_EXTENSION_IMAGE_TASK_NAME =
+		"pushClientExtensionImage";
 
 	public static final String VALIDATE_CLIENT_EXTENSION_IDS_TASK_NAME =
 		"validateClientExtensionIds";
@@ -314,6 +337,9 @@ public class ClientExtensionProjectConfigurator
 			project, assembleClientExtensionTaskProvider,
 			createClientExtensionConfigTaskProvider, workspaceExtension);
 
+		_addPublishClientExtensionTasks(
+			project, createClientExtensionConfigTaskProvider);
+
 		_configureLiferayRoutes(project, workspaceExtension);
 
 		if (_isLanguageProject(project)) {
@@ -449,6 +475,7 @@ public class ClientExtensionProjectConfigurator
 		SetProperty<String> setProperty = dockerBuildImage.getImages();
 
 		setProperty.add(dockerImageId);
+		setProperty.addAll(_getRegistryImageProvider(project));
 
 		Property<String> property = dockerRemoveImage.getImageId();
 
@@ -474,6 +501,187 @@ public class ClientExtensionProjectConfigurator
 			project, LifecycleBasePlugin.CLEAN_TASK_NAME);
 
 		cleanTask.dependsOn(dockerRemoveImage);
+	}
+
+	private void _addPublishClientExtensionTasks(
+		Project project,
+		TaskProvider<CreateClientExtensionConfigTask>
+			createClientExtensionConfigTaskProvider) {
+
+		TaskProvider<PushClientExtensionImageTask>
+			pushClientExtensionImageTaskProvider = GradleUtil.addTaskProvider(
+				project, PUSH_CLIENT_EXTENSION_IMAGE_TASK_NAME,
+				PushClientExtensionImageTask.class);
+
+		pushClientExtensionImageTaskProvider.configure(
+			pushClientExtensionImageTask -> {
+				pushClientExtensionImageTask.dependsOn(
+					RootProjectConfigurator.BUILD_DOCKER_IMAGE_TASK_NAME);
+				pushClientExtensionImageTask.onlyIf(
+					task -> !_isConfigurationOnly(
+						createClientExtensionConfigTaskProvider));
+				pushClientExtensionImageTask.setDescription(
+					"Pushes the client extension's Docker image.");
+				pushClientExtensionImageTask.setGroup(
+					PublishingPlugin.PUBLISH_TASK_GROUP);
+
+				SetProperty<String> imagesSetProperty =
+					pushClientExtensionImageTask.getImages();
+
+				imagesSetProperty.addAll(_getRegistryImageProvider(project));
+			});
+
+		TaskProvider<CreateClientExtensionDescriptorTask>
+			createClientExtensionDescriptorTaskProvider =
+				GradleUtil.addTaskProvider(
+					project, CREATE_CLIENT_EXTENSION_DESCRIPTOR_TASK_NAME,
+					CreateClientExtensionDescriptorTask.class);
+
+		createClientExtensionDescriptorTaskProvider.configure(
+			createClientExtensionDescriptorTask -> {
+				createClientExtensionDescriptorTask.dependsOn(
+					createClientExtensionConfigTaskProvider);
+				createClientExtensionDescriptorTask.mustRunAfter(
+					pushClientExtensionImageTaskProvider);
+				createClientExtensionDescriptorTask.setDescription(
+					"Writes the descriptor that the platform deploys the " +
+						"client extension from.");
+				createClientExtensionDescriptorTask.setGroup(
+					PublishingPlugin.PUBLISH_TASK_GROUP);
+
+				RegularFileProperty clientExtensionConfigFileProperty =
+					createClientExtensionDescriptorTask.
+						getClientExtensionConfigFile();
+
+				clientExtensionConfigFileProperty.fileProvider(
+					createClientExtensionConfigTaskProvider.map(
+						CreateClientExtensionConfigTask::
+							getClientExtensionConfigFile));
+
+				Property<String> imageProperty =
+					createClientExtensionDescriptorTask.getImage();
+
+				imageProperty.set(_getImageProvider(project, ""));
+
+				Property<String> oAuthApplicationHeadlessServerERCProperty =
+					createClientExtensionDescriptorTask.
+						getOAuthApplicationHeadlessServerERC();
+
+				oAuthApplicationHeadlessServerERCProperty.set(
+					createClientExtensionConfigTaskProvider.map(
+						CreateClientExtensionConfigTask::
+							getBatchOAuthApplicationHeadlessServerERC));
+
+				Property<String> typeProperty =
+					createClientExtensionDescriptorTask.getType();
+
+				typeProperty.set(
+					createClientExtensionConfigTaskProvider.map(
+						CreateClientExtensionConfigTask::getDescriptorType));
+			});
+
+		Gradle gradle = project.getGradle();
+
+		TaskExecutionGraph taskExecutionGraph = gradle.getTaskGraph();
+
+		taskExecutionGraph.whenReady(
+			taskGraph -> {
+				PushClientExtensionImageTask pushClientExtensionImageTask =
+					pushClientExtensionImageTaskProvider.get();
+
+				if (!taskGraph.hasTask(pushClientExtensionImageTask)) {
+					return;
+				}
+
+				CreateClientExtensionDescriptorTask
+					createClientExtensionDescriptorTask =
+						createClientExtensionDescriptorTaskProvider.get();
+
+				RegularFileProperty imageDigestFileProperty =
+					createClientExtensionDescriptorTask.getImageDigestFile();
+
+				imageDigestFileProperty.set(
+					pushClientExtensionImageTask.getImageDigestFile());
+			});
+
+		Provider<String> descriptorImageProvider = _getImageProvider(
+			project, "-descriptor");
+
+		TaskProvider<DockerBuildImage>
+			buildClientExtensionDescriptorImageTaskProvider =
+				GradleUtil.addTaskProvider(
+					project, BUILD_CLIENT_EXTENSION_DESCRIPTOR_IMAGE_TASK_NAME,
+					DockerBuildImage.class);
+
+		buildClientExtensionDescriptorImageTaskProvider.configure(
+			dockerBuildImage -> {
+				dockerBuildImage.setDescription(
+					"Builds the image that holds the client extension's " +
+						"descriptor.");
+				dockerBuildImage.setGroup(RootProjectConfigurator.DOCKER_GROUP);
+
+				SetProperty<String> imagesSetProperty =
+					dockerBuildImage.getImages();
+
+				imagesSetProperty.add(descriptorImageProvider);
+
+				DirectoryProperty inputDirectoryProperty =
+					dockerBuildImage.getInputDir();
+
+				inputDirectoryProperty.set(
+					createClientExtensionDescriptorTaskProvider.flatMap(
+						CreateClientExtensionDescriptorTask::getOutputDir));
+			});
+
+		TaskProvider<PushClientExtensionImageTask>
+			pushClientExtensionDescriptorImageTaskProvider =
+				GradleUtil.addTaskProvider(
+					project, PUSH_CLIENT_EXTENSION_DESCRIPTOR_IMAGE_TASK_NAME,
+					PushClientExtensionImageTask.class);
+
+		pushClientExtensionDescriptorImageTaskProvider.configure(
+			pushClientExtensionDescriptorImageTask -> {
+				pushClientExtensionDescriptorImageTask.dependsOn(
+					buildClientExtensionDescriptorImageTaskProvider);
+				pushClientExtensionDescriptorImageTask.setDescription(
+					"Pushes the image that holds the client extension's " +
+						"descriptor.");
+				pushClientExtensionDescriptorImageTask.setGroup(
+					PublishingPlugin.PUBLISH_TASK_GROUP);
+
+				RegularFileProperty imageDigestFileProperty =
+					pushClientExtensionDescriptorImageTask.getImageDigestFile();
+
+				ProjectLayout projectLayout = project.getLayout();
+
+				DirectoryProperty buildDirectoryProperty =
+					projectLayout.getBuildDirectory();
+
+				imageDigestFileProperty.set(
+					buildDirectoryProperty.file(
+						"client-extension-descriptor-image/digest"));
+
+				SetProperty<String> imagesSetProperty =
+					pushClientExtensionDescriptorImageTask.getImages();
+
+				imagesSetProperty.add(descriptorImageProvider);
+			});
+
+		TaskProvider<Task> publishClientExtensionTaskProvider =
+			GradleUtil.addTaskProvider(
+				project, PUBLISH_CLIENT_EXTENSION_TASK_NAME, Task.class);
+
+		publishClientExtensionTaskProvider.configure(
+			publishClientExtensionTask -> {
+				publishClientExtensionTask.dependsOn(
+					pushClientExtensionDescriptorImageTaskProvider,
+					pushClientExtensionImageTaskProvider);
+				publishClientExtensionTask.setDescription(
+					"Pushes the client extension's Docker image and a " +
+						"descriptor that the platform deploys it from.");
+				publishClientExtensionTask.setGroup(
+					PublishingPlugin.PUBLISH_TASK_GROUP);
+			});
 	}
 
 	private TaskProvider<Zip> _baseConfigureClientExtensionProject(
@@ -1191,6 +1399,21 @@ public class ClientExtensionProjectConfigurator
 		return project.getName() + ":latest";
 	}
 
+	private Provider<String> _getImageProvider(
+		Project project, String repositorySuffix) {
+
+		ProviderFactory providerFactory = project.getProviders();
+
+		Provider<String> registryProvider = providerFactory.gradleProperty(
+			_PROPERTY_PREFIX + "registry");
+
+		return registryProvider.zip(
+			_getVersionProvider(project),
+			(registry, version) -> StringUtil.concat(
+				registry, "/", project.getName(), repositorySuffix, ":",
+				version));
+	}
+
 	private JsonNode _getJsonNode(File file) {
 		if (!file.exists()) {
 			return _yamlObjectMapper.createObjectNode();
@@ -1226,10 +1449,49 @@ public class ClientExtensionProjectConfigurator
 		return (Map<String, Object>)value;
 	}
 
+	private Provider<List<String>> _getRegistryImageProvider(Project project) {
+		Provider<String> imageProvider = _getImageProvider(project, "");
+
+		Provider<List<String>> imagesProvider = imageProvider.map(
+			Collections::singletonList);
+
+		return imagesProvider.orElse(Collections.emptyList());
+	}
+
+	private Provider<String> _getVersionProvider(Project project) {
+		ProviderFactory providerFactory = project.getProviders();
+
+		Provider<String> versionProvider = providerFactory.provider(
+			() -> {
+				String version = String.valueOf(project.getVersion());
+
+				if (version.equals(Project.DEFAULT_VERSION)) {
+					return null;
+				}
+
+				return version;
+			});
+
+		return versionProvider.orElse(
+			providerFactory.gradleProperty(_PROPERTY_PREFIX + "version"));
+	}
+
 	private boolean _isActiveProfile(Project project, String profileName) {
 		return Objects.equals(
 			profileName,
 			GradleUtil.getProperty(project, "profileName", "default"));
+	}
+
+	private boolean _isConfigurationOnly(
+		TaskProvider<CreateClientExtensionConfigTask>
+			createClientExtensionConfigTaskProvider) {
+
+		CreateClientExtensionConfigTask createClientExtensionConfigTask =
+			createClientExtensionConfigTaskProvider.get();
+
+		return Objects.equals(
+			createClientExtensionConfigTask.getDescriptorType(),
+			ClientExtensionDescriptor.TYPE_CONFIGURATION);
 	}
 
 	private boolean _isLanguageProject(File rootDir, File projectDir) {
@@ -1452,6 +1714,9 @@ public class ClientExtensionProjectConfigurator
 		"LIFERAY_ROUTES_CLIENT_EXTENSION";
 
 	private static final String _ENV_LIFERAY_ROUTES_DXP = "LIFERAY_ROUTES_DXP";
+
+	private static final String _PROPERTY_PREFIX =
+		WorkspacePlugin.PROPERTY_PREFIX + "client.extension.";
 
 	private static final Pattern _overrideClientExtensionYamlPattern =
 		Pattern.compile("^client-extension\\.([a-z]+)\\.yaml$");

@@ -589,6 +589,9 @@ public interface LayoutLocalService
 	public Map<Layout, Layout> fetchDraftLayouts(List<Layout> layouts);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Layout> fetchDraftLayouts(long plid);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Layout fetchFirstLayout(
 		long groupId, boolean privateLayout, long parentLayoutId);
 
@@ -1516,6 +1519,12 @@ public interface LayoutLocalService
 			String colorSchemeId, String css)
 		throws PortalException;
 
+	public Layout updateMasterLayoutPageTemplateEntry(
+			long groupId, boolean privateLayout, long layoutId,
+			String masterLayoutPageTemplateEntryERC,
+			String masterLayoutPageTemplateEntryScopeERC)
+		throws PortalException;
+
 	/**
 	 * Updates the layout replacing its master layout page template entry
 	 * external reference code
@@ -1739,4 +1748,4 @@ public interface LayoutLocalService
 		throws E;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2037369851
+// LIFERAY-SERVICE-BUILDER-HASH:-1407315814

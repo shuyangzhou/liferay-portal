@@ -6,6 +6,7 @@
 package com.liferay.portal.smoke.test;
 
 import com.liferay.account.model.AccountEntry;
+import com.liferay.account.model.AccountGroupRel;
 import com.liferay.account.service.AccountEntryLocalService;
 import com.liferay.account.service.AccountEntryOrganizationRelLocalService;
 import com.liferay.account.service.AccountGroupRelLocalService;
@@ -216,9 +217,6 @@ import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.portal.vulcan.pagination.Page;
-import com.liferay.search.experiences.rest.dto.v1_0.GeneralConfiguration;
-import com.liferay.search.experiences.rest.dto.v1_0.SXPBlueprint;
-import com.liferay.search.experiences.rest.resource.v1_0.SXPBlueprintResource;
 import com.liferay.segments.model.SegmentsEntry;
 import com.liferay.segments.model.SegmentsExperience;
 import com.liferay.segments.service.SegmentsEntryLocalService;
@@ -675,10 +673,13 @@ public class BundleSiteInitializerTest {
 	private void _assertAccountGroupAssignments(
 		AdminAccountGroup accountGroup, int accountGroupAssignmentsCount) {
 
+		List<AccountGroupRel> accountGroupRels =
+			_accountGroupRelLocalService.getAccountGroupRelsByAccountGroupId(
+				accountGroup.getId());
+
 		Assert.assertEquals(
-			accountGroupAssignmentsCount,
-			_accountGroupRelLocalService.
-				getAccountGroupRelsCountByAccountGroupId(accountGroup.getId()));
+			accountGroupRels.toString(), accountGroupAssignmentsCount,
+			accountGroupRels.size());
 	}
 
 	private void _assertAccountGroups1() throws Exception {
@@ -4166,102 +4167,6 @@ public class BundleSiteInitializerTest {
 			allowedServiceSignatures2.size());
 	}
 
-	private void _assertSXPBlueprint1() throws Exception {
-		SXPBlueprintResource.Builder sxpBlueprintResourceBuilder =
-			_sxpBlueprintResourceFactory.create();
-
-		SXPBlueprintResource sxpBlueprintResource =
-			sxpBlueprintResourceBuilder.user(
-				_serviceContext.fetchUser()
-			).build();
-
-		SXPBlueprint sxpBlueprint =
-			sxpBlueprintResource.getSXPBlueprintByExternalReferenceCode(
-				"TESTSXPBLUEPRINT1");
-
-		Assert.assertNotNull(sxpBlueprint);
-		_assertSearchableAssetTypes(
-			new String[] {"com.liferay.journal.model.JournalArticle"},
-			sxpBlueprint.getConfiguration());
-		Assert.assertEquals("Test SXBlueprint 1", sxpBlueprint.getTitle());
-
-		sxpBlueprint =
-			sxpBlueprintResource.getSXPBlueprintByExternalReferenceCode(
-				"TESTSXPBLUEPRINT2");
-
-		Assert.assertNotNull(sxpBlueprint);
-		Assert.assertFalse(
-			sxpBlueprint.toString(
-			).contains(
-				"[$TAXONOMY_CATEGORY_ID:/site-initializer/taxonomy-" +
-					"vocabularies/company/test-asset-vocabulary-1/test-asset-" +
-						"category-1.json$]"
-			));
-		_assertSearchableAssetTypes(
-			new String[] {
-				"com.liferay.document.library.kernel.model.DLFileEntry"
-			},
-			sxpBlueprint.getConfiguration());
-		Assert.assertEquals("Test SXBlueprint 2", sxpBlueprint.getTitle());
-	}
-
-	private void _assertSXPBlueprint2() throws Exception {
-		SXPBlueprintResource.Builder sxpBlueprintResourceBuilder =
-			_sxpBlueprintResourceFactory.create();
-
-		SXPBlueprintResource sxpBlueprintResource =
-			sxpBlueprintResourceBuilder.user(
-				_serviceContext.fetchUser()
-			).build();
-
-		SXPBlueprint sxpBlueprint =
-			sxpBlueprintResource.getSXPBlueprintByExternalReferenceCode(
-				"TESTSXPBLUEPRINT1");
-
-		Assert.assertNotNull(sxpBlueprint);
-		_assertSearchableAssetTypes(
-			new String[] {"com.liferay.journal.model.JournalArticle"},
-			sxpBlueprint.getConfiguration());
-		Assert.assertEquals("Test SXBlueprint 1", sxpBlueprint.getTitle());
-
-		sxpBlueprint =
-			sxpBlueprintResource.getSXPBlueprintByExternalReferenceCode(
-				"TESTSXPBLUEPRINT2");
-
-		Assert.assertNotNull(sxpBlueprint);
-		_assertSearchableAssetTypes(
-			new String[] {
-				"com.liferay.document.library.kernel.model.DLFileEntry",
-				"com.liferay.journal.model.JournalArticle"
-			},
-			sxpBlueprint.getConfiguration());
-		Assert.assertEquals(
-			"Test SXBlueprint 2 Update", sxpBlueprint.getTitle());
-
-		sxpBlueprint =
-			sxpBlueprintResource.getSXPBlueprintByExternalReferenceCode(
-				"TESTSXPBLUEPRINT3");
-
-		Assert.assertNotNull(sxpBlueprint);
-		_assertSearchableAssetTypes(
-			new String[] {"com.liferay.portal.kernel.model.User"},
-			sxpBlueprint.getConfiguration());
-		Assert.assertEquals("Test SXBlueprint 3", sxpBlueprint.getTitle());
-	}
-
-	private void _assertSearchableAssetTypes(
-		String[] className,
-		com.liferay.search.experiences.rest.dto.v1_0.Configuration
-			configuration) {
-
-		GeneralConfiguration generalConfiguration =
-			configuration.getGeneralConfiguration();
-
-		Assert.assertTrue(
-			ArrayUtil.containsAll(
-				generalConfiguration.getSearchableAssetTypes(), className));
-	}
-
 	private void _assertSegmentsEntries() {
 		Assert.assertEquals(
 			2,
@@ -5087,7 +4992,6 @@ public class BundleSiteInitializerTest {
 		_assertSiteSettings();
 		_assertSiteNavigationMenu1();
 		_assertStyleBookEntry();
-		_assertSXPBlueprint1();
 		_assertUserAccounts1();
 		_assertUserGroups();
 		_assertUserRoles();
@@ -5125,7 +5029,6 @@ public class BundleSiteInitializerTest {
 		_assertResourcePermission2();
 		_assertSiteConfiguration2();
 		_assertSiteNavigationMenu2();
-		_assertSXPBlueprint2();
 		_assertUserAccounts2();
 	}
 
@@ -5380,9 +5283,6 @@ public class BundleSiteInitializerTest {
 
 	@Inject
 	private StyleBookEntryLocalService _styleBookEntryLocalService;
-
-	@Inject
-	private SXPBlueprintResource.Factory _sxpBlueprintResourceFactory;
 
 	@Inject
 	private TemplateEntryLocalService _templateEntryLocalService;

@@ -153,7 +153,8 @@ public class DBMigrationImportProcess {
 						_dataSourceInfos.add(
 							0,
 							_getDataSourceInfo(
-								null, _sourceDataSource, _targetDataSource));
+								dbCopyTablesProcess, null, _sourceDataSource,
+								_targetDataSource));
 					}
 					catch (Exception exception) {
 						throwableCollector.collect(exception);
@@ -187,8 +188,8 @@ public class DBMigrationImportProcess {
 
 							_dataSourceInfos.add(
 								_getDataSourceInfo(
-									partitionName, sourceDataSource,
-									targetDataSource));
+									dbCopyTablesProcess, partitionName,
+									sourceDataSource, targetDataSource));
 						}
 						catch (Exception exception) {
 							throwableCollector.collect(exception);
@@ -263,13 +264,17 @@ public class DBMigrationImportProcess {
 	}
 
 	private String _getDataSourceInfo(
-			String partitionName, DataSource sourceDataSource,
-			DataSource targetDataSource)
+			DBCopyTablesProcess dbCopyTablesProcess, String partitionName,
+			DataSource sourceDataSource, DataSource targetDataSource)
 		throws Exception {
 
 		if (Validator.isNull(partitionName)) {
 			partitionName = "Default";
 		}
+
+		String customTableAndColumnInfos = StringUtil.merge(
+			dbCopyTablesProcess.getCustomTableAndColumnInfos(),
+			StringPool.NEW_LINE + partitionName + " partition ");
 
 		Set<String> sourceTableNames = _getNames(sourceDataSource, "TABLE");
 		Set<String> sourceViewNames = _getNames(sourceDataSource, "VIEW");
@@ -294,6 +299,7 @@ public class DBMigrationImportProcess {
 					_asymmetricDifference(sourceTableNames, targetTableNames),
 				partitionName + " partition missing target views: " +
 					_asymmetricDifference(sourceViewNames, targetViewNames),
+				partitionName + " partition " + customTableAndColumnInfos,
 				StringPool.NEW_LINE
 			},
 			StringPool.NEW_LINE);

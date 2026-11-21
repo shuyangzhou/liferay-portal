@@ -29,8 +29,12 @@
 {{- $targetActiveDataPlane := $xr.spec.targetActiveDataPlane -}}
 
 {{- $activeDataPlane := $targetActiveDataPlane -}}
-{{- $databaseBootstrapIamUser := trimSuffix ".gserviceaccount.com" $databaseBootstrapEmail -}}
-{{- $databaseIamUser := trimSuffix ".gserviceaccount.com" $gsaEmail -}}
+{{- $databaseBootstrapIamUser := eq $env.databaseEngine "mysql" | ternary (splitList "@" $databaseBootstrapEmail | first) (trimSuffix ".gserviceaccount.com" $databaseBootstrapEmail) -}}
+{{- $databaseEngineSettings := get (dict
+    "mysql" (dict "charset" "utf8mb4" "collation" "utf8mb4_unicode_ci" "defaultVersion" "8.4" "versionPrefix" "MYSQL")
+    "postgresql" (dict "charset" "UTF8" "collation" "en_US.UTF8" "defaultVersion" "18" "versionPrefix" "POSTGRES")) $env.databaseEngine -}}
+{{- $databaseIamUser := eq $env.databaseEngine "mysql" | ternary (splitList "@" $gsaEmail | first) (trimSuffix ".gserviceaccount.com" $gsaEmail) -}}
+{{- $databaseVersion := printf "%s_%s" $databaseEngineSettings.versionPrefix ($xr.spec.database.version | default $databaseEngineSettings.defaultVersion | replace "." "_") -}}
 {{- $dataPlanes := list $targetActiveDataPlane -}}
 {{- $isCMKKeyReady := or (not $cmkEnabled) $cmkKeyId -}}
 {{- $labels := merge (dict "app" "liferay" "deployment-name" $env.deploymentName "environment-id" $environmentId "project-id" $projectId) $xr.spec.commonTags -}}

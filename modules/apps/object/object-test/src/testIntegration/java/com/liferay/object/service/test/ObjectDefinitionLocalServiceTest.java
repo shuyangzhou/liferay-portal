@@ -205,7 +205,6 @@ import com.liferay.portal.language.override.service.PLOEntryLocalService;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
-import com.liferay.portal.test.rule.FeatureFlag;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -4397,7 +4396,20 @@ public class ObjectDefinitionLocalServiceTest {
 						String methodName = method.getName();
 
 						if (methodName.equals("execute")) {
-							clusterRequests.add((ClusterRequest)arguments[0]);
+							ClusterRequest clusterRequest =
+								(ClusterRequest)arguments[0];
+
+							MethodHandler methodHandler =
+								(MethodHandler)clusterRequest.getPayload();
+
+							MethodKey methodKey = methodHandler.getMethodKey();
+
+							if (Objects.equals(
+									methodKey.getMethodName(),
+									"deployObjectDefinition")) {
+
+								clusterRequests.add(clusterRequest);
+							}
 						}
 						else if (methodName.equals(
 									"getClusterEventListeners") ||
@@ -4457,14 +4469,34 @@ public class ObjectDefinitionLocalServiceTest {
 
 		clusterRequests.clear();
 
+		objectDefinition.setPanelCategoryKey("site_administration.content");
+
 		_updateCustomObjectDefinition(
 			objectDefinition.getClassName(),
 			objectDefinition.getDescriptionMap(),
 			objectDefinition.getFriendlyURLSeparator(), objectDefinition,
 			Collections.emptyList());
 
-		Assert.assertTrue(
-			clusterRequests.toString(), clusterRequests.isEmpty());
+		Assert.assertEquals(
+			clusterRequests.toString(), 1, clusterRequests.size());
+
+		clusterRequest = clusterRequests.get(0);
+
+		Assert.assertTrue(clusterRequest.isMulticast());
+		Assert.assertTrue(clusterRequest.isSkipLocal());
+
+		methodHandler = (MethodHandler)clusterRequest.getPayload();
+
+		arguments = methodHandler.getArguments();
+
+		deployedObjectDefinition = (ObjectDefinition)arguments[0];
+
+		Assert.assertEquals(
+			objectDefinition.getObjectDefinitionId(),
+			deployedObjectDefinition.getObjectDefinitionId());
+		Assert.assertEquals(
+			"site_administration.content",
+			deployedObjectDefinition.getPanelCategoryKey());
 
 		ReflectionTestUtil.setFieldValue(
 			clusterExecutorSnapshot, "_serviceSupplier", serviceSupplier);
@@ -5008,7 +5040,6 @@ public class ObjectDefinitionLocalServiceTest {
 		_objectFolderLocalService.deleteObjectFolder(objectFolder);
 	}
 
-	@FeatureFlag("LPD-11388")
 	@Test
 	public void testUpdateTitleObjectFieldId() throws Exception {
 		ObjectDefinition objectDefinition =
@@ -5842,7 +5873,7 @@ public class ObjectDefinitionLocalServiceTest {
 
 		AssetListEntrySegmentsEntryRel assetListEntrySegmentsEntryRel =
 			_assetListEntrySegmentsEntryRelLocalService.
-				getAssetListEntrySegmentsEntryRel(
+				fetchAssetListEntrySegmentsEntryRel(
 					assetListEntry.getAssetListEntryId(),
 					SegmentsEntryConstants.ID_DEFAULT);
 

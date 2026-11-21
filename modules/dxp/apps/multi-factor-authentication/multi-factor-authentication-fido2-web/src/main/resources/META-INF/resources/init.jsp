@@ -16,10 +16,11 @@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
 <%@ page import="com.liferay.multi.factor.authentication.fido2.credential.model.MFAFIDO2CredentialEntry" %><%@
-page import="com.liferay.multi.factor.authentication.fido2.credential.service.MFAFIDO2CredentialEntryLocalServiceUtil" %><%@
 page import="com.liferay.multi.factor.authentication.fido2.web.internal.configuration.MFAFIDO2Configuration" %><%@
 page import="com.liferay.multi.factor.authentication.fido2.web.internal.constants.MFAFIDO2WebKeys" %><%@
 page import="com.liferay.portal.configuration.module.configuration.ConfigurationProviderUtil" %><%@
+page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
+page import="com.liferay.portal.kernel.util.GetterUtil" %><%@
 page import="com.liferay.portal.kernel.util.HashMapBuilder" %>
 
 <%@ page import="java.util.List" %>

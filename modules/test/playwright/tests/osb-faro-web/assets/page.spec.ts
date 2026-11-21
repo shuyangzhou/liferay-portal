@@ -557,7 +557,7 @@ test(
 	}
 );
 
-test.skip(
+test(
 	'Create the page name with special characters makes the correct name appear in the path part of AC pages',
 	{
 		tag: '@LRAC-8988',
@@ -731,7 +731,7 @@ test(
 	}
 );
 
-test.skip(
+test(
 	'Path analysis shows the outside pages that were interacted with in DXP',
 	{
 		tag: '@LRAC-14827',
@@ -827,7 +827,7 @@ test.skip(
 	}
 );
 
-test.skip(
+test(
 	'Path Analysis shows the pages that were interacted with in DXP',
 	{
 		tag: '@LRAC-14827',

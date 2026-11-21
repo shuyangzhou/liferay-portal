@@ -1,0 +1,60 @@
+import groovy.json.JsonSlurper
+
+task runGradleTest
+
+runGradleTest {
+	dependsOn ":client-extensions:able:createClientExtensionDescriptor", ":client-extensions:baker:createClientExtensionDescriptor", ":client-extensions:charlie:createClientExtensionDescriptor", ":client-extensions:dog:createClientExtensionDescriptor"
+
+	doLast {
+		Map<String, Object> ableDescriptorMap = _readDescriptor("able")
+
+		assert ableDescriptorMap.configs.size() > 0
+		assert ableDescriptorMap.descriptorVersion == 1
+		assert ableDescriptorMap.image.digest == null
+		assert ableDescriptorMap.image.repository == "localhost:5999/able"
+		assert ableDescriptorMap.image.tag == "1.0.0"
+		assert ableDescriptorMap.oauthApplicationHeadlessServerERC == null
+		assert ableDescriptorMap.type == "service"
+		assert ableDescriptorMap.workload == null
+
+		Map<String, Object> bakerDescriptorMap = _readDescriptor("baker")
+
+		assert bakerDescriptorMap.configs.size() > 0
+		assert bakerDescriptorMap.image == null
+		assert bakerDescriptorMap.oauthApplicationHeadlessServerERC == null
+		assert bakerDescriptorMap.type == "configuration"
+
+		Map<String, Object> charlieDescriptorMap = _readDescriptor("charlie")
+
+		assert charlieDescriptorMap.image.repository == "localhost:5999/charlie"
+		assert charlieDescriptorMap.oauthApplicationHeadlessServerERC == "charlie-oauth-application-headless-server"
+		assert charlieDescriptorMap.type == "batch"
+
+		Map<String, Object> dogDescriptorMap = _readDescriptor("dog")
+
+		assert dogDescriptorMap.image.repository == "localhost:5999/dog"
+		assert dogDescriptorMap.oauthApplicationHeadlessServerERC == null
+		assert dogDescriptorMap.type == "service"
+
+		Project ableProject = project(":client-extensions:able")
+
+		File dockerfileFile = ableProject.file("build/client-extension-descriptor/Dockerfile")
+
+		String dockerfileText = dockerfileFile.text
+
+		assert dockerfileText.contains("COPY client-extension-descriptor.json /")
+		assert dockerfileText.contains("LABEL com.liferay.client-extension.descriptor.version=\"1\"")
+	}
+}
+
+Map<String, Object> _readDescriptor(String name) {
+	Project clientExtensionProject = project(":client-extensions:${name}")
+
+	File descriptorFile = clientExtensionProject.file("build/client-extension-descriptor/client-extension-descriptor.json")
+
+	JsonSlurper jsonSlurper = new JsonSlurper()
+
+	Map<String, Object> descriptorJSONMap = jsonSlurper.parse(descriptorFile)
+
+	return descriptorJSONMap.descriptor
+}

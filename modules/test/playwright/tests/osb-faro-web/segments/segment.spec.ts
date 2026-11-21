@@ -13,6 +13,7 @@ import {loginAnalyticsCloudTest} from '../../../fixtures/loginAnalyticsCloudTest
 import {loginTest} from '../../../fixtures/loginTest';
 import {liferayConfig} from '../../../liferay.config';
 import {clickAndExpectToBeVisible} from '../../../utils/clickAndExpectToBeVisible';
+import {getRandomInt} from '../../../utils/getRandomInt';
 import getRandomString from '../../../utils/getRandomString';
 import performLogin, {
 	performLogout,
@@ -37,7 +38,6 @@ import {
 	addNestedSegmentField,
 	addSegmentField,
 	createBatchSegment,
-	createDynamicSegment,
 	editCriteriaAttributeValue,
 	editCriteriaConjunction,
 	editSegment,
@@ -159,7 +159,7 @@ test(
 	}
 );
 
-test.skip(
+test(
 	'Create a segment with behavior of commenting on a blog',
 	{
 		tag: '@Legacy',
@@ -191,10 +191,10 @@ test.skip(
 			]);
 		});
 
-		const pageName = 'Liferay Blog - AC Page';
+		const pageName = getRandomString();
 
 		await test.step('Create blogViewed and posted events for known and anonymous individuals', async () => {
-			const blogId = '1905';
+			const blogId = String(getRandomInt());
 
 			await apiHelpers.jsonWebServicesOSBAsah.createEvents(
 				knownIndividual.map((individual) => ({
@@ -278,16 +278,17 @@ test.skip(
 				projectID: project.groupId,
 			});
 
-			await createDynamicSegment(page);
+			await createBatchSegment(page);
 
 			await addSegmentField({
-				criterionName: 'Commented on Blog',
+				criterionName: 'Comment',
 				criterionType: 'Events',
 				page,
 			});
 
-			await selectAsset({
+			await selectBehaviorAsset({
 				assetName: pageName,
+				assetType: 'Blogs',
 				page,
 			});
 
@@ -312,40 +313,29 @@ test.skip(
 			});
 		});
 
-		await test.step('Reload the segment page to clear the cache', async () => {
-			await waitForLoading(page);
-
-			await page.reload();
-
-			await waitForLoading(page);
-		});
-
 		await test.step('Check the segment member count in the membership', async () => {
 			await navigateTo({
 				page,
 				pageName: 'Membership',
 			});
 
-			await expect(
-				page
-					.locator('li')
-					.filter({hasText: 'Known Members:'})
-					.locator('b')
-			).toHaveText('1');
+			await expect(async () => {
+				await page.reload();
 
-			await expect(
-				page
-					.locator('li')
-					.filter({hasText: 'Anonymous Members:'})
-					.locator('b')
-			).toHaveText('1');
+				await expect(
+					page
+						.locator('li')
+						.filter({hasText: 'Total Members:'})
+						.locator('b')
+				).toHaveText('2', {timeout: 5000});
+			}).toPass({timeout: 60000});
 
-			await expect(
-				page
-					.locator('li')
-					.filter({hasText: 'Total Members:'})
-					.locator('b')
-			).toHaveText('2');
+			await viewSegmentMembershipCount({
+				anonymousMemberCount: '1',
+				knownMemberCount: '1',
+				page,
+				totalMemberCount: '2',
+			});
 		});
 
 		await test.step('Check that the correct known member appears in the membership tab', async () => {
@@ -357,7 +347,7 @@ test.skip(
 	}
 );
 
-test.skip(
+test(
 	'Segment criterias nest correctly in the criteria card',
 	{
 		tag: '@Legacy',
@@ -371,11 +361,11 @@ test.skip(
 				projectID: project.groupId,
 			});
 
-			await createDynamicSegment(page);
+			await createBatchSegment(page);
 
 			await test.step('Add email criteria and fill in', async () => {
 				await addSegmentField({
-					criterionName: 'email',
+					criterionName: 'Email Address',
 					criterionType: 'Individual',
 					page,
 				});
@@ -390,11 +380,13 @@ test.skip(
 					attributeValue: '@liferay.com',
 					page,
 				});
+
+				await page.keyboard.press('Escape');
 			});
 
 			await test.step('Add jobTitle criteria and fill in', async () => {
 				await addSegmentField({
-					criterionName: 'jobTitle',
+					criterionName: 'Job Title',
 					criterionType: 'Individual',
 					page,
 				});
@@ -411,13 +403,15 @@ test.skip(
 					index: 1,
 					page,
 				});
+
+				await page.keyboard.press('Escape');
 			});
 
 			await test.step('Add the familyName criteria as a nested criteria of the jobTitle and fill in', async () => {
 				await addNestedSegmentField({
-					criterionName: 'familyName',
+					criterionName: 'Last Name',
 					criterionType: 'Individual',
-					nestedSegmentField: 'jobTitle',
+					nestedSegmentField: 'Job Title',
 					page,
 				});
 
@@ -426,6 +420,8 @@ test.skip(
 					index: 2,
 					page,
 				});
+
+				await page.keyboard.press('Escape');
 
 				await editCriteriaConjunction({
 					index: 1,
@@ -444,21 +440,22 @@ test.skip(
 		await test.step('Check the criteria in the Segment Criteria card and verify if two of the criteria are nested', async () => {
 			await viewSegmentCriteriaCard({
 				criteriaRowIndex: 0,
-				criteriaRowValue: 'Individual email contains "@liferay.com"',
+				criteriaRowValue:
+					'Individual Email Address contains "@liferay.com"',
 				page,
 			});
 
 			await viewSegmentCriteriaCard({
 				criteriaRowIndex: 0,
 				criteriaRowValue:
-					'Individual jobTitle does not contain "engineer"',
+					'Individual Job Title does not contain "engineer"',
 				page,
 				parent: page.locator('.criteria-group').nth(1),
 			});
 
 			await viewSegmentCriteriaCard({
 				criteriaRowIndex: 1,
-				criteriaRowValue: 'Individual familyName is "Smith"',
+				criteriaRowValue: 'Individual Last Name is "Smith"',
 				page,
 				parent: page.locator('.criteria-group').nth(1),
 			});
@@ -466,7 +463,7 @@ test.skip(
 	}
 );
 
-test.skip(
+test(
 	'Add segment using an organization property "organization"',
 	{
 		tag: '@Legacy',
@@ -523,11 +520,11 @@ test.skip(
 				projectID: project.groupId,
 			});
 
-			await createDynamicSegment(page);
+			await createBatchSegment(page);
 
 			await addSegmentField({
 				criterionName: 'Organization',
-				criterionType: 'Organization Attributes',
+				criterionType: 'Organization',
 				page,
 			});
 
@@ -590,7 +587,7 @@ test.skip(
 	}
 );
 
-test.skip(
+test(
 	'Add segment using an individual property "user group"',
 	{
 		tag: '@Legacy',
@@ -661,7 +658,7 @@ test.skip(
 				projectID: project.groupId,
 			});
 
-			await createDynamicSegment(page);
+			await createBatchSegment(page);
 
 			await addSegmentField({
 				criterionName: 'User Group',
@@ -858,9 +855,7 @@ test(
 				searchTerm: 'NonExistentSegment',
 			});
 
-			await expect(
-				page.getByText('No results were found.')
-			).toBeVisible();
+			await expect(page.getByText('No Results Were Found')).toBeVisible();
 
 			// Sort by Name ascending then toggle to descending
 

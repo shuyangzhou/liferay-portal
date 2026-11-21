@@ -7,6 +7,7 @@ package com.liferay.flags.internal.messaging.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.flags.service.FlagsEntryService;
+import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
@@ -14,12 +15,22 @@ import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.test.TestInfo;
+import com.liferay.portal.kernel.test.context.ContextUserReplace;
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlEscapableObject;
@@ -31,6 +42,7 @@ import com.liferay.portal.kernel.util.SubscriptionSender;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
@@ -63,8 +75,10 @@ public class FlagsEntryServiceTest {
 
 	@ClassRule
 	@Rule
-	public static final LiferayIntegrationTestRule liferayIntegrationTestRule =
-		new LiferayIntegrationTestRule();
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(),
+			PermissionCheckerMethodTestRule.INSTANCE);
 
 	@Before
 	public void setUp() {
@@ -83,6 +97,40 @@ public class FlagsEntryServiceTest {
 	}
 
 	@Test
+	@TestInfo("LPD-116123")
+	public void testAddEntry() throws Exception {
+		Group group = GroupTestUtil.addGroup();
+
+		Layout layout = LayoutTestUtil.addTypePortletLayout(group, true);
+
+		User user = UserTestUtil.addUser();
+
+		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
+				user, PermissionCheckerFactoryUtil.create(user))) {
+
+			PrincipalException.MustHavePermission mustHavePermission =
+				Assert.assertThrows(
+					PrincipalException.MustHavePermission.class,
+					() -> _flagsEntryService.addEntry(
+						Layout.class.getName(), layout.getPlid(),
+						user.getEmailAddress(), TestPropsValues.getUserId(),
+						RandomTestUtil.randomString(),
+						RandomTestUtil.randomString(),
+						RandomTestUtil.randomString(),
+						ServiceContextTestUtil.getServiceContext(
+							group.getGroupId(), user.getUserId())));
+
+			Assert.assertArrayEquals(
+				new String[] {ActionKeys.VIEW}, mustHavePermission.actionId);
+			Assert.assertEquals(
+				layout.getLayoutId(), mustHavePermission.resourceId);
+			Assert.assertEquals(
+				Layout.class.getName(), mustHavePermission.resourceName);
+		}
+	}
+
+	@Test
+	@TestInfo("LPD-116123")
 	public void testEscapeContentAttributes() throws Exception {
 		MockSubscriptionSenderMessageListener
 			mockSubscriptionSenderMessageListener =
@@ -98,8 +146,11 @@ public class FlagsEntryServiceTest {
 			"[$REASON$]", "<img src=x onerror=alert(3)>"
 		).build();
 
+		Layout layout = LayoutTestUtil.addTypePortletLayout(
+			TestPropsValues.getGroupId());
+
 		_flagsEntryService.addEntry(
-			RandomTestUtil.randomString(), 0L,
+			Layout.class.getName(), layout.getPlid(),
 			RandomTestUtil.randomString() + "@liferay.com",
 			TestPropsValues.getUserId(),
 			contentAttributes.get("[$CONTENT_TITLE$]"),
@@ -115,6 +166,7 @@ public class FlagsEntryServiceTest {
 	}
 
 	@Test
+	@TestInfo("LPD-116123")
 	public void testNotifyAfterRequestIsRecycled() throws Exception {
 		MockSubscriptionSenderMessageListener
 			mockSubscriptionSenderMessageListener =
@@ -166,8 +218,11 @@ public class FlagsEntryServiceTest {
 
 		serviceContext.setRequest(mockHttpServletRequest);
 
+		Layout layout = LayoutTestUtil.addTypePortletLayout(
+			TestPropsValues.getGroupId());
+
 		_flagsEntryService.addEntry(
-			RandomTestUtil.randomString(), 0L,
+			Layout.class.getName(), layout.getPlid(),
 			RandomTestUtil.randomString() + "@liferay.com", user.getUserId(),
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 			RandomTestUtil.randomString(), serviceContext);

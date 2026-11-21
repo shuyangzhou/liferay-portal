@@ -3,11 +3,6 @@ import {TimeSpans} from 'shared/util/constants';
 export const EVER = 'ever';
 export const SINCE = 'since';
 
-export const DAYS = 'days';
-export const HOURS = 'hours';
-
-export const HOURS_IN_A_DAY = 24;
-export const MAX_DAYS = 30;
 export const MAX_NESTED_OR_CRITERIA = 3;
 export const MAX_SEQUENTIAL_CRITERIA = 5;
 
@@ -79,6 +74,7 @@ export enum CustomFunctionOperators {
 	AccountsFilterByCount = 'accounts-filter-by-count',
 	ActivitiesFilter = 'activities-filter',
 	ActivitiesFilterByCount = 'activities-filter-by-count',
+	CampaignsFilter = 'campaigns-filter',
 	EventsFilterByCount = 'events-filter-by-count',
 	InterestsFilter = 'interests-filter',
 	OrganizationsFilter = 'organizations-filter',
@@ -103,6 +99,7 @@ export enum NotOperators {
 	NotAccountsFilterByCount = 'not-accounts-filter-by-count',
 	NotActivitiesFilter = 'not-activities-filter',
 	NotActivitiesFilterByCount = 'not-activities-filter-by-count',
+	NotCampaignsFilter = 'not-campaigns-filter',
 	NotContains = 'not-contains',
 	NotEventsFilterByCount = 'not-events-filter-by-count',
 	NotOrganizationsFilter = 'not-organizations-filter',
@@ -134,6 +131,7 @@ export enum PropertyTypes {
 	AccountText = 'account-text',
 	Behavior = 'behavior',
 	Boolean = 'boolean',
+	Campaign = 'campaign',
 	Date = 'date',
 	DateTime = 'date-time',
 	Duration = 'duration',
@@ -169,6 +167,7 @@ export const CUSTOM_FUNCTION_OPERATOR_KEY_MAP = {
 	['activities.filter']: CustomFunctionOperators.ActivitiesFilter,
 	['activities.filterByCount']:
 		CustomFunctionOperators.ActivitiesFilterByCount,
+	['campaigns.filter']: CustomFunctionOperators.CampaignsFilter,
 	['events.filterByCount']: CustomFunctionOperators.EventsFilterByCount,
 	['interests.filter']: CustomFunctionOperators.InterestsFilter,
 	['organizations.filter']: CustomFunctionOperators.OrganizationsFilter,
@@ -242,6 +241,18 @@ export const SUPPORTED_OPERATORS_MAP = {
 			key: RelationalOperators.EQ,
 			label: Liferay.Language.get('is').toLowerCase(),
 			name: RelationalOperators.EQ,
+		},
+	],
+	[PropertyTypes.Campaign]: [
+		{
+			key: CustomFunctionOperators.CampaignsFilter,
+			label: Liferay.Language.get('is').toLowerCase(),
+			name: CustomFunctionOperators.CampaignsFilter,
+		},
+		{
+			key: NotOperators.NotCampaignsFilter,
+			label: Liferay.Language.get('is-not').toLowerCase(),
+			name: NotOperators.NotCampaignsFilter,
 		},
 	],
 	[PropertyTypes.Tag]: [
@@ -544,6 +555,10 @@ export const SUPPORTED_PROPERTY_TYPES_MAP = {
 		NotOperators.NotActivitiesFilterByCount,
 	],
 	[PropertyTypes.Boolean]: [RelationalOperators.EQ],
+	[PropertyTypes.Campaign]: [
+		CustomFunctionOperators.CampaignsFilter,
+		NotOperators.NotCampaignsFilter,
+	],
 	[PropertyTypes.Tag]: [
 		CustomFunctionOperators.TagsFilter,
 		NotOperators.NotTagsFilter,
@@ -784,17 +799,6 @@ export const ALL_EVENT_IDS = Array.from(
 		)
 	)
 );
-
-export const TIME_WINDOW_OPTIONS = [
-	{
-		label: Liferay.Language.get('hours'),
-		value: HOURS,
-	},
-	{
-		label: Liferay.Language.get('days'),
-		value: DAYS,
-	},
-];
 
 export const TIME_PERIOD_OPTIONS = [
 	{

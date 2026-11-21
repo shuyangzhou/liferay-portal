@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUti
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.struts.StrutsAction;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.TestInfo;
@@ -103,10 +104,6 @@ public class GetLayoutsStrutsActionTest {
 
 		_role = RoleTestUtil.addRole(RoleConstants.TYPE_SITE);
 
-		RoleTestUtil.addResourcePermission(
-			_role, Layout.class.getName(), ResourceConstants.SCOPE_GROUP,
-			String.valueOf(_group.getGroupId()), ActionKeys.VIEW);
-
 		_themeDisplay = ContentLayoutTestUtil.getThemeDisplay(
 			_companyLocalService.getCompany(_group.getCompanyId()), _group,
 			_layoutLocalService.getLayout(
@@ -115,7 +112,7 @@ public class GetLayoutsStrutsActionTest {
 	}
 
 	@Test
-	@TestInfo("LPD-112154")
+	@TestInfo({"LPD-112154", "LPD-116822"})
 	public void testGetLayoutsStrutsActionWithIncludeDraftLayouts()
 		throws Exception {
 
@@ -144,10 +141,11 @@ public class GetLayoutsStrutsActionTest {
 		_assertLayoutInTree(true, publishedLayout, false);
 		_assertLayoutInTree(true, publishedLayout, true);
 
-		RoleTestUtil.addResourcePermission(
-			_role, Layout.class.getName(), ResourceConstants.SCOPE_INDIVIDUAL,
-			String.valueOf(unpublishedLayout.getPlid()),
-			ActionKeys.PREVIEW_DRAFT);
+		_resourcePermissionLocalService.setResourcePermissions(
+			_group.getCompanyId(), Layout.class.getName(),
+			ResourceConstants.SCOPE_INDIVIDUAL,
+			String.valueOf(unpublishedLayout.getPlid()), _role.getRoleId(),
+			new String[] {ActionKeys.PREVIEW_DRAFT});
 
 		_assertLayoutInTree(false, unpublishedLayout, false);
 		_assertLayoutInTree(true, unpublishedLayout, true);
@@ -181,7 +179,7 @@ public class GetLayoutsStrutsActionTest {
 	}
 
 	@Test
-	@TestInfo("LPS-106110")
+	@TestInfo({"LPD-116824", "LPS-106110"})
 	public void testGetLayoutsStrutsActionWithPagination() throws Exception {
 		Map<Long, List<Long>> layoutIdsMap = _getLayoutIdsMap(
 			_COUNT_ROOT_LAYOUTS, LayoutConstants.DEFAULT_PARENT_LAYOUT_ID);
@@ -440,6 +438,9 @@ public class GetLayoutsStrutsActionTest {
 
 	@Inject
 	private Portal _portal;
+
+	@Inject
+	private ResourcePermissionLocalService _resourcePermissionLocalService;
 
 	@DeleteAfterTestRun
 	private Role _role;

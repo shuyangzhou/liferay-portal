@@ -6,9 +6,18 @@
 package com.liferay.layout.content.page.editor.web.internal.portlet.action.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.layout.page.template.constants.LayoutPageTemplateEntryTypeConstants;
+import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
+import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
+import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocalService;
+import com.liferay.layout.page.template.test.util.LayoutPageTemplateTestUtil;
+import com.liferay.layout.test.util.DesignLibraryTestUtil;
 import com.liferay.layout.test.util.LayoutTestUtil;
+import com.liferay.layout.util.structure.DropZoneLayoutStructureItem;
+import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
@@ -25,14 +34,18 @@ import com.liferay.portal.kernel.test.portlet.MockLiferayPortletActionRequest;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletActionResponse;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.test.util.FeatureFlagTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.test.rule.FeatureFlag;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -69,31 +82,18 @@ public class UpdateFragmentsHighlightedConfigurationMVCActionCommandTest {
 		_layout = LayoutTestUtil.addTypeContentLayout(_group);
 	}
 
+	@FeatureFlag("LPD-57283")
 	@Test
+	@TestInfo("LPD-108820")
 	public void testUpdateFragmentsHighlightedConfiguration() throws Exception {
-		try {
-			User user = UserTestUtil.addGroupAdminUser(_group);
+		FeatureFlagTestUtil.invokeFeatureFlagListeners(
+			_group.getCompanyId(), true, "LPD-57283");
 
-			_assertUpdateHighlightedFragment(
-				new String[] {"BASIC_COMPONENT-heading"},
-				"BASIC_COMPONENT-heading", true, user);
+		User user = UserTestUtil.addGroupAdminUser(_group);
 
-			_assertUpdateHighlightedFragment(
-				new String[] {
-					"BASIC_COMPONENT-heading", "BASIC_COMPONENT-html"
-				},
-				"BASIC_COMPONENT-html", true, user);
-
-			_assertUpdateHighlightedFragment(
-				new String[] {"BASIC_COMPONENT-heading"},
-				"BASIC_COMPONENT-html", false, user);
-
-			_assertUpdateHighlightedFragment(
-				new String[0], "BASIC_COMPONENT-heading", false, user);
-		}
-		finally {
-			ServiceContextThreadLocal.popServiceContext();
-		}
+		_testUpdateFragmentsHighlightedConfiguration(user);
+		_testUpdateFragmentsHighlightedConfigurationWithDesignLibraryMasterLayout(
+			user);
 	}
 
 	@Test
@@ -121,7 +121,6 @@ public class UpdateFragmentsHighlightedConfigurationMVCActionCommandTest {
 			_assertUpdateHighlightedFragment(
 				new String[] {"BASIC_COMPONENT-html"}, "BASIC_COMPONENT-html",
 				true, user2);
-
 			_assertUpdateHighlightedFragment(
 				new String[0], "BASIC_COMPONENT-html", false, user2);
 
@@ -222,6 +221,72 @@ public class UpdateFragmentsHighlightedConfigurationMVCActionCommandTest {
 		return themeDisplay;
 	}
 
+	private void _testUpdateFragmentsHighlightedConfiguration(User user)
+		throws Exception {
+
+		_assertUpdateHighlightedFragment(
+			new String[] {"BASIC_COMPONENT-heading"}, "BASIC_COMPONENT-heading",
+			true, user);
+		_assertUpdateHighlightedFragment(
+			new String[] {"BASIC_COMPONENT-heading", "BASIC_COMPONENT-html"},
+			"BASIC_COMPONENT-html", true, user);
+		_assertUpdateHighlightedFragment(
+			new String[] {"BASIC_COMPONENT-heading"}, "BASIC_COMPONENT-html",
+			false, user);
+		_assertUpdateHighlightedFragment(
+			new String[0], "BASIC_COMPONENT-heading", false, user);
+	}
+
+	private void
+			_testUpdateFragmentsHighlightedConfigurationWithDesignLibraryMasterLayout(
+				User user)
+		throws Exception {
+
+		Group designLibraryGroup = DesignLibraryTestUtil.addDesignLibraryGroup(
+			_group.getGroupId(), true);
+
+		LayoutPageTemplateEntry masterLayoutPageTemplateEntry =
+			LayoutPageTemplateTestUtil.addLayoutPageTemplateEntry(
+				designLibraryGroup.getGroupId(),
+				LayoutPageTemplateEntryTypeConstants.MASTER_LAYOUT,
+				WorkflowConstants.STATUS_APPROVED);
+
+		LayoutPageTemplateStructure layoutPageTemplateStructure =
+			_layoutPageTemplateStructureLocalService.
+				fetchLayoutPageTemplateStructure(
+					designLibraryGroup.getGroupId(),
+					masterLayoutPageTemplateEntry.getPlid());
+
+		LayoutStructure layoutStructure = LayoutStructure.of(
+			layoutPageTemplateStructure.getDefaultSegmentsExperienceData());
+
+		DropZoneLayoutStructureItem dropZoneLayoutStructureItem =
+			(DropZoneLayoutStructureItem)
+				layoutStructure.getDropZoneLayoutStructureItem();
+
+		dropZoneLayoutStructureItem.setAllowNewFragmentEntries(false);
+		dropZoneLayoutStructureItem.setFragmentEntriesJSONArray(
+			JSONUtil.putAll(
+				JSONUtil.put(
+					"fragmentEntryRendererKey", "BASIC_COMPONENT-heading")));
+
+		_layoutPageTemplateStructureLocalService.
+			updateLayoutPageTemplateStructureData(
+				TestPropsValues.getUserId(), designLibraryGroup.getGroupId(),
+				masterLayoutPageTemplateEntry.getPlid(),
+				layoutStructure.toString());
+
+		_layout = LayoutTestUtil.updateMasterLayoutPageTemplateEntryERC(
+			_layout, masterLayoutPageTemplateEntry.getExternalReferenceCode(),
+			designLibraryGroup.getExternalReferenceCode());
+
+		_assertUpdateHighlightedFragment(
+			new String[0], "BASIC_COMPONENT-html", true, user);
+		_assertUpdateHighlightedFragment(
+			new String[] {"BASIC_COMPONENT-heading"}, "BASIC_COMPONENT-heading",
+			true, user);
+	}
+
 	private Company _company;
 
 	@Inject
@@ -231,6 +296,10 @@ public class UpdateFragmentsHighlightedConfigurationMVCActionCommandTest {
 	private Group _group;
 
 	private Layout _layout;
+
+	@Inject
+	private LayoutPageTemplateStructureLocalService
+		_layoutPageTemplateStructureLocalService;
 
 	@Inject(
 		filter = "mvc.command.name=/layout_content_page_editor/update_fragments_highlighted_configuration"

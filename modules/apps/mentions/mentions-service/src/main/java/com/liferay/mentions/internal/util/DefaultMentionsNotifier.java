@@ -7,6 +7,7 @@ package com.liferay.mentions.internal.util;
 
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
+import com.liferay.mentions.configuration.MentionsGroupServiceConfiguration;
 import com.liferay.mentions.constants.MentionsConstants;
 import com.liferay.mentions.constants.MentionsPortletKeys;
 import com.liferay.mentions.matcher.MentionsMatcher;
@@ -17,15 +18,18 @@ import com.liferay.message.boards.service.MBMessageLocalService;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.configuration.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.comment.DiscussionPermission;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.UserGroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.permission.LayoutPermission;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
@@ -40,8 +44,10 @@ import com.liferay.social.kernel.util.SocialInteractionsConfiguration;
 import com.liferay.social.kernel.util.SocialInteractionsConfigurationUtil;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -78,11 +84,16 @@ public class DefaultMentionsNotifier implements MentionsNotifier {
 			ServiceContext serviceContext)
 		throws PortalException {
 
+		User user = _userLocalService.getUser(userId);
+
 		Set<String> mentionedUsersScreenNames = _getMentionedUsersScreenNames(
 			userId, className, content);
 
 		String discussionClassName = null;
 		long discussionClassPK = 0;
+		Set<Long> mentionedUserGroupIds = new HashSet<>();
+		Set<Long> previousMentionedUserGroupIds = new HashSet<>();
+		Set<Long> previousMentionedUserIds = new HashSet<>();
 
 		if ((serviceContext.getAttribute("discussionClassNameId") instanceof
 				Number discussionClassNameId) &&
@@ -92,22 +103,45 @@ public class DefaultMentionsNotifier implements MentionsNotifier {
 			discussionClassName = _portal.getClassName(
 				discussionClassNameId.longValue());
 			discussionClassPK = discussionClassPKNumber.longValue();
+			mentionedUserGroupIds = _getMentionedUserGroupIds(
+				user.getCompanyId(), content);
 
 			String previousBody = (String)serviceContext.getAttribute(
 				"previousBody");
 
 			if (previousBody != null) {
-				mentionedUsersScreenNames.removeAll(
-					_getMentionedUsersScreenNames(
-						userId, className, previousBody));
+				for (String previousMentionedUserScreenName :
+						_getMentionedUsersScreenNames(
+							userId, className, previousBody)) {
+
+					mentionedUsersScreenNames.remove(
+						previousMentionedUserScreenName);
+
+					User previousMentionedUser =
+						_userLocalService.fetchUserByScreenName(
+							user.getCompanyId(),
+							previousMentionedUserScreenName);
+
+					if (previousMentionedUser == null) {
+						continue;
+					}
+
+					previousMentionedUserIds.add(
+						previousMentionedUser.getUserId());
+				}
+
+				previousMentionedUserGroupIds = _getMentionedUserGroupIds(
+					user.getCompanyId(), previousBody);
+
+				mentionedUserGroupIds.removeAll(previousMentionedUserGroupIds);
 			}
 		}
 
-		if (mentionedUsersScreenNames.isEmpty()) {
+		if (mentionedUsersScreenNames.isEmpty() &&
+			mentionedUserGroupIds.isEmpty()) {
+
 			return;
 		}
-
-		User user = _userLocalService.getUser(userId);
 
 		String contentURL = (String)serviceContext.getAttribute("contentURL");
 
@@ -193,6 +227,31 @@ public class DefaultMentionsNotifier implements MentionsNotifier {
 				mentionedUser.getEmailAddress(), mentionedUser.getFullName());
 		}
 
+		mentionsSubscriptionSender.setExcludedUserGroupIds(
+			previousMentionedUserGroupIds);
+		mentionsSubscriptionSender.setExcludedUserIds(previousMentionedUserIds);
+		mentionsSubscriptionSender.setMentionableUnsafePredicate(
+			mentionedUser -> _hasDiscussionViewPermission(
+				classPK, _permissionCheckerFactory.create(mentionedUser)));
+		mentionsSubscriptionSender.setUserGroupIds(mentionedUserGroupIds);
+
+		if (!mentionedUserGroupIds.isEmpty()) {
+			MentionsGroupServiceConfiguration
+				mentionsGroupServiceConfiguration =
+					_configurationProvider.getCompanyConfiguration(
+						MentionsGroupServiceConfiguration.class,
+						user.getCompanyId());
+
+			mentionsSubscriptionSender.setUserGroupLocalizedBodyMap(
+				_localization.getMap(
+					mentionsGroupServiceConfiguration.
+						commentUserGroupMentionEmailBody()));
+			mentionsSubscriptionSender.setUserGroupLocalizedSubjectMap(
+				_localization.getMap(
+					mentionsGroupServiceConfiguration.
+						commentUserGroupMentionEmailSubject()));
+		}
+
 		mentionsSubscriptionSender.flushNotificationsAsync();
 	}
 
@@ -219,6 +278,36 @@ public class DefaultMentionsNotifier implements MentionsNotifier {
 		return StringPool.BLANK;
 	}
 
+	private Set<Long> _getMentionedUserGroupIds(
+		long companyId, String content) {
+
+		Set<Long> mentionedUserGroupIds = new LinkedHashSet<>();
+
+		if (!FeatureFlagManagerUtil.isEnabled(companyId, "LPD-104086")) {
+			return mentionedUserGroupIds;
+		}
+
+		Matcher matcher = _mentionPattern.matcher(content);
+
+		while (matcher.find()) {
+			if (!Objects.equals(matcher.group(1), "usergroup")) {
+				continue;
+			}
+
+			UserGroup mentionedUserGroup =
+				_userGroupLocalService.fetchUserGroupByExternalReferenceCode(
+					matcher.group(2), companyId);
+
+			if (mentionedUserGroup == null) {
+				continue;
+			}
+
+			mentionedUserGroupIds.add(mentionedUserGroup.getUserGroupId());
+		}
+
+		return mentionedUserGroupIds;
+	}
+
 	private Set<String> _getMentionedUsersScreenNames(
 			long userId, String className, String content)
 		throws PortalException {
@@ -235,12 +324,16 @@ public class DefaultMentionsNotifier implements MentionsNotifier {
 		if (FeatureFlagManagerUtil.isEnabled(
 				user.getCompanyId(), "LPD-104086")) {
 
-			Matcher matcher = _mentionUserPattern.matcher(content);
+			Matcher matcher = _mentionPattern.matcher(content);
 
 			while (matcher.find()) {
+				if (!Objects.equals(matcher.group(1), "user")) {
+					continue;
+				}
+
 				User mentionedUser =
 					_userLocalService.fetchUserByExternalReferenceCode(
-						matcher.group(1), user.getCompanyId());
+						matcher.group(2), user.getCompanyId());
 
 				if (mentionedUser == null) {
 					continue;
@@ -288,8 +381,12 @@ public class DefaultMentionsNotifier implements MentionsNotifier {
 
 	private static final MentionsMatcher _defaultMentionsMatcher =
 		new DefaultMentionsMatcher();
-	private static final Pattern _mentionUserPattern = Pattern.compile(
-		"<span\\s+class=\"mention mention-user-([^\"\\s]+)\">[^<]*</span>");
+	private static final Pattern _mentionPattern = Pattern.compile(
+		"<span\\s+class=\"mention mention-(user|usergroup)-([^\"\\s]+)\">" +
+			"[^<]*</span>");
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private DiscussionPermission _discussionPermission;
@@ -313,6 +410,9 @@ public class DefaultMentionsNotifier implements MentionsNotifier {
 	private Portal _portal;
 
 	private ServiceTrackerMap<String, MentionsMatcher> _serviceTrackerMap;
+
+	@Reference
+	private UserGroupLocalService _userGroupLocalService;
 
 	@Reference
 	private UserLocalService _userLocalService;

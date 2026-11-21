@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -118,12 +119,27 @@ public class SynonymSearchTest {
 		for (Map.Entry<Locale, String> entry : _synonymsMap.entrySet()) {
 			String[] parts = StringUtil.split(entry.getValue());
 
-			_assertSearch(parts[0], entry.getKey());
+			_assertSearch(2, parts[0], entry.getKey());
 		}
 	}
 
-	private static void _addJournalArticle(Map<Locale, String> localeStringMap)
+	@Test
+	public void testSearchQuotedPhrase() {
+		_assertSearch(
+			1, "\"Ministério Público de Santa Catarina\"", LocaleUtil.BRAZIL);
+		_assertSearch(
+			1, "\"denunciado pelo Ministério Público\"", LocaleUtil.BRAZIL);
+		_assertSearch(1, "\"perseguido pelo bichano\"", LocaleUtil.BRAZIL);
+		_assertSearch(1, "\"perseguido pelo gato\"", LocaleUtil.BRAZIL);
+		_assertSearch(2, "\"Tribunal de Justiça\"", LocaleUtil.BRAZIL);
+	}
+
+	private static void _addJournalArticle(Locale locale, String title)
 		throws Exception {
+
+		Map<Locale, String> localeStringMap = HashMapBuilder.put(
+			locale, title
+		).build();
 
 		JournalTestUtil.addArticle(
 			_group.getGroupId(), 0,
@@ -137,15 +153,20 @@ public class SynonymSearchTest {
 		for (Map.Entry<Locale, String> entry : _synonymsMap.entrySet()) {
 			String[] parts = StringUtil.split(entry.getValue());
 
-			_addJournalArticle(
-				HashMapBuilder.put(
-					entry.getKey(), parts[0]
-				).build());
-			_addJournalArticle(
-				HashMapBuilder.put(
-					entry.getKey(), parts[1]
-				).build());
+			_addJournalArticle(entry.getKey(), parts[0]);
+			_addJournalArticle(entry.getKey(), parts[1]);
 		}
+
+		_addJournalArticle(
+			LocaleUtil.BRAZIL, "Decisão do Tribunal de Justiça hoje");
+		_addJournalArticle(
+			LocaleUtil.BRAZIL,
+			"Ministério Público de Santa Catarina abre vaga");
+		_addJournalArticle(
+			LocaleUtil.BRAZIL, "Promotor denunciado pelo MP ontem");
+		_addJournalArticle(
+			LocaleUtil.BRAZIL, "Rato perseguido pelo gato fugiu");
+		_addJournalArticle(LocaleUtil.BRAZIL, "Recurso ao TJ negado");
 	}
 
 	private static void _addSynonymSets() {
@@ -160,7 +181,13 @@ public class SynonymSearchTest {
 		ReflectionTestUtil.invoke(
 			_editSynonymSetsMVCActionCommand, "updateSynonymSets",
 			new Class<?>[] {ActionRequest.class, String[].class},
-			mockLiferayPortletActionRequest, values.toArray(new String[0]));
+			mockLiferayPortletActionRequest,
+			ArrayUtil.append(
+				values.toArray(new String[0]),
+				new String[] {
+					"Ministério Público,MP", "Tribunal de Justiça,TJ",
+					"gato,bichano"
+				}));
 	}
 
 	private static void _deleteSynonymSets() {
@@ -178,7 +205,9 @@ public class SynonymSearchTest {
 			mockLiferayPortletActionRequest);
 	}
 
-	private void _assertSearch(String keyword, Locale locale) {
+	private void _assertSearch(
+		int expectedCount, String keyword, Locale locale) {
+
 		String localizedFieldName = Field.getLocalizedName(locale, Field.TITLE);
 
 		SearchRequestBuilder searchRequestBuilder =
@@ -200,7 +229,8 @@ public class SynonymSearchTest {
 
 		DocumentsAssert.assertCount(
 			searchResponse.getRequestString(),
-			documents.toArray(new Document[0]), localizedFieldName, 2);
+			documents.toArray(new Document[0]), localizedFieldName,
+			expectedCount);
 	}
 
 	private static final Locale _ARABIC_LOCALE = new Locale("ar", "SA");

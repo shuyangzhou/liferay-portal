@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.util.Tuple;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.aui.base.BaseInputTag;
+import com.liferay.taglib.util.BeanGetterUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.jsp.JspException;
@@ -198,13 +199,19 @@ public class InputTag extends BaseInputTag {
 				"aui:model-context:defaultLanguageId");
 		}
 
-		if (Validator.isNull(defaultLanguageId) && (model != null) &&
+		boolean groupedModel = false;
+
+		if ((model != null) &&
 			ModelHintsUtil.hasField(model.getName(), "groupId")) {
 
-			ThemeDisplay themeDisplay =
-				(ThemeDisplay)httpServletRequest.getAttribute(
-					WebKeys.THEME_DISPLAY);
+			groupedModel = true;
+		}
 
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		if (Validator.isNull(defaultLanguageId) && groupedModel) {
 			defaultLanguageId = LocaleUtil.toLanguageId(
 				themeDisplay.getSiteDefaultLocale());
 		}
@@ -310,6 +317,16 @@ public class InputTag extends BaseInputTag {
 			httpServletRequest, "title", String.valueOf(title));
 		setNamespacedAttribute(
 			httpServletRequest, "wrappedField", wrappedField);
+
+		if (getLocalized()) {
+			long groupId = themeDisplay.getSiteGroupId();
+
+			if (groupedModel && (bean != null)) {
+				groupId = BeanGetterUtil.getLong(bean, "groupId");
+			}
+
+			setNamespacedAttribute(httpServletRequest, "groupId", groupId);
+		}
 
 		httpServletRequest.setAttribute(
 			getAttributeNamespace() + "value", getValue());

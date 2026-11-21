@@ -1108,14 +1108,14 @@ public class ObjectDefinitionLocalServiceImpl
 			_dlFileEntryLocalService, _dlFileEntryTextProvider,
 			_groupLocalService, _kaleoDefinitionLocalService,
 			_listTypeLocalService, _objectActionLocalService,
-			objectDefinitionLocalService, _objectDefinitionSettingLocalService,
-			_objectEntryFolderLocalService, _objectEntryLocalService,
-			_objectEntryService, _objectFieldBusinessTypeRegistry,
-			_objectFieldLocalService, _objectFolderLocalService,
-			_objectLayoutLocalService, _objectLayoutTabLocalService,
-			_objectRelationshipLocalService, _objectScopeProviderRegistry,
-			_objectViewLocalService, _organizationLocalService, _portal,
-			_portletLocalService, _resourceActions, _userLocalService,
+			objectDefinitionLocalService, _objectEntryFolderLocalService,
+			_objectEntryLocalService, _objectEntryService,
+			_objectFieldBusinessTypeRegistry, _objectFieldLocalService,
+			_objectFolderLocalService, _objectLayoutLocalService,
+			_objectLayoutTabLocalService, _objectRelationshipLocalService,
+			_objectScopeProviderRegistry, _objectViewLocalService,
+			_organizationLocalService, _portal, _portletLocalService,
+			_resourceActions, _userLocalService,
 			_resourcePermissionLocalService, _searchLocalizationHelper,
 			_sharingModelResourcePermissionConfigurator,
 			_systemEventLocalService, _textEmbeddingDocumentContributor,
@@ -2794,8 +2794,6 @@ public class ObjectDefinitionLocalServiceImpl
 		String oldClassName = objectDefinition.getClassName();
 		boolean oldEnableObjectEntrySubscription =
 			objectDefinition.isEnableObjectEntrySubscription();
-		String oldFriendlyURLSeparator =
-			objectDefinition.getFriendlyURLSeparator();
 
 		boolean addSystemObjectFields = false;
 
@@ -2960,13 +2958,8 @@ public class ObjectDefinitionLocalServiceImpl
 				objectDefinitionLocalService.deployObjectDefinition(
 					objectDefinition);
 
-				if (!StringUtil.equals(
-						oldFriendlyURLSeparator,
-						objectDefinition.getFriendlyURLSeparator())) {
-
-					_registerTransactionCallbackForCluster(
-						_deployObjectDefinitionMethodKey, objectDefinition);
-				}
+				_registerTransactionCallbackForCluster(
+					_deployObjectDefinitionMethodKey, objectDefinition);
 			}
 
 			if (active != oldActive) {

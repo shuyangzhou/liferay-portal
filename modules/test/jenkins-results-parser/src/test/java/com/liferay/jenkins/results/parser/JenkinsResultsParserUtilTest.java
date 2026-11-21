@@ -286,6 +286,189 @@ public class JenkinsResultsParserUtilTest
 	}
 
 	@Test
+	public void testGetLatestPortalBundleOverlaySHAShort() throws Exception {
+		Properties buildProperties = new Properties();
+
+		String s3BucketPath = "s3://" + RandomTestUtil.randomString();
+
+		buildProperties.setProperty("cloud.ci.s3.bucket.path", s3BucketPath);
+		buildProperties.setProperty(
+			"cloud.ci.s3.bucket.persistent.resources.archives.path",
+			s3BucketPath + "/persistent-resources");
+
+		JenkinsResultsParserUtil.setBuildProperties(buildProperties);
+
+		String basePortalBranchName = RandomTestUtil.randomString();
+
+		String baseS3ObjectKey = _getRandomPortalBundleS3ObjectKey(
+			basePortalBranchName);
+
+		String overlayPortalBranchName = RandomTestUtil.randomString();
+
+		String failedS3ObjectKey = _getPortalBundleOverlayS3ObjectKey(
+			baseS3ObjectKey, overlayPortalBranchName,
+			_getRandomPortalGitCommitShort());
+
+		String otherOverlayS3ObjectKey = _getPortalBundleOverlayS3ObjectKey(
+			baseS3ObjectKey, RandomTestUtil.randomString(),
+			_getRandomPortalGitCommitShort());
+		String pullRequestS3ObjectKey = JenkinsResultsParserUtil.combine(
+			baseS3ObjectKey, "/", overlayPortalBranchName, "_",
+			_getRandomPortalGitCommitShort(), "_",
+			_getRandomPortalGitCommitShort());
+		String reusedS3ObjectKey = _getPortalBundleOverlayS3ObjectKey(
+			baseS3ObjectKey, overlayPortalBranchName,
+			_getRandomPortalGitCommitShort());
+
+		String successOverlaySHAShort = _getRandomPortalGitCommitShort();
+
+		String successS3ObjectKey = _getPortalBundleOverlayS3ObjectKey(
+			baseS3ObjectKey, overlayPortalBranchName, successOverlaySHAShort);
+
+		Shell shell = mockShell();
+
+		setShellCommandOutput(
+			"aws s3 ls --recursive", shell,
+			JenkinsResultsParserUtil.join(
+				"\n",
+				"2026-11-01 10:00:00       123 " + successS3ObjectKey +
+					"/data.json.gz",
+				"2026-11-02 10:00:00       123 " + failedS3ObjectKey +
+					"/data.json.gz",
+				"2026-11-03 10:00:00  99999999 " + successS3ObjectKey +
+					"/liferay-portal-bundle-tomcat.tar.gz",
+				"2026-11-04 10:00:00       123 " + baseS3ObjectKey +
+					"/data.json.gz",
+				"2026-11-05 10:00:00       123 " + otherOverlayS3ObjectKey +
+					"/data.json.gz",
+				"2026-11-06 10:00:00       123 " + pullRequestS3ObjectKey +
+					"/data.json.gz",
+				"2026-11-07 10:00:00       123 " + reusedS3ObjectKey +
+					"/data.json.gz"));
+
+		Map<String, JSONObject> dataJSONObjects = new HashMap<>();
+
+		long reusedCompletedTime = RandomTestUtil.randomInt();
+
+		dataJSONObjects.put(
+			s3BucketPath + "/" + baseS3ObjectKey,
+			new JSONObject(
+			).put(
+				"completed_time", reusedCompletedTime + 2
+			).put(
+				"status", "SUCCESS"
+			));
+		dataJSONObjects.put(
+			s3BucketPath + "/" + failedS3ObjectKey,
+			new JSONObject(
+			).put(
+				"completed_time", reusedCompletedTime + 2
+			).put(
+				"status", "FAILED"
+			));
+		dataJSONObjects.put(
+			s3BucketPath + "/" + otherOverlayS3ObjectKey,
+			new JSONObject(
+			).put(
+				"completed_time", reusedCompletedTime + 2
+			).put(
+				"status", "SUCCESS"
+			));
+		dataJSONObjects.put(
+			s3BucketPath + "/" + pullRequestS3ObjectKey,
+			new JSONObject(
+			).put(
+				"completed_time", reusedCompletedTime + 2
+			).put(
+				"status", "SUCCESS"
+			));
+		dataJSONObjects.put(
+			s3BucketPath + "/" + reusedS3ObjectKey,
+			new JSONObject(
+			).put(
+				"completed_time", reusedCompletedTime
+			).put(
+				"status", "SUCCESS"
+			));
+		dataJSONObjects.put(
+			s3BucketPath + "/" + successS3ObjectKey,
+			new JSONObject(
+			).put(
+				"completed_time", reusedCompletedTime + 1
+			).put(
+				"status", "SUCCESS"
+			));
+
+		try (MockedStatic<CloudBucketUtil> cloudBucketUtilMockedStatic =
+				_mockCloudBucketUtil(dataJSONObjects)) {
+
+			testEquals(
+				successOverlaySHAShort,
+				JenkinsResultsParserUtil.getLatestPortalBundleOverlaySHAShort(
+					basePortalBranchName, overlayPortalBranchName));
+		}
+
+		Mockito.verify(
+			shell
+		).doExecute(
+			Mockito.argThat(
+				executionRequest -> hasCommand(
+					executionRequest, "aws s3 ls --recursive",
+					JenkinsResultsParserUtil.combine(
+						s3BucketPath, "/persistent-resources/portal-bundle",
+						"/", basePortalBranchName, "_")))
+		);
+
+		dataJSONObjects.clear();
+
+		List<String> overlaySHAShorts = new ArrayList<>();
+		List<String> s3FilesOutputLines = new ArrayList<>();
+
+		for (int index = 0; index < 11; index++) {
+			String overlaySHAShort = _getRandomPortalGitCommitShort();
+
+			String s3ObjectKey = _getPortalBundleOverlayS3ObjectKey(
+				baseS3ObjectKey, overlayPortalBranchName, overlaySHAShort);
+
+			dataJSONObjects.put(
+				s3BucketPath + "/" + s3ObjectKey,
+				new JSONObject(
+				).put(
+					"completed_time",
+					reusedCompletedTime + Math.max(0, index - 8)
+				).put(
+					"status", "SUCCESS"
+				));
+
+			overlaySHAShorts.add(overlaySHAShort);
+			s3FilesOutputLines.add(
+				JenkinsResultsParserUtil.combine(
+					"2026-11-", String.valueOf(20 - index),
+					" 10:00:00       123 ", s3ObjectKey, "/data.json.gz"));
+		}
+
+		setShellCommandOutput(
+			"aws s3 ls --recursive", shell,
+			JenkinsResultsParserUtil.join("\n", s3FilesOutputLines));
+
+		try (MockedStatic<CloudBucketUtil> cloudBucketUtilMockedStatic =
+				_mockCloudBucketUtil(dataJSONObjects)) {
+
+			testEquals(
+				overlaySHAShorts.get(9),
+				JenkinsResultsParserUtil.getLatestPortalBundleOverlaySHAShort(
+					basePortalBranchName, overlayPortalBranchName));
+		}
+
+		setShellCommandOutput("aws s3 ls --recursive", shell, "");
+
+		testEquals(
+			null,
+			JenkinsResultsParserUtil.getLatestPortalBundleOverlaySHAShort(
+				basePortalBranchName, overlayPortalBranchName));
+	}
+
+	@Test
 	public void testGetLatestPortalBundleS3ObjectPath() throws Exception {
 		Properties buildProperties = new Properties();
 
@@ -1695,6 +1878,15 @@ public class JenkinsResultsParserUtilTest
 			buildAwsPropertiesFile.exists());
 
 		return JenkinsResultsParserUtil.getProperties(buildAwsPropertiesFile);
+	}
+
+	private String _getPortalBundleOverlayS3ObjectKey(
+		String baseS3ObjectKey, String overlayPortalBranchName,
+		String overlaySHAShort) {
+
+		return JenkinsResultsParserUtil.combine(
+			baseS3ObjectKey, "/", overlayPortalBranchName, "_", overlaySHAShort,
+			"_", overlaySHAShort);
 	}
 
 	private String _getRandomPortalBundleS3ObjectKey(String portalBranchName) {

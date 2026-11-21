@@ -19,8 +19,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.security.audit.configuration.AuditConfiguration;
+import com.liferay.portal.security.audit.event.generators.constants.EventTypes;
 import com.liferay.portal.security.audit.router.configuration.LoggingAuditMessageProcessorConfiguration;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LoggerTestUtil;
@@ -93,7 +96,33 @@ public class LoggingAuditMessageProcessorTest {
 				});
 
 			Assert.assertEquals(messages.toString(), 1, messages.size());
+
+			_testProcessWhenAuditIsDisabled(logCapture);
+			_testProcessWhenProcessorIsDisabled(logCapture);
 		}
+	}
+
+	private List<String> _getActions(LogCapture logCapture, String pid) {
+		return TransformUtil.transform(
+			logCapture.getMessages(),
+			message -> {
+				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+					message);
+
+				JSONObject additionalInfoJSONObject = jsonObject.getJSONObject(
+					"additionalInfo");
+
+				if (!Objects.equals(
+						jsonObject.getString("eventType"),
+						EventTypes.AUDIT_CONFIG_CHANGE) ||
+					!Objects.equals(
+						additionalInfoJSONObject.getString("pid"), pid)) {
+
+					return null;
+				}
+
+				return additionalInfoJSONObject.getString("action");
+			});
 	}
 
 	private Dictionary<String, Object> _getFedRAMPProperties()
@@ -124,6 +153,58 @@ public class LoggingAuditMessageProcessorTest {
 		}
 
 		return fedRAMPProperties;
+	}
+
+	private void _testProcessWhenAuditIsDisabled(LogCapture logCapture)
+		throws Exception {
+
+		logCapture.resetPriority(LoggerTestUtil.INFO);
+
+		try (ConfigurationTemporarySwapper configurationTemporarySwapper =
+				new ConfigurationTemporarySwapper(
+					AuditConfiguration.class.getName(),
+					HashMapDictionaryBuilder.<String, Object>put(
+						"enabled", false
+					).build())) {
+
+			List<String> actions = _getActions(
+				logCapture, AuditConfiguration.class.getName());
+
+			Assert.assertEquals(actions.toString(), 1, actions.size());
+		}
+
+		List<String> actions = _getActions(
+			logCapture, AuditConfiguration.class.getName());
+
+		Assert.assertEquals(actions.toString(), 2, actions.size());
+	}
+
+	private void _testProcessWhenProcessorIsDisabled(LogCapture logCapture)
+		throws Exception {
+
+		logCapture.resetPriority(LoggerTestUtil.INFO);
+
+		try (ConfigurationTemporarySwapper configurationTemporarySwapper =
+				new ConfigurationTemporarySwapper(
+					LoggingAuditMessageProcessorConfiguration.class.getName(),
+					HashMapDictionaryBuilder.<String, Object>put(
+						"enabled", false
+					).put(
+						"logMessageFormat", "JSON"
+					).build())) {
+
+			List<String> actions = _getActions(
+				logCapture,
+				LoggingAuditMessageProcessorConfiguration.class.getName());
+
+			Assert.assertEquals(actions.toString(), 1, actions.size());
+		}
+
+		List<String> actions = _getActions(
+			logCapture,
+			LoggingAuditMessageProcessorConfiguration.class.getName());
+
+		Assert.assertEquals(actions.toString(), 2, actions.size());
 	}
 
 	private static final String _CLASS_NAME =

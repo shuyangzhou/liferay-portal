@@ -329,6 +329,26 @@ public class PortletDataContextFactoryImpl
 			}
 		}
 
+		Element groupExternalReferenceCodeMappingsElement =
+			headerElement.element("group-external-reference-code-mappings");
+
+		if (groupExternalReferenceCodeMappingsElement != null) {
+			Map<String, String> groupExternalReferenceCodes =
+				(Map<String, String>)portletDataContext.getNewPrimaryKeysMap(
+					Group.class + ".externalReferenceCode");
+
+			for (Element groupExternalReferenceCodeMappingElement :
+					groupExternalReferenceCodeMappingsElement.elements(
+						"group-external-reference-code-mapping")) {
+
+				groupExternalReferenceCodes.put(
+					groupExternalReferenceCodeMappingElement.attributeValue(
+						"external-reference-code"),
+					groupExternalReferenceCodeMappingElement.attributeValue(
+						"live-external-reference-code"));
+			}
+		}
+
 		Element missingReferencesElement = rootElement.element(
 			"missing-references");
 

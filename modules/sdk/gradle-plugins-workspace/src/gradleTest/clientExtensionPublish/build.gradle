@@ -1,0 +1,105 @@
+import groovy.json.JsonSlurper
+
+String registry = project.property("liferay.workspace.client.extension.registry")
+
+task runGradleTest
+
+runGradleTest {
+	dependsOn ":client-extensions:able:publishClientExtension", ":client-extensions:baker:publishClientExtension"
+
+	doLast {
+		JsonSlurper jsonSlurper = new JsonSlurper()
+
+		Map<String, Object> catalogMap = jsonSlurper.parse(new URL("http://${registry}/v2/_catalog"))
+
+		assert catalogMap.repositories.contains("able")
+		assert catalogMap.repositories.contains("able-descriptor")
+		assert !catalogMap.repositories.contains("baker")
+		assert catalogMap.repositories.contains("baker-descriptor")
+
+		HttpURLConnection httpURLConnection = _openManifest(registry, "able", "1.0.0")
+
+		httpURLConnection.requestMethod = "HEAD"
+
+		assert httpURLConnection.responseCode == 200
+
+		HttpURLConnection descriptorHttpURLConnection = _openManifest(registry, "able-descriptor", "1.0.0")
+
+		descriptorHttpURLConnection.requestMethod = "HEAD"
+
+		assert descriptorHttpURLConnection.responseCode == 200
+
+		String descriptorDigest = descriptorHttpURLConnection.getHeaderField("Docker-Content-Digest")
+
+		Project ableProject = project(":client-extensions:able")
+
+		File descriptorDigestFile = ableProject.file("build/client-extension-descriptor-image/digest")
+
+		assert descriptorDigestFile.text == descriptorDigest
+
+		HttpURLConnection digestTagHttpURLConnection = _openManifest(registry, "able-descriptor", "1.0.0.${descriptorDigest.substring(7, 19)}")
+
+		digestTagHttpURLConnection.requestMethod = "HEAD"
+
+		assert digestTagHttpURLConnection.getHeaderField("Docker-Content-Digest") == descriptorDigest
+
+		Map<String, Object> ableDescriptorMap = _pullDescriptor(registry, "able")
+
+		assert ableDescriptorMap.configs.size() > 0
+		assert ableDescriptorMap.descriptorVersion == 1
+		assert ableDescriptorMap.image.digest == httpURLConnection.getHeaderField("Docker-Content-Digest")
+		assert ableDescriptorMap.image.repository == "${registry}/able"
+		assert ableDescriptorMap.image.tag == "1.0.0"
+		assert ableDescriptorMap.serviceId == null
+		assert ableDescriptorMap.type == "service"
+		assert ableDescriptorMap.workload == null
+
+		Map<String, Object> bakerDescriptorMap = _pullDescriptor(registry, "baker")
+
+		assert bakerDescriptorMap.configs.size() > 0
+		assert bakerDescriptorMap.image == null
+		assert bakerDescriptorMap.oauthApplicationHeadlessServerERC == null
+		assert bakerDescriptorMap.type == "configuration"
+		assert bakerDescriptorMap.workload == null
+	}
+}
+
+HttpURLConnection _openManifest(String registry, String name, String reference) {
+	HttpURLConnection httpURLConnection = new URL("http://${registry}/v2/${name}/manifests/${reference}").openConnection()
+
+	httpURLConnection.setRequestProperty("Accept", "application/vnd.docker.distribution.manifest.v2+json, application/vnd.oci.image.manifest.v1+json")
+
+	return httpURLConnection
+}
+
+Map<String, Object> _pullDescriptor(String registry, String name) {
+	HttpURLConnection httpURLConnection = _openManifest(registry, "${name}-descriptor", "1.0.0")
+
+	JsonSlurper jsonSlurper = new JsonSlurper()
+
+	Map<String, Object> manifestMap = jsonSlurper.parse(httpURLConnection.inputStream)
+
+	List<Map<String, Object>> layerMaps = manifestMap.layers
+
+	assert layerMaps.size() == 1
+
+	Map<String, Object> configMap = jsonSlurper.parse(new URL("http://${registry}/v2/${name}-descriptor/blobs/${manifestMap.config.digest}"))
+
+	assert configMap.config.Labels["com.liferay.client-extension.descriptor.version"] == "1"
+
+	File layerFile = new File(buildDir, "pulled-descriptors/${name}.tar.gz")
+
+	layerFile.parentFile.mkdirs()
+
+	layerFile.bytes = new URL("http://${registry}/v2/${name}-descriptor/blobs/${layerMaps[0].digest}").bytes
+
+	FileTree layerFileTree = tarTree(resources.gzip(layerFile))
+
+	FileTree descriptorFileTree = layerFileTree.matching {
+		include "client-extension-descriptor.json"
+	}
+
+	Map<String, Object> descriptorJSONMap = jsonSlurper.parse(descriptorFileTree.singleFile)
+
+	return descriptorJSONMap.descriptor
+}

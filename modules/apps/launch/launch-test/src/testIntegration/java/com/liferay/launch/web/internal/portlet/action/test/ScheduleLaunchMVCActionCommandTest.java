@@ -111,84 +111,15 @@ public class ScheduleLaunchMVCActionCommandTest {
 	@Test
 	public void testProcessAction() throws Exception {
 
-		// Date in the past
-
-		JSONObject jsonObject = _processAction(
-			System.currentTimeMillis() - Time.MINUTE,
-			TestPropsValues.getUser());
-
-		Assert.assertEquals(
-			_language.get(
-				LocaleUtil.US, "the-publish-time-must-be-in-the-future"),
-			jsonObject.getString("validationError"));
-
-		_assertScheduledDateAndStatus(null, WorkflowConstants.STATUS_DRAFT);
-
-		// External redirect
-
-		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				"com.liferay.portal.util.PortalImpl", LoggerTestUtil.WARN)) {
-
-			String redirect =
-				"http://" + RandomTestUtil.randomString() + ".com";
-
-			jsonObject = _processAction(
-				System.currentTimeMillis() + Time.DAY, redirect,
-				TestPropsValues.getUser());
-
-			List<LogEntry> logEntries = logCapture.getLogEntries();
-
-			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
-
-			LogEntry logEntry = logEntries.get(0);
-
-			Assert.assertEquals(
-				"Redirect URL " + redirect + " is not allowed",
-				logEntry.getMessage());
-		}
-
-		Assert.assertTrue(Validator.isNull(jsonObject.getString("redirect")));
-
-		_launchSetPublisher.unschedulePublish(
-			_launchSetObjectEntry.getObjectEntryId());
-
-		// Without permission
-
-		PermissionChecker permissionChecker =
-			PermissionThreadLocal.getPermissionChecker();
-
-		_user = UserTestUtil.addUser();
-
-		PermissionThreadLocal.setPermissionChecker(
-			PermissionCheckerFactoryUtil.create(_user));
-
-		try {
-			jsonObject = _processAction(
-				System.currentTimeMillis() + Time.DAY, _user);
-
-			Assert.assertEquals(
-				_language.get(
-					LocaleUtil.US, "you-do-not-have-the-required-permissions"),
-				jsonObject.getString("error"));
-		}
-		finally {
-			PermissionThreadLocal.setPermissionChecker(permissionChecker);
-		}
-
-		_assertScheduledDateAndStatus(null, WorkflowConstants.STATUS_DRAFT);
-
-		// Future date
+		// Already scheduled
 
 		long publishTime = System.currentTimeMillis() + Time.DAY;
 
-		jsonObject = _processAction(publishTime, TestPropsValues.getUser());
+		_launchSetPublisher.schedulePublish(
+			new Date(publishTime), _launchSetObjectEntry.getObjectEntryId(),
+			TestPropsValues.getUserId());
 
-		Assert.assertEquals(_REDIRECT, jsonObject.getString("redirect"));
-
-		_assertScheduledDateAndStatus(
-			new Date(publishTime), WorkflowConstants.STATUS_SCHEDULED);
-
-		// Already scheduled
+		JSONObject jsonObject;
 
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				"com.liferay.launch.web.internal.portlet.action." +
@@ -219,6 +150,102 @@ public class ScheduleLaunchMVCActionCommandTest {
 
 		_assertScheduledDateAndStatus(
 			new Date(publishTime), WorkflowConstants.STATUS_SCHEDULED);
+
+		_launchSetPublisher.unschedulePublish(
+			_launchSetObjectEntry.getObjectEntryId());
+
+		// External redirect
+
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				"com.liferay.portal.util.PortalImpl", LoggerTestUtil.WARN)) {
+
+			String redirect =
+				"http://" + RandomTestUtil.randomString() + ".com";
+
+			jsonObject = _processAction(
+				System.currentTimeMillis() + Time.DAY, redirect,
+				TestPropsValues.getUser());
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
+
+			LogEntry logEntry = logEntries.get(0);
+
+			Assert.assertEquals(
+				"Redirect URL " + redirect + " is not allowed",
+				logEntry.getMessage());
+		}
+
+		Assert.assertTrue(Validator.isNull(jsonObject.getString("redirect")));
+
+		_launchSetPublisher.unschedulePublish(
+			_launchSetObjectEntry.getObjectEntryId());
+
+		// Future date
+
+		jsonObject = _processAction(
+			System.currentTimeMillis() + (Time.SECOND * 30),
+			TestPropsValues.getUser());
+
+		Assert.assertEquals(
+			_language.get(
+				LocaleUtil.US,
+				"the-date-and-time-must-be-at-least-one-minute-in-the-future"),
+			jsonObject.getString("validationError"));
+
+		_assertScheduledDateAndStatus(null, WorkflowConstants.STATUS_DRAFT);
+
+		publishTime = System.currentTimeMillis() + (Time.MINUTE * 2);
+
+		jsonObject = _processAction(publishTime, TestPropsValues.getUser());
+
+		Assert.assertEquals(_REDIRECT, jsonObject.getString("redirect"));
+
+		_assertScheduledDateAndStatus(
+			new Date(publishTime), WorkflowConstants.STATUS_SCHEDULED);
+
+		_launchSetPublisher.unschedulePublish(
+			_launchSetObjectEntry.getObjectEntryId());
+
+		// Past date
+
+		jsonObject = _processAction(
+			System.currentTimeMillis() - Time.MINUTE,
+			TestPropsValues.getUser());
+
+		Assert.assertEquals(
+			_language.get(
+				LocaleUtil.US,
+				"the-date-and-time-must-be-at-least-one-minute-in-the-future"),
+			jsonObject.getString("validationError"));
+
+		_assertScheduledDateAndStatus(null, WorkflowConstants.STATUS_DRAFT);
+
+		// Without permission
+
+		PermissionChecker permissionChecker =
+			PermissionThreadLocal.getPermissionChecker();
+
+		_user = UserTestUtil.addUser();
+
+		PermissionThreadLocal.setPermissionChecker(
+			PermissionCheckerFactoryUtil.create(_user));
+
+		try {
+			jsonObject = _processAction(
+				System.currentTimeMillis() + Time.DAY, _user);
+
+			Assert.assertEquals(
+				_language.get(
+					LocaleUtil.US, "you-do-not-have-the-required-permissions"),
+				jsonObject.getString("error"));
+		}
+		finally {
+			PermissionThreadLocal.setPermissionChecker(permissionChecker);
+		}
+
+		_assertScheduledDateAndStatus(null, WorkflowConstants.STATUS_DRAFT);
 	}
 
 	private void _assertScheduledDateAndStatus(

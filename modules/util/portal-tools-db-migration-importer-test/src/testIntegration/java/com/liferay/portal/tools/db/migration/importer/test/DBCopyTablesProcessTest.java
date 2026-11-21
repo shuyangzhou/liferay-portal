@@ -454,6 +454,101 @@ public class DBCopyTablesProcessTest {
 	}
 
 	@Test
+	@TestInfo("LPD-110100")
+	public void testGetCustomTableAndColumnInfos() throws Exception {
+		_sourceDB.runSQL(
+			StringBundler.concat(
+				"create table TestTable (id INTEGER, c",
+				RandomTestUtil.randomString(63), " INTEGER)"));
+
+		DBCopyTablesProcess dbCopyTablesProcess = _runDBCopyTablesProcess();
+
+		String tableName = StringUtil.toLowerCase(_sourceTableName);
+
+		Assert.assertEquals(
+			Arrays.asList(
+				"custom tables: none",
+				StringBundler.concat(
+					"custom table ", tableName,
+					": not migrated because its name or the name of one of ",
+					"its columns is longer than 63 bytes")),
+			ListUtil.toList(
+				dbCopyTablesProcess.getCustomTableAndColumnInfos(),
+				StringUtil::toLowerCase));
+
+		tearDown();
+
+		_sourceDB.runSQL("create table TestTable (testColumn VARCHAR(75))");
+
+		dbCopyTablesProcess = _runDBCopyTablesProcess();
+
+		DBType dbType = _sourceDB.getDBType();
+		String typeName = "varchar";
+
+		if (dbType == DBType.ORACLE) {
+			typeName = "varchar2";
+		}
+
+		Assert.assertEquals(
+			Arrays.asList(
+				"custom tables: " + tableName,
+				StringBundler.concat(
+					"custom column ", tableName, ".testcolumn: source ",
+					typeName, ", created as varchar(75)")),
+			ListUtil.toList(
+				dbCopyTablesProcess.getCustomTableAndColumnInfos(),
+				StringUtil::toLowerCase));
+
+		tearDown();
+
+		List<String> expectedCustomTableAndColumnInfos = ListUtil.fromArray(
+			"custom tables: none",
+			StringBundler.concat(
+				"custom column ", tableName, ".customcolumn: source ", typeName,
+				", created as varchar(75)"));
+		String fallbackColumnSQL = StringPool.BLANK;
+
+		if (dbType == DBType.ORACLE) {
+			fallbackColumnSQL = ", rowidColumn ROWID";
+
+			expectedCustomTableAndColumnInfos.add(
+				StringBundler.concat(
+					"custom column ", tableName,
+					".rowidcolumn: source rowid, created as text (no ",
+					"equivalent postgresql type)"));
+		}
+		else if (dbType == DBType.SQLSERVER) {
+			fallbackColumnSQL = ", variantColumn sql_variant";
+
+			expectedCustomTableAndColumnInfos.add(
+				StringBundler.concat(
+					"custom column ", tableName,
+					".variantcolumn: source sql_variant, created as text (no ",
+					"equivalent postgresql type)"));
+		}
+
+		_createTable(
+			StringBundler.concat(
+				"create table TestTable (id INTEGER, customColumn ",
+				"VARCHAR(75), testColumn VARCHAR(75)", fallbackColumnSQL, ")"),
+			"create table TestTable (id INTEGER, testColumn VARCHAR(75))");
+
+		dbCopyTablesProcess = _runDBCopyTablesProcess();
+
+		Assert.assertEquals(
+			expectedCustomTableAndColumnInfos,
+			ListUtil.toList(
+				dbCopyTablesProcess.getCustomTableAndColumnInfos(),
+				StringUtil::toLowerCase));
+	}
+
+	@Test
+	@TestInfo("LPD-110100")
+	public void testGetCustomTableAndColumnInfosInPartition() throws Exception {
+		_testInPartition(this::testGetCustomTableAndColumnInfos);
+	}
+
+	@Test
 	public void testIntegerColumn() throws Exception {
 		_testColumnTypeOf(
 			Function.identity(), Function.identity(), "INTEGER",
@@ -914,11 +1009,13 @@ public class DBCopyTablesProcessTest {
 		}
 	}
 
-	private void _runDBCopyTablesProcess() throws Exception {
+	private DBCopyTablesProcess _runDBCopyTablesProcess() throws Exception {
 		DBCopyTablesProcess dbCopyTablesProcess = new DBCopyTablesProcess(
 			_sourceDataSource, _targetDataSource);
 
 		dbCopyTablesProcess.run();
+
+		return dbCopyTablesProcess;
 	}
 
 	private void _testColumnTypeOf(

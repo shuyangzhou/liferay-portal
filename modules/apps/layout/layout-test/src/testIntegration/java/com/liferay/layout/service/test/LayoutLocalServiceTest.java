@@ -7,6 +7,9 @@ package com.liferay.layout.service.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.counter.kernel.service.CounterLocalService;
+import com.liferay.depot.model.DepotEntry;
+import com.liferay.depot.service.DepotEntryGroupRelLocalService;
+import com.liferay.depot.service.DepotEntryLocalService;
 import com.liferay.fragment.constants.FragmentConstants;
 import com.liferay.fragment.model.FragmentCollection;
 import com.liferay.fragment.model.FragmentEntry;
@@ -21,7 +24,9 @@ import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalService;
 import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocalService;
+import com.liferay.layout.page.template.test.util.LayoutPageTemplateTestUtil;
 import com.liferay.layout.test.util.ContentLayoutTestUtil;
+import com.liferay.layout.test.util.DesignLibraryTestUtil;
 import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.petra.function.UnsafeBiFunction;
 import com.liferay.petra.lang.SafeCloseable;
@@ -55,6 +60,7 @@ import com.liferay.portal.kernel.service.SystemEventLocalService;
 import com.liferay.portal.kernel.test.TestInfo;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.test.util.FeatureFlagTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -72,6 +78,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.test.rule.FeatureFlag;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -569,6 +576,52 @@ public class LayoutLocalServiceTest {
 		Assert.assertNull(
 			_layoutLocalService.fetchDraftLayout(
 				layout.getPlid(), RandomTestUtil.randomLong()));
+	}
+
+	@Test
+	@TestInfo("LPD-115763")
+	public void testFetchDraftLayouts() throws Exception {
+		List<Layout> draftLayouts = _layoutLocalService.fetchDraftLayouts(
+			RandomTestUtil.randomLong());
+
+		Assert.assertTrue(draftLayouts.isEmpty());
+
+		Layout layout = LayoutTestUtil.addTypeContentPublishedLayout(
+			_group, RandomTestUtil.randomString(),
+			WorkflowConstants.STATUS_APPROVED);
+
+		Layout mainDraftLayout = _layoutLocalService.fetchDraftLayout(
+			layout.getPlid());
+
+		draftLayouts = _layoutLocalService.fetchDraftLayouts(layout.getPlid());
+
+		Assert.assertTrue(draftLayouts.contains(mainDraftLayout));
+		Assert.assertEquals(draftLayouts.toString(), 1, draftLayouts.size());
+
+		Layout launchDraftLayout1 = LayoutTestUtil.addLaunchDraftLayout(
+			RandomTestUtil.randomLong(), layout);
+
+		draftLayouts = _layoutLocalService.fetchDraftLayouts(layout.getPlid());
+
+		Assert.assertTrue(
+			draftLayouts.containsAll(
+				Arrays.asList(launchDraftLayout1, mainDraftLayout)));
+		Assert.assertEquals(draftLayouts.toString(), 2, draftLayouts.size());
+
+		Layout launchDraftLayout2 = LayoutTestUtil.addLaunchDraftLayout(
+			RandomTestUtil.randomLong(), layout);
+
+		draftLayouts = _layoutLocalService.fetchDraftLayouts(layout.getPlid());
+
+		Assert.assertTrue(
+			draftLayouts.containsAll(
+				Arrays.asList(
+					launchDraftLayout1, launchDraftLayout2, mainDraftLayout)));
+		Assert.assertEquals(draftLayouts.toString(), 3, draftLayouts.size());
+
+		Assert.assertEquals(
+			mainDraftLayout,
+			_layoutLocalService.fetchDraftLayout(layout.getPlid()));
 	}
 
 	@Test
@@ -1258,6 +1311,48 @@ public class LayoutLocalServiceTest {
 			"1_column", layoutTypePortlet.getLayoutTemplateId());
 	}
 
+	@FeatureFlag("LPD-57283")
+	@Test
+	@TestInfo("LPD-108822")
+	public void testUpdateMasterLayoutPageTemplateEntry() throws Exception {
+		FeatureFlagTestUtil.invokeFeatureFlagListeners(
+			_group.getCompanyId(), true, "LPD-57283");
+
+		Group designLibraryGroup = DesignLibraryTestUtil.addDesignLibraryGroup(
+			_group.getGroupId(), false);
+
+		LayoutPageTemplateEntry masterLayoutPageTemplateEntry =
+			LayoutPageTemplateTestUtil.addLayoutPageTemplateEntry(
+				designLibraryGroup.getGroupId(),
+				LayoutPageTemplateEntryTypeConstants.MASTER_LAYOUT,
+				WorkflowConstants.STATUS_APPROVED);
+
+		Layout layout = LayoutTestUtil.addTypeContentLayout(_group);
+
+		layout = _layoutLocalService.updateMasterLayoutPageTemplateEntry(
+			layout.getGroupId(), layout.isPrivateLayout(), layout.getLayoutId(),
+			masterLayoutPageTemplateEntry.getExternalReferenceCode(),
+			designLibraryGroup.getExternalReferenceCode());
+
+		Assert.assertEquals(
+			masterLayoutPageTemplateEntry.getExternalReferenceCode(),
+			layout.getMasterLayoutPageTemplateEntryERC());
+		Assert.assertEquals(
+			designLibraryGroup.getExternalReferenceCode(),
+			layout.getMasterLayoutPageTemplateEntryScopeERC());
+		Assert.assertEquals(0, layout.getMasterLayoutPlid());
+
+		DepotEntry depotEntry = _depotEntryLocalService.getGroupDepotEntry(
+			designLibraryGroup.getGroupId());
+
+		_depotEntryGroupRelLocalService.addDepotEntryGroupRel(
+			depotEntry.getDepotEntryId(), _group.getGroupId());
+
+		Assert.assertEquals(
+			masterLayoutPageTemplateEntry.getPlid(),
+			layout.getMasterLayoutPlid());
+	}
+
 	@Test(expected = MasterLayoutException.class)
 	public void testUpdateMasterLayoutPageTemplateEntryERCWithInvalidMasterLayoutPageTemplateEntryERC()
 		throws Exception {
@@ -1538,6 +1633,12 @@ public class LayoutLocalServiceTest {
 
 	@Inject
 	private CounterLocalService _counterLocalService;
+
+	@Inject
+	private DepotEntryGroupRelLocalService _depotEntryGroupRelLocalService;
+
+	@Inject
+	private DepotEntryLocalService _depotEntryLocalService;
 
 	@Inject
 	private FragmentCollectionLocalService _fragmentCollectionLocalService;

@@ -8,9 +8,7 @@ package com.liferay.object.rest.internal.resource.v1_0.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
-import com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil;
 import com.liferay.depot.service.DepotEntryLocalService;
-import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.headless.admin.taxonomy.client.dto.v1_0.TaxonomyCategory;
 import com.liferay.headless.admin.taxonomy.client.resource.v1_0.TaxonomyCategoryResource;
 import com.liferay.list.type.model.ListTypeDefinition;
@@ -51,19 +49,16 @@ import com.liferay.object.system.SystemObjectDefinitionManagerRegistry;
 import com.liferay.object.test.util.ObjectDefinitionTestUtil;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.NoSuchCompanyException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
@@ -78,7 +73,8 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.test.randomizerbumpers.UniqueStringRandomizerBumper;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -89,30 +85,27 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
-import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Method;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import java.sql.Timestamp;
-
-import java.text.DateFormat;
+import java.text.Format;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -120,19 +113,14 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.function.Function;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.ServiceRegistration;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -145,24 +133,9 @@ import org.skyscreamer.jsonassert.JSONCompareMode;
 @RunWith(Arquillian.class)
 public abstract class BaseObjectEntryResourceTestCase {
 
-	@BeforeClass
-	public static void setUpClass() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		testGroupId = TestPropsValues.getGroupId();
-
-		assetVocabulary = AssetVocabularyLocalServiceUtil.addVocabulary(
-			UserLocalServiceUtil.getGuestUserId(TestPropsValues.getCompanyId()),
-			testGroupId, RandomTestUtil.randomString(), new ServiceContext());
-
-		Bundle bundle = FrameworkUtil.getBundle(
-			BaseObjectEntryResourceTestCase.class);
-
-		_bundleContext = bundle.getBundleContext();
-
-		_serviceRegistrations = Arrays.asList(
-			_bundleContext.registerService(
-				ModelListener.class, testDLFileEntryModelListener, null),
-			_bundleContext.registerService(
-				ModelListener.class, testObjectEntryModelListener, null));
 
 		TaxonomyCategoryResource.Builder builder =
 			TaxonomyCategoryResource.builder();
@@ -172,185 +145,95 @@ public abstract class BaseObjectEntryResourceTestCase {
 		).locale(
 			LocaleUtil.getDefault()
 		).build();
-	}
 
-	@AfterClass
-	public static void tearDownClass() {
-		_serviceRegistrations.forEach(ServiceRegistration::unregister);
-	}
-
-	@Before
-	public void setUp() throws Exception {
 		group = GroupTestUtil.addGroup();
 
-		listTypeDefinition =
+		_listTypeDefinition =
 			listTypeDefinitionLocalService.addListTypeDefinition(
 				null, TestPropsValues.getUserId(),
-				Collections.singletonMap(
-					LocaleUtil.US, RandomTestUtil.randomString()),
-				false, Collections.emptyList(), new ServiceContext());
+				RandomTestUtil.randomLocaleStringMap(LocaleUtil.US), false,
+				Collections.emptyList(), new ServiceContext());
 
 		_listTypeEntry1 = _listTypeEntryLocalService.addListTypeEntry(
 			null, TestPropsValues.getUserId(),
-			listTypeDefinition.getListTypeDefinitionId(), LIST_TYPE_ENTRY_KEY_1,
-			Collections.singletonMap(
-				LocaleUtil.US, RandomTestUtil.randomString()),
-			listTypeDefinition.isSystem());
+			_listTypeDefinition.getListTypeDefinitionId(),
+			LIST_TYPE_ENTRY_KEY_1,
+			RandomTestUtil.randomLocaleStringMap(LocaleUtil.US),
+			_listTypeDefinition.isSystem());
 		_listTypeEntry2 = _listTypeEntryLocalService.addListTypeEntry(
 			null, TestPropsValues.getUserId(),
-			listTypeDefinition.getListTypeDefinitionId(), LIST_TYPE_ENTRY_KEY_2,
-			Collections.singletonMap(
-				LocaleUtil.US, RandomTestUtil.randomString()),
-			listTypeDefinition.isSystem());
+			_listTypeDefinition.getListTypeDefinitionId(),
+			LIST_TYPE_ENTRY_KEY_2,
+			RandomTestUtil.randomLocaleStringMap(LocaleUtil.US),
+			_listTypeDefinition.isSystem());
 		_listTypeEntry3 = _listTypeEntryLocalService.addListTypeEntry(
 			null, TestPropsValues.getUserId(),
-			listTypeDefinition.getListTypeDefinitionId(), LIST_TYPE_ENTRY_KEY_3,
-			Collections.singletonMap(
-				LocaleUtil.US, RandomTestUtil.randomString()),
-			listTypeDefinition.isSystem());
-
-		systemObjectDefinitionManager =
-			_systemObjectDefinitionManagerRegistry.
-				getSystemObjectDefinitionManager("User");
-
-		userSystemObjectDefinition =
-			objectDefinitionLocalService.fetchSystemObjectDefinition(
-				TestPropsValues.getCompanyId(),
-				systemObjectDefinitionManager.getName());
-
-		_userSystemObjectField = ObjectFieldTestUtil.addCustomObjectField(
-			TestPropsValues.getUserId(),
-			ObjectFieldConstants.BUSINESS_TYPE_TEXT,
-			ObjectFieldConstants.DB_TYPE_STRING, userSystemObjectDefinition,
-			OBJECT_FIELD_NAME_2);
+			_listTypeDefinition.getListTypeDefinitionId(),
+			LIST_TYPE_ENTRY_KEY_3,
+			RandomTestUtil.randomLocaleStringMap(LocaleUtil.US),
+			_listTypeDefinition.isSystem());
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		if (objectRelationship1 != null) {
-			objectRelationshipLocalService.deleteObjectRelationship(
-				objectRelationship1);
-		}
-
-		if (objectRelationship2 != null) {
-			objectRelationshipLocalService.deleteObjectRelationship(
-				objectRelationship2);
-		}
-
-		if (objectRelationship3 != null) {
-			objectRelationshipLocalService.deleteObjectRelationship(
-				objectRelationship3);
-		}
-
-		if (objectRelationship4 != null) {
-			objectRelationshipLocalService.deleteObjectRelationship(
-				objectRelationship4);
-		}
-
-		if (objectRelationship5 != null) {
-			objectRelationshipLocalService.deleteObjectRelationship(
-				objectRelationship5);
-		}
-
-		if (_objectRelationship6 != null) {
-			objectRelationshipLocalService.deleteObjectRelationship(
-				_objectRelationship6);
-		}
-
-		if (objectRelationship7 != null) {
-			objectRelationshipLocalService.deleteObjectRelationship(
-				objectRelationship7);
-		}
-
-		if (objectDefinition1 != null) {
+		if (_objectDefinition1 != null) {
 			objectDefinitionLocalService.deleteObjectDefinition(
-				objectDefinition1);
+				_objectDefinition1.getObjectDefinitionId());
 		}
 
-		if (objectDefinition2 != null) {
+		if (_objectDefinition2 != null) {
 			objectDefinitionLocalService.deleteObjectDefinition(
-				objectDefinition2);
+				_objectDefinition2.getObjectDefinitionId());
 		}
 
-		if (objectDefinition3 != null) {
+		if (_objectDefinition3 != null) {
 			objectDefinitionLocalService.deleteObjectDefinition(
-				objectDefinition3);
+				_objectDefinition3.getObjectDefinitionId());
 		}
 
 		if (_objectDefinition4 != null) {
 			objectDefinitionLocalService.deleteObjectDefinition(
-				_objectDefinition4);
+				_objectDefinition4.getObjectDefinitionId());
 		}
 
-		if (siteScopedObjectDefinition1 != null) {
+		if (_siteScopedObjectDefinition1 != null) {
 			objectDefinitionLocalService.deleteObjectDefinition(
-				siteScopedObjectDefinition1);
+				_siteScopedObjectDefinition1.getObjectDefinitionId());
 		}
 
 		if (_siteScopedObjectDefinition2 != null) {
 			objectDefinitionLocalService.deleteObjectDefinition(
-				_siteScopedObjectDefinition2);
+				_siteScopedObjectDefinition2.getObjectDefinitionId());
+		}
+
+		if (_assetVocabulary != null) {
+			assetVocabularyLocalService.deleteVocabulary(_assetVocabulary);
 		}
 
 		listTypeDefinitionLocalService.deleteListTypeDefinition(
-			listTypeDefinition);
-
-		groupLocalService.deleteGroup(group);
-	}
-
-	protected ObjectDefinition addDepotScopedObjectDefinition()
-		throws Exception {
-
-		ObjectDefinition objectDefinition =
-			ObjectDefinitionTestUtil.publishObjectDefinition(
-				Collections.singletonList(
-					new TextObjectFieldBuilder(
-					).labelMap(
-						RandomTestUtil.randomLocaleStringMap()
-					).name(
-						StringUtil.randomId()
-					).build()),
-				ObjectDefinitionConstants.SCOPE_DEPOT);
-
-		objectDefinitionSettingLocalService.addObjectDefinitionSetting(
-			objectDefinition.getUserId(),
-			objectDefinition.getObjectDefinitionId(),
-			ObjectDefinitionSettingConstants.NAME_ACCEPT_ALL_GROUPS,
-			StringPool.TRUE);
-
-		return objectDefinition;
+			_listTypeDefinition);
 	}
 
 	protected ObjectRelationship addObjectRelationshipAndRelateObjectEntries(
-			ObjectDefinition objectDefinition1,
-			ObjectDefinition objectDefinition2, long primaryKey1,
+			ObjectDefinition objectDefinition,
+			ObjectDefinition relatedObjectDefinition, long primaryKey1,
 			long primaryKey2, String type)
 		throws Exception {
 
 		return addObjectRelationshipAndRelateObjectEntries(
-			ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
-			objectDefinition1, objectDefinition2, primaryKey1, primaryKey2,
-			type);
+			ObjectRelationshipConstants.DELETION_TYPE_PREVENT, objectDefinition,
+			relatedObjectDefinition, primaryKey1, primaryKey2, type);
 	}
 
 	protected ObjectRelationship addObjectRelationshipAndRelateObjectEntries(
-			String type)
-		throws Exception {
-
-		return addObjectRelationshipAndRelateObjectEntries(
-			getObjectDefinition1(), getObjectDefinition2(),
-			objectEntry1.getPrimaryKey(), objectEntry2.getPrimaryKey(), type);
-	}
-
-	protected ObjectRelationship addObjectRelationshipAndRelateObjectEntries(
-			String deletionType, ObjectDefinition objectDefinition1,
-			ObjectDefinition objectDefinition2, long primaryKey1,
+			String deletionType, ObjectDefinition objectDefinition,
+			ObjectDefinition relatedObjectDefinition, long primaryKey1,
 			long primaryKey2, String type)
 		throws Exception {
 
 		ObjectRelationship objectRelationship =
 			ObjectRelationshipTestUtil.addObjectRelationship(
-				deletionType, objectDefinition1, objectDefinition2,
+				deletionType, objectDefinition, relatedObjectDefinition,
 				TestPropsValues.getUserId(), type);
 
 		ObjectRelationshipTestUtil.relateObjectEntries(
@@ -397,7 +280,11 @@ public abstract class BaseObjectEntryResourceTestCase {
 
 		user.setEmailAddressVerified(true);
 
-		return UserLocalServiceUtil.updateUser(user);
+		user = userLocalService.updateUser(user);
+
+		_users.add(user);
+
+		return user;
 	}
 
 	protected void assertFilterString(
@@ -408,13 +295,14 @@ public abstract class BaseObjectEntryResourceTestCase {
 
 		JSONObject jsonObject = HTTPTestUtil.invokeToJSONObject(
 			null,
-			objectDefinition.getRESTContextPath() + "?filter=" + filterString,
+			objectDefinition.getRESTContextPath() + "?filter=" +
+				URLCodec.encodeURL(filterString),
 			Http.Method.GET);
 
-		JSONArray itemsJSONArray = jsonObject.getJSONArray("items");
-
-		Assert.assertNull(jsonObject.get("title"));
 		Assert.assertNull(jsonObject.get("status"));
+		Assert.assertNull(jsonObject.get("title"));
+
+		JSONArray itemsJSONArray = jsonObject.getJSONArray("items");
 
 		Assert.assertEquals(1, itemsJSONArray.length());
 
@@ -427,10 +315,10 @@ public abstract class BaseObjectEntryResourceTestCase {
 
 	protected void assertItem(
 		int index, JSONObject jsonObject, String objectFieldName,
-		Object value) {
+		Object objectFieldValue) {
 
 		Assert.assertEquals(
-			String.valueOf(value),
+			String.valueOf(objectFieldValue),
 			JSONUtil.getValueAsString(
 				jsonObject, "JSONArray/items", "JSONObject/" + index,
 				"Object/" + objectFieldName));
@@ -460,7 +348,8 @@ public abstract class BaseObjectEntryResourceTestCase {
 	}
 
 	protected void assertPatchCustomObjectEntry(
-			Function<JSONObject, String> endpointFunction,
+			UnsafeFunction<JSONObject, String, Exception>
+				endpointUnsafeFunction,
 			ObjectDefinition childObjectDefinition,
 			ObjectDefinition parentObjectDefinition, Object scopeKey)
 		throws Exception {
@@ -475,15 +364,16 @@ public abstract class BaseObjectEntryResourceTestCase {
 			objectDefinitionLocalService.updateObjectDefinition(
 				childObjectDefinition);
 
-		objectEntry2 = ObjectEntryTestUtil.addObjectEntry(
+		ObjectEntry parentObjectEntry1 = ObjectEntryTestUtil.addObjectEntry(
 			parentObjectDefinition, OBJECT_FIELD_NAME_2, OBJECT_FIELD_VALUE_2);
-		objectEntry3 = ObjectEntryTestUtil.addObjectEntry(
+		ObjectEntry parentObjectEntry2 = ObjectEntryTestUtil.addObjectEntry(
 			parentObjectDefinition, OBJECT_FIELD_NAME_2, OBJECT_FIELD_VALUE_2);
 
-		objectRelationship1 = ObjectRelationshipTestUtil.addObjectRelationship(
-			parentObjectDefinition, childObjectDefinition,
-			TestPropsValues.getUserId(),
-			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+		ObjectRelationship objectRelationship1 =
+			ObjectRelationshipTestUtil.addObjectRelationship(
+				parentObjectDefinition, childObjectDefinition,
+				TestPropsValues.getUserId(),
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
 		String objectRelationship1ERCObjectFieldName =
 			ObjectFieldSettingUtil.getValue(
@@ -492,20 +382,15 @@ public abstract class BaseObjectEntryResourceTestCase {
 				objectFieldLocalService.getObjectField(
 					objectRelationship1.getObjectFieldId2()));
 
-		objectRelationship2 = ObjectRelationshipTestUtil.addObjectRelationship(
-			parentObjectDefinition, childObjectDefinition,
-			TestPropsValues.getUserId(),
-			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+		ObjectRelationship objectRelationship2 =
+			ObjectRelationshipTestUtil.addObjectRelationship(
+				parentObjectDefinition, childObjectDefinition,
+				TestPropsValues.getUserId(),
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
-		String objectRelationship2IdObjectFieldName =
-			ObjectFieldSettingUtil.getValue(
-				ObjectFieldSettingConstants.
-					NAME_OBJECT_RELATIONSHIP_ERC_OBJECT_FIELD_NAME,
-				objectFieldLocalService.getObjectField(
-					objectRelationship2.getObjectFieldId2())
-			).replace(
-				"ERC", "Id"
-			);
+		ObjectField objectRelationship2ObjectField =
+			objectFieldLocalService.getObjectField(
+				objectRelationship2.getObjectFieldId2());
 
 		BigDecimal randomBigDecimal = BigDecimal.valueOf(
 			RandomTestUtil.randomDouble()
@@ -513,55 +398,30 @@ public abstract class BaseObjectEntryResourceTestCase {
 			5, RoundingMode.HALF_UP
 		);
 		boolean randomBoolean = RandomTestUtil.randomBoolean();
-		Date randomDate1 = RandomTestUtil.nextDate();
-		Date randomDate2 = RandomTestUtil.nextDate();
-		Date randomDate3 = RandomTestUtil.nextDate();
+		Date randomDate = RandomTestUtil.nextDate();
+		Date randomDateTimeInput = RandomTestUtil.nextDate();
+		Date randomDateTimeUTC = RandomTestUtil.nextDate();
 		String randomExternalReferenceCode = RandomTestUtil.randomString();
 		float randomFloat = RandomTestUtil.randomFloat();
 		int randomInt = RandomTestUtil.randomInt();
 		long randomLong = RandomTestUtil.randomLong(
 			ObjectFieldValidationConstants.BUSINESS_TYPE_LONG_VALUE_MIN,
 			ObjectFieldValidationConstants.BUSINESS_TYPE_LONG_VALUE_MAX);
-		String randomString1 = RandomTestUtil.randomString();
-		String randomString2 = RandomTestUtil.randomString();
-		String randomString3 = RandomTestUtil.randomString();
+		String randomLongText = RandomTestUtil.randomString();
+		String randomRichText = RandomTestUtil.randomString();
+		String randomText = RandomTestUtil.randomString();
 
 		JSONObject jsonObject = HTTPTestUtil.invokeToJSONObject(
-			JSONUtil.put(
-				_OBJECT_FIELD_NAME_RICH_TEXT, randomString2
-			).put(
-				OBJECT_FIELD_NAME_BOOLEAN, randomBoolean
-			).put(
-				OBJECT_FIELD_NAME_DATE, dateFormat.format(randomDate1)
-			).put(
-				OBJECT_FIELD_NAME_DATE_TIME_INPUT,
-				dateTimeDateFormat.format(randomDate2)
-			).put(
-				OBJECT_FIELD_NAME_DATE_TIME_UTC,
-				dateTimeDateFormat.format(randomDate3)
-			).put(
-				OBJECT_FIELD_NAME_DECIMAL, randomFloat
-			).put(
-				OBJECT_FIELD_NAME_INTEGER, randomInt
-			).put(
-				OBJECT_FIELD_NAME_LONG_INTEGER, randomLong
-			).put(
-				OBJECT_FIELD_NAME_LONG_TEXT, randomString1
-			).put(
-				OBJECT_FIELD_NAME_MULTISELECT_PICKLIST,
-				JSONUtil.putAll(LIST_TYPE_ENTRY_KEY_1, LIST_TYPE_ENTRY_KEY_2)
-			).put(
-				OBJECT_FIELD_NAME_PICKLIST, LIST_TYPE_ENTRY_KEY_3
-			).put(
-				OBJECT_FIELD_NAME_PRECISION_DECIMAL, randomBigDecimal
-			).put(
-				OBJECT_FIELD_NAME_TEXT, randomString3
+			_createObjectEntryJSONObject(
+				randomBigDecimal, randomBoolean, randomDate,
+				randomDateTimeInput, randomDateTimeUTC, randomFloat, randomInt,
+				randomLong, randomLongText, randomRichText, randomText
 			).put(
 				objectRelationship1ERCObjectFieldName,
-				objectEntry2.getExternalReferenceCode()
+				parentObjectEntry1.getExternalReferenceCode()
 			).put(
-				objectRelationship2IdObjectFieldName,
-				objectEntry2.getObjectEntryId()
+				objectRelationship2ObjectField.getName(),
+				parentObjectEntry1.getObjectEntryId()
 			).put(
 				"externalReferenceCode", randomExternalReferenceCode
 			).put(
@@ -569,57 +429,16 @@ public abstract class BaseObjectEntryResourceTestCase {
 			).toString(),
 			getEndpoint(childObjectDefinition, scopeKey), Http.Method.POST);
 
-		JSONObject expectedJSONObject = JSONUtil.put(
-			_OBJECT_FIELD_NAME_RICH_TEXT, randomString2
-		).put(
-			OBJECT_FIELD_NAME_BOOLEAN, randomBoolean
-		).put(
-			OBJECT_FIELD_NAME_DATE,
-			dateFormat.format(randomDate1) + "T00:00:00.000Z"
-		).put(
-			OBJECT_FIELD_NAME_DATE_TIME_INPUT,
-			StringUtil.removeLast(dateTimeDateFormat.format(randomDate2), "Z")
-		).put(
-			OBJECT_FIELD_NAME_DATE_TIME_UTC,
-			dateTimeDateFormat.format(randomDate3)
-		).put(
-			OBJECT_FIELD_NAME_DECIMAL, randomFloat
-		).put(
-			OBJECT_FIELD_NAME_INTEGER, randomInt
-		).put(
-			OBJECT_FIELD_NAME_LONG_INTEGER, (double)randomLong
-		).put(
-			OBJECT_FIELD_NAME_LONG_TEXT, randomString1
-		).put(
-			OBJECT_FIELD_NAME_MULTISELECT_PICKLIST,
-			JSONUtil.putAll(
-				JSONUtil.put(
-					"key", LIST_TYPE_ENTRY_KEY_1
-				).put(
-					"name", _listTypeEntry1.getName(LocaleUtil.getDefault())
-				),
-				JSONUtil.put(
-					"key", LIST_TYPE_ENTRY_KEY_2
-				).put(
-					"name", _listTypeEntry2.getName(LocaleUtil.getDefault())
-				))
-		).put(
-			OBJECT_FIELD_NAME_PICKLIST,
-			JSONUtil.put(
-				"key", LIST_TYPE_ENTRY_KEY_3
-			).put(
-				"name", _listTypeEntry3.getName(LocaleUtil.getDefault())
-			)
-		).put(
-			OBJECT_FIELD_NAME_PRECISION_DECIMAL, randomBigDecimal
-		).put(
-			OBJECT_FIELD_NAME_TEXT, randomString3
+		JSONObject expectedJSONObject = _createExpectedObjectEntryJSONObject(
+			randomBigDecimal, randomBoolean, randomDate, randomDateTimeInput,
+			randomDateTimeUTC, randomFloat, randomInt, randomLong,
+			randomLongText, randomRichText, randomText
 		).put(
 			objectRelationship1ERCObjectFieldName,
-			objectEntry2.getExternalReferenceCode()
+			parentObjectEntry1.getExternalReferenceCode()
 		).put(
-			objectRelationship2IdObjectFieldName,
-			(int)objectEntry2.getObjectEntryId()
+			objectRelationship2ObjectField.getName(),
+			(int)parentObjectEntry1.getObjectEntryId()
 		).put(
 			"externalReferenceCode", randomExternalReferenceCode
 		).put(
@@ -628,7 +447,7 @@ public abstract class BaseObjectEntryResourceTestCase {
 			"status", JSONUtil.put("code", WorkflowConstants.STATUS_DRAFT)
 		);
 
-		String endpoint = endpointFunction.apply(jsonObject);
+		String endpoint = endpointUnsafeFunction.apply(jsonObject);
 
 		JSONAssert.assertEquals(
 			expectedJSONObject.toString(),
@@ -643,10 +462,7 @@ public abstract class BaseObjectEntryResourceTestCase {
 		JSONAssert.assertEquals(
 			expectedJSONObject.toString(),
 			HTTPTestUtil.invokeToJSONObject(
-				JSONUtil.put(
-					"externalReferenceCode", randomExternalReferenceCode
-				).toString(),
-				endpoint, Http.Method.GET
+				null, endpoint, Http.Method.GET
 			).toString(),
 			JSONCompareMode.LENIENT);
 
@@ -655,19 +471,19 @@ public abstract class BaseObjectEntryResourceTestCase {
 		expectedJSONObject = _cloneJSONObject(
 			expectedJSONObject, OBJECT_FIELD_NAME_BOOLEAN, !randomBoolean);
 
-		assertPatchCustomObjectEntry(
+		_assertPatchObjectField(
 			endpoint, expectedJSONObject, OBJECT_FIELD_NAME_BOOLEAN,
 			!randomBoolean);
 
 		// Date field
 
-		Date date = new Date(randomDate1.getTime() + (24 * 3600 * 1000));
+		Date date = new Date(randomDate.getTime() + Time.DAY);
 
 		expectedJSONObject = _cloneJSONObject(
 			expectedJSONObject, OBJECT_FIELD_NAME_DATE,
 			dateFormat.format(date) + "T00:00:00.000Z");
 
-		assertPatchCustomObjectEntry(
+		_assertPatchObjectField(
 			endpoint, expectedJSONObject, OBJECT_FIELD_NAME_DATE,
 			dateFormat.format(date));
 
@@ -675,28 +491,28 @@ public abstract class BaseObjectEntryResourceTestCase {
 
 		expectedJSONObject = _cloneJSONObject(
 			expectedJSONObject, OBJECT_FIELD_NAME_DATE_TIME_INPUT,
-			StringUtil.removeLast(dateTimeDateFormat.format(date), "Z"));
+			StringUtil.removeLast(dateTimeFormat.format(date), "Z"));
 
-		assertPatchCustomObjectEntry(
+		_assertPatchObjectField(
 			endpoint, expectedJSONObject, OBJECT_FIELD_NAME_DATE_TIME_INPUT,
-			dateTimeDateFormat.format(date));
+			dateTimeFormat.format(date));
 
 		// Date time field ('UTC' type)
 
 		expectedJSONObject = _cloneJSONObject(
 			expectedJSONObject, OBJECT_FIELD_NAME_DATE_TIME_UTC,
-			dateTimeDateFormat.format(date));
+			dateTimeFormat.format(date));
 
-		assertPatchCustomObjectEntry(
+		_assertPatchObjectField(
 			endpoint, expectedJSONObject, OBJECT_FIELD_NAME_DATE_TIME_UTC,
-			dateTimeDateFormat.format(date));
+			dateTimeFormat.format(date));
 
 		// Decimal field
 
 		expectedJSONObject = _cloneJSONObject(
 			expectedJSONObject, OBJECT_FIELD_NAME_DECIMAL, randomFloat + 1);
 
-		assertPatchCustomObjectEntry(
+		_assertPatchObjectField(
 			endpoint, expectedJSONObject, OBJECT_FIELD_NAME_DECIMAL,
 			randomFloat + 1);
 
@@ -705,7 +521,7 @@ public abstract class BaseObjectEntryResourceTestCase {
 		expectedJSONObject = _cloneJSONObject(
 			expectedJSONObject, OBJECT_FIELD_NAME_INTEGER, randomInt + 1);
 
-		assertPatchCustomObjectEntry(
+		_assertPatchObjectField(
 			endpoint, expectedJSONObject, OBJECT_FIELD_NAME_INTEGER,
 			randomInt + 1);
 
@@ -714,7 +530,7 @@ public abstract class BaseObjectEntryResourceTestCase {
 		expectedJSONObject = _cloneJSONObject(
 			expectedJSONObject, OBJECT_FIELD_NAME_LONG_INTEGER, randomLong + 1);
 
-		assertPatchCustomObjectEntry(
+		_assertPatchObjectField(
 			endpoint, expectedJSONObject, OBJECT_FIELD_NAME_LONG_INTEGER,
 			randomLong + 1);
 
@@ -722,29 +538,21 @@ public abstract class BaseObjectEntryResourceTestCase {
 
 		expectedJSONObject = _cloneJSONObject(
 			expectedJSONObject, OBJECT_FIELD_NAME_LONG_TEXT,
-			"b" + randomString1);
+			"b" + randomLongText);
 
-		assertPatchCustomObjectEntry(
+		_assertPatchObjectField(
 			endpoint, expectedJSONObject, OBJECT_FIELD_NAME_LONG_TEXT,
-			"b" + randomString1);
+			"b" + randomLongText);
 
 		// Multiselect picklist field
 
 		expectedJSONObject = _cloneJSONObject(
 			expectedJSONObject, OBJECT_FIELD_NAME_MULTISELECT_PICKLIST,
 			JSONUtil.putAll(
-				JSONUtil.put(
-					"key", LIST_TYPE_ENTRY_KEY_2
-				).put(
-					"name", _listTypeEntry2.getName(LocaleUtil.getDefault())
-				),
-				JSONUtil.put(
-					"key", LIST_TYPE_ENTRY_KEY_3
-				).put(
-					"name", _listTypeEntry3.getName(LocaleUtil.getDefault())
-				)));
+				_toListTypeEntryJSONObject(_listTypeEntry2),
+				_toListTypeEntryJSONObject(_listTypeEntry3)));
 
-		assertPatchCustomObjectEntry(
+		_assertPatchObjectField(
 			endpoint, expectedJSONObject,
 			OBJECT_FIELD_NAME_MULTISELECT_PICKLIST,
 			JSONUtil.putAll(LIST_TYPE_ENTRY_KEY_2, LIST_TYPE_ENTRY_KEY_3));
@@ -753,35 +561,11 @@ public abstract class BaseObjectEntryResourceTestCase {
 
 		expectedJSONObject = _cloneJSONObject(
 			expectedJSONObject, OBJECT_FIELD_NAME_PICKLIST,
-			JSONUtil.put(
-				"key", LIST_TYPE_ENTRY_KEY_1
-			).put(
-				"name", _listTypeEntry1.getName(LocaleUtil.getDefault())
-			));
+			_toListTypeEntryJSONObject(_listTypeEntry1));
 
-		assertPatchCustomObjectEntry(
+		_assertPatchObjectField(
 			endpoint, expectedJSONObject, OBJECT_FIELD_NAME_PICKLIST,
 			LIST_TYPE_ENTRY_KEY_1);
-
-		// Relationship external reference code field
-
-		expectedJSONObject = _cloneJSONObject(
-			expectedJSONObject, objectRelationship1ERCObjectFieldName,
-			objectEntry3.getExternalReferenceCode());
-
-		assertPatchCustomObjectEntry(
-			endpoint, expectedJSONObject, objectRelationship1ERCObjectFieldName,
-			objectEntry3.getExternalReferenceCode());
-
-		// Relationship ID field
-
-		expectedJSONObject = _cloneJSONObject(
-			expectedJSONObject, objectRelationship2IdObjectFieldName,
-			objectEntry3.getObjectEntryId());
-
-		assertPatchCustomObjectEntry(
-			endpoint, expectedJSONObject, objectRelationship2IdObjectFieldName,
-			objectEntry3.getObjectEntryId());
 
 		// Precision decimal field
 
@@ -791,64 +575,68 @@ public abstract class BaseObjectEntryResourceTestCase {
 			expectedJSONObject, OBJECT_FIELD_NAME_PRECISION_DECIMAL,
 			bigDecimal);
 
-		assertPatchCustomObjectEntry(
+		_assertPatchObjectField(
 			endpoint, expectedJSONObject, OBJECT_FIELD_NAME_PRECISION_DECIMAL,
 			bigDecimal);
+
+		// Relationship external reference code field
+
+		expectedJSONObject = _cloneJSONObject(
+			expectedJSONObject, objectRelationship1ERCObjectFieldName,
+			parentObjectEntry2.getExternalReferenceCode());
+
+		_assertPatchObjectField(
+			endpoint, expectedJSONObject, objectRelationship1ERCObjectFieldName,
+			parentObjectEntry2.getExternalReferenceCode());
+
+		// Relationship ID field
+
+		expectedJSONObject = _cloneJSONObject(
+			expectedJSONObject, objectRelationship2ObjectField.getName(),
+			parentObjectEntry2.getObjectEntryId());
+
+		_assertPatchObjectField(
+			endpoint, expectedJSONObject,
+			objectRelationship2ObjectField.getName(),
+			parentObjectEntry2.getObjectEntryId());
 
 		// Rich text field
 
 		expectedJSONObject = _cloneJSONObject(
 			expectedJSONObject, _OBJECT_FIELD_NAME_RICH_TEXT,
-			"b" + randomString2);
+			"b" + randomRichText);
 
-		assertPatchCustomObjectEntry(
+		_assertPatchObjectField(
 			endpoint, expectedJSONObject, _OBJECT_FIELD_NAME_RICH_TEXT,
-			"b" + randomString2);
+			"b" + randomRichText);
 
 		// Text field
 
 		expectedJSONObject = _cloneJSONObject(
-			expectedJSONObject, OBJECT_FIELD_NAME_TEXT, "b" + randomString3);
+			expectedJSONObject, OBJECT_FIELD_NAME_TEXT, "b" + randomText);
 
-		assertPatchCustomObjectEntry(
+		_assertPatchObjectField(
 			endpoint, expectedJSONObject, OBJECT_FIELD_NAME_TEXT,
-			"b" + randomString3);
-	}
-
-	protected void assertPatchCustomObjectEntry(
-			String endpoint, JSONObject expectedJSONObject, String fieldName,
-			Object fieldValue)
-		throws Exception {
-
-		JSONAssert.assertEquals(
-			expectedJSONObject.toString(),
-			HTTPTestUtil.invokeToJSONObject(
-				JSONUtil.put(
-					fieldName, fieldValue
-				).put(
-					"externalReferenceCode",
-					expectedJSONObject.get("externalReferenceCode")
-				).toString(),
-				endpoint, Http.Method.PATCH
-			).toString(),
-			JSONCompareMode.LENIENT);
+			"b" + randomText);
 	}
 
 	protected void assertPutCustomObjectEntry(
-			Function<JSONObject, String> endpointFunction,
+			UnsafeFunction<JSONObject, String, Exception>
+				endpointUnsafeFunction,
 			ObjectDefinition childObjectDefinition,
 			ObjectDefinition parentObjectDefinition, Object scopeKey)
 		throws Exception {
 
-		objectEntry2 = ObjectEntryTestUtil.addObjectEntry(
+		ObjectEntry parentObjectEntry1 = ObjectEntryTestUtil.addObjectEntry(
 			parentObjectDefinition, OBJECT_FIELD_NAME_2, OBJECT_FIELD_VALUE_2);
-		objectEntry3 = ObjectEntryTestUtil.addObjectEntry(
+		ObjectEntry parentObjectEntry2 = ObjectEntryTestUtil.addObjectEntry(
 			parentObjectDefinition, OBJECT_FIELD_NAME_2, OBJECT_FIELD_VALUE_2);
 
-		objectRelationship1 = ObjectRelationshipTestUtil.addObjectRelationship(
-			parentObjectDefinition, childObjectDefinition,
-			TestPropsValues.getUserId(),
-			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+		ObjectRelationship objectRelationship1 =
+			ObjectRelationshipTestUtil.addObjectRelationship(
+				parentObjectDefinition, childObjectDefinition,
+				TestPropsValues.getUserId(),
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
 		ObjectField objectRelationship1ObjectField =
 			objectFieldLocalService.getObjectField(
@@ -860,10 +648,11 @@ public abstract class BaseObjectEntryResourceTestCase {
 					NAME_OBJECT_RELATIONSHIP_ERC_OBJECT_FIELD_NAME,
 				objectRelationship1ObjectField);
 
-		objectRelationship2 = ObjectRelationshipTestUtil.addObjectRelationship(
-			parentObjectDefinition, childObjectDefinition,
-			TestPropsValues.getUserId(),
-			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+		ObjectRelationship objectRelationship2 =
+			ObjectRelationshipTestUtil.addObjectRelationship(
+				parentObjectDefinition, childObjectDefinition,
+				TestPropsValues.getUserId(),
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
 		ObjectField objectRelationship2ObjectField =
 			objectFieldLocalService.getObjectField(
@@ -881,82 +670,54 @@ public abstract class BaseObjectEntryResourceTestCase {
 			5, RoundingMode.HALF_UP
 		);
 		boolean randomBoolean = RandomTestUtil.randomBoolean();
-		Date randomDate1 = RandomTestUtil.nextDate();
-		Date randomDate2 = RandomTestUtil.nextDate();
-		Date randomDate3 = RandomTestUtil.nextDate();
+		Date randomDate = RandomTestUtil.nextDate();
+		Date randomDateTimeInput = RandomTestUtil.nextDate();
+		Date randomDateTimeUTC = RandomTestUtil.nextDate();
 		String randomExternalReferenceCode = RandomTestUtil.randomString();
 		float randomFloat = RandomTestUtil.randomFloat();
 		int randomInt = RandomTestUtil.randomInt();
 		long randomLong = RandomTestUtil.randomLong(
 			ObjectFieldValidationConstants.BUSINESS_TYPE_LONG_VALUE_MIN,
 			ObjectFieldValidationConstants.BUSINESS_TYPE_LONG_VALUE_MAX);
-		String randomString1 = RandomTestUtil.randomString();
-		String randomString2 = RandomTestUtil.randomString();
-		String randomString3 = RandomTestUtil.randomString();
+		String randomLongText = RandomTestUtil.randomString();
+		String randomRichText = RandomTestUtil.randomString();
+		String randomText = RandomTestUtil.randomString();
 
 		JSONObject jsonObject = HTTPTestUtil.invokeToJSONObject(
-			JSONUtil.put(
-				_OBJECT_FIELD_NAME_RICH_TEXT, randomString2
-			).put(
-				OBJECT_FIELD_NAME_BOOLEAN, randomBoolean
-			).put(
-				OBJECT_FIELD_NAME_DATE, dateFormat.format(randomDate1)
-			).put(
-				OBJECT_FIELD_NAME_DATE_TIME_INPUT,
-				dateTimeDateFormat.format(randomDate2)
-			).put(
-				OBJECT_FIELD_NAME_DATE_TIME_UTC,
-				dateTimeDateFormat.format(randomDate3)
-			).put(
-				OBJECT_FIELD_NAME_DECIMAL, randomFloat
-			).put(
-				OBJECT_FIELD_NAME_INTEGER, randomInt
-			).put(
-				OBJECT_FIELD_NAME_LONG_INTEGER, randomLong
-			).put(
-				OBJECT_FIELD_NAME_LONG_TEXT, randomString1
-			).put(
-				OBJECT_FIELD_NAME_MULTISELECT_PICKLIST,
-				JSONUtil.putAll(LIST_TYPE_ENTRY_KEY_1, LIST_TYPE_ENTRY_KEY_2)
-			).put(
-				OBJECT_FIELD_NAME_PICKLIST, LIST_TYPE_ENTRY_KEY_3
-			).put(
-				OBJECT_FIELD_NAME_PRECISION_DECIMAL, randomBigDecimal
-			).put(
-				OBJECT_FIELD_NAME_TEXT, randomString3
+			_createObjectEntryJSONObject(
+				randomBigDecimal, randomBoolean, randomDate,
+				randomDateTimeInput, randomDateTimeUTC, randomFloat, randomInt,
+				randomLong, randomLongText, randomRichText, randomText
 			).put(
 				objectRelationship1ERCObjectFieldName,
-				objectEntry2.getExternalReferenceCode()
+				parentObjectEntry1.getExternalReferenceCode()
 			).put(
 				objectRelationship1ObjectField.getName(),
-				objectEntry3.getObjectEntryId()
+				parentObjectEntry2.getObjectEntryId()
 			).put(
 				objectRelationship2ERCObjectFieldName,
-				objectEntry3.getExternalReferenceCode()
+				parentObjectEntry2.getExternalReferenceCode()
 			).put(
 				objectRelationship2ObjectField.getName(),
-				objectEntry2.getObjectEntryId()
+				parentObjectEntry1.getObjectEntryId()
 			).put(
 				"externalReferenceCode", randomExternalReferenceCode
 			).toString(),
 			getEndpoint(childObjectDefinition, scopeKey), Http.Method.POST);
 
-		String endpoint = endpointFunction.apply(jsonObject);
+		String endpoint = endpointUnsafeFunction.apply(jsonObject);
 
 		HTTPTestUtil.invokeToJSONObject(
 			JSONFactoryUtil.getNullJSON(), endpoint, Http.Method.PUT);
+
+		jsonObject = HTTPTestUtil.invokeToJSONObject(
+			null, endpoint, Http.Method.GET);
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
 				_OBJECT_FIELD_NAME_RICH_TEXT, ""
 			).put(
 				OBJECT_FIELD_NAME_BOOLEAN, false
-			).put(
-				OBJECT_FIELD_NAME_DATE, (Timestamp)null
-			).put(
-				OBJECT_FIELD_NAME_DATE_TIME_INPUT, (Timestamp)null
-			).put(
-				OBJECT_FIELD_NAME_DATE_TIME_UTC, (Timestamp)null
 			).put(
 				OBJECT_FIELD_NAME_DECIMAL, 0
 			).put(
@@ -976,129 +737,63 @@ public abstract class BaseObjectEntryResourceTestCase {
 				OBJECT_FIELD_NAME_TEXT, ""
 			).put(
 				objectRelationship1ERCObjectFieldName,
-				objectEntry3.getExternalReferenceCode()
+				parentObjectEntry2.getExternalReferenceCode()
 			).put(
 				objectRelationship1ObjectField.getName(),
-				(int)objectEntry3.getObjectEntryId()
+				(int)parentObjectEntry2.getObjectEntryId()
 			).put(
 				objectRelationship2ERCObjectFieldName,
-				objectEntry2.getExternalReferenceCode()
+				parentObjectEntry1.getExternalReferenceCode()
 			).put(
 				objectRelationship2ObjectField.getName(),
-				(int)objectEntry2.getObjectEntryId()
+				(int)parentObjectEntry1.getObjectEntryId()
 			).put(
 				"externalReferenceCode", randomExternalReferenceCode
 			).toString(),
-			HTTPTestUtil.invokeToJSONObject(
-				null, endpoint, Http.Method.GET
-			).toString(),
-			JSONCompareMode.LENIENT);
+			jsonObject.toString(), JSONCompareMode.LENIENT);
+
+		Assert.assertFalse(jsonObject.has(OBJECT_FIELD_NAME_DATE));
+		Assert.assertFalse(jsonObject.has(OBJECT_FIELD_NAME_DATE_TIME_INPUT));
+		Assert.assertFalse(jsonObject.has(OBJECT_FIELD_NAME_DATE_TIME_UTC));
 
 		JSONAssert.assertEquals(
-			JSONUtil.put(
-				_OBJECT_FIELD_NAME_RICH_TEXT, randomString2
-			).put(
-				OBJECT_FIELD_NAME_BOOLEAN, randomBoolean
-			).put(
-				OBJECT_FIELD_NAME_DATE,
-				dateFormat.format(randomDate1) + "T00:00:00.000Z"
-			).put(
-				OBJECT_FIELD_NAME_DATE_TIME_INPUT,
-				StringUtil.removeLast(
-					dateTimeDateFormat.format(randomDate2), "Z")
-			).put(
-				OBJECT_FIELD_NAME_DATE_TIME_UTC,
-				dateTimeDateFormat.format(randomDate3)
-			).put(
-				OBJECT_FIELD_NAME_DECIMAL, randomFloat
-			).put(
-				OBJECT_FIELD_NAME_INTEGER, randomInt
-			).put(
-				OBJECT_FIELD_NAME_LONG_INTEGER, (double)randomLong
-			).put(
-				OBJECT_FIELD_NAME_LONG_TEXT, randomString1
-			).put(
-				OBJECT_FIELD_NAME_MULTISELECT_PICKLIST,
-				JSONUtil.putAll(
-					JSONUtil.put(
-						"key", LIST_TYPE_ENTRY_KEY_1
-					).put(
-						"name", _listTypeEntry1.getName(LocaleUtil.getDefault())
-					),
-					JSONUtil.put(
-						"key", LIST_TYPE_ENTRY_KEY_2
-					).put(
-						"name", _listTypeEntry2.getName(LocaleUtil.getDefault())
-					))
-			).put(
-				OBJECT_FIELD_NAME_PICKLIST,
-				JSONUtil.put(
-					"key", LIST_TYPE_ENTRY_KEY_3
-				).put(
-					"name", _listTypeEntry3.getName(LocaleUtil.getDefault())
-				)
-			).put(
-				OBJECT_FIELD_NAME_PRECISION_DECIMAL, randomBigDecimal
-			).put(
-				OBJECT_FIELD_NAME_TEXT, randomString3
+			_createExpectedObjectEntryJSONObject(
+				randomBigDecimal, randomBoolean, randomDate,
+				randomDateTimeInput, randomDateTimeUTC, randomFloat, randomInt,
+				randomLong, randomLongText, randomRichText, randomText
 			).put(
 				objectRelationship1ERCObjectFieldName,
-				objectEntry2.getExternalReferenceCode()
+				parentObjectEntry1.getExternalReferenceCode()
 			).put(
 				objectRelationship1ObjectField.getName(),
-				(int)objectEntry2.getObjectEntryId()
+				(int)parentObjectEntry1.getObjectEntryId()
 			).put(
 				objectRelationship2ERCObjectFieldName,
-				objectEntry3.getExternalReferenceCode()
+				parentObjectEntry2.getExternalReferenceCode()
 			).put(
 				objectRelationship2ObjectField.getName(),
-				(int)objectEntry3.getObjectEntryId()
+				(int)parentObjectEntry2.getObjectEntryId()
 			).put(
 				"externalReferenceCode", randomExternalReferenceCode
 			).toString(),
 			HTTPTestUtil.invokeToJSONObject(
-				JSONUtil.put(
-					_OBJECT_FIELD_NAME_RICH_TEXT, randomString2
-				).put(
-					OBJECT_FIELD_NAME_BOOLEAN, randomBoolean
-				).put(
-					OBJECT_FIELD_NAME_DATE, dateFormat.format(randomDate1)
-				).put(
-					OBJECT_FIELD_NAME_DATE_TIME_INPUT,
-					dateTimeDateFormat.format(randomDate2)
-				).put(
-					OBJECT_FIELD_NAME_DATE_TIME_UTC,
-					dateTimeDateFormat.format(randomDate3)
-				).put(
-					OBJECT_FIELD_NAME_DECIMAL, randomFloat
-				).put(
-					OBJECT_FIELD_NAME_INTEGER, randomInt
-				).put(
-					OBJECT_FIELD_NAME_LONG_INTEGER, randomLong
-				).put(
-					OBJECT_FIELD_NAME_LONG_TEXT, randomString1
-				).put(
-					OBJECT_FIELD_NAME_MULTISELECT_PICKLIST,
-					JSONUtil.putAll(
-						LIST_TYPE_ENTRY_KEY_1, LIST_TYPE_ENTRY_KEY_2)
-				).put(
-					OBJECT_FIELD_NAME_PICKLIST, LIST_TYPE_ENTRY_KEY_3
-				).put(
-					OBJECT_FIELD_NAME_PRECISION_DECIMAL, randomBigDecimal
-				).put(
-					OBJECT_FIELD_NAME_TEXT, randomString3
+				_createObjectEntryJSONObject(
+					randomBigDecimal, randomBoolean, randomDate,
+					randomDateTimeInput, randomDateTimeUTC, randomFloat,
+					randomInt, randomLong, randomLongText, randomRichText,
+					randomText
 				).put(
 					objectRelationship1ERCObjectFieldName,
-					objectEntry3.getExternalReferenceCode()
+					parentObjectEntry2.getExternalReferenceCode()
 				).put(
 					objectRelationship1ObjectField.getName(),
-					objectEntry2.getObjectEntryId()
+					parentObjectEntry1.getObjectEntryId()
 				).put(
 					objectRelationship2ERCObjectFieldName,
-					objectEntry2.getExternalReferenceCode()
+					parentObjectEntry1.getExternalReferenceCode()
 				).put(
 					objectRelationship2ObjectField.getName(),
-					objectEntry3.getObjectEntryId()
+					parentObjectEntry2.getObjectEntryId()
 				).toString(),
 				endpoint, Http.Method.PUT
 			).toString(),
@@ -1106,28 +801,21 @@ public abstract class BaseObjectEntryResourceTestCase {
 	}
 
 	protected JSONArray createObjectEntriesJSONArray(
-			String[] externalReferenceCodeValues, String objectFieldName,
-			String[] objectFieldValues)
-		throws Exception {
+		String[] externalReferenceCodes, String objectFieldName,
+		String[] objectFieldValues) {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 		for (int i = 0; i < objectFieldValues.length; i++) {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+			jsonArray.put(
 				JSONUtil.put(
 					objectFieldName, objectFieldValues[i]
 				).put(
-					"externalReferenceCode", externalReferenceCodeValues[i]
-				).toString());
-
-			jsonArray.put(jsonObject);
+					"externalReferenceCode", externalReferenceCodes[i]
+				));
 		}
 
 		return jsonArray;
-	}
-
-	protected String escape(String string) {
-		return URLCodec.encodeURL(string);
 	}
 
 	protected Company getCompanyByWebId() throws Exception {
@@ -1137,15 +825,6 @@ public abstract class BaseObjectEntryResourceTestCase {
 		catch (NoSuchCompanyException noSuchCompanyException) {
 			return CompanyTestUtil.addCompanyWithWebId("www.able.com");
 		}
-	}
-
-	protected String getEndpoint(
-		long objectEntryId, ObjectRelationship objectRelationship,
-		ObjectDefinition objectDefinition) {
-
-		return StringBundler.concat(
-			objectDefinition.getRESTContextPath(), StringPool.SLASH,
-			objectEntryId, "?nestedFields=", objectRelationship.getName());
 	}
 
 	protected String getEndpoint(
@@ -1163,213 +842,96 @@ public abstract class BaseObjectEntryResourceTestCase {
 		return objectDefinition.getRESTContextPath();
 	}
 
-	protected ObjectDefinition getObjectDefinition1() throws Exception {
-		if (objectDefinition1 != null) {
-			return objectDefinition1;
+	protected ObjectEntry getLocalizedObjectEntry() throws Exception {
+		getObjectDefinition4();
+
+		return _localizedObjectEntry;
+	}
+
+	protected String getNestedFieldsEndpoint(
+		ObjectDefinition objectDefinition, long objectEntryId,
+		ObjectRelationship objectRelationship) {
+
+		return StringBundler.concat(
+			objectDefinition.getRESTContextPath(), StringPool.SLASH,
+			objectEntryId, "?nestedFields=", objectRelationship.getName());
+	}
+
+	protected JSONObject getNestedFieldsObjectEntryJSONObject(
+			Integer nestedFieldDepth, String nestedFieldName,
+			ObjectDefinition objectDefinition)
+		throws Exception {
+
+		String endpoint = StringBundler.concat(
+			objectDefinition.getRESTContextPath(), "?nestedFields=",
+			nestedFieldName);
+
+		if (nestedFieldDepth != null) {
+			endpoint += "&nestedFieldsDepth=" + nestedFieldDepth;
 		}
 
-		String objectDefinitionName = ObjectDefinitionTestUtil.getRandomName();
+		JSONObject jsonObject = HTTPTestUtil.invokeToJSONObject(
+			null, endpoint, Http.Method.GET);
 
-		objectDefinition1 = ObjectDefinitionTestUtil.publishObjectDefinition(
-			objectDefinitionName, _createObjectFields(objectDefinitionName),
+		JSONArray itemsJSONArray = jsonObject.getJSONArray("items");
+
+		Assert.assertEquals(1, itemsJSONArray.length());
+
+		return itemsJSONArray.getJSONObject(0);
+	}
+
+	protected ObjectDefinition getObjectDefinition1() throws Exception {
+		if (_objectDefinition1 != null) {
+			return _objectDefinition1;
+		}
+
+		String randomString = RandomTestUtil.randomString(
+			UniqueStringRandomizerBumper.INSTANCE);
+
+		String objectDefinitionName = "A" + randomString;
+
+		_objectDefinition1 = ObjectDefinitionTestUtil.publishObjectDefinition(
+			objectDefinitionName,
+			_createObjectDefinition1ObjectFields(objectDefinitionName),
 			ObjectDefinitionConstants.SCOPE_COMPANY);
 
-		return objectDefinition1;
+		return _objectDefinition1;
 	}
 
 	protected ObjectDefinition getObjectDefinition2() throws Exception {
-		if (objectDefinition2 != null) {
-			return objectDefinition2;
+		if (_objectDefinition2 != null) {
+			return _objectDefinition2;
 		}
 
-		objectDefinition2 = ObjectDefinitionTestUtil.publishObjectDefinition(
-			ObjectDefinitionTestUtil.getRandomName(),
-			Arrays.asList(
-				_createAttachmentObjectField(
-					"pdf", ObjectFieldSettingConstants.VALUE_DOCS_AND_MEDIA,
-					OBJECT_FIELD_NAME_ATTACHMENT_DOCS_AND_MEDIA_SOURCE),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_BOOLEAN,
-					ObjectFieldConstants.DB_TYPE_BOOLEAN, true, false, null,
-					RandomTestUtil.randomString(), OBJECT_FIELD_NAME_BOOLEAN,
-					false),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_DATE,
-					ObjectFieldConstants.DB_TYPE_DATE,
-					RandomTestUtil.randomString(), OBJECT_FIELD_NAME_DATE,
-					false),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_DATE_TIME,
-					ObjectFieldConstants.DB_TYPE_DATE_TIME, true, true, null,
-					RandomTestUtil.randomString(),
-					OBJECT_FIELD_NAME_DATE_TIME_INPUT,
-					Collections.singletonList(
-						new ObjectFieldSettingBuilder(
-						).name(
-							ObjectFieldSettingConstants.NAME_TIME_STORAGE
-						).value(
-							ObjectFieldSettingConstants.
-								VALUE_USE_INPUT_AS_ENTERED
-						).build()),
-					false),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_DATE_TIME,
-					ObjectFieldConstants.DB_TYPE_DATE_TIME, true, true, null,
-					RandomTestUtil.randomString(),
-					OBJECT_FIELD_NAME_DATE_TIME_UTC,
-					Collections.singletonList(
-						new ObjectFieldSettingBuilder(
-						).name(
-							ObjectFieldSettingConstants.NAME_TIME_STORAGE
-						).value(
-							ObjectFieldSettingConstants.VALUE_CONVERT_TO_UTC
-						).build()),
-					false),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_DECIMAL,
-					ObjectFieldConstants.DB_TYPE_DOUBLE, true, false, null,
-					RandomTestUtil.randomString(), OBJECT_FIELD_NAME_DECIMAL,
-					false),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_INTEGER,
-					ObjectFieldConstants.DB_TYPE_INTEGER, true, true, null,
-					RandomTestUtil.randomString(), OBJECT_FIELD_NAME_INTEGER,
-					false),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_LONG_INTEGER,
-					ObjectFieldConstants.DB_TYPE_LONG, true, false, null,
-					RandomTestUtil.randomString(),
-					OBJECT_FIELD_NAME_LONG_INTEGER, false),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_LONG_TEXT,
-					ObjectFieldConstants.DB_TYPE_CLOB, false, false, null,
-					RandomTestUtil.randomString(), OBJECT_FIELD_NAME_LONG_TEXT,
-					false),
-				ObjectFieldUtil.createObjectField(
-					listTypeDefinition.getListTypeDefinitionId(),
-					ObjectFieldConstants.BUSINESS_TYPE_MULTISELECT_PICKLIST,
-					null, ObjectFieldConstants.DB_TYPE_STRING, true, false,
-					null, RandomTestUtil.randomString(),
-					OBJECT_FIELD_NAME_MULTISELECT_PICKLIST, false, false),
-				ObjectFieldUtil.createObjectField(
-					listTypeDefinition.getListTypeDefinitionId(),
-					ObjectFieldConstants.BUSINESS_TYPE_PICKLIST, null,
-					ObjectFieldConstants.DB_TYPE_STRING, true, false, null,
-					RandomTestUtil.randomString(), OBJECT_FIELD_NAME_PICKLIST,
-					false, false),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_PRECISION_DECIMAL,
-					ObjectFieldConstants.DB_TYPE_BIG_DECIMAL, true, false, null,
-					RandomTestUtil.randomString(),
-					OBJECT_FIELD_NAME_PRECISION_DECIMAL, false),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_TEXT,
-					ObjectFieldConstants.DB_TYPE_STRING, true, true, null,
-					RandomTestUtil.randomString(), OBJECT_FIELD_NAME_TEXT,
-					false),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_TEXT,
-					ObjectFieldConstants.DB_TYPE_STRING, true, true, null,
-					RandomTestUtil.randomString(), OBJECT_FIELD_NAME_2, false)),
+		_objectDefinition2 = ObjectDefinitionTestUtil.publishObjectDefinition(
+			ListUtil.concat(
+				Collections.singletonList(
+					_createAttachmentObjectField(
+						"pdf", ObjectFieldSettingConstants.VALUE_DOCS_AND_MEDIA,
+						OBJECT_FIELD_NAME_ATTACHMENT_DOCS_AND_MEDIA_SOURCE)),
+				_createBusinessTypeObjectFields(),
+				Arrays.asList(
+					_createTextObjectField(OBJECT_FIELD_NAME_TEXT),
+					_createTextObjectField(OBJECT_FIELD_NAME_2))),
 			ObjectDefinitionConstants.SCOPE_COMPANY);
 
-		return objectDefinition2;
+		return _objectDefinition2;
 	}
 
 	protected ObjectDefinition getObjectDefinition3() throws Exception {
-		if (objectDefinition3 != null) {
-			return objectDefinition3;
+		if (_objectDefinition3 != null) {
+			return _objectDefinition3;
 		}
 
-		objectDefinition3 = ObjectDefinitionTestUtil.publishObjectDefinition(
-			ObjectDefinitionTestUtil.getRandomName(),
-			Arrays.asList(
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_BOOLEAN,
-					ObjectFieldConstants.DB_TYPE_BOOLEAN, true, false, null,
-					RandomTestUtil.randomString(), OBJECT_FIELD_NAME_BOOLEAN,
-					false),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_DATE,
-					ObjectFieldConstants.DB_TYPE_DATE,
-					RandomTestUtil.randomString(), OBJECT_FIELD_NAME_DATE,
-					false),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_DATE_TIME,
-					ObjectFieldConstants.DB_TYPE_DATE_TIME, true, true, null,
-					RandomTestUtil.randomString(),
-					OBJECT_FIELD_NAME_DATE_TIME_INPUT,
-					Collections.singletonList(
-						new ObjectFieldSettingBuilder(
-						).name(
-							ObjectFieldSettingConstants.NAME_TIME_STORAGE
-						).value(
-							ObjectFieldSettingConstants.
-								VALUE_USE_INPUT_AS_ENTERED
-						).build()),
-					false),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_DATE_TIME,
-					ObjectFieldConstants.DB_TYPE_DATE_TIME, true, true, null,
-					RandomTestUtil.randomString(),
-					OBJECT_FIELD_NAME_DATE_TIME_UTC,
-					Collections.singletonList(
-						new ObjectFieldSettingBuilder(
-						).name(
-							ObjectFieldSettingConstants.NAME_TIME_STORAGE
-						).value(
-							ObjectFieldSettingConstants.VALUE_CONVERT_TO_UTC
-						).build()),
-					false),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_DECIMAL,
-					ObjectFieldConstants.DB_TYPE_DOUBLE, true, false, null,
-					RandomTestUtil.randomString(), OBJECT_FIELD_NAME_DECIMAL,
-					false),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_INTEGER,
-					ObjectFieldConstants.DB_TYPE_INTEGER, true, true, null,
-					RandomTestUtil.randomString(), OBJECT_FIELD_NAME_INTEGER,
-					false),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_LONG_INTEGER,
-					ObjectFieldConstants.DB_TYPE_LONG, true, false, null,
-					RandomTestUtil.randomString(),
-					OBJECT_FIELD_NAME_LONG_INTEGER, false),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_LONG_TEXT,
-					ObjectFieldConstants.DB_TYPE_CLOB, false, false, null,
-					RandomTestUtil.randomString(), OBJECT_FIELD_NAME_LONG_TEXT,
-					false),
-				ObjectFieldUtil.createObjectField(
-					listTypeDefinition.getListTypeDefinitionId(),
-					ObjectFieldConstants.BUSINESS_TYPE_MULTISELECT_PICKLIST,
-					null, ObjectFieldConstants.DB_TYPE_STRING, true, false,
-					null, RandomTestUtil.randomString(),
-					OBJECT_FIELD_NAME_MULTISELECT_PICKLIST, false, false),
-				ObjectFieldUtil.createObjectField(
-					listTypeDefinition.getListTypeDefinitionId(),
-					ObjectFieldConstants.BUSINESS_TYPE_PICKLIST, null,
-					ObjectFieldConstants.DB_TYPE_STRING, true, false, null,
-					RandomTestUtil.randomString(), OBJECT_FIELD_NAME_PICKLIST,
-					false, false),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_PRECISION_DECIMAL,
-					ObjectFieldConstants.DB_TYPE_BIG_DECIMAL, true, false, null,
-					RandomTestUtil.randomString(),
-					OBJECT_FIELD_NAME_PRECISION_DECIMAL, false),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_TEXT,
-					ObjectFieldConstants.DB_TYPE_STRING, true, true, null,
-					RandomTestUtil.randomString(), OBJECT_FIELD_NAME_TEXT,
-					false),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_TEXT,
-					ObjectFieldConstants.DB_TYPE_STRING, true, true, null,
-					RandomTestUtil.randomString(), OBJECT_FIELD_NAME_3, false)),
+		_objectDefinition3 = ObjectDefinitionTestUtil.publishObjectDefinition(
+			ListUtil.concat(
+				_createBusinessTypeObjectFields(),
+				Arrays.asList(
+					_createTextObjectField(OBJECT_FIELD_NAME_TEXT),
+					_createTextObjectField(OBJECT_FIELD_NAME_3))),
 			ObjectDefinitionConstants.SCOPE_COMPANY);
 
-		return objectDefinition3;
+		return _objectDefinition3;
 	}
 
 	protected ObjectDefinition getObjectDefinition4() throws Exception {
@@ -1378,14 +940,12 @@ public abstract class BaseObjectEntryResourceTestCase {
 		}
 
 		_objectDefinition4 = ObjectDefinitionTestUtil.publishObjectDefinition(
-			ObjectDefinitionTestUtil.getRandomName(),
 			Arrays.asList(
 				new LongTextObjectFieldBuilder(
 				).indexed(
 					true
 				).labelMap(
-					LocalizedMapUtil.getLocalizedMap(
-						RandomTestUtil.randomString())
+					RandomTestUtil.randomLocaleStringMap()
 				).localized(
 					true
 				).name(
@@ -1395,8 +955,7 @@ public abstract class BaseObjectEntryResourceTestCase {
 				).indexed(
 					true
 				).labelMap(
-					LocalizedMapUtil.getLocalizedMap(
-						RandomTestUtil.randomString())
+					RandomTestUtil.randomLocaleStringMap()
 				).localized(
 					true
 				).name(
@@ -1406,8 +965,7 @@ public abstract class BaseObjectEntryResourceTestCase {
 				).indexed(
 					true
 				).labelMap(
-					LocalizedMapUtil.getLocalizedMap(
-						RandomTestUtil.randomString())
+					RandomTestUtil.randomLocaleStringMap()
 				).localized(
 					true
 				).name(
@@ -1417,8 +975,7 @@ public abstract class BaseObjectEntryResourceTestCase {
 				).indexed(
 					true
 				).labelMap(
-					LocalizedMapUtil.getLocalizedMap(
-						RandomTestUtil.randomString())
+					RandomTestUtil.randomLocaleStringMap()
 				).localized(
 					true
 				).name(
@@ -1434,15 +991,10 @@ public abstract class BaseObjectEntryResourceTestCase {
 					ObjectFieldConstants.DB_TYPE_STRING, true, true, null,
 					RandomTestUtil.randomString(), _OBJECT_FIELD_NAME_RICH_TEXT,
 					false),
-				ObjectFieldUtil.createObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_TEXT,
-					ObjectFieldConstants.DB_TYPE_STRING, true, true, null,
-					RandomTestUtil.randomString(), OBJECT_FIELD_NAME_TEXT,
-					false)),
-			ObjectDefinitionConstants.SCOPE_COMPANY,
-			TestPropsValues.getUserId());
+				_createTextObjectField(OBJECT_FIELD_NAME_TEXT)),
+			ObjectDefinitionConstants.SCOPE_COMPANY);
 
-		_objectEntry5 = ObjectEntryTestUtil.addObjectEntry(
+		_localizedObjectEntry = ObjectEntryTestUtil.addObjectEntry(
 			_objectDefinition4,
 			HashMapBuilder.<String, Serializable>put(
 				OBJECT_FIELD_NAME_LOCALIZED_LONG_TEXT, "name2_text_english"
@@ -1474,35 +1026,6 @@ public abstract class BaseObjectEntryResourceTestCase {
 			).build());
 
 		return _objectDefinition4;
-	}
-
-	protected ObjectEntry getObjectEntry5() throws Exception {
-		getObjectDefinition4();
-
-		return _objectEntry5;
-	}
-
-	protected JSONObject getObjectEntryJSONObject(
-			Integer nestedFieldDepth, String nestedFieldName,
-			ObjectDefinition objectDefinition)
-		throws Exception {
-
-		String endpoint = StringBundler.concat(
-			objectDefinition.getRESTContextPath(), "?nestedFields=",
-			nestedFieldName);
-
-		if (nestedFieldDepth != null) {
-			endpoint += "&nestedFieldsDepth=" + nestedFieldDepth;
-		}
-
-		JSONObject jsonObject = HTTPTestUtil.invokeToJSONObject(
-			null, endpoint, Http.Method.GET);
-
-		JSONArray itemsJSONArray = jsonObject.getJSONArray("items");
-
-		Assert.assertEquals(1, itemsJSONArray.length());
-
-		return itemsJSONArray.getJSONObject(0);
 	}
 
 	protected JSONObject getObjectEntryJSONObject(
@@ -1600,18 +1123,22 @@ public abstract class BaseObjectEntryResourceTestCase {
 	protected ObjectDefinition getSiteScopedObjectDefinition1()
 		throws Exception {
 
-		if (siteScopedObjectDefinition1 != null) {
-			return siteScopedObjectDefinition1;
+		if (_siteScopedObjectDefinition1 != null) {
+			return _siteScopedObjectDefinition1;
 		}
 
-		String objectDefinitionName = ObjectDefinitionTestUtil.getRandomName();
+		String randomString = RandomTestUtil.randomString(
+			UniqueStringRandomizerBumper.INSTANCE);
 
-		siteScopedObjectDefinition1 =
+		String objectDefinitionName = "A" + randomString;
+
+		_siteScopedObjectDefinition1 =
 			ObjectDefinitionTestUtil.publishObjectDefinition(
-				objectDefinitionName, _createObjectFields(objectDefinitionName),
+				objectDefinitionName,
+				_createObjectDefinition1ObjectFields(objectDefinitionName),
 				ObjectDefinitionConstants.SCOPE_SITE);
 
-		return siteScopedObjectDefinition1;
+		return _siteScopedObjectDefinition1;
 	}
 
 	protected ObjectDefinition getSiteScopedObjectDefinition2()
@@ -1623,15 +1150,44 @@ public abstract class BaseObjectEntryResourceTestCase {
 
 		_siteScopedObjectDefinition2 =
 			ObjectDefinitionTestUtil.publishObjectDefinition(
-				Arrays.asList(
-					ObjectFieldUtil.createObjectField(
-						ObjectFieldConstants.BUSINESS_TYPE_TEXT,
-						ObjectFieldConstants.DB_TYPE_STRING, true, true, null,
-						RandomTestUtil.randomString(), OBJECT_FIELD_NAME_2,
-						false)),
+				Arrays.asList(_createTextObjectField(OBJECT_FIELD_NAME_2)),
 				ObjectDefinitionConstants.SCOPE_SITE);
 
 		return _siteScopedObjectDefinition2;
+	}
+
+	protected ObjectDefinition getUserSystemObjectDefinition()
+		throws Exception {
+
+		if (_userSystemObjectDefinition != null) {
+			return _userSystemObjectDefinition;
+		}
+
+		_userSystemObjectDefinitionManager =
+			_systemObjectDefinitionManagerRegistry.
+				getSystemObjectDefinitionManager("User");
+
+		_userSystemObjectDefinition =
+			objectDefinitionLocalService.fetchSystemObjectDefinition(
+				TestPropsValues.getCompanyId(),
+				_userSystemObjectDefinitionManager.getName());
+
+		_userSystemObjectField = ObjectFieldTestUtil.addCustomObjectField(
+			TestPropsValues.getUserId(),
+			ObjectFieldConstants.BUSINESS_TYPE_TEXT,
+			ObjectFieldConstants.DB_TYPE_STRING, _userSystemObjectDefinition,
+			OBJECT_FIELD_NAME_2);
+
+		return _userSystemObjectDefinition;
+	}
+
+	protected SystemObjectDefinitionManager
+			getUserSystemObjectDefinitionManager()
+		throws Exception {
+
+		getUserSystemObjectDefinition();
+
+		return _userSystemObjectDefinitionManager;
 	}
 
 	protected JSONObject postObjectEntry(
@@ -1648,6 +1204,8 @@ public abstract class BaseObjectEntryResourceTestCase {
 	protected TaxonomyCategory postTaxonomyVocabularyTaxonomyCategory()
 		throws Exception {
 
+		AssetVocabulary assetVocabulary = _getAssetVocabulary();
+
 		return postTaxonomyVocabularyTaxonomyCategory(
 			testGroupId, assetVocabulary.getVocabularyId());
 	}
@@ -1661,24 +1219,44 @@ public abstract class BaseObjectEntryResourceTestCase {
 			randomTaxonomyCategory(groupId, taxonomyVocabularyId));
 	}
 
+	protected ObjectDefinition publishDepotScopedObjectDefinition()
+		throws Exception {
+
+		ObjectDefinition objectDefinition =
+			ObjectDefinitionTestUtil.publishObjectDefinition(
+				Collections.singletonList(
+					new TextObjectFieldBuilder(
+					).labelMap(
+						RandomTestUtil.randomLocaleStringMap()
+					).name(
+						StringUtil.randomId()
+					).build()),
+				ObjectDefinitionConstants.SCOPE_DEPOT);
+
+		_objectDefinitionSettingLocalService.addObjectDefinitionSetting(
+			objectDefinition.getUserId(),
+			objectDefinition.getObjectDefinitionId(),
+			ObjectDefinitionSettingConstants.NAME_ACCEPT_ALL_GROUPS,
+			StringPool.TRUE);
+
+		return objectDefinition;
+	}
+
 	protected ObjectDefinition publishLocalizedObjectDefinition(
 			String objectFieldName)
 		throws Exception {
 
 		return ObjectDefinitionTestUtil.publishObjectDefinition(
-			ObjectDefinitionTestUtil.getRandomName(),
 			Collections.singletonList(
 				new TextObjectFieldBuilder(
 				).labelMap(
-					LocalizedMapUtil.getLocalizedMap(
-						RandomTestUtil.randomString())
+					RandomTestUtil.randomLocaleStringMap()
 				).localized(
 					true
 				).name(
 					objectFieldName
 				).build()),
-			ObjectDefinitionConstants.SCOPE_COMPANY,
-			TestPropsValues.getUserId());
+			ObjectDefinitionConstants.SCOPE_COMPANY);
 	}
 
 	protected TaxonomyCategory randomTaxonomyCategory(
@@ -1691,9 +1269,12 @@ public abstract class BaseObjectEntryResourceTestCase {
 				description = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
 				externalReferenceCode = StringUtil.toLowerCase(
-					RandomTestUtil.randomString());
+					RandomTestUtil.randomString(
+						UniqueStringRandomizerBumper.INSTANCE));
 				id = StringUtil.toLowerCase(RandomTestUtil.randomString());
-				name = StringUtil.toLowerCase(RandomTestUtil.randomString());
+				name = StringUtil.toLowerCase(
+					RandomTestUtil.randomString(
+						UniqueStringRandomizerBumper.INSTANCE));
 				numberOfTaxonomyCategories = RandomTestUtil.randomInt();
 				siteId = groupId;
 				taxonomyCategoryUsageCount = RandomTestUtil.randomInt();
@@ -1704,35 +1285,37 @@ public abstract class BaseObjectEntryResourceTestCase {
 	}
 
 	protected void setObjectDefinition(
-			ObjectDefinition objectDefinition,
-			ObjectEntryResource objectEntryResource)
-		throws Exception {
+		ObjectDefinition objectDefinition,
+		ObjectEntryResource objectEntryResource) {
 
-		Class<?> clazz = objectEntryResource.getClass();
-
-		Method method = clazz.getMethod(
-			"setObjectDefinition", ObjectDefinition.class);
-
-		method.invoke(objectEntryResource, objectDefinition);
+		ReflectionTestUtil.invoke(
+			objectEntryResource, "setObjectDefinition",
+			new Class<?>[] {ObjectDefinition.class}, objectDefinition);
 	}
 
 	protected static final String ERC_VALUE_1 =
-		"a" + RandomTestUtil.randomString();
+		"a" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String ERC_VALUE_2 =
-		"b" + RandomTestUtil.randomString();
+		"b" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String ERC_VALUE_3 =
-		"c" + RandomTestUtil.randomString();
+		"c" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String LIST_TYPE_ENTRY_KEY_1 =
-		"a" + RandomTestUtil.randomString();
+		"a" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String LIST_TYPE_ENTRY_KEY_2 =
-		"b" + RandomTestUtil.randomString();
+		"b" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String LIST_TYPE_ENTRY_KEY_3 =
-		"c" + RandomTestUtil.randomString();
+		"c" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final int MAX_FILE_SIZE_VALUE = 1;
 
@@ -1743,78 +1326,106 @@ public abstract class BaseObjectEntryResourceTestCase {
 		RandomTestUtil.randomString();
 
 	protected static final String OBJECT_FIELD_NAME_1 =
-		"x" + RandomTestUtil.randomString();
+		"x" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String OBJECT_FIELD_NAME_2 =
-		"x" + RandomTestUtil.randomString();
+		"x" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String OBJECT_FIELD_NAME_3 =
-		"x" + RandomTestUtil.randomString();
+		"x" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String
 		OBJECT_FIELD_NAME_ATTACHMENT_CMS_BASIC_DOCUMENT_SOURCE =
-			"x" + RandomTestUtil.randomString();
+			"x" +
+				RandomTestUtil.randomString(
+					UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String
 		OBJECT_FIELD_NAME_ATTACHMENT_DOCS_AND_MEDIA_SOURCE =
-			"x" + RandomTestUtil.randomString();
+			"x" +
+				RandomTestUtil.randomString(
+					UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String
 		OBJECT_FIELD_NAME_ATTACHMENT_USER_COMPUTER_TO_CMS_BASIC_DOCUMENT_SOURCE =
-			"x" + RandomTestUtil.randomString();
+			"x" +
+				RandomTestUtil.randomString(
+					UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String
 		OBJECT_FIELD_NAME_ATTACHMENT_USER_COMPUTER_TO_DOCS_AND_MEDIA_SOURCE_1 =
-			"x" + RandomTestUtil.randomString();
+			"x" +
+				RandomTestUtil.randomString(
+					UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String
 		OBJECT_FIELD_NAME_ATTACHMENT_USER_COMPUTER_TO_DOCS_AND_MEDIA_SOURCE_2 =
-			"x" + RandomTestUtil.randomString();
+			"x" +
+				RandomTestUtil.randomString(
+					UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String OBJECT_FIELD_NAME_BOOLEAN =
-		"x" + RandomTestUtil.randomString();
+		"x" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String OBJECT_FIELD_NAME_DATE =
-		"x" + RandomTestUtil.randomString();
+		"x" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String OBJECT_FIELD_NAME_DATE_TIME_INPUT =
-		"x" + RandomTestUtil.randomString();
+		"x" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String OBJECT_FIELD_NAME_DATE_TIME_UTC =
-		"x" + RandomTestUtil.randomString();
+		"x" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String OBJECT_FIELD_NAME_DECIMAL =
-		"x" + RandomTestUtil.randomString();
+		"x" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String OBJECT_FIELD_NAME_INTEGER =
-		"x" + RandomTestUtil.randomString();
+		"x" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String OBJECT_FIELD_NAME_LOCALIZED_LONG_TEXT =
-		"x" + RandomTestUtil.randomString();
+		"x" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String OBJECT_FIELD_NAME_LOCALIZED_RICH_TEXT =
-		"x" + RandomTestUtil.randomString();
+		"x" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String OBJECT_FIELD_NAME_LOCALIZED_TEXT =
-		"x" + RandomTestUtil.randomString();
+		"x" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String OBJECT_FIELD_NAME_LONG_INTEGER =
-		"x" + RandomTestUtil.randomString();
+		"x" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String OBJECT_FIELD_NAME_LONG_TEXT =
-		"x" + RandomTestUtil.randomString();
+		"x" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String OBJECT_FIELD_NAME_MULTISELECT_PICKLIST =
-		"x" + RandomTestUtil.randomString();
+		"x" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String OBJECT_FIELD_NAME_PICKLIST =
-		"x" + RandomTestUtil.randomString();
+		"x" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String OBJECT_FIELD_NAME_PRECISION_DECIMAL =
-		"x" + RandomTestUtil.randomString();
+		"x" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final String OBJECT_FIELD_NAME_TEXT =
-		"x" + RandomTestUtil.randomString();
+		"x" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
 	protected static final int OBJECT_FIELD_VALUE_1 =
 		RandomTestUtil.randomInt();
@@ -1829,20 +1440,7 @@ public abstract class BaseObjectEntryResourceTestCase {
 		RandomTestUtil.randomInt();
 
 	protected static final String TAG_1 = StringUtil.toLowerCase(
-		RandomTestUtil.randomString());
-
-	protected static AssetVocabulary assetVocabulary;
-	protected static final DateFormat dateFormat =
-		DateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd");
-	protected static final DateFormat dateTimeDateFormat =
-		DateFormatFactoryUtil.getSimpleDateFormat(
-			"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-	protected static TaxonomyCategoryResource taxonomyCategoryResource;
-	protected static final TestDLFileEntryModelListener
-		testDLFileEntryModelListener = new TestDLFileEntryModelListener();
-	protected static long testGroupId;
-	protected static final TestObjectEntryModelListener
-		testObjectEntryModelListener = new TestObjectEntryModelListener();
+		RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE));
 
 	@Inject
 	protected AssetVocabularyLocalService assetVocabularyLocalService;
@@ -1852,6 +1450,12 @@ public abstract class BaseObjectEntryResourceTestCase {
 
 	@Inject
 	protected CompanyLocalService companyLocalService;
+
+	protected final Format dateFormat =
+		FastDateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd");
+	protected final Format dateTimeFormat =
+		FastDateFormatFactoryUtil.getSimpleDateFormat(
+			"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
 	@Inject
 	protected DepotEntryLocalService depotEntryLocalService;
@@ -1863,28 +1467,10 @@ public abstract class BaseObjectEntryResourceTestCase {
 	protected GroupLocalService groupLocalService;
 
 	@Inject
-	protected JSONFactory jsonFactory;
-
-	protected ListTypeDefinition listTypeDefinition;
-
-	@Inject
 	protected ListTypeDefinitionLocalService listTypeDefinitionLocalService;
-
-	protected ObjectDefinition objectDefinition1;
-	protected ObjectDefinition objectDefinition2;
-	protected ObjectDefinition objectDefinition3;
 
 	@Inject
 	protected ObjectDefinitionLocalService objectDefinitionLocalService;
-
-	@Inject
-	protected ObjectDefinitionSettingLocalService
-		objectDefinitionSettingLocalService;
-
-	protected ObjectEntry objectEntry1;
-	protected ObjectEntry objectEntry2;
-	protected ObjectEntry objectEntry3;
-	protected ObjectEntry objectEntry4;
 
 	@Inject
 	protected ObjectEntryLocalService objectEntryLocalService;
@@ -1894,13 +1480,6 @@ public abstract class BaseObjectEntryResourceTestCase {
 
 	@Inject
 	protected ObjectFieldLocalService objectFieldLocalService;
-
-	protected ObjectRelationship objectRelationship1;
-	protected ObjectRelationship objectRelationship2;
-	protected ObjectRelationship objectRelationship3;
-	protected ObjectRelationship objectRelationship4;
-	protected ObjectRelationship objectRelationship5;
-	protected ObjectRelationship objectRelationship7;
 
 	@Inject
 	protected ObjectRelationshipLocalService objectRelationshipLocalService;
@@ -1917,9 +1496,8 @@ public abstract class BaseObjectEntryResourceTestCase {
 	@Inject
 	protected RoleLocalService roleLocalService;
 
-	protected ObjectDefinition siteScopedObjectDefinition1;
-	protected SystemObjectDefinitionManager systemObjectDefinitionManager;
-	protected JSONObject userAccountJSONObject;
+	protected TaxonomyCategoryResource taxonomyCategoryResource;
+	protected long testGroupId;
 
 	@Inject
 	protected UserGroupRoleLocalService userGroupRoleLocalService;
@@ -1927,48 +1505,23 @@ public abstract class BaseObjectEntryResourceTestCase {
 	@Inject
 	protected UserLocalService userLocalService;
 
-	protected ObjectDefinition userSystemObjectDefinition;
+	private void _assertPatchObjectField(
+			String endpoint, JSONObject expectedJSONObject,
+			String objectFieldName, Object objectFieldValue)
+		throws Exception {
 
-	protected static class TestDLFileEntryModelListener
-		extends BaseModelListener<DLFileEntry> {
-
-		public Long getLastFileEntryId() {
-			return _fileEntryIds.get(_fileEntryIds.size() - 1);
-		}
-
-		@Override
-		public void onAfterCreate(DLFileEntry dlFileEntry)
-			throws ModelListenerException {
-
-			_fileEntryIds.add(dlFileEntry.getFileEntryId());
-		}
-
-		private List<Long> _fileEntryIds = new ArrayList<>();
-
-	}
-
-	protected static class TestObjectEntryModelListener
-		extends BaseModelListener<ObjectEntry> {
-
-		public Long getLastObjectEntryId() {
-			return _objectEntryIds.get(_objectEntryIds.size() - 1);
-		}
-
-		@Override
-		public void onAfterCreate(ObjectEntry objectEntry)
-			throws ModelListenerException {
-
-			_objectEntryIds.add(objectEntry.getObjectEntryId());
-		}
-
-		private List<Long> _objectEntryIds = new ArrayList<>();
-
-	}
-
-	protected enum Type {
-
-		MANY_TO_MANY, MANY_TO_ONE, ONE_TO_MANY
-
+		JSONAssert.assertEquals(
+			expectedJSONObject.toString(),
+			HTTPTestUtil.invokeToJSONObject(
+				JSONUtil.put(
+					objectFieldName, objectFieldValue
+				).put(
+					"externalReferenceCode",
+					expectedJSONObject.get("externalReferenceCode")
+				).toString(),
+				endpoint, Http.Method.PATCH
+			).toString(),
+			JSONCompareMode.LENIENT);
 	}
 
 	private JSONObject _cloneJSONObject(
@@ -2012,64 +1565,8 @@ public abstract class BaseObjectEntryResourceTestCase {
 			false);
 	}
 
-	private List<ObjectField> _createObjectFields(String objectDefinitionName) {
+	private List<ObjectField> _createBusinessTypeObjectFields() {
 		return Arrays.asList(
-			_createAttachmentObjectField(
-				"jpg, txt",
-				ObjectFieldSettingConstants.VALUE_CMS_BASIC_DOCUMENT,
-				OBJECT_FIELD_NAME_ATTACHMENT_CMS_BASIC_DOCUMENT_SOURCE),
-			_createAttachmentObjectField(
-				"jpg, txt", ObjectFieldSettingConstants.VALUE_DOCS_AND_MEDIA,
-				OBJECT_FIELD_NAME_ATTACHMENT_DOCS_AND_MEDIA_SOURCE),
-			_createAttachmentObjectField(
-				"jpg, txt",
-				ObjectFieldSettingConstants.
-					VALUE_USER_COMPUTER_TO_CMS_BASIC_DOCUMENT,
-				OBJECT_FIELD_NAME_ATTACHMENT_USER_COMPUTER_TO_CMS_BASIC_DOCUMENT_SOURCE),
-			_createAttachmentObjectField(
-				"jpg, txt",
-				ObjectFieldSettingConstants.
-					VALUE_USER_COMPUTER_TO_DOCS_AND_MEDIA,
-				OBJECT_FIELD_NAME_ATTACHMENT_USER_COMPUTER_TO_DOCS_AND_MEDIA_SOURCE_1),
-			ObjectFieldUtil.createObjectField(
-				ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT,
-				ObjectFieldConstants.DB_TYPE_LONG, true, false, null,
-				OBJECT_FIELD_NAME_ATTACHMENT_USER_COMPUTER_TO_DOCS_AND_MEDIA_SOURCE_2,
-				OBJECT_FIELD_NAME_ATTACHMENT_USER_COMPUTER_TO_DOCS_AND_MEDIA_SOURCE_2,
-				Arrays.asList(
-					new ObjectFieldSettingBuilder(
-					).name(
-						ObjectFieldSettingConstants.
-							NAME_ACCEPTED_FILE_EXTENSIONS
-					).value(
-						"txt"
-					).build(),
-					new ObjectFieldSettingBuilder(
-					).name(
-						ObjectFieldSettingConstants.NAME_FILE_SOURCE
-					).value(
-						ObjectFieldSettingConstants.
-							VALUE_USER_COMPUTER_TO_DOCS_AND_MEDIA
-					).build(),
-					new ObjectFieldSettingBuilder(
-					).name(
-						ObjectFieldSettingConstants.NAME_MAX_FILE_SIZE
-					).value(
-						String.valueOf(MAX_FILE_SIZE_VALUE)
-					).build(),
-					new ObjectFieldSettingBuilder(
-					).name(
-						ObjectFieldSettingConstants.NAME_SHOW_FILES_IN_LIBRARY
-					).value(
-						Boolean.TRUE.toString()
-					).build(),
-					new ObjectFieldSettingBuilder(
-					).name(
-						ObjectFieldSettingConstants.NAME_STORAGE_DL_FOLDER_PATH
-					).value(
-						StringPool.SLASH + objectDefinitionName
-					).build()),
-				false),
 			ObjectFieldUtil.createObjectField(
 				ObjectFieldConstants.BUSINESS_TYPE_BOOLEAN,
 				ObjectFieldConstants.DB_TYPE_BOOLEAN, true, false, null,
@@ -2125,13 +1622,13 @@ public abstract class BaseObjectEntryResourceTestCase {
 				RandomTestUtil.randomString(), OBJECT_FIELD_NAME_LONG_TEXT,
 				false),
 			ObjectFieldUtil.createObjectField(
-				listTypeDefinition.getListTypeDefinitionId(),
+				_listTypeDefinition.getListTypeDefinitionId(),
 				ObjectFieldConstants.BUSINESS_TYPE_MULTISELECT_PICKLIST, null,
 				ObjectFieldConstants.DB_TYPE_STRING, true, false, null,
 				RandomTestUtil.randomString(),
 				OBJECT_FIELD_NAME_MULTISELECT_PICKLIST, false, false),
 			ObjectFieldUtil.createObjectField(
-				listTypeDefinition.getListTypeDefinitionId(),
+				_listTypeDefinition.getListTypeDefinitionId(),
 				ObjectFieldConstants.BUSINESS_TYPE_PICKLIST, null,
 				ObjectFieldConstants.DB_TYPE_STRING, true, false, null,
 				RandomTestUtil.randomString(), OBJECT_FIELD_NAME_PICKLIST,
@@ -2140,50 +1637,231 @@ public abstract class BaseObjectEntryResourceTestCase {
 				ObjectFieldConstants.BUSINESS_TYPE_PRECISION_DECIMAL,
 				ObjectFieldConstants.DB_TYPE_BIG_DECIMAL, true, false, null,
 				RandomTestUtil.randomString(),
-				OBJECT_FIELD_NAME_PRECISION_DECIMAL, false),
-			ObjectFieldUtil.createObjectField(
-				ObjectFieldConstants.BUSINESS_TYPE_RICH_TEXT,
-				ObjectFieldConstants.DB_TYPE_STRING, true, true, null,
-				RandomTestUtil.randomString(), _OBJECT_FIELD_NAME_RICH_TEXT,
-				false),
-			ObjectFieldUtil.createObjectField(
-				ObjectFieldConstants.BUSINESS_TYPE_TEXT,
-				ObjectFieldConstants.DB_TYPE_STRING, true, true, null,
-				RandomTestUtil.randomString(), OBJECT_FIELD_NAME_TEXT, false),
-			ObjectFieldUtil.createObjectField(
-				ObjectFieldConstants.BUSINESS_TYPE_TEXT,
-				ObjectFieldConstants.DB_TYPE_STRING, true, true, null,
-				RandomTestUtil.randomString(), OBJECT_FIELD_NAME_1, false));
+				OBJECT_FIELD_NAME_PRECISION_DECIMAL, false));
+	}
+
+	private JSONObject _createExpectedObjectEntryJSONObject(
+		BigDecimal randomBigDecimal, boolean randomBoolean, Date randomDate,
+		Date randomDateTimeInput, Date randomDateTimeUTC, float randomFloat,
+		int randomInt, long randomLong, String randomLongText,
+		String randomRichText, String randomText) {
+
+		return JSONUtil.put(
+			_OBJECT_FIELD_NAME_RICH_TEXT, randomRichText
+		).put(
+			OBJECT_FIELD_NAME_BOOLEAN, randomBoolean
+		).put(
+			OBJECT_FIELD_NAME_DATE,
+			dateFormat.format(randomDate) + "T00:00:00.000Z"
+		).put(
+			OBJECT_FIELD_NAME_DATE_TIME_INPUT,
+			StringUtil.removeLast(
+				dateTimeFormat.format(randomDateTimeInput), "Z")
+		).put(
+			OBJECT_FIELD_NAME_DATE_TIME_UTC,
+			dateTimeFormat.format(randomDateTimeUTC)
+		).put(
+			OBJECT_FIELD_NAME_DECIMAL, randomFloat
+		).put(
+			OBJECT_FIELD_NAME_INTEGER, randomInt
+		).put(
+			OBJECT_FIELD_NAME_LONG_INTEGER, (double)randomLong
+		).put(
+			OBJECT_FIELD_NAME_LONG_TEXT, randomLongText
+		).put(
+			OBJECT_FIELD_NAME_MULTISELECT_PICKLIST,
+			JSONUtil.putAll(
+				_toListTypeEntryJSONObject(_listTypeEntry1),
+				_toListTypeEntryJSONObject(_listTypeEntry2))
+		).put(
+			OBJECT_FIELD_NAME_PICKLIST,
+			_toListTypeEntryJSONObject(_listTypeEntry3)
+		).put(
+			OBJECT_FIELD_NAME_PRECISION_DECIMAL, randomBigDecimal
+		).put(
+			OBJECT_FIELD_NAME_TEXT, randomText
+		);
+	}
+
+	private List<ObjectField> _createObjectDefinition1ObjectFields(
+		String objectDefinitionName) {
+
+		return ListUtil.concat(
+			Arrays.asList(
+				_createAttachmentObjectField(
+					"jpg, txt",
+					ObjectFieldSettingConstants.VALUE_CMS_BASIC_DOCUMENT,
+					OBJECT_FIELD_NAME_ATTACHMENT_CMS_BASIC_DOCUMENT_SOURCE),
+				_createAttachmentObjectField(
+					"jpg, txt",
+					ObjectFieldSettingConstants.VALUE_DOCS_AND_MEDIA,
+					OBJECT_FIELD_NAME_ATTACHMENT_DOCS_AND_MEDIA_SOURCE),
+				_createAttachmentObjectField(
+					"jpg, txt",
+					ObjectFieldSettingConstants.
+						VALUE_USER_COMPUTER_TO_CMS_BASIC_DOCUMENT,
+					OBJECT_FIELD_NAME_ATTACHMENT_USER_COMPUTER_TO_CMS_BASIC_DOCUMENT_SOURCE),
+				_createAttachmentObjectField(
+					"jpg, txt",
+					ObjectFieldSettingConstants.
+						VALUE_USER_COMPUTER_TO_DOCS_AND_MEDIA,
+					OBJECT_FIELD_NAME_ATTACHMENT_USER_COMPUTER_TO_DOCS_AND_MEDIA_SOURCE_1),
+				ObjectFieldUtil.createObjectField(
+					ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT,
+					ObjectFieldConstants.DB_TYPE_LONG, true, false, null,
+					OBJECT_FIELD_NAME_ATTACHMENT_USER_COMPUTER_TO_DOCS_AND_MEDIA_SOURCE_2,
+					OBJECT_FIELD_NAME_ATTACHMENT_USER_COMPUTER_TO_DOCS_AND_MEDIA_SOURCE_2,
+					Arrays.asList(
+						new ObjectFieldSettingBuilder(
+						).name(
+							ObjectFieldSettingConstants.
+								NAME_ACCEPTED_FILE_EXTENSIONS
+						).value(
+							"txt"
+						).build(),
+						new ObjectFieldSettingBuilder(
+						).name(
+							ObjectFieldSettingConstants.NAME_FILE_SOURCE
+						).value(
+							ObjectFieldSettingConstants.
+								VALUE_USER_COMPUTER_TO_DOCS_AND_MEDIA
+						).build(),
+						new ObjectFieldSettingBuilder(
+						).name(
+							ObjectFieldSettingConstants.NAME_MAX_FILE_SIZE
+						).value(
+							String.valueOf(MAX_FILE_SIZE_VALUE)
+						).build(),
+						new ObjectFieldSettingBuilder(
+						).name(
+							ObjectFieldSettingConstants.
+								NAME_SHOW_FILES_IN_LIBRARY
+						).value(
+							Boolean.TRUE.toString()
+						).build(),
+						new ObjectFieldSettingBuilder(
+						).name(
+							ObjectFieldSettingConstants.
+								NAME_STORAGE_DL_FOLDER_PATH
+						).value(
+							StringPool.SLASH + objectDefinitionName
+						).build()),
+					false)),
+			_createBusinessTypeObjectFields(),
+			Arrays.asList(
+				ObjectFieldUtil.createObjectField(
+					ObjectFieldConstants.BUSINESS_TYPE_RICH_TEXT,
+					ObjectFieldConstants.DB_TYPE_STRING, true, true, null,
+					RandomTestUtil.randomString(), _OBJECT_FIELD_NAME_RICH_TEXT,
+					false),
+				_createTextObjectField(OBJECT_FIELD_NAME_TEXT),
+				_createTextObjectField(OBJECT_FIELD_NAME_1)));
+	}
+
+	private JSONObject _createObjectEntryJSONObject(
+		BigDecimal randomBigDecimal, boolean randomBoolean, Date randomDate,
+		Date randomDateTimeInput, Date randomDateTimeUTC, float randomFloat,
+		int randomInt, long randomLong, String randomLongText,
+		String randomRichText, String randomText) {
+
+		return JSONUtil.put(
+			_OBJECT_FIELD_NAME_RICH_TEXT, randomRichText
+		).put(
+			OBJECT_FIELD_NAME_BOOLEAN, randomBoolean
+		).put(
+			OBJECT_FIELD_NAME_DATE, dateFormat.format(randomDate)
+		).put(
+			OBJECT_FIELD_NAME_DATE_TIME_INPUT,
+			dateTimeFormat.format(randomDateTimeInput)
+		).put(
+			OBJECT_FIELD_NAME_DATE_TIME_UTC,
+			dateTimeFormat.format(randomDateTimeUTC)
+		).put(
+			OBJECT_FIELD_NAME_DECIMAL, randomFloat
+		).put(
+			OBJECT_FIELD_NAME_INTEGER, randomInt
+		).put(
+			OBJECT_FIELD_NAME_LONG_INTEGER, randomLong
+		).put(
+			OBJECT_FIELD_NAME_LONG_TEXT, randomLongText
+		).put(
+			OBJECT_FIELD_NAME_MULTISELECT_PICKLIST,
+			JSONUtil.putAll(LIST_TYPE_ENTRY_KEY_1, LIST_TYPE_ENTRY_KEY_2)
+		).put(
+			OBJECT_FIELD_NAME_PICKLIST, LIST_TYPE_ENTRY_KEY_3
+		).put(
+			OBJECT_FIELD_NAME_PRECISION_DECIMAL, randomBigDecimal
+		).put(
+			OBJECT_FIELD_NAME_TEXT, randomText
+		);
+	}
+
+	private ObjectField _createTextObjectField(String objectFieldName) {
+		return ObjectFieldUtil.createObjectField(
+			ObjectFieldConstants.BUSINESS_TYPE_TEXT,
+			ObjectFieldConstants.DB_TYPE_STRING, true, true, null,
+			RandomTestUtil.randomString(), objectFieldName, false);
+	}
+
+	private AssetVocabulary _getAssetVocabulary() throws Exception {
+		if (_assetVocabulary != null) {
+			return _assetVocabulary;
+		}
+
+		_assetVocabulary = assetVocabularyLocalService.addVocabulary(
+			userLocalService.getGuestUserId(TestPropsValues.getCompanyId()),
+			testGroupId,
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE),
+			new ServiceContext());
+
+		return _assetVocabulary;
+	}
+
+	private JSONObject _toListTypeEntryJSONObject(ListTypeEntry listTypeEntry) {
+		return JSONUtil.put(
+			"key", listTypeEntry.getKey()
+		).put(
+			"name", listTypeEntry.getName(LocaleUtil.getDefault())
+		);
 	}
 
 	private static final String _OBJECT_FIELD_NAME_RICH_TEXT =
-		"x" + RandomTestUtil.randomString();
+		"x" +
+			RandomTestUtil.randomString(UniqueStringRandomizerBumper.INSTANCE);
 
-	private static BundleContext _bundleContext;
-	private static List<ServiceRegistration<?>> _serviceRegistrations;
-
-	@DeleteAfterTestRun
+	private AssetVocabulary _assetVocabulary;
+	private ListTypeDefinition _listTypeDefinition;
 	private ListTypeEntry _listTypeEntry1;
-
-	@DeleteAfterTestRun
 	private ListTypeEntry _listTypeEntry2;
-
-	@DeleteAfterTestRun
 	private ListTypeEntry _listTypeEntry3;
 
 	@Inject
 	private ListTypeEntryLocalService _listTypeEntryLocalService;
 
+	private ObjectEntry _localizedObjectEntry;
+	private ObjectDefinition _objectDefinition1;
+	private ObjectDefinition _objectDefinition2;
+	private ObjectDefinition _objectDefinition3;
 	private ObjectDefinition _objectDefinition4;
-	private ObjectEntry _objectEntry5;
-	private ObjectRelationship _objectRelationship6;
+
+	@Inject
+	private ObjectDefinitionSettingLocalService
+		_objectDefinitionSettingLocalService;
+
+	private ObjectDefinition _siteScopedObjectDefinition1;
 	private ObjectDefinition _siteScopedObjectDefinition2;
 
 	@Inject
 	private SystemObjectDefinitionManagerRegistry
 		_systemObjectDefinitionManagerRegistry;
 
+	private ObjectDefinition _userSystemObjectDefinition;
+	private SystemObjectDefinitionManager _userSystemObjectDefinitionManager;
+
 	@DeleteAfterTestRun
 	private ObjectField _userSystemObjectField;
+
+	@DeleteAfterTestRun
+	private final List<User> _users = new ArrayList<>();
 
 }

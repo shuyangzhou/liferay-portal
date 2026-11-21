@@ -29,7 +29,7 @@ spec:
                                     -   /scripts/{{ .scriptName }}
                                 env:
                                     {{- .env | toYaml | nindent 36 }}
-                                image: postgres:18-alpine
+                                image: {{ .image }}
                                 name: sql-runner
                                 resources:
                                     limits:
@@ -54,7 +54,6 @@ spec:
                         initContainers:
                             -   args:
                                     -   --auto-iam-authn
-                                    -   --port={{ .port }}
                                     -   --private-ip
                                     -   --structured-logs
                                     -   "{{ .connectionName }}"
@@ -130,8 +129,8 @@ metadata:
     name: {{ $xr.metadata.name }}-db-{{ $dataPlane }}
 spec:
     forProvider:
-        charset: UTF8
-        collation: en_US.UTF8
+        charset: {{ $databaseEngineSettings.charset }}
+        collation: {{ $databaseEngineSettings.collation }}
         instanceSelector:
             matchLabels:
                 app: liferay
@@ -152,7 +151,7 @@ metadata:
     name: {{ $databaseInstanceNamePrefix }}{{ $dataPlane }}
 spec:
     forProvider:
-        databaseVersion: {{ printf "POSTGRES_%s" ($database.version | default "18") }}
+        databaseVersion: {{ $databaseVersion }}
         deletionProtection: {{ and (not $forceDestroy) (eq $dataPlane $activeDataPlane) }}
         {{- if $cmkEnabled }}
         encryptionKeyName: {{ $cmkKeyId }}
@@ -164,12 +163,17 @@ spec:
             backupConfiguration:
                 backupRetentionSettings:
                     retainedBackups: 7
+                {{- if eq $env.databaseEngine "mysql" }}
+                binaryLogEnabled: true
+                {{- end }}
                 enabled: true
+                {{- if ne $env.databaseEngine "mysql" }}
                 pointInTimeRecoveryEnabled: true
+                {{- end }}
                 transactionLogRetentionDays: 7
             {{- end }}
             databaseFlags:
-                -   name: cloudsql.iam_authentication
+                -   name: {{ eq $env.databaseEngine "mysql" | ternary "cloudsql_iam_authentication" "cloudsql.iam_authentication" }}
                     value: "on"
             diskSize: {{ $database.storageGB }}
             diskType: PD_SSD
@@ -193,7 +197,7 @@ apiVersion: sql.gcp.m.upbound.io/v1beta1
 kind: User
 metadata:
     annotations:
-        crossplane.io/external-name: {{ $databaseBootstrapIamUser }}
+        crossplane.io/external-name: {{ dig (printf "database-bootstrap-iam-user-%s" $dataPlane) "resource" "metadata" "annotations" "crossplane.io/external-name" (eq $env.databaseEngine "mysql" | ternary $databaseBootstrapEmail $databaseBootstrapIamUser) $observedResources }}
         gotemplating.fn.crossplane.io/composition-resource-name: database-bootstrap-iam-user-{{ $dataPlane }}
     labels:
         app: liferay
@@ -218,7 +222,7 @@ apiVersion: sql.gcp.m.upbound.io/v1beta1
 kind: User
 metadata:
     annotations:
-        crossplane.io/external-name: {{ $databaseIamUser }}
+        crossplane.io/external-name: {{ dig (printf "liferay-iam-user-%s" $dataPlane) "resource" "metadata" "annotations" "crossplane.io/external-name" (eq $env.databaseEngine "mysql" | ternary $gsaEmail $databaseIamUser) $observedResources }}
         gotemplating.fn.crossplane.io/composition-resource-name: liferay-iam-user-{{ $dataPlane }}
     labels:
         app: liferay
@@ -249,7 +253,6 @@ spec:
     {{- end }}
 {{- end }}
 {{- $databaseConnectionName := dig "status" "atProvider" "connectionName" "" $observedDatabaseInstance }}
-{{- $databasePort := "5432" }}
 {{- if and $isDatabaseInstanceReady $isDatabaseBootstrapUserReady $gsaEmail }}
 ---
 {{ include "database-job" (dict
@@ -257,14 +260,12 @@ spec:
     "dataPlane" $dataPlane
     "env" (list
         (dict "name" "DATABASE_NAME" "value" $databaseName)
-        (dict "name" "DATABASE_PORT" "value" $databasePort)
         (dict "name" "DATABASE_USERNAME" "value" $databaseBootstrapIamUser)
-        (dict "name" "LIFERAY_DATABASE_USERNAME" "value" $databaseIamUser)
-        (dict "name" "PGPASSWORD" "value" "iam"))
+        (dict "name" "LIFERAY_DATABASE_USERNAME" "value" $databaseIamUser))
+    "image" $env.databaseClientImage
     "jobName" (printf "%s-db-grant-%s" $xr.metadata.name $dataPlane)
     "name" "grant"
     "namespace" $namespace
-    "port" $databasePort
     "scriptName" "grant-database.sh"
     "serviceAccountName" "database-bootstrap") }}
 {{- end }}
@@ -281,13 +282,11 @@ spec:
     "dataPlane" $dataPlane
     "env" (list
         (dict "name" "DATABASE_NAME" "value" $databaseName)
-        (dict "name" "DATABASE_PORT" "value" $databasePort)
-        (dict "name" "DATABASE_USERNAME" "value" $databaseIamUser)
-        (dict "name" "PGPASSWORD" "value" "iam"))
+        (dict "name" "DATABASE_USERNAME" "value" $databaseIamUser))
+    "image" $env.databaseClientImage
     "jobName" (printf "%s-db-login-check-%s" $xr.metadata.name $dataPlane)
     "name" "login-check"
     "namespace" $namespace
-    "port" $databasePort
     "scriptName" "check-database-login.sh"
     "serviceAccountName" "liferay-default") }}
 {{- end }}

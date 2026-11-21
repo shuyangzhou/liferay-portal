@@ -1,16 +1,10 @@
-import Alert from '@clayui/alert';
 import AttributeFilterSection from './components/AttributeFilterSection';
 import ClayButton from '@clayui/button';
 import ClayIcon from 'shared/components/Icon';
 import DateFilterConjunctionInput from './components/DateFilterConjunctionInput';
 import Form from 'shared/components/form';
 import OccurenceConjunctionInput from './components/OccurenceConjunctionInput';
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import RealTimePeriodInput, {
-	DEFAULT_OPTIONS,
-} from './components/RealTimePeriodInput';
-import {DataTypes} from 'shared/types/DataTypes';
-import {Attribute} from 'event-analysis/utils/types';
+import React, {useCallback, useMemo, useState} from 'react';
 import {
 	AttributeConjunctionChangeParams,
 	Criterion,
@@ -24,9 +18,7 @@ import {
 	RelationalOperators,
 } from '../utils/constants';
 import {
-	getFilterCriterionIMap,
 	getFilterCriterionIMapByPropertyNamePrefix,
-	getIndexFromPropertyName,
 	getIndexFromPropertyNamePrefix,
 	hasAttributeFilterCriterion,
 	removeItemsByIndex,
@@ -67,109 +59,10 @@ const EventInput: React.FC<IEventInputProps> = ({
 	valid,
 	value: valueIMap,
 }) => {
-	const [selectedCustomAttribute, setSelectedCustomAttribute] =
-		useState<Attribute | null>(null);
-
 	const [showAttributeFilter, setShowAttributeFilter] = useState(() =>
 		hasAttributeFilterCriterion(valueIMap, ATTRIBUTE_PROPERTY_PREFIX)
 	);
 	const {id: eventId, options} = property;
-
-	const getRealTimePeriodFromCriterion = useCallback((): {
-		interval: number;
-		timeWindow: string;
-	} | null => {
-		const dayCriterion = valueIMap.getIn(['criterionGroup', 'items', 2]);
-
-		if (!dayCriterion) {
-			return null;
-		}
-
-		const dayValue: string = dayCriterion.get('value');
-
-		if (!dayValue || typeof dayValue !== 'string') {
-			return null;
-		}
-
-		const parts = dayValue.split('_');
-
-		if (parts.length !== 2) {
-			return null;
-		}
-
-		const [intervalStr, timeWindow] = parts;
-		const interval = parseInt(intervalStr, 10);
-
-		if (isNaN(interval)) {
-			return null;
-		}
-
-		return {interval, timeWindow};
-	}, [valueIMap]);
-
-	const handleRealTimePeriodChange = useCallback(
-		(interval: number, timeWindow: string) => {
-			const newDayValue = `${interval}_${timeWindow}`;
-
-			const conjunctionDateFilterIndex = getIndexFromPropertyName(
-				valueIMap,
-				'day'
-			);
-
-			let dayCriterion;
-			if (conjunctionDateFilterIndex >= 0) {
-				const existingDayIMap = getFilterCriterionIMap(
-					valueIMap,
-					conjunctionDateFilterIndex
-				);
-
-				dayCriterion = existingDayIMap.merge({
-					operatorName: RelationalOperators.GE,
-					touched: true,
-					valid: true,
-					value: newDayValue,
-				});
-			}
-			else {
-				dayCriterion = fromJS({
-					operatorName: RelationalOperators.GE,
-					propertyName: 'day',
-					touched: true,
-					valid: true,
-					value: newDayValue,
-				});
-			}
-
-			const updatedValue = valueIMap.mergeIn(
-				['criterionGroup', 'items', 2],
-				dayCriterion
-			);
-
-			onChange({
-				touched: {...touched, dateFilter: true},
-				valid: {...valid, dateFilter: true},
-				value: updatedValue,
-			});
-		},
-		[onChange, valueIMap, touched, valid]
-	);
-
-	useEffect(() => {
-		if (segmentType === SegmentTypes.RealTime) {
-			const currentPeriod = getRealTimePeriodFromCriterion();
-
-			if (!currentPeriod) {
-				handleRealTimePeriodChange(
-					DEFAULT_OPTIONS.interval,
-					DEFAULT_OPTIONS.timeWindow
-				);
-			}
-		}
-	}, [
-		segmentType,
-		getRealTimePeriodFromCriterion,
-		handleRealTimePeriodChange,
-	]);
 
 	const getConjunctionDateFilterIMap = (value: CustomValue) => {
 		const conjunctionCriterion = value.getIn([
@@ -185,7 +78,6 @@ const EventInput: React.FC<IEventInputProps> = ({
 
 	const handleAttributeConjunctionChange = useCallback(
 		({
-			attribute,
 			criterion,
 			touched: conjunctionTouched,
 			valid: conjunctionValid,
@@ -211,10 +103,6 @@ const EventInput: React.FC<IEventInputProps> = ({
 				valid: {...valid, ...conjunctionValid},
 				value: nextValue,
 			});
-
-			if (attribute) {
-				setSelectedCustomAttribute(attribute);
-			}
 		},
 		[onChange, valueIMap, touched, valid]
 	);
@@ -355,11 +243,6 @@ const EventInput: React.FC<IEventInputProps> = ({
 	}
 
 	const isAccountSegment = segmentCategory === SegmentCategories.Account;
-	const isRealTime = segmentType === SegmentTypes.RealTime;
-	const isSelectedAttributeDateType =
-		selectedCustomAttribute?.dataType === DataTypes.Date;
-
-	const initialPeriod = getRealTimePeriodFromCriterion();
 
 	return (
 		<div className="criteria-statement">
@@ -390,80 +273,66 @@ const EventInput: React.FC<IEventInputProps> = ({
 					<b>{displayValue}</b>
 				</Form.GroupItem>
 
-				<OccurenceConjunctionInput
-					onChange={
-						handleOccurenceConjunctionChange as (params: {
-							criterion?: Criterion;
-							touched?: boolean;
-							valid?: boolean;
-						}) => void
-					}
-					operatorName={
-						valueIMap.get('operator') as FunctionalOperators &
-							RelationalOperators
-					}
-					touched={touched.occurenceCount}
-					valid={valid.occurenceCount}
-					value={valueIMap.get('value')}
-				/>
+				{segmentType === SegmentTypes.Batch && (
+					<>
+						<OccurenceConjunctionInput
+							onChange={handleOccurenceConjunctionChange}
+							operatorName={
+								valueIMap.get(
+									'operator'
+								) as FunctionalOperators & RelationalOperators
+							}
+							touched={touched.occurenceCount}
+							valid={valid.occurenceCount}
+							value={valueIMap.get('value')}
+						/>
 
-				{isRealTime ? (
-					<RealTimePeriodInput
-						initialInterval={initialPeriod?.interval}
-						initialTimeWindow={initialPeriod?.timeWindow}
-						onChange={handleRealTimePeriodChange}
-					/>
-				) : (
-					<DateFilterConjunctionInput
-						conjunctionCriterion={dateFilterConjunctionCriterion}
-						onChange={handleDateFilterConjunctionChange}
-					/>
+						<DateFilterConjunctionInput
+							conjunctionCriterion={
+								dateFilterConjunctionCriterion
+							}
+							onChange={handleDateFilterConjunctionChange}
+						/>
+					</>
 				)}
 			</Form.Group>
 
-			{showAttributeFilter ? (
-				<AttributeFilterSection
-					conjunctionCriterion={(
-						getFilterCriterionIMapByPropertyNamePrefix(
-							valueIMap,
-							ATTRIBUTE_PROPERTY_PREFIX
-						) || Map({propertyName: ATTRIBUTE_PROPERTY_PREFIX})
-					).toJS()}
-					eventId={eventId}
-					onChange={handleAttributeConjunctionChange}
-					onClear={handleClearAttributeFilter}
-					touched={{
-						attribute: touched.attribute,
-						attributeValue: touched.attributeValue,
-					}}
-					valid={{
-						attribute: valid.attribute,
-						attributeValue: valid.attributeValue,
-					}}
-				/>
-			) : (
-				<Form.Group autoFit>
-					<ClayButton
-						className="button-root"
-						displayType="secondary"
-						onClick={handleShowAttributeFilterClick}
-					>
-						<ClayIcon symbol="plus" />
+			{segmentType === SegmentTypes.Batch &&
+				(showAttributeFilter ? (
+					<AttributeFilterSection
+						conjunctionCriterion={(
+							getFilterCriterionIMapByPropertyNamePrefix(
+								valueIMap,
+								ATTRIBUTE_PROPERTY_PREFIX
+							) || Map({propertyName: ATTRIBUTE_PROPERTY_PREFIX})
+						).toJS()}
+						eventId={eventId}
+						onChange={handleAttributeConjunctionChange}
+						onClear={handleClearAttributeFilter}
+						touched={{
+							attribute: touched.attribute,
+							attributeValue: touched.attributeValue,
+						}}
+						valid={{
+							attribute: valid.attribute,
+							attributeValue: valid.attributeValue,
+						}}
+					/>
+				) : (
+					<Form.Group autoFit>
+						<ClayButton
+							className="button-root"
+							displayType="secondary"
+							onClick={handleShowAttributeFilterClick}
+						>
+							<ClayIcon symbol="plus" />
 
-						<span className="ml-2">
-							{Liferay.Language.get('add-event-attribute')}
-						</span>
-					</ClayButton>
-				</Form.Group>
-			)}
-
-			{isRealTime && isSelectedAttributeDateType && (
-				<Alert className="mt-2" displayType="info" variant="feedback">
-					{Liferay.Language.get(
-						'event-date-attributes-may-create-time-conflicts-and-reduce-matching-users.-review-your-criteria-to-ensure-the-segment-behaves-as-expected'
-					)}
-				</Alert>
-			)}
+							<span className="ml-2">
+								{Liferay.Language.get('add-event-attribute')}
+							</span>
+						</ClayButton>
+					</Form.Group>
+				))}
 		</div>
 	);
 };

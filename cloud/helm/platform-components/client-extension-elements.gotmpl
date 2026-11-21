@@ -1,3 +1,7 @@
+{{- $clientExtensionDefaults := get . "clientExtensionDefaults" }}
+{{- if not (kindIs "map" $clientExtensionDefaults) }}
+    {{- $clientExtensionDefaults = dict }}
+{{- end }}
 {{- $clientExtensions := get . "clientExtensions" }}
 {{- $elements := list }}
 {{- if kindIs "map" $clientExtensions }}
@@ -5,6 +9,20 @@
         {{- if not (kindIs "map" $clientExtension) }}
             {{- continue }}
         {{- end }}
+        {{- $merged := deepCopy $clientExtensionDefaults }}
+        {{- range $key, $value := $clientExtension }}
+            {{- $_ := set $merged $key $value }}
+        {{- end }}
+        {{- $defaultValues := get $clientExtensionDefaults "values" }}
+        {{- $entryValues := get $clientExtension "values" }}
+        {{- if and (kindIs "map" $defaultValues) (kindIs "map" $entryValues) }}
+            {{- $values := deepCopy $defaultValues }}
+            {{- range $key, $value := $entryValues }}
+                {{- $_ := set $values $key $value }}
+            {{- end }}
+            {{- $_ := set $merged "values" $values }}
+        {{- end }}
+        {{- $clientExtension = $merged }}
         {{- if eq (toString (get $clientExtension "enabled")) "false" }}
             {{- continue }}
         {{- end }}

@@ -13,8 +13,13 @@ public class MFAFIDO2WebKeys {
 	public static final String MFA_FIDO2_ASSERTION_REQUEST =
 		"MFA_FIDO2_ASSERTION_REQUEST";
 
+	public static final String MFA_FIDO2_CREDENTIAL_ENTRIES =
+		"MFA_FIDO2_CREDENTIAL_ENTRIES";
+
 	public static final String MFA_FIDO2_PKCC_OPTIONS =
 		"MFA_FIDO2_PKCC_OPTIONS";
+
+	public static final String MFA_FIDO2_REMOVABLE = "MFA_FIDO2_REMOVABLE";
 
 	public static final String MFA_FIDO2_VALIDATED_AT_TIME =
 		"MFA_FIDO2_VALIDATED_AT_TIME";

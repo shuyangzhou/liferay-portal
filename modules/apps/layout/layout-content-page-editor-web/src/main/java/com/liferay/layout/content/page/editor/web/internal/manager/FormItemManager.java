@@ -23,8 +23,8 @@ import com.liferay.fragment.service.FragmentEntryLocalService;
 import com.liferay.fragment.util.configuration.FragmentEntryConfigurationParser;
 import com.liferay.layout.content.page.editor.web.internal.exception.FormContainerParentItemRequiredException;
 import com.liferay.layout.content.page.editor.web.internal.util.layout.structure.LayoutStructureUtil;
+import com.liferay.layout.helper.DropZoneAllowedFragmentEntriesHelper;
 import com.liferay.layout.util.constants.LayoutDataItemTypeConstants;
-import com.liferay.layout.util.structure.DropZoneLayoutStructureItem;
 import com.liferay.layout.util.structure.FormStepContainerStyledLayoutStructureItem;
 import com.liferay.layout.util.structure.FormStyledLayoutStructureItem;
 import com.liferay.layout.util.structure.FragmentStyledLayoutStructureItem;
@@ -38,8 +38,6 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.service.GroupLocalService;
@@ -48,7 +46,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ScopeUtil;
-import com.liferay.segments.constants.SegmentsExperienceConstants;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -818,9 +815,11 @@ public class FormItemManager {
 				FORM_INPUT_SUBMIT_BUTTON);
 
 		if ((fragmentEntry == null) ||
-			!_isAllowedFragmentEntryKey(
-				fragmentEntry.getFragmentEntryKey(),
-				_getMasterDropZoneLayoutStructureItem(layout))) {
+			!_dropZoneAllowedFragmentEntriesHelper.isAllowedFragmentEntryKey(
+				layout.getCompanyId(),
+				LayoutStructureUtil.getMasterDropZoneLayoutStructureItem(
+					layout),
+				fragmentEntry.getFragmentEntryKey(), layout.getGroupId())) {
 
 			return null;
 		}
@@ -986,31 +985,6 @@ public class FormItemManager {
 			null);
 	}
 
-	private DropZoneLayoutStructureItem _getMasterDropZoneLayoutStructureItem(
-		Layout layout) {
-
-		if (layout.getMasterLayoutPlid() <= 0) {
-			return null;
-		}
-
-		try {
-			LayoutStructure masterLayoutStructure =
-				LayoutStructureUtil.getLayoutStructure(
-					layout.getGroupId(), layout.getMasterLayoutPlid(),
-					SegmentsExperienceConstants.KEY_DEFAULT);
-
-			return (DropZoneLayoutStructureItem)
-				masterLayoutStructure.getDropZoneLayoutStructureItem();
-		}
-		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Unable to get master layout structure", exception);
-			}
-		}
-
-		return null;
-	}
-
 	private boolean _hasChildFormStyledLayoutStructureItem(
 		String itemId, LayoutStructure layoutStructure) {
 
@@ -1083,42 +1057,13 @@ public class FormItemManager {
 		return false;
 	}
 
-	private boolean _isAllowedFragmentEntryKey(
-		String fragmentEntryKey,
-		DropZoneLayoutStructureItem masterDropZoneLayoutStructureItem) {
-
-		if (masterDropZoneLayoutStructureItem == null) {
-			return true;
-		}
-
-		List<String> fragmentEntryKeys =
-			masterDropZoneLayoutStructureItem.getFragmentEntryKeys();
-
-		if (masterDropZoneLayoutStructureItem.isAllowNewFragmentEntries()) {
-			if (ListUtil.isEmpty(fragmentEntryKeys) ||
-				!fragmentEntryKeys.contains(fragmentEntryKey)) {
-
-				return true;
-			}
-
-			return false;
-		}
-
-		if (ListUtil.isNotEmpty(fragmentEntryKeys) &&
-			fragmentEntryKeys.contains(fragmentEntryKey)) {
-
-			return true;
-		}
-
-		return false;
-	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		FormItemManager.class);
-
 	@Reference
 	private DefaultInputFragmentEntryConfigurationProvider
 		_defaultInputFragmentEntryConfigurationProvider;
+
+	@Reference
+	private DropZoneAllowedFragmentEntriesHelper
+		_dropZoneAllowedFragmentEntriesHelper;
 
 	@Reference
 	private FragmentCollectionContributorRegistry

@@ -160,43 +160,32 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 
 		Class<?> clazz = object.getClass();
 
-		String className = clazz.getName();
+		Set<String> restrictedMethodNames =
+			_restrictedMethodNamesClassValue.get(clazz);
 
-		if (!_allowAllClasses &&
-			!_isMatch(
-				_allowedClasses, clazz, _allowedMatchResults,
-				_allowedPackageNames)) {
-
-			Set<String> restrictedMethodNames =
-				TemplateRestrictedUtil.getRestrictedMethodNames(
-					clazz, _restrictedMethodNames.get(className));
-
-			if ((restrictedMethodNames == null) ||
-				_isMatch(
-					_restrictedClasses, clazz, _restrictedMatchResults,
-					_restrictedPackageNames)) {
-
-				return _RESTRICTED_STRING_MODEL_FACTORY.create(object, this);
-			}
-
-			if (!restrictedMethodNames.isEmpty()) {
-				LiferayFreeMarkerStringModel liferayFreeMarkerStringModel =
-					(LiferayFreeMarkerStringModel)
-						_RESTRICTED_STRING_MODEL_FACTORY.create(object, this);
-
-				liferayFreeMarkerStringModel.setRestrictedMethodNames(
-					restrictedMethodNames);
-
-				return liferayFreeMarkerStringModel;
-			}
+		if (restrictedMethodNames == null) {
+			return _RESTRICTED_STRING_MODEL_FACTORY.create(object, this);
 		}
 
-		if (_serviceProxyClassNames.contains(className)) {
-			return _SERVICE_PROXY_STRING_MODEL_FACTORY.create(object, this);
+		if (!restrictedMethodNames.isEmpty()) {
+			LiferayFreeMarkerStringModel liferayFreeMarkerStringModel =
+				(LiferayFreeMarkerStringModel)
+					_RESTRICTED_STRING_MODEL_FACTORY.create(object, this);
+
+			liferayFreeMarkerStringModel.setRestrictedMethodNames(
+				restrictedMethodNames);
+
+			return liferayFreeMarkerStringModel;
 		}
 
 		if (object instanceof BaseLocalService ||
 			object instanceof BaseService) {
+
+			String className = clazz.getName();
+
+			if (_serviceProxyClassNames.contains(className)) {
+				return _SERVICE_PROXY_STRING_MODEL_FACTORY.create(object, this);
+			}
 
 			AopInvocationHandler aopInvocationHandler =
 				ProxyUtil.fetchInvocationHandler(
@@ -212,33 +201,40 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 		return super.wrap(object);
 	}
 
-	private boolean _isMatch(
-		List<Class<?>> classes, Class<?> clazz,
-		Map<String, Boolean> matchResults, List<String> packageNames) {
+	private Set<String> _getRestrictedMethodNames(Class<?> clazz) {
+		if (_allowAllClasses ||
+			_isMatch(_allowedClasses, clazz, _allowedPackageNames)) {
 
-		String className = clazz.getName();
-
-		Boolean matched = matchResults.get(className);
-
-		if (matched != null) {
-			return matched;
+			return Collections.emptySet();
 		}
+
+		Set<String> restrictedMethodNames =
+			TemplateRestrictedUtil.getRestrictedMethodNames(
+				clazz, _restrictedMethodNames.get(clazz.getName()));
+
+		if ((restrictedMethodNames == null) ||
+			_isMatch(_restrictedClasses, clazz, _restrictedPackageNames)) {
+
+			return null;
+		}
+
+		return restrictedMethodNames;
+	}
+
+	private boolean _isMatch(
+		List<Class<?>> classes, Class<?> clazz, List<String> packageNames) {
 
 		for (Class<?> curClass : classes) {
-			if (!curClass.isAssignableFrom(clazz)) {
-				continue;
+			if (curClass.isAssignableFrom(clazz)) {
+				return true;
 			}
-
-			matchResults.putIfAbsent(className, true);
-
-			return true;
 		}
+
+		String className = clazz.getName();
 
 		int index = className.lastIndexOf(StringPool.PERIOD);
 
 		if (index == -1) {
-			matchResults.putIfAbsent(className, false);
-
 			return false;
 		}
 
@@ -247,16 +243,10 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 		packageName = packageName.concat(StringPool.PERIOD);
 
 		for (String curPackageName : packageNames) {
-			if (!packageName.startsWith(curPackageName)) {
-				continue;
+			if (packageName.startsWith(curPackageName)) {
+				return true;
 			}
-
-			matchResults.putIfAbsent(className, true);
-
-			return true;
 		}
-
-		matchResults.putIfAbsent(className, false);
 
 		return false;
 	}
@@ -355,13 +345,20 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 
 	private final boolean _allowAllClasses;
 	private final List<Class<?>> _allowedClasses;
-	private final Map<String, Boolean> _allowedMatchResults =
-		new ConcurrentHashMap<>();
 	private final List<String> _allowedPackageNames;
 	private final List<Class<?>> _restrictedClasses;
-	private final Map<String, Boolean> _restrictedMatchResults =
-		new ConcurrentHashMap<>();
 	private final Map<String, Set<String>> _restrictedMethodNames;
+
+	private final ClassValue<Set<String>> _restrictedMethodNamesClassValue =
+		new ClassValue<>() {
+
+			@Override
+			protected Set<String> computeValue(Class<?> clazz) {
+				return _getRestrictedMethodNames(clazz);
+			}
+
+		};
+
 	private final List<String> _restrictedPackageNames;
 	private final Set<String> _serviceProxyClassNames =
 		Collections.newSetFromMap(new ConcurrentHashMap<>());

@@ -654,6 +654,10 @@ public class LayoutLocalServiceUtil {
 		return getService().fetchDraftLayouts(layouts);
 	}
 
+	public static List<Layout> fetchDraftLayouts(long plid) {
+		return getService().fetchDraftLayouts(plid);
+	}
+
 	public static Layout fetchFirstLayout(
 		long groupId, boolean privateLayout, long parentLayoutId) {
 
@@ -1866,6 +1870,17 @@ public class LayoutLocalServiceUtil {
 			groupId, privateLayout, layoutId, themeId, colorSchemeId, css);
 	}
 
+	public static Layout updateMasterLayoutPageTemplateEntry(
+			long groupId, boolean privateLayout, long layoutId,
+			String masterLayoutPageTemplateEntryERC,
+			String masterLayoutPageTemplateEntryScopeERC)
+		throws PortalException {
+
+		return getService().updateMasterLayoutPageTemplateEntry(
+			groupId, privateLayout, layoutId, masterLayoutPageTemplateEntryERC,
+			masterLayoutPageTemplateEntryScopeERC);
+	}
+
 	/**
 	 * Updates the layout replacing its master layout page template entry
 	 * external reference code
@@ -2145,4 +2160,4 @@ public class LayoutLocalServiceUtil {
 	private static volatile LayoutLocalService _service;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-629644598
+// LIFERAY-SERVICE-BUILDER-HASH:-1651792520

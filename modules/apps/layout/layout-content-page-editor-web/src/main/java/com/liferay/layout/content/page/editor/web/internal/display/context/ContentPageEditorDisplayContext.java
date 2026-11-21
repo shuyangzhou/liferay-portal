@@ -490,6 +490,11 @@ public class ContentPageEditorDisplayContext {
 					"/layout_content_page_editor" +
 						"/get_collection_warning_message")
 			).put(
+				"getDropZoneAllowedFragmentEntryKeysURL",
+				_getResourceURL(
+					"/layout_content_page_editor" +
+						"/get_drop_zone_allowed_fragment_entry_keys")
+			).put(
 				"getEditCollectionConfigurationURL",
 				ResourceURLBuilder.createResourceURL(
 					renderResponse
@@ -614,6 +619,13 @@ public class ContentPageEditorDisplayContext {
 				}
 			).put(
 				"isSegmentationEnabled", _isSegmentationEnabled()
+			).put(
+				"launchSetId",
+				() -> {
+					Layout layout = themeDisplay.getLayout();
+
+					return layout.getLaunchSetId();
+				}
 			).put(
 				"layoutConversionWarningMessages",
 				MultiSessionMessages.get(
@@ -1563,24 +1575,16 @@ public class ContentPageEditorDisplayContext {
 			_getFragmentEntryLinksMap(
 				fragmentEntryLinks, false, layoutStructure));
 
-		Layout layout = themeDisplay.getLayout();
+		Layout masterLayout = _getMasterLayout();
 
-		if (Validator.isNotNull(layout.getMasterLayoutPageTemplateEntryERC())) {
-			LayoutPageTemplateEntry masterLayoutPageTemplateEntry =
-				layoutPageTemplateEntryLocalService.
-					fetchLayoutPageTemplateEntryByExternalReferenceCode(
-						layout.getMasterLayoutPageTemplateEntryERC(),
-						layout.getGroupId());
+		if (masterLayout != null) {
+			fragmentEntryLinks =
+				_fragmentEntryLinkLocalService.getFragmentEntryLinksByPlid(
+					masterLayout.getGroupId(), masterLayout.getPlid());
 
-			if (masterLayoutPageTemplateEntry != null) {
-				fragmentEntryLinks =
-					_fragmentEntryLinkLocalService.getFragmentEntryLinksByPlid(
-						getGroupId(), masterLayoutPageTemplateEntry.getPlid());
-
-				fragmentEntryLinksMap.putAll(
-					_getFragmentEntryLinksMap(
-						fragmentEntryLinks, true, _getMasterLayoutStructure()));
-			}
+			fragmentEntryLinksMap.putAll(
+				_getFragmentEntryLinksMap(
+					fragmentEntryLinks, true, _getMasterLayoutStructure()));
 		}
 
 		Map<Long, LayoutStructureItem> fragmentLayoutStructureItems =
@@ -1816,12 +1820,12 @@ public class ContentPageEditorDisplayContext {
 				_contentManager.getMappedLayoutDisplayPageObjectProviders(
 					getGroupId(), themeDisplay.getPlid());
 
-		Layout layout = themeDisplay.getLayout();
+		Layout masterLayout = _getMasterLayout();
 
-		if (layout.getMasterLayoutPlid() > 0) {
+		if (masterLayout != null) {
 			layoutDisplayPageObjectProviders.addAll(
 				_contentManager.getMappedLayoutDisplayPageObjectProviders(
-					getGroupId(), layout.getMasterLayoutPlid()));
+					masterLayout.getGroupId(), masterLayout.getPlid()));
 		}
 
 		for (LayoutDisplayPageObjectProvider<?>
@@ -1869,6 +1873,24 @@ public class ContentPageEditorDisplayContext {
 		return (DropZoneLayoutStructureItem)layoutStructureItem;
 	}
 
+	private Layout _getMasterLayout() {
+		if (_masterLayout != null) {
+			return _masterLayout;
+		}
+
+		Layout layout = themeDisplay.getLayout();
+
+		long masterLayoutPlid = layout.getMasterLayoutPlid();
+
+		if (masterLayoutPlid <= 0) {
+			return null;
+		}
+
+		_masterLayout = _layoutLocalService.fetchLayout(masterLayoutPlid);
+
+		return _masterLayout;
+	}
+
 	private JSONObject _getMasterLayoutJSONObject() {
 		return JSONUtil.put(
 			"masterLayoutData",
@@ -1896,15 +1918,15 @@ public class ContentPageEditorDisplayContext {
 			return _masterLayoutStructure;
 		}
 
-		Layout layout = themeDisplay.getLayout();
+		Layout masterLayout = _getMasterLayout();
 
-		if (layout.getMasterLayoutPlid() <= 0) {
+		if (masterLayout == null) {
 			return _masterLayoutStructure;
 		}
 
 		try {
 			_masterLayoutStructure = LayoutStructureUtil.getLayoutStructure(
-				layout.getGroupId(), layout.getMasterLayoutPlid(),
+				masterLayout.getGroupId(), masterLayout.getPlid(),
 				SegmentsExperienceConstants.KEY_DEFAULT);
 
 			return _masterLayoutStructure;
@@ -2317,6 +2339,7 @@ public class ContentPageEditorDisplayContext {
 	private final LayoutSetLocalService _layoutSetLocalService;
 	private LayoutStructure _layoutStructure;
 	private Integer _layoutType;
+	private Layout _masterLayout;
 	private LayoutStructure _masterLayoutStructure;
 	private final PageEditorConfiguration _pageEditorConfiguration;
 	private final PortletResourcePermission _portletResourcePermission;

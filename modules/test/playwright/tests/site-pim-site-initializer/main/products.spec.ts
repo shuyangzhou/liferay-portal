@@ -626,3 +626,92 @@ test(
 		});
 	}
 );
+
+test(
+	'A product folder lists its products and subfolders',
+	{tag: '@LPD-115762'},
+	async ({
+		apiHelpers,
+		page,
+		productFolderPage,
+		productPage,
+		productsPage,
+	}) => {
+		const folderTitle = getRandomString();
+		const productTitle = getRandomString();
+		const space = await apiHelpers.headlessAssetLibrary.createSpace();
+		const subfolderTitle = getRandomString();
+
+		await test.step('A folder created from the products page is listed in it', async () => {
+			await productsPage.goto();
+
+			await productFolderPage.createFolder(folderTitle, space.name);
+
+			await expect(productsPage.getProduct(folderTitle)).toBeVisible();
+
+			await productsPage.getProduct(folderTitle).click();
+
+			await productFolderPage.newButton.waitFor();
+
+			await productFolderPage.createFolder(subfolderTitle, space.name);
+		});
+
+		await test.step('The New menu offers a folder and the product types', async () => {
+			await productFolderPage.openNewMenu();
+
+			await expect(
+				productFolderPage.menuItem('PIM Basic Product')
+			).toBeVisible();
+
+			await page.keyboard.press('Escape');
+		});
+
+		await test.step('A subfolder row has the folder actions', async () => {
+			await expect(
+				productFolderPage.rowLink(subfolderTitle)
+			).toBeVisible();
+
+			await productFolderPage.expectRowActions(subfolderTitle, [
+				'View Folder',
+				'Edit',
+				'Permissions',
+				'Delete',
+			]);
+		});
+
+		await test.step('A product created from the folder is listed in it', async () => {
+			await productFolderPage.openNewProductEditor('PIM Basic Product');
+
+			await productPage.sku.fill(getRandomString());
+			await productPage.title.fill(productTitle);
+
+			await productPage.save();
+
+			await expect(productFolderPage.rowLink(productTitle)).toBeVisible();
+
+			await productFolderPage.expectRowActions(productTitle, [
+				'Edit',
+				'Permissions',
+				'Delete',
+			]);
+		});
+
+		await test.step('An empty subfolder shows the products empty state', async () => {
+			await productFolderPage.rowLink(subfolderTitle).click();
+
+			await expect(productFolderPage.emptyState).toBeVisible();
+		});
+
+		await test.step('The products page lists only top-level items, and search finds the rest', async () => {
+			await productsPage.goto();
+
+			await expect(productsPage.getProduct(folderTitle)).toBeVisible();
+			await expect(productsPage.getProduct(productTitle)).toBeHidden();
+			await expect(productsPage.getProduct(subfolderTitle)).toBeHidden();
+
+			await productsPage.search(productTitle);
+
+			await expect(productsPage.getProduct(productTitle)).toBeVisible();
+		});
+	}
+);

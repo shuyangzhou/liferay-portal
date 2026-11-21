@@ -36,74 +36,15 @@ import java.util.regex.Pattern;
  */
 public class PropertiesFeatureFlagsCheck extends BaseFileCheck {
 
-	@Override
-	public void setAllFileNames(List<String> allFileNames) {
-		_allFileNames = allFileNames;
-	}
+	public static final String[] EXCLUDES = {"**/*-test-*/**", "**/test/**"};
 
-	@Override
-	protected String doProcess(
-			String fileName, String absolutePath, String content)
-		throws IOException {
+	public static final String[] INCLUDES = {
+		"**/bnd.bnd", "**/rest-openapi*.yaml", "**/*.java", "**/*.js",
+		"**/*.json", "**/*.jsp", "**/*.jspf", "**/*.jsx", "**/*.ts", "**/*.tsx"
+	};
 
-		if (!absolutePath.endsWith("/portal-impl/src/portal.properties")) {
-			return content;
-		}
-
-		_checkUnnecessaryFeatureFlags(fileName, content);
-
-		content = _generateFeatureFlagProperties(absolutePath, content);
-		content = _generateFeatureFlagUIProperties(
-			fileName, absolutePath, content);
-
-		return content;
-	}
-
-	private void _checkUnnecessaryFeatureFlags(String fileName, String content)
-		throws IOException {
-
-		Properties properties = new Properties();
-
-		properties.load(new StringReader(content));
-
-		Enumeration<String> enumeration =
-			(Enumeration<String>)properties.propertyNames();
-
-		while (enumeration.hasMoreElements()) {
-			String key = enumeration.nextElement();
-
-			if (!key.startsWith("feature.flag.") || !key.endsWith(".type")) {
-				continue;
-			}
-
-			String value = properties.getProperty(key);
-
-			if (!StringUtil.equals(value, "dev")) {
-				continue;
-			}
-
-			addMessage(
-				fileName,
-				"Remove unnecessary property \"" + key +
-					"\", since \"dev\" is the default value");
-		}
-	}
-
-	private String _generateFeatureFlagProperties(
-		String absolutePath, String content) {
-
-		List<String> featureFlagKeys = new ArrayList<>(
-			getAttributeValues(
-				_ADDITIONAL_FEATURE_FLAG_KEYS_KEY, absolutePath));
-
-		List<String> fileNames = SourceFormatterUtil.filterFileNames(
-			_allFileNames, new String[] {"**/*-test-*/**", "**/test/**"},
-			new String[] {
-				"**/bnd.bnd", "**/rest-openapi*.yaml", "**/*.java", "**/*.js",
-				"**/*.json", "**/*.jsp", "**/*.jspf", "**/*.jsx", "**/*.ts",
-				"**/*.tsx"
-			},
-			getSourceFormatterExcludes(), true);
+	public static List<String> getFeatureFlagKeys(List<String> fileNames) {
+		List<String> featureFlagKeys = new ArrayList<>();
 
 		for (String fileName : fileNames) {
 			fileName = StringUtil.replace(
@@ -165,57 +106,249 @@ public class PropertiesFeatureFlagsCheck extends BaseFileCheck {
 
 		ListUtil.distinct(featureFlagKeys, new NaturalOrderStringComparator());
 
-		Matcher matcher = _featureFlagsPattern.matcher(content);
+		return featureFlagKeys;
+	}
 
-		if (matcher.find()) {
-			String matchedFeatureFlags = matcher.group(2);
+	@Override
+	public void setAllFileNames(List<String> allFileNames) {
+		_allFileNames = allFileNames;
+	}
 
-			if (featureFlagKeys.isEmpty()) {
-				if (matchedFeatureFlags.contains("feature.flag.")) {
-					return StringUtil.replaceFirst(
-						content, matchedFeatureFlags, StringPool.BLANK,
-						matcher.start(2));
-				}
+	@Override
+	protected String doProcess(
+			String fileName, String absolutePath, String content)
+		throws IOException {
 
-				return content;
+		if (!absolutePath.endsWith("/portal-impl/src/portal.properties")) {
+			return content;
+		}
+
+		_checkUnnecessaryFeatureFlags(fileName, content);
+
+		List<String> additionalFeatureFlagKeys = new ArrayList<>(
+			getAttributeValues(
+				_ADDITIONAL_FEATURE_FLAG_KEYS_KEY, absolutePath));
+
+		additionalFeatureFlagKeys.addAll(
+			getAttributeValues(_PRIVATE_FEATURE_FLAG_KEYS_KEY, absolutePath));
+
+		content = _generateFeatureFlagProperties(
+			additionalFeatureFlagKeys, content);
+		content = _generateFeatureFlagUIProperties(
+			fileName, absolutePath, content);
+
+		return content;
+	}
+
+	private static List<String> _getFeatureFlagKeys(
+		String content, Pattern pattern) {
+
+		List<String> featureFlagKeys = new ArrayList<>();
+
+		Matcher matcher = pattern.matcher(content);
+
+		while (matcher.find()) {
+			featureFlagKeys.add(matcher.group(1));
+		}
+
+		return featureFlagKeys;
+	}
+
+	private static List<String> _getFeatureFlagKeysByFeatureFlagManagerUtilCall(
+		String content, boolean javaSource, String methodName) {
+
+		List<String> featureFlagKeys = new ArrayList<>();
+
+		int x = -1;
+
+		while (true) {
+			x = content.indexOf(
+				"FeatureFlagManagerUtil." + methodName + "(", x + 1);
+
+			if (x == -1) {
+				return featureFlagKeys;
 			}
 
-			List<String> deprecationFeatureFlagKeys = new ArrayList<>();
-
-			Matcher deprecationFeatureFlagKeyMatcher =
-				_deprecationFeatureFlagPattern.matcher(content);
-
-			while (deprecationFeatureFlagKeyMatcher.find()) {
-				deprecationFeatureFlagKeys.add(
-					deprecationFeatureFlagKeyMatcher.group(1));
+			if (javaSource && ToolsUtil.isInsideQuotes(content, x)) {
+				continue;
 			}
 
-			StringBundler sb = new StringBundler(featureFlagKeys.size() * 6);
+			String methodCall = null;
 
-			for (String featureFlagKey : featureFlagKeys) {
-				String featureFlagPropertyKey =
-					"feature.flag." + featureFlagKey;
-
-				String environmentVariable =
-					ToolsUtil.encodeEnvironmentProperty(featureFlagPropertyKey);
-
-				sb.append("\n\n    #\n    # Env: ");
-				sb.append(environmentVariable);
-				sb.append("\n    #\n    ");
-				sb.append(featureFlagPropertyKey);
-				sb.append(StringPool.EQUAL);
-				sb.append(deprecationFeatureFlagKeys.contains(featureFlagKey));
-			}
-
-			if (matchedFeatureFlags.contains("feature.flag.")) {
-				content = StringUtil.replaceFirst(
-					content, matchedFeatureFlags, sb.toString(),
-					matcher.start(2));
+			if (javaSource) {
+				methodCall = JavaSourceUtil.getMethodCall(content, x);
 			}
 			else {
-				content = StringUtil.insert(
-					content, sb.toString(), matcher.start(2));
+				methodCall = JavaSourceUtil.getMethodCall(
+					content.substring(x), 0);
 			}
+
+			List<String> parameterList = JavaSourceUtil.getParameterList(
+				methodCall);
+
+			if (parameterList.isEmpty()) {
+				continue;
+			}
+
+			String parameter = null;
+
+			if (parameterList.size() == 1) {
+				parameter = parameterList.get(0);
+			}
+			else {
+				parameter = parameterList.get(1);
+			}
+
+			if (!parameter.endsWith(StringPool.QUOTE) ||
+				!parameter.startsWith(StringPool.QUOTE)) {
+
+				continue;
+			}
+
+			String unquotedParameterValue = StringUtil.unquote(parameter);
+
+			if (!unquotedParameterValue.matches("[A-Z]+-\\d+")) {
+				continue;
+			}
+
+			featureFlagKeys.add(unquotedParameterValue);
+		}
+	}
+
+	private static List<String>
+		_getFeatureFlagKeysByMapUtilSingletonDictionaryCall(String content) {
+
+		List<String> featureFlagKeys = new ArrayList<>();
+
+		Matcher matcher = _mapUtilSingletonDictionaryPattern.matcher(content);
+
+		while (matcher.find()) {
+			List<String> parameterList = JavaSourceUtil.getParameterList(
+				JavaSourceUtil.getMethodCall(content, matcher.start()));
+
+			if (parameterList.size() != 2) {
+				continue;
+			}
+
+			String parameter = parameterList.get(0);
+
+			if (!parameter.equals("\"feature.flag.key\"")) {
+				continue;
+			}
+
+			parameter = parameterList.get(1);
+
+			if (!parameter.endsWith(StringPool.QUOTE) ||
+				!parameter.startsWith(StringPool.QUOTE)) {
+
+				continue;
+			}
+
+			String unquotedParameterValue = StringUtil.unquote(parameter);
+
+			if (!unquotedParameterValue.matches("[A-Z]+-\\d+")) {
+				continue;
+			}
+
+			featureFlagKeys.add(unquotedParameterValue);
+		}
+
+		return featureFlagKeys;
+	}
+
+	private void _checkUnnecessaryFeatureFlags(String fileName, String content)
+		throws IOException {
+
+		Properties properties = new Properties();
+
+		properties.load(new StringReader(content));
+
+		Enumeration<String> enumeration =
+			(Enumeration<String>)properties.propertyNames();
+
+		while (enumeration.hasMoreElements()) {
+			String key = enumeration.nextElement();
+
+			if (!key.startsWith("feature.flag.") || !key.endsWith(".type")) {
+				continue;
+			}
+
+			String value = properties.getProperty(key);
+
+			if (!StringUtil.equals(value, "dev")) {
+				continue;
+			}
+
+			addMessage(
+				fileName,
+				"Remove unnecessary property \"" + key +
+					"\", since \"dev\" is the default value");
+		}
+	}
+
+	private String _generateFeatureFlagProperties(
+		List<String> additionalFeatureFlagKeys, String content) {
+
+		List<String> featureFlagKeys = getFeatureFlagKeys(
+			SourceFormatterUtil.filterFileNames(
+				_allFileNames, EXCLUDES, INCLUDES, getSourceFormatterExcludes(),
+				true));
+
+		featureFlagKeys.addAll(additionalFeatureFlagKeys);
+
+		ListUtil.distinct(featureFlagKeys, new NaturalOrderStringComparator());
+
+		Matcher matcher = _featureFlagsPattern.matcher(content);
+
+		if (!matcher.find()) {
+			return content;
+		}
+
+		String matchedFeatureFlags = matcher.group(2);
+
+		if (featureFlagKeys.isEmpty()) {
+			if (matchedFeatureFlags.contains("feature.flag.")) {
+				return StringUtil.replaceFirst(
+					content, matchedFeatureFlags, StringPool.BLANK,
+					matcher.start(2));
+			}
+
+			return content;
+		}
+
+		List<String> deprecationFeatureFlagKeys = new ArrayList<>();
+
+		Matcher deprecationFeatureFlagKeyMatcher =
+			_deprecationFeatureFlagPattern.matcher(content);
+
+		while (deprecationFeatureFlagKeyMatcher.find()) {
+			deprecationFeatureFlagKeys.add(
+				deprecationFeatureFlagKeyMatcher.group(1));
+		}
+
+		StringBundler sb = new StringBundler(featureFlagKeys.size() * 6);
+
+		for (String featureFlagKey : featureFlagKeys) {
+			String featureFlagPropertyKey = "feature.flag." + featureFlagKey;
+
+			String environmentVariable = ToolsUtil.encodeEnvironmentProperty(
+				featureFlagPropertyKey);
+
+			sb.append("\n\n    #\n    # Env: ");
+			sb.append(environmentVariable);
+			sb.append("\n    #\n    ");
+			sb.append(featureFlagPropertyKey);
+			sb.append(StringPool.EQUAL);
+			sb.append(deprecationFeatureFlagKeys.contains(featureFlagKey));
+		}
+
+		if (matchedFeatureFlags.contains("feature.flag.")) {
+			content = StringUtil.replaceFirst(
+				content, matchedFeatureFlags, sb.toString(), matcher.start(2));
+		}
+		else {
+			content = StringUtil.insert(
+				content, sb.toString(), matcher.start(2));
 		}
 
 		return content;
@@ -301,33 +434,37 @@ public class PropertiesFeatureFlagsCheck extends BaseFileCheck {
 				continue;
 			}
 
-			if (key.endsWith(".type") &&
-				StringUtil.contains("beta,deprecation,release", value)) {
+			if (!key.endsWith(".type") ||
+				!StringUtil.contains("beta,deprecation,release", value)) {
 
-				int x = key.lastIndexOf(".");
+				featureFlagUIPropertiesMap.put(key, value);
 
-				for (String enforcePropertyName : _ENFORCE_PROPERTY_NAMES) {
-					String featureFlagUIPropertyName =
-						key.substring(0, x) + "." + enforcePropertyName;
+				continue;
+			}
 
-					if (properties.containsKey(featureFlagUIPropertyName)) {
-						addMessage(
-							fileName,
-							"Property \"" + featureFlagUIPropertyName +
-								"\" must be in Language.properties");
-					}
+			int x = key.lastIndexOf(".");
 
-					if (portalLanguageProperties.containsKey(
-							featureFlagUIPropertyName)) {
+			for (String enforcePropertyName : _ENFORCE_PROPERTY_NAMES) {
+				String featureFlagUIPropertyName =
+					key.substring(0, x) + "." + enforcePropertyName;
 
-						continue;
-					}
-
+				if (properties.containsKey(featureFlagUIPropertyName)) {
 					addMessage(
 						fileName,
-						"Missing property \"" + featureFlagUIPropertyName +
-							"\" in Language.properties");
+						"Property \"" + featureFlagUIPropertyName +
+							"\" must be in Language.properties");
 				}
+
+				if (portalLanguageProperties.containsKey(
+						featureFlagUIPropertyName)) {
+
+					continue;
+				}
+
+				addMessage(
+					fileName,
+					"Missing property \"" + featureFlagUIPropertyName +
+						"\" in Language.properties");
 			}
 
 			featureFlagUIPropertiesMap.put(key, value);
@@ -344,120 +481,6 @@ public class PropertiesFeatureFlagsCheck extends BaseFileCheck {
 		}
 
 		return content;
-	}
-
-	private List<String> _getFeatureFlagKeys(String content, Pattern pattern) {
-		List<String> featureFlagKeys = new ArrayList<>();
-
-		Matcher matcher = pattern.matcher(content);
-
-		while (matcher.find()) {
-			featureFlagKeys.add(matcher.group(1));
-		}
-
-		return featureFlagKeys;
-	}
-
-	private List<String> _getFeatureFlagKeysByFeatureFlagManagerUtilCall(
-		String content, boolean javaSource, String methodName) {
-
-		List<String> featureFlagKeys = new ArrayList<>();
-
-		int x = -1;
-
-		while (true) {
-			x = content.indexOf(
-				"FeatureFlagManagerUtil." + methodName + "(", x + 1);
-
-			if (x == -1) {
-				return featureFlagKeys;
-			}
-
-			if (javaSource && ToolsUtil.isInsideQuotes(content, x)) {
-				continue;
-			}
-
-			String methodCall = null;
-
-			if (javaSource) {
-				methodCall = JavaSourceUtil.getMethodCall(content, x);
-			}
-			else {
-				methodCall = JavaSourceUtil.getMethodCall(
-					content.substring(x), 0);
-			}
-
-			List<String> parameterList = JavaSourceUtil.getParameterList(
-				methodCall);
-
-			if (parameterList.isEmpty()) {
-				continue;
-			}
-
-			String parameter = null;
-
-			if (parameterList.size() == 1) {
-				parameter = parameterList.get(0);
-			}
-			else {
-				parameter = parameterList.get(1);
-			}
-
-			if (!parameter.endsWith(StringPool.QUOTE) ||
-				!parameter.startsWith(StringPool.QUOTE)) {
-
-				continue;
-			}
-
-			String unquotedParameterValue = StringUtil.unquote(parameter);
-
-			if (!unquotedParameterValue.matches("[A-Z]+-\\d+")) {
-				continue;
-			}
-
-			featureFlagKeys.add(unquotedParameterValue);
-		}
-	}
-
-	private List<String> _getFeatureFlagKeysByMapUtilSingletonDictionaryCall(
-		String content) {
-
-		List<String> featureFlagKeys = new ArrayList<>();
-
-		Matcher matcher = _mapUtilSingletonDictionaryPattern.matcher(content);
-
-		while (matcher.find()) {
-			List<String> parameterList = JavaSourceUtil.getParameterList(
-				JavaSourceUtil.getMethodCall(content, matcher.start()));
-
-			if (parameterList.size() != 2) {
-				continue;
-			}
-
-			String parameter = parameterList.get(0);
-
-			if (!parameter.equals("\"feature.flag.key\"")) {
-				continue;
-			}
-
-			parameter = parameterList.get(1);
-
-			if (!parameter.endsWith(StringPool.QUOTE) ||
-				!parameter.startsWith(StringPool.QUOTE)) {
-
-				continue;
-			}
-
-			String unquotedParameterValue = StringUtil.unquote(parameter);
-
-			if (!unquotedParameterValue.matches("[A-Z]+-\\d+")) {
-				continue;
-			}
-
-			featureFlagKeys.add(unquotedParameterValue);
-		}
-
-		return featureFlagKeys;
 	}
 
 	private Properties _getPortalLanguageProperties(String absolutePath)
@@ -485,6 +508,9 @@ public class PropertiesFeatureFlagsCheck extends BaseFileCheck {
 
 	private static final String _PORTAL_LANGUAGE_PROPERTIES_FILE_NAME_KEY =
 		"portalLanguagePropertiesFileName";
+
+	private static final String _PRIVATE_FEATURE_FLAG_KEYS_KEY =
+		"privateFeatureFlagKeys";
 
 	private static final Pattern _deprecationFeatureFlagPattern =
 		Pattern.compile("feature\\.flag\\.([A-Z]+-\\d+)\\.type=deprecation");

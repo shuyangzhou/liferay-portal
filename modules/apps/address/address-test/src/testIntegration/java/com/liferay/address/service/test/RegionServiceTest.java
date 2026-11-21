@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.context.ContextUserReplace;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.test.util.CountryTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -55,11 +56,12 @@ public class RegionServiceTest {
 	@Before
 	public void setUp() throws Exception {
 		_country = _countryLocalService.addCountry(
-			null, "aa", "aaa", true, RandomTestUtil.randomBoolean(),
+			null, CountryTestUtil.randomA2(TestPropsValues.getCompanyId()),
+			CountryTestUtil.randomA3(TestPropsValues.getCompanyId()), true,
+			RandomTestUtil.randomBoolean(), RandomTestUtil.randomString(),
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
-			RandomTestUtil.randomString(), RandomTestUtil.randomDouble(),
+			RandomTestUtil.randomDouble(), RandomTestUtil.randomBoolean(),
 			RandomTestUtil.randomBoolean(), RandomTestUtil.randomBoolean(),
-			RandomTestUtil.randomBoolean(),
 			ServiceContextTestUtil.getServiceContext());
 
 		_role = RoleTestUtil.addRole(RoleConstants.TYPE_REGULAR);
@@ -76,7 +78,8 @@ public class RegionServiceTest {
 			_region = _regionService.addRegion(
 				null, _country.getCountryId(), true,
 				RandomTestUtil.randomString(), RandomTestUtil.nextDouble(),
-				"aa", ServiceContextTestUtil.getServiceContext());
+				RandomTestUtil.randomString(),
+				ServiceContextTestUtil.getServiceContext());
 
 			Assert.fail();
 		}
@@ -98,7 +101,8 @@ public class RegionServiceTest {
 			_region = _regionService.addRegion(
 				null, _country.getCountryId(), true,
 				RandomTestUtil.randomString(), RandomTestUtil.nextDouble(),
-				"aa", ServiceContextTestUtil.getServiceContext());
+				RandomTestUtil.randomString(),
+				ServiceContextTestUtil.getServiceContext());
 		}
 	}
 
@@ -106,7 +110,7 @@ public class RegionServiceTest {
 	public void testDeleteRegion() throws Exception {
 		_region = _regionService.addRegion(
 			null, _country.getCountryId(), true, RandomTestUtil.randomString(),
-			RandomTestUtil.nextDouble(), "aa",
+			RandomTestUtil.nextDouble(), RandomTestUtil.randomString(),
 			ServiceContextTestUtil.getServiceContext());
 
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
@@ -139,7 +143,7 @@ public class RegionServiceTest {
 	public void testUpdateActive() throws Exception {
 		_region = _regionService.addRegion(
 			null, _country.getCountryId(), true, RandomTestUtil.randomString(),
-			RandomTestUtil.nextDouble(), "aa",
+			RandomTestUtil.nextDouble(), RandomTestUtil.randomString(),
 			ServiceContextTestUtil.getServiceContext());
 
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
@@ -172,7 +176,7 @@ public class RegionServiceTest {
 	public void testUpdateRegion() throws Exception {
 		_region = _regionService.addRegion(
 			null, _country.getCountryId(), true, RandomTestUtil.randomString(),
-			RandomTestUtil.nextDouble(), "aa",
+			RandomTestUtil.nextDouble(), RandomTestUtil.randomString(),
 			ServiceContextTestUtil.getServiceContext());
 
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(

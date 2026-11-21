@@ -160,7 +160,6 @@ BackgroundTask lastCompletedInitialPublicationBackgroundTask = BackgroundTaskMan
 <aui:script>
 	function <portlet:namespace />saveGroup(forceDisable) {
 		var form = document.<portlet:namespace />fm;
-		var ok = true;
 
 		function doSubmit() {
 			if (forceDisable) {
@@ -236,6 +235,9 @@ BackgroundTask lastCompletedInitialPublicationBackgroundTask = BackgroundTaskMan
 							},
 						});
 					}
+				}
+				else if (oldValue != <%= StagingConstants.TYPE_NOT_STAGED %>) {
+					doSubmit();
 				}
 			}
 		</c:if>

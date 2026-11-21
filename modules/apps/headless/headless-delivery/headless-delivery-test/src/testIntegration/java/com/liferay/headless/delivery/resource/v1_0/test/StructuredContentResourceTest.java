@@ -7,8 +7,10 @@ package com.liferay.headless.delivery.resource.v1_0.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.asset.kernel.model.AssetCategory;
+import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
+import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.test.util.BlogsTestUtil;
@@ -466,6 +468,7 @@ public class StructuredContentResourceTest
 
 	@Override
 	@Test
+	@TestInfo("LPD-116124")
 	public void testGetStructuredContent() throws Exception {
 
 		// Get structured content
@@ -490,6 +493,8 @@ public class StructuredContentResourceTest
 		_testGetStructuredContentWithImageContentURL();
 		_testGetStructuredContentWithInvalidImage();
 		_testGetStructuredContentWithRadioField();
+		_testGetStructuredContentWithRelatedContents();
+		_testGetStructuredContentWithRelatedContentsWithDeletedEntry();
 		_testGetStructuredContentWithRoleAdministrator();
 		_testGetStructuredContentWithRoleOwner();
 		_testGetStructuredContentWithRoleRegularUser();
@@ -1086,8 +1091,8 @@ public class StructuredContentResourceTest
 		return DDMTemplateTestUtil.addTemplate(
 			ddmStructure.getGroupId(), ddmStructure.getStructureId(),
 			PortalUtil.getClassNameId(JournalArticle.class),
-			TemplateConstants.LANG_TYPE_VM,
-			_read("test-structured-content-template.vm"), LocaleUtil.US);
+			TemplateConstants.LANG_TYPE_FTL,
+			_read("test-structured-content-template.ftl"), LocaleUtil.US);
 	}
 
 	private ExpandoColumn _addExpandoColumn(
@@ -2672,6 +2677,126 @@ public class StructuredContentResourceTest
 		Assert.assertNotNull(structuredContent.getContentStructureId());
 	}
 
+	private void _testGetStructuredContentWithRelatedContents()
+		throws Exception {
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(
+				irrelevantGroup.getGroupId());
+
+		serviceContext.setAddGuestPermissions(false);
+
+		BlogsEntry blogsEntry = BlogsTestUtil.addEntryWithWorkflow(
+			TestPropsValues.getUserId(), RandomTestUtil.randomString(), true,
+			serviceContext);
+
+		StructuredContent structuredContent = randomStructuredContent();
+
+		structuredContent.setRelatedContents(
+			new RelatedContent[] {
+				new RelatedContent() {
+					{
+						contentType = "BlogPosting";
+						id = blogsEntry.getEntryId();
+					}
+				},
+				new RelatedContent() {
+					{
+						contentType = "BlogPosting";
+						id = _blogsEntry.getEntryId();
+					}
+				}
+			});
+		structuredContent.setViewableBy(StructuredContent.ViewableBy.ANYONE);
+
+		StructuredContent postStructuredContent =
+			structuredContentResource.postSiteStructuredContent(
+				testGroup.getGroupId(), structuredContent);
+
+		RelatedContent[] relatedContents =
+			postStructuredContent.getRelatedContents();
+
+		Assert.assertEquals(
+			Arrays.toString(relatedContents), 2, relatedContents.length);
+
+		String password = RandomTestUtil.randomString();
+
+		User regularUser = UserTestUtil.addUser(testCompany, password);
+
+		StructuredContentResource.Builder builder =
+			StructuredContentResource.builder();
+
+		StructuredContentResource regularUserStructuredContentResource =
+			builder.authentication(
+				regularUser.getEmailAddress(), password
+			).endpoint(
+				testCompany.getVirtualHostname(),
+				PortalUtil.getPortalServerPort(false), "http"
+			).locale(
+				LocaleUtil.getDefault()
+			).build();
+
+		StructuredContent getStructuredContent =
+			regularUserStructuredContentResource.getStructuredContent(
+				postStructuredContent.getId());
+
+		relatedContents = getStructuredContent.getRelatedContents();
+
+		Assert.assertEquals(
+			Arrays.toString(relatedContents), 1, relatedContents.length);
+
+		RelatedContent relatedContent = relatedContents[0];
+
+		Assert.assertEquals(
+			Long.valueOf(_blogsEntry.getEntryId()), relatedContent.getId());
+	}
+
+	private void _testGetStructuredContentWithRelatedContentsWithDeletedEntry()
+		throws Exception {
+
+		AssetEntry assetEntry = _assetEntryLocalService.updateEntry(
+			TestPropsValues.getUserId(), testGroup.getGroupId(),
+			BlogsEntry.class.getName(), RandomTestUtil.randomLong(), null,
+			null);
+
+		StructuredContent structuredContent = randomStructuredContent();
+
+		structuredContent.setRelatedContents(
+			new RelatedContent[] {
+				new RelatedContent() {
+					{
+						contentType = "BlogPosting";
+						id = assetEntry.getClassPK();
+					}
+				},
+				new RelatedContent() {
+					{
+						contentType = "BlogPosting";
+						id = _blogsEntry.getEntryId();
+					}
+				}
+			});
+
+		StructuredContent postStructuredContent =
+			structuredContentResource.postSiteStructuredContent(
+				testGroup.getGroupId(), structuredContent);
+
+		StructuredContent getStructuredContent =
+			structuredContentResource.getStructuredContent(
+				postStructuredContent.getId());
+
+		RelatedContent[] relatedContents =
+			getStructuredContent.getRelatedContents();
+
+		Assert.assertEquals(
+			Arrays.toString(relatedContents), 1, relatedContents.length);
+
+		RelatedContent relatedContent = relatedContents[0];
+
+		Assert.assertEquals(
+			Long.valueOf(_blogsEntry.getEntryId()), relatedContent.getId());
+	}
+
 	private void _testGetStructuredContentWithRoleAdministrator()
 		throws Exception {
 
@@ -3962,6 +4087,9 @@ public class StructuredContentResourceTest
 
 	@Inject
 	private AssetCategoryLocalService _assetCategoryLocalService;
+
+	@Inject
+	private AssetEntryLocalService _assetEntryLocalService;
 
 	@Inject
 	private AssetVocabularyLocalService _assetVocabularyLocalService;

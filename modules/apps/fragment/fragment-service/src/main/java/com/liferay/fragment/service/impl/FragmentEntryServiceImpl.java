@@ -11,6 +11,7 @@ import com.liferay.fragment.model.FragmentCollection;
 import com.liferay.fragment.model.FragmentEntry;
 import com.liferay.fragment.service.base.FragmentEntryServiceBaseImpl;
 import com.liferay.fragment.service.persistence.FragmentCollectionPersistence;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.dao.orm.custom.sql.CustomSQL;
@@ -507,6 +508,9 @@ public class FragmentEntryServiceImpl extends FragmentEntryServiceBaseImpl {
 			getPermissionChecker(), fragmentEntry.getGroupId(),
 			FragmentActionKeys.MANAGE_FRAGMENT_ENTRIES);
 
+		_validateFragmentCollectionId(
+			fragmentCollectionId, fragmentEntry.getGroupId());
+
 		return fragmentEntryLocalService.moveFragmentEntry(
 			fragmentEntryId, fragmentCollectionId);
 	}
@@ -515,9 +519,7 @@ public class FragmentEntryServiceImpl extends FragmentEntryServiceBaseImpl {
 	public FragmentEntry publishDraft(FragmentEntry draftFragmentEntry)
 		throws PortalException {
 
-		_portletResourcePermission.check(
-			getPermissionChecker(), draftFragmentEntry.getGroupId(),
-			FragmentActionKeys.MANAGE_FRAGMENT_ENTRIES);
+		_verifyFragmentEntry(draftFragmentEntry);
 
 		return fragmentEntryLocalService.publishDraft(draftFragmentEntry);
 	}
@@ -526,9 +528,7 @@ public class FragmentEntryServiceImpl extends FragmentEntryServiceBaseImpl {
 	public FragmentEntry updateDraft(FragmentEntry draftFragmentEntry)
 		throws PortalException {
 
-		_portletResourcePermission.check(
-			getPermissionChecker(), draftFragmentEntry.getGroupId(),
-			FragmentActionKeys.MANAGE_FRAGMENT_ENTRIES);
+		_verifyFragmentEntry(draftFragmentEntry);
 
 		return fragmentEntryLocalService.updateDraft(draftFragmentEntry);
 	}
@@ -537,9 +537,7 @@ public class FragmentEntryServiceImpl extends FragmentEntryServiceBaseImpl {
 	public FragmentEntry updateFragmentEntry(FragmentEntry fragmentEntry)
 		throws PortalException {
 
-		_portletResourcePermission.check(
-			getPermissionChecker(), fragmentEntry.getGroupId(),
-			FragmentActionKeys.MANAGE_FRAGMENT_ENTRIES);
+		_verifyFragmentEntry(fragmentEntry);
 
 		return fragmentEntryLocalService.updateFragmentEntry(fragmentEntry);
 	}
@@ -591,6 +589,9 @@ public class FragmentEntryServiceImpl extends FragmentEntryServiceBaseImpl {
 			getPermissionChecker(), fragmentEntry.getGroupId(),
 			FragmentActionKeys.MANAGE_FRAGMENT_ENTRIES);
 
+		_validateFragmentCollectionId(
+			fragmentCollectionId, fragmentEntry.getGroupId());
+
 		return fragmentEntryLocalService.updateFragmentEntry(
 			getUserId(), fragmentEntryId, fragmentCollectionId, name, css, html,
 			js, cacheable, configuration, icon, previewFileEntryId, readOnly,
@@ -610,6 +611,51 @@ public class FragmentEntryServiceImpl extends FragmentEntryServiceBaseImpl {
 
 		return fragmentEntryLocalService.updateFragmentEntry(
 			fragmentEntryId, name);
+	}
+
+	private void _validateFragmentCollectionId(
+			long fragmentCollectionId, long groupId)
+		throws PortalException {
+
+		FragmentCollection fragmentCollection =
+			_fragmentCollectionPersistence.findByPrimaryKey(
+				fragmentCollectionId);
+
+		if (fragmentCollection.getGroupId() != groupId) {
+			throw new IllegalArgumentException(
+				StringBundler.concat(
+					"Fragment collection ", fragmentCollectionId,
+					" does not belong to group ", groupId));
+		}
+	}
+
+	private void _verifyFragmentEntry(FragmentEntry fragmentEntry)
+		throws PortalException {
+
+		FragmentEntry persistedFragmentEntry =
+			fragmentEntryPersistence.findByPrimaryKey(
+				fragmentEntry.getFragmentEntryId());
+
+		_portletResourcePermission.check(
+			getPermissionChecker(), persistedFragmentEntry.getGroupId(),
+			FragmentActionKeys.MANAGE_FRAGMENT_ENTRIES);
+
+		if ((fragmentEntry.getCompanyId() !=
+				persistedFragmentEntry.getCompanyId()) ||
+			(fragmentEntry.getGroupId() !=
+				persistedFragmentEntry.getGroupId()) ||
+			(fragmentEntry.getHeadId() != persistedFragmentEntry.getHeadId()) ||
+			(fragmentEntry.getUserId() != persistedFragmentEntry.getUserId())) {
+
+			throw new IllegalArgumentException(
+				StringBundler.concat(
+					"Fragment entry ", fragmentEntry.getFragmentEntryId(),
+					" does not match the persisted fragment entry"));
+		}
+
+		_validateFragmentCollectionId(
+			fragmentEntry.getFragmentCollectionId(),
+			persistedFragmentEntry.getGroupId());
 	}
 
 	@Reference

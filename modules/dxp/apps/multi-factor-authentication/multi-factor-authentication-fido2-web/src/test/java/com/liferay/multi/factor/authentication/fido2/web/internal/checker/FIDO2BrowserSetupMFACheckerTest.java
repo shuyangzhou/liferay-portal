@@ -11,11 +11,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.multi.factor.authentication.fido2.credential.model.MFAFIDO2CredentialEntry;
 import com.liferay.multi.factor.authentication.fido2.credential.service.MFAFIDO2CredentialEntryLocalService;
 import com.liferay.multi.factor.authentication.fido2.web.internal.BaseMFAFIDO2WebTestCase;
+import com.liferay.multi.factor.authentication.fido2.web.internal.configuration.MFAFIDO2Configuration;
 import com.liferay.multi.factor.authentication.fido2.web.internal.constants.MFAFIDO2EventTypes;
+import com.liferay.multi.factor.authentication.fido2.web.internal.constants.MFAFIDO2WebKeys;
 import com.liferay.portal.kernel.audit.AuditMessage;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
@@ -28,7 +36,11 @@ import com.yubico.webauthn.data.PublicKeyCredential;
 import com.yubico.webauthn.data.PublicKeyCredentialCreationOptions;
 import com.yubico.webauthn.data.PublicKeyCredentialDescriptor;
 
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletContext;
+
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Assert;
@@ -41,6 +53,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 /**
  * @author Regisson Aguiar
@@ -71,6 +84,110 @@ public class FIDO2BrowserSetupMFACheckerTest extends BaseMFAFIDO2WebTestCase {
 			_fido2BrowserSetupMFAChecker, "_portal", portal);
 		ReflectionTestUtil.setFieldValue(
 			_fido2BrowserSetupMFAChecker, "_relyingParty", _relyingParty);
+	}
+
+	@Test
+	public void testIncludeSetup() throws Exception {
+		List<MFAFIDO2CredentialEntry> mfaFIDO2CredentialEntries = Arrays.asList(
+			Mockito.mock(MFAFIDO2CredentialEntry.class),
+			Mockito.mock(MFAFIDO2CredentialEntry.class));
+		long userId = RandomTestUtil.randomLong();
+
+		Mockito.when(
+			_mfaFIDO2CredentialEntryLocalService.
+				getMFAFIDO2CredentialEntriesByUserId(userId)
+		).thenReturn(
+			mfaFIDO2CredentialEntries
+		);
+
+		ReflectionTestUtil.setFieldValue(
+			_fido2BrowserSetupMFAChecker, "_mfaFIDO2Configuration",
+			Mockito.mock(MFAFIDO2Configuration.class));
+
+		ServletContext servletContext = Mockito.mock(ServletContext.class);
+		RequestDispatcher requestDispatcher = Mockito.mock(
+			RequestDispatcher.class);
+
+		Mockito.when(
+			servletContext.getRequestDispatcher("/mfa_fido2_checker/setup.jsp")
+		).thenReturn(
+			requestDispatcher
+		);
+
+		ReflectionTestUtil.setFieldValue(
+			_fido2BrowserSetupMFAChecker, "_servletContext", servletContext);
+
+		MockHttpServletRequest mockHttpServletRequest =
+			new MockHttpServletRequest();
+		MockHttpServletResponse mockHttpServletResponse =
+			new MockHttpServletResponse();
+
+		_fido2BrowserSetupMFAChecker.includeSetup(
+			mockHttpServletRequest, mockHttpServletResponse, userId);
+
+		Assert.assertSame(
+			mfaFIDO2CredentialEntries,
+			mockHttpServletRequest.getAttribute(
+				MFAFIDO2WebKeys.MFA_FIDO2_CREDENTIAL_ENTRIES));
+
+		Mockito.verify(
+			requestDispatcher
+		).include(
+			mockHttpServletRequest, mockHttpServletResponse
+		);
+	}
+
+	@Test
+	public void testIncludeSetupRemovable() throws Exception {
+		long userId = RandomTestUtil.randomLong();
+
+		Mockito.when(
+			_mfaFIDO2CredentialEntryLocalService.
+				getMFAFIDO2CredentialEntriesByUserId(userId)
+		).thenReturn(
+			Collections.emptyList()
+		);
+
+		ReflectionTestUtil.setFieldValue(
+			_fido2BrowserSetupMFAChecker, "_mfaFIDO2Configuration",
+			Mockito.mock(MFAFIDO2Configuration.class));
+
+		ServletContext servletContext = Mockito.mock(ServletContext.class);
+
+		Mockito.when(
+			servletContext.getRequestDispatcher("/mfa_fido2_checker/setup.jsp")
+		).thenReturn(
+			Mockito.mock(RequestDispatcher.class)
+		);
+
+		ReflectionTestUtil.setFieldValue(
+			_fido2BrowserSetupMFAChecker, "_servletContext", servletContext);
+
+		ModelResourcePermission<User> userModelResourcePermission =
+			Mockito.mock(ModelResourcePermission.class);
+
+		ReflectionTestUtil.setFieldValue(
+			_fido2BrowserSetupMFAChecker, "_userModelResourcePermission",
+			userModelResourcePermission);
+
+		Assert.assertFalse(_isSetupRemovable(null, userId));
+
+		Assert.assertTrue(_isSetupRemovable(_mockThemeDisplay(userId), userId));
+
+		ThemeDisplay themeDisplay = _mockThemeDisplay(
+			RandomTestUtil.randomLong());
+
+		Assert.assertFalse(_isSetupRemovable(themeDisplay, userId));
+
+		Mockito.when(
+			userModelResourcePermission.contains(
+				Mockito.any(), Mockito.eq(userId),
+				Mockito.eq(ActionKeys.IMPERSONATE))
+		).thenReturn(
+			true
+		);
+
+		Assert.assertTrue(_isSetupRemovable(themeDisplay, userId));
 	}
 
 	@Test
@@ -140,6 +257,37 @@ public class FIDO2BrowserSetupMFACheckerTest extends BaseMFAFIDO2WebTestCase {
 
 		_testSetUp();
 		_testSetUpWithFailedRegistration();
+	}
+
+	private boolean _isSetupRemovable(ThemeDisplay themeDisplay, long userId)
+		throws Exception {
+
+		MockHttpServletRequest mockHttpServletRequest =
+			new MockHttpServletRequest();
+
+		if (themeDisplay != null) {
+			mockHttpServletRequest.setAttribute(
+				WebKeys.THEME_DISPLAY, themeDisplay);
+		}
+
+		_fido2BrowserSetupMFAChecker.includeSetup(
+			mockHttpServletRequest, new MockHttpServletResponse(), userId);
+
+		return GetterUtil.getBoolean(
+			mockHttpServletRequest.getAttribute(
+				MFAFIDO2WebKeys.MFA_FIDO2_REMOVABLE));
+	}
+
+	private ThemeDisplay _mockThemeDisplay(long userId) {
+		ThemeDisplay themeDisplay = Mockito.mock(ThemeDisplay.class);
+
+		Mockito.when(
+			themeDisplay.getUserId()
+		).thenReturn(
+			userId
+		);
+
+		return themeDisplay;
 	}
 
 	private void _testSetUp() throws Exception {

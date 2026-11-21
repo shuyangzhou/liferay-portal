@@ -10,8 +10,11 @@ import com.liferay.launch.web.internal.constants.LaunchPortletKeys;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectEntryService;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.scheduler.SchedulerException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -44,32 +47,42 @@ public class ScheduleLaunchMVCActionCommand extends BaseLaunchMVCActionCommand {
 
 		hideDefaultSuccessMessage(actionRequest);
 
-		Date publishDate = new Date(
-			ParamUtil.getLong(actionRequest, "publishTime"));
-
-		if (!publishDate.after(new Date())) {
-			JSONPortletResponseUtil.writeJSON(
-				actionRequest, actionResponse,
-				JSONUtil.put(
-					"validationError",
-					language.get(
-						portal.getHttpServletRequest(actionRequest),
-						"the-publish-time-must-be-in-the-future")));
-
-			return;
-		}
-
 		long launchSetId = ParamUtil.getLong(actionRequest, "launchSetId");
 
 		_objectEntryService.checkModelResourcePermission(
 			_objectEntryLocalService.getObjectEntry(launchSetId),
 			ActionKeys.UPDATE);
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
+		try {
+			ThemeDisplay themeDisplay =
+				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
-		_launchSetPublisher.schedulePublish(
-			publishDate, launchSetId, themeDisplay.getUserId());
+			_launchSetPublisher.schedulePublish(
+				new Date(ParamUtil.getLong(actionRequest, "publishTime")),
+				launchSetId, themeDisplay.getUserId());
+		}
+		catch (SchedulerException schedulerException) {
+			if (schedulerException.getType() !=
+					SchedulerException.TYPE_INVALID_START_DATE) {
+
+				throw schedulerException;
+			}
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(schedulerException);
+			}
+
+			JSONPortletResponseUtil.writeJSON(
+				actionRequest, actionResponse,
+				JSONUtil.put(
+					"validationError",
+					language.get(
+						portal.getHttpServletRequest(actionRequest),
+						"the-date-and-time-must-be-at-least-one-minute-in-" +
+							"the-future")));
+
+			return;
+		}
 
 		JSONPortletResponseUtil.writeJSON(
 			actionRequest, actionResponse,
@@ -78,6 +91,9 @@ public class ScheduleLaunchMVCActionCommand extends BaseLaunchMVCActionCommand {
 				portal.escapeRedirect(
 					ParamUtil.getString(actionRequest, "redirect"))));
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		ScheduleLaunchMVCActionCommand.class);
 
 	@Reference
 	private LaunchSetPublisher _launchSetPublisher;

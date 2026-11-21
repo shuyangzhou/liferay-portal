@@ -1,9 +1,6 @@
-{{- $envoyGateway := .Values.operatorApplications.envoyGateway -}}
+{{- $envoyGateway := .Values.envoyGateway -}}
 {{- $crds := $envoyGateway.crds -}}
 {{- if and $envoyGateway.enabled $crds.enabled -}}
-{{- if ne (dig "crds" "enabled" true $envoyGateway.values) false -}}
-{{- fail "The value \"operatorApplications.envoyGateway.values.crds.enabled\" must be false when \"operatorApplications.envoyGateway.crds.enabled\" is true" -}}
-{{- end -}}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -11,8 +8,8 @@ metadata:
         argocd.argoproj.io/sync-wave: "-100"
     labels:
         {{- include "liferay-platform.labels" . | nindent 8 }}
-        app.kubernetes.io/name: {{ $crds.name }}
-    name: {{ $crds.name }}
+        app.kubernetes.io/name: envoy-gateway-crds
+    name: envoy-gateway-crds
     namespace: {{ .Release.Namespace }}
 spec:
     destination:

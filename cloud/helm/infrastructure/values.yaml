@@ -1,6 +1,10 @@
 backup:
     restore:
         sanitizationScripts: {}
+clientExtensions:
+    separateNamespace:
+        enabled: false
+        name: ""
 clusterSecretStoreName: ""
 cmk: {}
 commonTags: {}
@@ -33,6 +37,10 @@ persistence:
 projectId: ""
 search:
     elasticsearch:
+        accessControl:
+            allowedIngress: []
+            eckOperatorNamespace: elastic-system
+            enabled: false
         config: {}
         env:
             ES_JAVA_OPTS: -Xms4g -Xmx4g
@@ -75,10 +83,16 @@ search:
             requests:
                 cpu: 500m
                 memory: 4Gi
+        snapshotsJob:
+            image:
+                pullPolicy: IfNotPresent
+                repository: curlimages/curl
+                tag: 8.22.0
         version: 8.19.11
         volumeSize: 10Gi
     engine: ""
     opensearch: {}
+    snapshots: {}
     supportedEngines:
         -   elasticsearch
 secretNames: []

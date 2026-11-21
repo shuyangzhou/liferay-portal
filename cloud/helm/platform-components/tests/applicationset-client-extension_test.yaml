@@ -22,7 +22,7 @@ tests:
                 template: templates/applicationset-client-extension.yaml
             -   equal:
                     path: spec.template.spec.destination.namespace
-                    value: liferay-{{ index .path.segments 2 }}-{{ index .path.segments 4 }}
+                    value: "{{ if eq (toString (get . \"separateNamespace\")) \"true\" }}liferay-{{ index .path.segments 2 }}-{{ index .path.segments 4 }}-cx{{ else }}liferay-{{ index .path.segments 2 }}-{{ index .path.segments 4 }}{{ end }}"
                 template: templates/applicationset-client-extension.yaml
             -   contains:
                     content:
@@ -43,7 +43,7 @@ tests:
                     base: liferay/projects/{{path.basename}}/base
     -   asserts:
             -   failedTemplate:
-                    errorMessage: The value "gitops.layout.projectId" must have the form {{path[n]}} for the client extension ApplicationSet
+                    errorPattern: gitops.layout.projectId
                 template: templates/applicationset-client-extension.yaml
         it: Fails for a layout expression that is not a path segment
         set:
@@ -54,12 +54,6 @@ tests:
             -   equal:
                     path: spec.clusterResourceWhitelist
                     value: []
-                template: templates/appproject-client-extension.yaml
-            -   notContains:
-                    any: true
-                    content:
-                        kind: RoleBinding
-                    path: spec.namespaceResourceWhitelist
                 template: templates/appproject-client-extension.yaml
             -   equal:
                     path: spec.destinations
@@ -77,11 +71,10 @@ tests:
                 template: templates/appproject-client-extension.yaml
         it: Omits the ApplicationSet and AppProject when the DXP operator does not deliver client extensions
         set:
-            operatorApplications:
-                dxpOperator:
-                    values:
-                        clientExtensions:
-                            enabled: false
+            dxpOperator:
+                values:
+                    clientExtensions:
+                        enabled: false
     -   asserts:
             -   hasDocuments:
                     count: 0
@@ -133,6 +126,9 @@ tests:
                         helm:
                             parameters:
                                 -   forceString: true
+                                    name: clientExtension.dxpNamespace
+                                    value: liferay-{{ index .path.segments 2 }}-{{ index .path.segments 4 }}
+                                -   forceString: true
                                     name: clientExtension.serviceId
                                     value: "{{ .name }}"
                                 -   forceString: true
@@ -144,6 +140,15 @@ tests:
                                 -   forceString: true
                                     name: network.gatewayName
                                     value: "{{ index .path.segments 2 }}-{{ index .path.segments 4 }}-gateway"
+                                -   forceString: true
+                                    name: network.gatewayNamespace
+                                    value: liferay-{{ index .path.segments 2 }}-{{ index .path.segments 4 }}
+                                -   forceString: true
+                                    name: operatorServiceAccount.name
+                                    value: dxp-operator
+                                -   forceString: true
+                                    name: operatorServiceAccount.namespace
+                                    value: dxp-operator-system
                             releaseName: "{{ .name }}"
                             valueFiles:
                                 -   "cxdescriptor://{{ trimPrefix \"oci://\" .descriptor }}:{{ .version }}"

@@ -10,7 +10,7 @@ import {MockedProvider} from '@apollo/client/testing';
 import {mockEventPropertiesReq} from 'test/graphql-data';
 import {Property} from 'shared/util/records';
 import {range} from 'lodash';
-import {fireEvent, render, screen, waitFor} from '@testing-library/react';
+import {fireEvent, render, screen} from '@testing-library/react';
 import {Routes} from 'shared/util/router';
 
 jest.unmock('react-dom');
@@ -43,6 +43,73 @@ const mockValue = createCustomValueMap([
 	{key: 'operator', value: 'gt'},
 	{key: 'value', value: 1}
 ]);
+
+const renderEventInputWithoutAttributes = (segmentType) => {
+	const noAttributeValue = createCustomValueMap([
+		{
+			key: 'criterionGroup',
+			value: [
+				{
+					operatorName: 'eq',
+					propertyName: 'eventId',
+					value: 'whitePaperDownloaded'
+				}
+			]
+		},
+		{key: 'operator', value: 'ge'},
+		{key: 'value', value: 1}
+	]);
+
+	render(
+		<MockedProvider addTypename={false} mocks={[]}>
+			<MemoryRouter
+				initialEntries={[
+					`/workspace/23/123123/contacts/segments/create?type=${segmentType}`
+				]}
+			>
+				<RouterRoutes>
+					<Route
+						element={
+							<EventInput
+								displayValue='White Paper Downloaded'
+								onChange={jest.fn()}
+								operatorRenderer={() => (
+									<div>{'has / has not'}</div>
+								)}
+								property={
+									new Property({
+										entityName: 'Event',
+										id: 'whitePaperDownloaded',
+										label: 'White Paper Downloaded',
+										name: 'whitePaperDownloaded',
+										options: [],
+										propertyKey: 'event',
+										type: 'event'
+									})
+								}
+								segmentType={segmentType}
+								touched={{
+									attribute: false,
+									attributeValue: false,
+									dateFilter: false,
+									occurenceCount: false
+								}}
+								valid={{
+									attribute: true,
+									attributeValue: true,
+									dateFilter: true,
+									occurenceCount: true
+								}}
+								value={fromJS(noAttributeValue)}
+							/>
+						}
+						path={`${Routes.CONTACTS_SEGMENT_CREATE}/*`}
+					/>
+				</RouterRoutes>
+			</MemoryRouter>
+		</MockedProvider>
+	);
+};
 
 describe('EventInput', () => {
 	let handleWindowError;
@@ -147,9 +214,9 @@ describe('EventInput', () => {
 			</MockedProvider>
 		);
 
-		await waitFor(() =>
-			expect(document.body.querySelector('.loading-root')).toBeNull()
-		);
+		expect(
+			await screen.findByText('AttributeConjunctionInput')
+		).toBeInTheDocument();
 
 		expect(screen.getByText('has / has not')).toBeInTheDocument();
 		expect(screen.getByText('Asset Clicked')).toBeInTheDocument();
@@ -238,6 +305,21 @@ describe('EventInput', () => {
 		expect(screen.getByText('has / has not')).toBeInTheDocument();
 		expect(screen.getByText('Asset Clicked')).toBeInTheDocument();
 		expect(screen.getByText('triggered')).toBeInTheDocument();
+	});
+
+	it('should render the occurrence count, the date filter and the attribute filter in a batch segment', () => {
+		renderEventInputWithoutAttributes('BATCH');
+
+		expect(screen.getByText('Add Event Attribute')).toBeInTheDocument();
+		expect(screen.getByText('time(s)')).toBeInTheDocument();
+	});
+
+	it('should not render the occurrence count, the date filter nor the attribute filter in a real time segment', () => {
+		renderEventInputWithoutAttributes('REAL_TIME');
+
+		expect(screen.getByText('White Paper Downloaded')).toBeInTheDocument();
+		expect(screen.queryByText('Add Event Attribute')).toBeNull();
+		expect(screen.queryByText('time(s)')).toBeNull();
 	});
 
 	it('should not fetch the event attributes until Add Event Attribute is clicked', async () => {
@@ -339,13 +421,13 @@ describe('EventInput', () => {
 			</MockedProvider>
 		);
 
-		expect(screen.getByText('Add Event Attribute')).toBeInTheDocument();
+		expect(screen.getByText(/^add event attribute$/i)).toBeInTheDocument();
 		expect(screen.queryByText('where event attribute')).toBeNull();
 
-		fireEvent.click(screen.getByText('Add Event Attribute'));
+		fireEvent.click(screen.getByText(/^add event attribute$/i));
 
-		await waitFor(() =>
-			expect(screen.getByText('where event attribute')).toBeInTheDocument()
-		);
+		expect(
+			await screen.findByText('where event attribute')
+		).toBeInTheDocument();
 	});
 });

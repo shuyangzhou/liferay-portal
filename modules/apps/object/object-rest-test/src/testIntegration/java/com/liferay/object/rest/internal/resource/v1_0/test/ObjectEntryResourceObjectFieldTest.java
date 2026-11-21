@@ -44,7 +44,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.test.rule.FeatureFlag;
 import com.liferay.portal.test.rule.FeatureFlags;
@@ -83,6 +82,160 @@ public class ObjectEntryResourceObjectFieldTest
 			PermissionCheckerMethodTestRule.INSTANCE);
 
 	@Test
+	public void testGetObjectEntriesPageWithAssigneeObjectField()
+		throws Exception {
+
+		ObjectDefinition objectDefinition = getObjectDefinition1();
+
+		ObjectFieldUtil.addCustomObjectField(
+			new AssigneeObjectFieldBuilder(
+			).labelMap(
+				RandomTestUtil.randomLocaleStringMap()
+			).name(
+				"assignee"
+			).objectDefinitionId(
+				objectDefinition.getObjectDefinitionId()
+			).userId(
+				TestPropsValues.getUserId()
+			).build());
+
+		User user1 = UserTestUtil.addUser();
+
+		HTTPTestUtil.invokeToJSONObject(
+			JSONUtil.put(
+				"assignee",
+				HashMapBuilder.put(
+					"externalReferenceCode",
+					() -> {
+						Role role = roleLocalService.getRole(
+							TestPropsValues.getCompanyId(),
+							AccountRoleConstants.
+								REQUIRED_ROLE_NAME_ACCOUNT_MANAGER);
+
+						Organization organization =
+							OrganizationTestUtil.addOrganization();
+
+						_organizationLocalService.addUserOrganization(
+							user1.getUserId(),
+							organization.getOrganizationId());
+
+						Group organizationGroup =
+							groupLocalService.getOrganizationGroup(
+								TestPropsValues.getCompanyId(),
+								organization.getOrganizationId());
+
+						userGroupRoleLocalService.addUserGroupRole(
+							user1.getUserId(), organizationGroup.getGroupId(),
+							role.getRoleId());
+
+						return role.getExternalReferenceCode();
+					}
+				).put(
+					"type", "Role"
+				).build()
+			).toString(),
+			objectDefinition.getRESTContextPath(), Http.Method.POST);
+		HTTPTestUtil.invokeToJSONObject(
+			JSONUtil.put(
+				"assignee",
+				HashMapBuilder.put(
+					"externalReferenceCode", user1.getExternalReferenceCode()
+				).put(
+					"type", "User"
+				).build()
+			).toString(),
+			objectDefinition.getRESTContextPath(), Http.Method.POST);
+
+		User user2 = UserTestUtil.addUser();
+
+		HTTPTestUtil.invokeToJSONObject(
+			JSONUtil.put(
+				"assignee",
+				HashMapBuilder.put(
+					"externalReferenceCode",
+					() -> {
+						Role role = RoleTestUtil.addRole(
+							"Regular Role", RoleConstants.TYPE_REGULAR);
+
+						userLocalService.addRoleUser(role.getRoleId(), user2);
+
+						return role.getExternalReferenceCode();
+					}
+				).put(
+					"type", "Role"
+				).build()
+			).toString(),
+			objectDefinition.getRESTContextPath(), Http.Method.POST);
+		HTTPTestUtil.invokeToJSONObject(
+			JSONUtil.put(
+				"assignee",
+				HashMapBuilder.put(
+					"externalReferenceCode", user2.getExternalReferenceCode()
+				).put(
+					"type", "User"
+				).build()
+			).toString(),
+			objectDefinition.getRESTContextPath(), Http.Method.POST);
+
+		JSONObject jsonObject = HTTPTestUtil.invokeToJSONObject(
+			null,
+			StringBundler.concat(
+				objectDefinition.getRESTContextPath(),
+				"?assigneeUserExternalReferenceCode=",
+				user1.getExternalReferenceCode(), "&sort=",
+				URLCodec.encodeURL("id:asc")),
+			Http.Method.GET);
+
+		JSONArray itemsJSONArray = jsonObject.getJSONArray("items");
+
+		Assert.assertEquals(2, itemsJSONArray.length());
+		Assert.assertEquals(
+			AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_MANAGER,
+			JSONUtil.getValue(
+				itemsJSONArray.getJSONObject(0), "JSONObject/assignee",
+				"Object/name"));
+		Assert.assertEquals(
+			user1.getFullName(),
+			JSONUtil.getValue(
+				itemsJSONArray.getJSONObject(1), "JSONObject/assignee",
+				"Object/name"));
+
+		jsonObject = HTTPTestUtil.invokeToJSONObject(
+			null,
+			StringBundler.concat(
+				objectDefinition.getRESTContextPath(),
+				"?assigneeUserExternalReferenceCode=",
+				user2.getExternalReferenceCode(), "&sort=",
+				URLCodec.encodeURL("id:asc")),
+			Http.Method.GET);
+
+		itemsJSONArray = jsonObject.getJSONArray("items");
+
+		Assert.assertEquals(2, itemsJSONArray.length());
+		Assert.assertEquals(
+			"Regular Role",
+			JSONUtil.getValue(
+				itemsJSONArray.getJSONObject(0), "JSONObject/assignee",
+				"Object/name"));
+		Assert.assertEquals(
+			user2.getFullName(),
+			JSONUtil.getValue(
+				itemsJSONArray.getJSONObject(1), "JSONObject/assignee",
+				"Object/name"));
+
+		jsonObject = HTTPTestUtil.invokeToJSONObject(
+			null,
+			objectDefinition.getRESTContextPath() +
+				"?assigneeUserExternalReferenceCode=" +
+					RandomTestUtil.randomString(),
+			Http.Method.GET);
+
+		itemsJSONArray = jsonObject.getJSONArray("items");
+
+		Assert.assertEquals(0, itemsJSONArray.length());
+	}
+
+	@Test
 	public void testGetObjectEntriesPageWithDeletedObjectField()
 		throws Exception {
 
@@ -117,182 +270,25 @@ public class ObjectEntryResourceObjectFieldTest
 	}
 
 	@Test
-	public void testGetObjectEntriesWithAssigneeObjectField() throws Exception {
-		ObjectFieldUtil.addCustomObjectField(
-			new AssigneeObjectFieldBuilder(
-			).labelMap(
-				RandomTestUtil.randomLocaleStringMap()
-			).name(
-				"assignee"
-			).objectDefinitionId(
-				getObjectDefinition1().getObjectDefinitionId()
-			).userId(
-				TestPropsValues.getUserId()
-			).build());
-
-		User user1 = UserTestUtil.addUser();
-
-		HTTPTestUtil.invokeToJSONObject(
-			JSONUtil.put(
-				"assignee",
-				HashMapBuilder.put(
-					"externalReferenceCode",
-					() -> {
-						Role role = roleLocalService.getRole(
-							TestPropsValues.getCompanyId(),
-							AccountRoleConstants.
-								REQUIRED_ROLE_NAME_ACCOUNT_MANAGER);
-
-						Organization organization =
-							OrganizationTestUtil.addOrganization();
-
-						_organizationLocalService.addUserOrganization(
-							user1.getUserId(),
-							organization.getOrganizationId());
-
-						Group group = groupLocalService.getOrganizationGroup(
-							TestPropsValues.getCompanyId(),
-							organization.getOrganizationId());
-
-						userGroupRoleLocalService.addUserGroupRole(
-							user1.getUserId(), group.getGroupId(),
-							role.getRoleId());
-
-						return role.getExternalReferenceCode();
-					}
-				).put(
-					"type", "Role"
-				).build()
-			).toString(),
-			getObjectDefinition1().getRESTContextPath(), Http.Method.POST);
-		HTTPTestUtil.invokeToJSONObject(
-			JSONUtil.put(
-				"assignee",
-				HashMapBuilder.put(
-					"externalReferenceCode", user1.getExternalReferenceCode()
-				).put(
-					"type", "User"
-				).build()
-			).toString(),
-			getObjectDefinition1().getRESTContextPath(), Http.Method.POST);
-
-		User user2 = UserTestUtil.addUser();
-
-		HTTPTestUtil.invokeToJSONObject(
-			JSONUtil.put(
-				"assignee",
-				HashMapBuilder.put(
-					"externalReferenceCode",
-					() -> {
-						Role role = RoleTestUtil.addRole(
-							"Regular Role", RoleConstants.TYPE_REGULAR);
-
-						userLocalService.addRoleUser(role.getRoleId(), user2);
-
-						return role.getExternalReferenceCode();
-					}
-				).put(
-					"type", "Role"
-				).build()
-			).toString(),
-			getObjectDefinition1().getRESTContextPath(), Http.Method.POST);
-		HTTPTestUtil.invokeToJSONObject(
-			JSONUtil.put(
-				"assignee",
-				HashMapBuilder.put(
-					"externalReferenceCode", user2.getExternalReferenceCode()
-				).put(
-					"type", "User"
-				).build()
-			).toString(),
-			getObjectDefinition1().getRESTContextPath(), Http.Method.POST);
-
-		JSONObject jsonObject = HTTPTestUtil.invokeToJSONObject(
-			null,
-			StringBundler.concat(
-				getObjectDefinition1().getRESTContextPath(),
-				"?assigneeUserExternalReferenceCode=",
-				user1.getExternalReferenceCode(), "&sort=",
-				URLCodec.encodeURL("id:asc")),
-			Http.Method.GET);
-
-		JSONArray itemsJSONArray = jsonObject.getJSONArray("items");
-
-		Assert.assertEquals(2, itemsJSONArray.length());
-
-		Assert.assertEquals(
-			AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_MANAGER,
-			JSONUtil.getValue(
-				itemsJSONArray.getJSONObject(0), "JSONObject/assignee",
-				"Object/name"));
-		Assert.assertEquals(
-			user1.getFullName(),
-			JSONUtil.getValue(
-				itemsJSONArray.getJSONObject(1), "JSONObject/assignee",
-				"Object/name"));
-
-		jsonObject = HTTPTestUtil.invokeToJSONObject(
-			null,
-			StringBundler.concat(
-				getObjectDefinition1().getRESTContextPath(),
-				"?assigneeUserExternalReferenceCode=",
-				user2.getExternalReferenceCode(), "&sort=",
-				URLCodec.encodeURL("id:asc")),
-			Http.Method.GET);
-
-		itemsJSONArray = jsonObject.getJSONArray("items");
-
-		Assert.assertEquals(2, itemsJSONArray.length());
-
-		Assert.assertEquals(
-			"Regular Role",
-			JSONUtil.getValue(
-				itemsJSONArray.getJSONObject(0), "JSONObject/assignee",
-				"Object/name"));
-		Assert.assertEquals(
-			user2.getFullName(),
-			JSONUtil.getValue(
-				itemsJSONArray.getJSONObject(1), "JSONObject/assignee",
-				"Object/name"));
-
-		jsonObject = HTTPTestUtil.invokeToJSONObject(
-			null,
-			getObjectDefinition1().getRESTContextPath() +
-				"?assigneeUserExternalReferenceCode=" +
-					RandomTestUtil.randomString(),
-			Http.Method.GET);
-
-		itemsJSONArray = jsonObject.getJSONArray("items");
-
-		Assert.assertEquals(0, itemsJSONArray.length());
-	}
-
-	@Test
-	public void testPatchPutCustomObjectEntryByExternalReferenceCodeWithAssigneeObjectField()
-		throws Exception {
-
-		_testPatchPutCustomObjectEntryWithAssigneeObjectField(
-			Http.Method.PATCH, getObjectDefinition1(), true);
-		_testPatchPutCustomObjectEntryWithAssigneeObjectField(
-			Http.Method.PUT, getObjectDefinition1(), true);
-		_testPatchPutCustomObjectEntryWithAssigneeObjectField(
-			Http.Method.PATCH, getSiteScopedObjectDefinition1(), true);
-		_testPatchPutCustomObjectEntryWithAssigneeObjectField(
-			Http.Method.PUT, getSiteScopedObjectDefinition1(), true);
-	}
-
-	@Test
 	public void testPatchPutCustomObjectEntryWithAssigneeObjectField()
 		throws Exception {
 
 		_testPatchPutCustomObjectEntryWithAssigneeObjectField(
 			Http.Method.PATCH, getObjectDefinition1(), false);
 		_testPatchPutCustomObjectEntryWithAssigneeObjectField(
-			Http.Method.PUT, getObjectDefinition1(), false);
+			Http.Method.PATCH, getObjectDefinition1(), true);
 		_testPatchPutCustomObjectEntryWithAssigneeObjectField(
 			Http.Method.PATCH, getSiteScopedObjectDefinition1(), false);
 		_testPatchPutCustomObjectEntryWithAssigneeObjectField(
+			Http.Method.PATCH, getSiteScopedObjectDefinition1(), true);
+		_testPatchPutCustomObjectEntryWithAssigneeObjectField(
+			Http.Method.PUT, getObjectDefinition1(), false);
+		_testPatchPutCustomObjectEntryWithAssigneeObjectField(
+			Http.Method.PUT, getObjectDefinition1(), true);
+		_testPatchPutCustomObjectEntryWithAssigneeObjectField(
 			Http.Method.PUT, getSiteScopedObjectDefinition1(), false);
+		_testPatchPutCustomObjectEntryWithAssigneeObjectField(
+			Http.Method.PUT, getSiteScopedObjectDefinition1(), true);
 	}
 
 	@Test
@@ -330,7 +326,7 @@ public class ObjectEntryResourceObjectFieldTest
 							).build()))),
 				false);
 
-		String endpoint = getEndpoint(objectDefinition, testGroupId);
+		String endpoint = objectDefinition.getRESTContextPath();
 
 		HTTPTestUtil.invokeToJSONObject(
 			JSONFactoryUtil.getNullJSON(), endpoint, Http.Method.POST);
@@ -387,218 +383,28 @@ public class ObjectEntryResourceObjectFieldTest
 		String timeZoneId = user.getTimeZoneId();
 
 		try {
-			String testTimeZoneId = "Europe/Madrid";
-
-			user.setTimeZoneId(testTimeZoneId);
+			user.setTimeZoneId("Europe/Madrid");
 
 			user = userLocalService.updateUser(user);
 
-			// Format: "EEE MMM dd HH:mm:ss zzz yyyy"
-
-			JSONAssert.assertEquals(
-				JSONUtil.put(
-					OBJECT_FIELD_NAME_DATE_TIME_INPUT, "2000-07-27T11:00:00.000"
-				).put(
-					OBJECT_FIELD_NAME_DATE_TIME_UTC, "2000-07-27T09:00:00.000Z"
-				).toString(),
-				HTTPTestUtil.invokeToJSONObject(
-					JSONUtil.put(
-						OBJECT_FIELD_NAME_DATE_TIME_INPUT,
-						"Thu Jul 27 11:00:00 CET 2000"
-					).put(
-						OBJECT_FIELD_NAME_DATE_TIME_UTC,
-						"Thu Jul 27 11:00:00 CET 2000"
-					).toString(),
-					getObjectDefinition1().getRESTContextPath(),
-					Http.Method.POST
-				).toString(),
-				JSONCompareMode.LENIENT);
-
-			// Format: "dd-MMM-yyyy hh:mm:ss.SSS a"
-
-			JSONAssert.assertEquals(
-				JSONUtil.put(
-					OBJECT_FIELD_NAME_DATE_TIME_INPUT, "2000-07-27T11:00:00.000"
-				).put(
-					OBJECT_FIELD_NAME_DATE_TIME_UTC, "2000-07-27T09:00:00.000Z"
-				).toString(),
-				HTTPTestUtil.invokeToJSONObject(
-					JSONUtil.put(
-						OBJECT_FIELD_NAME_DATE_TIME_INPUT,
-						"27-Jul-2000 11:00:00.000 AM"
-					).put(
-						OBJECT_FIELD_NAME_DATE_TIME_UTC,
-						"27-Jul-2000 11:00:00.000 AM"
-					).toString(),
-					getObjectDefinition1().getRESTContextPath(),
-					Http.Method.POST
-				).toString(),
-				JSONCompareMode.LENIENT);
-
-			// Format: "yyyy-MM-dd HH:mm"
-
-			JSONAssert.assertEquals(
-				JSONUtil.put(
-					OBJECT_FIELD_NAME_DATE_TIME_INPUT, "2000-07-27T11:00:00.000"
-				).put(
-					OBJECT_FIELD_NAME_DATE_TIME_UTC, "2000-07-27T09:00:00.000Z"
-				).toString(),
-				HTTPTestUtil.invokeToJSONObject(
-					JSONUtil.put(
-						OBJECT_FIELD_NAME_DATE_TIME_INPUT, "2000-07-27 11:00"
-					).put(
-						OBJECT_FIELD_NAME_DATE_TIME_UTC, "2000-07-27 11:00"
-					).toString(),
-					getObjectDefinition1().getRESTContextPath(),
-					Http.Method.POST
-				).toString(),
-				JSONCompareMode.LENIENT);
-
-			// Format: "yyyy-MM-dd HH:mm:ss.S"
-
-			JSONAssert.assertEquals(
-				JSONUtil.put(
-					OBJECT_FIELD_NAME_DATE_TIME_INPUT, "2000-07-27T11:00:00.000"
-				).put(
-					OBJECT_FIELD_NAME_DATE_TIME_UTC, "2000-07-27T09:00:00.000Z"
-				).toString(),
-				HTTPTestUtil.invokeToJSONObject(
-					JSONUtil.put(
-						OBJECT_FIELD_NAME_DATE_TIME_INPUT,
-						"2000-07-27 11:00:00.000"
-					).put(
-						OBJECT_FIELD_NAME_DATE_TIME_UTC,
-						"2000-07-27 11:00:00.000"
-					).toString(),
-					getObjectDefinition1().getRESTContextPath(),
-					Http.Method.POST
-				).toString(),
-				JSONCompareMode.LENIENT);
-
-			// Format: "yyyy-MM-dd HH:mm:ss.SSS"
-
-			JSONAssert.assertEquals(
-				JSONUtil.put(
-					OBJECT_FIELD_NAME_DATE_TIME_INPUT, "2000-07-27T11:00:00.000"
-				).put(
-					OBJECT_FIELD_NAME_DATE_TIME_UTC, "2000-07-27T09:00:00.000Z"
-				).toString(),
-				HTTPTestUtil.invokeToJSONObject(
-					JSONUtil.put(
-						OBJECT_FIELD_NAME_DATE_TIME_INPUT,
-						"2000-07-27 11:00:00.000"
-					).put(
-						OBJECT_FIELD_NAME_DATE_TIME_UTC,
-						"2000-07-27 11:00:00.000"
-					).toString(),
-					getObjectDefinition1().getRESTContextPath(),
-					Http.Method.POST
-				).toString(),
-				JSONCompareMode.LENIENT);
-
-			// Format: "yyyy-MM-dd'T'HH:mm:ss'Z'"
-
-			JSONAssert.assertEquals(
-				JSONUtil.put(
-					OBJECT_FIELD_NAME_DATE_TIME_INPUT, "2000-07-27T11:00:00.000"
-				).put(
-					OBJECT_FIELD_NAME_DATE_TIME_UTC, "2000-07-27T11:00:00.000Z"
-				).toString(),
-				HTTPTestUtil.invokeToJSONObject(
-					JSONUtil.put(
-						OBJECT_FIELD_NAME_DATE_TIME_INPUT,
-						"2000-07-27T11:00:00Z"
-					).put(
-						OBJECT_FIELD_NAME_DATE_TIME_UTC, "2000-07-27T11:00:00Z"
-					).toString(),
-					getObjectDefinition1().getRESTContextPath(),
-					Http.Method.POST
-				).toString(),
-				JSONCompareMode.LENIENT);
-
-			// Format: "yyyy-MM-dd'T'HH:mm:ss.SSS"
-
-			JSONAssert.assertEquals(
-				JSONUtil.put(
-					OBJECT_FIELD_NAME_DATE_TIME_INPUT, "2000-07-27T11:00:00.000"
-				).put(
-					OBJECT_FIELD_NAME_DATE_TIME_UTC, "2000-07-27T09:00:00.000Z"
-				).toString(),
-				HTTPTestUtil.invokeToJSONObject(
-					JSONUtil.put(
-						OBJECT_FIELD_NAME_DATE_TIME_INPUT,
-						"2000-07-27T11:00:00.000"
-					).put(
-						OBJECT_FIELD_NAME_DATE_TIME_UTC,
-						"2000-07-27T11:00:00.000"
-					).toString(),
-					getObjectDefinition1().getRESTContextPath(),
-					Http.Method.POST
-				).toString(),
-				JSONCompareMode.LENIENT);
-
-			// Format: "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-
-			JSONAssert.assertEquals(
-				JSONUtil.put(
-					OBJECT_FIELD_NAME_DATE_TIME_INPUT, "2000-07-27T11:00:00.000"
-				).put(
-					OBJECT_FIELD_NAME_DATE_TIME_UTC, "2000-07-27T11:00:00.000Z"
-				).toString(),
-				HTTPTestUtil.invokeToJSONObject(
-					JSONUtil.put(
-						OBJECT_FIELD_NAME_DATE_TIME_INPUT,
-						"2000-07-27T11:00:00.000Z"
-					).put(
-						OBJECT_FIELD_NAME_DATE_TIME_UTC,
-						"2000-07-27T11:00:00.000Z"
-					).toString(),
-					getObjectDefinition1().getRESTContextPath(),
-					Http.Method.POST
-				).toString(),
-				JSONCompareMode.LENIENT);
-
-			// Format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ" and negative offset
-
-			JSONAssert.assertEquals(
-				JSONUtil.put(
-					OBJECT_FIELD_NAME_DATE_TIME_INPUT, "2000-07-27T11:00:00.000"
-				).put(
-					OBJECT_FIELD_NAME_DATE_TIME_UTC, "2000-07-27T15:00:00.000Z"
-				).toString(),
-				HTTPTestUtil.invokeToJSONObject(
-					JSONUtil.put(
-						OBJECT_FIELD_NAME_DATE_TIME_INPUT,
-						"2000-07-27T11:00:00.000-0400"
-					).put(
-						OBJECT_FIELD_NAME_DATE_TIME_UTC,
-						"2000-07-27T11:00:00.000-0400"
-					).toString(),
-					getObjectDefinition1().getRESTContextPath(),
-					Http.Method.POST
-				).toString(),
-				JSONCompareMode.LENIENT);
-
-			// Format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ" and positive offset
-
-			JSONAssert.assertEquals(
-				JSONUtil.put(
-					OBJECT_FIELD_NAME_DATE_TIME_INPUT, "2000-07-27T11:00:00.000"
-				).put(
-					OBJECT_FIELD_NAME_DATE_TIME_UTC, "2000-07-27T07:00:00.000Z"
-				).toString(),
-				HTTPTestUtil.invokeToJSONObject(
-					JSONUtil.put(
-						OBJECT_FIELD_NAME_DATE_TIME_INPUT,
-						"2000-07-27T11:00:00.000+0400"
-					).put(
-						OBJECT_FIELD_NAME_DATE_TIME_UTC,
-						"2000-07-27T11:00:00.000+0400"
-					).toString(),
-					getObjectDefinition1().getRESTContextPath(),
-					Http.Method.POST
-				).toString(),
-				JSONCompareMode.LENIENT);
+			_testPostCustomObjectEntryWithDateTimeObjectField(
+				"2000-07-27 11:00", "2000-07-27T09:00:00.000Z");
+			_testPostCustomObjectEntryWithDateTimeObjectField(
+				"2000-07-27 11:00:00.000", "2000-07-27T09:00:00.000Z");
+			_testPostCustomObjectEntryWithDateTimeObjectField(
+				"2000-07-27T11:00:00.000", "2000-07-27T09:00:00.000Z");
+			_testPostCustomObjectEntryWithDateTimeObjectField(
+				"2000-07-27T11:00:00.000+0400", "2000-07-27T07:00:00.000Z");
+			_testPostCustomObjectEntryWithDateTimeObjectField(
+				"2000-07-27T11:00:00.000-0400", "2000-07-27T15:00:00.000Z");
+			_testPostCustomObjectEntryWithDateTimeObjectField(
+				"2000-07-27T11:00:00.000Z", "2000-07-27T11:00:00.000Z");
+			_testPostCustomObjectEntryWithDateTimeObjectField(
+				"2000-07-27T11:00:00Z", "2000-07-27T11:00:00.000Z");
+			_testPostCustomObjectEntryWithDateTimeObjectField(
+				"27-Jul-2000 11:00:00.000 AM", "2000-07-27T09:00:00.000Z");
+			_testPostCustomObjectEntryWithDateTimeObjectField(
+				"Thu Jul 27 11:00:00 CET 2000", "2000-07-27T09:00:00.000Z");
 		}
 		finally {
 			user.setTimeZoneId(timeZoneId);
@@ -607,7 +413,6 @@ public class ObjectEntryResourceObjectFieldTest
 		}
 	}
 
-	@FeatureFlag("LPD-11388")
 	@Test
 	public void testPostCustomObjectEntryWithLocationObjectField()
 		throws Exception {
@@ -667,16 +472,16 @@ public class ObjectEntryResourceObjectFieldTest
 				jsonObject.getJSONObject("location"));
 
 			objectValidationRuleLocalService.addObjectValidationRule(
-				StringUtil.randomString(), TestPropsValues.getUserId(),
+				RandomTestUtil.randomString(), TestPropsValues.getUserId(),
 				objectDefinition.getObjectDefinitionId(), true,
 				ObjectValidationRuleConstants.ENGINE_TYPE_DDM,
-				LocalizedMapUtil.getLocalizedMap("Field must not be empty"),
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				ObjectValidationRuleConstants.OUTPUT_TYPE_FULL_VALIDATION,
 				"not(isEmpty(location))", false, Collections.emptyList());
 
 			jsonObject = HTTPTestUtil.invokeToJSONObject(
-				String.valueOf(jsonFactory.createJSONObject()),
+				JSONFactoryUtil.getNullJSON(),
 				objectDefinition.getRESTContextPath(), Http.Method.POST);
 
 			assertLocationJSONObject(
@@ -802,6 +607,29 @@ public class ObjectEntryResourceObjectFieldTest
 				"type", "User"
 			).toString(),
 			String.valueOf(jsonObject.get("assignee")),
+			JSONCompareMode.LENIENT);
+	}
+
+	private void _testPostCustomObjectEntryWithDateTimeObjectField(
+			String dateTimeString, String expectedDateTimeUTCString)
+		throws Exception {
+
+		ObjectDefinition objectDefinition = getObjectDefinition1();
+
+		JSONAssert.assertEquals(
+			JSONUtil.put(
+				OBJECT_FIELD_NAME_DATE_TIME_INPUT, "2000-07-27T11:00:00.000"
+			).put(
+				OBJECT_FIELD_NAME_DATE_TIME_UTC, expectedDateTimeUTCString
+			).toString(),
+			HTTPTestUtil.invokeToJSONObject(
+				JSONUtil.put(
+					OBJECT_FIELD_NAME_DATE_TIME_INPUT, dateTimeString
+				).put(
+					OBJECT_FIELD_NAME_DATE_TIME_UTC, dateTimeString
+				).toString(),
+				objectDefinition.getRESTContextPath(), Http.Method.POST
+			).toString(),
 			JSONCompareMode.LENIENT);
 	}
 

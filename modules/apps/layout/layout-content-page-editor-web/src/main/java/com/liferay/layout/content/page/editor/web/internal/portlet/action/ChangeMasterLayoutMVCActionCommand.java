@@ -14,8 +14,6 @@ import com.liferay.layout.content.page.editor.constants.ContentPageEditorPortlet
 import com.liferay.layout.content.page.editor.web.internal.manager.FragmentEntryLinkManager;
 import com.liferay.layout.content.page.editor.web.internal.util.StyleBookEntryUtil;
 import com.liferay.layout.content.page.editor.web.internal.util.layout.structure.LayoutStructureUtil;
-import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
-import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalService;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -67,18 +65,21 @@ public class ChangeMasterLayoutMVCActionCommand
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		String masterLayoutPageTemplateEntryERC = ParamUtil.getString(
-			actionRequest, "masterLayoutPageTemplateEntryERC");
-
 		Layout layout = _layoutLocalService.fetchLayout(themeDisplay.getPlid());
 
 		LayoutPermissionUtil.checkLayoutRestrictedUpdatePermission(
 			themeDisplay.getPermissionChecker(), layout);
 
+		String masterLayoutPageTemplateEntryERC = ParamUtil.getString(
+			actionRequest, "masterLayoutPageTemplateEntryERC");
+		String masterLayoutPageTemplateEntryScopeERC = ParamUtil.getString(
+			actionRequest, "masterLayoutPageTemplateEntryScopeERC");
+
 		Layout updatedLayout =
-			_layoutLocalService.updateMasterLayoutPageTemplateEntryERC(
+			_layoutLocalService.updateMasterLayoutPageTemplateEntry(
 				layout.getGroupId(), layout.isPrivateLayout(),
-				layout.getLayoutId(), masterLayoutPageTemplateEntryERC);
+				layout.getLayoutId(), masterLayoutPageTemplateEntryERC,
+				masterLayoutPageTemplateEntryScopeERC);
 
 		if (layout.isDraftLayout()) {
 			UnicodeProperties layoutTypeSettingsUnicodeProperties =
@@ -106,22 +107,17 @@ public class ChangeMasterLayoutMVCActionCommand
 			);
 		}
 
-		LayoutPageTemplateEntry masterLayoutPageTemplateEntry =
-			_layoutPageTemplateEntryLocalService.
-				getLayoutPageTemplateEntryByExternalReferenceCode(
-					masterLayoutPageTemplateEntryERC,
-					themeDisplay.getScopeGroupId());
+		Layout masterLayout = _layoutLocalService.getLayout(
+			updatedLayout.getMasterLayoutPlid());
 
 		LayoutStructure layoutStructure =
 			LayoutStructureUtil.getLayoutStructure(
-				themeDisplay.getScopeGroupId(),
-				masterLayoutPageTemplateEntry.getPlid(),
+				masterLayout.getGroupId(), masterLayout.getPlid(),
 				SegmentsExperienceConstants.KEY_DEFAULT);
 
 		List<FragmentEntryLink> fragmentEntryLinks =
 			_fragmentEntryLinkLocalService.getFragmentEntryLinksByPlid(
-				themeDisplay.getScopeGroupId(),
-				masterLayoutPageTemplateEntry.getPlid());
+				masterLayout.getGroupId(), masterLayout.getPlid());
 
 		JSONObject fragmentEntryLinksJSONObject =
 			_jsonFactory.createJSONObject();
@@ -244,10 +240,6 @@ public class ChangeMasterLayoutMVCActionCommand
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;
-
-	@Reference
-	private LayoutPageTemplateEntryLocalService
-		_layoutPageTemplateEntryLocalService;
 
 	@Reference
 	private Portal _portal;

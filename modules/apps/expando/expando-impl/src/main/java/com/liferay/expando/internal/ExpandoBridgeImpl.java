@@ -41,7 +41,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -241,11 +240,30 @@ public class ExpandoBridgeImpl implements ExpandoBridge {
 
 	@Override
 	public Map<String, Serializable> getAttributes(boolean secure) {
-		Map<String, Serializable> attributes = new HashMap<>();
+		Map<String, Serializable> attributes = null;
 
-		for (ExpandoColumn column : getAttributeColumns()) {
-			attributes.put(
-				column.getName(), getAttribute(column.getName(), secure));
+		try {
+			attributes = ExpandoValueLocalServiceUtil.getData(
+				_companyId, _className,
+				ExpandoTableConstants.DEFAULT_TABLE_NAME, _classPK);
+
+			if (secure && !attributes.isEmpty()) {
+				PermissionChecker permissionChecker =
+					GuestOrUserUtil.getPermissionChecker();
+
+				for (ExpandoColumn column : getAttributeColumns()) {
+					if (ExpandoColumnPermissionUtil.contains(
+							permissionChecker, column, ActionKeys.VIEW)) {
+
+						continue;
+					}
+
+					attributes.remove(column.getName());
+				}
+			}
+		}
+		catch (Exception exception) {
+			ReflectionUtil.throwException(exception);
 		}
 
 		return attributes;
@@ -260,10 +278,10 @@ public class ExpandoBridgeImpl implements ExpandoBridge {
 	public Map<String, Serializable> getAttributes(
 		Collection<String> names, boolean secure) {
 
-		Map<String, Serializable> attributeValues = null;
+		Map<String, Serializable> attributes = null;
 
 		try {
-			attributeValues = ExpandoValueLocalServiceUtil.getData(
+			attributes = ExpandoValueLocalServiceUtil.getData(
 				_companyId, _className,
 				ExpandoTableConstants.DEFAULT_TABLE_NAME, names, _classPK);
 
@@ -280,7 +298,7 @@ public class ExpandoBridgeImpl implements ExpandoBridge {
 						continue;
 					}
 
-					attributeValues.remove(name);
+					attributes.remove(name);
 				}
 			}
 		}
@@ -288,7 +306,7 @@ public class ExpandoBridgeImpl implements ExpandoBridge {
 			ReflectionUtil.throwException(exception);
 		}
 
-		return attributeValues;
+		return attributes;
 	}
 
 	@Override

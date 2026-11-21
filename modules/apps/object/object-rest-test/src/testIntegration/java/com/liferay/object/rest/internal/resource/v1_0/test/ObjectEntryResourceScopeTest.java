@@ -12,7 +12,6 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.rest.test.util.ObjectEntryTestUtil;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -20,7 +19,6 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.test.TestInfo;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.HTTPTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -62,140 +60,23 @@ public class ObjectEntryResourceScopeTest
 	public void testDeleteScopeScopeKeyByExternalReferenceCode()
 		throws Exception {
 
-		// Site scope external reference code
+		Group testGroup = groupLocalService.fetchGroup(testGroupId);
 
-		Group group = groupLocalService.fetchGroup(testGroupId);
-
-		_siteScopedObjectEntry1 = ObjectEntryTestUtil.addObjectEntry(
-			getSiteScopedObjectDefinition1(), OBJECT_FIELD_NAME_1,
-			OBJECT_FIELD_VALUE_1);
-
-		HTTPTestUtil.invokeToJSONObject(
-			null,
-			StringBundler.concat(
-				getEndpoint(
-					getSiteScopedObjectDefinition1(),
-					group.getExternalReferenceCode()),
-				"/by-external-reference-code/",
-				_siteScopedObjectEntry1.getExternalReferenceCode()),
-			Http.Method.DELETE);
-
-		assertNotFound(
-			HTTPTestUtil.invokeToJSONObject(
-				null,
-				StringBundler.concat(
-					getSiteScopedObjectDefinition1().getRESTContextPath(),
-					StringPool.SLASH,
-					_siteScopedObjectEntry1.getObjectEntryId()),
-				Http.Method.GET));
-
-		// Site scope group ID
-
-		_siteScopedObjectEntry1 = ObjectEntryTestUtil.addObjectEntry(
-			getSiteScopedObjectDefinition1(), OBJECT_FIELD_NAME_1,
-			OBJECT_FIELD_VALUE_1);
-
-		HTTPTestUtil.invokeToJSONObject(
-			null,
-			StringBundler.concat(
-				getEndpoint(
-					getSiteScopedObjectDefinition1(), group.getGroupId()),
-				"/by-external-reference-code/",
-				_siteScopedObjectEntry1.getExternalReferenceCode()),
-			Http.Method.DELETE);
-
-		assertNotFound(
-			HTTPTestUtil.invokeToJSONObject(
-				null,
-				StringBundler.concat(
-					getSiteScopedObjectDefinition1().getRESTContextPath(),
-					StringPool.SLASH,
-					_siteScopedObjectEntry1.getObjectEntryId()),
-				Http.Method.GET));
-
-		// Site scope group key
-
-		_siteScopedObjectEntry1 = ObjectEntryTestUtil.addObjectEntry(
-			getSiteScopedObjectDefinition1(), OBJECT_FIELD_NAME_1,
-			OBJECT_FIELD_VALUE_1);
-
-		HTTPTestUtil.invokeToJSONObject(
-			null,
-			StringBundler.concat(
-				getEndpoint(
-					getSiteScopedObjectDefinition1(), group.getGroupKey()),
-				"/by-external-reference-code/",
-				_siteScopedObjectEntry1.getExternalReferenceCode()),
-			Http.Method.DELETE);
-
-		assertNotFound(
-			HTTPTestUtil.invokeToJSONObject(
-				null,
-				StringBundler.concat(
-					getSiteScopedObjectDefinition1().getRESTContextPath(),
-					StringPool.SLASH,
-					_siteScopedObjectEntry1.getObjectEntryId()),
-				Http.Method.GET));
+		_testDeleteScopeScopeKeyByExternalReferenceCode(
+			testGroup.getExternalReferenceCode());
+		_testDeleteScopeScopeKeyByExternalReferenceCode(testGroup.getGroupId());
+		_testDeleteScopeScopeKeyByExternalReferenceCode(
+			testGroup.getGroupKey());
 	}
 
 	@Test
 	public void testGetScopeScopeKeyByExternalReferenceCode() throws Exception {
+		Group testGroup = groupLocalService.fetchGroup(testGroupId);
 
-		// Site scope external reference code
-
-		Group group = groupLocalService.fetchGroup(testGroupId);
-
-		String objectFieldValue = RandomTestUtil.randomString();
-
-		_siteScopedObjectEntry1 = ObjectEntryTestUtil.addObjectEntry(
-			getSiteScopedObjectDefinition1(), OBJECT_FIELD_NAME_1,
-			objectFieldValue);
-
-		Assert.assertEquals(
-			objectFieldValue,
-			JSONUtil.getValueAsString(
-				HTTPTestUtil.invokeToJSONObject(
-					null,
-					StringBundler.concat(
-						getEndpoint(
-							getSiteScopedObjectDefinition1(),
-							group.getExternalReferenceCode()),
-						"/by-external-reference-code/",
-						_siteScopedObjectEntry1.getExternalReferenceCode()),
-					Http.Method.GET),
-				"Object/" + OBJECT_FIELD_NAME_1));
-
-		// Site scope group ID
-
-		Assert.assertEquals(
-			objectFieldValue,
-			JSONUtil.getValueAsString(
-				HTTPTestUtil.invokeToJSONObject(
-					null,
-					StringBundler.concat(
-						getEndpoint(
-							getSiteScopedObjectDefinition1(),
-							group.getGroupId()),
-						"/by-external-reference-code/",
-						_siteScopedObjectEntry1.getExternalReferenceCode()),
-					Http.Method.GET),
-				"Object/" + OBJECT_FIELD_NAME_1));
-
-		// Site scope group key
-
-		Assert.assertEquals(
-			objectFieldValue,
-			JSONUtil.getValueAsString(
-				HTTPTestUtil.invokeToJSONObject(
-					null,
-					StringBundler.concat(
-						getEndpoint(
-							getSiteScopedObjectDefinition1(),
-							group.getGroupKey()),
-						"/by-external-reference-code/",
-						_siteScopedObjectEntry1.getExternalReferenceCode()),
-					Http.Method.GET),
-				"Object/" + OBJECT_FIELD_NAME_1));
+		_testGetScopeScopeKeyByExternalReferenceCode(
+			testGroup.getExternalReferenceCode());
+		_testGetScopeScopeKeyByExternalReferenceCode(testGroup.getGroupId());
+		_testGetScopeScopeKeyByExternalReferenceCode(testGroup.getGroupKey());
 	}
 
 	@Test
@@ -204,7 +85,7 @@ public class ObjectEntryResourceScopeTest
 		// Depot scope group ID
 
 		ObjectDefinition depotScopedObjectDefinition =
-			addDepotScopedObjectDefinition();
+			publishDepotScopedObjectDefinition();
 
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				"com.liferay.portal.vulcan.internal.jaxrs.exception.mapper." +
@@ -254,17 +135,17 @@ public class ObjectEntryResourceScopeTest
 					Http.Method.GET));
 		}
 
-		_siteScopedObjectEntry1 = ObjectEntryTestUtil.addObjectEntry(
+		ObjectEntryTestUtil.addObjectEntry(
 			getSiteScopedObjectDefinition1(), OBJECT_FIELD_NAME_1,
 			OBJECT_FIELD_VALUE_1);
 
-		Group group = groupLocalService.fetchGroup(testGroupId);
+		Group testGroup = groupLocalService.fetchGroup(testGroupId);
 
 		jsonObject = HTTPTestUtil.invokeToJSONObject(
 			null,
 			getEndpoint(
 				getSiteScopedObjectDefinition1(),
-				group.getExternalReferenceCode()),
+				testGroup.getExternalReferenceCode()),
 			Http.Method.GET);
 
 		assertItem(0, jsonObject, OBJECT_FIELD_NAME_1, OBJECT_FIELD_VALUE_1);
@@ -273,7 +154,8 @@ public class ObjectEntryResourceScopeTest
 
 		jsonObject = HTTPTestUtil.invokeToJSONObject(
 			null,
-			getEndpoint(getSiteScopedObjectDefinition1(), group.getGroupId()),
+			getEndpoint(
+				getSiteScopedObjectDefinition1(), testGroup.getGroupId()),
 			Http.Method.GET);
 
 		assertItem(0, jsonObject, OBJECT_FIELD_NAME_1, OBJECT_FIELD_VALUE_1);
@@ -282,7 +164,8 @@ public class ObjectEntryResourceScopeTest
 
 		jsonObject = HTTPTestUtil.invokeToJSONObject(
 			null,
-			getEndpoint(getSiteScopedObjectDefinition1(), group.getGroupKey()),
+			getEndpoint(
+				getSiteScopedObjectDefinition1(), testGroup.getGroupKey()),
 			Http.Method.GET);
 
 		assertItem(0, jsonObject, OBJECT_FIELD_NAME_1, OBJECT_FIELD_VALUE_1);
@@ -293,61 +176,27 @@ public class ObjectEntryResourceScopeTest
 	public void testPatchScopeScopeKeyByExternalReferenceCode()
 		throws Exception {
 
-		Group group = groupLocalService.fetchGroup(testGroupId);
+		Group testGroup = groupLocalService.fetchGroup(testGroupId);
 
-		// Scope key: external reference code
-
-		String externalReferenceCodeEndpoint = getEndpoint(
-			getSiteScopedObjectDefinition1(), group.getExternalReferenceCode());
-
-		assertPatchCustomObjectEntry(
-			jsonObject ->
-				externalReferenceCodeEndpoint + "/by-external-reference-code/" +
-					jsonObject.getString("externalReferenceCode"),
-			getSiteScopedObjectDefinition1(), getSiteScopedObjectDefinition2(),
-			group.getExternalReferenceCode());
-
-		// Scope key: group ID
-
-		String groupIdEndpoint = getEndpoint(
-			getSiteScopedObjectDefinition1(), testGroupId);
-
-		assertPatchCustomObjectEntry(
-			jsonObject ->
-				groupIdEndpoint + "/by-external-reference-code/" +
-					jsonObject.getString("externalReferenceCode"),
-			getSiteScopedObjectDefinition1(), getSiteScopedObjectDefinition2(),
-			testGroupId);
-
-		// Scope key: group key
-
-		String groupKeyEndpoint = getEndpoint(
-			getSiteScopedObjectDefinition1(), group.getGroupKey());
-
-		assertPatchCustomObjectEntry(
-			jsonObject ->
-				groupKeyEndpoint + "/by-external-reference-code/" +
-					jsonObject.getString("externalReferenceCode"),
-			getSiteScopedObjectDefinition1(), getSiteScopedObjectDefinition2(),
-			group.getGroupKey());
+		_testPatchScopeScopeKeyByExternalReferenceCode(
+			testGroup.getExternalReferenceCode());
+		_testPatchScopeScopeKeyByExternalReferenceCode(testGroup.getGroupId());
+		_testPatchScopeScopeKeyByExternalReferenceCode(testGroup.getGroupKey());
 	}
 
 	@Test
 	public void testPostScopeScopeKey() throws Exception {
-		Group group1 = groupLocalService.fetchGroup(testGroupId);
-		Group group2 = GroupTestUtil.addGroup();
+		Group testGroup = groupLocalService.fetchGroup(testGroupId);
 
 		_testPostScopeScopeKey(
-			group1.getExternalReferenceCode(),
-			group2.getExternalReferenceCode());
-		_testPostScopeScopeKey(group1.getGroupId(), group2.getGroupId());
-		_testPostScopeScopeKey(group1.getGroupKey(), group2.getGroupKey());
+			testGroup.getExternalReferenceCode(),
+			group.getExternalReferenceCode());
+		_testPostScopeScopeKey(testGroup.getGroupId(), group.getGroupId());
+		_testPostScopeScopeKey(testGroup.getGroupKey(), group.getGroupKey());
 	}
 
 	@Test
-	public void testPostSiteScopedCustomObjectEntryInUserGroup()
-		throws Exception {
-
+	public void testPostScopeScopeKeyWithUserGroup() throws Exception {
 		UserGroup userGroup = UserGroupTestUtil.addUserGroup();
 
 		JSONObject jsonObject = HTTPTestUtil.invokeToJSONObject(
@@ -375,43 +224,68 @@ public class ObjectEntryResourceScopeTest
 	@Test
 	@TestInfo("LPD-53245")
 	public void testPutScopeScopeKeyByExternalReferenceCode() throws Exception {
-		Group group = groupLocalService.fetchGroup(testGroupId);
+		Group testGroup = groupLocalService.fetchGroup(testGroupId);
 
-		// Scope key: external reference code
+		_testPutScopeScopeKeyByExternalReferenceCode(
+			testGroup.getExternalReferenceCode());
+		_testPutScopeScopeKeyByExternalReferenceCode(testGroup.getGroupId());
+		_testPutScopeScopeKeyByExternalReferenceCode(testGroup.getGroupKey());
+	}
 
-		String externalReferenceCodeEndpoint = getEndpoint(
-			getSiteScopedObjectDefinition1(), group.getExternalReferenceCode());
+	private void _testDeleteScopeScopeKeyByExternalReferenceCode(
+			Object scopeKey)
+		throws Exception {
 
-		assertPutCustomObjectEntry(
+		ObjectEntry objectEntry = ObjectEntryTestUtil.addObjectEntry(
+			getSiteScopedObjectDefinition1(), OBJECT_FIELD_NAME_1,
+			RandomTestUtil.randomString());
+
+		HTTPTestUtil.invokeToJSONObject(
+			null,
+			StringBundler.concat(
+				getEndpoint(getSiteScopedObjectDefinition1(), scopeKey),
+				"/by-external-reference-code/",
+				objectEntry.getExternalReferenceCode()),
+			Http.Method.DELETE);
+
+		assertNotFound(
+			getObjectEntryJSONObject(
+				getSiteScopedObjectDefinition1(),
+				String.valueOf(objectEntry.getObjectEntryId())));
+	}
+
+	private void _testGetScopeScopeKeyByExternalReferenceCode(Object scopeKey)
+		throws Exception {
+
+		String objectFieldValue = RandomTestUtil.randomString();
+
+		ObjectEntry objectEntry = ObjectEntryTestUtil.addObjectEntry(
+			getSiteScopedObjectDefinition1(), OBJECT_FIELD_NAME_1,
+			objectFieldValue);
+
+		Assert.assertEquals(
+			objectFieldValue,
+			JSONUtil.getValueAsString(
+				HTTPTestUtil.invokeToJSONObject(
+					null,
+					StringBundler.concat(
+						getEndpoint(getSiteScopedObjectDefinition1(), scopeKey),
+						"/by-external-reference-code/",
+						objectEntry.getExternalReferenceCode()),
+					Http.Method.GET),
+				"Object/" + OBJECT_FIELD_NAME_1));
+	}
+
+	private void _testPatchScopeScopeKeyByExternalReferenceCode(Object scopeKey)
+		throws Exception {
+
+		assertPatchCustomObjectEntry(
 			jsonObject ->
-				externalReferenceCodeEndpoint + "/by-external-reference-code/" +
-					jsonObject.getString("externalReferenceCode"),
+				getEndpoint(getSiteScopedObjectDefinition1(), scopeKey) +
+					"/by-external-reference-code/" +
+						jsonObject.getString("externalReferenceCode"),
 			getSiteScopedObjectDefinition1(), getSiteScopedObjectDefinition2(),
-			group.getExternalReferenceCode());
-
-		// Scope key: group ID
-
-		String groupIdEndpoint = getEndpoint(
-			getSiteScopedObjectDefinition1(), testGroupId);
-
-		assertPutCustomObjectEntry(
-			jsonObject ->
-				groupIdEndpoint + "/by-external-reference-code/" +
-					jsonObject.getString("externalReferenceCode"),
-			getSiteScopedObjectDefinition1(), getSiteScopedObjectDefinition2(),
-			testGroupId);
-
-		// Scope key: group key
-
-		String groupKeyEndpoint = getEndpoint(
-			getSiteScopedObjectDefinition1(), group.getGroupKey());
-
-		assertPutCustomObjectEntry(
-			jsonObject ->
-				groupKeyEndpoint + "/by-external-reference-code/" +
-					jsonObject.getString("externalReferenceCode"),
-			getSiteScopedObjectDefinition1(), getSiteScopedObjectDefinition2(),
-			group.getGroupKey());
+			scopeKey);
 	}
 
 	private void _testPostScopeScopeKey(Object scopeKey1, Object scopeKey2)
@@ -439,6 +313,16 @@ public class ObjectEntryResourceScopeTest
 		Assert.assertEquals(0, itemsJSONArray.length());
 	}
 
-	private ObjectEntry _siteScopedObjectEntry1;
+	private void _testPutScopeScopeKeyByExternalReferenceCode(Object scopeKey)
+		throws Exception {
+
+		assertPutCustomObjectEntry(
+			jsonObject ->
+				getEndpoint(getSiteScopedObjectDefinition1(), scopeKey) +
+					"/by-external-reference-code/" +
+						jsonObject.getString("externalReferenceCode"),
+			getSiteScopedObjectDefinition1(), getSiteScopedObjectDefinition2(),
+			scopeKey);
+	}
 
 }

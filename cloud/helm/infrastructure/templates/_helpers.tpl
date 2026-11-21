@@ -1,3 +1,7 @@
+{{- define "clientExtensions.namespace" -}}
+{{- .Values.clientExtensions.separateNamespace.name | required "clientExtensions.separateNamespace.name is required when clientExtensions.separateNamespace.enabled is true" -}}
+{{- end -}}
+
 {{- define "elasticsearch.containerSecurityContext" -}}
 allowPrivilegeEscalation: false
 capabilities:
@@ -87,4 +91,8 @@ seccompProfile:
 {{- fail (printf "Search engine %s is not available on this cloud, which supports: %s" $engine (join ", " $supportedEngines)) -}}
 {{- end -}}
 {{- $engine -}}
+{{- end -}}
+
+{{- define "search.snapshotsChecksum" -}}
+{{- .Values.search.snapshots | toJson | sha256sum -}}
 {{- end -}}

@@ -53,7 +53,7 @@ describe('AttributeConjunctionInput', () => {
 		});
 
 		fireEvent.click(
-			screen.getByRole('combobox', {name: 'Event Attributes'})
+			screen.getByRole('combobox', {name: /^event attributes$/i})
 		);
 
 		await screen.findByRole('option', {name: 'displayName-24'});
@@ -75,7 +75,6 @@ describe('AttributeConjunctionInput', () => {
 		await waitFor(() =>
 			expect(onChange).toHaveBeenCalledWith(
 				expect.objectContaining({
-					attribute: attributes[27],
 					criterion: expect.objectContaining({
 						propertyName: `attribute/${encodeAttributeId(
 							'name-27'
@@ -134,7 +133,7 @@ describe('AttributeConjunctionInput', () => {
 
 			expect(
 				container.querySelector('.form-control-sm')
-			).toBeTruthy();
+			).toBeInTheDocument();
 		});
 	});
 
@@ -158,7 +157,7 @@ describe('AttributeConjunctionInput', () => {
 				valid: {attribute: true, attributeValue: false}
 			});
 
-			fireEvent.click(getByLabelText('Clear'));
+			fireEvent.click(getByLabelText(/^clear$/i));
 
 			expect(onClear).toHaveBeenCalledTimes(1);
 		});
@@ -172,7 +171,7 @@ describe('AttributeConjunctionInput', () => {
 				valid: {attribute: true, attributeValue: false}
 			});
 
-			expect(queryByLabelText('Clear')).toBeNull();
+			expect(queryByLabelText(/^clear$/i)).toBeNull();
 		});
 	});
 });

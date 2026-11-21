@@ -5,6 +5,9 @@
 
 package com.liferay.flags.service.impl;
 
+import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.model.AssetRenderer;
+import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.flags.internal.messaging.FlagsRequest;
 import com.liferay.flags.service.base.FlagsEntryServiceBaseImpl;
 import com.liferay.message.boards.model.MBMessage;
@@ -21,6 +24,10 @@ import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.Validator;
@@ -50,6 +57,19 @@ public class FlagsEntryServiceImpl extends FlagsEntryServiceBaseImpl {
 
 		if (!Validator.isEmailAddress(reporterEmailAddress)) {
 			throw new EmailAddressException();
+		}
+
+		ModelResourcePermission<?> modelResourcePermission =
+			ModelResourcePermissionRegistryUtil.getModelResourcePermission(
+				className);
+
+		if (modelResourcePermission != null) {
+			modelResourcePermission.check(
+				getPermissionChecker(), classPK, ActionKeys.VIEW);
+		}
+		else if (!_hasViewPermission(className, classPK)) {
+			throw new PrincipalException.MustHavePermission(
+				getPermissionChecker(), className, classPK, ActionKeys.VIEW);
 		}
 
 		FlagsRequest flagsRequest = new FlagsRequest(
@@ -88,6 +108,27 @@ public class FlagsEntryServiceImpl extends FlagsEntryServiceBaseImpl {
 					addOrUpdateMessageSuspiciousActivity(classPK, reason);
 			}
 		}
+	}
+
+	private boolean _hasViewPermission(String className, long classPK)
+		throws PortalException {
+
+		AssetRendererFactory<?> assetRendererFactory =
+			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+				className);
+
+		if (assetRendererFactory == null) {
+			return false;
+		}
+
+		AssetRenderer<?> assetRenderer = assetRendererFactory.getAssetRenderer(
+			classPK);
+
+		if (assetRenderer == null) {
+			return false;
+		}
+
+		return assetRenderer.hasViewPermission(getPermissionChecker());
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

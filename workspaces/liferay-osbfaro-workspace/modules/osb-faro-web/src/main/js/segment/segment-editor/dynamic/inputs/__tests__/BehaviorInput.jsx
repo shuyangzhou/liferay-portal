@@ -90,14 +90,14 @@ describe('BehaviorInput', () => {
 		fireEvent.click(getByText('at least'));
 		fireEvent.click(getByText('ever'));
 
-		expect(getAllByText('at least')[1]).toBeTruthy();
-		expect(getByText('at most')).toBeTruthy();
+		expect(getAllByText('at least')[1]).toBeInTheDocument();
+		expect(getByText('at most')).toBeInTheDocument();
 
-		expect(getByText('since')).toBeTruthy();
-		expect(getByText('before')).toBeTruthy();
-		expect(getByText('between')).toBeTruthy();
-		expect(getAllByText('ever')[1]).toBeTruthy();
-		expect(getAllByText('on')[0]).toBeTruthy();
+		expect(getByText('since')).toBeInTheDocument();
+		expect(getByText('before')).toBeInTheDocument();
+		expect(getByText('between')).toBeInTheDocument();
+		expect(getAllByText('ever')[1]).toBeInTheDocument();
+		expect(getAllByText('on')[0]).toBeInTheDocument();
 
 		expect(container).toMatchSnapshot();
 	});
@@ -126,9 +126,9 @@ describe('BehaviorInput', () => {
 			/>
 		);
 
-		expect(getByText('Account')).toBeTruthy();
-		expect(getByText('at least one individual who triggered')).toBeTruthy();
-		expect(queryByText('Individual')).toBeNull();
+		expect(getByText(/^account$/i)).toBeInTheDocument();
+		expect(getByText(/^at least one individual who triggered$/i)).toBeInTheDocument();
+		expect(queryByText(/^individual$/i)).toBeNull();
 	});
 
 	it('should start the rule with Individual in an individual segment', () => {
@@ -136,8 +136,8 @@ describe('BehaviorInput', () => {
 			<DefaultComponent segmentCategory={SegmentCategories.Individual} />
 		);
 
-		expect(getByText('Individual')).toBeTruthy();
-		expect(queryByText('at least one individual who triggered')).toBeNull();
+		expect(getByText(/^individual$/i)).toBeInTheDocument();
+		expect(queryByText(/^at least one individual who triggered$/i)).toBeNull();
 	});
 
 	it('should render with has-error for occurenceCount', () => {
@@ -147,7 +147,7 @@ describe('BehaviorInput', () => {
 
 		expect(
 			container.querySelector('.form-group-item-shrink.has-error')
-		).toBeTruthy();
+		).toBeInTheDocument();
 	});
 
 	describe('handlePageAssetSelect', () => {
@@ -287,13 +287,13 @@ describe('BehaviorInput', () => {
 		]);
 
 		it('should disable the "Add Event Attribute" button until an asset type is selected', () => {
-			const {getByText} = render(
+			const {getByRole} = render(
 				<DefaultComponent value={valueWithoutAssetType} />
 			);
 
 			expect(
-				getByText('Add Event Attribute').closest('button').disabled
-			).toBe(true);
+				getByRole('button', {name: /^add event attribute$/i})
+			).toBeDisabled();
 		});
 
 		it('should keep the "Add Event Attribute" button when there is no event to read attributes from', () => {
@@ -301,17 +301,26 @@ describe('BehaviorInput', () => {
 				<DefaultComponent value={valueWithoutAssetType} />
 			);
 
-			fireEvent.click(getByText('Add Event Attribute'));
+			fireEvent.click(getByText(/^add event attribute$/i));
 
 			expect(queryByTestId('attribute-filter-section')).toBeNull();
-			expect(getByText('Add Event Attribute')).toBeTruthy();
+			expect(getByText(/^add event attribute$/i)).toBeInTheDocument();
 		});
 
 		it('should show the "Add Event Attribute" button when there is no attribute criterion', () => {
 			const {getByText, queryByTestId} = render(<DefaultComponent />);
 
-			expect(getByText('Add Event Attribute')).toBeTruthy();
+			expect(getByText(/^add event attribute$/i)).toBeInTheDocument();
 			expect(queryByTestId('attribute-filter-section')).toBeNull();
+		});
+
+		it('should not render the attribute filter in a real time segment', () => {
+			const {queryByTestId, queryByText} = render(
+				<DefaultComponent segmentType={SegmentTypes.RealTime} />
+			);
+
+			expect(queryByTestId('attribute-filter-section')).toBeNull();
+			expect(queryByText(/^add event attribute$/i)).toBeNull();
 		});
 
 		it('should reveal the attribute filter section when the button is clicked', () => {
@@ -319,10 +328,10 @@ describe('BehaviorInput', () => {
 				<DefaultComponent />
 			);
 
-			fireEvent.click(getByText('Add Event Attribute'));
+			fireEvent.click(getByText(/^add event attribute$/i));
 
-			expect(getByTestId('attribute-filter-section')).toBeTruthy();
-			expect(queryByText('Add Event Attribute')).toBeNull();
+			expect(getByTestId('attribute-filter-section')).toBeInTheDocument();
+			expect(queryByText(/^add event attribute$/i)).toBeNull();
 		});
 
 		it('should initialize with the section shown when a real attribute criterion is already present', () => {
@@ -350,8 +359,8 @@ describe('BehaviorInput', () => {
 				<DefaultComponent value={valueWithAttribute} />
 			);
 
-			expect(getByTestId('attribute-filter-section')).toBeTruthy();
-			expect(queryByText('Add Event Attribute')).toBeNull();
+			expect(getByTestId('attribute-filter-section')).toBeInTheDocument();
+			expect(queryByText(/^add event attribute$/i)).toBeNull();
 		});
 
 		it('should not reveal the section for only the seeded attribute/ placeholder', () => {
@@ -379,7 +388,7 @@ describe('BehaviorInput', () => {
 				<DefaultComponent value={valueWithPlaceholder} />
 			);
 
-			expect(getByText('Add Event Attribute')).toBeTruthy();
+			expect(getByText(/^add event attribute$/i)).toBeInTheDocument();
 			expect(queryByTestId('attribute-filter-section')).toBeNull();
 		});
 

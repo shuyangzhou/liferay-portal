@@ -1,6 +1,7 @@
 {{- define "liferay-platform.argocdExternalURL" -}}
 {{- if .Values.argocd.gateway.enabled -}}
-{{- $scheme := ternary "https" "http" (ne .Values.argocd.gateway.tls.externalSecretKey "") -}}
+{{- $tls := .Values.argocd.gateway.tls -}}
+{{- $scheme := ternary "https" "http" (or $tls.externalSecretKey $tls.secretName | empty | not) -}}
 {{- printf "%s://%s" $scheme .Values.argocd.gateway.hostname -}}
 {{- end -}}
 {{- end -}}
@@ -15,6 +16,10 @@ chart: {{ .chart }}
 {{- end }}
 repoURL: {{ .repoURL }}
 targetRevision: {{ .targetRevision | quote }}
+{{- end -}}
+
+{{- define "liferay-platform.clientExtensionNamespace" -}}
+{{- printf "%s-cx" . -}}
 {{- end -}}
 
 {{- define "liferay-platform.clusterSecretStoreName" -}}
@@ -39,9 +44,9 @@ sidecar.opentelemetry.io/inject: "false"
 {{- end -}}
 
 {{- define "liferay-platform.dxpOperatorServiceAccountName" -}}
-{{- $values := .Values.operatorApplications.dxpOperator.values | default dict -}}
+{{- $values := .Values.dxpOperator.values | default dict -}}
 {{- dig "serviceAccount" "name" "" $values | default (dig "fullnameOverride" "" $values) | required (printf "The value %q must not be empty when %q is true"
-    "operatorApplications.dxpOperator.values.fullnameOverride" "operatorApplications.dxpOperator.values.clientExtensions.enabled") -}}
+    "dxpOperator.values.fullnameOverride" "dxpOperator.values.clientExtensions.enabled") -}}
 {{- end -}}
 
 {{- define "liferay-platform.environmentNamespaceLabels" -}}
@@ -62,9 +67,41 @@ pod-security.kubernetes.io/enforce: restricted
 liferay.com/project: liferay-cloud-native
 {{- end -}}
 
+{{- define "liferay-platform.operators" -}}
+ackPrometheusService:
+    name: ack-prometheusservice
+argoWorkflows:
+    chart: argo-workflows
+    name: argo-workflows
+crossplane:
+    chart: crossplane
+    name: crossplane
+    namespaceLabels:
+        pod-security.kubernetes.io/enforce: restricted
+dxpOperator:
+    name: dxp-operator
+    namespaceLabels:
+        pod-security.kubernetes.io/enforce: restricted
+eckOperator:
+    chart: eck-operator
+    name: eck-operator
+    namespaceLabels:
+        pod-security.kubernetes.io/enforce: restricted
+envoyGateway:
+    name: envoy-gateway
+externalSecrets:
+    chart: external-secrets
+    name: external-secrets
+keda:
+    chart: keda
+    extraDestinationNamespaces:
+        -   kube-system
+    name: keda
+{{- end -}}
+
 {{- define "liferay-platform.requireAPIServerSources" -}}
 {{- if not .apiServerSources -}}
-{{- fail (printf "The value \"networkPolicy.apiServerSources\" must not be empty when \"operatorApplications.%s.enabled\" is true" .operatorApplication) -}}
+{{- fail (printf "The value \"networkPolicy.apiServerSources\" must not be empty when \"%s.enabled\" is true" .operatorApplication) -}}
 {{- end -}}
 {{- end -}}
 
