@@ -87,19 +87,15 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 						"connection in the Control Panel."));
 			}
 
-			if (_sidecar != null) {
-				_sidecar.stop();
-			}
-
 			Path workPath = Paths.get(PropsValues.LIFERAY_HOME);
 
-			_sidecar = new Sidecar(
+			Sidecar sidecar = new Sidecar(
 				elasticsearchConfigurationWrapper, processExecutor,
 				_resolveHomePath(workPath), this, processFile, workPath);
 
 			ElasticsearchConnection.Builder builder =
 				new ElasticsearchConnection.Builder(
-					() -> new String[] {_sidecar.getNetworkHostAddress()});
+					() -> new String[] {sidecar.getNetworkHostAddress()});
 
 			builder.active(
 				true
@@ -112,9 +108,9 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 			).maxConnectionsPerRoute(
 				elasticsearchConfigurationWrapper.maxConnectionsPerRoute()
 			).postCloseRunnable(
-				_sidecar::stop
+				sidecar::stop
 			).preConnectRunnable(
-				_sidecar::start
+				() -> _restart(sidecar)
 			);
 
 			elasticsearchConnectionManager.addElasticsearchConnection(
@@ -164,6 +160,16 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 		}
 
 		return relativeSidecarHomePath;
+	}
+
+	private synchronized void _restart(Sidecar sidecar) {
+		if (_sidecar != null) {
+			_sidecar.stop();
+		}
+
+		_sidecar = sidecar;
+
+		sidecar.start();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(SidecarManager.class);
