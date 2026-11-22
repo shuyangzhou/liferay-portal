@@ -6,8 +6,10 @@
 package com.liferay.foo.entry.test.util;
 
 import com.liferay.foo.entry.model.FooEntry;
+import com.liferay.foo.entry.model.FooEntryVersion;
 import com.liferay.foo.entry.service.persistence.FooEntryPersistence;
 import com.liferay.foo.entry.service.persistence.FooEntryUtil;
+import com.liferay.foo.entry.service.persistence.FooEntryVersionUtil;
 import com.liferay.portal.kernel.test.util.TransactionTestUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -23,6 +25,16 @@ public class FooEntryTestUtil {
 			_fooEntryPersistence,
 			fooEntryPersistence -> fooEntryPersistence.fetchByPrimaryKey(
 				fooEntryId));
+	}
+
+	public static FooEntryVersion fetchFooEntryVersion(long fooEntryVersionId)
+		throws Exception {
+
+		return TransactionTestUtil.invoke(
+			FooEntryVersionUtil.getPersistence(),
+			fooEntryVersionPersistence ->
+				fooEntryVersionPersistence.fetchByPrimaryKey(
+					fooEntryVersionId));
 	}
 
 	public static String getCall() {

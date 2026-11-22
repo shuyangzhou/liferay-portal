@@ -46,9 +46,18 @@ public class JavaTransactionTestUtilCheck extends BaseJavaTermCheck {
 		String fileContent) {
 
 		if ((javaTerm.getParentJavaClass() != null) ||
-			!fileContent.contains("TransactionTestUtil") ||
 			absolutePath.endsWith("/TransactionTestUtil.java")) {
 
+			return javaTerm.getContent();
+		}
+
+		String className = javaTerm.getName();
+
+		if (className.endsWith("TestUtil")) {
+			_checkPersistenceLookups(fileName, (JavaClass)javaTerm);
+		}
+
+		if (!fileContent.contains("TransactionTestUtil")) {
 			return javaTerm.getContent();
 		}
 
@@ -81,6 +90,36 @@ public class JavaTransactionTestUtilCheck extends BaseJavaTermCheck {
 	@Override
 	protected String[] getCheckableJavaTermNames() {
 		return new String[] {JAVA_CLASS};
+	}
+
+	private void _checkPersistenceLookups(
+		String fileName, JavaClass javaClass) {
+
+		for (JavaTerm childJavaTerm : javaClass.getChildJavaTerms()) {
+			if (!childJavaTerm.isJavaMethod()) {
+				continue;
+			}
+
+			Matcher matcher = _getPersistencePattern.matcher(
+				_stripCommentsAndLiterals(childJavaTerm.getContent()));
+
+			while (matcher.find()) {
+				String testUtilClassName = matcher.group(1) + "TestUtil";
+
+				if (testUtilClassName.equals(javaClass.getName())) {
+					continue;
+				}
+
+				addMessage(
+					fileName,
+					StringBundler.concat(
+						"Test util method \"", childJavaTerm.getName(),
+						"\" reads \"", matcher.group(1),
+						"Util.getPersistence()\", move it into ",
+						testUtilClassName),
+					childJavaTerm.getLineNumber(matcher.start()));
+			}
+		}
 	}
 
 	private void _checkRepeatedCalls(
@@ -360,6 +399,9 @@ public class JavaTransactionTestUtilCheck extends BaseJavaTermCheck {
 		return new String(chars);
 	}
 
+	private static final Pattern _getPersistencePattern = Pattern.compile(
+		"(?<![\\w$])([A-Za-z_$][\\w$]*)Util\\s*\\.\\s*getPersistence\\s*\\(" +
+			"\\s*\\)");
 	private static final Pattern _invokePattern = Pattern.compile(
 		StringBundler.concat(
 			"(?<![\\w$])TransactionTestUtil\\s*\\.\\s*invoke\\s*\\(\\s*",

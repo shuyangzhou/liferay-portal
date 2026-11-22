@@ -18,7 +18,7 @@ JavaDiamondOperatorCheck | .java | Finds cases where Diamond Operator is not use
 JavaDuplicateVariableCheck | .java | Finds variables where a variable with the same name already exists in an extended class. |
 [JavaElseStatementCheck](check/java_else_statement_check.md#javaelsestatementcheck) | .java | Finds unnecessary `else` statements (when the `if` statement ends with a `return` statement). |
 JavaEmptyLineAfterSuperCallCheck | .java | Finds missing empty line after a `super` call. |
-[JavaTransactionTestUtilCheck](check/java_transaction_test_util_check.md#javatransactiontestutilcheck) | .java | Checks that a persistence read made through `TransactionTestUtil.invoke` is kept in one place, either the only test that makes it or a test util method that two or more classes call. |
+[JavaTransactionTestUtilCheck](check/java_transaction_test_util_check.md#javatransactiontestutilcheck) | .java | Checks that a persistence read made through `TransactionTestUtil.invoke` is kept in one place, either the only test that makes it or a test util method that two or more classes call, and that a `*TestUtil` class reads only the persistence of the entity it is named after. |
 [JavaUnusedSourceFormatterChecksCheck](check/java_unused_source_formatter_checks_check.md#javaunusedsourceformattercheckscheck) | .java | Finds `*Check` classes that are not configured. |
 [MapBuilderCheck](check/builder_check.md#buildercheck) | .java, .jsp, .jspf, .jspx, .tag, .tpl, or .vm | Checks that `ConcurrentHashMapBuilder`, `HashMapBuilder`, `LinkedHashMapBuilder` or `TreeMapBuilder` is used when possible. |
 [PortletURLBuilderCheck](check/builder_check.md#buildercheck) | .java, .jsp, .jspf, .jspx, .tag, .tpl, or .vm | Checks that `PortletURLBuilder` is used when possible. |

@@ -1017,7 +1017,7 @@
 		</check>
 		<check name="JavaTransactionTestUtilCheck">
 			<category name="Miscellaneous" />
-			<description name="Checks that a persistence read made through `TransactionTestUtil.invoke` is kept in one place, either the only test that makes it or a test util method that two or more classes call." />
+			<description name="Checks that a persistence read made through `TransactionTestUtil.invoke` is kept in one place, either the only test that makes it or a test util method that two or more classes call, and that a `*TestUtil` class reads only the persistence of the entity it is named after." />
 		</check>
 		<check name="JavaUniqueUpgradeProcessCheck">
 			<category name="Bug Prevention" />
