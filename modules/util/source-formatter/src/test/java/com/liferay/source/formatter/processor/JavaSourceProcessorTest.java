@@ -1561,6 +1561,21 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 	}
 
 	@Test
+	public void testTransactionTestUtil() throws Exception {
+		test(
+			"transactiontestutil/foo-entry-test/src/testIntegration/java/com" +
+				"/liferay/foo/entry/service/test/FooEntryLocalServiceTest." +
+					"testjava");
+		test(
+			"transactiontestutil/foo-entry-test-util/src/main/java/com" +
+				"/liferay/foo/entry/test/util/FooEntryTestUtil.testjava",
+			"Test util method \"getFooEntries\" wraps " +
+				"\"TransactionTestUtil\" call \"FooEntryUtil.findByGroupId\" " +
+					"and no class calls it, remove it",
+			37);
+	}
+
+	@Test
 	public void testTruncateLongLines() throws Exception {
 		test("TruncateLongLines.testjava");
 	}

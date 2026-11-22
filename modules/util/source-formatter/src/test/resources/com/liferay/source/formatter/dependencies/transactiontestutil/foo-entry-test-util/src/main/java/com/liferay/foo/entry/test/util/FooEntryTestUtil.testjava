@@ -1,0 +1,69 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.liferay.foo.entry.test.util;
+
+import com.liferay.foo.entry.model.FooEntry;
+import com.liferay.foo.entry.service.persistence.FooEntryPersistence;
+import com.liferay.foo.entry.service.persistence.FooEntryUtil;
+import com.liferay.portal.kernel.test.util.TransactionTestUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+
+import java.util.List;
+
+/**
+ * @author Shuyang Zhou
+ */
+public class FooEntryTestUtil {
+
+	public static FooEntry fetchFooEntry(long fooEntryId) throws Exception {
+		return TransactionTestUtil.invoke(
+			_fooEntryPersistence,
+			fooEntryPersistence -> fooEntryPersistence.fetchByPrimaryKey(
+				fooEntryId));
+	}
+
+	public static String getCall() {
+
+		// TransactionTestUtil.invoke(FooUtil.getPersistence(), a -> a.b())
+
+		return StringUtil.trim(
+			"TransactionTestUtil.invoke(FooUtil.getPersistence(), a -> a.c())");
+	}
+
+	public static List<FooEntry> getFooEntries(long groupId) throws Exception {
+		return TransactionTestUtil.invoke(
+			FooEntryUtil.getPersistence(),
+			fooEntryPersistence -> fooEntryPersistence.findByGroupId(groupId));
+	}
+
+	public static int getFooEntriesCount(long groupId) throws Exception {
+		return getFooEntriesCount(groupId, 0);
+	}
+
+	public static int getFooEntriesCount(long groupId, int status)
+		throws Exception {
+
+		return TransactionTestUtil.invoke(
+			FooEntryUtil.getPersistence(),
+			fooEntryPersistence -> fooEntryPersistence.countByG_S(
+				groupId, status));
+	}
+
+	public static class FooEntryFinder {
+
+		public List<FooEntry> find(long companyId) throws Exception {
+			return TransactionTestUtil.invoke(
+				FooEntryUtil.getPersistence(),
+				fooEntryPersistence -> fooEntryPersistence.findByCompanyId(
+					companyId));
+		}
+
+	}
+
+	private static final FooEntryPersistence _fooEntryPersistence =
+		FooEntryUtil.getPersistence();
+
+}
