@@ -1,0 +1,27 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.liferay.system.bundle.context.test;
+
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+import org.osgi.framework.BundleContext;
+
+/**
+ * @author Shuyang Zhou
+ */
+public class SystemBundleContextTest {
+
+	@Test
+	public void testGetBundleContext() {
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+		Assert.assertNotNull(bundleContext.getBundle());
+	}
+
+}

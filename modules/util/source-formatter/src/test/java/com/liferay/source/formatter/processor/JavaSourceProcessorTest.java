@@ -1459,6 +1459,32 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 	}
 
 	@Test
+	public void testSystemBundleContext() throws Exception {
+		test("SystemBundleContextPortal.testjava");
+		test(
+			"modules/src/main/java/com/liferay/system/bundle/context" +
+				"/SystemBundleContextComponent.testjava",
+			"Use the BundleContext of the @Activate method instead of " +
+				"SystemBundleUtil.getBundleContext()",
+			20);
+		test(
+			"modules/src/main/java/com/liferay/system/bundle/context" +
+				"/SystemBundleContextUtil.testjava",
+			"Use FrameworkUtil.getBundle(<Class>.class) and its " +
+				"BundleContext instead of SystemBundleUtil.getBundleContext()",
+			21);
+		test(
+			"modules/src/test/java/com/liferay/system/bundle/context" +
+				"/SystemBundleContextUtilTest.testjava");
+		test(
+			"modules/src/testIntegration/java/com/liferay/system/bundle" +
+				"/context/test/SystemBundleContextTest.testjava",
+			"Use BundleContextTestUtil.getBundleContext(<Class>.class) " +
+				"instead of SystemBundleUtil.getBundleContext()",
+			22);
+	}
+
+	@Test
 	public void testTestClassStaticInitializer() throws Exception {
 		test(
 			SourceProcessorTestParameters.create(
