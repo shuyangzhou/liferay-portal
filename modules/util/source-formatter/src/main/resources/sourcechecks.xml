@@ -995,6 +995,11 @@
 			<category name="Styling" />
 			<description name="Checks that `if/else` statement is used instead of `switch` statement." />
 		</check>
+		<check name="JavaSystemBundleContextCheck">
+			<category name="Bug Prevention" />
+			<description name="Finds `SystemBundleUtil.getBundleContext()` in module code that has a `BundleContext` of its own." />
+			<property name="enabled" value="false" />
+		</check>
 		<check name="JavaSystemEventAnnotationCheck">
 			<category name="Bug Prevention" />
 			<description name="Finds missing method `setDeletionSystemEventStagedModelTypes` in class with annotation @SystemEvent." />

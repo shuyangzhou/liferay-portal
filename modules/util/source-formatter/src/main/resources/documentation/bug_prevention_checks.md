@@ -168,6 +168,7 @@ JavaStaticMethodCheck | .java | Finds cases where methods are unnecessarily decl
 JavaStaticVariableDependencyCheck | .java | Checks that static variables in the same class that depend on each other are correctly defined. |
 [JavaStopWatchCheck](check/java_stop_watch_check.md#javastopwatchcheck) | .java | Checks for potential NullPointerException when using `StopWatch`. |
 JavaStringStartsWithSubstringCheck | .java | Checks for uses of `contains` followed by `substring`, which should be `startsWith` instead. |
+[JavaSystemBundleContextCheck](check/java_system_bundle_context_check.md#javasystembundlecontextcheck) | .java | Finds `SystemBundleUtil.getBundleContext()` in module code that has a `BundleContext` of its own. |
 JavaSystemEventAnnotationCheck | .java | Finds missing method `setDeletionSystemEventStagedModelTypes` in class with annotation @SystemEvent. |
 JavaSystemExceptionCheck | .java | Finds unnecessary SystemExceptions. |
 JavaTaglibMethodCheck | .java | Checks that a `*Tag` class has a `set*` and `get*` or `is*` method for each attribute. |

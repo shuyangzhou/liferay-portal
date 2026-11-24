@@ -345,6 +345,7 @@ JavaStringBundlerInitialCapacityCheck | [Performance](performance_checks.md#perf
 JavaStringStartsWithSubstringCheck | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | .java | Checks for uses of `contains` followed by `substring`, which should be `startsWith` instead. |
 JavaStylingCheck | [Styling](styling_checks.md#styling-checks) | .java | Applies rules to enforce consistency in code style. |
 [JavaSwitchCheck](check/java_switch_check.md#javaswitchcheck) | [Styling](styling_checks.md#styling-checks) | .java | Checks that `if/else` statement is used instead of `switch` statement. |
+[JavaSystemBundleContextCheck](check/java_system_bundle_context_check.md#javasystembundlecontextcheck) | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | .java | Finds `SystemBundleUtil.getBundleContext()` in module code that has a `BundleContext` of its own. |
 JavaSystemEventAnnotationCheck | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | .java | Finds missing method `setDeletionSystemEventStagedModelTypes` in class with annotation @SystemEvent. |
 JavaSystemExceptionCheck | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | .java | Finds unnecessary SystemExceptions. |
 JavaTaglibMethodCheck | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | .java | Checks that a `*Tag` class has a `set*` and `get*` or `is*` method for each attribute. |
