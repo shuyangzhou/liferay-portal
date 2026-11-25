@@ -267,6 +267,11 @@ public class ObjectDefinitionLocalServiceWrapper
 	}
 
 	@Override
+	public void deployObjectDefinitions(long companyId) {
+		_objectDefinitionLocalService.deployObjectDefinitions(companyId);
+	}
+
+	@Override
 	public <T> T dslQuery(com.liferay.petra.sql.dsl.query.DSLQuery dslQuery) {
 		return _objectDefinitionLocalService.dslQuery(dslQuery);
 	}
@@ -728,6 +733,11 @@ public class ObjectDefinitionLocalServiceWrapper
 	}
 
 	@Override
+	public void undeployObjectDefinitions(long companyId) {
+		_objectDefinitionLocalService.undeployObjectDefinitions(companyId);
+	}
+
+	@Override
 	public com.liferay.object.model.ObjectDefinition updateClassName(
 			long objectDefinitionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -876,4 +886,4 @@ public class ObjectDefinitionLocalServiceWrapper
 	private ObjectDefinitionLocalService _objectDefinitionLocalService;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1360588635
+// LIFERAY-SERVICE-BUILDER-HASH:-2034825111

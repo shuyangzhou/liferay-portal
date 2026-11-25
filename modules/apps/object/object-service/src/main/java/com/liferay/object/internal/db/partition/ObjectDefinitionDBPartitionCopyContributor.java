@@ -1,44 +1,34 @@
 /**
- * SPDX-FileCopyrightText: (c) 2024 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.object.internal.instance.lifecycle;
+package com.liferay.object.internal.db.partition;
 
 import com.liferay.asset.list.model.AssetListEntryTable;
 import com.liferay.fragment.model.FragmentCompositionTable;
 import com.liferay.fragment.model.FragmentEntryLinkTable;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructureRelTable;
-import com.liferay.object.definition.security.permission.resource.util.ObjectDefinitionResourcePermissionUtil;
 import com.liferay.object.definition.util.ObjectDefinitionUtil;
 import com.liferay.object.model.ObjectDefinition;
-import com.liferay.object.service.ObjectActionLocalService;
 import com.liferay.object.service.ObjectDefinitionLocalService;
-import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.dao.orm.common.SQLTransformer;
-import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener;
-import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
 import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.jdbc.CurrentConnection;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.db.partition.DBPartitionCopyContributor;
 import com.liferay.portal.kernel.model.ClassNameTable;
-import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.PortletPreferencesTable;
 import com.liferay.portal.kernel.model.PortletTable;
 import com.liferay.portal.kernel.model.ResourceActionTable;
 import com.liferay.portal.kernel.model.ResourcePermissionTable;
 import com.liferay.portal.kernel.model.UserNotificationEventTable;
-import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
-import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.language.override.service.PLOEntryLocalService;
-import com.liferay.portal.util.PortalInstances;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstanceTable;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstanceTokenTable;
 import com.liferay.portal.workflow.kaleo.model.KaleoLogTable;
@@ -49,7 +39,6 @@ import com.liferay.template.model.TemplateEntryTable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-import java.util.List;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
@@ -57,26 +46,20 @@ import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author István András Dézsi
+ * @author Luis Ortiz
  */
-@Component(service = PortalInstanceLifecycleListener.class)
-public class CompanyObjectDefinitionPortalInstanceLifecycleListener
-	extends BasePortalInstanceLifecycleListener {
+@Component(service = DBPartitionCopyContributor.class)
+public class ObjectDefinitionDBPartitionCopyContributor
+	implements DBPartitionCopyContributor {
 
 	@Override
-	public void portalInstancePreregistered(Company company) throws Exception {
-		if (!PropsValues.DATABASE_PARTITION_ENABLED ||
-			!PortalInstances.isCompanyInCopyProcess()) {
-
-			return;
-		}
-
+	public void copy(long fromCompanyId, long toCompanyId) throws Exception {
 		Connection connection = _currentConnection.getConnection(
 			InfrastructureUtil.getDataSource());
 
 		for (ObjectDefinition objectDefinition :
 				_objectDefinitionLocalService.getObjectDefinitions(
-					company.getCompanyId(),
-					WorkflowConstants.STATUS_APPROVED)) {
+					toCompanyId, WorkflowConstants.STATUS_APPROVED)) {
 
 			if (objectDefinition.isUnmodifiableSystemObject()) {
 				continue;
@@ -101,73 +84,10 @@ public class CompanyObjectDefinitionPortalInstanceLifecycleListener
 				ObjectDefinitionUtil.getPortletId(className));
 
 			_ploEntryLocalService.deletePLOEntries(
-				company.getCompanyId(), "model.resource." + className);
+				toCompanyId, "model.resource." + className);
 
 			_objectDefinitionLocalService.addOrUpdateObjectDefinitionPLOEntries(
 				objectDefinition);
-		}
-	}
-
-	@Override
-	public void portalInstancePreunregistered(Company company)
-		throws Exception {
-
-		if (!PropsValues.DATABASE_PARTITION_ENABLED) {
-			return;
-		}
-
-		List<ObjectDefinition> objectDefinitions =
-			_objectDefinitionLocalService.getObjectDefinitions(
-				company.getCompanyId(), WorkflowConstants.STATUS_APPROVED);
-
-		for (ObjectDefinition objectDefinition : objectDefinitions) {
-			if (!objectDefinition.isUnmodifiableSystemObject()) {
-
-				// A partition company is deleted by dropping its schema, so
-				// its object definitions are never individually deleted and
-				// nothing else removes their resource actions. Evict them
-				// from the JVM global maps in ResourceActionsImpl while the
-				// partition is still readable, or the portlet to root model
-				// resource bindings leak and a later company reusing a random
-				// portlet name collides with them. See LPS-135983.
-
-				try {
-					ObjectDefinitionResourcePermissionUtil.
-						removeResourceActions(
-							_objectActionLocalService, objectDefinition,
-							_objectFieldLocalService, _resourceActions);
-				}
-				catch (Exception exception) {
-					_log.error(exception);
-				}
-			}
-
-			_objectDefinitionLocalService.undeployObjectDefinition(
-				objectDefinition);
-		}
-	}
-
-	@Override
-	public void portalInstanceRegistered(Company company) throws Exception {
-		if (!PropsValues.DATABASE_PARTITION_ENABLED ||
-			!PortalInstances.isCompanyInCopyProcess()) {
-
-			return;
-		}
-
-		List<ObjectDefinition> objectDefinitions =
-			_objectDefinitionLocalService.getObjectDefinitions(
-				company.getCompanyId(), WorkflowConstants.STATUS_APPROVED);
-
-		for (ObjectDefinition objectDefinition : objectDefinitions) {
-			if (objectDefinition.isActive()) {
-				_objectDefinitionLocalService.deployObjectDefinition(
-					objectDefinition);
-			}
-			else {
-				_objectDefinitionLocalService.deployInactiveObjectDefinition(
-					objectDefinition);
-			}
 		}
 	}
 
@@ -239,9 +159,6 @@ public class CompanyObjectDefinitionPortalInstanceLifecycleListener
 		return sb.toString();
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		CompanyObjectDefinitionPortalInstanceLifecycleListener.class);
-
 	private final Map<String, String> _classNameColumnNamesMap =
 		HashMapBuilder.put(
 			AssetListEntryTable.INSTANCE.getTableName(),
@@ -302,13 +219,7 @@ public class CompanyObjectDefinitionPortalInstanceLifecycleListener
 	private CurrentConnection _currentConnection;
 
 	@Reference
-	private ObjectActionLocalService _objectActionLocalService;
-
-	@Reference
 	private ObjectDefinitionLocalService _objectDefinitionLocalService;
-
-	@Reference
-	private ObjectFieldLocalService _objectFieldLocalService;
 
 	@Reference
 	private PLOEntryLocalService _ploEntryLocalService;
@@ -337,8 +248,5 @@ public class CompanyObjectDefinitionPortalInstanceLifecycleListener
 			ResourcePermissionTable.INSTANCE.name.getName() + StringPool.COMMA +
 				ResourcePermissionTable.INSTANCE.primKey.getName()
 		).build();
-
-	@Reference
-	private ResourceActions _resourceActions;
 
 }

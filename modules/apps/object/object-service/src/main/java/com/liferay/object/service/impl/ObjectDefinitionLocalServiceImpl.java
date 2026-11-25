@@ -793,6 +793,8 @@ public class ObjectDefinitionLocalServiceImpl
 			objectDefinitionId -> InactiveObjectDefinitionDeployerUtil.deploy(
 				_bundleContext, _objectEntryService, _objectFieldLocalService,
 				_objectRelationshipLocalService, objectDefinition));
+
+		_addDeployedObjectDefinition(objectDefinition);
 	}
 
 	@Override
@@ -810,6 +812,37 @@ public class ObjectDefinitionLocalServiceImpl
 				objectDefinitionDeployer,
 				_serviceTrackerMap.getService(objectDefinitionDeployer),
 				objectDefinition);
+		}
+
+		_addDeployedObjectDefinition(objectDefinition);
+	}
+
+	@Override
+	public void deployObjectDefinitions(long companyId) {
+		if (_serviceTrackerMap == null) {
+			return;
+		}
+
+		Map<Long, ObjectDefinition> deployedObjectDefinitions =
+			_deployedObjectDefinitionsMap.getOrDefault(
+				companyId, Collections.emptyMap());
+
+		for (ObjectDefinition objectDefinition :
+				objectDefinitionLocalService.getObjectDefinitions(
+					companyId, WorkflowConstants.STATUS_APPROVED)) {
+
+			if (deployedObjectDefinitions.containsKey(
+					objectDefinition.getObjectDefinitionId())) {
+
+				continue;
+			}
+
+			if (objectDefinition.isActive()) {
+				deployObjectDefinition(objectDefinition);
+			}
+			else {
+				deployInactiveObjectDefinition(objectDefinition);
+			}
 		}
 	}
 
@@ -1149,6 +1182,10 @@ public class ObjectDefinitionLocalServiceImpl
 							_objectFieldLocalService,
 							_objectRelationshipLocalService, objectDefinition));
 				}
+
+				for (ObjectDefinition objectDefinition : objectDefinitions) {
+					_addDeployedObjectDefinition(objectDefinition);
+				}
 			});
 
 		DependencyManagerSyncUtil.registerSyncCallable(
@@ -1173,23 +1210,36 @@ public class ObjectDefinitionLocalServiceImpl
 		try (SafeCloseable safeCloseable = CompanyThreadLocal.lock(
 				objectDefinition.getCompanyId())) {
 
-			_undeploy(
-				_objectDefinitionDeployer,
-				_objectDefinitionDeployerServiceRegistrationsMap,
-				objectDefinition);
-
-			for (ObjectDefinitionDeployer objectDefinitionDeployer :
-					_serviceTrackerMap.keySet()) {
-
-				_undeploy(
-					objectDefinitionDeployer,
-					_serviceTrackerMap.getService(objectDefinitionDeployer),
-					objectDefinition);
-			}
-
-			_unregister(objectDefinition, _inactiveServiceRegistrationsMap);
+			_undeployServiceRegistrations(objectDefinition);
 
 			_invalidatePortalCache(objectDefinition);
+		}
+	}
+
+	@Override
+	public void undeployObjectDefinitions(long companyId) {
+		Map<Long, ObjectDefinition> deployedObjectDefinitions =
+			_deployedObjectDefinitionsMap.remove(companyId);
+
+		if (deployedObjectDefinitions == null) {
+			return;
+		}
+
+		for (ObjectDefinition objectDefinition :
+				deployedObjectDefinitions.values()) {
+
+			if (objectDefinition.isUnmodifiableSystemObject()) {
+				continue;
+			}
+
+			ObjectDefinitionResourcePermissionUtil.removeResourceActions(
+				objectDefinition, _resourceActions);
+
+			try (SafeCloseable safeCloseable = CompanyThreadLocal.lock(
+					companyId)) {
+
+				_undeployServiceRegistrations(objectDefinition);
+			}
 		}
 	}
 
@@ -1408,6 +1458,18 @@ public class ObjectDefinitionLocalServiceImpl
 		}
 
 		super.runSQL(sql);
+	}
+
+	private void _addDeployedObjectDefinition(
+		ObjectDefinition objectDefinition) {
+
+		Map<Long, ObjectDefinition> deployedObjectDefinitions =
+			_deployedObjectDefinitionsMap.computeIfAbsent(
+				objectDefinition.getCompanyId(),
+				companyId -> new ConcurrentHashMap<>());
+
+		deployedObjectDefinitions.put(
+			objectDefinition.getObjectDefinitionId(), objectDefinition);
 	}
 
 	private ObjectDefinition _addObjectDefinition(
@@ -2715,6 +2777,33 @@ public class ObjectDefinitionLocalServiceImpl
 
 		_registerTransactionCallbackForCluster(
 			_undeployObjectDefinitionMethodKey, objectDefinition);
+	}
+
+	private void _undeployServiceRegistrations(
+		ObjectDefinition objectDefinition) {
+
+		_undeploy(
+			_objectDefinitionDeployer,
+			_objectDefinitionDeployerServiceRegistrationsMap, objectDefinition);
+
+		for (ObjectDefinitionDeployer objectDefinitionDeployer :
+				_serviceTrackerMap.keySet()) {
+
+			_undeploy(
+				objectDefinitionDeployer,
+				_serviceTrackerMap.getService(objectDefinitionDeployer),
+				objectDefinition);
+		}
+
+		_unregister(objectDefinition, _inactiveServiceRegistrationsMap);
+
+		Map<Long, ObjectDefinition> deployedObjectDefinitions =
+			_deployedObjectDefinitionsMap.get(objectDefinition.getCompanyId());
+
+		if (deployedObjectDefinitions != null) {
+			deployedObjectDefinitions.remove(
+				objectDefinition.getObjectDefinitionId());
+		}
 	}
 
 	private void _unregister(
@@ -4126,6 +4215,9 @@ public class ObjectDefinitionLocalServiceImpl
 
 	@Reference
 	private CurrentConnection _currentConnection;
+
+	private final Map<Long, Map<Long, ObjectDefinition>>
+		_deployedObjectDefinitionsMap = new ConcurrentHashMap<>();
 
 	@Reference
 	private DepotEntryGroupRelLocalService _depotEntryGroupRelLocalService;
