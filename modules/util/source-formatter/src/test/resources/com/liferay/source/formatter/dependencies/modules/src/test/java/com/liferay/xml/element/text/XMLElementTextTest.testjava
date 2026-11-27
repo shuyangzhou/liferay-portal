@@ -1,0 +1,29 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.liferay.xml.element.text;
+
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+/**
+ * @author Shuyang Zhou
+ */
+public class XMLElementTextTest {
+
+	@Test
+	public void testGetUuid() throws Exception {
+		Document document = SAXReaderUtil.read("<entry><uuid>1</uuid></entry>");
+
+		Element rootElement = document.getRootElement();
+
+		Assert.assertEquals("1", rootElement.elementText("uuid"));
+	}
+
+}

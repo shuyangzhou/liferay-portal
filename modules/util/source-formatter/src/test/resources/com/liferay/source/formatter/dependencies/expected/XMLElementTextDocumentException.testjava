@@ -1,0 +1,31 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.liferay.source.formatter.dependencies;
+
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.DocumentException;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
+
+/**
+ * @author Shuyang Zhou
+ */
+public class XMLElementTextDocumentException {
+
+	public String getAssetEntryUuid(String assetEntryXml) {
+		try {
+			Document document = SAXReaderUtil.read(assetEntryXml);
+
+			Element rootElement = document.getRootElement();
+
+			return rootElement.elementText("asset-entry-uuid");
+		}
+		catch (DocumentException documentException) {
+			throw new IllegalArgumentException(documentException);
+		}
+	}
+
+}

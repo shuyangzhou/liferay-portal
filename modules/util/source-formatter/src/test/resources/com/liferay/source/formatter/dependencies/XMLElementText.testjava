@@ -1,0 +1,54 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.liferay.source.formatter.dependencies;
+
+import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.kernel.xml.SAXReader;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
+
+/**
+ * @author Shuyang Zhou
+ */
+public class XMLElementText {
+
+	public XMLElementText(SAXReader saxReader) {
+		_saxReader = saxReader;
+	}
+
+	public String[] getAssetEntry(String assetEntryXml) throws Exception {
+		Document document = SAXReaderUtil.read(assetEntryXml);
+
+		Element rootElement = document.getRootElement();
+
+		String assetEntryType = rootElement.elementText("asset-entry-type");
+
+		String assetEntryUuid = rootElement.elementText("asset-entry-uuid");
+
+		return new String[] {assetEntryType, assetEntryUuid};
+	}
+
+	public String getProductId(String catalogEntryXml) throws Exception {
+		Document document = _saxReader.read(catalogEntryXml);
+
+		Element rootElement = document.getRootElement();
+
+		return rootElement.element("product-id").getText();
+	}
+
+	public String getValidatedAssetEntryUuid(String assetEntryXml)
+		throws Exception {
+
+		Document document = _saxReader.read(assetEntryXml, true);
+
+		Element rootElement = document.getRootElement();
+
+		return rootElement.elementText("asset-entry-uuid");
+	}
+
+	private final SAXReader _saxReader;
+
+}

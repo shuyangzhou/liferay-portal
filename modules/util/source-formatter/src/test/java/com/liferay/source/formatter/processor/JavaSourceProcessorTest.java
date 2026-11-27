@@ -1771,4 +1771,14 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 		test("UsePassedInVariable.testjava");
 	}
 
+	@Test
+	public void testXMLElementText() throws Exception {
+		test("XMLElementText.testjava");
+		test("XMLElementTextDocument.testjava");
+		test("XMLElementTextDocumentException.testjava");
+		test(
+			"modules/src/test/java/com/liferay/xml/element/text" +
+				"/XMLElementTextTest.testjava");
+	}
+
 }
