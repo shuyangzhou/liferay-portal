@@ -35,6 +35,7 @@ public class KBAdminNavigationDisplayContextTest {
 			Mockito.mock(
 				KBAdminNavigationDisplayContext.class,
 				Mockito.CALLS_REAL_METHODS);
+
 		HttpServletRequest httpServletRequest = Mockito.mock(
 			HttpServletRequest.class);
 
