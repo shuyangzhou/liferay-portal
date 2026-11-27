@@ -437,11 +437,14 @@ public abstract class BasePriceModifierProductGroupResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("externalReferenceCode")) {
+			Serializable externalReferenceCode = parameters.get(
+				"externalReferenceCode");
+
+			if (externalReferenceCode != null) {
 				priceModifierProductGroupUnsafeFunction =
 					priceModifierProductGroup ->
 						postPriceModifierByExternalReferenceCodePriceModifierProductGroup(
-							(String)parameters.get("externalReferenceCode"),
+							(String)externalReferenceCode,
 							priceModifierProductGroup);
 			}
 			else {
@@ -1156,4 +1159,4 @@ public abstract class BasePriceModifierProductGroupResourceImpl
 		LogFactoryUtil.getLog(BasePriceModifierProductGroupResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:317854121
+// LIFERAY-REST-BUILDER-HASH:-1629712323

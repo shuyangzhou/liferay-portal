@@ -10,7 +10,6 @@ import com.liferay.osb.faro.rest.internal.resource.v1_0.Interval;
 import com.liferay.osb.faro.rest.internal.resource.v1_0.TimeRange;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -116,10 +115,19 @@ public class ParameterContainerRequestFilter implements ContainerRequestFilter {
 		MultivaluedMap<String, String> pathParameters,
 		MultivaluedMap<String, String> queryParameters) {
 
-		for (String name : new String[] {"individualSegmentId", "segmentId"}) {
-			_validateId(name, pathParameters.getFirst(name));
-			_validateId(name, queryParameters.getFirst(name));
-		}
+		_validateBoolean("blocked", queryParameters.getFirst("blocked"));
+		_validateBoolean("hidden", queryParameters.getFirst("hidden"));
+		_validateId("accountLifecycleId", pathParameters, queryParameters);
+		_validateId("eventDefinitionId", pathParameters, queryParameters);
+		_validateId("individualSegmentId", pathParameters, queryParameters);
+		_validateId("segmentId", pathParameters, queryParameters);
+		_validateInteger(
+			Integer.MAX_VALUE, "page", queryParameters.getFirst("page"));
+		_validateInteger(100, "pageSize", queryParameters.getFirst("pageSize"));
+		_validateRange(
+			queryParameters.getFirst("rangeEnd"),
+			queryParameters.getFirst("rangeStart"));
+		_validateSort(queryParameters.getFirst("sort"));
 
 		for (Map.Entry<String, String[]> entry : _validValues.entrySet()) {
 			List<String> values = queryParameters.get(entry.getKey());
@@ -132,18 +140,28 @@ public class ParameterContainerRequestFilter implements ContainerRequestFilter {
 				_validateValue(entry.getKey(), entry.getValue(), value);
 			}
 		}
-
-		_validateInteger(
-			Integer.MAX_VALUE, "page", queryParameters.getFirst("page"));
-		_validateInteger(100, "pageSize", queryParameters.getFirst("pageSize"));
-		_validateRange(
-			queryParameters.getFirst("rangeEnd"),
-			queryParameters.getFirst("rangeStart"));
-		_validateSort(queryParameters.getFirst("sort"));
 	}
 
-	private void _validateId(String name, String value) {
-		if ((value != null) && !Validator.isNumber(value)) {
+	private void _validateBoolean(String name, String value) {
+		if ((value != null) && !StringUtil.equalsIgnoreCase(value, "false") &&
+			!StringUtil.equalsIgnoreCase(value, "true")) {
+
+			throw new BadRequestException(
+				StringBundler.concat(
+					"\"", name, "\" must be one of \"false\", \"true\""));
+		}
+	}
+
+	private void _validateId(
+		String name, MultivaluedMap<String, String> pathParameters,
+		MultivaluedMap<String, String> queryParameters) {
+
+		String pathParameter = pathParameters.getFirst(name);
+		String queryParameter = queryParameters.getFirst(name);
+
+		if (((pathParameter != null) && !Validator.isNumber(pathParameter)) ||
+			((queryParameter != null) && !Validator.isNumber(queryParameter))) {
+
 			throw new BadRequestException(
 				StringBundler.concat("\"", name, "\" must be a numeric ID"));
 		}
@@ -174,6 +192,16 @@ public class ParameterContainerRequestFilter implements ContainerRequestFilter {
 	}
 
 	private void _validateRange(String rangeEnd, String rangeStart) {
+		if (((rangeEnd != null) || (rangeStart != null)) &&
+			Objects.equals(
+				_getResourceMethodName(),
+				"getWorkspaceGroupChannelVisitorMetric")) {
+
+			throw new BadRequestException(
+				"\"rangeEnd\" and \"rangeStart\" are not supported by this " +
+					"endpoint");
+		}
+
 		LocalDate rangeEndLocalDate = _toLocalDate("rangeEnd", rangeEnd);
 		LocalDate rangeStartLocalDate = _toLocalDate("rangeStart", rangeStart);
 
@@ -244,10 +272,9 @@ public class ParameterContainerRequestFilter implements ContainerRequestFilter {
 
 				throw new BadRequestException(
 					StringBundler.concat(
-						"\"", fieldName, "\" is not a sortable column. ",
-						"Sortable columns: ",
-						StringUtil.merge(
-							sortableFieldNames, StringPool.COMMA_AND_SPACE)));
+						"\"", fieldName, "\" is not a sortable column. The ",
+						"sortable columns are \"",
+						StringUtil.merge(sortableFieldNames, "\", \""), "\"."));
 			}
 		}
 	}
@@ -258,8 +285,8 @@ public class ParameterContainerRequestFilter implements ContainerRequestFilter {
 		if ((value != null) && !ArrayUtil.contains(validValues, value)) {
 			throw new BadRequestException(
 				StringBundler.concat(
-					"\"", name, "\" must be one of ",
-					StringUtil.merge(validValues, StringPool.COMMA_AND_SPACE)));
+					"\"", name, "\" must be one of \"",
+					StringUtil.merge(validValues, "\", \""), "\""));
 		}
 	}
 
@@ -272,6 +299,9 @@ public class ParameterContainerRequestFilter implements ContainerRequestFilter {
 				"accountId", "accountName", "fromAccountLifecycleStageId",
 				"toAccountLifecycleStageId", "transitionDate"
 			}
+		).put(
+			"getWorkspaceGroupChannelAccountLifecyclesPage",
+			new String[] {"dateModified", "id", "name"}
 		).put(
 			"getWorkspaceGroupChannelAccountsPage",
 			new String[] {
@@ -317,11 +347,21 @@ public class ParameterContainerRequestFilter implements ContainerRequestFilter {
 				"viewsMetric", "visitorsMetric"
 			}
 		).put(
+			"getWorkspaceGroupEventAttributeDefinitionsPage",
+			new String[] {"name"}
+		).put(
+			"getWorkspaceGroupEventDefinitionsPage",
+			new String[] {"displayName", "name"}
+		).put(
 			"getWorkspaceGroupIndividualSegmentMembershipsPage", new String[0]
 		).build();
 	private static final Map<String, String[]> _validValues =
 		HashMapBuilder.put(
 			"activityStatus", new String[] {"ACTIVE", "INACTIVE"}
+		).put(
+			"attributeType", new String[] {"ALL", "GLOBAL", "LOCAL"}
+		).put(
+			"eventType", new String[] {"ALL", "CUSTOM", "DEFAULT"}
 		).put(
 			"interval", _getNames(Interval.values())
 		).put(
@@ -336,6 +376,8 @@ public class ParameterContainerRequestFilter implements ContainerRequestFilter {
 			}
 		).put(
 			"status", new String[] {"ACTIVE", "INACTIVE"}
+		).put(
+			"type", new String[] {"CHANNEL", "REFERRER", "SOURCE_MEDIUM"}
 		).build();
 
 	@Context

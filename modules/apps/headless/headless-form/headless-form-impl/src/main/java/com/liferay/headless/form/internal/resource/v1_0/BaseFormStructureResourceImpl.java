@@ -273,9 +273,10 @@ public abstract class BaseFormStructureResourceImpl
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		if (parameters.containsKey("siteId")) {
-			return getSiteFormStructuresPage(
-				(Long)parameters.get("siteId"), pagination);
+		Serializable siteId = parameters.get("siteId");
+
+		if (siteId != null) {
+			return getSiteFormStructuresPage((Long)siteId, pagination);
 		}
 		else {
 			throw new NotSupportedException(
@@ -891,4 +892,4 @@ public abstract class BaseFormStructureResourceImpl
 		LogFactoryUtil.getLog(BaseFormStructureResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:108613018
+// LIFERAY-REST-BUILDER-HASH:1212378180

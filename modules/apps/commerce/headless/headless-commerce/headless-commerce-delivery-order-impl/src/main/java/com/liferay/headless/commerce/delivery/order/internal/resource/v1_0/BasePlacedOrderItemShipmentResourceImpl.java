@@ -279,9 +279,11 @@ public abstract class BasePlacedOrderItemShipmentResourceImpl
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		if (parameters.containsKey("placedOrderItemId")) {
+		Serializable placedOrderItemId = parameters.get("placedOrderItemId");
+
+		if (placedOrderItemId != null) {
 			return getPlacedOrderItemPlacedOrderItemShipmentsPage(
-				_parseLong((String)parameters.get("placedOrderItemId")));
+				_parseLong((String)placedOrderItemId));
 		}
 		else {
 			throw new NotSupportedException(
@@ -903,4 +905,4 @@ public abstract class BasePlacedOrderItemShipmentResourceImpl
 		LogFactoryUtil.getLog(BasePlacedOrderItemShipmentResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:2049705691
+// LIFERAY-REST-BUILDER-HASH:1466753231

@@ -5,6 +5,7 @@
 
 package com.liferay.sharepoint.rest.repository.internal.helper;
 
+import com.liferay.document.library.kernel.model.DLVersionNumberIncrease;
 import com.liferay.document.library.repository.external.ExtRepositoryFileEntry;
 import com.liferay.document.library.repository.external.ExtRepositoryObject;
 import com.liferay.document.library.repository.external.ExtRepositoryObjectType;
@@ -48,13 +49,16 @@ public class SharepointURLHelper {
 	}
 
 	public String getCheckInFileURL(
-		String extRepositoryFileEntryKey, boolean createMajorVersion,
-		String changeLog) {
+		String extRepositoryFileEntryKey,
+		DLVersionNumberIncrease dlVersionNumberIncrease, String changeLog) {
 
 		int checkInType = 0;
 
-		if (createMajorVersion) {
+		if (dlVersionNumberIncrease == DLVersionNumberIncrease.MAJOR) {
 			checkInType = 1;
+		}
+		else if (dlVersionNumberIncrease == DLVersionNumberIncrease.NONE) {
+			checkInType = 2;
 		}
 
 		return String.format(
@@ -112,7 +116,7 @@ public class SharepointURLHelper {
 
 		return String.format(
 			"%s/_api/web/GetFileByServerRelativePath(decodedUrl='%s')" +
-				"/Versions(%s)",
+				"/Versions(%s)/$value",
 			_siteAbsoluteURL,
 			_encode(extRepositoryFileEntry.getExtRepositoryModelKey()),
 			versionId);
@@ -141,6 +145,24 @@ public class SharepointURLHelper {
 				"/Folders?$select=%s&$expand=%s",
 			_siteAbsoluteURL, _encode(extRepositoryFolderKey),
 			_FIELDS_SELECTED_FOLDER, _FIELDS_EXPANDED_FOLDER);
+	}
+
+	public String getFoldersWithChildrenCountURL(
+		String extRepositoryFolderKey) {
+
+		return String.format(
+			"%s/_api/web/GetFolderByServerRelativePath(decodedUrl='%s')" +
+				"/Folders?$select=%s,Files/Name,Folders/Name&" +
+					"$expand=%s,Files,Folders",
+			_siteAbsoluteURL, _encode(extRepositoryFolderKey),
+			_FIELDS_SELECTED_FOLDER, _FIELDS_EXPANDED_FOLDER);
+	}
+
+	public String getListURL(String libraryPath) {
+		return String.format(
+			"%s/_api/web/GetList('%s/%s')?$select=EnableMinorVersions",
+			_siteAbsoluteURL, HttpComponentsUtil.getPath(_siteAbsoluteURL),
+			_encode(libraryPath));
 	}
 
 	public String getMoveFileURL(

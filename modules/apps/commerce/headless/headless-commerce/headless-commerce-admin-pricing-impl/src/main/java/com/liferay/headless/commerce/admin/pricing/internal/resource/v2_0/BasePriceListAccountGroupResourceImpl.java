@@ -420,11 +420,13 @@ public abstract class BasePriceListAccountGroupResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("externalReferenceCode")) {
+			Serializable externalReferenceCode = parameters.get(
+				"externalReferenceCode");
+
+			if (externalReferenceCode != null) {
 				priceListAccountGroupUnsafeFunction = priceListAccountGroup ->
 					postPriceListByExternalReferenceCodePriceListAccountGroup(
-						(String)parameters.get("externalReferenceCode"),
-						priceListAccountGroup);
+						(String)externalReferenceCode, priceListAccountGroup);
 			}
 			else {
 				throw new NotSupportedException(
@@ -1132,4 +1134,4 @@ public abstract class BasePriceListAccountGroupResourceImpl
 		LogFactoryUtil.getLog(BasePriceListAccountGroupResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:1268480924
+// LIFERAY-REST-BUILDER-HASH:-356971318

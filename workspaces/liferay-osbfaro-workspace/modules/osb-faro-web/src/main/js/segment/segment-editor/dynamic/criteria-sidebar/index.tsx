@@ -1,7 +1,10 @@
 import AttributesCriteriaTabs from './AttributesCriteriaTabs';
+import CampaignsEmptyState from './CampaignsEmptyState';
+import ClayButton from '@clayui/button';
 import ClayDropDown from '@clayui/drop-down';
 import CriteriaSidebarCollapse from './CriteriaSidebarCollapse';
 import CriteriaSidebarSearchBar from './CriteriaSidebarSearchBar';
+import EmptyState from '@clayui/empty-state';
 import EventsCriteriaTabs from './EventsCriteriaTabs';
 import Loading from 'shared/components/Loading';
 import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
@@ -10,10 +13,14 @@ import useCriteriaItemsNavigation from './useCriteriaItemsNavigation';
 import {extractRemoteCriterionEntries} from '../criterion-types/extract';
 import {FieldOwnerTypes, SegmentTypes} from 'shared/util/constants';
 import {getPaginatedSection} from './paginatedSections';
-import {List} from 'immutable';
+import {List, Map} from 'immutable';
 import {Option, Picker} from '@clayui/core';
+import {CAMPAIGN_PROPERTY} from '../utils/properties';
 import {Property, PropertyGroup, PropertySubgroup} from 'shared/util/records';
-import {ReferencedObjectsContext} from '../context/referencedObjects';
+import {
+	EntityType,
+	ReferencedObjectsContext,
+} from '../context/referencedObjects';
 import {translateQueryToCriteria} from '../utils/odata';
 import {usePaginatedProperties} from './usePaginatedProperties';
 
@@ -23,6 +30,7 @@ const EVENTS_PROPERTY_KEY = 'web';
 
 const PROPERTY_KEY_TO_GROUP: Record<string, string> = {
 	account: 'attributes',
+	campaign: 'behavioral',
 	individual: 'attributes',
 	interest: 'intent-signals',
 	organization: 'attributes',
@@ -74,7 +82,7 @@ export default function CriteriaSidebar({
 		string | null
 	>(() => propertyGroupsIList.first()?.propertyKey ?? null);
 
-	const {addProperty} = useContext(ReferencedObjectsContext);
+	const {addEntities, addProperty} = useContext(ReferencedObjectsContext);
 
 	const navigation = useCriteriaItemsNavigation(itemsRef);
 
@@ -84,6 +92,7 @@ export default function CriteriaSidebar({
 
 	const {
 		items: remoteItems,
+		keywords: remoteKeywords,
 		loading: remoteLoading,
 		page: remotePage,
 		setPage: setRemotePage,
@@ -99,6 +108,21 @@ export default function CriteriaSidebar({
 
 	useEffect(() => {
 		remoteItems.forEach((property) => property && addProperty?.(property));
+
+		if (selectedPropertyKey === CAMPAIGN_PROPERTY.propertyKey) {
+			addEntities?.({
+				entityType: EntityType.Campaigns,
+				payload: remoteItems
+					.filter((property) => !!property)
+					.map((property) =>
+						Map({
+							campaignName: property!.label,
+							id: property!.id,
+						})
+					)
+					.toArray(),
+			});
+		}
 	}, [remoteItems]);
 
 	useEffect(() => {
@@ -212,6 +236,37 @@ export default function CriteriaSidebar({
 
 		if (isRemoteSection && remoteLoading) {
 			return <Loading overlay />;
+		}
+
+		if (
+			selectedPropertyKey === CAMPAIGN_PROPERTY.propertyKey &&
+			remoteItems.isEmpty()
+		) {
+			if (remoteKeywords) {
+				return (
+					<div className="empty-message">
+						<EmptyState
+							className="text-center"
+							description={Liferay.Language.get(
+								'review-your-search-and-try-again'
+							)}
+							title={Liferay.Language.get(
+								'no-results-were-found'
+							)}
+						>
+							<ClayButton
+								displayType="secondary"
+								onClick={() => setSearchValue('')}
+								size="sm"
+							>
+								{Liferay.Language.get('clear-search')}
+							</ClayButton>
+						</EmptyState>
+					</div>
+				);
+			}
+
+			return <CampaignsEmptyState />;
 		}
 
 		return (

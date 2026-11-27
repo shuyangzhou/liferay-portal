@@ -11,6 +11,7 @@ import com.liferay.commerce.product.exception.CPInstanceUnitOfMeasureKeyExceptio
 import com.liferay.commerce.product.exception.CPInstanceUnitOfMeasureRateException;
 import com.liferay.commerce.product.exception.CPInstanceUnitOfMeasureSkuException;
 import com.liferay.commerce.product.exception.DuplicateCPInstanceUnitOfMeasureKeyException;
+import com.liferay.commerce.product.exception.NoSuchCPInstanceUnitOfMeasureException;
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.model.CPInstance;
 import com.liferay.commerce.product.model.CPInstanceUnitOfMeasure;
@@ -95,7 +96,44 @@ public class CPInstanceUnitOfMeasureLocalServiceTest {
 	}
 
 	@Test
-	public void testAddCPInstanceUnitOfMeasure() throws PortalException {
+	public void testAddCPInstanceUnitOfMeasure() throws Exception {
+		_testAddCPInstanceUnitOfMeasure();
+		_testAddCPInstanceUnitOfMeasureWithDuplicateKey();
+		_testAddCPInstanceUnitOfMeasureWithPrimary();
+		_testAddCPInstanceUnitOfMeasureWithSpecialCharactersName();
+		_testAddCPInstanceUnitOfMeasureWithoutIncrementalOrderQuantity();
+		_testAddCPInstanceUnitOfMeasureWithoutKey();
+		_testAddCPInstanceUnitOfMeasureWithoutRate();
+		_testAddCPInstanceUnitOfMeasureWithoutSku();
+	}
+
+	@Test
+	public void testUpdateCPInstanceUnitOfMeasure() throws Exception {
+		_testUpdateCPInstanceUnitOfMeasure();
+		_testUpdateCPInstanceUnitOfMeasureWithDifferentCPInstance();
+		_testUpdateCPInstanceUnitOfMeasureWithSpecialCharactersName();
+		_testUpdateCPInstanceUnitOfMeasureWithoutIncrementalOrderQuantity();
+		_testUpdateCPInstanceUnitOfMeasureWithoutKey();
+		_testUpdateCPInstanceUnitOfMeasureWithoutRate();
+	}
+
+	@Rule
+	public final FrutillaRule frutillaRule = new FrutillaRule();
+
+	private CPInstanceUnitOfMeasure _getCpInstanceUnitOfMeasure(
+			CPInstance cpInstance)
+		throws PortalException {
+
+		return _cpInstanceUnitOfMeasureLocalService.addCPInstanceUnitOfMeasure(
+			_user.getUserId(), cpInstance.getCPInstanceId(), true,
+			BigDecimal.TEN, "KEY",
+			HashMapBuilder.put(
+				LocaleUtil.getDefault(), "NAME"
+			).build(),
+			2, BigDecimal.ZERO, true, 0.0, BigDecimal.ONE, cpInstance.getSku());
+	}
+
+	private void _testAddCPInstanceUnitOfMeasure() throws Exception {
 		frutillaRule.scenario(
 			"Create a new Unit of Measure for a CPInstance"
 		).given(
@@ -115,9 +153,127 @@ public class CPInstanceUnitOfMeasureLocalServiceTest {
 		Assert.assertNotNull(_getCpInstanceUnitOfMeasure(cpInstances.get(0)));
 	}
 
-	@Test
-	public void testAddCPInstanceUnitOfMeasureWithSpecialCharactersName()
-		throws PortalException {
+	private void _testAddCPInstanceUnitOfMeasureWithDuplicateKey()
+		throws Exception {
+
+		frutillaRule.scenario(
+			"Create two new Unit of Measure for a CPInstance"
+		).given(
+			"I have a product definition with a default SKU"
+		).when(
+			"two Unit Of Measures are added"
+		).and(
+			"Both Unit Of Measures are set with same key value"
+		).then(
+			"An exception is thrown"
+		).and(
+			"The second Unit Of Measure is not created"
+		);
+
+		CPDefinition cpDefinition = CPTestUtil.addCPDefinitionFromCatalog(
+			_commerceCatalog.getGroupId(), SimpleCPTypeConstants.NAME, true,
+			true);
+
+		List<CPInstance> cpInstances = cpDefinition.getCPInstances();
+
+		CPInstance cpInstance = cpInstances.get(0);
+
+		_getCpInstanceUnitOfMeasure(cpInstance);
+
+		Assert.assertThrows(
+			DuplicateCPInstanceUnitOfMeasureKeyException.class,
+			() -> _getCpInstanceUnitOfMeasure(cpInstance));
+
+		List<CPInstanceUnitOfMeasure> cpInstanceUnitOfMeasures =
+			_cpInstanceUnitOfMeasureLocalService.getCPInstanceUnitOfMeasures(
+				cpInstance.getCPInstanceId(), QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS, null);
+
+		Assert.assertEquals(
+			cpInstanceUnitOfMeasures.toString(), 1,
+			cpInstanceUnitOfMeasures.size());
+	}
+
+	private void _testAddCPInstanceUnitOfMeasureWithPrimary() throws Exception {
+		frutillaRule.scenario(
+			"Create two new Unit of Measure for a CPInstance"
+		).given(
+			"I have a product definition with a default SKU"
+		).when(
+			"two Unit Of Measures are added"
+		).and(
+			"Both Unit Of Measures are set to be primary"
+		).then(
+			"Both Unit Of Measures are created"
+		).and(
+			"Only one is primary."
+		);
+
+		CPDefinition cpDefinition = CPTestUtil.addCPDefinitionFromCatalog(
+			_commerceCatalog.getGroupId(), SimpleCPTypeConstants.NAME, true,
+			true);
+
+		List<CPInstance> cpInstances = cpDefinition.getCPInstances();
+
+		CPInstance cpInstance = cpInstances.get(0);
+
+		Map<Locale, String> nameMap = HashMapBuilder.put(
+			LocaleUtil.getDefault(), "NAME"
+		).build();
+
+		CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure1 =
+			_cpInstanceUnitOfMeasureLocalService.addCPInstanceUnitOfMeasure(
+				_user.getUserId(), cpInstance.getCPInstanceId(), true,
+				BigDecimal.TEN, "KEY1", nameMap, 2, BigDecimal.ZERO, true, 0.0,
+				BigDecimal.ONE, cpInstance.getSku());
+
+		CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure2 =
+			_cpInstanceUnitOfMeasureLocalService.addCPInstanceUnitOfMeasure(
+				_user.getUserId(), cpInstance.getCPInstanceId(), true,
+				BigDecimal.TEN, "KEY2", nameMap, 2, BigDecimal.ZERO, true, 0.0,
+				BigDecimal.ONE, cpInstance.getSku());
+
+		List<CPInstanceUnitOfMeasure> cpInstanceUnitOfMeasures =
+			_cpInstanceUnitOfMeasureLocalService.getCPInstanceUnitOfMeasures(
+				cpInstance.getCPInstanceId(), QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS, null);
+
+		Assert.assertEquals(
+			cpInstanceUnitOfMeasures.toString(), 2,
+			cpInstanceUnitOfMeasures.size());
+
+		int primaryCPInstanceUnitOfMeasuresCount = 0;
+
+		for (CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure :
+				cpInstanceUnitOfMeasures) {
+
+			if (!cpInstanceUnitOfMeasure.isPrimary()) {
+				continue;
+			}
+
+			primaryCPInstanceUnitOfMeasuresCount++;
+		}
+
+		Assert.assertEquals(1, primaryCPInstanceUnitOfMeasuresCount);
+
+		cpInstanceUnitOfMeasure1 =
+			_cpInstanceUnitOfMeasureLocalService.updateCPInstanceUnitOfMeasure(
+				cpInstanceUnitOfMeasure1.getCPInstanceUnitOfMeasureId(),
+				cpInstance.getCPInstanceId(), true, BigDecimal.ONE, "KEY1",
+				nameMap, 2, BigDecimal.ZERO, true, 0.0, BigDecimal.ONE,
+				cpInstance.getSku());
+
+		Assert.assertTrue(cpInstanceUnitOfMeasure1.isPrimary());
+
+		cpInstanceUnitOfMeasure2 =
+			_cpInstanceUnitOfMeasureLocalService.getCPInstanceUnitOfMeasure(
+				cpInstanceUnitOfMeasure2.getCPInstanceUnitOfMeasureId());
+
+		Assert.assertFalse(cpInstanceUnitOfMeasure2.isPrimary());
+	}
+
+	private void _testAddCPInstanceUnitOfMeasureWithSpecialCharactersName()
+		throws Exception {
 
 		frutillaRule.scenario(
 			"Create a new UOM for a CPInstance"
@@ -149,18 +305,13 @@ public class CPInstanceUnitOfMeasureLocalServiceTest {
 				2, BigDecimal.ZERO, true, 0.0, BigDecimal.ONE,
 				cpInstance.getSku());
 
-		Assert.assertNotNull(cpInstanceUnitOfMeasure);
-
 		Assert.assertEquals(
 			"Unit of Measure",
 			cpInstanceUnitOfMeasure.getName(LocaleUtil.getDefault()));
 	}
 
-	@Test(
-		expected = CPInstanceUnitOfMeasureIncrementalOrderQuantityException.class
-	)
-	public void testAddCPInstanceUnitOfMeasureWithoutIncrementalOrderQuantity()
-		throws PortalException {
+	private void _testAddCPInstanceUnitOfMeasureWithoutIncrementalOrderQuantity()
+		throws Exception {
 
 		frutillaRule.scenario(
 			"Create a new Unit of Measure for a CPInstance"
@@ -182,17 +333,17 @@ public class CPInstanceUnitOfMeasureLocalServiceTest {
 
 		CPInstance cpInstance = cpInstances.get(0);
 
-		CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure =
-			_cpInstanceUnitOfMeasureLocalService.addCPInstanceUnitOfMeasure(
-				_user.getUserId(), cpInstance.getCPInstanceId(), true, null,
-				"KEY",
-				HashMapBuilder.put(
-					LocaleUtil.getDefault(), "NOME"
-				).build(),
-				2, BigDecimal.ZERO, true, 0.0, BigDecimal.ONE,
-				cpInstance.getSku());
-
-		Assert.assertNull(cpInstanceUnitOfMeasure);
+		Assert.assertThrows(
+			CPInstanceUnitOfMeasureIncrementalOrderQuantityException.class,
+			() ->
+				_cpInstanceUnitOfMeasureLocalService.addCPInstanceUnitOfMeasure(
+					_user.getUserId(), cpInstance.getCPInstanceId(), true, null,
+					"KEY",
+					HashMapBuilder.put(
+						LocaleUtil.getDefault(), "NAME"
+					).build(),
+					2, BigDecimal.ZERO, true, 0.0, BigDecimal.ONE,
+					cpInstance.getSku()));
 
 		List<CPInstanceUnitOfMeasure> cpInstanceUnitOfMeasures =
 			_cpInstanceUnitOfMeasureLocalService.getCPInstanceUnitOfMeasures(
@@ -202,10 +353,7 @@ public class CPInstanceUnitOfMeasureLocalServiceTest {
 		Assert.assertTrue(cpInstanceUnitOfMeasures.isEmpty());
 	}
 
-	@Test(expected = CPInstanceUnitOfMeasureKeyException.class)
-	public void testAddCPInstanceUnitOfMeasureWithoutKey()
-		throws PortalException {
-
+	private void _testAddCPInstanceUnitOfMeasureWithoutKey() throws Exception {
 		frutillaRule.scenario(
 			"Create a new Unit of Measure for a CPInstance"
 		).given(
@@ -226,17 +374,17 @@ public class CPInstanceUnitOfMeasureLocalServiceTest {
 
 		CPInstance cpInstance = cpInstances.get(0);
 
-		CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure =
-			_cpInstanceUnitOfMeasureLocalService.addCPInstanceUnitOfMeasure(
-				_user.getUserId(), cpInstance.getCPInstanceId(), true,
-				BigDecimal.TEN, null,
-				HashMapBuilder.put(
-					LocaleUtil.getDefault(), "NOME"
-				).build(),
-				2, BigDecimal.ZERO, true, 0.0, BigDecimal.ONE,
-				cpInstance.getSku());
-
-		Assert.assertNull(cpInstanceUnitOfMeasure);
+		Assert.assertThrows(
+			CPInstanceUnitOfMeasureKeyException.class,
+			() ->
+				_cpInstanceUnitOfMeasureLocalService.addCPInstanceUnitOfMeasure(
+					_user.getUserId(), cpInstance.getCPInstanceId(), true,
+					BigDecimal.TEN, null,
+					HashMapBuilder.put(
+						LocaleUtil.getDefault(), "NAME"
+					).build(),
+					2, BigDecimal.ZERO, true, 0.0, BigDecimal.ONE,
+					cpInstance.getSku()));
 
 		List<CPInstanceUnitOfMeasure> cpInstanceUnitOfMeasures =
 			_cpInstanceUnitOfMeasureLocalService.getCPInstanceUnitOfMeasures(
@@ -246,10 +394,7 @@ public class CPInstanceUnitOfMeasureLocalServiceTest {
 		Assert.assertTrue(cpInstanceUnitOfMeasures.isEmpty());
 	}
 
-	@Test(expected = CPInstanceUnitOfMeasureRateException.class)
-	public void testAddCPInstanceUnitOfMeasureWithoutRate()
-		throws PortalException {
-
+	private void _testAddCPInstanceUnitOfMeasureWithoutRate() throws Exception {
 		frutillaRule.scenario(
 			"Create a new Unit of Measure for a CPInstance"
 		).given(
@@ -270,16 +415,16 @@ public class CPInstanceUnitOfMeasureLocalServiceTest {
 
 		CPInstance cpInstance = cpInstances.get(0);
 
-		CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure =
-			_cpInstanceUnitOfMeasureLocalService.addCPInstanceUnitOfMeasure(
-				_user.getUserId(), cpInstance.getCPInstanceId(), true,
-				BigDecimal.TEN, "KEY",
-				HashMapBuilder.put(
-					LocaleUtil.getDefault(), "NOME"
-				).build(),
-				2, BigDecimal.ZERO, true, 0.0, null, cpInstance.getSku());
-
-		Assert.assertNull(cpInstanceUnitOfMeasure);
+		Assert.assertThrows(
+			CPInstanceUnitOfMeasureRateException.class,
+			() ->
+				_cpInstanceUnitOfMeasureLocalService.addCPInstanceUnitOfMeasure(
+					_user.getUserId(), cpInstance.getCPInstanceId(), true,
+					BigDecimal.TEN, "KEY",
+					HashMapBuilder.put(
+						LocaleUtil.getDefault(), "NAME"
+					).build(),
+					2, BigDecimal.ZERO, true, 0.0, null, cpInstance.getSku()));
 
 		List<CPInstanceUnitOfMeasure> cpInstanceUnitOfMeasures =
 			_cpInstanceUnitOfMeasureLocalService.getCPInstanceUnitOfMeasures(
@@ -289,10 +434,7 @@ public class CPInstanceUnitOfMeasureLocalServiceTest {
 		Assert.assertTrue(cpInstanceUnitOfMeasures.isEmpty());
 	}
 
-	@Test(expected = CPInstanceUnitOfMeasureSkuException.class)
-	public void testAddCPInstanceUnitOfMeasureWithoutSku()
-		throws PortalException {
-
+	private void _testAddCPInstanceUnitOfMeasureWithoutSku() throws Exception {
 		frutillaRule.scenario(
 			"Create a new Unit of Measure for a CPInstance"
 		).given(
@@ -313,16 +455,16 @@ public class CPInstanceUnitOfMeasureLocalServiceTest {
 
 		CPInstance cpInstance = cpInstances.get(0);
 
-		CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure =
-			_cpInstanceUnitOfMeasureLocalService.addCPInstanceUnitOfMeasure(
-				_user.getUserId(), cpInstance.getCPInstanceId(), true,
-				BigDecimal.TEN, "KEY",
-				HashMapBuilder.put(
-					LocaleUtil.getDefault(), "NOME"
-				).build(),
-				2, BigDecimal.ZERO, true, 0.0, BigDecimal.ONE, null);
-
-		Assert.assertNull(cpInstanceUnitOfMeasure);
+		Assert.assertThrows(
+			CPInstanceUnitOfMeasureSkuException.class,
+			() ->
+				_cpInstanceUnitOfMeasureLocalService.addCPInstanceUnitOfMeasure(
+					_user.getUserId(), cpInstance.getCPInstanceId(), true,
+					BigDecimal.TEN, "KEY",
+					HashMapBuilder.put(
+						LocaleUtil.getDefault(), "NAME"
+					).build(),
+					2, BigDecimal.ZERO, true, 0.0, BigDecimal.ONE, null));
 
 		List<CPInstanceUnitOfMeasure> cpInstanceUnitOfMeasures =
 			_cpInstanceUnitOfMeasureLocalService.getCPInstanceUnitOfMeasures(
@@ -332,129 +474,7 @@ public class CPInstanceUnitOfMeasureLocalServiceTest {
 		Assert.assertTrue(cpInstanceUnitOfMeasures.isEmpty());
 	}
 
-	@Test(expected = DuplicateCPInstanceUnitOfMeasureKeyException.class)
-	public void testCPInstanceUnitOfMeasureMustHaveUniqueKeyForCPInstance()
-		throws PortalException {
-
-		frutillaRule.scenario(
-			"Create two new Unit of Measure for a CPInstance"
-		).given(
-			"I have a product definition with a default SKU"
-		).when(
-			"two Unit Of Measures is added"
-		).and(
-			"Both Unit Of Measures are set with same key value"
-		).then(
-			"An exception is thrown"
-		).and(
-			"The second Unit Of Measure is not created"
-		);
-
-		CPDefinition cpDefinition = CPTestUtil.addCPDefinitionFromCatalog(
-			_commerceCatalog.getGroupId(), SimpleCPTypeConstants.NAME, true,
-			true);
-
-		List<CPInstance> cpInstances = cpDefinition.getCPInstances();
-
-		CPInstance cpInstance = cpInstances.get(0);
-
-		_getCpInstanceUnitOfMeasure(cpInstance);
-
-		_getCpInstanceUnitOfMeasure(cpInstance);
-
-		List<CPInstanceUnitOfMeasure> cpInstanceUnitOfMeasures =
-			_cpInstanceUnitOfMeasureLocalService.getCPInstanceUnitOfMeasures(
-				cpInstance.getCPInstanceId(), QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS, null);
-
-		Assert.assertEquals(
-			cpInstanceUnitOfMeasures.toString(), 1,
-			cpInstanceUnitOfMeasures.size());
-	}
-
-	@Test
-	public void testOnlyOneCPInstanceUnitOfMeasureIsPrimary()
-		throws PortalException {
-
-		frutillaRule.scenario(
-			"Create two new Unit of Measure for a CPInstance"
-		).given(
-			"I have a product definition with a default SKU"
-		).when(
-			"two Unit Of Measures is added"
-		).and(
-			"Both Unit Of Measures are set to be primary"
-		).then(
-			"Both Unit Of Measures are created"
-		).and(
-			"Only one is primary."
-		);
-
-		CPDefinition cpDefinition = CPTestUtil.addCPDefinitionFromCatalog(
-			_commerceCatalog.getGroupId(), SimpleCPTypeConstants.NAME, true,
-			true);
-
-		List<CPInstance> cpInstances = cpDefinition.getCPInstances();
-
-		CPInstance cpInstance = cpInstances.get(0);
-
-		Map<Locale, String> nameMap = HashMapBuilder.put(
-			LocaleUtil.getDefault(), "NOME"
-		).build();
-
-		CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure1 =
-			_cpInstanceUnitOfMeasureLocalService.addCPInstanceUnitOfMeasure(
-				_user.getUserId(), cpInstance.getCPInstanceId(), true,
-				BigDecimal.TEN, "KEY1", nameMap, 2, BigDecimal.ZERO, true, 0.0,
-				BigDecimal.ONE, cpInstance.getSku());
-
-		CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure2 =
-			_cpInstanceUnitOfMeasureLocalService.addCPInstanceUnitOfMeasure(
-				_user.getUserId(), cpInstance.getCPInstanceId(), true,
-				BigDecimal.TEN, "KEY2", nameMap, 2, BigDecimal.ZERO, true, 0.0,
-				BigDecimal.ONE, cpInstance.getSku());
-
-		List<CPInstanceUnitOfMeasure> cpInstanceUnitOfMeasures =
-			_cpInstanceUnitOfMeasureLocalService.getCPInstanceUnitOfMeasures(
-				cpInstance.getCPInstanceId(), QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS, null);
-
-		Assert.assertEquals(
-			cpInstanceUnitOfMeasures.toString(), 2,
-			cpInstanceUnitOfMeasures.size());
-
-		int primaryCPInstanceUnitOfMeasureCount = 0;
-
-		for (CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure :
-				cpInstanceUnitOfMeasures) {
-
-			if (!cpInstanceUnitOfMeasure.isPrimary()) {
-				continue;
-			}
-
-			primaryCPInstanceUnitOfMeasureCount++;
-		}
-
-		Assert.assertEquals(1, primaryCPInstanceUnitOfMeasureCount);
-
-		cpInstanceUnitOfMeasure1 =
-			_cpInstanceUnitOfMeasureLocalService.updateCPInstanceUnitOfMeasure(
-				cpInstanceUnitOfMeasure1.getCPInstanceUnitOfMeasureId(),
-				cpInstance.getCPInstanceId(), true, BigDecimal.ONE, "KEY1",
-				nameMap, 2, BigDecimal.ZERO, true, 0.0, BigDecimal.ONE,
-				cpInstance.getSku());
-
-		Assert.assertTrue("Primary", cpInstanceUnitOfMeasure1.isPrimary());
-
-		cpInstanceUnitOfMeasure2 =
-			_cpInstanceUnitOfMeasureLocalService.getCPInstanceUnitOfMeasure(
-				cpInstanceUnitOfMeasure2.getCPInstanceUnitOfMeasureId());
-
-		Assert.assertTrue("Primary", !cpInstanceUnitOfMeasure2.isPrimary());
-	}
-
-	@Test
-	public void testUpdateCPInstanceUnitOfMeasure() throws PortalException {
+	private void _testUpdateCPInstanceUnitOfMeasure() throws Exception {
 		frutillaRule.scenario(
 			"Update fields of a Unit of Measure"
 		).given(
@@ -484,7 +504,7 @@ public class CPInstanceUnitOfMeasureLocalServiceTest {
 				cpInstanceUnitOfMeasure.getCPInstanceId(), false,
 				BigDecimal.ONE, "KEY2",
 				HashMapBuilder.put(
-					LocaleUtil.getDefault(), "NOME 2"
+					LocaleUtil.getDefault(), "NAME 2"
 				).build(),
 				3, BigDecimal.ONE, false, 1.0, BigDecimal.TEN,
 				cpInstanceUnitOfMeasure.getSku());
@@ -502,7 +522,7 @@ public class CPInstanceUnitOfMeasureLocalServiceTest {
 
 		Assert.assertEquals("KEY", "KEY2", cpInstanceUnitOfMeasure.getKey());
 		Assert.assertEquals(
-			"Name", "NOME 2",
+			"Name", "NAME 2",
 			cpInstanceUnitOfMeasure.getName(LocaleUtil.getDefault()));
 		Assert.assertEquals(
 			"Precision", 3, cpInstanceUnitOfMeasure.getPrecision());
@@ -515,9 +535,56 @@ public class CPInstanceUnitOfMeasureLocalServiceTest {
 			"Rate", BigDecimal.TEN, cpInstanceUnitOfMeasure.getRate());
 	}
 
-	@Test
-	public void testUpdateCPInstanceUnitOfMeasureWithSpecialCharactersName()
-		throws PortalException {
+	private void _testUpdateCPInstanceUnitOfMeasureWithDifferentCPInstance()
+		throws Exception {
+
+		frutillaRule.scenario(
+			"Update a Unit of Measure with a different SKU"
+		).given(
+			"I have two product definitions with a default SKU"
+		).when(
+			"Unit Of Measure is added to the first SKU"
+		).then(
+			"Update the Unit Of Measure with the second SKU"
+		).and(
+			"An exception is thrown"
+		);
+
+		CPDefinition cpDefinition1 = CPTestUtil.addCPDefinitionFromCatalog(
+			_commerceCatalog.getGroupId(), SimpleCPTypeConstants.NAME, true,
+			true);
+
+		List<CPInstance> cpInstances1 = cpDefinition1.getCPInstances();
+
+		CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure =
+			_getCpInstanceUnitOfMeasure(cpInstances1.get(0));
+
+		CPDefinition cpDefinition2 = CPTestUtil.addCPDefinitionFromCatalog(
+			_commerceCatalog.getGroupId(), SimpleCPTypeConstants.NAME, true,
+			true);
+
+		List<CPInstance> cpInstances2 = cpDefinition2.getCPInstances();
+
+		CPInstance cpInstance2 = cpInstances2.get(0);
+
+		Assert.assertThrows(
+			NoSuchCPInstanceUnitOfMeasureException.class,
+			() ->
+				_cpInstanceUnitOfMeasureLocalService.
+					updateCPInstanceUnitOfMeasure(
+						cpInstanceUnitOfMeasure.getCPInstanceUnitOfMeasureId(),
+						cpInstance2.getCPInstanceId(), true, BigDecimal.TEN,
+						RandomTestUtil.randomString(),
+						HashMapBuilder.put(
+							LocaleUtil.getDefault(),
+							RandomTestUtil.randomString()
+						).build(),
+						2, BigDecimal.ZERO, true, 0.0, BigDecimal.ONE,
+						cpInstanceUnitOfMeasure.getSku()));
+	}
+
+	private void _testUpdateCPInstanceUnitOfMeasureWithSpecialCharactersName()
+		throws Exception {
 
 		frutillaRule.scenario(
 			"Create a new UOM for a CPInstance"
@@ -567,11 +634,8 @@ public class CPInstanceUnitOfMeasureLocalServiceTest {
 			cpInstanceUnitOfMeasure.getName(LocaleUtil.getDefault()));
 	}
 
-	@Test(
-		expected = CPInstanceUnitOfMeasureIncrementalOrderQuantityException.class
-	)
-	public void testUpdateCPInstanceUnitOfMeasureWithoutIncrementalOrderQuantity()
-		throws PortalException {
+	private void _testUpdateCPInstanceUnitOfMeasureWithoutIncrementalOrderQuantity()
+		throws Exception {
 
 		frutillaRule.scenario(
 			"Try to set Incremental Order Quantity to null"
@@ -592,31 +656,38 @@ public class CPInstanceUnitOfMeasureLocalServiceTest {
 
 		List<CPInstance> cpInstances = cpDefinition.getCPInstances();
 
-		CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure =
+		CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure1 =
 			_getCpInstanceUnitOfMeasure(cpInstances.get(0));
 
-		cpInstanceUnitOfMeasure =
-			_cpInstanceUnitOfMeasureLocalService.updateCPInstanceUnitOfMeasure(
-				cpInstanceUnitOfMeasure.getCPInstanceUnitOfMeasureId(),
-				cpInstanceUnitOfMeasure.getCPInstanceId(), true, null,
-				cpInstanceUnitOfMeasure.getKey(),
-				HashMapBuilder.put(
-					LocaleUtil.getDefault(), "NOME"
-				).build(),
-				cpInstanceUnitOfMeasure.getPrecision(), BigDecimal.ONE,
-				cpInstanceUnitOfMeasure.isPrimary(),
-				cpInstanceUnitOfMeasure.getPriority(),
-				cpInstanceUnitOfMeasure.getRate(),
-				cpInstanceUnitOfMeasure.getSku());
+		Assert.assertThrows(
+			CPInstanceUnitOfMeasureIncrementalOrderQuantityException.class,
+			() ->
+				_cpInstanceUnitOfMeasureLocalService.
+					updateCPInstanceUnitOfMeasure(
+						cpInstanceUnitOfMeasure1.getCPInstanceUnitOfMeasureId(),
+						cpInstanceUnitOfMeasure1.getCPInstanceId(), true, null,
+						cpInstanceUnitOfMeasure1.getKey(),
+						HashMapBuilder.put(
+							LocaleUtil.getDefault(), "NAME"
+						).build(),
+						cpInstanceUnitOfMeasure1.getPrecision(), BigDecimal.ONE,
+						cpInstanceUnitOfMeasure1.isPrimary(),
+						cpInstanceUnitOfMeasure1.getPriority(),
+						cpInstanceUnitOfMeasure1.getRate(),
+						cpInstanceUnitOfMeasure1.getSku()));
+
+		CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure2 =
+			_cpInstanceUnitOfMeasureLocalService.getCPInstanceUnitOfMeasure(
+				cpInstanceUnitOfMeasure1.getCPInstanceUnitOfMeasureId());
 
 		Assert.assertEquals(
-			"Incremental order quantity", BigDecimal.TEN,
-			cpInstanceUnitOfMeasure.getIncrementalOrderQuantity());
+			"Incremental order quantity",
+			cpInstanceUnitOfMeasure1.getIncrementalOrderQuantity(),
+			cpInstanceUnitOfMeasure2.getIncrementalOrderQuantity());
 	}
 
-	@Test(expected = CPInstanceUnitOfMeasureKeyException.class)
-	public void testUpdateCPInstanceUnitOfMeasureWithoutKey()
-		throws PortalException {
+	private void _testUpdateCPInstanceUnitOfMeasureWithoutKey()
+		throws Exception {
 
 		frutillaRule.scenario(
 			"Update a Unit of Measure without key"
@@ -638,26 +709,32 @@ public class CPInstanceUnitOfMeasureLocalServiceTest {
 
 		List<CPInstance> cpInstances = cpDefinition.getCPInstances();
 
-		CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure =
+		CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure1 =
 			_getCpInstanceUnitOfMeasure(cpInstances.get(0));
 
-		cpInstanceUnitOfMeasure =
-			_cpInstanceUnitOfMeasureLocalService.updateCPInstanceUnitOfMeasure(
-				cpInstanceUnitOfMeasure.getCPInstanceUnitOfMeasureId(),
-				cpInstanceUnitOfMeasure.getCPInstanceId(), true, BigDecimal.TEN,
-				null,
-				HashMapBuilder.put(
-					LocaleUtil.getDefault(), "NOME"
-				).build(),
-				2, BigDecimal.ZERO, true, 0.0, BigDecimal.ONE,
-				cpInstanceUnitOfMeasure.getSku());
+		Assert.assertThrows(
+			CPInstanceUnitOfMeasureKeyException.class,
+			() ->
+				_cpInstanceUnitOfMeasureLocalService.
+					updateCPInstanceUnitOfMeasure(
+						cpInstanceUnitOfMeasure1.getCPInstanceUnitOfMeasureId(),
+						cpInstanceUnitOfMeasure1.getCPInstanceId(), true,
+						BigDecimal.TEN, null,
+						HashMapBuilder.put(
+							LocaleUtil.getDefault(), "NAME"
+						).build(),
+						2, BigDecimal.ZERO, true, 0.0, BigDecimal.ONE,
+						cpInstanceUnitOfMeasure1.getSku()));
 
-		Assert.assertEquals("Key", "KEY", cpInstanceUnitOfMeasure.getKey());
+		CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure2 =
+			_cpInstanceUnitOfMeasureLocalService.getCPInstanceUnitOfMeasure(
+				cpInstanceUnitOfMeasure1.getCPInstanceUnitOfMeasureId());
+
+		Assert.assertEquals("Key", "KEY", cpInstanceUnitOfMeasure2.getKey());
 	}
 
-	@Test(expected = CPInstanceUnitOfMeasureRateException.class)
-	public void testUpdateCPInstanceUnitOfMeasureWithoutRate()
-		throws PortalException {
+	private void _testUpdateCPInstanceUnitOfMeasureWithoutRate()
+		throws Exception {
 
 		frutillaRule.scenario(
 			"Create a new Unit of Measure for a CPInstance"
@@ -679,38 +756,30 @@ public class CPInstanceUnitOfMeasureLocalServiceTest {
 
 		List<CPInstance> cpInstances = cpDefinition.getCPInstances();
 
-		CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure =
+		CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure1 =
 			_getCpInstanceUnitOfMeasure(cpInstances.get(0));
 
-		cpInstanceUnitOfMeasure =
-			_cpInstanceUnitOfMeasureLocalService.updateCPInstanceUnitOfMeasure(
-				cpInstanceUnitOfMeasure.getCPInstanceUnitOfMeasureId(),
-				cpInstanceUnitOfMeasure.getCPInstanceId(), true, BigDecimal.TEN,
-				"KEY",
-				HashMapBuilder.put(
-					LocaleUtil.getDefault(), "NOME"
-				).build(),
-				2, BigDecimal.ZERO, true, 0.0, null,
-				cpInstanceUnitOfMeasure.getSku());
+		Assert.assertThrows(
+			CPInstanceUnitOfMeasureRateException.class,
+			() ->
+				_cpInstanceUnitOfMeasureLocalService.
+					updateCPInstanceUnitOfMeasure(
+						cpInstanceUnitOfMeasure1.getCPInstanceUnitOfMeasureId(),
+						cpInstanceUnitOfMeasure1.getCPInstanceId(), true,
+						BigDecimal.TEN, "KEY",
+						HashMapBuilder.put(
+							LocaleUtil.getDefault(), "NAME"
+						).build(),
+						2, BigDecimal.ZERO, true, 0.0, null,
+						cpInstanceUnitOfMeasure1.getSku()));
+
+		CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure2 =
+			_cpInstanceUnitOfMeasureLocalService.getCPInstanceUnitOfMeasure(
+				cpInstanceUnitOfMeasure1.getCPInstanceUnitOfMeasureId());
 
 		Assert.assertEquals(
-			"Rate", BigDecimal.ONE, cpInstanceUnitOfMeasure.getRate());
-	}
-
-	@Rule
-	public final FrutillaRule frutillaRule = new FrutillaRule();
-
-	private CPInstanceUnitOfMeasure _getCpInstanceUnitOfMeasure(
-			CPInstance cpInstance)
-		throws PortalException {
-
-		return _cpInstanceUnitOfMeasureLocalService.addCPInstanceUnitOfMeasure(
-			_user.getUserId(), cpInstance.getCPInstanceId(), true,
-			BigDecimal.TEN, "KEY",
-			HashMapBuilder.put(
-				LocaleUtil.getDefault(), "NOME"
-			).build(),
-			2, BigDecimal.ZERO, true, 0.0, BigDecimal.ONE, cpInstance.getSku());
+			"Rate", cpInstanceUnitOfMeasure1.getRate(),
+			cpInstanceUnitOfMeasure2.getRate());
 	}
 
 	private static Company _company;

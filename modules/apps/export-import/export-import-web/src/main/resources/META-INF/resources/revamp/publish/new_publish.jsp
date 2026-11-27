@@ -10,16 +10,6 @@
 <liferay-staging:defineObjects />
 
 <%
-Date lastPublishDate = null;
-
-Group publishSourceGroup = (stagingGroup != null) ? stagingGroup : group;
-
-LayoutSet layoutSet = LayoutSetLocalServiceUtil.fetchLayoutSet(publishSourceGroup.getGroupId(), false);
-
-if (layoutSet != null) {
-	lastPublishDate = ExportImportDateUtil.getLastPublishDate(layoutSet);
-}
-
 portletDisplay.setShowBackIcon(true);
 
 String backURL = ParamUtil.getString(request, "backURL", themeDisplay.getURLCurrent());
@@ -32,7 +22,10 @@ if (liveGroup == null) {
 	liveGroup = group;
 }
 
-PublishProcessDisplayContext publishProcessDisplayContext = new PublishProcessDisplayContext(liveGroup, locale, publishSourceGroup);
+String portletId = ParamUtil.getString(request, "portletId");
+Group publishSourceGroup = (stagingGroup != null) ? stagingGroup : group;
+
+PublishProcessDisplayContext publishProcessDisplayContext = new PublishProcessDisplayContext(liveGroup, locale, ParamUtil.getLong(request, "plid"), portletId, publishSourceGroup);
 
 renderResponse.setTitle(publishProcessDisplayContext.getTitle(scheduledPublishProcessId));
 %>
@@ -55,19 +48,30 @@ renderResponse.setTitle(publishProcessDisplayContext.getTitle(scheduledPublishPr
 			).put(
 				"defaultScheduled", ParamUtil.getBoolean(request, "scheduled")
 			).put(
-				"lastPublishDate", (lastPublishDate == null) ? null : String.valueOf(lastPublishDate.toInstant())
-			).put(
 				"pageTreeModalConfiguration", publishProcessDisplayContext.getPageTreeModalConfiguration()
 			).put(
-				"processesBackURL", HttpComponentsUtil.setParameter(backURL, liferayPortletResponse.getNamespace() + "tabs1", "processes")
+				"processesBackURL",
+				Validator.isNull(portletId) ?
+					PortletURLBuilder.createRenderURL(
+						liferayPortletResponse
+					).setTabs1(
+						"processes"
+					).buildString() : backURL
 			).put(
 				"publishPreviewAPIURL", publishProcessDisplayContext.getPublishPreviewAPIURL()
 			).put(
 				"publishProcessAPIURL", publishProcessDisplayContext.getPublishProcessAPIURL()
 			).put(
+				"remote", liveGroup.isStagedRemotely()
+			).put(
 				"remoteConnection", publishProcessDisplayContext.getRemoteConnectionJSONObject()
 			).put(
-				"scheduledBackURL", HttpComponentsUtil.setParameter(backURL, liferayPortletResponse.getNamespace() + "tabs1", "scheduled")
+				"scheduledBackURL",
+				PortletURLBuilder.createRenderURL(
+					liferayPortletResponse
+				).setTabs1(
+					"scheduled"
+				).buildString()
 			).put(
 				"scheduledPublishProcessAPIURL", publishProcessDisplayContext.getScheduledPublishProcessAPIURL()
 			).put(

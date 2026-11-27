@@ -694,11 +694,13 @@ public abstract class BaseWarehouseItemResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("externalReferenceCode")) {
+			Serializable externalReferenceCode = parameters.get(
+				"externalReferenceCode");
+
+			if (externalReferenceCode != null) {
 				warehouseItemUnsafeFunction = warehouseItem ->
 					postWarehouseByExternalReferenceCodeWarehouseItem(
-						(String)parameters.get("externalReferenceCode"),
-						warehouseItem);
+						(String)externalReferenceCode, warehouseItem);
 			}
 			else {
 				throw new NotSupportedException(
@@ -711,6 +713,9 @@ public abstract class BaseWarehouseItemResourceImpl
 				"updateStrategy", "UPDATE");
 
 			if (StringUtil.equalsIgnoreCase(updateStrategy, "PARTIAL_UPDATE")) {
+				Serializable externalReferenceCode = parameters.get(
+					"externalReferenceCode");
+
 				warehouseItemUnsafeFunction = warehouseItem -> {
 					WarehouseItem getWarehouseItem = null;
 					WarehouseItem persistedWarehouseItem = null;
@@ -724,11 +729,10 @@ public abstract class BaseWarehouseItemResourceImpl
 							getWarehouseItem.getId(), warehouseItem);
 					}
 					catch (NoSuchModelException noSuchModelException) {
-						if (parameters.containsKey("externalReferenceCode")) {
+						if (externalReferenceCode != null) {
 							persistedWarehouseItem =
 								postWarehouseByExternalReferenceCodeWarehouseItem(
-									(String)parameters.get(
-										"externalReferenceCode"),
+									(String)externalReferenceCode,
 									warehouseItem);
 						}
 						else {
@@ -1500,4 +1504,4 @@ public abstract class BaseWarehouseItemResourceImpl
 		LogFactoryUtil.getLog(BaseWarehouseItemResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:-1650959610
+// LIFERAY-REST-BUILDER-HASH:1456945444

@@ -245,6 +245,12 @@ public class SharepointServerResponseConverter {
 		return searchResults;
 	}
 
+	public boolean isMinorVersionEnabled(JSONObject jsonObject) {
+		JSONObject dJSONObject = jsonObject.getJSONObject("d");
+
+		return dJSONObject.getBoolean("EnableMinorVersions");
+	}
+
 	private SharepointFileEntry _createFileEntry(JSONObject jsonObject) {
 		String extRepositoryModelKey = jsonObject.getString(
 			"ServerRelativeUrl");
@@ -322,7 +328,25 @@ public class SharepointServerResponseConverter {
 
 		return (T)new SharepointFolder(
 			extRepositoryModelKey, name, createDate, modifiedDate,
-			effectiveBasePermissionsBits);
+			effectiveBasePermissionsBits,
+			_getChildrenCount(jsonObject, "Files"),
+			_getChildrenCount(jsonObject, "Folders"));
+	}
+
+	private Integer _getChildrenCount(JSONObject jsonObject, String key) {
+		JSONObject childrenJSONObject = jsonObject.getJSONObject(key);
+
+		if (childrenJSONObject == null) {
+			return null;
+		}
+
+		JSONArray resultsJSONArray = childrenJSONObject.getJSONArray("results");
+
+		if (resultsJSONArray == null) {
+			return null;
+		}
+
+		return resultsJSONArray.length();
 	}
 
 	private long _getEffectiveBasePermissionsBits(JSONObject jsonObject) {

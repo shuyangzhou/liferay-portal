@@ -6,13 +6,16 @@
 package com.liferay.portal.workflow.kaleo.internal.runtime.integration.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.lazy.referencing.LazyReferencingThreadLocal;
 import com.liferay.portal.kernel.test.AssertUtils;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -21,17 +24,23 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.DefaultWorkflowNodeSetting;
 import com.liferay.portal.kernel.workflow.NoSuchWorkflowDefinitionException;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionFileException;
 import com.liferay.portal.kernel.workflow.WorkflowException;
 import com.liferay.portal.kernel.workflow.WorkflowNode;
 import com.liferay.portal.kernel.workflow.WorkflowNodeSetting;
 import com.liferay.portal.kernel.workflow.WorkflowTransition;
 import com.liferay.portal.security.script.management.test.util.ScriptManagementConfigurationTestUtil;
+import com.liferay.portal.test.log.LogCapture;
+import com.liferay.portal.test.log.LogEntry;
+import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.portal.workflow.constants.WorkflowDefinitionConstants;
 import com.liferay.portal.workflow.kaleo.definition.exception.KaleoDefinitionValidationException;
 import com.liferay.portal.workflow.kaleo.definition.util.WorkflowDefinitionContentUtil;
+import com.liferay.portal.workflow.kaleo.model.KaleoDefinition;
+import com.liferay.portal.workflow.kaleo.service.KaleoDefinitionLocalService;
 import com.liferay.portal.workflow.manager.WorkflowDefinitionManager;
 
 import java.io.Closeable;
@@ -319,6 +328,122 @@ public class WorkflowDefinitionManagerTest extends BaseWorkflowManagerTestCase {
 							"L_LIFERAY_AI_HUB_MCP_SERVER")
 					).toString()),
 				_createWorkflowNodeSetting("userMessage", "User Message")),
+			workflowNode.getWorkflowNodeSettings());
+	}
+
+	@Test
+	public void testDeployWorkflowDefinitionWithAskAHumanNode()
+		throws Exception {
+
+		AssertUtils.assertFailure(
+			KaleoDefinitionValidationException.class,
+			"The Ask a Human node must have a question",
+			() -> {
+				InputStream inputStream = getResourceInputStream(
+					"ask-a-human-node-with-empty-object-question-workflow-" +
+						"definition.json");
+
+				_workflowDefinitionManager.deployWorkflowDefinition(
+					FileUtil.getBytes(inputStream),
+					TestPropsValues.getCompanyId(),
+					RandomTestUtil.randomString(),
+					"Ask a Human Node With Empty Object Question Workflow " +
+						"Definition",
+					RandomTestUtil.randomString(), TestPropsValues.getUserId());
+			});
+		AssertUtils.assertFailure(
+			KaleoDefinitionValidationException.class,
+			"The Ask a Human node must have a question",
+			() -> {
+				InputStream inputStream = getResourceInputStream(
+					"ask-a-human-node-with-empty-question-workflow-" +
+						"definition.json");
+
+				_workflowDefinitionManager.deployWorkflowDefinition(
+					FileUtil.getBytes(inputStream),
+					TestPropsValues.getCompanyId(),
+					RandomTestUtil.randomString(),
+					"Ask a Human Node With Empty Question Workflow Definition",
+					RandomTestUtil.randomString(), TestPropsValues.getUserId());
+			});
+		AssertUtils.assertFailure(
+			WorkflowDefinitionFileException.class, "Unable to parse definition",
+			() -> {
+				InputStream inputStream = getResourceInputStream(
+					"ask-a-human-node-with-invalid-question-workflow-" +
+						"definition.json");
+
+				_workflowDefinitionManager.deployWorkflowDefinition(
+					FileUtil.getBytes(inputStream),
+					TestPropsValues.getCompanyId(),
+					RandomTestUtil.randomString(),
+					"Ask a Human Node With Invalid Question Workflow " +
+						"Definition",
+					RandomTestUtil.randomString(), TestPropsValues.getUserId());
+			});
+
+		InputStream inputStream = getResourceInputStream(
+			"ask-a-human-node-workflow-definition.json");
+
+		WorkflowDefinition workflowDefinition =
+			_workflowDefinitionManager.deployWorkflowDefinition(
+				FileUtil.getBytes(inputStream), TestPropsValues.getCompanyId(),
+				RandomTestUtil.randomString(),
+				"Ask a Human Node Workflow Definition",
+				RandomTestUtil.randomString(), TestPropsValues.getUserId());
+
+		List<WorkflowNode> workflowNodes =
+			workflowDefinition.getWorkflowNodes();
+
+		WorkflowNode workflowNode = workflowNodes.get(1);
+
+		Assert.assertEquals(
+			WorkflowNode.Type.ASK_A_HUMAN, workflowNode.getType());
+
+		_assertEquals(
+			List.of(
+				_createWorkflowNodeSetting(
+					"inputVariables",
+					JSONUtil.put(
+						JSONUtil.put(
+							"name", "inputVariable"
+						).put(
+							"type", "string"
+						)
+					).toString()),
+				_createWorkflowNodeSetting(
+					"outputVariables",
+					JSONUtil.put(
+						JSONUtil.put(
+							"name", "outputVariable"
+						).put(
+							"type", "string"
+						)
+					).toString()),
+				_createWorkflowNodeSetting(
+					"question",
+					JSONUtil.put(
+						"options",
+						JSONUtil.putAll(
+							JSONUtil.put(
+								"label_i18n", JSONUtil.put("en_US", "Yes")
+							).put(
+								"output", JSONUtil.put("outputVariable", "yes")
+							).put(
+								"transition", "end-1"
+							),
+							JSONUtil.put(
+								"label_i18n", JSONUtil.put("en_US", "No")
+							).put(
+								"output", JSONUtil.put("outputVariable", "no")
+							).put(
+								"transition", "end-2"
+							))
+					).put(
+						"title_i18n", JSONUtil.put("en_US", "Do you approve?")
+					).put(
+						"type", "quick-replies"
+					).toString())),
 			workflowNode.getWorkflowNodeSettings());
 	}
 
@@ -612,6 +737,45 @@ public class WorkflowDefinitionManagerTest extends BaseWorkflowManagerTestCase {
 	public void testGetWorkflowDefinition() throws Exception {
 		_testGetWorkflowDefinition("L_MESSAGE_BOARDS_USER_STATS_MODERATION");
 		_testGetWorkflowDefinition("L_SINGLE_APPROVER");
+	}
+
+	@Test
+	public void testLiberalGetLatestWorkflowDefinitionWithEmptyKaleoDefinition()
+		throws Exception {
+
+		KaleoDefinition kaleoDefinition = null;
+
+		try (SafeCloseable safeCloseable =
+				LazyReferencingThreadLocal.setEnabledWithSafeCloseable(true)) {
+
+			kaleoDefinition =
+				_kaleoDefinitionLocalService.getOrAddEmptyKaleoDefinition(
+					RandomTestUtil.randomString(),
+					RandomTestUtil.randomString(),
+					WorkflowDefinitionConstants.SCOPE_ALL, false,
+					ServiceContextTestUtil.getServiceContext());
+		}
+
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				"com.liferay.portal.workflow.kaleo.runtime.integration." +
+					"internal.KaleoWorkflowModelConverterImpl",
+				LoggerTestUtil.WARN)) {
+
+			WorkflowDefinition workflowDefinition =
+				_workflowDefinitionManager.liberalGetLatestWorkflowDefinition(
+					kaleoDefinition.getCompanyId(), kaleoDefinition.getName());
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertEquals(logEntries.toString(), 0, logEntries.size());
+
+			Assert.assertEquals(
+				kaleoDefinition.getCreateDate(),
+				workflowDefinition.getCreateDate());
+			Assert.assertEquals(
+				kaleoDefinition.getExternalReferenceCode(),
+				workflowDefinition.getExternalReferenceCode());
+		}
 	}
 
 	@Test
@@ -1125,6 +1289,9 @@ public class WorkflowDefinitionManagerTest extends BaseWorkflowManagerTestCase {
 			workflowDefinition.getExternalReferenceCode());
 		Assert.assertTrue(workflowDefinition.isActive());
 	}
+
+	@Inject
+	private KaleoDefinitionLocalService _kaleoDefinitionLocalService;
 
 	@Inject
 	private WorkflowDefinitionManager _workflowDefinitionManager;

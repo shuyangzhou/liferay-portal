@@ -76,7 +76,7 @@ public abstract class BaseImportPreviewResourceImpl
 	 * curl -X 'POST' 'http://localhost:8080/o/export-import/v1.0/asset-libraries/{assetLibraryExternalReferenceCode}/import-preview'  -u 'test@liferay.com:test'
 	 */
 	@io.swagger.v3.oas.annotations.Operation(
-		description = "Uploads a file to import into the specified asset library and retrieves its portlet data handlers and counts. The import process of the same scope imports the user's last uploaded file.",
+		description = "Uploads a file to import into the specified asset library and retrieves its portlet data handlers and counts. Pass the returned ID as the import process's importPreviewId to import this file.",
 		requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @io.swagger.v3.oas.annotations.media.Content(mediaType = "multipart/form-data", schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = PostAssetLibraryImportPreviewRequestBody.class)))
 	)
 	@io.swagger.v3.oas.annotations.Parameters(
@@ -189,7 +189,7 @@ public abstract class BaseImportPreviewResourceImpl
 	 * curl -X 'POST' 'http://localhost:8080/o/export-import/v1.0/import-preview'  -u 'test@liferay.com:test'
 	 */
 	@io.swagger.v3.oas.annotations.Operation(
-		description = "Uploads a file to import into the instance and retrieves its portlet data handlers, counts, and sites. The import process of the same scope imports the user's last uploaded file.",
+		description = "Uploads a file to import into the instance and retrieves its portlet data handlers, counts, and sites. Pass the returned ID as the import process's importPreviewId to import this file.",
 		requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @io.swagger.v3.oas.annotations.media.Content(mediaType = "multipart/form-data", schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = PostImportPreviewRequestBody.class)))
 	)
 	@io.swagger.v3.oas.annotations.Parameters(
@@ -282,7 +282,7 @@ public abstract class BaseImportPreviewResourceImpl
 	 * curl -X 'POST' 'http://localhost:8080/o/export-import/v1.0/sites/{siteExternalReferenceCode}/import-preview'  -u 'test@liferay.com:test'
 	 */
 	@io.swagger.v3.oas.annotations.Operation(
-		description = "Uploads a file to import into the specified site and retrieves its portlet data handlers and counts. The import process of the same scope imports the user's last uploaded file.",
+		description = "Uploads a file to import into the specified site and retrieves its portlet data handlers and counts. Pass the returned ID as the import process's importPreviewId to import this file.",
 		requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @io.swagger.v3.oas.annotations.media.Content(mediaType = "multipart/form-data", schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = PostSiteImportPreviewRequestBody.class)))
 	)
 	@io.swagger.v3.oas.annotations.Parameters(
@@ -417,18 +417,23 @@ public abstract class BaseImportPreviewResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("assetLibraryExternalReferenceCode")) {
+			Serializable assetLibraryExternalReferenceCode = parameters.get(
+				"assetLibraryExternalReferenceCode");
+
+			Serializable siteExternalReferenceCode = parameters.get(
+				"siteExternalReferenceCode");
+
+			if (assetLibraryExternalReferenceCode != null) {
 				importPreviewUnsafeFunction =
 					importPreview -> postAssetLibraryImportPreview(
-						(String)parameters.get(
-							"assetLibraryExternalReferenceCode"),
+						(String)assetLibraryExternalReferenceCode,
 						(String)parameters.get("portletId"),
 						(MultipartBody)null);
 			}
-			else if (parameters.containsKey("siteExternalReferenceCode")) {
+			else if (siteExternalReferenceCode != null) {
 				importPreviewUnsafeFunction =
 					importPreview -> postSiteImportPreview(
-						(String)parameters.get("siteExternalReferenceCode"),
+						(String)siteExternalReferenceCode,
 						(String)parameters.get("portletId"),
 						(String)parameters.get("sitePageExternalReferenceCode"),
 						(MultipartBody)null);
@@ -1138,4 +1143,4 @@ public abstract class BaseImportPreviewResourceImpl
 	}
 
 }
-// LIFERAY-REST-BUILDER-HASH:-1985711980
+// LIFERAY-REST-BUILDER-HASH:-689316636

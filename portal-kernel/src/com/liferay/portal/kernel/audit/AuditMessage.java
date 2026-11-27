@@ -5,22 +5,19 @@
 
 package com.liferay.portal.kernel.audit;
 
-import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalRunMode;
-import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
@@ -89,19 +86,13 @@ public class AuditMessage implements Serializable {
 		_clientHost = auditRequestContext.getClientHost();
 		_clientIP = auditRequestContext.getClientIP();
 		_correlationId = auditRequestContext.getCorrelationId();
-
-		if ((companyId > CompanyConstants.SYSTEM) &&
-			FeatureFlagManagerUtil.isEnabled(companyId, "LPD-96921")) {
-
-			_httpMethod = auditRequestContext.getHttpMethod();
-			_userAgent = auditRequestContext.getUserAgent();
-		}
-
+		_httpMethod = auditRequestContext.getHttpMethod();
 		_requestId = auditRequestContext.getRequestId();
 		_requestIdGenerated = auditRequestContext.isRequestIdGenerated();
 		_serverName = auditRequestContext.getServerName();
 		_serverPort = auditRequestContext.getServerPort();
 		_sessionID = auditRequestContext.getSessionID();
+		_userAgent = auditRequestContext.getUserAgent();
 		_userEmailAddress = auditRequestContext.getRealUserEmailAddress();
 
 		long realUserId = auditRequestContext.getRealUserId();
@@ -114,30 +105,15 @@ public class AuditMessage implements Serializable {
 		}
 
 		if ((realUserId > 0) && (impersonatedUserId != realUserId)) {
-			if (FeatureFlagManagerUtil.isEnabled(companyId, "LPD-96921")) {
-				User impersonatedUser = UserLocalServiceUtil.fetchUser(
-					impersonatedUserId);
+			User impersonatedUser = UserLocalServiceUtil.fetchUser(
+				impersonatedUserId);
 
-				if ((impersonatedUser != null) &&
-					!impersonatedUser.isGuestUser()) {
-
-					_impersonated = true;
-					_impersonatedUserEmailAddress =
-						impersonatedUser.getEmailAddress();
-					_impersonatedUserId = impersonatedUserId;
-					_impersonatedUserName = impersonatedUser.getFullName();
-				}
-			}
-			else if (!_additionalInfoJSONObject.has("doAsUserId")) {
-				_additionalInfoJSONObject.put(
-					"doAsUserEmailAddress",
-					PortalUtil.getUserEmailAddress(impersonatedUserId)
-				).put(
-					"doAsUserId", String.valueOf(impersonatedUserId)
-				).put(
-					"doAsUserName",
-					PortalUtil.getUserName(impersonatedUserId, StringPool.BLANK)
-				);
+			if ((impersonatedUser != null) && !impersonatedUser.isGuestUser()) {
+				_impersonated = true;
+				_impersonatedUserEmailAddress =
+					impersonatedUser.getEmailAddress();
+				_impersonatedUserId = impersonatedUserId;
+				_impersonatedUserName = impersonatedUser.getFullName();
 			}
 		}
 
@@ -307,6 +283,8 @@ public class AuditMessage implements Serializable {
 
 		_timestampDate = GetterUtil.getDate(
 			jsonObject.getString(_TIMESTAMP), _getDateFormat());
+		_userAccountEntryIds = JSONUtil.toLongArray(
+			jsonObject.getJSONArray(_USER_ACCOUNT_ENTRY_IDS));
 
 		if (jsonObject.has(_USER_AGENT)) {
 			_userAgent = jsonObject.getString(_USER_AGENT);
@@ -420,6 +398,10 @@ public class AuditMessage implements Serializable {
 
 	public Date getTimestampDate() {
 		return _timestampDate;
+	}
+
+	public long[] getUserAccountEntryIds() {
+		return _userAccountEntryIds;
 	}
 
 	public String getUserAgent() {
@@ -568,6 +550,10 @@ public class AuditMessage implements Serializable {
 		_timestampDate = timestampDate;
 	}
 
+	public void setUserAccountEntryIds(long[] userAccountEntryIds) {
+		_userAccountEntryIds = userAccountEntryIds;
+	}
+
 	public void setUserAgent(String userAgent) {
 		_userAgent = userAgent;
 	}
@@ -650,6 +636,15 @@ public class AuditMessage implements Serializable {
 			dateFormat.format(
 				(_timestampDate != null) ? _timestampDate : new Date())
 		).put(
+			_USER_ACCOUNT_ENTRY_IDS,
+			() -> {
+				if (ArrayUtil.isEmpty(_userAccountEntryIds)) {
+					return null;
+				}
+
+				return JSONUtil.putAll(ArrayUtil.toArray(_userAccountEntryIds));
+			}
+		).put(
 			_USER_AGENT, _userAgent
 		).put(
 			_USER_EMAIL_ADDRESS, _userEmailAddress
@@ -726,6 +721,8 @@ public class AuditMessage implements Serializable {
 
 	private static final String _TIMESTAMP = "timestamp";
 
+	private static final String _USER_ACCOUNT_ENTRY_IDS = "userAccountEntryIds";
+
 	private static final String _USER_AGENT = "userAgent";
 
 	private static final String _USER_EMAIL_ADDRESS = "userEmailAddress";
@@ -766,6 +763,7 @@ public class AuditMessage implements Serializable {
 	private int _serverPort;
 	private String _sessionID;
 	private Date _timestampDate;
+	private long[] _userAccountEntryIds = new long[0];
 	private String _userAgent;
 	private String _userEmailAddress;
 	private long _userId = -1;

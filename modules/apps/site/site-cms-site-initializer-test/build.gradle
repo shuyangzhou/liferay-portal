@@ -1,6 +1,7 @@
 dependencies {
 	testIntegrationImplementation group: "org.skyscreamer", name: "jsonassert", version: "1.2.3"
 	testIntegrationImplementation project(":apps:asset:asset-test-util")
+	testIntegrationImplementation project(":apps:batch-engine:batch-engine-test-util")
 	testIntegrationImplementation project(":apps:bulk:bulk-selection-api")
 	testIntegrationImplementation project(":apps:comment:comment-api")
 	testIntegrationImplementation project(":apps:depot:depot-api")
@@ -41,6 +42,7 @@ dependencies {
 	testIntegrationImplementation project(":apps:site:site-cms-site-initializer")
 	testIntegrationImplementation project(":apps:site:site-cms-site-initializer-api")
 	testIntegrationImplementation project(":apps:static:portal:portal-upgrade-api")
+	testIntegrationImplementation project(":apps:subscription:subscription-api")
 	testIntegrationImplementation project(":apps:translation:translation-api")
 	testIntegrationImplementation project(":apps:trash:trash-api")
 	testIntegrationImplementation project(":test:arquillian-extension-junit-bridge")

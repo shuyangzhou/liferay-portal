@@ -272,9 +272,10 @@ public abstract class BaseSegmentResourceImpl
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		if (parameters.containsKey("siteId")) {
-			return getSiteSegmentsPage(
-				(Long)parameters.get("siteId"), pagination);
+		Serializable siteId = parameters.get("siteId");
+
+		if (siteId != null) {
+			return getSiteSegmentsPage((Long)siteId, pagination);
 		}
 		else {
 			throw new NotSupportedException(
@@ -881,4 +882,4 @@ public abstract class BaseSegmentResourceImpl
 		LogFactoryUtil.getLog(BaseSegmentResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:-1346883847
+// LIFERAY-REST-BUILDER-HASH:-1843397713

@@ -886,9 +886,11 @@ public abstract class BaseWorkflowTaskResourceImpl
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		if (parameters.containsKey("workflowInstanceId")) {
+		Serializable workflowInstanceId = parameters.get("workflowInstanceId");
+
+		if (workflowInstanceId != null) {
 			return getWorkflowInstanceWorkflowTasksPage(
-				_parseLong((String)parameters.get("workflowInstanceId")),
+				_parseLong((String)workflowInstanceId),
 				_parseBoolean((String)parameters.get("completed")), pagination);
 		}
 		else {
@@ -1520,4 +1522,4 @@ public abstract class BaseWorkflowTaskResourceImpl
 		LogFactoryUtil.getLog(BaseWorkflowTaskResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:1356454955
+// LIFERAY-REST-BUILDER-HASH:-1985559691

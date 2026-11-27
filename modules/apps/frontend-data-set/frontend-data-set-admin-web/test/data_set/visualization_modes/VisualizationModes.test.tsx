@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {render, screen, within} from '@testing-library/react';
+import {render, screen, waitFor, within} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import fetch from 'jest-fetch-mock';
 import React from 'react';
@@ -258,18 +258,19 @@ describe('VisualizationModes', () => {
 		expect(within(getRow('cards')).getByRole('switch')).toBeEnabled();
 	});
 
-	it('warns about enabled visualization modes without fields', async () => {
+	it('shows whether the default visualization modes have fields mapped', async () => {
 		renderVisualizationModes();
 
 		expect(
-			await within(getRow('cards')).findByText('no-fields-assigned')
+			await within(getRow('cards')).findByText('not-mapped')
 		).toBeVisible();
 
+		expect(within(getRow('table')).getByText('mapped')).toBeVisible();
 		expect(
-			within(getRow('table')).queryByText('no-fields-assigned')
+			within(getRow('Timeline')).queryByText('mapped')
 		).not.toBeInTheDocument();
 		expect(
-			within(getRow('Timeline')).queryByText('no-fields-assigned')
+			within(getRow('Timeline')).queryByText('not-mapped')
 		).not.toBeInTheDocument();
 	});
 
@@ -306,5 +307,283 @@ describe('VisualizationModes', () => {
 				'this-visualization-mode-is-provided-by-a-client-extension-and-receives-all-the-fields-of-each-item'
 			)
 		).toBeVisible();
+	});
+
+	describe('with a client extension that declares sections', () => {
+		const SECTIONS = JSON.stringify([
+			{label: 'Title', name: 'title', required: true},
+			{label: 'Image', name: 'image'},
+		]);
+
+		const renderWithSections = (visualizationModes?: string) =>
+			renderVisualizationModes({
+				dataSet: {...DATA_SET, visualizationModes},
+				fieldTreeItems: [
+					{label: 'Name', name: 'name'},
+					{label: 'Photo', name: 'photo'},
+				],
+				visualizationModeClientExtensions: [
+					{
+						externalReferenceCode: 'LXC:timeline',
+						icon: 'date',
+						name: 'Timeline',
+						sections: SECTIONS,
+					},
+				],
+			} as any);
+
+		it('shows the field mapping of the visualization mode as not mapped', async () => {
+			renderWithSections(
+				JSON.stringify([{enabled: true, name: 'LXC:timeline'}])
+			);
+
+			expect(
+				within(getRow('Timeline')).getByText('not-mapped')
+			).toBeVisible();
+		});
+
+		it('shows the field mapping of a disabled visualization mode', async () => {
+			renderWithSections(
+				JSON.stringify([{enabled: false, name: 'LXC:timeline'}])
+			);
+
+			expect(
+				within(getRow('Timeline')).getByText('not-mapped')
+			).toBeVisible();
+		});
+
+		it('shows the field mapping as mapped once each required element has a field', async () => {
+			renderWithSections(
+				JSON.stringify([
+					{
+						configuration: {
+							sectionFields: {image: 'image', title: 'title'},
+						},
+						enabled: true,
+						name: 'LXC:timeline',
+					},
+				])
+			);
+
+			expect(
+				within(getRow('Timeline')).getByText('mapped')
+			).toBeVisible();
+		});
+
+		it('shows a field mapping table instead of the generic message', async () => {
+			renderWithSections();
+
+			await userEvent.click(screen.getByText('Timeline'));
+
+			expect(screen.getByText('Title')).toBeInTheDocument();
+			expect(screen.getByText('Image')).toBeInTheDocument();
+			expect(screen.getAllByText('not-assigned')).toHaveLength(2);
+			expect(
+				screen.queryByText(
+					'this-visualization-mode-is-provided-by-a-client-extension-and-receives-all-the-fields-of-each-item'
+				)
+			).not.toBeInTheDocument();
+			expect(
+				screen.getByText(
+					'this-visualization-mode-will-not-be-shown-until-you-assign-a-field-to-each-required-item-element'
+				)
+			).toBeVisible();
+		});
+
+		describe('when assigning a field in a modal', () => {
+			beforeEach(() => {
+				(Liferay.on as jest.Mock).mockReturnValue({detach: jest.fn()});
+			});
+
+			afterEach(() => {
+				(Liferay.on as jest.Mock).mockReturnValue(undefined);
+			});
+
+			it('persists the field assigned manually to a section and keeps the rest of the configuration', async () => {
+				renderWithSections(
+					JSON.stringify([
+						{
+							configuration: {other: 'kept'},
+							enabled: true,
+							name: 'LXC:timeline',
+						},
+					])
+				);
+
+				await userEvent.click(screen.getByText('Timeline'));
+				await userEvent.click(
+					screen.getAllByRole('button', {name: 'assign-field'})[0]
+				);
+				await userEvent.click(
+					screen.getByRole('menuitem', {
+						name: 'assign-field-manually',
+					})
+				);
+				await userEvent.type(
+					await screen.findByPlaceholderText('type-field-here'),
+					'name'
+				);
+				await userEvent.click(
+					screen.getByRole('button', {name: 'add'})
+				);
+
+				await waitFor(() =>
+					expect(
+						JSON.parse(patchRequestBodies[0].visualizationModes)
+					).toEqual([
+						{
+							configuration: {
+								other: 'kept',
+								sectionFields: {title: 'name'},
+							},
+							enabled: true,
+							name: 'LXC:timeline',
+						},
+					])
+				);
+			});
+		});
+
+		it('clears the field assigned to a section', async () => {
+			renderWithSections(
+				JSON.stringify([
+					{
+						configuration: {sectionFields: {title: 'name'}},
+						enabled: true,
+						name: 'LXC:timeline',
+					},
+				])
+			);
+
+			await userEvent.click(screen.getByText('Timeline'));
+			await userEvent.click(
+				screen.getByRole('button', {name: 'view-x-options'})
+			);
+			await userEvent.click(
+				screen.getByRole('menuitem', {name: 'clear-assignment'})
+			);
+
+			await waitFor(() =>
+				expect(
+					JSON.parse(patchRequestBodies[0].visualizationModes)
+				).toEqual([
+					{
+						configuration: {sectionFields: {}},
+						enabled: true,
+						name: 'LXC:timeline',
+					},
+				])
+			);
+		});
+
+		it('keeps the fields assigned to the sections when toggling the visualization mode', async () => {
+			renderWithSections(
+				JSON.stringify([
+					{
+						configuration: {sectionFields: {title: 'name'}},
+						enabled: true,
+						name: 'LXC:timeline',
+					},
+				])
+			);
+
+			await userEvent.click(
+				within(getRow('Timeline')).getByRole('switch')
+			);
+
+			await waitFor(() =>
+				expect(
+					JSON.parse(patchRequestBodies[0].visualizationModes)
+				).toContainEqual({
+					configuration: {sectionFields: {title: 'name'}},
+					enabled: false,
+					name: 'LXC:timeline',
+				})
+			);
+		});
+
+		it('ignores a second save while one is pending', async () => {
+			let releaseResponse: Function = () => {};
+
+			const pendingResponse = new Promise((resolve) => {
+				releaseResponse = resolve;
+			});
+
+			fetch.mockResponse(async (request) => {
+				if (request.method === 'PATCH') {
+					const body = await request.json();
+
+					patchRequestBodies.push(body);
+
+					await pendingResponse;
+
+					return JSON.stringify({...DATA_SET, ...body});
+				}
+
+				return JSON.stringify({...DATA_SET});
+			});
+
+			renderWithSections(
+				JSON.stringify([
+					{
+						configuration: {
+							sectionFields: {image: 'photo', title: 'name'},
+						},
+						enabled: true,
+						name: 'LXC:timeline',
+					},
+				])
+			);
+
+			await userEvent.click(screen.getByText('Timeline'));
+
+			const [titleOptions, imageOptions] = screen.getAllByRole('button', {
+				name: 'view-x-options',
+			});
+
+			await userEvent.click(titleOptions);
+			await userEvent.click(
+				screen.getByRole('menuitem', {name: 'clear-assignment'})
+			);
+
+			await waitFor(() => expect(patchRequestBodies).toHaveLength(1));
+
+			await userEvent.click(imageOptions);
+			await userEvent.click(
+				screen.getByRole('menuitem', {name: 'clear-assignment'})
+			);
+
+			expect(patchRequestBodies).toHaveLength(1);
+
+			releaseResponse();
+
+			await waitFor(() =>
+				expect(DEFAULT_PROPS.onDataSetUpdate).toHaveBeenCalled()
+			);
+
+			expect(patchRequestBodies).toHaveLength(1);
+		});
+
+		it('flags assigned sections the client extension no longer declares', async () => {
+			renderWithSections(
+				JSON.stringify([
+					{
+						configuration: {
+							sectionFields: {removed: 'name', title: 'name'},
+						},
+						enabled: true,
+						name: 'LXC:timeline',
+					},
+				])
+			);
+
+			await userEvent.click(screen.getByText('Timeline'));
+
+			expect(
+				screen.getByText(
+					'the-client-extension-no-longer-declares-these-item-elements-x'
+				)
+			).toBeVisible();
+		});
 	});
 });

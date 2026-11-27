@@ -207,6 +207,7 @@ import com.liferay.portal.language.override.service.PLOEntryLocalService;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
+import com.liferay.portal.test.rule.FeatureFlag;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -1547,6 +1548,29 @@ public class ObjectDefinitionLocalServiceTest {
 
 		// Depot scope
 
+		AssertUtils.assertFailure(
+			ObjectDefinitionScopeException.class,
+			"An object definition can only be linked to a workflow " +
+				"definition within the same scope",
+			() -> _objectDefinitionLocalService.addCustomObjectDefinition(
+				null, TestPropsValues.getUserId(), 0, null, null, true, false,
+				true, true, true, false, false, false, false, null,
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				ObjectDefinitionTestUtil.getRandomName(), null, null,
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				true, ObjectDefinitionConstants.SCOPE_DEPOT,
+				ObjectDefinitionConstants.STORAGE_TYPE_DEFAULT,
+				Collections.singletonList(
+					new ObjectDefinitionSettingBuilder(
+					).name(
+						ObjectDefinitionSettingConstants.NAME_ACCEPT_ALL_GROUPS
+					).value(
+						StringPool.TRUE
+					).build()),
+				Collections.emptyList(),
+				_createWorkflowDefinitionLinks(
+					depotEntry1.getGroupId(), group.getGroupId()),
+				new ServiceContext()));
 		AssertUtils.assertFailure(
 			ObjectDefinitionScopeException.class,
 			"An object definition can only be linked to a workflow " +
@@ -4110,6 +4134,7 @@ public class ObjectDefinitionLocalServiceTest {
 		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 	}
 
+	@FeatureFlag("LPD-108620")
 	@Test
 	public void testUpdateCustomObjectDefinition() throws Exception {
 		_assertObjectDefinitionValidationExceptionValidationErrors(
@@ -4155,6 +4180,54 @@ public class ObjectDefinitionLocalServiceTest {
 							"Test"
 						).build()),
 					Collections.emptyList(), new ServiceContext());
+			});
+
+		_assertObjectDefinitionValidationExceptionValidationErrors(
+			List.of(
+				ObjectDefinitionAccountEntryRestrictedObjectFieldIdException.
+					class.getName()),
+			() -> {
+				ObjectDefinition childObjectDefinition =
+					ObjectDefinitionTestUtil.addCustomObjectDefinition();
+
+				ObjectRelationship objectRelationship =
+					ObjectRelationshipTestUtil.addObjectRelationship(
+						_objectRelationshipLocalService,
+						ObjectDefinitionTestUtil.addCustomObjectDefinition(),
+						childObjectDefinition,
+						ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
+						StringUtil.randomId(),
+						ObjectRelationshipConstants.TYPE_ONE_TO_ONE);
+
+				_objectDefinitionLocalService.updateCustomObjectDefinition(
+					childObjectDefinition.getExternalReferenceCode(),
+					childObjectDefinition.getObjectDefinitionId(),
+					objectRelationship.getObjectFieldId2(),
+					childObjectDefinition.getDescriptionObjectFieldId(),
+					childObjectDefinition.getObjectFolderId(),
+					childObjectDefinition.getTitleObjectFieldId(), true,
+					childObjectDefinition.isActive(), null, null,
+					childObjectDefinition.isEnableCategorization(),
+					childObjectDefinition.isEnableComments(),
+					childObjectDefinition.isEnableFormContainer(),
+					childObjectDefinition.isEnableFriendlyURLCustomization(),
+					childObjectDefinition.isEnableIndexSearch(),
+					childObjectDefinition.isEnableObjectEntryDraft(),
+					childObjectDefinition.isEnableObjectEntryHistory(),
+					childObjectDefinition.isEnableObjectEntrySchedule(),
+					childObjectDefinition.isEnableObjectEntrySubscription(),
+					childObjectDefinition.isEnableObjectEntryVersioning(),
+					childObjectDefinition.getFriendlyURLSeparator(),
+					childObjectDefinition.getLabelMap(),
+					childObjectDefinition.getShortName(),
+					childObjectDefinition.getPanelAppOrder(),
+					childObjectDefinition.getPanelCategoryKey(),
+					childObjectDefinition.isPortlet(),
+					childObjectDefinition.getPluralLabelMap(),
+					childObjectDefinition.getScope(),
+					childObjectDefinition.getStatus(), Collections.emptyList(),
+					Collections.emptyList(), Collections.emptyList(),
+					new ServiceContext());
 			});
 
 		ObjectDefinition objectDefinition =
@@ -5566,18 +5639,23 @@ public class ObjectDefinitionLocalServiceTest {
 	}
 
 	private List<WorkflowDefinitionLink> _createWorkflowDefinitionLinks(
-			long groupId)
+			long... groupIds)
 		throws Exception {
 
-		WorkflowDefinitionLink workflowDefinitionLink =
-			_workflowDefinitionLinkLocalService.createWorkflowDefinitionLink(
-				0L);
+		return TransformUtil.transformToList(
+			groupIds,
+			groupId -> {
+				WorkflowDefinitionLink workflowDefinitionLink =
+					_workflowDefinitionLinkLocalService.
+						createWorkflowDefinitionLink(0L);
 
-		workflowDefinitionLink.setGroupId(groupId);
-		workflowDefinitionLink.setUserId(TestPropsValues.getUserId());
-		workflowDefinitionLink.setWorkflowDefinitionName("Single Approver");
+				workflowDefinitionLink.setGroupId(groupId);
+				workflowDefinitionLink.setUserId(TestPropsValues.getUserId());
+				workflowDefinitionLink.setWorkflowDefinitionName(
+					"Single Approver");
 
-		return Collections.singletonList(workflowDefinitionLink);
+				return workflowDefinitionLink;
+			});
 	}
 
 	private long _getClassNameId(String className) throws Exception {

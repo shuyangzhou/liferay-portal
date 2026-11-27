@@ -17,6 +17,7 @@ import com.liferay.object.rest.test.util.ObjectEntryTestUtil;
 import com.liferay.object.rest.test.util.ObjectRelationshipTestUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -2285,8 +2286,71 @@ public class ObjectEntryResourceSortTest
 		}
 	}
 
+	@FeatureFlag("LPD-108620")
+	@Test
+	public void testSortByOneToOneRelationshipCustomObjectFields()
+		throws Exception {
+
+		ObjectDefinition parentObjectDefinition = getObjectDefinition2();
+
+		String parentEndpoint = getEndpoint(
+			parentObjectDefinition, testGroupId);
+
+		JSONObject parentJSONObject1 = HTTPTestUtil.invokeToJSONObject(
+			JSONUtil.put(
+				OBJECT_FIELD_NAME_TEXT, "a" + RandomTestUtil.randomString()
+			).toString(),
+			parentEndpoint, Http.Method.POST);
+		JSONObject parentJSONObject2 = HTTPTestUtil.invokeToJSONObject(
+			JSONUtil.put(
+				OBJECT_FIELD_NAME_TEXT, "b" + RandomTestUtil.randomString()
+			).toString(),
+			parentEndpoint, Http.Method.POST);
+
+		ObjectDefinition childObjectDefinition = getObjectDefinition1();
+
+		String childEndpoint = getEndpoint(childObjectDefinition, testGroupId);
+
+		JSONObject childJSONObject1 = HTTPTestUtil.invokeToJSONObject(
+			JSONUtil.put(
+				OBJECT_FIELD_NAME_TEXT, RandomTestUtil.randomString()
+			).toString(),
+			childEndpoint, Http.Method.POST);
+		JSONObject childJSONObject2 = HTTPTestUtil.invokeToJSONObject(
+			JSONUtil.put(
+				OBJECT_FIELD_NAME_TEXT, RandomTestUtil.randomString()
+			).toString(),
+			childEndpoint, Http.Method.POST);
+
+		ObjectRelationship objectRelationship =
+			ObjectRelationshipTestUtil.addObjectRelationship(
+				parentObjectDefinition, childObjectDefinition,
+				TestPropsValues.getUserId(),
+				ObjectRelationshipConstants.TYPE_ONE_TO_ONE);
+
+		try {
+			_relateObjectEntries(
+				parentEndpoint, parentJSONObject1, objectRelationship,
+				childJSONObject2);
+			_relateObjectEntries(
+				parentEndpoint, parentJSONObject2, objectRelationship,
+				childJSONObject1);
+
+			_testSortByFieldNames(
+				childEndpoint, childJSONObject2, childJSONObject1,
+				objectRelationship.getName() + "/" + OBJECT_FIELD_NAME_TEXT);
+		}
+		finally {
+			_deleteObjectEntries(
+				childJSONObject1, childJSONObject2, parentJSONObject1,
+				parentJSONObject2);
+		}
+	}
+
 	@Test
 	public void testSortBySystemObjectField() throws Exception {
+		_testSortBySystemObjectFieldAcrossPages();
+
 		Role role = RoleTestUtil.addRole(RoleConstants.TYPE_REGULAR);
 
 		ObjectDefinition objectDefinition = getObjectDefinition1();
@@ -2754,6 +2818,52 @@ public class ObjectEntryResourceSortTest
 				valuesJSONObject4.toString(),
 				relatedEndpoint + "/" + relatedJSONObject4.getLong("id"),
 				Http.Method.PATCH);
+		}
+	}
+
+	private void _testSortBySystemObjectFieldAcrossPages() throws Exception {
+		ObjectDefinition objectDefinition = getObjectDefinition1();
+
+		ObjectEntry[] objectEntries = new ObjectEntry[5];
+
+		for (int index = 0; index < objectEntries.length; index++) {
+			objectEntries[index] = ObjectEntryTestUtil.addObjectEntry(
+				objectDefinition, OBJECT_FIELD_NAME_TEXT,
+				RandomTestUtil.randomString());
+		}
+
+		try {
+			EntityCacheUtil.clearCache();
+
+			objectEntryLocalService.getObjectEntry(
+				objectEntries[3].getObjectEntryId());
+
+			String endpoint = StringBundler.concat(
+				getEndpoint(objectDefinition, testGroupId), "?sort=",
+				URLCodec.encodeURL("id:desc"), "&pageSize=3&page=");
+
+			JSONObject pageJSONObject = HTTPTestUtil.invokeToJSONObject(
+				null, endpoint + 1, Http.Method.GET);
+
+			assertItem(
+				0, pageJSONObject, "id", objectEntries[4].getObjectEntryId());
+			assertItem(
+				1, pageJSONObject, "id", objectEntries[3].getObjectEntryId());
+			assertItem(
+				2, pageJSONObject, "id", objectEntries[2].getObjectEntryId());
+
+			pageJSONObject = HTTPTestUtil.invokeToJSONObject(
+				null, endpoint + 2, Http.Method.GET);
+
+			assertItem(
+				0, pageJSONObject, "id", objectEntries[1].getObjectEntryId());
+			assertItem(
+				1, pageJSONObject, "id", objectEntries[0].getObjectEntryId());
+		}
+		finally {
+			for (ObjectEntry objectEntry : objectEntries) {
+				objectEntryLocalService.deleteObjectEntry(objectEntry);
+			}
 		}
 	}
 

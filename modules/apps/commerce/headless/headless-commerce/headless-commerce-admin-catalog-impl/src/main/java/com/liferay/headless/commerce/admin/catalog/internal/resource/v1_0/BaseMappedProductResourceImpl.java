@@ -545,11 +545,13 @@ public abstract class BaseMappedProductResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("externalReferenceCode")) {
+			Serializable externalReferenceCode = parameters.get(
+				"externalReferenceCode");
+
+			if (externalReferenceCode != null) {
 				mappedProductUnsafeFunction = mappedProduct ->
 					postProductByExternalReferenceCodeMappedProduct(
-						(String)parameters.get("externalReferenceCode"),
-						mappedProduct);
+						(String)externalReferenceCode, mappedProduct);
 			}
 			else {
 				throw new NotSupportedException(
@@ -1273,4 +1275,4 @@ public abstract class BaseMappedProductResourceImpl
 		LogFactoryUtil.getLog(BaseMappedProductResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:-2117574925
+// LIFERAY-REST-BUILDER-HASH:-1210322423

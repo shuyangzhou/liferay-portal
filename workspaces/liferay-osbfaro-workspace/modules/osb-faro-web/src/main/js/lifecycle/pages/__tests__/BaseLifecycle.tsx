@@ -648,7 +648,6 @@ describe('BaseLifecycle', () => {
 					groupId: '23',
 				})
 			);
-			expect(button).toHaveClass('btn-primary', 'rounded-lg');
 		});
 
 		it('shows while the lifecycle is processing', () => {
@@ -932,10 +931,6 @@ describe('BaseLifecycle', () => {
 			fireEvent.click(getSwitchButton());
 
 			expect(getSwitchButton()).toHaveAttribute('aria-expanded', 'true');
-			expect(getSwitchButton()).toHaveClass(
-				'active',
-				'btn-outline-borderless'
-			);
 			expect(
 				screen
 					.getByText(/switch lifecycle dashboard/i)

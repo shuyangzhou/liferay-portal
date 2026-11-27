@@ -4,9 +4,8 @@
  */
 
 import {PageTemplateModalContent} from '@liferay/layout-js-components-web';
-import {openToast} from 'frontend-js-components-web';
 import {addParams, fetch, navigate} from 'frontend-js-web';
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 
 import type {PageTemplateSet} from '@liferay/layout-js-components-web';
 
@@ -27,10 +26,25 @@ export default function AddLayoutPageTemplateEntryDesignLibraryModalContent({
 	namespace,
 	pageTemplateSets,
 }: AddLayoutPageTemplateEntryDesignLibraryModalContentProps) {
+	const pendingReloadRef = useRef(false);
+
+	useEffect(
+		() => () => {
+			if (pendingReloadRef.current) {
+				navigate(location.href);
+			}
+		},
+		[]
+	);
+
 	const submitLayoutPageTemplateEntry = async (
 		pageTemplateSetId: number,
 		pageTemplateName?: string
-	) => {
+	): Promise<string | void> => {
+		if (!pageTemplateSets.some(({id}) => id === pageTemplateSetId)) {
+			pendingReloadRef.current = true;
+		}
+
 		const formData = new FormData();
 
 		formData.append(
@@ -40,33 +54,29 @@ export default function AddLayoutPageTemplateEntryDesignLibraryModalContent({
 
 		formData.append(`${namespace}name`, pageTemplateName ?? '');
 
-		try {
-			const response = await fetch(addLayoutPageTemplateEntryURL, {
-				body: formData,
-				method: 'POST',
-			});
+		const response = await fetch(addLayoutPageTemplateEntryURL, {
+			body: formData,
+			method: 'POST',
+		});
 
-			const {redirectURL}: {redirectURL?: string} = await response.json();
+		const {error, redirectURL}: {error?: string; redirectURL?: string} =
+			await response.json();
 
-			if (!redirectURL) {
-				navigate(location.href);
-
-				return;
-			}
-
-			navigate(
-				addParams(
-					{[`${namespace}redirect`]: location.href},
-					redirectURL
-				)
-			);
+		if (error) {
+			return error;
 		}
-		catch {
-			openToast({
-				message: Liferay.Language.get('an-unexpected-error-occurred'),
-				type: 'danger',
-			});
+
+		pendingReloadRef.current = false;
+
+		if (!redirectURL) {
+			navigate(location.href);
+
+			return;
 		}
+
+		navigate(
+			addParams({[`${namespace}redirect`]: location.href}, redirectURL)
+		);
 	};
 
 	return (
@@ -78,7 +88,7 @@ export default function AddLayoutPageTemplateEntryDesignLibraryModalContent({
 			onSubmitPageTemplateSet={
 				mode === 'page-template'
 					? submitLayoutPageTemplateEntry
-					: () => navigate(location.href)
+					: async () => navigate(location.href)
 			}
 			pageTemplateSets={mode === 'page-template' ? pageTemplateSets : []}
 		/>

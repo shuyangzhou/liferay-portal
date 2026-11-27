@@ -21,6 +21,8 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.launch.LaunchSetMode;
+import com.liferay.portal.kernel.launch.LaunchSetThreadLocal;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
@@ -237,6 +239,18 @@ public class ItemSelectorImpl implements ItemSelector {
 
 		for (Map.Entry<String, String[]> entry : parameters.entrySet()) {
 			portletURL.setParameter(entry.getKey(), entry.getValue());
+		}
+
+		if (LaunchSetThreadLocal.isLaunchSetModeEdit()) {
+			portletURL.setParameter(
+				"p_launch_set_id",
+				String.valueOf(LaunchSetThreadLocal.getLaunchSetId()));
+
+			LaunchSetMode launchSetMode =
+				LaunchSetThreadLocal.getLaunchSetMode();
+
+			portletURL.setParameter(
+				"p_launch_set_mode", launchSetMode.getValue());
 		}
 
 		return portletURL;

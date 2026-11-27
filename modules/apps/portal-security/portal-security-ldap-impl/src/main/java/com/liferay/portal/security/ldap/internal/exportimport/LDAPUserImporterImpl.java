@@ -66,6 +66,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.exportimport.UserImporter;
+import com.liferay.portal.security.key.secret.SecretContext;
 import com.liferay.portal.security.key.secret.SecretResolver;
 import com.liferay.portal.security.ldap.ContactConverterKeys;
 import com.liferay.portal.security.ldap.SafeLdapContext;
@@ -79,6 +80,7 @@ import com.liferay.portal.security.ldap.SafePortalLDAP;
 import com.liferay.portal.security.ldap.UserConverterKeys;
 import com.liferay.portal.security.ldap.configuration.ConfigurationProvider;
 import com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration;
+import com.liferay.portal.security.ldap.constants.LDAPConstants;
 import com.liferay.portal.security.ldap.exportimport.LDAPGroup;
 import com.liferay.portal.security.ldap.exportimport.LDAPToPortalConverter;
 import com.liferay.portal.security.ldap.exportimport.LDAPUser;
@@ -652,6 +654,10 @@ public class LDAPUserImporterImpl implements LDAPUserImporter {
 			if (!autoPassword) {
 				String defaultPassword = _secretResolver.resolve(
 					companyId,
+					SecretContext.fromConfiguration(
+						LDAPConstants.IMPORT_USER_PASSWORD_DEFAULT,
+						_ldapImportConfigurationProvider.
+							getConfigurationProperties(companyId)),
 					ldapImportConfiguration.importUserPasswordDefault());
 
 				if (StringUtil.equalsIgnoreCase(
@@ -2009,6 +2015,10 @@ public class LDAPUserImporterImpl implements LDAPUserImporter {
 			else {
 				password = _secretResolver.resolve(
 					companyId,
+					SecretContext.fromConfiguration(
+						LDAPConstants.IMPORT_USER_PASSWORD_DEFAULT,
+						_ldapImportConfigurationProvider.
+							getConfigurationProperties(companyId)),
 					ldapImportConfiguration.importUserPasswordDefault());
 
 				if (StringUtil.equalsIgnoreCase(

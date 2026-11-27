@@ -1,51 +1,57 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {CustomValue} from 'shared/util/records';
+import {
+	EntityType,
+	ReferencedObjectsContext,
+} from 'segment/segment-editor/dynamic/context/referencedObjects';
 import {getCampaignIds} from 'segment/segment-editor/dynamic/utils/custom-inputs';
 import {getOperatorLabel} from '../utils';
+import {getSegmentCategoryLabel} from 'segment/utils/labels';
+import {getUnavailableCampaignIds} from 'segment/segment-editor/dynamic/utils/campaigns';
 import {IDisplayComponentProps} from '../types';
-import {sub} from 'shared/util/lang';
-import {useCampaignNames} from 'shared/hooks/useCampaignNames';
-import {useParams} from 'react-router-dom';
 
 const CampaignDisplay: React.FC<IDisplayComponentProps> = ({
 	criterion,
 	property,
+	segmentCategory,
 }) => {
-	const {channelId = '', groupId = ''} = useParams<{
-		channelId: string;
-		groupId: string;
-	}>();
+	const {referencedEntities} = useContext(ReferencedObjectsContext);
 
-	const {entityName, label, type} = property;
+	if (getUnavailableCampaignIds(criterion, referencedEntities).length) {
+		return (
+			<b className="undefined-property">
+				{Liferay.Language.get('campaign-no-longer-exists')}
+			</b>
+		);
+	}
 
 	const ids = getCampaignIds(criterion.value as CustomValue);
 
-	const {loading, names} = useCampaignNames({channelId, groupId, ids});
-
 	return (
 		<>
-			{entityName}
+			<span className="sentence-start">
+				{getSegmentCategoryLabel(segmentCategory)}
+			</span>
 
-			<b>{label}</b>
+			<span>{Liferay.Language.get('campaign').toLowerCase()}</span>
 
-			<span>{getOperatorLabel(criterion.operatorName ?? '', type)}</span>
+			<span>
+				{getOperatorLabel(criterion.operatorName ?? '', property.type)}
+			</span>
 
-			{!loading &&
-				ids.map((id, index) => (
-					<React.Fragment key={id}>
-						{index > 0 && ', '}
+			<span>{Liferay.Language.get('touched-by').toLowerCase()}</span>
 
-						{names[id] ? (
-							<b>{`'${names[id]}'`}</b>
-						) : (
-							<b className="undefined-entity">
-								{sub(Liferay.Language.get('undefined-x'), [
-									label,
-								])}
-							</b>
-						)}
-					</React.Fragment>
-				))}
+			{ids.map((id, index) => (
+				<React.Fragment key={id}>
+					{index > 0 && ', '}
+
+					<b>{`'${referencedEntities.getIn([
+						EntityType.Campaigns,
+						id,
+						'campaignName',
+					])}'`}</b>
+				</React.Fragment>
+			))}
 		</>
 	);
 };

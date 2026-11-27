@@ -7,7 +7,6 @@ package com.liferay.portal.security.audit.configuration.web.internal.display.con
 
 import com.liferay.portal.security.audit.configuration.AuditConfiguration;
 import com.liferay.portal.security.audit.configuration.web.internal.util.AuditConfigurationOverrideUtil;
-import com.liferay.portal.security.audit.router.configuration.FileSystemAuditMessageProcessorConfiguration;
 
 /**
  * @author Christian Moura
@@ -15,58 +14,18 @@ import com.liferay.portal.security.audit.router.configuration.FileSystemAuditMes
 public class AuditConfigurationDisplayContext {
 
 	public AuditConfigurationDisplayContext(
-		AuditConfiguration auditConfiguration,
-		FileSystemAuditMessageProcessorConfiguration
-			fileSystemAuditMessageProcessorConfiguration,
-		boolean systemScope) {
+		AuditConfiguration auditConfiguration, boolean systemScope) {
 
 		_auditConfiguration = auditConfiguration;
-		_fileSystemAuditMessageProcessorConfiguration =
-			fileSystemAuditMessageProcessorConfiguration;
 		_systemScope = systemScope;
 	}
 
 	public String getEnabledHelpMessage() {
-		return _getHelpMessage(AuditConfiguration.class, "enabled");
-	}
-
-	public String getFileSystemAuditMessageProcessorEnabledHelpMessage() {
-		return _getHelpMessage(
-			FileSystemAuditMessageProcessorConfiguration.class, "enabled");
-	}
-
-	public String
-		getFileSystemAuditMessageProcessorGenerateChecksumHelpMessage() {
-
-		return _getHelpMessage(
-			FileSystemAuditMessageProcessorConfiguration.class,
-			"generateChecksum");
-	}
-
-	public String getFileSystemAuditMessageProcessorOutputDirectory() {
-		return _fileSystemAuditMessageProcessorConfiguration.outputDirectory();
-	}
-
-	public String
-		getFileSystemAuditMessageProcessorOutputDirectoryHelpMessage() {
-
-		return _getHelpMessage(
-			FileSystemAuditMessageProcessorConfiguration.class,
-			"outputDirectory");
-	}
-
-	public String getFileSystemAuditMessageProcessorOutputFormat() {
-		return _fileSystemAuditMessageProcessorConfiguration.outputFormat();
-	}
-
-	public String getFileSystemAuditMessageProcessorOutputFormatHelpMessage() {
-		return _getHelpMessage(
-			FileSystemAuditMessageProcessorConfiguration.class, "outputFormat");
+		return _getHelpMessage("enabled");
 	}
 
 	public String getPseudonymizationEnabledHelpMessage() {
-		return _getHelpMessage(
-			AuditConfiguration.class, "pseudonymizationEnabled");
+		return _getHelpMessage("pseudonymizationEnabled");
 	}
 
 	public boolean isEnabled() {
@@ -74,41 +33,7 @@ public class AuditConfigurationDisplayContext {
 	}
 
 	public boolean isEnabledOverridden() {
-		return _isOverridden(AuditConfiguration.class, "enabled");
-	}
-
-	public boolean isFileSystemAuditMessageProcessorEnabled() {
-		return _fileSystemAuditMessageProcessorConfiguration.enabled();
-	}
-
-	public boolean isFileSystemAuditMessageProcessorEnabledOverridden() {
-		return _isOverridden(
-			FileSystemAuditMessageProcessorConfiguration.class, "enabled");
-	}
-
-	public boolean isFileSystemAuditMessageProcessorGenerateChecksum() {
-		return _fileSystemAuditMessageProcessorConfiguration.generateChecksum();
-	}
-
-	public boolean
-		isFileSystemAuditMessageProcessorGenerateChecksumOverridden() {
-
-		return _isOverridden(
-			FileSystemAuditMessageProcessorConfiguration.class,
-			"generateChecksum");
-	}
-
-	public boolean
-		isFileSystemAuditMessageProcessorOutputDirectoryOverridden() {
-
-		return _isOverridden(
-			FileSystemAuditMessageProcessorConfiguration.class,
-			"outputDirectory");
-	}
-
-	public boolean isFileSystemAuditMessageProcessorOutputFormatOverridden() {
-		return _isOverridden(
-			FileSystemAuditMessageProcessorConfiguration.class, "outputFormat");
+		return _isOverridden("enabled");
 	}
 
 	public boolean isPseudonymizationEnabled() {
@@ -116,25 +41,24 @@ public class AuditConfigurationDisplayContext {
 	}
 
 	public boolean isPseudonymizationEnabledOverridden() {
-		return _isOverridden(
-			AuditConfiguration.class, "pseudonymizationEnabled");
+		return _isOverridden("pseudonymizationEnabled");
 	}
 
 	public boolean isSystemScope() {
 		return _systemScope;
 	}
 
-	private String _getHelpMessage(Class<?> clazz, String key) {
-		return AuditConfigurationOverrideUtil.getHelpMessage(clazz, key);
+	private String _getHelpMessage(String key) {
+		return AuditConfigurationOverrideUtil.getHelpMessage(
+			AuditConfiguration.class, key);
 	}
 
-	private boolean _isOverridden(Class<?> clazz, String key) {
-		return AuditConfigurationOverrideUtil.isOverridden(clazz, key);
+	private boolean _isOverridden(String key) {
+		return AuditConfigurationOverrideUtil.isOverridden(
+			AuditConfiguration.class, key);
 	}
 
 	private final AuditConfiguration _auditConfiguration;
-	private final FileSystemAuditMessageProcessorConfiguration
-		_fileSystemAuditMessageProcessorConfiguration;
 	private final boolean _systemScope;
 
 }

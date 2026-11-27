@@ -1087,6 +1087,28 @@ public class CustomFDSSerializerTest extends BaseFDSSerializerTestCase {
 	}
 
 	@Test
+	public void testSerializeShowColumnsVisibility() throws Exception {
+		_mockSerializeShowColumnsVisibility(FDS_NAMES[0], false);
+		_mockSerializeShowColumnsVisibility(FDS_NAMES[1], true);
+
+		String fdsName = RandomTestUtil.randomString();
+
+		_mockSerializeShowColumnsVisibility(fdsName, null);
+
+		Assert.assertFalse(
+			_customFDSSerializer.serializeShowColumnsVisibility(
+				FDS_NAMES[0], httpServletRequest));
+		Assert.assertTrue(
+			_customFDSSerializer.serializeShowColumnsVisibility(
+				FDS_NAMES[1], httpServletRequest));
+		Assert.assertTrue(
+			_customFDSSerializer.serializeShowColumnsVisibility(
+				fdsName, httpServletRequest));
+
+		_resetFDSSerializer();
+	}
+
+	@Test
 	public void testSerializeShowPagination() throws Exception {
 		_mockSerializeShowPagination(FDS_NAMES[0], false);
 		_mockSerializeShowPagination(FDS_NAMES[1], true);
@@ -1745,6 +1767,86 @@ public class CustomFDSSerializerTest extends BaseFDSSerializerTestCase {
 			).getString(
 				"name"
 			));
+
+		// Visualization mode with sections
+
+		Mockito.when(
+			fdsVisualizationModeCET.getSections()
+		).thenReturn(
+			JSONUtil.putAll(
+				JSONUtil.put(
+					"name", "title"
+				).put(
+					"required", true
+				),
+				JSONUtil.put("name", "image")
+			).toString()
+		);
+
+		_resetFDSSerializer();
+
+		_mockSerializeViewsTable(
+			FDS_NAMES[0],
+			Collections.singletonList(
+				HashMapBuilder.<String, Object>put(
+					"fieldName", FIELD_NAMES[0]
+				).put(
+					"label", LABELS[0]
+				).put(
+					"renderer", "default"
+				).put(
+					"rendererType", "internal"
+				).put(
+					"sortable", false
+				).put(
+					"type", "String"
+				).build()));
+
+		_mockSerializeViewsCardsOrList(
+			FDS_NAMES[0], sectionsMap, "dataSetToDataSetCardsSections");
+		_mockSerializeViewsCardsOrList(
+			FDS_NAMES[0], sectionsMap, "dataSetToDataSetListSections");
+
+		_customFDSSerializer.cetManager = cetManager;
+
+		_mockVisualizationModeSectionFields(
+			cetExternalReferenceCode, JSONUtil.put("removed", "name"));
+
+		jsonArray = _customFDSSerializer.serializeViews(
+			FDS_NAMES[0], httpServletRequest);
+
+		for (int index = 0; index < jsonArray.length(); index++) {
+			Assert.assertNotEquals(
+				cetExternalReferenceCode,
+				jsonArray.getJSONObject(
+					index
+				).getString(
+					"name"
+				));
+		}
+
+		_mockVisualizationModeSectionFields(
+			cetExternalReferenceCode,
+			JSONUtil.put(
+				"removed", "name"
+			).put(
+				"title", "name"
+			));
+
+		jsonArray = _customFDSSerializer.serializeViews(
+			FDS_NAMES[0], httpServletRequest);
+
+		JSONAssert.assertEquals(
+			JSONUtil.put(
+				"title", "name"
+			).toString(),
+			String.valueOf(
+				jsonArray.getJSONObject(
+					1
+				).getJSONObject(
+					"schema"
+				)),
+			JSONCompareMode.STRICT);
 	}
 
 	private boolean _containsLabel(
@@ -2150,6 +2252,24 @@ public class CustomFDSSerializerTest extends BaseFDSSerializerTestCase {
 		).thenCallRealMethod();
 	}
 
+	private void _mockSerializeShowColumnsVisibility(
+		String fdsName, Boolean showColumnsVisibility) {
+
+		Mockito.when(
+			_customFDSSerializer.getDataSetObjectEntryProperties(
+				fdsName, httpServletRequest)
+		).thenReturn(
+			HashMapBuilder.<String, Object>put(
+				"showColumnsVisibility", showColumnsVisibility
+			).build()
+		);
+
+		Mockito.when(
+			_customFDSSerializer.serializeShowColumnsVisibility(
+				fdsName, httpServletRequest)
+		).thenCallRealMethod();
+	}
+
 	private void _mockSerializeShowPagination(
 		String fdsName, boolean showPagination) {
 
@@ -2401,6 +2521,37 @@ public class CustomFDSSerializerTest extends BaseFDSSerializerTestCase {
 				"tableSectionsOrder", "dataSetToDataSetTableSections")
 		).thenReturn(
 			objectEntries
+		);
+	}
+
+	private void _mockVisualizationModeSectionFields(
+			String cetExternalReferenceCode, JSONObject sectionFieldsJSONObject)
+		throws Exception {
+
+		Mockito.when(
+			_customFDSSerializer.getDataSetObjectEntryProperties(
+				FDS_NAMES[0], httpServletRequest)
+		).thenReturn(
+			HashMapBuilder.<String, Object>put(
+				"defaultVisualizationMode", "table"
+			).put(
+				"visualizationModes",
+				JSONUtil.putAll(
+					JSONUtil.put(
+						"enabled", true
+					).put(
+						"name", "table"
+					),
+					JSONUtil.put(
+						"configuration",
+						JSONUtil.put("sectionFields", sectionFieldsJSONObject)
+					).put(
+						"enabled", true
+					).put(
+						"name", cetExternalReferenceCode
+					)
+				).toString()
+			).build()
 		);
 	}
 

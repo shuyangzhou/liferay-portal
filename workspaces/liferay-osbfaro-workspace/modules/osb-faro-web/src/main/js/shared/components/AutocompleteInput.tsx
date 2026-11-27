@@ -24,7 +24,8 @@ type GraphqlQuery = {
 };
 
 interface IAutocompleteProps {
-	className?: string;
+	'aria-invalid'?: boolean;
+	'className'?: string;
 
 	/**
 	 * Extra request identity for `paginatedDataSourceFn`, for a caller whose data
@@ -32,16 +33,16 @@ interface IAutocompleteProps {
 	 * field the values are read from). The suggestions are refetched
 	 * whenever it changes; without it, only the query invalidates them.
 	 */
-	dataSourceKey?: string;
-	disabled?: boolean;
-	graphqlQuery?: GraphqlQuery;
-	pageSize?: number;
-	paginatedDataSourceFn?: PaginatedDataSourceFn;
-	placeholder?: string;
-	testId?: string;
-	value: string;
-	onBlur?: React.FocusEventHandler<HTMLInputElement>;
-	onChange?: (value: string) => void;
+	'dataSourceKey'?: string;
+	'disabled'?: boolean;
+	'graphqlQuery'?: GraphqlQuery;
+	'pageSize'?: number;
+	'paginatedDataSourceFn'?: PaginatedDataSourceFn;
+	'placeholder'?: string;
+	'testId'?: string;
+	'value': string;
+	'onBlur'?: React.FocusEventHandler<HTMLInputElement>;
+	'onChange'?: (value: string) => void;
 }
 
 const DEBOUNCE_DELAY = 250;
@@ -118,6 +119,7 @@ const GraphqlAutocompleteInput: React.FC<
 interface IBaseAutocompleteProps
 	extends Pick<
 		IAutocompleteProps,
+		| 'aria-invalid'
 		| 'className'
 		| 'disabled'
 		| 'onBlur'
@@ -131,6 +133,7 @@ interface IBaseAutocompleteProps
 }
 
 const BaseAutocomplete: React.FC<IBaseAutocompleteProps> = ({
+	'aria-invalid': ariaInvalid,
 	className,
 	disabled = false,
 	items,
@@ -143,6 +146,7 @@ const BaseAutocomplete: React.FC<IBaseAutocompleteProps> = ({
 }) => (
 	<ClayAutocomplete
 		allowsCustomValue
+		aria-invalid={ariaInvalid}
 		aria-labelledby="clay-autocomplete-label-1"
 		className={getCN('select-input-root', className)}
 		data-testid="attribute-value-string-input"

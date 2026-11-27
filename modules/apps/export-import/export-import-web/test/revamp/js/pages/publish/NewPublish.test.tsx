@@ -238,8 +238,18 @@ describe('NewPublish', () => {
 		).toBeDisabled();
 	});
 
+	it('offers the from last publish date filter', async () => {
+		renderComponent();
+
+		await screen.findByText('loaded');
+
+		expect(
+			screen.getByRole('option', {name: 'from-last-publish-date'})
+		).toBeInTheDocument();
+	});
+
 	it('publishes to the remote live with the edited connection', async () => {
-		renderComponent({remoteConnection: REMOTE_CONNECTION});
+		renderComponent({remote: true, remoteConnection: REMOTE_CONNECTION});
 
 		await fillRequiredFields();
 
@@ -288,7 +298,7 @@ describe('NewPublish', () => {
 	});
 
 	it('names the remote live in the schedule button', async () => {
-		renderComponent({remoteConnection: REMOTE_CONNECTION});
+		renderComponent({remote: true, remoteConnection: REMOTE_CONNECTION});
 
 		await fillRequiredFields();
 
@@ -303,8 +313,36 @@ describe('NewPublish', () => {
 		).toBeInTheDocument();
 	});
 
+	it('publishes to the remote live without the schedule and connection fields', async () => {
+		renderComponent({
+			remote: true,
+			scheduledPublishProcessAPIURL: undefined,
+		});
+
+		await fillRequiredFields();
+
+		expect(
+			screen.queryByLabelText(/remote-host-ip/)
+		).not.toBeInTheDocument();
+		expect(
+			screen.queryByRole('radio', {name: /schedule-for-later/})
+		).not.toBeInTheDocument();
+
+		await user.click(
+			screen.getByRole('button', {name: /publish-to-remote-live/i})
+		);
+
+		await waitFor(() => {
+			expect(getPublishProcessCall()).toBeDefined();
+		});
+
+		const body = JSON.parse(getPublishProcessCall()![1]!.body as string);
+
+		expect(body.remoteConnection).toBeUndefined();
+	});
+
 	it('clears the required error once a connection field is corrected', async () => {
-		renderComponent({remoteConnection: REMOTE_CONNECTION});
+		renderComponent({remote: true, remoteConnection: REMOTE_CONNECTION});
 
 		await fillRequiredFields();
 
@@ -347,6 +385,7 @@ describe('NewPublish', () => {
 		});
 
 		renderComponent({
+			remote: true,
 			remoteConnection: REMOTE_CONNECTION,
 			scheduledPublishProcessId: SCHEDULED_PUBLISH_PROCESS.id,
 		});

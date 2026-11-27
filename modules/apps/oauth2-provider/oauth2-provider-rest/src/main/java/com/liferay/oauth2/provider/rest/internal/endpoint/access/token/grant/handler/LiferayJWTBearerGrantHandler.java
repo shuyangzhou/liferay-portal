@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.security.fips.FIPSModeValidator;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.security.key.secret.SecretContext;
 import com.liferay.portal.security.key.secret.SecretResolver;
 
 import jakarta.ws.rs.core.MultivaluedMap;
@@ -34,6 +35,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.cxf.jaxrs.utils.JAXRSUtils;
+import org.apache.cxf.message.Message;
 import org.apache.cxf.rs.security.jose.jwa.SignatureAlgorithm;
 import org.apache.cxf.rs.security.jose.jwk.JsonWebKey;
 import org.apache.cxf.rs.security.jose.jwk.JsonWebKeys;
@@ -44,6 +47,7 @@ import org.apache.cxf.rs.security.jose.jws.JwsJwtCompactConsumer;
 import org.apache.cxf.rs.security.jose.jws.JwsSignatureVerifier;
 import org.apache.cxf.rs.security.jose.jws.JwsUtils;
 import org.apache.cxf.rs.security.jose.jwt.JwtClaims;
+import org.apache.cxf.rs.security.jose.jwt.JwtConstants;
 import org.apache.cxf.rs.security.jose.jwt.JwtToken;
 import org.apache.cxf.rs.security.oauth2.common.Client;
 import org.apache.cxf.rs.security.oauth2.common.ServerAccessToken;
@@ -290,7 +294,17 @@ public class LiferayJWTBearerGrantHandler extends BaseAccessTokenGrantHandler {
 					jwsJwtCompactConsumer.getUnsignedEncodedSequence(),
 					jwsJwtCompactConsumer.getDecodedSignature());
 
-				validateClaims(client, jwtClaims);
+				Message message = JAXRSUtils.getCurrentMessage();
+
+				try {
+					OAuth2HttpRequestUtil.putExpectedJWTAudience(
+						jwtClaims, message);
+
+					validateClaims(client, jwtClaims);
+				}
+				finally {
+					message.remove(JwtConstants.EXPECTED_CLAIM_AUDIENCE);
+				}
 
 				return doCreateAccessToken(
 					client,
@@ -521,6 +535,9 @@ public class LiferayJWTBearerGrantHandler extends BaseAccessTokenGrantHandler {
 				JsonWebKeys jsonWebKeys = JwkUtils.readJwkSet(
 					_secretResolver.resolve(
 						companyId,
+						SecretContext.fromConfiguration(
+							"oauth2.in.assertion.signature.json.web.key.set",
+							properties),
 						oAuth2InAssertionConfiguration.
 							signatureJSONWebKeySet()));
 

@@ -513,11 +513,12 @@ public abstract class BaseDataListViewResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("dataDefinitionId")) {
+			Serializable dataDefinitionId = parameters.get("dataDefinitionId");
+
+			if (dataDefinitionId != null) {
 				dataListViewUnsafeFunction =
 					dataListView -> postDataDefinitionDataListView(
-						_parseLong((String)parameters.get("dataDefinitionId")),
-						dataListView);
+						_parseLong((String)dataDefinitionId), dataListView);
 			}
 			else {
 				throw new NotSupportedException(
@@ -606,9 +607,11 @@ public abstract class BaseDataListViewResourceImpl
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		if (parameters.containsKey("dataDefinitionId")) {
+		Serializable dataDefinitionId = parameters.get("dataDefinitionId");
+
+		if (dataDefinitionId != null) {
 			return getDataDefinitionDataListViewsPage(
-				_parseLong((String)parameters.get("dataDefinitionId")),
+				_parseLong((String)dataDefinitionId),
 				(String)parameters.get("keywords"), pagination, sorts);
 		}
 		else {
@@ -1260,4 +1263,4 @@ public abstract class BaseDataListViewResourceImpl
 		LogFactoryUtil.getLog(BaseDataListViewResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:-2019474771
+// LIFERAY-REST-BUILDER-HASH:-1565895269

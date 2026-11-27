@@ -168,6 +168,23 @@ public class SegmentsExperienceUpgradeProcessTest
 	}
 
 	@Test
+	@TestInfo("LPD-111365")
+	public void testUpgradeWithDraftLayoutSegmentsExperiences()
+		throws Exception {
+
+		_updateFragmentEntryLinks();
+		_updateLayoutPageTemplateStructureRels();
+
+		runUpgrade();
+
+		_assertSegmentsExperiences();
+
+		runUpgrade();
+
+		_assertSegmentsExperiences();
+	}
+
+	@Test
 	public void testUpgradeWithFragmentEntryLinkClassPKColumn()
 		throws Exception {
 

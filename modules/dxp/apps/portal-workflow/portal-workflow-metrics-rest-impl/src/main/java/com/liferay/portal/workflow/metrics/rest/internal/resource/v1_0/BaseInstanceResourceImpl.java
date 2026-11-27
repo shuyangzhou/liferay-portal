@@ -537,9 +537,11 @@ public abstract class BaseInstanceResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("processId")) {
+			Serializable processId = parameters.get("processId");
+
+			if (processId != null) {
 				instanceUnsafeFunction = instance -> postProcessInstance(
-					_parseLong((String)parameters.get("processId")), instance);
+					_parseLong((String)processId), instance);
 			}
 			else {
 				throw new NotSupportedException(
@@ -610,9 +612,11 @@ public abstract class BaseInstanceResourceImpl
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		if (parameters.containsKey("processId")) {
+		Serializable processId = parameters.get("processId");
+
+		if (processId != null) {
 			return getProcessInstancesPage(
-				_parseLong((String)parameters.get("processId")),
+				_parseLong((String)processId),
 				(Long[])parameters.get("assigneeIds"),
 				(Long[])parameters.get("classPKs"),
 				_parseDate((String)parameters.get("dateEnd")),
@@ -1244,4 +1248,4 @@ public abstract class BaseInstanceResourceImpl
 		LogFactoryUtil.getLog(BaseInstanceResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:-903615445
+// LIFERAY-REST-BUILDER-HASH:-770254327

@@ -6,6 +6,7 @@
 package com.liferay.portal.dao.orm.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -17,6 +18,7 @@ import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
@@ -49,7 +51,7 @@ public class QueryUtilTest {
 		_db = DBManagerUtil.getDB();
 
 		_db.runSQL(_SQL_CREATE_TABLE);
-		_db.runSQL(createInserts(_SIZE));
+		_db.runSQL(_createInserts(_SIZE));
 	}
 
 	@AfterClass
@@ -65,159 +67,180 @@ public class QueryUtilTest {
 
 	@Test
 	public void testListModifiableAllPos() throws Exception {
-		testList(
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, false, _SIZE, 0, _SIZE - 1);
+		_testList(
+			QueryUtil.ALL_POS, 0, _SIZE - 1, _SIZE, QueryUtil.ALL_POS, false);
 	}
 
 	@Test
 	public void testListModifiableFaultyParameters1() throws Exception {
-		testList(-1, 0, false, 0, 0, 0);
+		_testList(0, 0, 0, 0, -1, false);
 	}
 
 	@Test
 	public void testListModifiableFaultyParameters2() throws Exception {
-		testList(0, -1, false, 0, 0, 0);
+		_testList(-1, 0, 0, 0, 0, false);
 	}
 
 	@Test
 	public void testListModifiableFaultyParameters3() throws Exception {
-		testList(-2, -2, false, 0, 0, 0);
+		_testList(-2, 0, 0, 0, -2, false);
 	}
 
 	@Test
 	public void testListModifiableFaultyParameters4() throws Exception {
-		testList(-1, 10, false, 10, 0, 9);
+		_testList(10, 0, 9, 10, -1, false);
 	}
 
 	@Test
 	public void testListModifiableFaultyParameters5() throws Exception {
-		testList(10, 8, false, 0, 0, 0);
+		_testList(8, 0, 0, 0, 10, false);
 	}
 
 	@Test
 	public void testListModifiableFirstTen() throws Exception {
-		testList(0, 10, false, 10, 0, 9);
+		_testList(10, 0, 9, 10, 0, false);
 	}
 
 	@Test
 	public void testListModifiableFiveAfterFive() throws Exception {
-		testList(5, 10, false, 5, 5, 9);
+		_testList(10, 5, 9, 5, 5, false);
 	}
 
 	@Test
 	public void testListModifiableTooBigRange() throws Exception {
-		testList(_SIZE + 1, _SIZE + 21, false, 0, 0, 0);
+		_testList(_SIZE + 21, 0, 0, 0, _SIZE + 1, false);
 	}
 
 	@Test
 	public void testListUnmodifiableAllPos() throws Exception {
-		testList(
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, true, _SIZE, 0, _SIZE - 1);
+		_testList(
+			QueryUtil.ALL_POS, 0, _SIZE - 1, _SIZE, QueryUtil.ALL_POS, true);
 	}
 
 	@Test
 	public void testListUnmodifiableFaultyParameters1() throws Exception {
-		testList(-1, 0, true, 0, 0, 0);
+		_testList(0, 0, 0, 0, -1, true);
 	}
 
 	@Test
 	public void testListUnmodifiableFaultyParameters2() throws Exception {
-		testList(0, -1, true, 0, 0, 0);
+		_testList(-1, 0, 0, 0, 0, true);
 	}
 
 	@Test
 	public void testListUnmodifiableFaultyParameters3() throws Exception {
-		testList(-2, -2, true, 0, 0, 0);
+		_testList(-2, 0, 0, 0, -2, true);
 	}
 
 	@Test
 	public void testListUnmodifiableFaultyParameters4() throws Exception {
-		testList(-1, 10, true, 10, 0, 9);
+		_testList(10, 0, 9, 10, -1, true);
 	}
 
 	@Test
 	public void testListUnmodifiableFaultyParameters5() throws Exception {
-		testList(10, 8, true, 0, 0, 0);
+		_testList(8, 0, 0, 0, 10, true);
 	}
 
 	@Test
 	public void testListUnmodifiableFirstTen() throws Exception {
-		testList(0, 10, true, 10, 0, 9);
+		_testList(10, 0, 9, 10, 0, true);
 	}
 
 	@Test
 	public void testListUnmodifiableFiveAfterFive() throws Exception {
-		testList(5, 10, true, 5, 5, 9);
+		_testList(10, 5, 9, 5, 5, true);
 	}
 
 	@Test
 	public void testListUnmodifiableTooBigRange() throws Exception {
-		testList(_SIZE + 1, _SIZE + 21, true, 0, 0, 0);
+		_testList(_SIZE + 21, 0, 0, 0, _SIZE + 1, true);
+	}
+
+	@Test
+	public void testSQLWithLimitWithDistinct() throws Exception {
+		_testSQLWithLimitWithDistinct(15, 14, 5, "ORDER BY value DESC", 5);
+		_testSQLWithLimitWithDistinct(15, 5, 14, "ORDER BY value ASC", 5);
+		_testSQLWithLimitWithDistinct(15, 5, 14, StringPool.BLANK, 5);
 	}
 
 	@Test
 	public void testSQLWithLimitWithOuterOrder1Ascending() throws Exception {
-		testSQLWithLimitWithOuterOrder("ASC", 0, 10, 0, 9);
+		_testSQLWithLimitWithOuterOrder(10, 0, 9, "ORDER BY value ASC", 0);
 	}
 
 	@Test
 	public void testSQLWithLimitWithOuterOrder1Descending() throws Exception {
-		testSQLWithLimitWithOuterOrder("DESC", 0, 10, 19, 10);
+		_testSQLWithLimitWithOuterOrder(10, 19, 10, "ORDER BY value DESC", 0);
 	}
 
 	@Test
 	public void testSQLWithLimitWithOuterOrder2Ascending() throws Exception {
-		testSQLWithLimitWithOuterOrder("ASC", 5, 15, 5, 14);
+		_testSQLWithLimitWithOuterOrder(15, 5, 14, "ORDER BY value ASC", 5);
 	}
 
 	@Test
 	public void testSQLWithLimitWithOuterOrder2Descending() throws Exception {
-		testSQLWithLimitWithOuterOrder("DESC", 5, 15, 14, 5);
+		_testSQLWithLimitWithOuterOrder(15, 14, 5, "ORDER BY value DESC", 5);
 	}
 
 	@Test
 	public void testSQLWithLimitWithOuterOrder3Ascending() throws Exception {
-		testSQLWithLimitWithOuterOrder("ASC", 10, 20, 10, 19);
+		_testSQLWithLimitWithOuterOrder(20, 10, 19, "ORDER BY value ASC", 10);
 	}
 
 	@Test
 	public void testSQLWithLimitWithOuterOrder3Descending() throws Exception {
-		testSQLWithLimitWithOuterOrder("DESC", 10, 20, 9, 0);
+		_testSQLWithLimitWithOuterOrder(20, 9, 0, "ORDER BY value DESC", 10);
+	}
+
+	@Test
+	public void testSQLWithLimitWithOuterOrderMultipleColumns()
+		throws Exception {
+
+		_testSQLWithLimitWithOuterOrder(
+			10, 19, 10, "ORDER BY value DESC, id ASC", 0);
 	}
 
 	@Test
 	public void testUnionSQL1() throws Exception {
-		testUnionSQL(
-			"ASC", _SIZE / 2, _SIZE + (_SIZE / 2), _SIZE, "id", "value");
+		_testUnionSQL(
+			_SIZE + (_SIZE / 2), "id", "value", "ASC", _SIZE, _SIZE / 2);
 	}
 
 	@Test
 	public void testUnionSQL2() throws Exception {
-		testUnionSQL(
-			"DESC", _SIZE / 2, _SIZE + (_SIZE / 2), _SIZE, "value", "id");
+		_testUnionSQL(
+			_SIZE + (_SIZE / 2), "value", "id", "DESC", _SIZE, _SIZE / 2);
 	}
 
 	@Test
 	public void testUnionSQL3() throws Exception {
-		testUnionSQL("ASC", 0, _SIZE, _SIZE, "id", "id");
+		_testUnionSQL(_SIZE, "id", "id", "ASC", _SIZE, 0);
 	}
 
 	@Test
 	public void testUnionSQL4() throws Exception {
-		testUnionSQL("DESC", 0, _SIZE, _SIZE, "value", "value");
+		_testUnionSQL(_SIZE, "value", "value", "DESC", _SIZE, 0);
 	}
 
 	@Test
 	public void testUnionSQL5() throws Exception {
-		testUnionSQL("ASC", _SIZE, _SIZE * 2, _SIZE, "value", "value");
+		_testUnionSQL(_SIZE * 2, "value", "value", "ASC", _SIZE, _SIZE);
 	}
 
 	@Test
 	public void testUnionSQL6() throws Exception {
-		testUnionSQL("DESC", _SIZE, _SIZE * 2, _SIZE, "id", "id");
+		_testUnionSQL(_SIZE * 2, "id", "id", "DESC", _SIZE, _SIZE);
 	}
 
-	protected static String[] createInserts(int amount) {
+	@Test
+	public void testUnionSQL7() throws Exception {
+		_testUnionSQL(
+			_SIZE + (_SIZE / 2), "value", "id", null, _SIZE, _SIZE / 2);
+	}
+
+	private static String[] _createInserts(int amount) {
 		String[] sqls = new String[amount];
 
 		for (int i = 0; i < amount; i++) {
@@ -229,9 +252,9 @@ public class QueryUtilTest {
 		return sqls;
 	}
 
-	protected void testList(
-			int start, int end, boolean unmodifiable, int expectedSize,
-			int expectedFirstValue, int expectedLastValue)
+	private void _testList(
+			int end, int expectedFirstValue, int expectedLastValue,
+			int expectedSize, int start, boolean unmodifiable)
 		throws Exception {
 
 		Session session = null;
@@ -279,9 +302,9 @@ public class QueryUtilTest {
 		}
 	}
 
-	protected void testSQLWithLimitWithOuterOrder(
-			String order, int start, int end, int expectedFirstValue,
-			int expectedLastValue)
+	private void _testSQLWithLimitWithDistinct(
+			int end, int expectedFirstValue, int expectedLastValue,
+			String orderBy, int start)
 		throws Exception {
 
 		Session session = null;
@@ -290,7 +313,47 @@ public class QueryUtilTest {
 			session = _sessionFactory.openSession();
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(
-				"SELECT id FROM QueryUtilTest ORDER BY value ".concat(order));
+				"SELECT DISTINCT QueryUtilTest.* FROM QueryUtilTest ".concat(
+					orderBy));
+
+			List<Object[]> result = (List<Object[]>)QueryUtil.list(
+				sqlQuery, _sessionFactory.getDialect(), start, end, true);
+
+			Assert.assertEquals(result.toString(), end - start, result.size());
+
+			if (Validator.isNull(orderBy)) {
+				return;
+			}
+
+			Object[] firstRow = result.get(0);
+
+			Number firstId = (Number)firstRow[0];
+
+			Assert.assertEquals(expectedFirstValue, firstId.intValue());
+
+			Object[] lastRow = result.get(result.size() - 1);
+
+			Number lastId = (Number)lastRow[0];
+
+			Assert.assertEquals(expectedLastValue, lastId.intValue());
+		}
+		finally {
+			_sessionFactory.closeSession(session);
+		}
+	}
+
+	private void _testSQLWithLimitWithOuterOrder(
+			int end, int expectedFirstValue, int expectedLastValue,
+			String orderBy, int start)
+		throws Exception {
+
+		Session session = null;
+
+		try {
+			session = _sessionFactory.openSession();
+
+			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(
+				"SELECT id FROM QueryUtilTest ".concat(orderBy));
 
 			sqlQuery.addScalar("id", Type.INTEGER);
 
@@ -310,9 +373,9 @@ public class QueryUtilTest {
 		}
 	}
 
-	protected void testUnionSQL(
-			String order, int start, int end, int size, String firstType,
-			String lastType)
+	private void _testUnionSQL(
+			int end, String firstType, String lastType, String order, int size,
+			int start)
 		throws Exception {
 
 		Session session = null;
@@ -332,6 +395,10 @@ public class QueryUtilTest {
 				sqlQuery, _sessionFactory.getDialect(), start, end, true);
 
 			Assert.assertEquals(result.toString(), size, result.size());
+
+			if (order == null) {
+				return;
+			}
 
 			Object[] firstRow = result.get(0);
 			Object[] lastRow = result.get(result.size() - 1);

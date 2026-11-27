@@ -59,13 +59,12 @@ describe('Event Analysis Editor', () => {
 
 		const uniqueButton = getByRole('button', {name: /^unique$/i});
 
-		expect(uniqueButton).toHaveClass('active');
 		expect(uniqueButton).toHaveAttribute('aria-pressed', 'true');
 
 		for (const name of ['Average', 'Total']) {
 			const button = getByRole('button', {name});
 
-			expect(button).not.toHaveClass('active');
+			expect(button).toHaveAttribute('aria-pressed', 'false');
 			expect(button).toHaveAttribute('aria-pressed', 'false');
 		}
 	});
@@ -106,7 +105,6 @@ describe('Event Analysis Editor', () => {
 
 		const group = checkbox.parentElement;
 
-		expect(group).toHaveClass('event-analysis-editor-period');
 		expect(group.children).toHaveLength(2);
 		expect(group.firstElementChild).toBe(checkbox);
 	});

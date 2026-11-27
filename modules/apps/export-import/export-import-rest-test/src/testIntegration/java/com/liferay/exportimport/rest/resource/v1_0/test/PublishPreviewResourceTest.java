@@ -6,14 +6,22 @@
 package com.liferay.exportimport.rest.resource.v1_0.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.blogs.constants.BlogsPortletKeys;
+import com.liferay.blogs.test.util.BlogsTestUtil;
+import com.liferay.document.library.constants.DLPortletKeys;
+import com.liferay.document.library.test.util.DLAppTestUtil;
+import com.liferay.exportimport.kernel.service.StagingLocalService;
 import com.liferay.exportimport.rest.client.dto.v1_0.DateFilter;
 import com.liferay.exportimport.rest.client.dto.v1_0.PortletDataHandler;
 import com.liferay.exportimport.rest.client.dto.v1_0.PublishPreview;
 import com.liferay.exportimport.test.util.ExportImportTestUtil;
 import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.Time;
@@ -24,6 +32,7 @@ import com.liferay.staging.StagingGroupHelper;
 
 import java.util.Date;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +52,60 @@ public class PublishPreviewResourceTest
 
 		UserTestUtil.setUser(TestPropsValues.getUser());
 
+		GroupTestUtil.enableLocalStaging(testDepotEntryGroup);
 		GroupTestUtil.enableLocalStaging(testGroup);
+	}
+
+	@After
+	@Override
+	public void tearDown() throws Exception {
+		_stagingLocalService.disableStaging(
+			testDepotEntryGroup,
+			ServiceContextTestUtil.getServiceContext(
+				testDepotEntryGroup.getGroupId()));
+
+		super.tearDown();
+	}
+
+	@Override
+	@Test
+	public void testGetAssetLibraryPublishPreview() throws Exception {
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				"com.liferay.portal.vulcan.internal.jaxrs.exception.mapper." +
+					"WebApplicationExceptionMapper",
+				LoggerTestUtil.WARN)) {
+
+			assertHttpResponseStatusCode(
+				400,
+				publishPreviewResource.
+					getAssetLibraryPublishPreviewHttpResponse(
+						irrelevantDepotEntryGroup.getExternalReferenceCode(),
+						null, null, null, null, null));
+			assertHttpResponseStatusCode(
+				404,
+				publishPreviewResource.
+					getAssetLibraryPublishPreviewHttpResponse(
+						testGroup.getExternalReferenceCode(), null, null, null,
+						null, null));
+		}
+
+		Group stagingGroup = _stagingGroupHelper.fetchLocalStagingGroup(
+			testDepotEntryGroup);
+
+		DLAppTestUtil.addFileEntry(stagingGroup.getGroupId());
+
+		PublishPreview publishPreview =
+			publishPreviewResource.getAssetLibraryPublishPreview(
+				testDepotEntryGroup.getExternalReferenceCode(), null, null,
+				null, null, null);
+
+		Assert.assertEquals(Long.valueOf(1), publishPreview.getAdditionCount());
+
+		publishPreview = publishPreviewResource.getAssetLibraryPublishPreview(
+			testDepotEntryGroup.getExternalReferenceCode(), null, null, null,
+			DLPortletKeys.DOCUMENT_LIBRARY_ADMIN, null);
+
+		Assert.assertEquals(Long.valueOf(1), publishPreview.getAdditionCount());
 	}
 
 	@Override
@@ -61,7 +123,7 @@ public class PublishPreviewResourceTest
 					400,
 					publishPreviewResource.getSitePublishPreviewHttpResponse(
 						group.getExternalReferenceCode(), null, null, null,
-						null));
+						null, null, null));
 			}
 			finally {
 				GroupTestUtil.deleteGroup(group);
@@ -74,7 +136,7 @@ public class PublishPreviewResourceTest
 				publishPreviewResource.getSitePublishPreviewHttpResponse(
 					testGroup.getExternalReferenceCode(),
 					String.valueOf(DateFilter.Type.DATE_RANGE),
-					new Date(time + (2 * Time.HOUR)), null,
+					new Date(time + (2 * Time.HOUR)), null, null, null,
 					new Date(time + Time.HOUR)));
 		}
 
@@ -86,7 +148,8 @@ public class PublishPreviewResourceTest
 
 		PublishPreview publishPreview =
 			publishPreviewResource.getSitePublishPreview(
-				testGroup.getExternalReferenceCode(), null, null, null, null);
+				testGroup.getExternalReferenceCode(), null, null, null, null,
+				null, null);
 
 		Assert.assertNotNull(publishPreview.getAdditionCount());
 
@@ -99,11 +162,55 @@ public class PublishPreviewResourceTest
 			publishPreviewResource.getSitePublishPreview(
 				testGroup.getExternalReferenceCode(),
 				String.valueOf(DateFilter.Type.FROM_LAST_PUBLISH_DATE), null,
-				null, null);
+				null, null, null, null);
 
 		Assert.assertNotNull(lastPublishDatePublishPreview.getAdditionCount());
 
+		_testGetSitePublishPreviewWithPortlet();
 		_testGetSitePublishPreviewWithRemoteStaging();
+	}
+
+	private void _testGetSitePublishPreviewWithPortlet() throws Exception {
+		Group stagingGroup = _stagingGroupHelper.fetchLocalStagingGroup(
+			testGroup);
+
+		BlogsTestUtil.addEntry(
+			TestPropsValues.getUserId(), RandomTestUtil.randomString(),
+			RandomTestUtil.randomString(),
+			ServiceContextTestUtil.getServiceContext(
+				stagingGroup.getGroupId()));
+
+		Layout layout = LayoutTestUtil.addTypePortletLayout(stagingGroup);
+
+		LayoutTestUtil.addPortletToLayout(layout, BlogsPortletKeys.BLOGS);
+
+		PublishPreview publishPreview =
+			publishPreviewResource.getSitePublishPreview(
+				testGroup.getExternalReferenceCode(), null, null, null,
+				BlogsPortletKeys.BLOGS, layout.getExternalReferenceCode(),
+				null);
+
+		PortletDataHandler[] portletDataHandlers =
+			publishPreview.getPortletDataHandlers();
+
+		PortletDataHandler portletDataHandler = portletDataHandlers[0];
+
+		Assert.assertEquals(
+			"PORTLET_DATA_" + BlogsPortletKeys.BLOGS,
+			portletDataHandler.getName());
+
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				"com.liferay.portal.vulcan.internal.jaxrs.exception.mapper." +
+					"WebApplicationExceptionMapper",
+				LoggerTestUtil.WARN)) {
+
+			assertHttpResponseStatusCode(
+				400,
+				publishPreviewResource.getSitePublishPreviewHttpResponse(
+					testGroup.getExternalReferenceCode(), null, null, null,
+					BlogsPortletKeys.BLOGS, RandomTestUtil.randomString(),
+					null));
+		}
 	}
 
 	private void _testGetSitePublishPreviewWithRemoteStaging()
@@ -116,7 +223,7 @@ public class PublishPreviewResourceTest
 				PublishPreview publishPreview =
 					publishPreviewResource.getSitePublishPreview(
 						stagingGroup.getExternalReferenceCode(), null, null,
-						null, null);
+						null, null, null, null);
 
 				Assert.assertNotNull(publishPreview.getAdditionCount());
 
@@ -132,5 +239,8 @@ public class PublishPreviewResourceTest
 
 	@Inject
 	private StagingGroupHelper _stagingGroupHelper;
+
+	@Inject
+	private StagingLocalService _stagingLocalService;
 
 }

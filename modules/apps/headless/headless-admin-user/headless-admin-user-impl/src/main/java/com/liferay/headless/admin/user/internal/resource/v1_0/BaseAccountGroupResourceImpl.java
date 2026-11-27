@@ -1076,9 +1076,11 @@ public abstract class BaseAccountGroupResourceImpl
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		if (parameters.containsKey("accountId")) {
+		Serializable accountId = parameters.get("accountId");
+
+		if (accountId != null) {
 			return getAccountAccountGroupsPage(
-				_parseLong((String)parameters.get("accountId")), pagination);
+				_parseLong((String)accountId), pagination);
 		}
 		else {
 			return getAccountGroupsPage(search, filter, pagination, sorts);
@@ -1737,4 +1739,4 @@ public abstract class BaseAccountGroupResourceImpl
 		LogFactoryUtil.getLog(BaseAccountGroupResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:-604584042
+// LIFERAY-REST-BUILDER-HASH:-615953642

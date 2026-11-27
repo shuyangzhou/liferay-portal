@@ -56,6 +56,8 @@ import com.liferay.portal.kernel.exception.InfoFormException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.launch.LaunchSetMode;
+import com.liferay.portal.kernel.launch.LaunchSetThreadLocal;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutSet;
@@ -617,6 +619,41 @@ public class FragmentEntryFragmentRendererTest {
 		_testRenderWithEmptyHostsAllowed(fragmentEntryLink);
 		_testRenderWithHostsAllowed(fragmentEntryLink);
 		_testRenderWithHostsAllowedCaseInsensitive(fragmentEntryLink);
+	}
+
+	@Test
+	public void testRenderWithLaunchSetModeEdit() throws Exception {
+		FragmentEntry fragmentEntry = _getFragmentEntry(true);
+
+		FragmentEntryLink fragmentEntryLink =
+			_fragmentEntryLinkLocalService.addFragmentEntryLink(
+				null, TestPropsValues.getUserId(), _group.getGroupId(), null,
+				fragmentEntry.getExternalReferenceCode(),
+				ScopeUtil.getItemScopeExternalReferenceCode(
+					fragmentEntry.getGroupId(), _group.getGroupId()),
+				_defaultSegmentsExperienceId, _layout.getPlid(),
+				fragmentEntry.getCss(), fragmentEntry.getHtml(),
+				fragmentEntry.getJs(), fragmentEntry.getConfiguration(), null,
+				StringPool.BLANK, 0, null, fragmentEntry.getType(),
+				_serviceContext);
+
+		try (SafeCloseable safeCloseable =
+				LaunchSetThreadLocal.setLaunchSetIdWithSafeCloseable(
+					RandomTestUtil.randomLong(), LaunchSetMode.EDIT)) {
+
+			_renderFragmentEntryLink(fragmentEntryLink);
+		}
+
+		Assert.assertNull(
+			_fragmentEntryLinkCache.getFragmentEntryLinkContent(
+				fragmentEntryLink, _locale));
+
+		_renderFragmentEntryLink(fragmentEntryLink);
+
+		String content = _fragmentEntryLinkCache.getFragmentEntryLinkContent(
+			fragmentEntryLink, _locale);
+
+		Assert.assertTrue(content.contains(fragmentEntry.getHtml()));
 	}
 
 	@Test

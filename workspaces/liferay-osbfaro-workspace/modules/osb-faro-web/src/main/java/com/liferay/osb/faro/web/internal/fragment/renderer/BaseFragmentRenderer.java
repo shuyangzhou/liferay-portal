@@ -9,9 +9,23 @@ import com.liferay.fragment.renderer.FragmentRenderer;
 import com.liferay.fragment.renderer.FragmentRendererContext;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItemList;
 import com.liferay.frontend.taglib.react.servlet.taglib.ComponentTag;
+import com.liferay.osb.faro.engine.client.util.OrderByField;
+import com.liferay.osb.faro.model.FaroProject;
+import com.liferay.osb.faro.model.FaroUser;
+import com.liferay.osb.faro.service.FaroChannelLocalService;
+import com.liferay.osb.faro.service.FaroProjectLocalService;
+import com.liferay.osb.faro.service.FaroUserLocalService;
 import com.liferay.osb.faro.web.internal.display.context.ChannelSelectorDisplayContext;
+import com.liferay.osb.faro.web.internal.helper.ProjectHelper;
+import com.liferay.osb.faro.web.internal.model.display.asah.FaroChannelDisplay;
+import com.liferay.osb.faro.web.internal.model.display.contacts.FaroUserDisplay;
 import com.liferay.osb.faro.web.internal.util.FaroFragmentRendererUtil;
+import com.liferay.osb.faro.web.internal.util.FaroNavigationUtil;
+import com.liferay.osb.faro.web.internal.util.JSONUtil;
+import com.liferay.osb.faro.web.internal.util.comparator.FaroChannelComparator;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -22,9 +36,11 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.SessionClicks;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.servlet.PageContextFactoryUtil;
 
@@ -34,6 +50,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.jsp.JspWriter;
 import jakarta.servlet.jsp.PageContext;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -96,6 +113,37 @@ public abstract class BaseFragmentRenderer implements FragmentRenderer {
 						return channelSelectorDisplayContext.getFaroChannelId();
 					}
 				).put(
+					"channels",
+					() -> TransformUtil.transform(
+						faroChannelLocalService.search(
+							themeDisplay.getScopeGroupId(), null,
+							QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+							new FaroChannelComparator(
+								Collections.singletonList(
+									new OrderByField("name", "asc")))),
+						faroChannel -> JSONUtil.convertValue(
+							new FaroChannelDisplay(faroChannel), Map.class))
+				).put(
+					"currentUser",
+					() -> {
+						FaroUser faroUser = faroUserLocalService.fetchFaroUser(
+							themeDisplay.getScopeGroupId(),
+							themeDisplay.getUserId());
+
+						if (faroUser == null) {
+							return JSONUtil.convertValue(
+								new FaroUserDisplay(themeDisplay.getUser()),
+								Map.class);
+						}
+
+						return JSONUtil.convertValue(
+							new FaroUserDisplay(faroUser), Map.class);
+					}
+				).put(
+					"dismissedAlerts",
+					_getDismissedAlerts(
+						themeDisplay.getScopeGroupId(), httpServletRequest)
+				).put(
 					"friendlyURL",
 					() -> {
 						Layout layout = themeDisplay.getLayout();
@@ -104,6 +152,10 @@ public abstract class BaseFragmentRenderer implements FragmentRenderer {
 					}
 				).put(
 					"groupId", String.valueOf(themeDisplay.getScopeGroupId())
+				).put(
+					"ldpEnabled",
+					FaroNavigationUtil.isLDPEnabled(
+						themeDisplay.getScopeGroupId())
 				).put(
 					"navigationItems",
 					() -> getNavigationItems(httpServletRequest)
@@ -121,7 +173,22 @@ public abstract class BaseFragmentRenderer implements FragmentRenderer {
 						).build();
 					}
 				).put(
-					"params", getParams(httpServletRequest)
+					"params", _getParams(httpServletRequest)
+				).put(
+					"project",
+					() -> {
+						FaroProject faroProject =
+							faroProjectLocalService.fetchFaroProjectByGroupId(
+								themeDisplay.getScopeGroupId());
+
+						if (faroProject == null) {
+							return null;
+						}
+
+						return JSONUtil.convertValue(
+							projectHelper.getProjectDisplay(faroProject),
+							Map.class);
+					}
 				).put(
 					"signOutURL", themeDisplay.getURLSignOut()
 				).build());
@@ -149,45 +216,14 @@ public abstract class BaseFragmentRenderer implements FragmentRenderer {
 		return null;
 	}
 
-	protected Map<String, String> getParams(
-		HttpServletRequest httpServletRequest) {
+	@Reference
+	protected FaroChannelLocalService faroChannelLocalService;
 
-		return HashMapBuilder.put(
-			"accountId", ParamUtil.getString(httpServletRequest, "accountId")
-		).put(
-			"accountName",
-			ParamUtil.getString(httpServletRequest, "accountName")
-		).put(
-			"campaignId", ParamUtil.getString(httpServletRequest, "campaignId")
-		).put(
-			"campaignName",
-			ParamUtil.getString(httpServletRequest, "campaignName")
-		).put(
-			"delta", ParamUtil.getString(httpServletRequest, "delta")
-		).put(
-			"downloadReport",
-			ParamUtil.getString(httpServletRequest, "downloadReport")
-		).put(
-			"field", ParamUtil.getString(httpServletRequest, "field")
-		).put(
-			"page", ParamUtil.getString(httpServletRequest, "page")
-		).put(
-			"query", ParamUtil.getString(httpServletRequest, "query")
-		).put(
-			"rangeEnd", ParamUtil.getString(httpServletRequest, "rangeEnd")
-		).put(
-			"rangeKey", ParamUtil.getString(httpServletRequest, "rangeKey")
-		).put(
-			"rangeStart", ParamUtil.getString(httpServletRequest, "rangeStart")
-		).put(
-			"segmentId", ParamUtil.getString(httpServletRequest, "segmentId")
-		).put(
-			"segmentName",
-			ParamUtil.getString(httpServletRequest, "segmentName")
-		).put(
-			"sortOrder", ParamUtil.getString(httpServletRequest, "sortOrder")
-		).build();
-	}
+	@Reference
+	protected FaroProjectLocalService faroProjectLocalService;
+
+	@Reference
+	protected FaroUserLocalService faroUserLocalService;
 
 	@Reference
 	protected GroupLocalService groupLocalService;
@@ -198,8 +234,28 @@ public abstract class BaseFragmentRenderer implements FragmentRenderer {
 	@Reference
 	protected Portal portal;
 
+	@Reference
+	protected ProjectHelper projectHelper;
+
 	@Reference(target = "(osgi.web.symbolicname=com.liferay.osb.faro.web)")
 	protected ServletContext servletContext;
+
+	private Map<String, Object> _getDismissedAlerts(
+		long groupId, HttpServletRequest httpServletRequest) {
+
+		return HashMapBuilder.<String, Object>put(
+			"maintenanceDate",
+			SessionClicks.get(
+				httpServletRequest,
+				"osb-faro-web_dismissedAlerts_maintenanceDate_" + groupId, null)
+		).put(
+			"unassignedSegments",
+			GetterUtil.getBoolean(
+				SessionClicks.get(
+					httpServletRequest.getSession(),
+					"osb-faro-web_dismissedAlerts_unassignedSegments", null))
+		).build();
+	}
 
 	private Map<String, String> _getPageURLs(
 			long groupId, ThemeDisplay themeDisplay)
@@ -214,6 +270,21 @@ public abstract class BaseFragmentRenderer implements FragmentRenderer {
 		}
 
 		return pageURLs;
+	}
+
+	private Map<String, String> _getParams(
+		HttpServletRequest httpServletRequest) {
+
+		Map<String, String> params = new HashMap<>();
+
+		Map<String, String[]> parameterMap =
+			httpServletRequest.getParameterMap();
+
+		for (String name : parameterMap.keySet()) {
+			params.put(name, ParamUtil.getString(httpServletRequest, name));
+		}
+
+		return params;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

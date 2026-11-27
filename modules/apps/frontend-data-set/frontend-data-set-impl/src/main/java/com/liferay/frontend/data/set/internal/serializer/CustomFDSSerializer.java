@@ -40,6 +40,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -510,6 +511,17 @@ public class CustomFDSSerializer
 
 		return GetterUtil.getBoolean(
 			properties.get("searchSuggestionsEnabled"));
+	}
+
+	@Override
+	public boolean serializeShowColumnsVisibility(
+		String fdsName, HttpServletRequest httpServletRequest) {
+
+		Map<String, Object> properties = getDataSetObjectEntryProperties(
+			fdsName, httpServletRequest);
+
+		return GetterUtil.getBoolean(
+			properties.get("showColumnsVisibility"), true);
 	}
 
 	@Override
@@ -1174,6 +1186,84 @@ public class CustomFDSSerializer
 		return objectEntries;
 	}
 
+	private JSONObject _getSchemaJSONObject(
+		String externalReferenceCode, String sectionsJSON,
+		JSONObject visualizationModeJSONObject) {
+
+		JSONObject schemaJSONObject = _jsonFactory.createJSONObject();
+
+		if (Validator.isBlank(sectionsJSON)) {
+			return schemaJSONObject;
+		}
+
+		JSONArray sectionsJSONArray = null;
+
+		try {
+			sectionsJSONArray = _jsonFactory.createJSONArray(sectionsJSON);
+		}
+		catch (JSONException jsonException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(jsonException);
+			}
+		}
+
+		if (JSONUtil.isEmpty(sectionsJSONArray)) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					StringBundler.concat(
+						"Ignoring the sections of ", externalReferenceCode,
+						" because they are not a valid JSON array or declare ",
+						"none"));
+			}
+
+			return schemaJSONObject;
+		}
+
+		JSONObject configurationJSONObject =
+			visualizationModeJSONObject.getJSONObject("configuration");
+
+		JSONObject sectionFieldsJSONObject = null;
+
+		if (configurationJSONObject != null) {
+			sectionFieldsJSONObject = configurationJSONObject.getJSONObject(
+				"sectionFields");
+		}
+
+		for (int index = 0; index < sectionsJSONArray.length(); index++) {
+			JSONObject sectionJSONObject = sectionsJSONArray.getJSONObject(
+				index);
+
+			if (sectionJSONObject == null) {
+				continue;
+			}
+
+			String name = sectionJSONObject.getString("name");
+
+			String fieldName = null;
+
+			if (sectionFieldsJSONObject != null) {
+				fieldName = sectionFieldsJSONObject.getString(name);
+			}
+
+			if (Validator.isBlank(fieldName)) {
+				if (sectionJSONObject.getBoolean("required")) {
+
+					// A required section without a field leaves the
+					// visualization mode out, as the default ones are left
+					// out until mapped.
+
+					return null;
+				}
+
+				continue;
+			}
+
+			schemaJSONObject.put(name, fieldName);
+		}
+
+		return schemaJSONObject;
+	}
+
 	private String _getType(ObjectEntry objectEntry) {
 		Map<String, Object> properties = objectEntry.getProperties();
 
@@ -1219,6 +1309,14 @@ public class CustomFDSSerializer
 		FDSVisualizationModeCET fdsVisualizationModeCET =
 			(FDSVisualizationModeCET)cet;
 
+		JSONObject schemaJSONObject = _getSchemaJSONObject(
+			externalReferenceCode, fdsVisualizationModeCET.getSections(),
+			visualizationModeJSONObject);
+
+		if (schemaJSONObject == null) {
+			return null;
+		}
+
 		return JSONUtil.put(
 			"configuration",
 			visualizationModeJSONObject.getJSONObject("configuration")
@@ -1237,6 +1335,15 @@ public class CustomFDSSerializer
 				PortalUtil.getLocale(httpServletRequest))
 		).put(
 			"name", externalReferenceCode
+		).put(
+			"schema",
+			() -> {
+				if (schemaJSONObject.length() == 0) {
+					return null;
+				}
+
+				return schemaJSONObject;
+			}
 		).put(
 			"thumbnail",
 			GetterUtil.getString(fdsVisualizationModeCET.getIcon(), "view")

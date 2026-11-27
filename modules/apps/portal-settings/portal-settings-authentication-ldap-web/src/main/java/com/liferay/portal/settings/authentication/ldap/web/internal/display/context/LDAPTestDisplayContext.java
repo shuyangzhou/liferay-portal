@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.security.key.secret.SecretContext;
 import com.liferay.portal.security.key.secret.SecretResolverUtil;
 import com.liferay.portal.security.ldap.SafeLdapContext;
 import com.liferay.portal.security.ldap.SafeLdapFilter;
@@ -20,6 +21,7 @@ import com.liferay.portal.security.ldap.SafeLdapNameFactory;
 import com.liferay.portal.security.ldap.SafePortalLDAP;
 import com.liferay.portal.security.ldap.configuration.ConfigurationProvider;
 import com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration;
+import com.liferay.portal.security.ldap.constants.LDAPConstants;
 import com.liferay.portal.settings.authentication.ldap.web.internal.portlet.action.ActionUtil;
 import com.liferay.portal.settings.authentication.ldap.web.internal.portlet.util.ConfigurationProviderUtil;
 import com.liferay.portal.settings.authentication.ldap.web.internal.util.SafePortalLDAPUtil;
@@ -154,13 +156,20 @@ public class LDAPTestDisplayContext {
 			ldapServerConfigurationProvider =
 				ConfigurationProviderUtil.getLDAPServerConfigurationProvider();
 
+		long ldapServerId = ParamUtil.getLong(
+			_httpServletRequest, "ldapServerId");
+
 		LDAPServerConfiguration ldapServerConfiguration =
 			ldapServerConfigurationProvider.getConfiguration(
-				_companyId,
-				ParamUtil.getLong(_httpServletRequest, "ldapServerId"));
+				_companyId, ldapServerId);
 
 		return SecretResolverUtil.resolve(
-			_companyId, ldapServerConfiguration.securityCredential());
+			_companyId,
+			SecretContext.fromConfiguration(
+				LDAPConstants.SECURITY_CREDENTIAL,
+				ldapServerConfigurationProvider.getConfigurationProperties(
+					_companyId, ldapServerId)),
+			ldapServerConfiguration.securityCredential());
 	}
 
 	private Map<String, String> _getMappings(String prefix, String... names) {
