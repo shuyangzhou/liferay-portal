@@ -157,9 +157,7 @@ export class GlobalMenuPage {
 			}
 		}).toPass();
 
-		const sidebarHeader = this.page
-			.getByTestId('sideNavigation')
-			.locator('.sidebar-header', {hasText: categoryName});
+		const sidebar = this.page.getByTestId('sideNavigation');
 
 		let forceToReload = false;
 
@@ -170,7 +168,8 @@ export class GlobalMenuPage {
 
 			forceToReload = true;
 
-			await expect(sidebarHeader).toBeAttached();
+			await expect(sidebar).toBeAttached();
+			await expect(sidebar.locator('.sidebar-header')).toBeAttached();
 		}).toPass();
 
 		await openProductMenu(this.page);

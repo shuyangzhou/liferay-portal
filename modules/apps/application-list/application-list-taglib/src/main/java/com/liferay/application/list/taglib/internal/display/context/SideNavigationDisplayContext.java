@@ -82,7 +82,7 @@ public class SideNavigationDisplayContext {
 		).put(
 			"colorScheme", _getColorScheme()
 		).put(
-			"colorSchemeSessionKey", _SESSION_KEY_COLOR_SCHEME
+			"colorSchemeSessionKey", _COLOR_SCHEME_SESSION_KEY
 		).put(
 			"expandedKeys", _getExpandedKeys()
 		).put(
@@ -119,8 +119,6 @@ public class SideNavigationDisplayContext {
 		).put(
 			"selectedPortletId", _portletId
 		).put(
-			"sidebarStateSessionKey", _SESSION_KEY_SIDEBAR_STATE
-		).put(
 			"siteAdministrationItemSelectedEventName", itemSelectedEventName
 		).put(
 			"siteAdministrationItemSelectorUrl",
@@ -141,19 +139,21 @@ public class SideNavigationDisplayContext {
 			}
 		).put(
 			"visible", isVisible()
+		).put(
+			"visibleSessionKey", _VISIBLE_SESSION_KEY
 		).build();
 	}
 
 	public boolean isVisible() {
 		String state = SessionClicks.get(
-			_httpServletRequest, _SESSION_KEY_SIDEBAR_STATE, "open");
+			_httpServletRequest, _VISIBLE_SESSION_KEY, "visible");
 
-		return state.equals("open");
+		return state.equals("visible");
 	}
 
 	private String _getColorScheme() {
 		return SessionClicks.get(
-			_httpServletRequest, _SESSION_KEY_COLOR_SCHEME, "light");
+			_httpServletRequest, _COLOR_SCHEME_SESSION_KEY, "light");
 	}
 
 	private List<String> _getExpandedKeys() {
@@ -343,11 +343,11 @@ public class SideNavigationDisplayContext {
 		return scopePropsItems;
 	}
 
-	private static final String _SESSION_KEY_COLOR_SCHEME =
+	private static final String _COLOR_SCHEME_SESSION_KEY =
 		"com_liferay_application_list_taglib_SideNavigationColorScheme";
 
-	private static final String _SESSION_KEY_SIDEBAR_STATE =
-		"com.liferay.application.list_sidebarState";
+	private static final String _VISIBLE_SESSION_KEY =
+		"com_liferay_application_list_taglib_SideNavigationState";
 
 	private static final Snapshot<ItemSelector> _itemSelectorSnapshot =
 		new Snapshot<>(SideNavigationDisplayContext.class, ItemSelector.class);

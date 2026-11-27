@@ -6,17 +6,21 @@
 import {useCallback, useEffect, useState} from 'react';
 
 export function useUnifiedSidebarVisibility({
+	hiddenSessionValue,
 	initialVisible,
 	onVisibleChange,
 	sessionKey,
 	stateChangedEventName,
 	stateRequestedEventName,
+	visibleSessionValue,
 }: {
+	hiddenSessionValue: string;
 	initialVisible: boolean;
 	onVisibleChange?: (visible: boolean) => void;
 	sessionKey: string;
 	stateChangedEventName: string;
 	stateRequestedEventName: string;
+	visibleSessionValue: string;
 }) {
 	const [visible, setVisible] = useState(initialVisible);
 
@@ -30,10 +34,16 @@ export function useUnifiedSidebarVisibility({
 
 			Liferay.Util.Session.set(
 				sessionKey,
-				visible ? 'open' : 'closed'
+				visible ? visibleSessionValue : hiddenSessionValue
 			).catch(() => {});
 		},
-		[onVisibleChange, sessionKey, stateChangedEventName]
+		[
+			hiddenSessionValue,
+			onVisibleChange,
+			sessionKey,
+			stateChangedEventName,
+			visibleSessionValue,
+		]
 	);
 
 	useEffect(

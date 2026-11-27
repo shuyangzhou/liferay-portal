@@ -94,13 +94,14 @@ public class ProductMenuProductNavigationControlMenuEntry
 			boolean unifiedSidebar = FeatureFlagManagerUtil.isEnabled(
 				_portal.getCompanyId(httpServletRequest), "LPD-88120");
 
-			String sidebarState = SessionClicks.get(
+			String productMenuState = SessionClicks.get(
 				httpServletRequest,
-				"com.liferay.application.list_sidebarState",
+				"com.liferay.product.navigation.product.menu." +
+					"web_productMenuState",
 				unifiedSidebar ? "open" : "closed");
 
 			if (unifiedSidebar) {
-				boolean open = Objects.equals(sidebarState, "open");
+				boolean open = Objects.equals(productMenuState, "open");
 
 				writer.write(
 					"<li class=\"control-menu-nav-item product-menu-toggle");
@@ -172,7 +173,7 @@ public class ProductMenuProductNavigationControlMenuEntry
 					).put(
 						"cssClass",
 						() -> {
-							if (Objects.equals(sidebarState, "open")) {
+							if (Objects.equals(productMenuState, "open")) {
 								return "active";
 							}
 
@@ -210,7 +211,7 @@ public class ProductMenuProductNavigationControlMenuEntry
 					).put(
 						"isOpen",
 						() -> {
-							if (Objects.equals(sidebarState, "open")) {
+							if (Objects.equals(productMenuState, "open")) {
 								return StringPool.TRUE;
 							}
 
@@ -237,7 +238,7 @@ public class ProductMenuProductNavigationControlMenuEntry
 					).put(
 						"title",
 						() -> {
-							if (Objects.equals(sidebarState, "open")) {
+							if (Objects.equals(productMenuState, "open")) {
 								return HtmlUtil.escape(
 									_language.get(
 										httpServletRequest,

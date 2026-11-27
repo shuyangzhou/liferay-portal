@@ -41,10 +41,10 @@ interface Props {
 	label: string;
 	navigationItemsURL: string;
 	selectedPortletId: string;
-	sidebarStateSessionKey: string;
 	siteAdministrationItemSelectedEventName: string;
 	siteAdministrationItemSelectorUrl: string;
 	visible: boolean;
+	visibleSessionKey: string;
 }
 
 function SideNavigation({
@@ -58,10 +58,10 @@ function SideNavigation({
 	label,
 	navigationItemsURL,
 	selectedPortletId,
-	sidebarStateSessionKey,
 	siteAdministrationItemSelectedEventName,
 	siteAdministrationItemSelectorUrl,
 	visible: initialVisible,
+	visibleSessionKey,
 }: Props) {
 	const containerRef = useRef<HTMLElement | null>(
 		document.getElementById(
@@ -96,10 +96,12 @@ function SideNavigation({
 		});
 
 	const {updateVisible, visible} = useUnifiedSidebarVisibility({
+		hiddenSessionValue: 'hidden',
 		initialVisible,
-		sessionKey: sidebarStateSessionKey,
+		sessionKey: visibleSessionKey,
 		stateChangedEventName: 'sideNavigationStateChanged',
 		stateRequestedEventName: 'sideNavigationStateRequested',
+		visibleSessionValue: 'visible',
 	});
 
 	const numberOfResults = useMemo(
