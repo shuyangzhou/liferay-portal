@@ -433,10 +433,13 @@ public abstract class BasePinResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("externalReferenceCode")) {
+			Serializable externalReferenceCode = parameters.get(
+				"externalReferenceCode");
+
+			if (externalReferenceCode != null) {
 				pinUnsafeFunction =
 					pin -> postProductByExternalReferenceCodePin(
-						(String)parameters.get("externalReferenceCode"), pin);
+						(String)externalReferenceCode, pin);
 			}
 			else {
 				throw new NotSupportedException(
@@ -1146,4 +1149,4 @@ public abstract class BasePinResourceImpl
 		LogFactoryUtil.getLog(BasePinResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:466922503
+// LIFERAY-REST-BUILDER-HASH:-2117290429

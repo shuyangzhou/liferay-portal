@@ -6,31 +6,36 @@
 package com.liferay.portal.security.key.internal.configuration.persistence.listener;
 
 import com.liferay.configuration.admin.util.ConfigurationPidUtil;
-import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 import com.liferay.portal.configuration.metatype.definitions.ExtendedMetaTypeInformation;
 import com.liferay.portal.configuration.metatype.definitions.ExtendedMetaTypeService;
 import com.liferay.portal.configuration.persistence.listener.ConfigurationModelListener;
 import com.liferay.portal.configuration.persistence.listener.ConfigurationModelListenerException;
+import com.liferay.portal.file.install.constants.FileInstallConstants;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.security.fips.FIPSAuditEvent;
 import com.liferay.portal.kernel.security.fips.FIPSAuditUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.key.KeyReference;
 import com.liferay.portal.security.key.KeyReferenceUtil;
+import com.liferay.portal.security.key.internal.secret.SecretIdentifierUtil;
+import com.liferay.portal.security.key.secret.SecretContext;
 import com.liferay.portal.security.key.secret.SecretManager;
 import com.liferay.portal.security.key.secret.SecretResolver;
 import com.liferay.portal.security.key.spi.profile.KeyManagerProfileRegistry;
 
 import java.util.Dictionary;
 import java.util.Enumeration;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -63,7 +68,8 @@ public class ConfigurationSecretConfigurationModelListener
 		try {
 			Configuration[] configurations =
 				_configurationAdmin.listConfigurations(
-					"(service.pid=" + pid + ")");
+					"(service.pid=" + SystemBundleUtil.escapeFilterValue(pid) +
+						")");
 
 			if (configurations == null) {
 				return;
@@ -101,7 +107,10 @@ public class ConfigurationSecretConfigurationModelListener
 
 					String identifier = keyReference.getIdentifier();
 
-					if (!identifier.startsWith(_IDENTIFIER_PREFIX)) {
+					if (!identifier.equals(
+							SecretIdentifierUtil.getSecretIdentifier(
+								key, pid, properties::get))) {
+
 						continue;
 					}
 
@@ -139,6 +148,15 @@ public class ConfigurationSecretConfigurationModelListener
 				ExtendedObjectClassDefinition.Scope.COMPANY.getPropertyKey()),
 			CompanyConstants.SYSTEM);
 
+		Dictionary<String, Object> storedProperties = null;
+
+		if (Validator.isNotNull(
+				properties.get(
+					FileInstallConstants.FELIX_FILE_INSTALL_FILENAME))) {
+
+			storedProperties = _getStoredProperties(pid);
+		}
+
 		for (AttributeDefinition attributeDefinition :
 				objectClassDefinition.getAttributeDefinitions(
 					ObjectClassDefinition.ALL)) {
@@ -155,16 +173,42 @@ public class ConfigurationSecretConfigurationModelListener
 				continue;
 			}
 
+			Matcher matcher = _interpolationPattern.matcher(value);
+
+			if (matcher.find()) {
+				continue;
+			}
+
+			if (storedProperties != null) {
+				if (!Objects.equals(value, storedProperties.get(id))) {
+					FIPSAuditEvent fipsAuditEvent = new FIPSAuditEvent(
+						"configuration-secret-store-skipped",
+						FIPSAuditEvent.Severity.WARNING);
+
+					fipsAuditEvent.put(
+						"configuration-pid", GetterUtil.getString(pid));
+					fipsAuditEvent.put("property-id", GetterUtil.getString(id));
+
+					FIPSAuditUtil.write(fipsAuditEvent);
+
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							StringBundler.concat(
+								"Configuration ", pid,
+								" is installed from a file, so its credential ",
+								id, " stays in plaintext"));
+					}
+				}
+
+				continue;
+			}
+
 			try {
 				properties.put(
 					id,
 					_secretResolver.store(
 						companyId,
-						StringBundler.concat(
-							_IDENTIFIER_PREFIX,
-							StringUtil.replace(
-								pid, CharPool.TILDE, CharPool.SLASH),
-							StringPool.SLASH, companyId, StringPool.SLASH, id),
+						SecretContext.fromConfiguration(id, properties),
 						value));
 			}
 			catch (Exception exception) {
@@ -261,10 +305,42 @@ public class ConfigurationSecretConfigurationModelListener
 		return null;
 	}
 
-	private static final String _IDENTIFIER_PREFIX = "config/";
+	private Dictionary<String, Object> _getStoredProperties(String pid) {
+		try {
+			Configuration[] configurations =
+				_configurationAdmin.listConfigurations(
+					"(service.pid=" + SystemBundleUtil.escapeFilterValue(pid) +
+						")");
+
+			if (configurations == null) {
+				return new HashMapDictionary<>();
+			}
+
+			Configuration configuration = configurations[0];
+
+			Dictionary<String, Object> properties =
+				configuration.getProperties();
+
+			if (properties == null) {
+				return new HashMapDictionary<>();
+			}
+
+			return properties;
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(exception);
+			}
+		}
+
+		return new HashMapDictionary<>();
+	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ConfigurationSecretConfigurationModelListener.class);
+
+	private static final Pattern _interpolationPattern = Pattern.compile(
+		"\\$\\[(env|prop|secret):[^\\]]+\\]");
 
 	private BundleContext _bundleContext;
 

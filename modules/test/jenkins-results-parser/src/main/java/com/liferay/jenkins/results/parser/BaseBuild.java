@@ -344,6 +344,12 @@ public abstract class BaseBuild implements Build {
 			return _buildJSONObject;
 		}
 
+		if (_cachedDownstreamBuildReport != null) {
+			_buildJSONObject = _getCachedBuildJSONObject();
+
+			return _buildJSONObject;
+		}
+
 		String archiveFileContent = getArchiveFileContent("api/json");
 
 		if (!JenkinsResultsParserUtil.isNullOrEmpty(archiveFileContent)) {
@@ -374,6 +380,10 @@ public abstract class BaseBuild implements Build {
 
 	@Override
 	public JSONObject getBuildJSONObject(String tree) {
+		if (_cachedDownstreamBuildReport != null) {
+			return getBuildJSONObject();
+		}
+
 		String archiveFileContent = getArchiveFileContent("api/json");
 
 		if (!JenkinsResultsParserUtil.isNullOrEmpty(archiveFileContent)) {
@@ -2139,6 +2149,15 @@ public abstract class BaseBuild implements Build {
 			_jenkinsMaster = cachedDownstreamBuildReport.getJenkinsMaster();
 
 			_jenkinsCohort = _jenkinsMaster.getJenkinsCohort();
+
+			JSONObject buildReportJSONObject =
+				cachedDownstreamBuildReport.getBuildReportJSONObject();
+
+			if ((buildReportJSONObject != null) &&
+				buildReportJSONObject.has("startTime")) {
+
+				startTime = buildReportJSONObject.getLong("startTime");
+			}
 		}
 		else {
 			if (buildURL.contains("buildWithParameters")) {
@@ -2244,6 +2263,10 @@ public abstract class BaseBuild implements Build {
 
 	protected List<Callable<Object>> getArchiveCallables() {
 		List<Callable<Object>> archiveCallables = new ArrayList<>();
+
+		if (_cachedDownstreamBuildReport != null) {
+			return archiveCallables;
+		}
 
 		JenkinsMaster jenkinsMaster = getJenkinsMaster();
 
@@ -3326,6 +3349,53 @@ public abstract class BaseBuild implements Build {
 
 	private void _archiveTestReportJSON() {
 		_archive(null, false, "testReport/api/json");
+	}
+
+	private JSONObject _getCachedBuildJSONObject() {
+		JSONArray parametersJSONArray = new JSONArray();
+
+		Map<String, String> parameters = getParameters();
+
+		for (Map.Entry<String, String> entry : parameters.entrySet()) {
+			parametersJSONArray.put(
+				new JSONObject(
+				).put(
+					"name", entry.getKey()
+				).put(
+					"value", entry.getValue()
+				));
+		}
+
+		long timestamp = 0;
+
+		if (startTime != null) {
+			timestamp = startTime;
+		}
+
+		return new JSONObject(
+		).put(
+			"actions",
+			new JSONArray(
+			).put(
+				new JSONObject(
+				).put(
+					"parameters", parametersJSONArray
+				)
+			).put(
+				new JSONObject(
+				).put(
+					"queuingDurationMillis", 0
+				)
+			)
+		).put(
+			"duration", _duration
+		).put(
+			"result", _result
+		).put(
+			"timestamp", timestamp
+		).put(
+			"url", getBuildURL()
+		);
 	}
 
 	private int _getMaximumInvocationCount() {

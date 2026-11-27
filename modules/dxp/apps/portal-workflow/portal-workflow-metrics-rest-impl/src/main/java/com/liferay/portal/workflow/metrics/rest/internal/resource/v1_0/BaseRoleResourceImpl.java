@@ -231,9 +231,11 @@ public abstract class BaseRoleResourceImpl
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		if (parameters.containsKey("processId")) {
+		Serializable processId = parameters.get("processId");
+
+		if (processId != null) {
 			return getProcessRolesPage(
-				_parseLong((String)parameters.get("processId")),
+				_parseLong((String)processId),
 				_parseBoolean((String)parameters.get("completed")));
 		}
 		else {
@@ -857,4 +859,4 @@ public abstract class BaseRoleResourceImpl
 		LogFactoryUtil.getLog(BaseRoleResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:1254229812
+// LIFERAY-REST-BUILDER-HASH:-2120979438

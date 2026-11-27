@@ -6,11 +6,12 @@
 package com.liferay.document.library.google.docs.internal.display.context;
 
 import com.liferay.document.library.display.context.DLFilePicker;
-import com.liferay.document.library.google.docs.internal.helper.GoogleDocsConfigurationHelper;
 import com.liferay.document.library.google.docs.internal.helper.GoogleDocsMetadataHelper;
 import com.liferay.document.library.google.docs.internal.util.constants.GoogleDocsConstants;
+import com.liferay.document.library.google.drive.configuration.DLGoogleDriveCompanyConfiguration;
 import com.liferay.petra.io.unsync.UnsyncStringWriter;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.configuration.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
@@ -18,6 +19,7 @@ import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.URLTemplateResource;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HtmlUtil_IW;
+import com.liferay.portal.security.key.secret.SecretResolverUtil;
 
 /**
  * @author Iván Zaera
@@ -34,8 +36,11 @@ public class GoogleDocsDLFilePicker implements DLFilePicker {
 		_namespace = namespace;
 		_onFilePickCallback = onFilePickCallback;
 
-		_googleDocsConfigurationHelper = new GoogleDocsConfigurationHelper(
-			themeDisplay.getCompanyId());
+		_companyId = themeDisplay.getCompanyId();
+
+		_dlGoogleDriveCompanyConfiguration =
+			ConfigurationProviderUtil.getCompanyConfiguration(
+				DLGoogleDriveCompanyConfiguration.class, _companyId);
 	}
 
 	@Override
@@ -88,10 +93,10 @@ public class GoogleDocsDLFilePicker implements DLFilePicker {
 
 		template.put(
 			"googleAppsAPIKey",
-			_googleDocsConfigurationHelper.getGoogleAppsAPIKey());
+			SecretResolverUtil.resolve(
+				_companyId, _dlGoogleDriveCompanyConfiguration.pickerAPIKey()));
 		template.put(
-			"googleClientId",
-			_googleDocsConfigurationHelper.getGoogleClientId());
+			"googleClientId", _dlGoogleDriveCompanyConfiguration.clientId());
 		template.put("htmlUtil", HtmlUtil_IW.getInstance());
 		template.put("namespace", _namespace);
 		template.put("onFilePickCallback", _onFilePickCallback);
@@ -118,7 +123,9 @@ public class GoogleDocsDLFilePicker implements DLFilePicker {
 		return GoogleDocsConstants.DDM_FIELD_NAME_TITLE;
 	}
 
-	private final GoogleDocsConfigurationHelper _googleDocsConfigurationHelper;
+	private final long _companyId;
+	private final DLGoogleDriveCompanyConfiguration
+		_dlGoogleDriveCompanyConfiguration;
 	private final GoogleDocsMetadataHelper _googleDocsMetadataHelper;
 	private final String _namespace;
 	private final String _onFilePickCallback;

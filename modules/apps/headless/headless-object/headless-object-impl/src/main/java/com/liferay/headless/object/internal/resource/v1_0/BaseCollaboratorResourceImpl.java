@@ -747,10 +747,12 @@ public abstract class BaseCollaboratorResourceImpl
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		if (parameters.containsKey("objectEntryFolderId")) {
+		Serializable objectEntryFolderId = parameters.get(
+			"objectEntryFolderId");
+
+		if (objectEntryFolderId != null) {
 			return getObjectEntryFolderCollaboratorsPage(
-				_parseLong((String)parameters.get("objectEntryFolderId")),
-				pagination);
+				_parseLong((String)objectEntryFolderId), pagination);
 		}
 		else {
 			throw new NotSupportedException(
@@ -1368,4 +1370,4 @@ public abstract class BaseCollaboratorResourceImpl
 		LogFactoryUtil.getLog(BaseCollaboratorResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:-821025100
+// LIFERAY-REST-BUILDER-HASH:-866441786

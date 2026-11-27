@@ -475,11 +475,13 @@ public abstract class BaseCategoryDisplayPageResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("externalReferenceCode")) {
+			Serializable externalReferenceCode = parameters.get(
+				"externalReferenceCode");
+
+			if (externalReferenceCode != null) {
 				categoryDisplayPageUnsafeFunction = categoryDisplayPage ->
 					postChannelByExternalReferenceCodeCategoryDisplayPage(
-						(String)parameters.get("externalReferenceCode"),
-						categoryDisplayPage);
+						(String)externalReferenceCode, categoryDisplayPage);
 			}
 			else {
 				throw new NotSupportedException(
@@ -1217,4 +1219,4 @@ public abstract class BaseCategoryDisplayPageResourceImpl
 		LogFactoryUtil.getLog(BaseCategoryDisplayPageResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:-1711803102
+// LIFERAY-REST-BUILDER-HASH:-1941443054

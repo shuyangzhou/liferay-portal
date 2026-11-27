@@ -11,6 +11,7 @@ import com.liferay.petra.lang.SafeCloseable;
 import java.io.Serializable;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,6 +19,12 @@ import java.util.Set;
  * @author Marcela Cunha
  */
 public class ObjectEntryThreadLocal {
+
+	public static void addMissingObjectEntryId(long objectEntryId) {
+		List<Long> missingObjectEntryIds = _missingObjectEntryIds.get();
+
+		missingObjectEntryIds.add(objectEntryId);
+	}
 
 	public static void addValidatedObjectEntryId(long objectEntryId) {
 		Set<Long> validatedObjectEntryIds = _validatedObjectEntryIds.get();
@@ -31,6 +38,10 @@ public class ObjectEntryThreadLocal {
 
 	public static Map<String, Serializable> getExpandoBridgeAttributes() {
 		return _expandoBridgeAttributes.get();
+	}
+
+	public static List<Long> getMissingObjectEntryIds() {
+		return _missingObjectEntryIds.get();
 	}
 
 	public static Long getObjectEntryFolderId() {
@@ -57,6 +68,10 @@ public class ObjectEntryThreadLocal {
 		return _skipReadOnlyObjectFieldsValidation.get();
 	}
 
+	public static boolean isSkipRootObjectEntryVersion() {
+		return _skipRootObjectEntryVersion.get();
+	}
+
 	public static boolean isValidatedObjectEntry(long objectEntryId) {
 		Set<Long> validatedObjectEntryIds = _validatedObjectEntryIds.get();
 
@@ -74,6 +89,13 @@ public class ObjectEntryThreadLocal {
 		Map<String, Serializable> expandoValues) {
 
 		_expandoBridgeAttributes.set(expandoValues);
+	}
+
+	public static SafeCloseable setMissingObjectEntryIdsWithSafeCloseable(
+		List<Long> missingObjectEntryIds) {
+
+		return _missingObjectEntryIds.setWithSafeCloseable(
+			missingObjectEntryIds);
 	}
 
 	public static SafeCloseable setObjectEntryFolderIdWithSafeCloseable(
@@ -108,6 +130,13 @@ public class ObjectEntryThreadLocal {
 		_skipReadOnlyObjectFieldsValidation.set(skipReadOnlyValidation);
 	}
 
+	public static SafeCloseable setSkipRootObjectEntryVersionWithSafeCloseable(
+		boolean skipRootObjectEntryVersion) {
+
+		return _skipRootObjectEntryVersion.setWithSafeCloseable(
+			skipRootObjectEntryVersion);
+	}
+
 	private static final CentralizedThreadLocal<Boolean>
 		_disassociateRelatedModels = new CentralizedThreadLocal<>(
 			ObjectEntryThreadLocal.class + "._disassociateRelatedModels",
@@ -115,6 +144,10 @@ public class ObjectEntryThreadLocal {
 	private static final ThreadLocal<Map<String, Serializable>>
 		_expandoBridgeAttributes = new CentralizedThreadLocal<>(
 			ObjectEntryThreadLocal.class + "._expandoBridgeAttributes");
+	private static final CentralizedThreadLocal<List<Long>>
+		_missingObjectEntryIds = new CentralizedThreadLocal<>(
+			ObjectEntryThreadLocal.class + "._missingObjectEntryIds",
+			() -> null);
 	private static final CentralizedThreadLocal<Long> _objectEntryFolderId =
 		new CentralizedThreadLocal<>(
 			ObjectEntryThreadLocal.class + "._objectEntryFolderId", () -> null);
@@ -135,6 +168,10 @@ public class ObjectEntryThreadLocal {
 		_skipReadOnlyObjectFieldsValidation = new CentralizedThreadLocal<>(
 			ObjectEntryThreadLocal.class +
 				"._skipReadOnlyObjectFieldsValidation",
+			() -> false);
+	private static final CentralizedThreadLocal<Boolean>
+		_skipRootObjectEntryVersion = new CentralizedThreadLocal<>(
+			ObjectEntryThreadLocal.class + "._skipRootObjectEntryVersion",
 			() -> false);
 	private static final ThreadLocal<Set<Long>> _validatedObjectEntryIds =
 		new CentralizedThreadLocal<>(

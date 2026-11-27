@@ -429,9 +429,11 @@ public abstract class BaseFormRecordResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("formId")) {
+			Serializable formId = parameters.get("formId");
+
+			if (formId != null) {
 				formRecordUnsafeFunction = formRecord -> postFormFormRecord(
-					_parseLong((String)parameters.get("formId")), formRecord);
+					_parseLong((String)formId), formRecord);
 			}
 			else {
 				throw new NotSupportedException(
@@ -502,9 +504,11 @@ public abstract class BaseFormRecordResourceImpl
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		if (parameters.containsKey("formId")) {
+		Serializable formId = parameters.get("formId");
+
+		if (formId != null) {
 			return getFormFormRecordsPage(
-				_parseLong((String)parameters.get("formId")), pagination);
+				_parseLong((String)formId), pagination);
 		}
 		else {
 			throw new NotSupportedException(
@@ -1155,4 +1159,4 @@ public abstract class BaseFormRecordResourceImpl
 		LogFactoryUtil.getLog(BaseFormRecordResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:978017130
+// LIFERAY-REST-BUILDER-HASH:-163653710

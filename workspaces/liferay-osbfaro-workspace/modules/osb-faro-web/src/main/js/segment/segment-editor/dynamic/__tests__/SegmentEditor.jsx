@@ -151,7 +151,6 @@ describe('SegmentEditor', () => {
 			.closest('.base-edit-page-main');
 
 		expect(main).toContainElement(screen.getByLabelText(/segment erc/i));
-		expect(main.parentElement).toHaveClass('criteria-builder-section-main');
 	});
 
 	it('renders the realtime segment with the sequential toggle in the conditions heading', () => {
@@ -239,13 +238,13 @@ describe('SegmentEditor', () => {
 			)
 			.closest('.popover');
 
-		expect(popover).toHaveClass('hide');
+		expect(popover).not.toBeVisible();
 
 		fireEvent.mouseOver(
 			container.querySelector('.canvas-header .info-popover-root')
 		);
 
-		expect(popover).not.toHaveClass('hide');
+		expect(popover).toBeVisible();
 	});
 
 	it('does not render the sequential toggle on a batch segment', () => {

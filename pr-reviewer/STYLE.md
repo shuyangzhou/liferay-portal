@@ -80,6 +80,7 @@ Simplicity never outranks safety: when the two trade off, choose the safer form.
 
 - Place a test in its subject's package: a unit test at `xyz.BarTest` for source `xyz.Bar`, an integration test at `xyz.test.BarTest` for the same source. [604]
 - Consolidating trivial parallel test methods is a judgment call: fold many trivial variants into one method, but a few well named scenario methods are fine. [601]
+- Call a test helper once per value instead of looping over an array or collection literal of cases. [609]
 - Name a test method `test` plus the method it tests, keeping its `is` or `has` prefix (`testIsQuotaExceeded`, not `testQuotaExceeded`). [603]
 - Randomize any test value you do not assert on, an exception message or JSON value included; keep a literal only for a value the test checks. [602]
 - In a `*ResourceTest` that extends a generated `Base*ResourceTestCase`, override every base test method with `@Override @Test`, call `super.testX()` first, and add new scenarios as private `_testX*` helpers called from the override. A new top-level `@Test` method whose name does not match a base test is a violation. [605]
@@ -105,6 +106,7 @@ Simplicity never outranks safety: when the two trade off, choose the safer form.
 
 ## General coding
 
+- Never name a real customer or third party organization in code, test data, configuration, comments, or documentation; use Liferay's own names or reserved example values such as `example.com`. [003]
 - In runtime logic, prefer an exact check over a loose one — `equals`, not a substring `contains`; a partial check in a test is fine. [901]
 - Do not end a URL or path with a trailing slash. [902]
 - Do not end a file with a trailing newline; the source formatter strips it, so the `\ No newline at end of file` marker in a diff is the expected state. [908]

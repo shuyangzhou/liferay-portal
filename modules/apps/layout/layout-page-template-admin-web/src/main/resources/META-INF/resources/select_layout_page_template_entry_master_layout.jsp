@@ -41,13 +41,17 @@ renderResponse.setTitle(LanguageUtil.get(request, "select-master-page"));
 				<li class="card-page-item card-page-item-asset">
 
 					<%
+					SelectLayoutPageTemplateEntryMasterLayoutDisplayContext selectLayoutPageTemplateEntryMasterLayoutDisplayContext = new SelectLayoutPageTemplateEntryMasterLayoutDisplayContext(request, renderResponse);
+
+					Map<String, Object> additionalProps = selectLayoutPageTemplateEntryMasterLayoutDisplayContext.getAdditionalProps();
+
 					SelectLayoutPageTemplateEntryMasterLayoutVerticalCard selectLayoutPageTemplateEntryMasterLayoutVerticalCard = new SelectLayoutPageTemplateEntryMasterLayoutVerticalCard(masterLayoutPageTemplateEntry, renderRequest, renderResponse);
 					%>
 
 					<clay:vertical-card
 						additionalProps='<%=
 							HashMapBuilder.<String, Object>put(
-								"addLayoutPageTemplateEntryUrl", selectLayoutPageTemplateEntryMasterLayoutVerticalCard.getAddLayoutPageTemplateEntryURL()
+								"addLayoutPageTemplateEntryURL", selectLayoutPageTemplateEntryMasterLayoutVerticalCard.getAddLayoutPageTemplateEntryURL()
 							).put(
 								"dialogTitle", LanguageUtil.get(request, "add-page-template")
 							).put(
@@ -56,6 +60,8 @@ renderResponse.setTitle(LanguageUtil.get(request, "select-master-page"));
 								"mainFieldName", "name"
 							).put(
 								"mainFieldPlaceholder", LanguageUtil.get(request, "name")
+							).putAll(
+								additionalProps
 							).build()
 						%>'
 						propsTransformer="{SelectLayoutPageTemplateEntryMasterLayoutVerticalCardPropsTransformer} from layout-page-template-admin-web"

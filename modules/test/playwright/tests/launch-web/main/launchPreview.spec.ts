@@ -415,10 +415,11 @@ test(
 				pageTitle
 			);
 
-			expect(previewPage.url()).toContain(
-				`previewLaunchSetId=${firstLaunch.id}`
-			);
 			expect(previewPage.url()).toContain('p_l_mode=preview');
+			expect(previewPage.url()).toContain(
+				`p_launch_set_id=${firstLaunch.id}`
+			);
+			expect(previewPage.url()).toContain('p_launch_set_mode=preview');
 
 			await expectPreview(previewPage, {
 				hidden: [liveHeading, liveText, secondLaunchText],
@@ -440,7 +441,7 @@ test(
 			);
 
 			expect(previewPage.url()).toContain(
-				`previewLaunchSetId=${secondLaunch.id}`
+				`p_launch_set_id=${secondLaunch.id}`
 			);
 
 			await expectPreview(previewPage, {
@@ -459,7 +460,7 @@ test(
 
 			await launchPreviewPage.switchLaunch(secondLaunchName, 'No Launch');
 
-			expect(previewPage.url()).toContain('previewLaunchSetId=0');
+			expect(previewPage.url()).toContain('p_launch_set_id=0');
 
 			await expectPreview(previewPage, {
 				hidden: [firstLaunchHeading, firstLaunchText, secondLaunchText],

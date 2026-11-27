@@ -5,13 +5,16 @@
 
 import {expect, mergeTests} from '@playwright/test';
 
+import {dataApiHelpersTest} from '../../../fixtures/dataApiHelpersTest';
 import {featureFlagsTest} from '../../../fixtures/featureFlagsTest';
 import {instanceSettingsPagesTest} from '../../../fixtures/instanceSettingsPagesTest';
 import {loginTest} from '../../../fixtures/loginTest';
 import {systemSettingsPageTest} from '../../../fixtures/systemSettingsPageTest';
+import {performLoginViaApi} from '../../../utils/performLogin';
 import {waitForAlert} from '../../../utils/waitForAlert';
 
 const test = mergeTests(
+	dataApiHelpersTest,
 	instanceSettingsPagesTest,
 	loginTest(),
 	systemSettingsPageTest
@@ -35,7 +38,7 @@ const testWithoutFeatureFlag = mergeTests(
 	systemSettingsPageTest
 );
 
-test(
+testWithFeatureFlag(
 	'Assert that the audit configuration is rendered on the instance scope',
 	{tag: '@LPD-98544'},
 	async ({instanceSettingsPage, page}) => {
@@ -70,14 +73,10 @@ test(
 	async ({instanceSettingsPage, page}) => {
 		await instanceSettingsPage.goToInstanceSetting(
 			'Audit',
-			'Audit',
+			'File System Audit Message Processor',
 			true,
 			'Virtual Instance Scope'
 		);
-
-		await expect(
-			page.getByRole('heading', {name: 'File System Processor'})
-		).toBeVisible();
 
 		await expect(
 			page.getByLabel('Enable File System Processor')
@@ -94,12 +93,26 @@ testWithoutFeatureFlag(
 	async ({instanceSettingsPage, page, systemSettingsPage}) => {
 		await instanceSettingsPage.goToInstanceSetting(
 			'Audit',
-			'Audit',
+			'File System Audit Message Processor',
 			true,
 			'Virtual Instance Scope'
 		);
 
-		await expect(page.getByLabel('Pseudonymization Enabled')).toBeHidden();
+		const menubar = page
+			.locator('div')
+			.filter({hasText: 'Virtual Instance Scope'})
+			.locator('+ div')
+			.getByRole('menubar');
+
+		await expect(
+			menubar.getByRole('menuitem', {
+				exact: true,
+				name: 'File System Audit Message Processor',
+			})
+		).toBeVisible();
+		await expect(
+			menubar.getByRole('menuitem', {exact: true, name: 'Audit'})
+		).toBeHidden();
 
 		await systemSettingsPage.goToSystemSetting('Audit', 'Audit');
 
@@ -132,13 +145,96 @@ testWithFeatureFlag(
 	}
 );
 
+test.describe('Audit system configuration', () => {
+	test.afterEach(async ({page, systemSettingsPage}) => {
+		await systemSettingsPage.goToSystemSetting('Audit', 'Audit');
+
+		await page.getByLabel('Enabled', {exact: true}).setChecked(true);
+
+		await systemSettingsPage.saveAndWaitForAlert();
+	});
+
+	test(
+		'Assert that audit events are recorded only while audit is enabled on the system scope',
+		{tag: '@LPD-114745'},
+		async ({apiHelpers, browser, page, systemSettingsPage}) => {
+			const startDate = new Date().toISOString();
+
+			const userAccount =
+				await apiHelpers.headlessAdminUser.postUserAccount();
+
+			const getLoginAuditEvents = async () => {
+				const {items} = await apiHelpers.get(
+					`${apiHelpers.baseUrl}audit/v1.0/audit-events?eventType=LOGIN&pageSize=100&startDate=${encodeURIComponent(startDate)}`
+				);
+
+				return items.filter(
+					(auditEvent: {entityId: number}) =>
+						auditEvent.entityId === Number(userAccount.id)
+				);
+			};
+
+			const loginAsUserAccount = async () => {
+				const context = await browser.newContext();
+
+				try {
+					await performLoginViaApi({
+						page: await context.newPage(),
+						password: 'test',
+						screenName: userAccount.alternateName,
+					});
+				}
+				finally {
+					await context.close();
+				}
+			};
+
+			await systemSettingsPage.goToSystemSetting('Audit', 'Audit');
+
+			await page.getByLabel('Enabled', {exact: true}).setChecked(false);
+
+			await systemSettingsPage.saveAndWaitForAlert();
+
+			await systemSettingsPage.goToSystemSetting('Audit', 'Audit');
+
+			await expect(
+				page.getByLabel('Enabled', {exact: true})
+			).not.toBeChecked();
+
+			await expect(async () => {
+				const loginAuditEvents = await getLoginAuditEvents();
+
+				await loginAsUserAccount();
+
+				expect(await getLoginAuditEvents()).toHaveLength(
+					loginAuditEvents.length
+				);
+			}).toPass({timeout: 30000});
+
+			await page.getByLabel('Enabled', {exact: true}).setChecked(true);
+
+			await systemSettingsPage.saveAndWaitForAlert();
+
+			await expect(async () => {
+				const loginAuditEvents = await getLoginAuditEvents();
+
+				await loginAsUserAccount();
+
+				expect(await getLoginAuditEvents()).toHaveLength(
+					loginAuditEvents.length + 1
+				);
+			}).toPass({timeout: 30000});
+		}
+	);
+});
+
 test.describe('File System Processor instance configuration', () => {
 	let defaultOutputDirectory: string;
 
 	test.afterEach(async ({instanceSettingsPage, page}) => {
 		await instanceSettingsPage.goToInstanceSetting(
 			'Audit',
-			'Audit',
+			'File System Audit Message Processor',
 			true,
 			'Virtual Instance Scope'
 		);
@@ -163,7 +259,7 @@ test.describe('File System Processor instance configuration', () => {
 		async ({instanceSettingsPage, page}) => {
 			await instanceSettingsPage.goToInstanceSetting(
 				'Audit',
-				'Audit',
+				'File System Audit Message Processor',
 				true,
 				'Virtual Instance Scope'
 			);
@@ -183,7 +279,7 @@ test.describe('File System Processor instance configuration', () => {
 
 			await instanceSettingsPage.goToInstanceSetting(
 				'Audit',
-				'Audit',
+				'File System Audit Message Processor',
 				true,
 				'Virtual Instance Scope'
 			);

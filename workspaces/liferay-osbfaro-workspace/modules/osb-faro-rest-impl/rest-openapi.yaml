@@ -75,6 +75,66 @@ components:
                     readOnly: true
                     type: string
             type: object
+        AccountLifecycle:
+            description:
+                "An account lifecycle of a channel: the ordered stages accounts move through (e.g. 'Aware', 'Engaged', 'Pipeline'). Use `getWorkspaceGroupChannelAccountLifecyclesPage` to list them."
+            properties:
+                accountLifecycleStages:
+                    description:
+                        "Stages of the lifecycle, in display order."
+                    items:
+                        $ref: "#/components/schemas/AccountLifecycleStage"
+                    readOnly: true
+                    type: array
+                dateModified:
+                    description:
+                        "Last time the lifecycle was modified."
+                    format: date-time
+                    readOnly: true
+                    type: string
+                defaultAccountLifecycle:
+                    description:
+                        "True if the lifecycle is the default of the channel. A channel can have several lifecycles but only one default, which `getWorkspaceGroupChannelAccountsPage` uses when `accountLifecycleId` is omitted."
+                    readOnly: true
+                    type: boolean
+                description:
+                    description:
+                        "Description of the lifecycle."
+                    readOnly: true
+                    type: string
+                id:
+                    description:
+                        "Account lifecycle ID. Use it as `accountLifecycleId` to list the stage metrics and stage transitions of the lifecycle, to fetch the stage history of an account, or to filter accounts by lifecycle stage."
+                    readOnly: true
+                    type: string
+                name:
+                    description:
+                        "Name of the lifecycle."
+                    readOnly: true
+                    type: string
+            type: object
+        AccountLifecycleHistory:
+            description:
+                "An account's path through an account lifecycle: every stage of the lifecycle, with when the account entered and left it. Use `getWorkspaceGroupChannelAccountAccountLifecycleHistory` to retrieve it."
+            properties:
+                accountLifecycleStageHistories:
+                    description:
+                        "Every stage of the lifecycle, in display order, including the stages the account never entered."
+                    items:
+                        $ref: "#/components/schemas/AccountLifecycleStageHistory"
+                    readOnly: true
+                    type: array
+                id:
+                    description:
+                        "Account lifecycle ID."
+                    readOnly: true
+                    type: string
+                name:
+                    description:
+                        "Name of the lifecycle."
+                    readOnly: true
+                    type: string
+            type: object
         AccountLifecycleStage:
             description:
                 "A stage of an account lifecycle. A lifecycle has between 1 and 20 stages, each with a name unique within the lifecycle, ordered by position."
@@ -102,6 +162,92 @@ components:
                 position:
                     description:
                         "Position of the stage in the lifecycle, starting at 1. An account that matches several stages is placed in the one with the highest position."
+                    readOnly: true
+                    type: integer
+            type: object
+        AccountLifecycleStageHistory:
+            description:
+                "A stage of an account lifecycle with the account's most recent stay in it. Both dates are null when the account never entered the stage, and only `endDate` is null for the stage the account is in now."
+            properties:
+                description:
+                    description:
+                        "Description of the stage."
+                    readOnly: true
+                    type: string
+                endDate:
+                    description:
+                        "When the account left the stage. Null while the account is still in it or never entered it."
+                    format: date-time
+                    readOnly: true
+                    type: string
+                id:
+                    description:
+                        "Stage ID."
+                    readOnly: true
+                    type: string
+                maxDuration:
+                    description:
+                        "Maximum number of days an account is expected to stay in the stage before it is considered stalled. Null when no limit is set."
+                    readOnly: true
+                    type: integer
+                name:
+                    description:
+                        "Name of the stage, unique within the lifecycle ignoring case (e.g. 'At Risk' or 'Pipeline')."
+                    readOnly: true
+                    type: string
+                position:
+                    description:
+                        "Position of the stage in the lifecycle, starting at 1."
+                    readOnly: true
+                    type: integer
+                startDate:
+                    description:
+                        "When the account entered the stage. Null when it never entered it."
+                    format: date-time
+                    readOnly: true
+                    type: string
+            type: object
+        AccountLifecycleStageMetric:
+            description:
+                "A stage of an account lifecycle, with how many accounts are in it and how they move through it. Use `getWorkspaceGroupChannelAccountLifecycleStageMetricsPage` to list them."
+            properties:
+                accountsCount:
+                    description:
+                        "Number of accounts currently in the stage."
+                    format: int64
+                    readOnly: true
+                    type: integer
+                averageStageDuration:
+                    description:
+                        "Average number of days accounts stayed in the stage, over the stays that started in the last 90 days and have ended. 0 when there are none."
+                    format: double
+                    readOnly: true
+                    type: number
+                conversionRateToNextStage:
+                    description:
+                        "Moves from the stage to the next stage in the last 90 days, as a percentage of the accounts that entered the stage in that time. Null for the last stage and when no account entered the stage in that time."
+                    format: double
+                    readOnly: true
+                    type: number
+                description:
+                    description:
+                        "Description of the stage."
+                    readOnly: true
+                    type: string
+                name:
+                    description:
+                        "Name of the stage, unique within the lifecycle ignoring case (e.g. 'At Risk' or 'Pipeline')."
+                    readOnly: true
+                    type: string
+                percentage:
+                    description:
+                        "Percentage of the lifecycle's current accounts that are in this stage."
+                    format: double
+                    readOnly: true
+                    type: number
+                position:
+                    description:
+                        "Position of the stage in the lifecycle, starting at 1."
                     readOnly: true
                     type: integer
             type: object
@@ -133,6 +279,22 @@ components:
                     description:
                         "When the account entered the new stage."
                     format: date-time
+                    readOnly: true
+                    type: string
+            type: object
+        Acquisition:
+            description:
+                "A source of the sessions of a channel: an acquisition channel, a referrer, or a `source / medium` pair, with the number of sessions that came from it. Use `getWorkspaceGroupChannelAcquisitionsPage` to list them."
+            properties:
+                count:
+                    description:
+                        "Number of sessions in the date range that came from this value. With `type` REFERRER, a session with several referrers counts once for each."
+                    format: int64
+                    readOnly: true
+                    type: integer
+                name:
+                    description:
+                        "Name of the acquisition channel, referrer URL, or `source / medium` pair, depending on the `type` the list was requested with. Channel and source / medium values are lowercase."
                     readOnly: true
                     type: string
             type: object
@@ -377,6 +539,84 @@ components:
                 url:
                     description:
                         "Full URL of the page where the event was emitted."
+                    readOnly: true
+                    type: string
+            type: object
+        EventAttributeDefinition:
+            description:
+                "An attribute recorded on events of an LDP workspace, with its data type and a sample value. Use `getWorkspaceGroupEventAttributeDefinitionsPage` to list them."
+            properties:
+                dataType:
+                    description:
+                        "Logical data type of the attribute's values."
+                    enum: [BOOLEAN, DATE, DURATION, NUMBER, STRING]
+                    readOnly: true
+                    type: string
+                description:
+                    description:
+                        "Description of the attribute."
+                    readOnly: true
+                    type: string
+                displayName:
+                    description:
+                        "Display name of the attribute."
+                    readOnly: true
+                    type: string
+                id:
+                    description:
+                        "Event attribute definition ID."
+                    readOnly: true
+                    type: string
+                name:
+                    description:
+                        "Name of the attribute."
+                    readOnly: true
+                    type: string
+                sampleValue:
+                    description:
+                        "Sample value of the attribute. It may come from an event other than the one passed as `eventDefinitionId`."
+                    readOnly: true
+                    type: string
+                type:
+                    description:
+                        "Attribute scope. GLOBAL attributes are shared by all events; LOCAL attributes belong to specific events."
+                    enum: [GLOBAL, LOCAL]
+                    readOnly: true
+                    type: string
+            type: object
+        EventDefinition:
+            description:
+                "An event of an LDP workspace: one of the DEFAULT events that LDP predefines, or a CUSTOM event the workspace has seen across all channels, with its display name. Use `getWorkspaceGroupEventDefinitionsPage` to list them."
+            properties:
+                description:
+                    description:
+                        "Description of the event."
+                    readOnly: true
+                    type: string
+                displayName:
+                    description:
+                        "Display name of the event."
+                    readOnly: true
+                    type: string
+                hidden:
+                    description:
+                        "True if the definition is hidden from the LDP pickers."
+                    readOnly: true
+                    type: boolean
+                id:
+                    description:
+                        "Event definition ID. Use it as `eventDefinitionId` to list the attributes of the event."
+                    readOnly: true
+                    type: string
+                name:
+                    description:
+                        "Name of the event (e.g. 'pageViewed', 'formSubmitted'). It is the `Event.name` of the matching events."
+                    readOnly: true
+                    type: string
+                type:
+                    description:
+                        "Event classification. DEFAULT events are tracked by LDP out of the box; CUSTOM events are sent by a site itself."
+                    enum: [CUSTOM, DEFAULT]
                     readOnly: true
                     type: string
             type: object
@@ -880,6 +1120,76 @@ components:
                     readOnly: true
                     type: array
             type: object
+        VisitFrequencyMetric:
+            description:
+                "A split of the unique visitors of a channel over a date range by how often they came back. Buckets compare the number of sessions of each visitor to the number of days in the range: a visitor is daily with at least as many sessions as days, weekly with at least one session per 7 days, biweekly with at least one per 14 days, monthly with at least one per 30 days, and occasional otherwise. Each threshold is at least one session, so ranges shorter than 14, 28 or 60 days leave the biweekly, monthly or occasional bucket empty. Each visitor is counted in the most frequent bucket they qualify for. Use `getWorkspaceGroupChannelVisitFrequencyMetric` to retrieve it."
+            properties:
+                biWeeklyVisitors:
+                    description:
+                        "Visitors with at least one session per 14 days of the range, who are not daily or weekly."
+                    format: int64
+                    readOnly: true
+                    type: integer
+                dailyVisitors:
+                    description:
+                        "Visitors with at least as many sessions as days in the range."
+                    format: int64
+                    readOnly: true
+                    type: integer
+                monthlyVisitors:
+                    description:
+                        "Visitors with at least one session per 30 days of the range, who are not in a more frequent bucket."
+                    format: int64
+                    readOnly: true
+                    type: integer
+                occasionalVisitors:
+                    description:
+                        "Visitors who are not in any of the other buckets."
+                    format: int64
+                    readOnly: true
+                    type: integer
+                visitors:
+                    description:
+                        "Unique visitors in the range; the sum of the five buckets."
+                    format: int64
+                    readOnly: true
+                    type: integer
+                weeklyVisitors:
+                    description:
+                        "Visitors with at least one session per 7 days of the range, who are not daily."
+                    format: int64
+                    readOnly: true
+                    type: integer
+            type: object
+        VisitorMetric:
+            description:
+                "A set of visitor totals of a channel over a date range. Use `getWorkspaceGroupChannelVisitorMetric` to retrieve it."
+            properties:
+                averageSessionDuration:
+                    description:
+                        "Average duration of the sessions in the range, in milliseconds."
+                    format: int64
+                    readOnly: true
+                    type: integer
+                knownVisitors:
+                    description:
+                        "Visitors identified by email. Anonymous visitors are `visitors` minus `knownVisitors`."
+                    format: int64
+                    readOnly: true
+                    type: integer
+                totalSessionDuration:
+                    description:
+                        "Sum of the durations of all sessions in the range, in milliseconds."
+                    format: int64
+                    readOnly: true
+                    type: integer
+                visitors:
+                    description:
+                        "Unique visitors, known and anonymous, with at least one session in the range."
+                    format: int64
+                    readOnly: true
+                    type: integer
+            type: object
         Workspace:
             description:
                 "An LDP workspace synced from a Liferay site. Each workspace owns its own channels, individuals, accounts, segments, and asset analytics. Workspaces are scoped to the Liferay group identified by `groupId`."
@@ -897,7 +1207,7 @@ components:
             type: object
 info:
     description:
-        "Read only headless REST API for LDP (Liferay Data Platform). Exposes accounts, asset summary metrics, events, individuals, individual segments, page metrics, properties, and search terms for use as MCP tools and external integrations. All endpoints are scoped to a provisioned LDP workspace. Every tool accepts a `fields` input: request only the fields you need, especially on lists, and leave out the heavy fields `demographics`, `events` and `attributes` unless the question needs them. A Java client JAR is available for use with the group ID 'com.liferay', artifact ID 'com.liferay.osb.faro.rest.client', and version '1.0.0'."
+        "Read only headless REST API for LDP (Liferay Data Platform). Exposes account lifecycles, accounts, acquisitions, asset summary metrics, event attribute definitions, event definitions, events, individuals, individual segments, page metrics, properties, search terms, visit frequency metrics, and visitor metrics for use as MCP tools and external integrations. All endpoints are scoped to a provisioned LDP workspace. Every tool accepts a `fields` input: request only the fields you need, especially on lists, and leave out the heavy fields `demographics`, `events` and `attributes` unless the question needs them. A Java client JAR is available for use with the group ID 'com.liferay', artifact ID 'com.liferay.osb.faro.rest.client', and version '1.0.0'."
     license:
         name: Apache 2.0
         url: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -922,7 +1232,7 @@ paths:
                         type: integer
                 -   in: path
                     description:
-                        "ID of the account lifecycle whose stage transitions should be listed."
+                        "ID of the account lifecycle whose stage transitions should be listed. Use `getWorkspaceGroupChannelAccountLifecyclesPage` to find it."
                     name: accountLifecycleId
                     required: true
                     schema:
@@ -1106,10 +1416,149 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/Channel"
             tags: ["Channel"]
+    "/workspace/{groupId}/channels/{channelId}/account-lifecycles":
+        get:
+            description:
+                "List the account lifecycles of a channel (also known as property) in an LDP workspace, with their stages in display order. A channel can have several lifecycles, and exactly one of them is its default. Use this to find the `accountLifecycleId` and the stage names that the stage metric, stage history, and stage transition tools and `getWorkspaceGroupChannelAccountsPage` take."
+            operationId: getWorkspaceGroupChannelAccountLifecyclesPage
+            parameters:
+                -   in: path
+                    description:
+                        "ID of the Liferay site that owns the LDP workspace."
+                    name: groupId
+                    required: true
+                    schema:
+                        format: int64
+                        type: integer
+                -   in: path
+                    description:
+                        "ID of the channel whose account lifecycles should be listed."
+                    name: channelId
+                    required: true
+                    schema:
+                        type: string
+                -   in: query
+                    description:
+                        "Page number (starts at 1)."
+                    name: page
+                    schema:
+                        minimum: 1
+                        type: integer
+                -   in: query
+                    description:
+                        "Page size, from 1 to 100. Larger values are rejected."
+                    name: pageSize
+                    schema:
+                        maximum: 100
+                        minimum: 1
+                        type: integer
+                -   in: query
+                    description:
+                        "Free text search across lifecycle name and author name, ignoring case. Empty or null returns all lifecycles."
+                    name: search
+                    schema:
+                        type: string
+                -   in: query
+                    description:
+                        "Sort expression `column:asc|desc`. Defaults to `name:asc` when omitted. Sortable columns: dateModified, id, name. Only one column is accepted."
+                    example: name:asc
+                    name: sort
+                    schema:
+                        type: string
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/AccountLifecycle"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/AccountLifecycle"
+                                type: array
+            tags: ["AccountLifecycle"]
+    "/workspace/{groupId}/channels/{channelId}/account-lifecycles/{accountLifecycleId}/stage-metrics":
+        get:
+            description:
+                "List the stage metrics of an account lifecycle, one entry per stage in display order: how many accounts are in each stage now, their share of the lifecycle, the average days spent in the stage and the conversion rate to the next stage. Durations and conversion rates cover the last 90 days; the date range cannot be changed. Use this to answer 'where do accounts stall' style questions. Optionally narrow results to the accounts of a country, an industry, or a segment with `country`, `industry`, or `segmentId`. A lifecycle has at most 20 stages, so the default page returns them all. The lifecycle must belong to the channel; otherwise the call returns 404."
+            operationId: getWorkspaceGroupChannelAccountLifecycleStageMetricsPage
+            parameters:
+                -   in: path
+                    description:
+                        "ID of the Liferay site that owns the LDP workspace."
+                    name: groupId
+                    required: true
+                    schema:
+                        format: int64
+                        type: integer
+                -   in: path
+                    description:
+                        "ID of the channel whose account lifecycle stage metrics should be listed."
+                    name: channelId
+                    required: true
+                    schema:
+                        type: string
+                -   in: path
+                    description:
+                        "ID of the account lifecycle whose stage metrics should be listed. Use `getWorkspaceGroupChannelAccountLifecyclesPage` to find it."
+                    name: accountLifecycleId
+                    required: true
+                    schema:
+                        type: string
+                -   in: query
+                    description:
+                        "Only include accounts headquartered in this country."
+                    name: country
+                    schema:
+                        type: string
+                -   in: query
+                    description:
+                        "Only include accounts in this industry."
+                    name: industry
+                    schema:
+                        type: string
+                -   in: query
+                    description:
+                        "Page number (starts at 1)."
+                    name: page
+                    schema:
+                        minimum: 1
+                        type: integer
+                -   in: query
+                    description:
+                        "Page size, from 1 to 100. Larger values are rejected."
+                    name: pageSize
+                    schema:
+                        maximum: 100
+                        minimum: 1
+                        type: integer
+                -   in: query
+                    description:
+                        "Only include accounts that are members of this segment."
+                    name: segmentId
+                    schema:
+                        format: int64
+                        type: integer
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/AccountLifecycleStageMetric"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/AccountLifecycleStageMetric"
+                                type: array
+            tags: ["AccountLifecycleStageMetric"]
     "/workspace/{groupId}/channels/{channelId}/accounts":
         get:
             description:
-                "List or search accounts synced to an LDP workspace. Optionally narrow results to a single channel (also known as property). Optionally narrow results to a single lifecycle stage with `lifecycleStage`, passing the name of a stage; the stage is looked up in the account lifecycle given by `accountLifecycleId`, or in the channel's default account lifecycle when it is omitted. Use this to browse or search accounts by name. To fetch a single account by ID, use `getWorkspaceGroupAccount`. For date range filtering pass `rangeKey` as one of LAST_24_HOURS, YESTERDAY, LAST_7_DAYS, LAST_28_DAYS, LAST_30_DAYS, LAST_90_DAYS, LAST_180_DAYS, or pass both `rangeStart` and `rangeEnd` as `yyyy-MM-dd` dates for a custom window of at most 180 days; a custom window takes precedence over `rangeKey`. Without either, results are not limited to a date range. Wide date ranges can take a while. If the response says the query is still running, wait the stated number of seconds and repeat the identical call."
+                "List or search accounts synced to an LDP workspace. Optionally narrow results to a single channel (also known as property). Optionally narrow results to a single lifecycle stage with `lifecycleStage`, passing the name of a stage; the stage is looked up in the account lifecycle given by `accountLifecycleId`, or in the channel's default account lifecycle when it is omitted. To list the account lifecycles of a channel, use `getWorkspaceGroupChannelAccountLifecyclesPage`. Use this to browse or search accounts by name. To fetch a single account by ID, use `getWorkspaceGroupAccount`. For date range filtering pass `rangeKey` as one of LAST_24_HOURS, YESTERDAY, LAST_7_DAYS, LAST_28_DAYS, LAST_30_DAYS, LAST_90_DAYS, LAST_180_DAYS, or pass both `rangeStart` and `rangeEnd` as `yyyy-MM-dd` dates for a custom window of at most 180 days; a custom window takes precedence over `rangeKey`. Without either, results are not limited to a date range. Wide date ranges can take a while. If the response says the query is still running, wait the stated number of seconds and repeat the identical call."
             operationId: getWorkspaceGroupChannelAccountsPage
             parameters:
                 -   in: path
@@ -1202,6 +1651,51 @@ paths:
                                     $ref: "#/components/schemas/Account"
                                 type: array
             tags: ["Account"]
+    "/workspace/{groupId}/channels/{channelId}/accounts/{accountId}/account-lifecycle-histories/{accountLifecycleId}":
+        get:
+            description:
+                "Fetch the stage history of a single account in an account lifecycle: every stage of the lifecycle in display order, with when the account most recently entered and left it. The stage with a `startDate` and no `endDate` is the one the account is in now. Use this to answer 'how long has this account been in its stage' or 'when did it become a customer' style questions. To list the stage moves of many accounts, use `getWorkspaceGroupAccountLifecycleStageTransitionsPage`. An account that never entered the lifecycle, or that does not exist, gets every stage with null dates. The lifecycle must belong to the channel; otherwise the call returns 404."
+            operationId: getWorkspaceGroupChannelAccountAccountLifecycleHistory
+            parameters:
+                -   in: path
+                    description:
+                        "ID of the Liferay site that owns the LDP workspace."
+                    name: groupId
+                    required: true
+                    schema:
+                        format: int64
+                        type: integer
+                -   in: path
+                    description:
+                        "ID of the channel whose account lifecycle history should be fetched."
+                    name: channelId
+                    required: true
+                    schema:
+                        type: string
+                -   in: path
+                    description:
+                        "ID of the account whose stage history should be fetched."
+                    name: accountId
+                    required: true
+                    schema:
+                        type: string
+                -   in: path
+                    description:
+                        "ID of the account lifecycle whose stage history should be fetched. Use `getWorkspaceGroupChannelAccountLifecyclesPage` to find it."
+                    name: accountLifecycleId
+                    required: true
+                    schema:
+                        type: string
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/AccountLifecycleHistory"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/AccountLifecycleHistory"
+            tags: ["AccountLifecycleHistory"]
     "/workspace/{groupId}/channels/{channelId}/accounts/{accountId}/event-metrics":
         get:
             description:
@@ -1357,6 +1851,96 @@ paths:
                                     $ref: "#/components/schemas/UserSession"
                                 type: array
             tags: ["UserSession"]
+    "/workspace/{groupId}/channels/{channelId}/acquisitions":
+        get:
+            description:
+                "List the acquisitions of a channel (also known as property) in a date range: where its sessions came from, in descending order of number of sessions. `type` picks the breakdown: CHANNEL (the acquisition channel LDP assigns to each session, such as direct), REFERRER (referring URL), or SOURCE_MEDIUM (`source / medium` pairs from UTM parameters); it defaults to CHANNEL. Optionally narrow results to the sessions of the individuals in an account with `accountId` or in a segment with `segmentId`. For date range filtering pass `rangeKey` as one of LAST_24_HOURS, YESTERDAY, LAST_7_DAYS, LAST_28_DAYS, LAST_30_DAYS, LAST_90_DAYS, LAST_180_DAYS, or pass both `rangeStart` and `rangeEnd` as `yyyy-MM-dd` dates for a custom window of at most 180 days; a custom window takes precedence over `rangeKey`. Without either, the last 30 days are used. Use this for 'top traffic sources' or 'top referrers' style queries. Wide date ranges can take a while. If the response says the query is still running, wait the stated number of seconds and repeat the identical call."
+            operationId: getWorkspaceGroupChannelAcquisitionsPage
+            parameters:
+                -   in: path
+                    description:
+                        "ID of the Liferay site that owns the LDP workspace."
+                    name: groupId
+                    required: true
+                    schema:
+                        format: int64
+                        type: integer
+                -   in: path
+                    description:
+                        "ID of the channel whose acquisitions should be listed."
+                    name: channelId
+                    required: true
+                    schema:
+                        type: string
+                -   in: query
+                    description:
+                        "ID of an account. When set, narrow the acquisitions to the sessions of the individuals in that account."
+                    name: accountId
+                    schema:
+                        type: string
+                -   in: query
+                    description:
+                        "Page number (starts at 1)."
+                    name: page
+                    schema:
+                        minimum: 1
+                        type: integer
+                -   in: query
+                    description:
+                        "Page size, from 1 to 100. Larger values are rejected."
+                    name: pageSize
+                    schema:
+                        maximum: 100
+                        minimum: 1
+                        type: integer
+                -   in: query
+                    description:
+                        "Custom range end as a `yyyy-MM-dd` date (e.g. 2026-01-31). Set together with `rangeStart`; together they take precedence over `rangeKey`."
+                    name: rangeEnd
+                    schema:
+                        type: string
+                -   in: query
+                    description:
+                        "Date range preset. Use one of the listed enum values. Defaults to LAST_30_DAYS. When both `rangeStart` and `rangeEnd` are set, they take precedence over `rangeKey`."
+                    example: LAST_30_DAYS
+                    name: rangeKey
+                    schema:
+                        enum: [LAST_180_DAYS, LAST_24_HOURS, LAST_28_DAYS, LAST_30_DAYS, LAST_7_DAYS, LAST_90_DAYS, YESTERDAY]
+                        type: string
+                -   in: query
+                    description:
+                        "Custom range start as a `yyyy-MM-dd` date (e.g. 2026-01-01). Set together with `rangeEnd`; together they take precedence over `rangeKey`."
+                    name: rangeStart
+                    schema:
+                        type: string
+                -   in: query
+                    description:
+                        "ID of a segment. When set, narrow the acquisitions to the sessions of the individuals in that segment."
+                    name: segmentId
+                    schema:
+                        type: string
+                -   in: query
+                    description:
+                        "Breakdown to list: CHANNEL, REFERRER or SOURCE_MEDIUM. Defaults to CHANNEL."
+                    example: CHANNEL
+                    name: type
+                    schema:
+                        enum: [CHANNEL, REFERRER, SOURCE_MEDIUM]
+                        type: string
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Acquisition"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Acquisition"
+                                type: array
+            tags: ["Acquisition"]
     "/workspace/{groupId}/channels/{channelId}/asset-summaries":
         get:
             description:
@@ -2350,6 +2934,248 @@ paths:
                                     $ref: "#/components/schemas/SearchTerm"
                                 type: array
             tags: ["SearchTerm"]
+    "/workspace/{groupId}/channels/{channelId}/visit-frequency-metrics":
+        get:
+            description:
+                "Fetch how often the visitors of a channel (also known as property) came back in a date range, as counts of daily, weekly, biweekly, monthly and occasional visitors. The buckets are relative to the length of the range, so compare ranges of the same length. Each threshold is at least one session, so short ranges leave the less frequent buckets empty: under 14 days there are no biweekly visitors, under 28 days no monthly ones and under 60 days no occasional ones, and a single day such as LAST_24_HOURS or YESTERDAY counts every visitor as daily. Use LAST_90_DAYS or LAST_180_DAYS for a full split. It cannot be narrowed to a segment or an account. For date range filtering pass `rangeKey` as one of LAST_24_HOURS, YESTERDAY, LAST_7_DAYS, LAST_28_DAYS, LAST_30_DAYS, LAST_90_DAYS, LAST_180_DAYS, or pass both `rangeStart` and `rangeEnd` as `yyyy-MM-dd` dates for a custom window of at most 180 days; a custom window takes precedence over `rangeKey`. Without either, the last 30 days are used. Use this for 'how loyal are our visitors' style queries. Wide date ranges can take a while. If the response says the query is still running, wait the stated number of seconds and repeat the identical call."
+            operationId: getWorkspaceGroupChannelVisitFrequencyMetric
+            parameters:
+                -   in: path
+                    description:
+                        "ID of the Liferay site that owns the LDP workspace."
+                    name: groupId
+                    required: true
+                    schema:
+                        format: int64
+                        type: integer
+                -   in: path
+                    description:
+                        "ID of the channel whose visitors should be counted."
+                    name: channelId
+                    required: true
+                    schema:
+                        type: string
+                -   in: query
+                    description:
+                        "Custom range end as a `yyyy-MM-dd` date (e.g. 2026-01-31). Set together with `rangeStart`; together they take precedence over `rangeKey`."
+                    name: rangeEnd
+                    schema:
+                        type: string
+                -   in: query
+                    description:
+                        "Date range preset. Use one of the listed enum values. Defaults to LAST_30_DAYS. When both `rangeStart` and `rangeEnd` are set, they take precedence over `rangeKey`."
+                    example: LAST_30_DAYS
+                    name: rangeKey
+                    schema:
+                        enum: [LAST_180_DAYS, LAST_24_HOURS, LAST_28_DAYS, LAST_30_DAYS, LAST_7_DAYS, LAST_90_DAYS, YESTERDAY]
+                        type: string
+                -   in: query
+                    description:
+                        "Custom range start as a `yyyy-MM-dd` date (e.g. 2026-01-01). Set together with `rangeEnd`; together they take precedence over `rangeKey`."
+                    name: rangeStart
+                    schema:
+                        type: string
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/VisitFrequencyMetric"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/VisitFrequencyMetric"
+            tags: ["VisitFrequencyMetric"]
+    "/workspace/{groupId}/channels/{channelId}/visitor-metrics":
+        get:
+            description:
+                "Fetch the visitor totals of a channel (also known as property) for a date range: unique visitors, known visitors (identified by email), and the average and total session duration. Optionally narrow results to the individuals in a segment with `segmentId`. For date range filtering pass `rangeKey` as one of LAST_24_HOURS, YESTERDAY, LAST_7_DAYS, LAST_28_DAYS, LAST_30_DAYS, LAST_90_DAYS, LAST_180_DAYS; this tool does not support custom `rangeStart`/`rangeEnd` windows and returns 400 when they are set. Without `rangeKey`, the last 30 days are used. Use this for 'how many visitors did the site have' style queries. Wide date ranges can take a while. If the response says the query is still running, wait the stated number of seconds and repeat the identical call."
+            operationId: getWorkspaceGroupChannelVisitorMetric
+            parameters:
+                -   in: path
+                    description:
+                        "ID of the Liferay site that owns the LDP workspace."
+                    name: groupId
+                    required: true
+                    schema:
+                        format: int64
+                        type: integer
+                -   in: path
+                    description:
+                        "ID of the channel whose visitors should be counted."
+                    name: channelId
+                    required: true
+                    schema:
+                        type: string
+                -   in: query
+                    description:
+                        "Date range preset. Use one of the listed enum values. Defaults to LAST_30_DAYS."
+                    example: LAST_30_DAYS
+                    name: rangeKey
+                    schema:
+                        enum: [LAST_180_DAYS, LAST_24_HOURS, LAST_28_DAYS, LAST_30_DAYS, LAST_7_DAYS, LAST_90_DAYS, YESTERDAY]
+                        type: string
+                -   in: query
+                    description:
+                        "ID of a segment. When set, narrow the metrics to activity from the individuals in that segment."
+                    name: segmentId
+                    schema:
+                        type: string
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/VisitorMetric"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/VisitorMetric"
+            tags: ["VisitorMetric"]
+    "/workspace/{groupId}/event-attribute-definitions":
+        get:
+            description:
+                "List the event attribute definitions of an LDP workspace, with their data types and sample values. Optionally narrow results to the attributes of a single event with `eventDefinitionId`; an unknown ID returns an empty page. Use this to learn which attributes events carry and how to read their values. To list the events and their IDs, use `getWorkspaceGroupEventDefinitionsPage`."
+            operationId: getWorkspaceGroupEventAttributeDefinitionsPage
+            parameters:
+                -   in: path
+                    description:
+                        "ID of the Liferay site that owns the LDP workspace."
+                    name: groupId
+                    required: true
+                    schema:
+                        format: int64
+                        type: integer
+                -   in: query
+                    description:
+                        "Only include attributes of this scope. Defaults to ALL."
+                    example: ALL
+                    name: attributeType
+                    schema:
+                        enum: [ALL, GLOBAL, LOCAL]
+                        type: string
+                -   in: query
+                    description:
+                        "ID of an event definition. When set, narrow the results to the attributes of that event."
+                    name: eventDefinitionId
+                    schema:
+                        type: string
+                -   in: query
+                    description:
+                        "Page number (starts at 1)."
+                    name: page
+                    schema:
+                        minimum: 1
+                        type: integer
+                -   in: query
+                    description:
+                        "Page size, from 1 to 100. Larger values are rejected."
+                    name: pageSize
+                    schema:
+                        maximum: 100
+                        minimum: 1
+                        type: integer
+                -   in: query
+                    description:
+                        "Free text search across attribute name, display name, and description, ignoring case. Empty or null returns all attributes."
+                    name: search
+                    schema:
+                        type: string
+                -   in: query
+                    description:
+                        "Sort expression `column:asc|desc`. Defaults to `name:asc` when omitted. Sortable column: name. Only one column is accepted."
+                    example: name:asc
+                    name: sort
+                    schema:
+                        type: string
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/EventAttributeDefinition"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/EventAttributeDefinition"
+                                type: array
+            tags: ["EventAttributeDefinition"]
+    "/workspace/{groupId}/event-definitions":
+        get:
+            description:
+                "List the event definitions of an LDP workspace: the DEFAULT events that LDP predefines and every CUSTOM event the workspace has seen, across all channels, with their display names. Use this to find out which events exist before querying events. To list the attributes of an event, use `getWorkspaceGroupEventAttributeDefinitionsPage` with its ID as `eventDefinitionId`."
+            operationId: getWorkspaceGroupEventDefinitionsPage
+            parameters:
+                -   in: path
+                    description:
+                        "ID of the Liferay site that owns the LDP workspace."
+                    name: groupId
+                    required: true
+                    schema:
+                        format: int64
+                        type: integer
+                -   in: query
+                    description:
+                        "If true, lists only blocked custom events, which are not collected; if false, leaves them out. Both are returned when omitted."
+                    name: blocked
+                    schema:
+                        type: boolean
+                -   in: query
+                    description:
+                        "Only include events of this type. Defaults to ALL."
+                    example: ALL
+                    name: eventType
+                    schema:
+                        enum: [ALL, CUSTOM, DEFAULT]
+                        type: string
+                -   in: query
+                    description:
+                        "If true, lists only hidden definitions; if false, only visible ones. Both are returned when omitted."
+                    name: hidden
+                    schema:
+                        type: boolean
+                -   in: query
+                    description:
+                        "Page number (starts at 1)."
+                    name: page
+                    schema:
+                        minimum: 1
+                        type: integer
+                -   in: query
+                    description:
+                        "Page size, from 1 to 100. Larger values are rejected."
+                    name: pageSize
+                    schema:
+                        maximum: 100
+                        minimum: 1
+                        type: integer
+                -   in: query
+                    description:
+                        "Free text search across event name, display name, and description, ignoring case (name only when `blocked` is true). Empty or null returns all event definitions."
+                    name: search
+                    schema:
+                        type: string
+                -   in: query
+                    description:
+                        "Sort expression `column:asc|desc`. Defaults to `name:asc` when omitted. Sortable columns: displayName, name. Only one column is accepted."
+                    example: name:asc
+                    name: sort
+                    schema:
+                        type: string
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/EventDefinition"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/EventDefinition"
+                                type: array
+            tags: ["EventDefinition"]
     "/workspace/{groupId}/individual-segments/{individualSegmentId}":
         get:
             description:

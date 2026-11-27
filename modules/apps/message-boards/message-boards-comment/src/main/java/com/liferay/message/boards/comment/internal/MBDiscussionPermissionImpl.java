@@ -215,6 +215,45 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 			}
 		}
 
+		List<String> resourceActions = ResourceActionsUtil.getResourceActions(
+			className);
+
+		if ((actionId.equals(ActionKeys.DELETE_DISCUSSION) ||
+			 actionId.equals(ActionKeys.UPDATE_DISCUSSION)) &&
+			!resourceActions.contains(actionId)) {
+
+			if (_mbBanLocalService.hasBan(
+					message.getGroupId(), permissionChecker.getUserId())) {
+
+				return false;
+			}
+
+			if (!message.isDiscussion()) {
+				String messageActionId = ActionKeys.UPDATE;
+
+				if (actionId.equals(ActionKeys.DELETE_DISCUSSION)) {
+					messageActionId = ActionKeys.DELETE;
+				}
+
+				Boolean permission = ModelResourcePermissionUtil.contains(
+					permissionChecker, message.getGroupId(),
+					MBMessage.class.getName(), message.getMessageId(),
+					messageActionId);
+
+				if (permission != null) {
+					return permission.booleanValue();
+				}
+			}
+
+			if (permissionChecker.isSignedIn() &&
+				(permissionChecker.getUserId() == message.getUserId())) {
+
+				return true;
+			}
+
+			return permissionChecker.isGroupAdmin(message.getGroupId());
+		}
+
 		return hasPermission(
 			permissionChecker, message.getCompanyId(), message.getGroupId(),
 			className, message.getClassPK(), actionId);

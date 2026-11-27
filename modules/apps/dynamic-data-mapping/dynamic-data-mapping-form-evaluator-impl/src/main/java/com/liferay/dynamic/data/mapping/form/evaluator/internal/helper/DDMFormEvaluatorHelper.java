@@ -100,9 +100,6 @@ public class DDMFormEvaluatorHelper {
 
 		_ddmFormLayout = ddmFormEvaluatorEvaluateRequest.getDDMFormLayout();
 
-		_ddmFormEvaluatorRuleHelper = new DDMFormEvaluatorRuleHelper(
-			_ddmFormFieldsMap, ddmFormEvaluatorExpressionObserver);
-
 		ddmFormEvaluatorDDMExpressionFieldAccessor =
 			new DDMFormEvaluatorExpressionFieldAccessor(
 				_ddmFormEvaluatorFormValuesHelper, _ddmFormFieldsMap,
@@ -237,6 +234,69 @@ public class DDMFormEvaluatorHelper {
 		return formEvaluatorEvaluateResponse.build();
 	}
 
+	private void _checkFieldAffectedByAction(
+		DDMFormField ddmFormField, DDMFormRule ddmFormRule) {
+
+		_checkFieldAffectedBySetReadOnlyAction(ddmFormField, ddmFormRule);
+		_checkFieldAffectedBySetRequiredAction(ddmFormField, ddmFormRule);
+		_checkFieldAffectedBySetVisibleAction(ddmFormField, ddmFormRule);
+	}
+
+	private void _checkFieldAffectedByAction(DDMFormRule ddmFormRule) {
+		for (DDMFormField ddmFormField : _ddmFormFieldsMap.values()) {
+			_checkFieldAffectedByAction(ddmFormField, ddmFormRule);
+		}
+	}
+
+	private void _checkFieldAffectedBySetReadOnlyAction(
+		DDMFormField ddmFormField, DDMFormRule ddmFormRule) {
+
+		if (_hasAction(
+				ddmFormField.getName(), ddmFormRule, !ddmFormField.isReadOnly(),
+				"setEnabled")) {
+
+			UpdateFieldPropertyRequest.Builder builder =
+				UpdateFieldPropertyRequest.Builder.newBuilder(
+					ddmFormField.getName(), "readOnly",
+					!ddmFormField.isReadOnly());
+
+			ddmFormEvaluatorExpressionObserver.updateFieldProperty(
+				builder.build());
+		}
+	}
+
+	private void _checkFieldAffectedBySetRequiredAction(
+		DDMFormField ddmFormField, DDMFormRule ddmFormRule) {
+
+		if (_hasAction(
+				ddmFormField.getName(), ddmFormRule, ddmFormField.isRequired(),
+				"setRequired")) {
+
+			UpdateFieldPropertyRequest.Builder builder =
+				UpdateFieldPropertyRequest.Builder.newBuilder(
+					ddmFormField.getName(), "required",
+					!ddmFormField.isRequired());
+
+			ddmFormEvaluatorExpressionObserver.updateFieldProperty(
+				builder.build());
+		}
+	}
+
+	private void _checkFieldAffectedBySetVisibleAction(
+		DDMFormField ddmFormField, DDMFormRule ddmFormRule) {
+
+		if (_hasAction(
+				ddmFormField.getName(), ddmFormRule, true, "setVisible")) {
+
+			UpdateFieldPropertyRequest.Builder builder =
+				UpdateFieldPropertyRequest.Builder.newBuilder(
+					ddmFormField.getName(), "visible", false);
+
+			ddmFormEvaluatorExpressionObserver.updateFieldProperty(
+				builder.build());
+		}
+	}
+
 	private <T> DDMExpression<T> _createExpression(String expression)
 		throws DDMExpressionException {
 
@@ -308,8 +368,7 @@ public class DDMFormEvaluatorHelper {
 						action -> !_evaluatedActions.contains(action)));
 			}
 
-			_ddmFormEvaluatorRuleHelper.checkFieldAffectedByAction(
-				copyDDMFormRule);
+			_checkFieldAffectedByAction(copyDDMFormRule);
 		}
 	}
 
@@ -539,6 +598,22 @@ public class DDMFormEvaluatorHelper {
 		}
 
 		return nonevaluableFieldNames;
+	}
+
+	private boolean _hasAction(
+		String ddmFormFieldName, DDMFormRule ddmFormRule, boolean defaultValue,
+		String functionName) {
+
+		String setBooleanPropertyAction = String.format(
+			"%s('%s', %s)", functionName, ddmFormFieldName, defaultValue);
+
+		for (String action : ddmFormRule.getActions()) {
+			if (Objects.equals(setBooleanPropertyAction, action)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private boolean _isBooleanPropertyValue(
@@ -1217,7 +1292,6 @@ public class DDMFormEvaluatorHelper {
 		_ddmFormEvaluatorEvaluateRequest;
 	private final DDMFormEvaluatorFormValuesHelper
 		_ddmFormEvaluatorFormValuesHelper;
-	private final DDMFormEvaluatorRuleHelper _ddmFormEvaluatorRuleHelper;
 	private final DDMFormFieldTypeServicesRegistry
 		_ddmFormFieldTypeServicesRegistry;
 	private final Map<String, DDMFormField> _ddmFormFieldsMap;

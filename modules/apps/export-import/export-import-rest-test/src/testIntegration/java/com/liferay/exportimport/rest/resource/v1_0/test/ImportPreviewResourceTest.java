@@ -179,10 +179,7 @@ public class ImportPreviewResourceTest
 	}
 
 	@FeatureFlags(
-		featureFlags = {
-			@FeatureFlag(value = "LPD-41307"), @FeatureFlag("LPD-57655"),
-			@FeatureFlag("LPD-85946")
-		}
+		featureFlags = {@FeatureFlag("LPD-57655"), @FeatureFlag("LPD-85946")}
 	)
 	@Override
 	@Test
@@ -603,6 +600,7 @@ public class ImportPreviewResourceTest
 		Assert.assertEquals(file.getName(), importPreview.getFileName());
 		Assert.assertEquals(
 			Long.valueOf(file.length()), importPreview.getFileSize());
+		Assert.assertNotNull(importPreview.getId());
 		Assert.assertTrue(
 			_getAdditionCount(importPreview, objectDefinition.getPortletId()) >
 				0);

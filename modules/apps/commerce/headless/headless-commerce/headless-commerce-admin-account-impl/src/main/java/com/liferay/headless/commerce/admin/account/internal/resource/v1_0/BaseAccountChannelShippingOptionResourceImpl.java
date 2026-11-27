@@ -486,11 +486,14 @@ public abstract class BaseAccountChannelShippingOptionResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("externalReferenceCode")) {
+			Serializable externalReferenceCode = parameters.get(
+				"externalReferenceCode");
+
+			if (externalReferenceCode != null) {
 				accountChannelShippingOptionUnsafeFunction =
 					accountChannelShippingOption ->
 						postAccountByExternalReferenceCodeAccountChannelShippingOption(
-							(String)parameters.get("externalReferenceCode"),
+							(String)externalReferenceCode,
 							accountChannelShippingOption);
 			}
 			else {
@@ -1250,4 +1253,4 @@ public abstract class BaseAccountChannelShippingOptionResourceImpl
 			BaseAccountChannelShippingOptionResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:30802771
+// LIFERAY-REST-BUILDER-HASH:762587349

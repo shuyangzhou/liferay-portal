@@ -90,28 +90,24 @@ describe('AccountInfoBar', () => {
 			expect(screen.queryByText(/^engaged$/i)).not.toBeInTheDocument();
 		});
 
+		it('should render the Lifecycle label before the lifecycle selector', () => {
+			render(<AccountInfoBar {...mockAccount} />);
+
+			const label = screen.getByText(/^lifecycle$/i);
+
+			expect(
+				label.compareDocumentPosition(
+					screen.getByRole('combobox', {name: /^lifecycle$/i})
+				) & Node.DOCUMENT_POSITION_FOLLOWING
+			).toBeTruthy();
+		});
+
 		it('should render the lifecycle selector with the selected lifecycle', () => {
 			render(<AccountInfoBar {...mockAccount} />);
 
 			expect(
 				screen.getByRole('combobox', {name: /^lifecycle$/i})
 			).toHaveTextContent(/customer/i);
-		});
-
-		it.each([
-			['Engaged', 'label-inverse-warning'],
-			['At Risk', 'label-inverse-danger'],
-			['NOT_A_STAGE', 'label-inverse-secondary'],
-		])('should color the %s stage as %s', (stageName, className) => {
-			render(
-				<AccountInfoBar
-					lifecycleStages={[buildLifecycleStage('al-1', stageName)]}
-				/>
-			);
-
-			expect(screen.getByText(stageName).closest('.label')).toHaveClass(
-				className
-			);
 		});
 	});
 

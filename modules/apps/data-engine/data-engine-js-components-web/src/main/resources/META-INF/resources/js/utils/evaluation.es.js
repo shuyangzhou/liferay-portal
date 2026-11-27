@@ -12,7 +12,9 @@ const EVALUATOR_URL =
 	themeDisplay.getPathContext() +
 	'/o/dynamic-data-mapping-form-context-provider/';
 
-let controller = null;
+const controllersMap = new Map();
+
+const debouncedEvaluationsMap = new Map();
 
 export function mergeFieldOptions(field, newField) {
 	let newValue = {...newField.value};
@@ -130,7 +132,7 @@ export function mergePages(
 	);
 }
 
-const doEvaluate = debounce((fieldName, evaluatorContext, callback) => {
+const doEvaluate = (fieldName, evaluatorContext, callback) => {
 	const {
 		containerId,
 		defaultLanguageId,
@@ -144,13 +146,15 @@ const doEvaluate = debounce((fieldName, evaluatorContext, callback) => {
 		viewMode,
 	} = evaluatorContext;
 
-	if (controller) {
-		controller.abort();
-	}
+	controllersMap.get(containerId)?.abort();
+
+	let controller = null;
 
 	if (window.AbortController) {
 		controller = new AbortController();
 	}
+
+	controllersMap.set(containerId, controller);
 
 	sanitizePagesCaptchaHTML(pages);
 
@@ -179,7 +183,7 @@ const doEvaluate = debounce((fieldName, evaluatorContext, callback) => {
 			'Accept': 'application/json',
 			'Accept-Language': Liferay.ThemeDisplay.getBCP47LanguageId(),
 		},
-		signal: controller && controller.signal,
+		signal: controller?.signal,
 		url: EVALUATOR_URL,
 	})
 		.then((newPages) => {
@@ -203,11 +207,19 @@ const doEvaluate = debounce((fieldName, evaluatorContext, callback) => {
 			callback(null, mergedPages);
 		})
 		.catch((error) => callback(error));
-}, 350);
+};
 
 export function evaluate(fieldName, evaluatorContext) {
+	const {containerId} = evaluatorContext;
+
+	if (!debouncedEvaluationsMap.has(containerId)) {
+		debouncedEvaluationsMap.set(containerId, debounce(doEvaluate, 350));
+	}
+
+	const debouncedEvaluation = debouncedEvaluationsMap.get(containerId);
+
 	return new Promise((resolve, reject) => {
-		doEvaluate(fieldName, evaluatorContext, (error, pages) => {
+		debouncedEvaluation(fieldName, evaluatorContext, (error, pages) => {
 			if (error) {
 				return reject(error);
 			}

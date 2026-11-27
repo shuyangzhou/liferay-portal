@@ -15,6 +15,9 @@ import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Eudaldo Alonso
  */
@@ -28,24 +31,14 @@ public class SegmentsExperienceUpgradeProcess extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		String fragmentEntryLinkColumnName = "plid";
+		List<long[]> segmentsExperienceIdsList =
+			_addDraftLayoutSegmentsExperiences();
 
-		if (!hasColumn("FragmentEntryLink", "plid")) {
-			fragmentEntryLinkColumnName = "classPK";
-		}
+		_updateSegmentsExperienceIds(segmentsExperienceIdsList);
+	}
 
-		boolean hasFragmentEntryLinkCTCollectionId = hasColumn(
-			"FragmentEntryLink", "ctCollectionId");
-		boolean hasFragmentEntryLinkSegmentsExperienceId = hasColumn(
-			"FragmentEntryLink", "segmentsExperienceId");
-		boolean hasLayoutPageTemplateStructureRelCTCollectionId = hasColumn(
-			"LayoutPageTemplateStructureRel", "ctCollectionId");
-
-		String layoutPageTemplateStructureColumnName = "plid";
-
-		if (!hasColumn("LayoutPageTemplateStructure", "plid")) {
-			layoutPageTemplateStructureColumnName = "classPK";
-		}
+	private List<long[]> _addDraftLayoutSegmentsExperiences() throws Exception {
+		List<long[]> segmentsExperienceIdsList = new ArrayList<>();
 
 		try (PreparedStatement preparedStatement1 = connection.prepareStatement(
 				"select * from SegmentsExperience");
@@ -61,130 +54,103 @@ public class SegmentsExperienceUpgradeProcess extends UpgradeProcess {
 						"active_, typeSettings, lastPublishDate) values (?, ",
 						"?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ",
 						"?)"));
-			PreparedStatement preparedStatement3 =
-				AutoBatchPreparedStatementUtil.concurrentAutoBatch(
-					connection,
-					_getUpdateFragmentEntryLinkSQL(
-						fragmentEntryLinkColumnName,
-						hasFragmentEntryLinkCTCollectionId));
-			PreparedStatement preparedStatement4 =
-				AutoBatchPreparedStatementUtil.concurrentAutoBatch(
-					connection,
-					_getUpdateLayoutPageTemplateStructureRelSQL(
-						layoutPageTemplateStructureColumnName,
-						hasLayoutPageTemplateStructureRelCTCollectionId));
+
 			ResultSet resultSet = preparedStatement1.executeQuery()) {
 
 			while (resultSet.next()) {
-				Layout layout = _layoutLocalService.fetchLayout(
+				Layout draftLayout = _fetchDraftLayout(
 					resultSet.getLong("plid"));
 
-				if (layout == null) {
+				if (draftLayout == null) {
 					continue;
 				}
-
-				Layout draftLayout = layout.fetchDraftLayout();
 
 				long ctCollectionId = resultSet.getLong("ctCollectionId");
 				long groupId = resultSet.getLong("groupId");
 				String segmentsExperienceKey = resultSet.getString(
 					"segmentsExperienceKey");
 
-				if ((draftLayout == null) ||
-					_existDraftLayoutSegmentsExperience(
+				long draftLayoutSegmentsExperienceId =
+					_getDraftLayoutSegmentsExperienceId(
 						ctCollectionId, groupId, segmentsExperienceKey,
-						draftLayout.getPlid())) {
+						draftLayout.getPlid());
 
-					continue;
+				if (draftLayoutSegmentsExperienceId <= 0) {
+					preparedStatement2.setLong(1, 0);
+					preparedStatement2.setLong(2, ctCollectionId);
+
+					String uuid = PortalUUIDUtil.generate();
+
+					preparedStatement2.setString(3, uuid);
+					preparedStatement2.setString(4, uuid);
+
+					draftLayoutSegmentsExperienceId = increment();
+
+					preparedStatement2.setLong(
+						5, draftLayoutSegmentsExperienceId);
+
+					preparedStatement2.setLong(6, groupId);
+					preparedStatement2.setLong(
+						7, resultSet.getLong("companyId"));
+					preparedStatement2.setLong(8, resultSet.getLong("userId"));
+					preparedStatement2.setString(
+						9, resultSet.getString("userName"));
+					preparedStatement2.setDate(
+						10, resultSet.getDate("createDate"));
+					preparedStatement2.setDate(
+						11, resultSet.getDate("modifiedDate"));
+					preparedStatement2.setLong(
+						12, resultSet.getLong("segmentsEntryId"));
+					preparedStatement2.setString(13, segmentsExperienceKey);
+					preparedStatement2.setLong(14, draftLayout.getPlid());
+					preparedStatement2.setString(
+						15, resultSet.getString("name"));
+					preparedStatement2.setLong(
+						16, resultSet.getInt("priority"));
+					preparedStatement2.setBoolean(
+						17, resultSet.getBoolean("active_"));
+					preparedStatement2.setString(
+						18, resultSet.getString("typeSettings"));
+					preparedStatement2.setDate(
+						19, resultSet.getDate("lastPublishDate"));
+
+					preparedStatement2.addBatch();
 				}
 
-				preparedStatement2.setLong(1, 0);
-				preparedStatement2.setLong(2, ctCollectionId);
-
-				String uuid = PortalUUIDUtil.generate();
-
-				preparedStatement2.setString(3, uuid);
-				preparedStatement2.setString(4, uuid);
-
-				long draftLayoutSegmentsExperienceId = increment();
-
-				preparedStatement2.setLong(5, draftLayoutSegmentsExperienceId);
-
-				preparedStatement2.setLong(6, groupId);
-				preparedStatement2.setLong(7, resultSet.getLong("companyId"));
-				preparedStatement2.setLong(8, resultSet.getLong("userId"));
-				preparedStatement2.setString(
-					9, resultSet.getString("userName"));
-				preparedStatement2.setDate(10, resultSet.getDate("createDate"));
-				preparedStatement2.setDate(
-					11, resultSet.getDate("modifiedDate"));
-				preparedStatement2.setLong(
-					12, resultSet.getLong("segmentsEntryId"));
-				preparedStatement2.setString(13, segmentsExperienceKey);
-				preparedStatement2.setLong(14, draftLayout.getPlid());
-				preparedStatement2.setString(15, resultSet.getString("name"));
-				preparedStatement2.setLong(16, resultSet.getInt("priority"));
-				preparedStatement2.setBoolean(
-					17, resultSet.getBoolean("active_"));
-				preparedStatement2.setString(
-					18, resultSet.getString("typeSettings"));
-				preparedStatement2.setDate(
-					19, resultSet.getDate("lastPublishDate"));
-
-				preparedStatement2.addBatch();
-
-				long segmentsExperienceId = resultSet.getLong(
-					"segmentsExperienceId");
-
-				int index = 1;
-
-				if (hasFragmentEntryLinkSegmentsExperienceId) {
-					preparedStatement3.setLong(
-						index++, draftLayoutSegmentsExperienceId);
-
-					if (hasFragmentEntryLinkCTCollectionId) {
-						preparedStatement3.setLong(index++, ctCollectionId);
-					}
-
-					preparedStatement3.setLong(index++, segmentsExperienceId);
-					preparedStatement3.setLong(index, draftLayout.getPlid());
-
-					preparedStatement3.addBatch();
-
-					index = 1;
-				}
-
-				preparedStatement4.setLong(
-					index++, draftLayoutSegmentsExperienceId);
-
-				if (hasLayoutPageTemplateStructureRelCTCollectionId) {
-					preparedStatement4.setLong(index++, ctCollectionId);
-				}
-
-				preparedStatement4.setLong(index++, segmentsExperienceId);
-				preparedStatement4.setLong(index, draftLayout.getPlid());
-
-				preparedStatement4.addBatch();
+				segmentsExperienceIdsList.add(
+					new long[] {
+						ctCollectionId, groupId,
+						resultSet.getLong("segmentsExperienceId"),
+						draftLayoutSegmentsExperienceId, draftLayout.getPlid()
+					});
 			}
 
 			preparedStatement2.executeBatch();
-
-			preparedStatement3.executeBatch();
-
-			preparedStatement4.executeBatch();
 		}
+
+		return segmentsExperienceIdsList;
 	}
 
-	private boolean _existDraftLayoutSegmentsExperience(
+	private Layout _fetchDraftLayout(long plid) {
+		Layout layout = _layoutLocalService.fetchLayout(plid);
+
+		if (layout == null) {
+			return null;
+		}
+
+		return layout.fetchDraftLayout();
+	}
+
+	private long _getDraftLayoutSegmentsExperienceId(
 			long ctCollectionId, long groupId, String segmentsExperienceKey,
 			long plid)
 		throws Exception {
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				StringBundler.concat(
-					"select 1 from SegmentsExperience where ctCollectionId = ",
-					"? and groupId = ? and segmentsExperienceKey = ? and plid ",
-					"= ?"))) {
+					"select segmentsExperienceId from SegmentsExperience ",
+					"where ctCollectionId = ? and groupId = ? and ",
+					"segmentsExperienceKey = ? and plid = ?"))) {
 
 			preparedStatement.setLong(1, ctCollectionId);
 			preparedStatement.setLong(2, groupId);
@@ -192,7 +158,11 @@ public class SegmentsExperienceUpgradeProcess extends UpgradeProcess {
 			preparedStatement.setLong(4, plid);
 
 			try (ResultSet resultSet = preparedStatement.executeQuery()) {
-				return resultSet.next();
+				if (resultSet.next()) {
+					return resultSet.getLong("segmentsExperienceId");
+				}
+
+				return 0;
 			}
 		}
 	}
@@ -203,7 +173,7 @@ public class SegmentsExperienceUpgradeProcess extends UpgradeProcess {
 		StringBundler sb = new StringBundler(6);
 
 		sb.append("update FragmentEntryLink set segmentsExperienceId = ? ");
-		sb.append("where ");
+		sb.append("where groupId = ? and ");
 
 		if (hasCTCollectionId) {
 			sb.append("ctCollectionId = ? and ");
@@ -231,11 +201,93 @@ public class SegmentsExperienceUpgradeProcess extends UpgradeProcess {
 		sb.append("segmentsExperienceId = ? and ");
 		sb.append("layoutPageTemplateStructureId in (select ");
 		sb.append("layoutPageTemplateStructureId from ");
-		sb.append("LayoutPageTemplateStructure where ");
+		sb.append("LayoutPageTemplateStructure where groupId = ? and ");
 		sb.append(columnName);
 		sb.append(" = ?)");
 
 		return sb.toString();
+	}
+
+	private void _updateSegmentsExperienceIds(
+			List<long[]> segmentsExperienceIdsList)
+		throws Exception {
+
+		String fragmentEntryLinkColumnName = "plid";
+
+		if (!hasColumn("FragmentEntryLink", "plid")) {
+			fragmentEntryLinkColumnName = "classPK";
+		}
+
+		boolean hasFragmentEntryLinkCTCollectionId = hasColumn(
+			"FragmentEntryLink", "ctCollectionId");
+		boolean hasFragmentEntryLinkSegmentsExperienceId = hasColumn(
+			"FragmentEntryLink", "segmentsExperienceId");
+		boolean hasLayoutPageTemplateStructureRelCTCollectionId = hasColumn(
+			"LayoutPageTemplateStructureRel", "ctCollectionId");
+
+		String layoutPageTemplateStructureColumnName = "plid";
+
+		if (!hasColumn("LayoutPageTemplateStructure", "plid")) {
+			layoutPageTemplateStructureColumnName = "classPK";
+		}
+
+		try (PreparedStatement preparedStatement1 =
+				AutoBatchPreparedStatementUtil.concurrentAutoBatch(
+					connection,
+					_getUpdateFragmentEntryLinkSQL(
+						fragmentEntryLinkColumnName,
+						hasFragmentEntryLinkCTCollectionId));
+			PreparedStatement preparedStatement2 =
+				AutoBatchPreparedStatementUtil.concurrentAutoBatch(
+					connection,
+					_getUpdateLayoutPageTemplateStructureRelSQL(
+						layoutPageTemplateStructureColumnName,
+						hasLayoutPageTemplateStructureRelCTCollectionId))) {
+
+			for (long[] segmentsExperienceIds : segmentsExperienceIdsList) {
+				long ctCollectionId = segmentsExperienceIds[0];
+				long groupId = segmentsExperienceIds[1];
+				long segmentsExperienceId = segmentsExperienceIds[2];
+				long draftLayoutSegmentsExperienceId = segmentsExperienceIds[3];
+				long draftPlid = segmentsExperienceIds[4];
+
+				int index = 1;
+
+				if (hasFragmentEntryLinkSegmentsExperienceId) {
+					preparedStatement1.setLong(
+						index++, draftLayoutSegmentsExperienceId);
+					preparedStatement1.setLong(index++, groupId);
+
+					if (hasFragmentEntryLinkCTCollectionId) {
+						preparedStatement1.setLong(index++, ctCollectionId);
+					}
+
+					preparedStatement1.setLong(index++, segmentsExperienceId);
+					preparedStatement1.setLong(index, draftPlid);
+
+					preparedStatement1.addBatch();
+
+					index = 1;
+				}
+
+				preparedStatement2.setLong(
+					index++, draftLayoutSegmentsExperienceId);
+
+				if (hasLayoutPageTemplateStructureRelCTCollectionId) {
+					preparedStatement2.setLong(index++, ctCollectionId);
+				}
+
+				preparedStatement2.setLong(index++, segmentsExperienceId);
+				preparedStatement2.setLong(index++, groupId);
+				preparedStatement2.setLong(index, draftPlid);
+
+				preparedStatement2.addBatch();
+			}
+
+			preparedStatement1.executeBatch();
+
+			preparedStatement2.executeBatch();
+		}
 	}
 
 	private final LayoutLocalService _layoutLocalService;

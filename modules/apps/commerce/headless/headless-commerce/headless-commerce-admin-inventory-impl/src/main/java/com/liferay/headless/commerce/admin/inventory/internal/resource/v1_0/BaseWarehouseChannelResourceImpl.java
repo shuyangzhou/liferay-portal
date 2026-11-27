@@ -404,11 +404,13 @@ public abstract class BaseWarehouseChannelResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("externalReferenceCode")) {
+			Serializable externalReferenceCode = parameters.get(
+				"externalReferenceCode");
+
+			if (externalReferenceCode != null) {
 				warehouseChannelUnsafeFunction = warehouseChannel ->
 					postWarehouseByExternalReferenceCodeWarehouseChannel(
-						(String)parameters.get("externalReferenceCode"),
-						warehouseChannel);
+						(String)externalReferenceCode, warehouseChannel);
 			}
 			else {
 				throw new NotSupportedException(
@@ -1106,4 +1108,4 @@ public abstract class BaseWarehouseChannelResourceImpl
 		LogFactoryUtil.getLog(BaseWarehouseChannelResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:1919829621
+// LIFERAY-REST-BUILDER-HASH:-85674991

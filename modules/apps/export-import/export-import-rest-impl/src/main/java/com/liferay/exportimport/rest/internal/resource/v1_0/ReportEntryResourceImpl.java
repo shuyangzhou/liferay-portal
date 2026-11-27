@@ -96,10 +96,11 @@ public class ReportEntryResourceImpl extends BaseReportEntryResourceImpl {
 		BackgroundTask backgroundTask =
 			_backgroundTaskLocalService.getBackgroundTask(publishProcessId);
 
-		PermissionUtil.checkPublishPermission(backgroundTask.getGroupId());
-
 		BackgroundTaskUtil.checkTaskExecutorClassName(
 			backgroundTask, _CLASS_NAMES_PUBLISH_TASK_EXECUTOR);
+		PermissionUtil.checkPublishPermission(
+			backgroundTask.getGroupId(),
+			PermissionUtil.getViewPublishGroupActionId(backgroundTask));
 
 		return _getReportEntriesPage(
 			backgroundTask, filter, pagination, search, sorts);
@@ -135,7 +136,8 @@ public class ReportEntryResourceImpl extends BaseReportEntryResourceImpl {
 		}
 		else {
 			PermissionUtil.checkPublishPermission(
-				exportImportConfiguration.getGroupId());
+				exportImportConfiguration.getGroupId(),
+				ActionKeys.VIEW_STAGING);
 		}
 
 		return _toReportEntry(
@@ -287,7 +289,8 @@ public class ReportEntryResourceImpl extends BaseReportEntryResourceImpl {
 	};
 
 	private static final String[] _CLASS_NAMES_PUBLISH_TASK_EXECUTOR = {
-		BackgroundTaskExecutorNames.LAYOUT_STAGING_BACKGROUND_TASK_EXECUTOR
+		BackgroundTaskExecutorNames.LAYOUT_STAGING_BACKGROUND_TASK_EXECUTOR,
+		BackgroundTaskExecutorNames.PORTLET_STAGING_BACKGROUND_TASK_EXECUTOR
 	};
 
 	private static final EntityModel _entityModel =

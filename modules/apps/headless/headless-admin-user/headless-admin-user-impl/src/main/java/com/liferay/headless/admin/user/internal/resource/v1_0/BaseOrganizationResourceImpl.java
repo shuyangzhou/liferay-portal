@@ -1873,10 +1873,12 @@ public abstract class BaseOrganizationResourceImpl
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		if (parameters.containsKey("accountId")) {
+		Serializable accountId = parameters.get("accountId");
+
+		if (accountId != null) {
 			return getAccountOrganizationsPage(
-				_parseLong((String)parameters.get("accountId")), search, filter,
-				pagination, sorts);
+				_parseLong((String)accountId), search, filter, pagination,
+				sorts);
 		}
 		else {
 			return getOrganizationsPage(
@@ -2540,4 +2542,4 @@ public abstract class BaseOrganizationResourceImpl
 		LogFactoryUtil.getLog(BaseOrganizationResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:-1705911932
+// LIFERAY-REST-BUILDER-HASH:1587457894

@@ -409,10 +409,12 @@ public abstract class BaseRoleResourceImpl
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		if (parameters.containsKey("assetLibraryExternalReferenceCode")) {
+		Serializable assetLibraryExternalReferenceCode = parameters.get(
+			"assetLibraryExternalReferenceCode");
+
+		if (assetLibraryExternalReferenceCode != null) {
 			return getAssetLibraryRolesPage(
-				(String)parameters.get("assetLibraryExternalReferenceCode"),
-				pagination);
+				(String)assetLibraryExternalReferenceCode, pagination);
 		}
 		else {
 			throw new NotSupportedException(
@@ -1019,4 +1021,4 @@ public abstract class BaseRoleResourceImpl
 		LogFactoryUtil.getLog(BaseRoleResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:2095612546
+// LIFERAY-REST-BUILDER-HASH:-623956888

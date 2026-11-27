@@ -335,8 +335,10 @@ public abstract class BaseFormResourceImpl
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		if (parameters.containsKey("siteId")) {
-			return getSiteFormsPage((Long)parameters.get("siteId"), pagination);
+		Serializable siteId = parameters.get("siteId");
+
+		if (siteId != null) {
+			return getSiteFormsPage((Long)siteId, pagination);
 		}
 		else {
 			throw new NotSupportedException(
@@ -959,4 +961,4 @@ public abstract class BaseFormResourceImpl
 	}
 
 }
-// LIFERAY-REST-BUILDER-HASH:-435842388
+// LIFERAY-REST-BUILDER-HASH:-441481258

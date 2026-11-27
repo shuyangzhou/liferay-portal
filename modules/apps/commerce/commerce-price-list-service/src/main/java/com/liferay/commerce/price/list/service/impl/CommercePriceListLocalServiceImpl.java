@@ -91,7 +91,6 @@ import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
-import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ProxyFactory;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -803,21 +802,6 @@ public class CommercePriceListLocalServiceImpl
 	}
 
 	@Override
-	public List<CommercePriceList> getCommercePriceLists(
-		long[] groupIds, long companyId, int status, int start, int end,
-		OrderByComparator<CommercePriceList> orderByComparator) {
-
-		if (status == WorkflowConstants.STATUS_ANY) {
-			return commercePriceListPersistence.findByG_C_NotS(
-				groupIds, companyId, WorkflowConstants.STATUS_IN_TRASH, start,
-				end, orderByComparator);
-		}
-
-		return commercePriceListPersistence.findByG_C_S(
-			groupIds, companyId, status, start, end, orderByComparator);
-	}
-
-	@Override
 	public List<CommercePriceList>
 		getCommercePriceListsByAccountAndChannelAndOrderTypeId(
 			long groupId, long commerceAccountId, long commerceChannelId,
@@ -1082,6 +1066,15 @@ public class CommercePriceListLocalServiceImpl
 	public void setCatalogBasePriceList(
 			long groupId, long commercePriceListId, String type)
 		throws PortalException {
+
+		CommercePriceList commercePriceList =
+			commercePriceListPersistence.findByPrimaryKey(commercePriceListId);
+
+		if ((commercePriceList.getGroupId() != groupId) ||
+			!Objects.equals(commercePriceList.getType(), type)) {
+
+			throw new NoSuchPriceListException();
+		}
 
 		CommercePriceList baseCommercePriceList =
 			commercePriceListPersistence.fetchByG_CBPL_T_First(

@@ -28,7 +28,6 @@ import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.constants.ObjectFieldSettingConstants;
 import com.liferay.object.constants.ObjectRelationshipConstants;
 import com.liferay.object.constants.ObjectValidationRuleSettingConstants;
-import com.liferay.object.definition.security.permission.resource.util.ObjectDefinitionResourcePermissionUtil;
 import com.liferay.object.definition.setting.util.ObjectDefinitionSettingUtil;
 import com.liferay.object.definition.tree.util.ObjectDefinitionTreeUtil;
 import com.liferay.object.definition.util.ObjectDefinitionThreadLocal;
@@ -79,6 +78,7 @@ import com.liferay.object.field.business.type.ObjectFieldBusinessTypeRegistry;
 import com.liferay.object.field.setting.builder.ObjectFieldSettingBuilder;
 import com.liferay.object.field.util.ObjectFieldUtil;
 import com.liferay.object.internal.dao.db.ObjectDBManagerUtil;
+import com.liferay.object.internal.definition.security.permission.resource.util.ObjectDefinitionResourcePermissionUtil;
 import com.liferay.object.internal.deployer.InactiveObjectDefinitionDeployerUtil;
 import com.liferay.object.internal.deployer.ObjectDefinitionDeployerImpl;
 import com.liferay.object.model.ObjectAction;
@@ -145,6 +145,7 @@ import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.lazy.referencing.LazyReferencingThreadLocal;
 import com.liferay.portal.kernel.log.Log;
@@ -3238,6 +3239,27 @@ public class ObjectDefinitionLocalServiceImpl
 				accountEntryRestrictedObjectFieldId);
 		}
 
+		if (FeatureFlagManagerUtil.isEnabled(
+				objectDefinition.getCompanyId(), "LPD-108620") &&
+			accountEntryRestricted &&
+			(accountEntryRestrictedObjectFieldId > 0)) {
+
+			ObjectField objectField = _objectFieldPersistence.fetchByPrimaryKey(
+				accountEntryRestrictedObjectFieldId);
+
+			if ((objectField != null) &&
+				Validator.isNotNull(objectField.getRelationshipType()) &&
+				!Objects.equals(
+					objectField.getRelationshipType(),
+					ObjectRelationshipConstants.TYPE_ONE_TO_MANY)) {
+
+				_handleException(
+					new ObjectDefinitionAccountEntryRestrictedObjectFieldIdException(),
+					"accountEntryRestrictedObjectFieldId",
+					accountEntryRestrictedObjectFieldId);
+			}
+		}
+
 		if (objectDefinition.isApproved() &&
 			objectDefinition.isAccountEntryRestricted() &&
 			!accountEntryRestricted) {
@@ -4078,7 +4100,7 @@ public class ObjectDefinitionLocalServiceImpl
 						ObjectDefinitionSettingConstants.NAME_ACCEPT_ALL_GROUPS,
 						objectDefinitionSettings))) {
 
-				return;
+				continue;
 			}
 
 			String acceptedGroupIds = ObjectDefinitionSettingUtil.getValue(

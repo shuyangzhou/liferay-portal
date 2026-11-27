@@ -9,6 +9,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionFactory;
 import com.liferay.info.constants.InfoDisplayWebKeys;
 import com.liferay.info.field.InfoField;
+import com.liferay.info.field.type.LocationInfoFieldType;
 import com.liferay.info.field.type.PhoneNumberInfoFieldType;
 import com.liferay.info.field.type.RelationshipInfoFieldType;
 import com.liferay.info.item.InfoItemReference;
@@ -18,6 +19,7 @@ import com.liferay.layout.display.page.constants.LayoutDisplayPageWebKeys;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.constants.ObjectFieldSettingConstants;
 import com.liferay.object.field.builder.IntegerObjectFieldBuilder;
+import com.liferay.object.field.builder.LocationObjectFieldBuilder;
 import com.liferay.object.field.builder.PhoneNumberObjectFieldBuilder;
 import com.liferay.object.field.builder.TextObjectFieldBuilder;
 import com.liferay.object.field.setting.builder.ObjectFieldSettingBuilder;
@@ -55,6 +57,7 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.test.rule.FeatureFlag;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
@@ -119,21 +122,6 @@ public class ObjectFieldInfoFieldConverterTest {
 
 	@Test
 	public void testAddRelationshipInfoFieldAttributes() throws Exception {
-		ObjectDefinition objectDefinition2 =
-			ObjectDefinitionTestUtil.publishObjectDefinition();
-
-		ObjectRelationship objectRelationship =
-			ObjectRelationshipTestUtil.addObjectRelationship(
-				_objectRelationshipLocalService, _objectDefinition,
-				objectDefinition2);
-
-		ObjectFieldInfoFieldConverter objectFieldInfoFieldConverter =
-			new ObjectFieldInfoFieldConverter(
-				null, null, null, _objectDefinitionLocalService,
-				_objectFieldLocalService, _objectRelationshipLocalService,
-				_objectScopeProviderRegistry, null, null, _portal,
-				_restContextPathResolverRegistry, null, null);
-
 		InfoField.FinalStep finalStep = InfoField.builder(
 		).infoFieldType(
 			RelationshipInfoFieldType.INSTANCE
@@ -142,6 +130,19 @@ public class ObjectFieldInfoFieldConverterTest {
 		).name(
 			RandomTestUtil.randomString()
 		);
+		ObjectDefinition objectDefinition2 =
+			ObjectDefinitionTestUtil.publishObjectDefinition();
+		ObjectFieldInfoFieldConverter objectFieldInfoFieldConverter =
+			new ObjectFieldInfoFieldConverter(
+				null, null, null, _objectDefinitionLocalService,
+				_objectFieldLocalService, _objectRelationshipLocalService,
+				_objectScopeProviderRegistry, null, null, _portal,
+				_restContextPathResolverRegistry, null, null);
+
+		ObjectRelationship objectRelationship =
+			ObjectRelationshipTestUtil.addObjectRelationship(
+				_objectRelationshipLocalService, _objectDefinition,
+				objectDefinition2);
 
 		Assert.assertEquals(
 			StringPool.BLANK,
@@ -200,23 +201,6 @@ public class ObjectFieldInfoFieldConverterTest {
 	public void testAddRelationshipInfoFieldAttributesWithOrganization()
 		throws Exception {
 
-		ObjectDefinition objectDefinition =
-			_objectDefinitionLocalService.fetchSystemObjectDefinition(
-				TestPropsValues.getCompanyId(), "Organization");
-
-		ObjectRelationship objectRelationship =
-			ObjectRelationshipTestUtil.addObjectRelationship(
-				_objectRelationshipLocalService, objectDefinition,
-				_objectDefinition);
-
-		ObjectFieldInfoFieldConverter objectFieldInfoFieldConverter =
-			new ObjectFieldInfoFieldConverter(
-				null, null, null, _objectDefinitionLocalService,
-				_objectFieldLocalService, _objectRelationshipLocalService,
-				_objectScopeProviderRegistry, null, null, _portal,
-				_restContextPathResolverRegistry,
-				_systemObjectDefinitionManagerRegistry, null);
-
 		InfoField.FinalStep finalStep = InfoField.builder(
 		).infoFieldType(
 			RelationshipInfoFieldType.INSTANCE
@@ -225,6 +209,22 @@ public class ObjectFieldInfoFieldConverterTest {
 		).name(
 			RandomTestUtil.randomString()
 		);
+
+		ObjectDefinition objectDefinition =
+			_objectDefinitionLocalService.fetchSystemObjectDefinition(
+				TestPropsValues.getCompanyId(), "Organization");
+		ObjectFieldInfoFieldConverter objectFieldInfoFieldConverter =
+			new ObjectFieldInfoFieldConverter(
+				null, null, null, _objectDefinitionLocalService,
+				_objectFieldLocalService, _objectRelationshipLocalService,
+				_objectScopeProviderRegistry, null, null, _portal,
+				_restContextPathResolverRegistry,
+				_systemObjectDefinitionManagerRegistry, null);
+
+		ObjectRelationship objectRelationship =
+			ObjectRelationshipTestUtil.addObjectRelationship(
+				_objectRelationshipLocalService, objectDefinition,
+				_objectDefinition);
 
 		String url = _getRelationshipURL(
 			finalStep, objectFieldInfoFieldConverter, objectRelationship,
@@ -316,6 +316,32 @@ public class ObjectFieldInfoFieldConverterTest {
 		}
 	}
 
+	@FeatureFlag("LPD-70668")
+	@Test
+	public void testGetLocationInfoField() throws Exception {
+		ObjectField objectField = ObjectFieldUtil.addCustomObjectField(
+			new LocationObjectFieldBuilder(
+			).labelMap(
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString())
+			).name(
+				"a" + RandomTestUtil.randomString()
+			).objectDefinitionId(
+				_objectDefinition.getObjectDefinitionId()
+			).userId(
+				TestPropsValues.getUserId()
+			).build());
+		ObjectFieldInfoFieldConverter objectFieldInfoFieldConverter =
+			new ObjectFieldInfoFieldConverter(
+				_ddmExpressionFactory, null, null, null, null, null, null, null,
+				null, null, null, null, null);
+
+		InfoField<?> infoField = objectFieldInfoFieldConverter.getInfoField(
+			true, ObjectField.class.getSimpleName(), objectField);
+
+		Assert.assertSame(
+			LocationInfoFieldType.INSTANCE, infoField.getInfoFieldType());
+	}
+
 	@Test
 	public void testGetPhoneNumberInfoField() throws Exception {
 		ObjectField objectField = ObjectFieldUtil.addCustomObjectField(
@@ -337,7 +363,6 @@ public class ObjectFieldInfoFieldConverterTest {
 			).userId(
 				TestPropsValues.getUserId()
 			).build());
-
 		ObjectFieldInfoFieldConverter objectFieldInfoFieldConverter =
 			new ObjectFieldInfoFieldConverter(
 				_ddmExpressionFactory, null, null, null, null, null, null, null,

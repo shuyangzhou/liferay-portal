@@ -91,6 +91,13 @@ public class UpdateItemConfigMVCActionCommandTest {
 	}
 
 	@Test
+	@TestInfo("LPD-73215")
+	public void testUpdateCollectionItemConfig() throws Exception {
+		_testUpdateCollectionItemConfigResponsive();
+		_testUpdateCollectionItemConfigResponsivePartial();
+	}
+
+	@Test
 	public void testUpdateColumnItemConfigResponsive() throws Exception {
 		_testUpdateColumnItemConfigResponsive(
 			"column_item_config_responsive.json");
@@ -315,6 +322,89 @@ public class UpdateItemConfigMVCActionCommandTest {
 		return StringUtil.read(inputStream);
 	}
 
+	private void _testUpdateCollectionItemConfigResponsive() throws Exception {
+		LayoutStructure layoutStructure = _getLayoutStructure();
+
+		LayoutStructureItem layoutStructureItem =
+			layoutStructure.addCollectionStyledLayoutStructureItem(
+				layoutStructure.getMainItemId(), 0);
+
+		_layoutPageTemplateStructureLocalService.
+			updateLayoutPageTemplateStructureData(
+				TestPropsValues.getUserId(), _layout.getGroupId(),
+				_layout.getPlid(), layoutStructure.toString());
+
+		JSONObject jsonObject = layoutStructureItem.getItemConfigJSONObject();
+
+		Assert.assertEquals(
+			_objectMapper.readTree(_read("collection_item_config.json")),
+			_objectMapper.readTree(jsonObject.toString()));
+
+		MockActionRequest mockActionRequest = _getMockActionRequest();
+
+		mockActionRequest.setParameter(
+			"itemConfig", _read("collection_item_config_responsive.json"));
+		mockActionRequest.setParameter(
+			"itemId", layoutStructureItem.getItemId());
+
+		ReflectionTestUtil.invoke(
+			_mvcActionCommand, "doProcessAction",
+			new Class<?>[] {ActionRequest.class, ActionResponse.class},
+			mockActionRequest, new MockLiferayPortletActionResponse());
+
+		layoutStructure = _getLayoutStructure();
+
+		layoutStructureItem = layoutStructure.getLayoutStructureItem(
+			layoutStructureItem.getItemId());
+
+		jsonObject = layoutStructureItem.getItemConfigJSONObject();
+
+		Assert.assertEquals(
+			_objectMapper.readTree(
+				_read("collection_item_config_responsive.json")),
+			_objectMapper.readTree(jsonObject.toString()));
+	}
+
+	private void _testUpdateCollectionItemConfigResponsivePartial()
+		throws Exception {
+
+		LayoutStructure layoutStructure = _getLayoutStructure();
+
+		LayoutStructureItem layoutStructureItem =
+			layoutStructure.addCollectionStyledLayoutStructureItem(
+				layoutStructure.getMainItemId(), 0);
+
+		_layoutPageTemplateStructureLocalService.
+			updateLayoutPageTemplateStructureData(
+				TestPropsValues.getUserId(), _layout.getGroupId(),
+				_layout.getPlid(), layoutStructure.toString());
+
+		_updateItemConfig(
+			JSONUtil.put(
+				"tablet",
+				JSONUtil.put("flexWrap", RandomTestUtil.randomString())),
+			layoutStructureItem.getItemId());
+		_updateItemConfig(
+			JSONUtil.put("tablet", JSONUtil.put("align", "align-items-end")),
+			layoutStructureItem.getItemId());
+		_updateItemConfig(
+			JSONUtil.put("tablet", JSONUtil.put("flexWrap", "")),
+			layoutStructureItem.getItemId());
+
+		layoutStructure = _getLayoutStructure();
+
+		layoutStructureItem = layoutStructure.getLayoutStructureItem(
+			layoutStructureItem.getItemId());
+
+		JSONObject jsonObject = layoutStructureItem.getItemConfigJSONObject();
+
+		JSONObject tabletJSONObject = jsonObject.getJSONObject("tablet");
+
+		Assert.assertEquals(
+			"align-items-end", tabletJSONObject.getString("align"));
+		Assert.assertEquals("", tabletJSONObject.getString("flexWrap"));
+	}
+
 	private void _testUpdateColumnItemConfigResponsive(String itemConfigfile)
 		throws Exception {
 
@@ -399,6 +489,22 @@ public class UpdateItemConfigMVCActionCommandTest {
 		Assert.assertEquals(
 			_objectMapper.readTree(_read("row_item_config_responsive.json")),
 			_objectMapper.readTree(jsonObject.toString()));
+	}
+
+	private void _updateItemConfig(
+			JSONObject itemConfigJSONObject, String itemId)
+		throws Exception {
+
+		MockActionRequest mockActionRequest = _getMockActionRequest();
+
+		mockActionRequest.setParameter(
+			"itemConfig", itemConfigJSONObject.toString());
+		mockActionRequest.setParameter("itemId", itemId);
+
+		ReflectionTestUtil.invoke(
+			_mvcActionCommand, "doProcessAction",
+			new Class<?>[] {ActionRequest.class, ActionResponse.class},
+			mockActionRequest, new MockLiferayPortletActionResponse());
 	}
 
 	@Inject

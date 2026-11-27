@@ -464,12 +464,14 @@ public abstract class BaseDiscountRuleResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("externalReferenceCode")) {
+			Serializable externalReferenceCode = parameters.get(
+				"externalReferenceCode");
+
+			if (externalReferenceCode != null) {
 				discountRuleUnsafeFunction =
 					discountRule ->
 						postDiscountByExternalReferenceCodeDiscountRule(
-							(String)parameters.get("externalReferenceCode"),
-							discountRule);
+							(String)externalReferenceCode, discountRule);
 			}
 			else {
 				throw new NotSupportedException(
@@ -1197,4 +1199,4 @@ public abstract class BaseDiscountRuleResourceImpl
 		LogFactoryUtil.getLog(BaseDiscountRuleResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:-1730550982
+// LIFERAY-REST-BUILDER-HASH:-1837939118

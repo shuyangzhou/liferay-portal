@@ -306,11 +306,13 @@ public abstract class BaseDiagramResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("externalReferenceCode")) {
+			Serializable externalReferenceCode = parameters.get(
+				"externalReferenceCode");
+
+			if (externalReferenceCode != null) {
 				diagramUnsafeFunction =
 					diagram -> postProductByExternalReferenceCodeDiagram(
-						(String)parameters.get("externalReferenceCode"),
-						diagram);
+						(String)externalReferenceCode, diagram);
 			}
 			else {
 				throw new NotSupportedException(
@@ -1011,4 +1013,4 @@ public abstract class BaseDiagramResourceImpl
 		LogFactoryUtil.getLog(BaseDiagramResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:-778835936
+// LIFERAY-REST-BUILDER-HASH:-793987066

@@ -379,7 +379,7 @@ public abstract class BaseFragmentSetResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/headless-admin-fragment/v1.0/sites/{siteExternalReferenceCode}/fragment-sets' -d $'{"dateCreated": ___, "dateModified": ___, "description": ___, "externalReferenceCode": ___, "key": ___, "marketplace": ___, "name": ___, "uuid": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/headless-admin-fragment/v1.0/sites/{siteExternalReferenceCode}/fragment-sets' -d $'{"dateCreated": ___, "dateModified": ___, "description": ___, "externalReferenceCode": ___, "key": ___, "marketplace": ___, "name": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
 	@com.liferay.portal.vulcan.feature.flag.FeatureFlag("LPD-39244")
 	@io.swagger.v3.oas.annotations.Operation(
@@ -548,7 +548,7 @@ public abstract class BaseFragmentSetResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'PUT' 'http://localhost:8080/o/headless-admin-fragment/v1.0/sites/{siteExternalReferenceCode}/fragment-sets/{fragmentSetExternalReferenceCode}' -d $'{"dateCreated": ___, "dateModified": ___, "description": ___, "externalReferenceCode": ___, "key": ___, "marketplace": ___, "name": ___, "uuid": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'PUT' 'http://localhost:8080/o/headless-admin-fragment/v1.0/sites/{siteExternalReferenceCode}/fragment-sets/{fragmentSetExternalReferenceCode}' -d $'{"dateCreated": ___, "dateModified": ___, "description": ___, "externalReferenceCode": ___, "key": ___, "marketplace": ___, "name": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
 	@com.liferay.portal.vulcan.feature.flag.FeatureFlag("LPD-39244")
 	@io.swagger.v3.oas.annotations.Operation(
@@ -613,7 +613,10 @@ public abstract class BaseFragmentSetResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("siteExternalReferenceCode")) {
+			Serializable siteExternalReferenceCode = parameters.get(
+				"siteExternalReferenceCode");
+
+			if (siteExternalReferenceCode != null) {
 				if (!FeatureFlagManagerUtil.isEnabled(
 						CompanyThreadLocal.getCompanyId(), "LPD-39244")) {
 
@@ -621,8 +624,7 @@ public abstract class BaseFragmentSetResourceImpl
 				}
 
 				fragmentSetUnsafeFunction = fragmentSet -> postSiteFragmentSet(
-					(String)parameters.get("siteExternalReferenceCode"),
-					fragmentSet);
+					(String)siteExternalReferenceCode, fragmentSet);
 			}
 			else {
 				throw new NotSupportedException(
@@ -635,10 +637,13 @@ public abstract class BaseFragmentSetResourceImpl
 				"updateStrategy", "UPDATE");
 
 			if (StringUtil.equalsIgnoreCase(updateStrategy, "UPDATE")) {
+				Serializable siteExternalReferenceCode = parameters.get(
+					"siteExternalReferenceCode");
+
 				fragmentSetUnsafeFunction = fragmentSet -> {
 					FragmentSet persistedFragmentSet = null;
 
-					if (parameters.containsKey("siteExternalReferenceCode")) {
+					if (siteExternalReferenceCode != null) {
 						if (!FeatureFlagManagerUtil.isEnabled(
 								CompanyThreadLocal.getCompanyId(),
 								"LPD-39244")) {
@@ -647,7 +652,7 @@ public abstract class BaseFragmentSetResourceImpl
 						}
 
 						persistedFragmentSet = putSiteFragmentSet(
-							(String)parameters.get("siteExternalReferenceCode"),
+							(String)siteExternalReferenceCode,
 							fragmentSet.getExternalReferenceCode(),
 							fragmentSet);
 					}
@@ -688,9 +693,12 @@ public abstract class BaseFragmentSetResourceImpl
 			Map<String, Serializable> parameters)
 		throws Exception {
 
+		Serializable siteExternalReferenceCode = parameters.get(
+			"siteExternalReferenceCode");
+
 		UnsafeFunction<FragmentSet, FragmentSet, Exception>
 			fragmentSetUnsafeFunction = fragmentSet -> {
-				if (parameters.containsKey("siteExternalReferenceCode")) {
+				if (siteExternalReferenceCode != null) {
 					if (!FeatureFlagManagerUtil.isEnabled(
 							CompanyThreadLocal.getCompanyId(), "LPD-39244")) {
 
@@ -698,7 +706,7 @@ public abstract class BaseFragmentSetResourceImpl
 					}
 
 					deleteSiteFragmentSet(
-						(String)parameters.get("siteExternalReferenceCode"),
+						(String)siteExternalReferenceCode,
 						fragmentSet.getExternalReferenceCode());
 
 					return fragmentSet;
@@ -764,7 +772,10 @@ public abstract class BaseFragmentSetResourceImpl
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		if (parameters.containsKey("siteExternalReferenceCode")) {
+		Serializable siteExternalReferenceCode = parameters.get(
+			"siteExternalReferenceCode");
+
+		if (siteExternalReferenceCode != null) {
 			if (!FeatureFlagManagerUtil.isEnabled(
 					CompanyThreadLocal.getCompanyId(), "LPD-39244")) {
 
@@ -772,8 +783,7 @@ public abstract class BaseFragmentSetResourceImpl
 			}
 
 			return getSiteFragmentSetsPage(
-				(String)parameters.get("siteExternalReferenceCode"), filter,
-				pagination);
+				(String)siteExternalReferenceCode, filter, pagination);
 		}
 		else {
 			throw new NotSupportedException(
@@ -1383,4 +1393,4 @@ public abstract class BaseFragmentSetResourceImpl
 		LogFactoryUtil.getLog(BaseFragmentSetResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:541576358
+// LIFERAY-REST-BUILDER-HASH:-1145880850

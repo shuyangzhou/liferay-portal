@@ -46,6 +46,7 @@ import com.liferay.segments.exception.SegmentsExperiencePriorityException;
 import com.liferay.segments.model.SegmentsEntry;
 import com.liferay.segments.model.SegmentsExperience;
 import com.liferay.segments.model.SegmentsExperiment;
+import com.liferay.segments.service.SegmentsEntryLocalServiceUtil;
 import com.liferay.segments.service.SegmentsExperienceAudienceEntryRelLocalService;
 import com.liferay.segments.service.base.SegmentsExperienceLocalServiceBaseImpl;
 import com.liferay.segments.service.persistence.SegmentsEntryPersistence;
@@ -295,6 +296,26 @@ public class SegmentsExperienceLocalServiceImpl
 
 		segmentsExperiencePersistence.flush();
 
+		// Segments entry
+
+		SegmentsEntry segmentsEntry =
+			_segmentsEntryPersistence.fetchByPrimaryKey(
+				segmentsExperience.getSegmentsEntryId());
+
+		if ((segmentsEntry != null) &&
+			SegmentsEntryConstants.SOURCE_AUDIENCE.equals(
+				segmentsEntry.getSource())) {
+
+			int count = segmentsExperiencePersistence.countBySEERC_SESERC(
+				segmentsExperience.getSegmentsEntryERC(),
+				segmentsExperience.getSegmentsEntryScopeERC());
+
+			if (count == 0) {
+				SegmentsEntryLocalServiceUtil.deleteSegmentsEntry(
+					segmentsEntry);
+			}
+		}
+
 		// Segments experience audience entry rels
 
 		_segmentsExperienceAudienceEntryRelLocalService.
@@ -488,17 +509,6 @@ public class SegmentsExperienceLocalServiceImpl
 
 		return segmentsExperiencePersistence.findByG_SEERC_SESERC_P_A(
 			groupId, segmentsEntryERCs, segmentsEntryScopeERC, plid, active);
-	}
-
-	@Override
-	public List<SegmentsExperience> getSegmentsExperiences(
-		long groupId, String[] segmentsEntryERCs, String segmentsEntryScopeERC,
-		long plid, boolean active, int start, int end,
-		OrderByComparator<SegmentsExperience> orderByComparator) {
-
-		return segmentsExperiencePersistence.findByG_SEERC_SESERC_P_A(
-			groupId, segmentsEntryERCs, segmentsEntryScopeERC, plid, active,
-			start, end, orderByComparator);
 	}
 
 	@Override
@@ -762,6 +772,8 @@ public class SegmentsExperienceLocalServiceImpl
 
 		if ((segmentsEntry == null) ||
 			SegmentsEntryConstants.SOURCE_ASAH_FARO_BACKEND.equals(
+				segmentsEntry.getSource()) ||
+			SegmentsEntryConstants.SOURCE_AUDIENCE.equals(
 				segmentsEntry.getSource())) {
 
 			return active;
