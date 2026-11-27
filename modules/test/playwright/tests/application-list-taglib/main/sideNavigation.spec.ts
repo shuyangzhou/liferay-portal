@@ -273,8 +273,6 @@ test(
 
 			await waitForPageToBeLoaded(page);
 
-			await openProductMenu(page);
-
 			await expectSideNavigationToBeRendered();
 		});
 

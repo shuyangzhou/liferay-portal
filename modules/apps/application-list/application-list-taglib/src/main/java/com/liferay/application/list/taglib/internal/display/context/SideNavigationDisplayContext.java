@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author Thiago Buarque
@@ -147,9 +146,9 @@ public class SideNavigationDisplayContext {
 
 	public boolean isVisible() {
 		String state = SessionClicks.get(
-			_httpServletRequest, _SESSION_KEY_SIDEBAR_STATE, "closed");
+			_httpServletRequest, _SESSION_KEY_SIDEBAR_STATE, "open");
 
-		return Objects.equals(state, "open");
+		return state.equals("open");
 	}
 
 	private String _getColorScheme() {
