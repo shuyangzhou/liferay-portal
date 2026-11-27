@@ -15,6 +15,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.servlet.InitialRequestSyncUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
@@ -119,6 +121,9 @@ public abstract class InitialRequestPortalInstanceLifecycleListener
 
 		InitialRequestSyncUtil.registerSyncCallable(
 			() -> {
+				ServiceContextThreadLocal.pushServiceContext(
+					new ServiceContext());
+
 				try {
 					TransactionInvokerUtil.invoke(
 						_transactionConfig,
@@ -132,6 +137,8 @@ public abstract class InitialRequestPortalInstanceLifecycleListener
 					throw new Exception(throwable);
 				}
 				finally {
+					ServiceContextThreadLocal.popServiceContext();
+
 					if (_companyIds.remove(companyId)) {
 						_saveCompanyIds(_companyIds);
 					}
