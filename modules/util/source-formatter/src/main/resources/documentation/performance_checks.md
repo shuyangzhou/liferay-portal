@@ -22,6 +22,7 @@ JavaServiceHopCheck | .java | Flags a service method that delegates to a passthr
 JavaSessionCheck | .java | Finds unnecessary calls to `Session.flush()` (calls that are followed by `Session.clear()`). |
 [JavaStringBundlerConcatCheck](check/java_string_bundler_concat_check.md#javastringbundlerconcatcheck) | .java | Finds calls to `StringBundler.concat` with less than 3 parameters. |
 JavaStringBundlerInitialCapacityCheck | .java | Checks the initial capacity of new instances of `StringBundler`. |
+[JavaXMLElementTextCheck](check/java_xml_element_text_check.md#javaxmlelementtextcheck) | .java | Replaces XML parsed only to read the texts of child elements of its root with `XMLUtil.getElementText` calls. |
 LocalPatternCheck | .java | Checks that a `java.util.Pattern` variable is declared globally, so that it is initiated only once. |
 LocalVariableTypeInferenceCheck | .java, .jsp, .jspf, .jspx, .tag, .tpl, or .vm | Finds usage of `var` in local variable declaration. |
 [MVCRenderCommandViewTemplateCheck](check/mvc_render_command_view_template_check.md#mvcrendercommandviewtemplatecheck) | .java | Finds MVC render commands that only map `/` to a constant path that the portlet can declare as `view-template`. |

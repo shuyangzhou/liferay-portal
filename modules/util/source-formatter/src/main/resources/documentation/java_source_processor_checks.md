@@ -217,6 +217,7 @@ JavaUpgradeModelPermissionsCheck | [Upgrade](upgrade_checks.md#upgrade-checks) |
 JavaUpgradeVersionCheck | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | Verifies that the correct upgrade versions are used in classes that implement `UpgradeStepRegistrator`. |
 JavaVariableTypeCheck | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | Performs several checks on the modifiers on variables. |
 JavaVerifyUpgradeConnectionCheck | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | Finds cases where `DataAccess.getConnection` is used (instead of using the available global variable `connection`). |
+[JavaXMLElementTextCheck](check/java_xml_element_text_check.md#javaxmlelementtextcheck) | [Performance](performance_checks.md#performance-checks) | Replaces XML parsed only to read the texts of child elements of its root with `XMLUtil.getElementText` calls. |
 JavaXMLSecurityCheck | [Security](security_checks.md#security-checks) | Finds possible XXE or Quadratic Blowup security vulnerabilities. |
 JavadocCheck | [Javadoc](javadoc_checks.md#javadoc-checks) | Performs several checks on javadoc. |
 [JavadocStyleCheck](https://checkstyle.sourceforge.io/checks/javadoc/javadocstyle.html) | [Javadoc](javadoc_checks.md#javadoc-checks) | Validates Javadoc comments to help ensure they are well formed. |
