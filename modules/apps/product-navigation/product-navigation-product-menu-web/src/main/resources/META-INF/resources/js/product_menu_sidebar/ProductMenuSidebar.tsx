@@ -160,7 +160,6 @@ function ProductMenuSidebar({
 					initialExpandedKeys={initialExpandedKeys}
 					isFilterActive={isFilterActive}
 					items={items}
-					label={label}
 					loading={loading}
 					numberOfMatches={numberOfMatches}
 					onExpandedChange={onExpandedChange}

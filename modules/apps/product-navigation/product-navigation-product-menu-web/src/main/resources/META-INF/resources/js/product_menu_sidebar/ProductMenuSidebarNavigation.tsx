@@ -32,7 +32,6 @@ interface Props {
 	initialExpandedKeys: Set<React.Key>;
 	isFilterActive: boolean;
 	items: Array<ProductMenuSidebarItem>;
-	label: string;
 	loading: boolean;
 	numberOfMatches: number;
 	onExpandedChange: (expandedKeys: Set<React.Key>) => void;
@@ -48,7 +47,6 @@ function ProductMenuSidebarNavigation({
 	initialExpandedKeys,
 	isFilterActive,
 	items,
-	label,
 	loading,
 	numberOfMatches,
 	onExpandedChange,
@@ -103,7 +101,6 @@ function ProductMenuSidebarNavigation({
 					) : numberOfResults ? (
 						<ClayVerticalNav
 							active={selectedPortletId}
-							aria-label={label}
 							defaultExpandedKeys={initialExpandedKeys}
 							displayType="primary"
 							expandedKeys={expandedKeys}

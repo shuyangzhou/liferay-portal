@@ -169,7 +169,6 @@ function SideNavigation({
 					) : numberOfResults ? (
 						<ClayVerticalNav
 							active={selectedPortletId}
-							aria-label={label}
 							defaultExpandedKeys={initialExpandedKeys}
 							displayType="primary"
 							expandedKeys={expandedKeys}

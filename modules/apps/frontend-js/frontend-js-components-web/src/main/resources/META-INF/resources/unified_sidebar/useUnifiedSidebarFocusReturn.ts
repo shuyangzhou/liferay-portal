@@ -54,13 +54,7 @@ export function useUnifiedSidebarFocusReturn({
 		const focusWhenSettled = () => {
 			const currentLeft = button.getBoundingClientRect().left;
 
-			const settled =
-				currentLeft === left &&
-				!document
-					.getElementById(navigationId)
-					?.classList.contains('c-slideout-transition');
-
-			stableFrames = settled ? stableFrames + 1 : 0;
+			stableFrames = currentLeft === left ? stableFrames + 1 : 0;
 
 			left = currentLeft;
 
@@ -75,8 +69,7 @@ export function useUnifiedSidebarFocusReturn({
 					shouldFocusRef.current = false;
 
 					button.blur();
-
-					frameId = requestAnimationFrame(() => button.focus());
+					button.focus();
 				}
 
 				return;
@@ -88,7 +81,7 @@ export function useUnifiedSidebarFocusReturn({
 		frameId = requestAnimationFrame(focusWhenSettled);
 
 		return () => cancelAnimationFrame(frameId);
-	}, [buttonRef, navigationId, visible]);
+	}, [buttonRef, visible]);
 
 	return trackFocus;
 }
