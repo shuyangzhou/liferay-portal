@@ -33,11 +33,11 @@ interface Props {
 		visible: boolean;
 	};
 	selectedPortletId: string;
+	sidebarStateSessionKey: string;
 	siteItemSelectedEventName: string;
 	siteItemSelectorURL: string;
 	staging?: ProductMenuSidebarStagingProps;
 	visible: boolean;
-	visibleSessionKey: string;
 }
 
 function ProductMenuSidebar({
@@ -50,15 +50,15 @@ function ProductMenuSidebar({
 	navigationItemsURL,
 	pageTree,
 	selectedPortletId,
+	sidebarStateSessionKey,
 	siteItemSelectedEventName,
 	siteItemSelectorURL,
 	staging,
 	visible: initialVisible,
-	visibleSessionKey,
 }: Props) {
 	const {overlay, updateVisible, visible} = useProductMenuSidebarVisibility(
 		initialVisible,
-		visibleSessionKey
+		sidebarStateSessionKey
 	);
 
 	const {
@@ -160,6 +160,7 @@ function ProductMenuSidebar({
 					initialExpandedKeys={initialExpandedKeys}
 					isFilterActive={isFilterActive}
 					items={items}
+					label={label}
 					loading={loading}
 					numberOfMatches={numberOfMatches}
 					onExpandedChange={onExpandedChange}

@@ -514,10 +514,12 @@ public abstract class BaseAttachmentResourceImpl
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		if (parameters.containsKey("placedOrderId")) {
+		Serializable placedOrderId = parameters.get("placedOrderId");
+
+		if (placedOrderId != null) {
 			return getPlacedOrderAttachmentsPage(
-				_parseLong((String)parameters.get("placedOrderId")), search,
-				filter, pagination, sorts);
+				_parseLong((String)placedOrderId), search, filter, pagination,
+				sorts);
 		}
 		else {
 			throw new NotSupportedException(
@@ -1135,4 +1137,4 @@ public abstract class BaseAttachmentResourceImpl
 		LogFactoryUtil.getLog(BaseAttachmentResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:-952487733
+// LIFERAY-REST-BUILDER-HASH:223914087

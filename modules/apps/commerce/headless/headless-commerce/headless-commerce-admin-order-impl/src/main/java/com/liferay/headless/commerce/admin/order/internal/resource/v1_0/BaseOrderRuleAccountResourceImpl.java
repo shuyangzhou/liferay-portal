@@ -409,11 +409,13 @@ public abstract class BaseOrderRuleAccountResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("externalReferenceCode")) {
+			Serializable externalReferenceCode = parameters.get(
+				"externalReferenceCode");
+
+			if (externalReferenceCode != null) {
 				orderRuleAccountUnsafeFunction = orderRuleAccount ->
 					postOrderRuleByExternalReferenceCodeOrderRuleAccount(
-						(String)parameters.get("externalReferenceCode"),
-						orderRuleAccount);
+						(String)externalReferenceCode, orderRuleAccount);
 			}
 			else {
 				throw new NotSupportedException(
@@ -1111,4 +1113,4 @@ public abstract class BaseOrderRuleAccountResourceImpl
 		LogFactoryUtil.getLog(BaseOrderRuleAccountResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:1250394772
+// LIFERAY-REST-BUILDER-HASH:1876034402

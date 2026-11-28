@@ -214,4 +214,41 @@ describe('Liferay.Util.fetch', () => {
 
 		expect(fetch).toHaveBeenCalledWith(`/myportal${sameOriginUrl}`, init);
 	});
+
+	it.each(['edit', 'preview'])(
+		'adds the launch set headers when a launch set is in %s mode',
+		(launchSetMode) => {
+			window.Liferay.ThemeDisplay = {
+				getDoAsUserIdEncoded: () => '',
+				getLaunchSetId: () => '123',
+				getLaunchSetMode: () => launchSetMode,
+				getPathContext: () => '',
+			};
+
+			fetchWrapper(sameOriginUrl);
+
+			const [, init] = fetch.mock.calls[fetch.mock.calls.length - 1];
+
+			expect(init.headers.get('x-liferay-launch-set-id')).toBe('123');
+			expect(init.headers.get('x-liferay-launch-set-mode')).toBe(
+				launchSetMode
+			);
+		}
+	);
+
+	it('does not add the launch set headers outside of a launch set', () => {
+		window.Liferay.ThemeDisplay = {
+			getDoAsUserIdEncoded: () => '',
+			getLaunchSetId: () => '0',
+			getLaunchSetMode: () => '',
+			getPathContext: () => '',
+		};
+
+		fetchWrapper(sameOriginUrl);
+
+		const [, init] = fetch.mock.calls[fetch.mock.calls.length - 1];
+
+		expect(init.headers.has('x-liferay-launch-set-id')).toBe(false);
+		expect(init.headers.has('x-liferay-launch-set-mode')).toBe(false);
+	});
 });

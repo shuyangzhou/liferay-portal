@@ -6,19 +6,25 @@
 import openModuleModal from './openModuleModal';
 import {DesignLibraryResourceType} from './types';
 
-type CreationMenuItem = {label: string; onClick: () => void};
+type CreationMenuItem = {href?: string; label: string; onClick?: () => void};
 
 export default function getCreationMenuItems(
 	resourceTypes: DesignLibraryResourceType[]
 ): CreationMenuItem[] {
 	return resourceTypes.flatMap(
 		(resourceType) =>
-			resourceType.creationItems?.map(
-				(designLibraryResourceCreationItem) => ({
-					label: designLibraryResourceCreationItem.label,
-					onClick: () =>
-						openModuleModal(designLibraryResourceCreationItem),
-				})
-			) ?? []
+			resourceType.creationItems?.map((creationItem) => {
+				if ('href' in creationItem) {
+					return {
+						href: creationItem.href,
+						label: creationItem.label,
+					};
+				}
+
+				return {
+					label: creationItem.label,
+					onClick: () => openModuleModal(creationItem),
+				};
+			}) ?? []
 	);
 }

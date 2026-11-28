@@ -433,6 +433,66 @@ public class RedirectEntryLocalServiceTest {
 	}
 
 	@Test
+	public void testAddRedirectEntryNormalizesSourceURLOnce() throws Exception {
+		_redirectEntry = _redirectEntryLocalService.addRedirectEntry(
+			_group.getGroupId(), _URL_DESTINATION, null, _URL_GROUP_BASE, false,
+			"über-mİch", false, ServiceContextTestUtil.getServiceContext());
+
+		Assert.assertEquals(
+			_friendlyURLNormalizer.normalizeWithEncoding("über-mİch"),
+			_redirectEntry.getSourceURL());
+	}
+
+	@Test
+	public void testAddRedirectEntryNormalizesSourceURLOnceWhenFixingAChainByDestinationURL()
+		throws Exception {
+
+		_redirectEntry = _redirectEntryLocalService.addRedirectEntry(
+			_group.getGroupId(), _URL_DESTINATION, null, false, _URL_SOURCE,
+			ServiceContextTestUtil.getServiceContext());
+
+		_chainedRedirectEntry = _redirectEntryLocalService.addRedirectEntry(
+			_group.getGroupId(),
+			_appendGroupBaseURL(
+				_friendlyURLNormalizer.normalizeWithEncoding(_URL_SOURCE)),
+			null, _URL_GROUP_BASE, false, "über-mİch", true,
+			ServiceContextTestUtil.getServiceContext());
+
+		Assert.assertEquals(
+			_URL_DESTINATION, _chainedRedirectEntry.getDestinationURL());
+		Assert.assertEquals(
+			_friendlyURLNormalizer.normalizeWithEncoding("über-mİch"),
+			_chainedRedirectEntry.getSourceURL());
+	}
+
+	@Test
+	public void testAddRedirectEntryNormalizesSourceURLOnceWhenFixingAChainBySourceURL()
+		throws Exception {
+
+		_redirectEntry = _redirectEntryLocalService.addRedirectEntry(
+			_group.getGroupId(),
+			_appendGroupBaseURL(
+				_friendlyURLNormalizer.normalizeWithEncoding(
+					_URL_INTERMEDIATE_DESTINATION)),
+			null, false, "über-mİch",
+			ServiceContextTestUtil.getServiceContext());
+
+		_chainedRedirectEntry = _redirectEntryLocalService.addRedirectEntry(
+			_group.getGroupId(), _URL_FINAL_DESTINATION, null, _URL_GROUP_BASE,
+			false, _URL_INTERMEDIATE_DESTINATION, true,
+			ServiceContextTestUtil.getServiceContext());
+
+		_redirectEntry = _redirectEntryLocalService.fetchRedirectEntry(
+			_redirectEntry.getRedirectEntryId());
+
+		Assert.assertEquals(
+			_URL_FINAL_DESTINATION, _redirectEntry.getDestinationURL());
+		Assert.assertEquals(
+			_friendlyURLNormalizer.normalizeWithEncoding("über-mİch"),
+			_redirectEntry.getSourceURL());
+	}
+
+	@Test
 	public void testAddRedirectEntryNotNormalizedSourceURL() throws Exception {
 		_redirectEntry = _redirectEntryLocalService.addRedirectEntry(
 			_group.getGroupId(), _URL_DESTINATION, null, false, "attaché",
@@ -764,6 +824,23 @@ public class RedirectEntryLocalServiceTest {
 
 		Assert.assertEquals(
 			_friendlyURLNormalizer.normalizeWithEncoding("attaché"),
+			_redirectEntry.getSourceURL());
+	}
+
+	@Test
+	public void testUpdateRedirectEntryNormalizesSourceURLOnce()
+		throws Exception {
+
+		_redirectEntry = _redirectEntryLocalService.addRedirectEntry(
+			_group.getGroupId(), _URL_DESTINATION, null, _URL_GROUP_BASE, false,
+			_URL_SOURCE, false, ServiceContextTestUtil.getServiceContext());
+
+		_redirectEntry = _redirectEntryLocalService.updateRedirectEntry(
+			_redirectEntry.getRedirectEntryId(), _URL_DESTINATION, null,
+			_URL_GROUP_BASE, false, "über-mİch", false);
+
+		Assert.assertEquals(
+			_friendlyURLNormalizer.normalizeWithEncoding("über-mİch"),
 			_redirectEntry.getSourceURL());
 	}
 

@@ -979,16 +979,18 @@ public abstract class BaseCatalogResourceImpl
 				"updateStrategy", "UPDATE");
 
 			if (StringUtil.equalsIgnoreCase(updateStrategy, "PARTIAL_UPDATE")) {
+				Serializable externalReferenceCode = parameters.get(
+					"externalReferenceCode");
+
 				catalogUnsafeFunction = catalog -> {
 					Catalog getCatalog = null;
 					Catalog persistedCatalog = null;
 
 					try {
-						if (parameters.containsKey("externalReferenceCode")) {
+						if (externalReferenceCode != null) {
 							getCatalog =
 								getProductByExternalReferenceCodeCatalog(
-									(String)parameters.get(
-										"externalReferenceCode"),
+									(String)externalReferenceCode,
 									(Pagination)parameters.get("pagination"));
 						}
 						else {
@@ -1926,4 +1928,4 @@ public abstract class BaseCatalogResourceImpl
 		LogFactoryUtil.getLog(BaseCatalogResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:-565155543
+// LIFERAY-REST-BUILDER-HASH:-1148467355

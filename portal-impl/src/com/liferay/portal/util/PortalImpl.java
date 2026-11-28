@@ -48,7 +48,8 @@ import com.liferay.portal.kernel.image.ImageBag;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.language.constants.LanguageConstants;
-import com.liferay.portal.kernel.launch.LaunchPreviewThreadLocal;
+import com.liferay.portal.kernel.launch.LaunchSetMode;
+import com.liferay.portal.kernel.launch.LaunchSetThreadLocal;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.login.AuthLoginGroupSettingsUtil;
@@ -511,6 +512,11 @@ public class PortalImpl implements Portal {
 
 		_reservedParams.add("p_j_a_id"); // LPS-16418
 
+		// Portal launch set
+
+		_reservedParams.add("p_launch_set_id");
+		_reservedParams.add("p_launch_set_mode");
+
 		// Miscellaneous
 
 		_reservedParams.add("saveLastPath");
@@ -804,13 +810,17 @@ public class PortalImpl implements Portal {
 				url, "previewCTIndicator", true);
 		}
 
-		long previewLaunchSetId = LaunchPreviewThreadLocal.getLaunchSetId();
-
-		if (previewLaunchSetId > -1) {
+		if (LaunchSetThreadLocal.isLaunchSetModePreview()) {
 			url = HttpComponentsUtil.setParameter(
 				url, "p_l_mode", Constants.PREVIEW);
 			url = HttpComponentsUtil.setParameter(
-				url, "previewLaunchSetId", previewLaunchSetId);
+				url, "p_launch_set_id", LaunchSetThreadLocal.getLaunchSetId());
+
+			LaunchSetMode launchSetMode =
+				LaunchSetThreadLocal.getLaunchSetMode();
+
+			url = HttpComponentsUtil.setParameter(
+				url, "p_launch_set_mode", launchSetMode.getValue());
 		}
 
 		return url;

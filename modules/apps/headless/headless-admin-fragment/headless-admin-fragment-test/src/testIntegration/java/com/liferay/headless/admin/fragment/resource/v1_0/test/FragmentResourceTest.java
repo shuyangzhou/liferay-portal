@@ -18,6 +18,7 @@ import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormTestUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestUtil;
 import com.liferay.exportimport.test.util.LazyReferencingTestUtil;
+import com.liferay.fragment.constants.FragmentPortletKeys;
 import com.liferay.fragment.model.FragmentCollection;
 import com.liferay.fragment.model.FragmentEntry;
 import com.liferay.fragment.model.FragmentEntryVersion;
@@ -289,7 +290,7 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 			"LPD-107083", "LPD-107084", "LPD-107085", "LPD-107086",
 			"LPD-107087", "LPD-107088", "LPD-107149", "LPD-107185",
 			"LPD-107186", "LPD-107187", "LPD-107188", "LPD-107189",
-			"LPD-107706", "LPD-107754", "LPD-117504"
+			"LPD-107706", "LPD-107754"
 		}
 	)
 	public void testPostSiteFragment() throws Exception {
@@ -319,6 +320,7 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 		_testPostSiteFragmentNameInvalidProblemException();
 		_testPostSiteFragmentThumbnailURLReferenceExternalReferenceCode();
 		_testPostSiteFragmentThumbnailURLReferenceExternalReferenceCodeAndFileBase64();
+		_testPostSiteFragmentThumbnailURLReferenceExternalReferenceCodeDifferentRepositoryProblemException();
 		_testPostSiteFragmentThumbnailURLReferenceExternalReferenceCodeEmptyAndFileBase64();
 		_testPostSiteFragmentThumbnailURLReferenceExternalReferenceCodeNullAndFileBase64();
 		_testPostSiteFragmentThumbnailURLReferenceExternalReferenceCodeNullAndURL();
@@ -592,7 +594,7 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 
 	private FileEntry _addPortletFileEntry(String fileName) throws Exception {
 		Repository repository = _portletFileRepository.addPortletRepository(
-			testGroup.getGroupId(), RandomTestUtil.randomString(),
+			testGroup.getGroupId(), FragmentPortletKeys.FRAGMENT,
 			ServiceContextTestUtil.getServiceContext(
 				testGroup, TestPropsValues.getUserId()));
 
@@ -601,7 +603,7 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 		return _portletFileRepository.addPortletFileEntry(
 			null, testGroup.getGroupId(), TestPropsValues.getUserId(),
 			FragmentEntry.class.getName(), RandomTestUtil.randomLong(),
-			RandomTestUtil.randomString(), repository.getDlFolderId(),
+			FragmentPortletKeys.FRAGMENT, repository.getDlFolderId(),
 			clazz.getResourceAsStream("dependencies/" + fileName),
 			RandomTestUtil.randomString() + ".png", ContentTypes.IMAGE_PNG,
 			false);
@@ -2721,8 +2723,6 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 		FragmentSet fragmentSet = _randomFragmentSet(
 			fragmentSetExternalReferenceCode);
 
-		fragmentSet.setUuid(RandomTestUtil.randomString());
-
 		fragment.setFragmentSet(fragmentSet);
 
 		fragment.setFragmentSetExternalReferenceCode(
@@ -2738,14 +2738,11 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 				fragmentSet.getExternalReferenceCode(),
 				postFragment.getFragmentSetExternalReferenceCode());
 
-			FragmentCollection fragmentCollection =
+			Assert.assertNotNull(
 				_fragmentCollectionLocalService.
-					getFragmentCollectionByExternalReferenceCode(
+					fetchFragmentCollectionByExternalReferenceCode(
 						fragmentSetExternalReferenceCode,
-						testGroup.getGroupId());
-
-			Assert.assertEquals(
-				fragmentSet.getUuid(), fragmentCollection.getUuid());
+						testGroup.getGroupId()));
 		}
 	}
 
@@ -3028,6 +3025,25 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 
 		_postSiteFragmentAndAssertThumbnailURLReference(
 			_thumbnail1Bytes, externalReferenceCode, thumbnailURLReference);
+	}
+
+	private void _testPostSiteFragmentThumbnailURLReferenceExternalReferenceCodeDifferentRepositoryProblemException()
+		throws Exception {
+
+		Repository repository = _portletFileRepository.addPortletRepository(
+			testGroup.getGroupId(), RandomTestUtil.randomString(),
+			ServiceContextTestUtil.getServiceContext(
+				testGroup, TestPropsValues.getUserId()));
+
+		FileEntry fileEntry = _portletFileRepository.addPortletFileEntry(
+			testGroup.getGroupId(), TestPropsValues.getUserId(), null, 0,
+			RandomTestUtil.randomString(), repository.getDlFolderId(),
+			_thumbnail1Bytes, RandomTestUtil.randomString() + ".png",
+			ContentTypes.IMAGE_PNG, false);
+
+		_testPostFragmentThumbnailURLReferenceProblemException(
+			"Fragment thumbnail is invalid.",
+			fileEntry.getExternalReferenceCode(), null);
 	}
 
 	private void _testPostSiteFragmentThumbnailURLReferenceExternalReferenceCodeEmptyAndFileBase64()

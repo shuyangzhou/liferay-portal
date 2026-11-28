@@ -33,3 +33,13 @@ FDSVisualizationModeCET fdsVisualizationModeCET = editClientExtensionEntryDispla
 		%>'
 	/>
 </aui:field-wrapper>
+
+<%
+String sectionsPlaceholder = "[{\"label\": \"Title\", \"name\": \"title\", \"required\": true}]";
+%>
+
+<aui:input aria-describedby='<%= liferayPortletResponse.getNamespace() + "sectionsHelp" %>' label="item-elements" name="sections" placeholder="<%= HtmlUtil.escapeAttribute(sectionsPlaceholder) %>" rows="6" type="textarea" value="<%= fdsVisualizationModeCET.getSections() %>" />
+
+<div class="form-text mb-3" id="<portlet:namespace />sectionsHelp">
+	<liferay-ui:message key="fds-visualization-mode-item-elements-help" />
+</div>

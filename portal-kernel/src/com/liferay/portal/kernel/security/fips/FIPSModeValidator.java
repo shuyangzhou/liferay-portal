@@ -9,6 +9,8 @@ import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.SecureRandomUtil;
 import com.liferay.portal.kernel.security.pwd.PasswordEncryptor;
 import com.liferay.portal.kernel.security.xml.SecureXMLFactoryProviderUtil;
@@ -22,6 +24,8 @@ import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -32,8 +36,6 @@ import java.lang.reflect.Method;
 import java.net.URL;
 
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import java.security.Provider;
 import java.security.Security;
@@ -232,9 +234,16 @@ public class FIPSModeValidator {
 	private static Document _readChannelPropertiesDocument(
 		String channelPropertiesLocation) {
 
-		try (InputStream inputStream = Files.newInputStream(
-				Paths.get(channelPropertiesLocation))) {
+		File file = new File(channelPropertiesLocation);
 
+		if (!file.isFile()) {
+			throw new SecurityException(
+				"The cluster link channel properties \"" +
+					channelPropertiesLocation +
+						"\" must be a file in FIPS mode");
+		}
+
+		try (InputStream inputStream = new FileInputStream(file)) {
 			DocumentBuilderFactory documentBuilderFactory =
 				SecureXMLFactoryProviderUtil.newDocumentBuilderFactory();
 
@@ -570,39 +579,6 @@ public class FIPSModeValidator {
 		}
 	}
 
-	private static void _validatePlaintextSecrets() {
-		List<String> messages = new ArrayList<>();
-
-		for (String source : PropsUtil.getLoadedSources()) {
-			String fileName = source.substring(source.lastIndexOf('/') + 1);
-
-			if (fileName.equals("portal.properties")) {
-				continue;
-			}
-
-			Properties properties = null;
-
-			try {
-				properties = PropertiesUtil.load(new URL(source));
-			}
-			catch (IOException ioException) {
-				continue;
-			}
-
-			for (String key : _getPlaintextSecretProperties(properties)) {
-				messages.add(
-					StringBundler.concat(
-						"property \"", key, "\" in \"", fileName, "\""));
-			}
-		}
-
-		if (!messages.isEmpty()) {
-			throw new SecurityException(
-				"A plaintext value for " + StringUtil.merge(messages, ", ") +
-					" is not allowed in FIPS mode");
-		}
-	}
-
 	private static void _validatePortalProperties() {
 		if (GetterUtil.getBoolean(PropsUtil.get(PropsKeys.AUTH_MAC_ALLOW))) {
 			validateAlgorithm(PropsUtil.get(PropsKeys.AUTH_MAC_ALGORITHM));
@@ -625,8 +601,8 @@ public class FIPSModeValidator {
 		_validatePasswordsEncryptionAlgorithm(
 			PropsUtil.get(PropsKeys.PASSWORDS_ENCRYPTION_ALGORITHM));
 		_validatePasswordsMinLength();
-		_validatePlaintextSecrets();
 		validateSessionTimeout(PropsValues.SESSION_TIMEOUT);
+		_warnPlaintextSecrets(PropsUtil.getLoadedSources());
 	}
 
 	private static void _validateProviders(Provider[] providers) {
@@ -705,10 +681,46 @@ public class FIPSModeValidator {
 		}
 	}
 
+	private static void _warnPlaintextSecrets(List<String> sources) {
+		List<String> messages = new ArrayList<>();
+
+		for (String source : sources) {
+			String fileName = source.substring(source.lastIndexOf('/') + 1);
+
+			if (fileName.equals("portal.properties")) {
+				continue;
+			}
+
+			Properties properties = null;
+
+			try {
+				properties = PropertiesUtil.load(new URL(source));
+			}
+			catch (IOException ioException) {
+				continue;
+			}
+
+			for (String key : _getPlaintextSecretProperties(properties)) {
+				messages.add(
+					StringBundler.concat(
+						"property \"", key, "\" in \"", fileName, "\""));
+			}
+		}
+
+		if (!messages.isEmpty() && _log.isWarnEnabled()) {
+			_log.warn(
+				"A value for " + StringUtil.merge(messages, ", ") +
+					" is stored in plaintext");
+		}
+	}
+
 	private static final int _PASSWORDS_ENCRYPTION_ALGORITHM_KEY_SIZE_MIN = 112;
 
 	private static final int _PASSWORDS_ENCRYPTION_ALGORITHM_ROUNDS_MIN =
 		1300000;
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		FIPSModeValidator.class);
 
 	private static final Set<String> _allowedAlgorithms = Set.of(
 		"AES", "HmacSHA256", "HmacSHA384", "HmacSHA512", "PBKDF2WithHmacSHA256",

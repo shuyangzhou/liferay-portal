@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.feature.flag.FeatureFlag;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManager;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.launch.LaunchSetMode;
+import com.liferay.portal.kernel.launch.LaunchSetThreadLocal;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
@@ -231,6 +233,16 @@ public class LiferayGlobalObjectPreAUIDynamicInclude
 		_dateFormatPatterns.put(languageId, dateFormatPattern);
 
 		return dateFormatPattern;
+	}
+
+	private String _getLaunchSetMode() {
+		LaunchSetMode launchSetMode = LaunchSetThreadLocal.getLaunchSetMode();
+
+		if (launchSetMode == null) {
+			return StringPool.BLANK;
+		}
+
+		return launchSetMode.getValue();
 	}
 
 	private LiferayGlobalObjectConfiguration
@@ -653,6 +665,10 @@ public class LiferayGlobalObjectPreAUIDynamicInclude
 		_renderMethod(
 			"getLanguageId", printWriter,
 			_language.getLanguageId(httpServletRequest));
+		_renderMethod(
+			"getLaunchSetId", printWriter,
+			Math.max(LaunchSetThreadLocal.getLaunchSetId(), 0));
+		_renderMethod("getLaunchSetMode", printWriter, _getLaunchSetMode());
 		_renderMethod(
 			"getParentGroupId", printWriter, themeDisplay.getSiteGroupId());
 		_renderMethod(

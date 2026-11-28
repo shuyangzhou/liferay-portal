@@ -441,11 +441,14 @@ public abstract class BaseProductConfigurationListAccountGroupResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("externalReferenceCode")) {
+			Serializable externalReferenceCode = parameters.get(
+				"externalReferenceCode");
+
+			if (externalReferenceCode != null) {
 				productConfigurationListAccountGroupUnsafeFunction =
 					productConfigurationListAccountGroup ->
 						postProductConfigurationListByExternalReferenceCodeProductConfigurationListAccountGroup(
-							(String)parameters.get("externalReferenceCode"),
+							(String)externalReferenceCode,
 							productConfigurationListAccountGroup);
 			}
 			else {
@@ -1167,4 +1170,4 @@ public abstract class BaseProductConfigurationListAccountGroupResourceImpl
 			BaseProductConfigurationListAccountGroupResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:-1111418756
+// LIFERAY-REST-BUILDER-HASH:-1568166074

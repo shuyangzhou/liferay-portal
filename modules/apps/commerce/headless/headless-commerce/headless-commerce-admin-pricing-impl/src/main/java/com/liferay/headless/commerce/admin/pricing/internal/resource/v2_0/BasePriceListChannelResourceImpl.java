@@ -417,11 +417,13 @@ public abstract class BasePriceListChannelResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("externalReferenceCode")) {
+			Serializable externalReferenceCode = parameters.get(
+				"externalReferenceCode");
+
+			if (externalReferenceCode != null) {
 				priceListChannelUnsafeFunction = priceListChannel ->
 					postPriceListByExternalReferenceCodePriceListChannel(
-						(String)parameters.get("externalReferenceCode"),
-						priceListChannel);
+						(String)externalReferenceCode, priceListChannel);
 			}
 			else {
 				throw new NotSupportedException(
@@ -1119,4 +1121,4 @@ public abstract class BasePriceListChannelResourceImpl
 		LogFactoryUtil.getLog(BasePriceListChannelResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:-1403870829
+// LIFERAY-REST-BUILDER-HASH:-1818085461

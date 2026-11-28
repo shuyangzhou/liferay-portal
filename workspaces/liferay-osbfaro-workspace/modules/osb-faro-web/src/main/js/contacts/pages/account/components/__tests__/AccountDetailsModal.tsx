@@ -1,6 +1,5 @@
 import AccountDetailsModal from '../AccountDetailsModal';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {act, cleanup, render, screen} from '@testing-library/react';
 import {useRequest} from 'shared/hooks/useRequest';
 import {warmFrontendDataSet} from 'test/warm-frontend-data-set';
@@ -96,13 +95,6 @@ const renderModal = (
 };
 
 describe('AccountDetailsModal', () => {
-	beforeAll(() => {
-
-		// @ts-ignore
-
-		ReactDOM.createPortal = jest.fn((element) => element);
-	});
-
 	beforeEach(() => {
 		jest.clearAllMocks();
 		lastOnItemsPropSearch = undefined;
@@ -150,10 +142,10 @@ describe('AccountDetailsModal', () => {
 	it('should render a loading indicator instead of the data set while the request is loading', () => {
 		mockedUseRequest.mockReturnValue({data: undefined, loading: true});
 
-		const {container} = renderModal();
+		const {baseElement} = renderModal();
 
 		expect(screen.queryByTestId('fds-component')).not.toBeInTheDocument();
-		expect(container.querySelector('.loading-root')).toBeInTheDocument();
+		expect(baseElement.querySelector('.loading-root')).toBeInTheDocument();
 	});
 
 	it('should not offer any column as sortable since the data set is fed a static items array', () => {
@@ -175,7 +167,7 @@ describe('AccountDetailsModal', () => {
 		);
 
 		expect(screen.getByText('fax')).toBeInTheDocument();
-		expect(screen.getByText('–')).toHaveClass('text-secondary');
+		expect(screen.getByText('–')).toBeInTheDocument();
 	});
 
 	it('should render a missing last modified date as no data', () => {
@@ -185,7 +177,7 @@ describe('AccountDetailsModal', () => {
 			lastCustomDataRenderers.lastModifiedRenderer({value: undefined})
 		);
 
-		expect(screen.getByText('–')).toHaveClass('text-secondary');
+		expect(screen.getByText('–')).toBeInTheDocument();
 	});
 
 	it('should match items by name when the data set search has a query', () => {

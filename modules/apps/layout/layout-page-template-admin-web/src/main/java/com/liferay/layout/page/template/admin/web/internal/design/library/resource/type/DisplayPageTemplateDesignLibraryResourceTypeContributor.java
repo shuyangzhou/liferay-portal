@@ -64,6 +64,27 @@ public class DisplayPageTemplateDesignLibraryResourceTypeContributor
 
 		Group depotGroup = depotEntry.getGroup();
 
+		if (FeatureFlagManagerUtil.isEnabled(
+				depotEntry.getCompanyId(), "LPD-81022")) {
+
+			return Collections.singletonList(
+				new DesignLibraryResourceCreationItem(
+					PortletURLBuilder.create(
+						PortalUtil.getControlPanelPortletURL(
+							httpServletRequest, depotGroup,
+							LayoutPageTemplateAdminPortletKeys.
+								LAYOUT_PAGE_TEMPLATES,
+							0, 0, PortletRequest.RENDER_PHASE)
+					).setMVCPath(
+						"/select_display_page_master_layout.jsp"
+					).setRedirect(
+						backURL
+					).buildString(),
+					"add-display-page-template",
+					LanguageUtil.get(
+						httpServletRequest, "new-display-page-template")));
+		}
+
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
@@ -223,12 +244,6 @@ public class DisplayPageTemplateDesignLibraryResourceTypeContributor
 	@Override
 	public boolean hasViewPermission(
 		PermissionChecker permissionChecker, DepotEntry depotEntry) {
-
-		if (!FeatureFlagManagerUtil.isEnabled(
-				depotEntry.getCompanyId(), "LPD-81651")) {
-
-			return false;
-		}
 
 		return _portletResourcePermission.contains(
 			permissionChecker, depotEntry.getGroupId(), ActionKeys.VIEW);

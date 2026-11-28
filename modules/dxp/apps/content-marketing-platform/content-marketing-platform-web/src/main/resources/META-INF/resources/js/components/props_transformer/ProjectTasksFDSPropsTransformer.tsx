@@ -13,10 +13,8 @@ import {
 	SimpleActionLinkRenderer,
 	StateLabel,
 	addOnClickToCreationMenuItems,
-	deleteAssetEntriesBulkAction,
 	deleteItemAction,
 } from '@liferay/site-cms-site-initializer';
-import {sub} from 'frontend-js-web';
 import React from 'react';
 
 import {styleActions, styleBulkActions} from '../../utils/actionStyles';
@@ -24,9 +22,14 @@ import {
 	installCMPTabPersistence,
 	registerTabFDS,
 } from '../../utils/cmpTabPersistence';
+import deleteTasksBulkAction from '../../utils/deleteTasksBulkAction';
 import getCMPProjectObjectEntryIds from '../../utils/getCMPProjectObjectEntryIds';
 import {getFormattedLabel} from '../../utils/getFormattedText';
 import {openCMPModal} from '../../utils/openCMPModal';
+import {
+	getDeleteTaskConfirmationMessage,
+	getSubtasksCount,
+} from '../../utils/subtasksUtil';
 import {transformFDSBulkActions} from '../../utils/transformFDSBulkActions';
 import {ProjectTaskItemData, TaskAction} from '../../utils/types';
 import BulkEditAssigneeModalContent from '../modal/BulkEditAssigneeModalContent';
@@ -222,9 +225,9 @@ export default function ProjectTasksFDSPropsTransformer({
 		}) {
 			if (action?.data?.id === 'delete') {
 				await deleteItemAction(
-					sub(
-						Liferay.Language.get('delete-task-confirmation-body'),
-						getFormattedLabel(itemData.embedded.title)
+					getDeleteTaskConfirmationMessage(
+						getFormattedLabel(itemData.embedded.title),
+						await getSubtasksCount(itemData.embedded)
 					),
 					itemData,
 					loadData
@@ -305,45 +308,10 @@ export default function ProjectTasksFDSPropsTransformer({
 				});
 			}
 			else if (action?.data?.id === 'delete') {
-				deleteAssetEntriesBulkAction({
+				await deleteTasksBulkAction({
 					apiURL: otherProps.apiURL,
 					dataSetId: id,
-					getCustomBulkDeleteMessage: (selectedData) => {
-						if (selectedData.selectAll) {
-							return {
-								messages: [
-									Liferay.Language.get(
-										'delete-tasks-confirmation'
-									),
-								],
-								title: Liferay.Language.get('delete-all-tasks'),
-							};
-						}
-						else if (selectedData.items.length > 1) {
-							return {
-								messages: [
-									Liferay.Language.get(
-										'delete-tasks-confirmation'
-									),
-								],
-								title: sub(
-									Liferay.Language.get('delete-x-tasks'),
-									[selectedData.items.length]
-								),
-							};
-						}
-
-						return {
-							messages: [
-								Liferay.Language.get(
-									'delete-tasks-confirmation'
-								),
-							],
-							title: Liferay.Language.get('delete-task'),
-						};
-					},
 					selectedData,
-					showConfirmationModal: true,
 				});
 			}
 			else if (action?.data?.id === 'update-due-date') {

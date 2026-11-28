@@ -370,11 +370,13 @@ public abstract class BaseChannelAccountResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("externalReferenceCode")) {
+			Serializable externalReferenceCode = parameters.get(
+				"externalReferenceCode");
+
+			if (externalReferenceCode != null) {
 				channelAccountUnsafeFunction = channelAccount ->
 					postChannelByExternalReferenceCodeChannelAccount(
-						(String)parameters.get("externalReferenceCode"),
-						channelAccount);
+						(String)externalReferenceCode, channelAccount);
 			}
 			else {
 				throw new NotSupportedException(
@@ -1070,4 +1072,4 @@ public abstract class BaseChannelAccountResourceImpl
 		LogFactoryUtil.getLog(BaseChannelAccountResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:526828040
+// LIFERAY-REST-BUILDER-HASH:-715403632

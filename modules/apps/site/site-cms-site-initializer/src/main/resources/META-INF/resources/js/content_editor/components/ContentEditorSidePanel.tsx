@@ -67,7 +67,9 @@ type SidePanelProps = Props & {
 	categorizationFields: CategorizationFields | null;
 	dateConfig: datetimeUtils.DateConfig;
 	onUpdateCategorization: (props: UpdateCategorizationProps) => void;
+	onUpdateComments: React.Dispatch<React.SetStateAction<Comment[]>>;
 	onUpdateSchedule: (props: UpdateScheduleProps) => void;
+	onUpdateSubscription: (isSubscribed: boolean) => void;
 	requiredVocabularyIds: number[] | null;
 	scheduleFields: ScheduleFields;
 };
@@ -175,6 +177,10 @@ export default function ContentEditorSidePanel(props: Props) {
 	});
 	const [categorizationFields, setCategorizationFields] =
 		useState<CategorizationFields | null>(null);
+	const [comments, setComments] = useState<Comment[]>(props.comments);
+	const [isSubscribed, setIsSubscribed] = useState<boolean>(
+		props.isSubscribed
+	);
 	const [requiredVocabularyIds, setRequiredVocabularyIds] = useState<
 		number[] | null
 	>(null);
@@ -302,9 +308,13 @@ export default function ContentEditorSidePanel(props: Props) {
 			<SidePanel
 				{...props}
 				categorizationFields={categorizationFields}
+				comments={comments}
 				dateConfig={dateConfig}
+				isSubscribed={isSubscribed}
 				onUpdateCategorization={onUpdateCategorization}
+				onUpdateComments={setComments}
 				onUpdateSchedule={onUpdateSchedule}
+				onUpdateSubscription={setIsSubscribed}
 				requiredVocabularyIds={requiredVocabularyIds}
 				scheduleFields={scheduleFields}
 			/>
@@ -465,6 +475,9 @@ function SidePanel(props: SidePanelProps) {
 									{item.id === 'comments' ? (
 										<SubscribeButton
 											isSubscribed={props.isSubscribed}
+											onUpdateSubscription={
+												props.onUpdateSubscription
+											}
 											subscribeURL={props.subscribeURL}
 										/>
 									) : null}
@@ -515,15 +528,16 @@ function SidePanel(props: SidePanelProps) {
 
 function SubscribeButton({
 	isSubscribed,
+	onUpdateSubscription,
 	subscribeURL,
 }: {
 	isSubscribed: boolean;
+	onUpdateSubscription: (isSubscribed: boolean) => void;
 	subscribeURL: string;
 }) {
 	const [disabled, setDisabled] = useState<boolean>(false);
-	const [subscribed, setSubscribed] = useState<boolean>(isSubscribed);
 
-	const title = subscribed
+	const title = isSubscribed
 		? Liferay.Language.get('unsubscribe')
 		: Liferay.Language.get('subscribe');
 
@@ -539,7 +553,7 @@ function SubscribeButton({
 
 				const response = await fetch(subscribeURL, {
 					body: objectToFormData({
-						cmd: !subscribed ? 'subscribe' : 'unsubscribe',
+						cmd: !isSubscribed ? 'subscribe' : 'unsubscribe',
 					}),
 					method: 'POST',
 				});
@@ -559,10 +573,10 @@ function SubscribeButton({
 					});
 				}
 				else {
-					setSubscribed((subscribed) => !subscribed);
+					onUpdateSubscription(!isSubscribed);
 
 					openToast({
-						message: subscribed
+						message: isSubscribed
 							? Liferay.Language.get(
 									'you-have-successfully-unsubscribed-from-comments'
 								)
@@ -574,7 +588,7 @@ function SubscribeButton({
 				}
 			}}
 			size="sm"
-			symbol={subscribed ? 'bell-off' : 'bell-on'}
+			symbol={isSubscribed ? 'bell-off' : 'bell-on'}
 			title={title}
 		/>
 	);

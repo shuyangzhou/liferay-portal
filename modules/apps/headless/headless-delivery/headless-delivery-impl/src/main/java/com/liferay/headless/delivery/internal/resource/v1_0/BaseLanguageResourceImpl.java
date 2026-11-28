@@ -342,12 +342,15 @@ public abstract class BaseLanguageResourceImpl
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		if (parameters.containsKey("assetLibraryId")) {
-			return getAssetLibraryLanguagesPage(
-				(Long)parameters.get("assetLibraryId"));
+		Serializable assetLibraryId = parameters.get("assetLibraryId");
+
+		Serializable siteId = parameters.get("siteId");
+
+		if (assetLibraryId != null) {
+			return getAssetLibraryLanguagesPage((Long)assetLibraryId);
 		}
-		else if (parameters.containsKey("siteId")) {
-			return getSiteLanguagesPage((Long)parameters.get("siteId"));
+		else if (siteId != null) {
+			return getSiteLanguagesPage((Long)siteId);
 		}
 		else {
 			throw new NotSupportedException(
@@ -956,4 +959,4 @@ public abstract class BaseLanguageResourceImpl
 		LogFactoryUtil.getLog(BaseLanguageResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:8605013
+// LIFERAY-REST-BUILDER-HASH:-1146333399

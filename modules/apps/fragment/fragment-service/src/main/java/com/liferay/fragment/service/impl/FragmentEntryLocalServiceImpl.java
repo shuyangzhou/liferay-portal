@@ -16,6 +16,7 @@ import com.liferay.fragment.configuration.FragmentServiceConfiguration;
 import com.liferay.fragment.constants.FragmentPortletKeys;
 import com.liferay.fragment.exception.DuplicateFragmentEntryKeyException;
 import com.liferay.fragment.exception.FragmentEntryNameException;
+import com.liferay.fragment.exception.FragmentEntryPreviewFileEntryIdException;
 import com.liferay.fragment.exception.RequiredFragmentEntryException;
 import com.liferay.fragment.model.FragmentCollection;
 import com.liferay.fragment.model.FragmentCompositionTable;
@@ -54,6 +55,7 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.model.Repository;
@@ -345,29 +347,8 @@ public class FragmentEntryLocalServiceImpl
 		_fragmentEntryLinkLocalService.deleteFragmentEntryLinksByFragmentEntry(
 			fragmentEntry, true);
 
-		if (fragmentEntry.getPreviewFileEntryId() > 0) {
-			boolean deletePreviewFileEntry = true;
-
-			if (fragmentEntry.isDraft() &&
-				(fragmentEntry.getHeadId() !=
-					fragmentEntry.getFragmentEntryId())) {
-
-				FragmentEntry publishedFragmentEntry = fetchFragmentEntry(
-					fragmentEntry.getHeadId());
-
-				if ((publishedFragmentEntry != null) &&
-					(fragmentEntry.getPreviewFileEntryId() ==
-						publishedFragmentEntry.getPreviewFileEntryId())) {
-
-					deletePreviewFileEntry = false;
-				}
-			}
-
-			if (deletePreviewFileEntry) {
-				PortletFileRepositoryUtil.deletePortletFileEntry(
-					fragmentEntry.getPreviewFileEntryId());
-			}
-		}
+		_deletePreviewFileEntry(
+			fragmentEntry, fragmentEntry.getPreviewFileEntryId());
 
 		if (fragmentEntry.isDraft()) {
 			return deleteDraft(fragmentEntry);
@@ -717,6 +698,8 @@ public class FragmentEntryLocalServiceImpl
 	public FragmentEntry publishDraft(FragmentEntry draftFragmentEntry)
 		throws PortalException {
 
+		_validatePreviewFileEntryId(draftFragmentEntry);
+
 		FragmentEntry publishedFragmentEntry = fetchFragmentEntry(
 			draftFragmentEntry.getHeadId());
 
@@ -737,6 +720,8 @@ public class FragmentEntryLocalServiceImpl
 
 		draftFragmentEntry.setStatus(WorkflowConstants.STATUS_DRAFT);
 
+		_validatePreviewFileEntryId(draftFragmentEntry);
+
 		return super.updateDraft(draftFragmentEntry);
 	}
 
@@ -744,6 +729,8 @@ public class FragmentEntryLocalServiceImpl
 	@Override
 	public FragmentEntry updateFragmentEntry(FragmentEntry fragmentEntry)
 		throws PortalException {
+
+		_validatePreviewFileEntryId(fragmentEntry);
 
 		FragmentEntry draftFragmentEntry = null;
 
@@ -794,15 +781,18 @@ public class FragmentEntryLocalServiceImpl
 		FragmentEntry fragmentEntry = fragmentEntryPersistence.findByPrimaryKey(
 			fragmentEntryId);
 
+		_validatePreviewFileEntryId(
+			fragmentEntry.getCompanyId(), fragmentEntry.getGroupId(),
+			previewFileEntryId);
+
 		long previousPreviewFileEntryId = fragmentEntry.getPreviewFileEntryId();
 
 		fragmentEntry.setPreviewFileEntryId(previewFileEntryId);
 
 		fragmentEntry = fragmentEntryPersistence.update(fragmentEntry);
 
-		if ((previewFileEntryId == 0) && (previousPreviewFileEntryId > 0)) {
-			_portletFileRepository.deletePortletFileEntry(
-				previousPreviewFileEntryId);
+		if (previewFileEntryId == 0) {
+			_deletePreviewFileEntry(fragmentEntry, previousPreviewFileEntryId);
 		}
 
 		return fragmentEntry;
@@ -821,6 +811,12 @@ public class FragmentEntryLocalServiceImpl
 			fragmentEntryId);
 
 		_validate(name);
+
+		if (previewFileEntryId != fragmentEntry.getPreviewFileEntryId()) {
+			_validatePreviewFileEntryId(
+				fragmentEntry.getCompanyId(), fragmentEntry.getGroupId(),
+				previewFileEntryId);
+		}
 
 		if (WorkflowConstants.STATUS_APPROVED == status) {
 			JSONObject configurationJSONObject =
@@ -1042,6 +1038,31 @@ public class FragmentEntryLocalServiceImpl
 		}
 	}
 
+	private void _deletePreviewFileEntry(
+			FragmentEntry fragmentEntry, long previewFileEntryId)
+		throws PortalException {
+
+		if (previewFileEntryId <= 0) {
+			return;
+		}
+
+		if (fragmentEntry.isDraft() &&
+			(fragmentEntry.getHeadId() != fragmentEntry.getFragmentEntryId())) {
+
+			FragmentEntry publishedFragmentEntry = fetchFragmentEntry(
+				fragmentEntry.getHeadId());
+
+			if ((publishedFragmentEntry != null) &&
+				(previewFileEntryId ==
+					publishedFragmentEntry.getPreviewFileEntryId())) {
+
+				return;
+			}
+		}
+
+		_portletFileRepository.deletePortletFileEntry(previewFileEntryId);
+	}
+
 	private DepotEntry _fetchGroupDepotEntry(Group group) {
 		if (!group.isDepot()) {
 			return null;
@@ -1248,6 +1269,33 @@ public class FragmentEntryLocalServiceImpl
 		return repository;
 	}
 
+	private boolean _isFragmentRepositoryFileEntry(
+			long companyId, long fileEntryId, long groupId)
+		throws PortalException {
+
+		if (fileEntryId <= 0) {
+			return false;
+		}
+
+		if (groupId == CompanyConstants.SYSTEM) {
+			Group group = _groupLocalService.getCompanyGroup(companyId);
+
+			groupId = group.getGroupId();
+		}
+
+		FileEntry fileEntry = _dlAppLocalService.fetchFileEntry(fileEntryId);
+		Repository repository = _portletFileRepository.fetchPortletRepository(
+			groupId, FragmentPortletKeys.FRAGMENT);
+
+		if ((fileEntry == null) || (repository == null) ||
+			(repository.getRepositoryId() != fileEntry.getRepositoryId())) {
+
+			return false;
+		}
+
+		return true;
+	}
+
 	private void _propagateChanges(FragmentEntry fragmentEntry)
 		throws PortalException {
 
@@ -1396,6 +1444,43 @@ public class FragmentEntryLocalServiceImpl
 
 		if (fragmentEntry != null) {
 			throw new DuplicateFragmentEntryKeyException(fragmentEntryKey);
+		}
+	}
+
+	private void _validatePreviewFileEntryId(FragmentEntry fragmentEntry)
+		throws PortalException {
+
+		FragmentEntry existingFragmentEntry = fetchFragmentEntry(
+			fragmentEntry.getFragmentEntryId());
+
+		if ((existingFragmentEntry == null) && fragmentEntry.isDraft()) {
+			existingFragmentEntry = fetchFragmentEntry(
+				fragmentEntry.getHeadId());
+		}
+
+		if ((existingFragmentEntry != null) &&
+			(existingFragmentEntry.getPreviewFileEntryId() ==
+				fragmentEntry.getPreviewFileEntryId())) {
+
+			return;
+		}
+
+		_validatePreviewFileEntryId(
+			fragmentEntry.getCompanyId(), fragmentEntry.getGroupId(),
+			fragmentEntry.getPreviewFileEntryId());
+	}
+
+	private void _validatePreviewFileEntryId(
+			long companyId, long groupId, long previewFileEntryId)
+		throws PortalException {
+
+		if ((previewFileEntryId > 0) &&
+			!_isFragmentRepositoryFileEntry(
+				companyId, previewFileEntryId, groupId)) {
+
+			throw new FragmentEntryPreviewFileEntryIdException(
+				"Unable to use file entry " + previewFileEntryId +
+					" as a preview");
 		}
 	}
 

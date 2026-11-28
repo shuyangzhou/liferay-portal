@@ -198,11 +198,13 @@ public abstract class BaseDSRecipientViewDefinitionResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("siteId")) {
+			Serializable siteId = parameters.get("siteId");
+
+			if (siteId != null) {
 				dsRecipientViewDefinitionUnsafeFunction =
 					dsRecipientViewDefinition -> {
 						postSiteDSRecipientViewDefinition(
-							(Long)parameters.get("siteId"),
+							(Long)siteId,
 							(String)parameters.get("dsEnvelopeId"),
 							dsRecipientViewDefinition);
 
@@ -894,4 +896,4 @@ public abstract class BaseDSRecipientViewDefinitionResourceImpl
 		LogFactoryUtil.getLog(BaseDSRecipientViewDefinitionResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:59783141
+// LIFERAY-REST-BUILDER-HASH:-1056757115

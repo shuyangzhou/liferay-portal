@@ -401,12 +401,14 @@ public abstract class BaseTermOrderTypeResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("externalReferenceCode")) {
+			Serializable externalReferenceCode = parameters.get(
+				"externalReferenceCode");
+
+			if (externalReferenceCode != null) {
 				termOrderTypeUnsafeFunction =
 					termOrderType ->
 						postTermByExternalReferenceCodeTermOrderType(
-							(String)parameters.get("externalReferenceCode"),
-							termOrderType);
+							(String)externalReferenceCode, termOrderType);
 			}
 			else {
 				throw new NotSupportedException(
@@ -1102,4 +1104,4 @@ public abstract class BaseTermOrderTypeResourceImpl
 		LogFactoryUtil.getLog(BaseTermOrderTypeResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:707256197
+// LIFERAY-REST-BUILDER-HASH:188459919

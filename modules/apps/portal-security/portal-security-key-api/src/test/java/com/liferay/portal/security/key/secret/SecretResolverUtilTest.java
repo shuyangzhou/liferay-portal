@@ -12,6 +12,8 @@ import com.liferay.portal.security.key.KeyReference;
 import com.liferay.portal.security.key.KeyReferenceUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
+import java.util.Collections;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -46,11 +48,12 @@ public class SecretResolverUtilTest {
 
 	@Test
 	public void testResolve() {
+		SecretResolver secretResolver = Mockito.mock(SecretResolver.class);
+
 		long companyId = RandomTestUtil.randomLong();
-		String resolvedValue = RandomTestUtil.randomString();
 		String value = _randomKeyReferenceString();
 
-		SecretResolver secretResolver = Mockito.mock(SecretResolver.class);
+		String resolvedValue = RandomTestUtil.randomString();
 
 		Mockito.when(
 			secretResolver.resolve(companyId, value)
@@ -102,12 +105,13 @@ public class SecretResolverUtilTest {
 
 	@Test
 	public void testResolveWithIdentifier() {
+		SecretResolver secretResolver = Mockito.mock(SecretResolver.class);
+
 		long companyId = RandomTestUtil.randomLong();
 		String identifier = RandomTestUtil.randomString();
-		String resolvedValue = RandomTestUtil.randomString();
 		String value = _randomKeyReferenceString();
 
-		SecretResolver secretResolver = Mockito.mock(SecretResolver.class);
+		String resolvedValue = RandomTestUtil.randomString();
 
 		Mockito.when(
 			secretResolver.resolve(companyId, identifier, value)
@@ -134,6 +138,42 @@ public class SecretResolverUtilTest {
 			secretResolver, Mockito.never()
 		).resolve(
 			companyId, identifier, plainValue
+		);
+	}
+
+	@Test
+	public void testResolveWithSecretContext() {
+		SecretResolver secretResolver = Mockito.mock(SecretResolver.class);
+
+		long companyId = RandomTestUtil.randomLong();
+		SecretContext secretContext = SecretContext.fromConfiguration(
+			RandomTestUtil.randomString(), Collections.emptyMap());
+		String value = _randomKeyReferenceString();
+
+		String resolvedValue = RandomTestUtil.randomString();
+
+		Mockito.when(
+			secretResolver.resolve(companyId, secretContext, value)
+		).thenReturn(
+			resolvedValue
+		);
+
+		_setUpSecretResolverSnapshot(secretResolver);
+
+		Assert.assertSame(
+			resolvedValue,
+			SecretResolverUtil.resolve(companyId, secretContext, value));
+
+		String plainValue = RandomTestUtil.randomString();
+
+		Assert.assertSame(
+			plainValue,
+			SecretResolverUtil.resolve(companyId, secretContext, plainValue));
+
+		Mockito.verify(
+			secretResolver, Mockito.never()
+		).resolve(
+			companyId, secretContext, plainValue
 		);
 	}
 

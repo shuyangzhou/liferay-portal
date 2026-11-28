@@ -71,6 +71,8 @@ The **Forward Target** is the repository `ci:forward` merges a pull request into
 
 - **Diff is nonempty.** When the three dot diff produces no files, exit with a one line message — no validation produces useful signal on a clean branch.
 
+- **Commit message wording.** Read the branch's commit messages as [commit-message-wording.md](commit-message-wording.md) describes, before any validation runs, so a reword costs no build. This precondition never stops the run on its own: it shows what it flagged or noted and lets the developer choose whether to stop and reword.
+
 - **No source file hidden from git.** A file the build reads but git never sees passes every validation here and fails CI's clean checkout, as a Sass import of an uncommitted partial once did. The clean tree check above cannot see it when the developer's own ignore rules hide it, in `core.excludesFile` or `.git/info/exclude`, since `git status` honors those. List the ignored files under each changed module, keep those hidden by a rule outside the repository's own `.gitignore` files, and keep the source and build file types among them:
 
 	```bash
@@ -196,6 +198,8 @@ The procedure runs in two passes over the validations, in the order below. The o
 
 1. [Portlet Title](validations/portal/portlet-title.md)
 
+1. [Index Action Label](validations/portal/index-action-label.md)
+
 1. [BND DS Annotations Options](validations/branch/bnd-dsannotations-options.md)
 
 1. [Service Registration](validations/branch/service-registration.md)
@@ -217,6 +221,10 @@ The procedure runs in two passes over the validations, in the order below. The o
 1. [Required Configuration Policy](validations/branch/required-configuration-policy.md)
 
 1. [TransactionTestUtil Usage](validations/branch/transaction-test-util-usage.md)
+
+1. [Own Bundle Context](validations/branch/own-bundle-context.md)
+
+1. [XML Element Text](validations/branch/xml-element-text.md)
 
 1. [Full Portal Build](validations/portal/full-portal-build.md)
 

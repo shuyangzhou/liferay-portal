@@ -31,6 +31,7 @@ import com.liferay.object.exception.ObjectRelationshipTypeException;
 import com.liferay.object.internal.dao.db.ObjectDBManagerUtil;
 import com.liferay.object.internal.info.collection.provider.ManyToManyObjectRelationshipRelatedInfoCollectionProvider;
 import com.liferay.object.internal.info.collection.provider.OneToManyObjectRelationshipRelatedInfoCollectionProvider;
+import com.liferay.object.internal.info.collection.provider.OneToOneObjectRelationshipRelatedInfoCollectionProvider;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.model.ObjectEntryTable;
@@ -1518,6 +1519,14 @@ public class ObjectRelationshipLocalServiceImpl
 				_language, objectDefinition1, objectDefinition2,
 				_objectEntryLocalService, objectRelationship);
 		}
+		else if (Objects.equals(
+					objectRelationship.getType(),
+					ObjectRelationshipConstants.TYPE_ONE_TO_ONE)) {
+
+			return new OneToOneObjectRelationshipRelatedInfoCollectionProvider(
+				_language, objectDefinition1, objectDefinition2,
+				_objectEntryLocalService, objectRelationship);
+		}
 
 		return null;
 	}
@@ -2318,6 +2327,18 @@ public class ObjectRelationshipLocalServiceImpl
 				throw new ObjectRelationshipParameterObjectFieldIdException(
 					"Parameter object field ID " + parameterObjectFieldId +
 						" does not belong to a relationship object field");
+			}
+			else if (FeatureFlagManagerUtil.isEnabled(
+						objectField.getCompanyId(), "LPD-108620") &&
+					 !Objects.equals(
+						 objectField.getRelationshipType(),
+						 ObjectRelationshipConstants.TYPE_ONE_TO_MANY)) {
+
+				throw new ObjectRelationshipParameterObjectFieldIdException(
+					StringBundler.concat(
+						"Parameter object field ID ", parameterObjectFieldId,
+						" does not belong to a one to many relationship ",
+						"object field"));
 			}
 		}
 	}

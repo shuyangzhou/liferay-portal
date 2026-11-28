@@ -10,15 +10,23 @@ import com.liferay.exportimport.constants.ExportImportConstants;
 import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.vulcan.batch.engine.ExportImportVulcanBatchEngineTaskItemDelegate;
+import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.processor.FragmentEntryProcessorRegistry;
+import com.liferay.fragment.service.FragmentEntryLinkLocalService;
+import com.liferay.headless.admin.site.dto.v1_0.BasicFragmentInstancePageElementDefinition;
 import com.liferay.headless.admin.site.dto.v1_0.ContentPageSettings;
 import com.liferay.headless.admin.site.dto.v1_0.ContentPageSpecification;
 import com.liferay.headless.admin.site.dto.v1_0.CustomMetaTag;
 import com.liferay.headless.admin.site.dto.v1_0.EmbeddedPageSettings;
+import com.liferay.headless.admin.site.dto.v1_0.FormFragmentInstancePageElementDefinition;
+import com.liferay.headless.admin.site.dto.v1_0.FragmentInstance;
 import com.liferay.headless.admin.site.dto.v1_0.ItemExternalReference;
 import com.liferay.headless.admin.site.dto.v1_0.LinkToPagePageSettings;
 import com.liferay.headless.admin.site.dto.v1_0.LinkToURLPageSettings;
 import com.liferay.headless.admin.site.dto.v1_0.OpenGraphSettings;
+import com.liferay.headless.admin.site.dto.v1_0.PageElement;
+import com.liferay.headless.admin.site.dto.v1_0.PageElementDefinition;
+import com.liferay.headless.admin.site.dto.v1_0.PageExperience;
 import com.liferay.headless.admin.site.dto.v1_0.PageSetPageSettings;
 import com.liferay.headless.admin.site.dto.v1_0.PageSettings;
 import com.liferay.headless.admin.site.dto.v1_0.PageSpecification;
@@ -86,8 +94,8 @@ import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 import com.liferay.portal.vulcan.util.SearchUtil;
-
-import jakarta.validation.ValidationException;
+import com.liferay.segments.model.SegmentsExperience;
+import com.liferay.segments.service.SegmentsExperienceLocalService;
 
 import jakarta.ws.rs.core.MultivaluedMap;
 
@@ -381,7 +389,7 @@ public class SitePageResourceImpl
 		long groupId = GroupUtil.getGroupId(
 			true, contextCompany.getCompanyId(), siteExternalReferenceCode);
 
-		if (privateLayout) {
+		if (GetterUtil.getBoolean(privateLayout)) {
 			EnabledUtil.checkPrivateLayoutEnabled(groupId);
 		}
 
@@ -409,7 +417,8 @@ public class SitePageResourceImpl
 				searchContext.setAttribute(Field.TITLE, search);
 				searchContext.setAttribute(Field.TYPE, _TYPES);
 				searchContext.setAttribute(
-					"privateLayout", privateLayout.toString());
+					"privateLayout",
+					String.valueOf(GetterUtil.getBoolean(privateLayout)));
 				searchContext.setAttribute(
 					"status", WorkflowConstants.STATUS_ANY);
 				searchContext.setAttribute(
@@ -432,6 +441,8 @@ public class SitePageResourceImpl
 			String siteExternalReferenceCode, Boolean privateLayout,
 			SitePage sitePage)
 		throws Exception {
+
+		privateLayout = GetterUtil.getBoolean(privateLayout);
 
 		long groupId = GroupUtil.getGroupId(
 			false, contextCompany.getCompanyId(), siteExternalReferenceCode);
@@ -456,6 +467,8 @@ public class SitePageResourceImpl
 			String sitePageExternalReferenceCode, Boolean privateLayout,
 			SitePage sitePage)
 		throws Exception {
+
+		privateLayout = GetterUtil.getBoolean(privateLayout);
 
 		long groupId = GroupUtil.getStagingAwareGroupId(
 			contextCompany.getCompanyId(), siteExternalReferenceCode);
@@ -482,14 +495,18 @@ public class SitePageResourceImpl
 
 		if (layout.isPrivateLayout() != privateLayout) {
 			throw new IllegalArgumentException(
-				"The private page setting does not match the target page's " +
-					"privacy");
+				"The private page setting does not match the target site " +
+					"page's privacy");
 		}
 
 		ServiceContext serviceContext = _getServiceContext(
 			layout.getGroupId(), layout.isPrivateLayout(), sitePage);
 
 		if (layout.isTypeEmpty()) {
+			_validateSitePageUUIDAvailable(
+				layout.getGroupId(), layout, layout.isPrivateLayout(),
+				sitePage);
+
 			layout = _layoutService.convertEmptyLayout(
 				layout.getPlid(), layout.getNameMap(),
 				SitePageTypeUtil.toInternalType(sitePage.getType()),
@@ -502,7 +519,7 @@ public class SitePageResourceImpl
 					 SitePageTypeUtil.toInternalType(sitePage.getType()))) {
 
 			throw new IllegalArgumentException(
-				"The page type does not match the target page type");
+				"The site page type does not match the target site page type");
 		}
 
 		return _toSitePage(_updateLayout(layout, serviceContext, sitePage));
@@ -571,7 +588,7 @@ public class SitePageResourceImpl
 			if (!(pageSpecifications[0] instanceof
 					ContentPageSpecification contentPageSpecification)) {
 
-				throw new ValidationException(
+				throw new IllegalArgumentException(
 					"The page specification type does not match the content " +
 						"page type");
 			}
@@ -586,6 +603,10 @@ public class SitePageResourceImpl
 
 		_validatePageSpecificationExternalReferenceCode(
 			serviceContext, sitePage);
+
+		_validateSitePageUUIDAvailable(groupId, null, privateLayout, sitePage);
+
+		_validatePageExperienceUUIDsAvailable(groupId, null, sitePage);
 
 		Layout layout = null;
 
@@ -736,6 +757,28 @@ public class SitePageResourceImpl
 		return null;
 	}
 
+	private FragmentInstance _getFragmentInstance(
+		PageElementDefinition pageElementDefinition) {
+
+		if (pageElementDefinition instanceof
+				BasicFragmentInstancePageElementDefinition
+					basicFragmentInstancePageElementDefinition) {
+
+			return basicFragmentInstancePageElementDefinition.
+				getFragmentInstance();
+		}
+
+		if (pageElementDefinition instanceof
+				FormFragmentInstancePageElementDefinition
+					formFragmentInstancePageElementDefinition) {
+
+			return formFragmentInstancePageElementDefinition.
+				getFragmentInstance();
+		}
+
+		return null;
+	}
+
 	private OpenGraphSettings _getOpenGraphSettings(PageSettings pageSettings) {
 		if (pageSettings == null) {
 			return null;
@@ -766,8 +809,8 @@ public class SitePageResourceImpl
 
 		if (layout.isPrivateLayout() != privateLayout) {
 			throw new IllegalArgumentException(
-				"The private page setting does not match the target page's " +
-					"privacy");
+				"The private page setting does not match the target site " +
+					"page's privacy");
 		}
 
 		return layout.getLayoutId();
@@ -909,7 +952,7 @@ public class SitePageResourceImpl
 			 !(pageSettings instanceof WidgetPageSettings))) {
 
 			throw new IllegalArgumentException(
-				"The page type does not match the page settings type");
+				"The site page type does not match the page settings type");
 		}
 
 		String queryString = StringPool.BLANK;
@@ -1100,6 +1143,24 @@ public class SitePageResourceImpl
 			pageSettings.getHiddenFromNavigation(), defaultValue);
 	}
 
+	private boolean _isLayoutPlid(Layout layout, long plid) {
+		if (layout == null) {
+			return false;
+		}
+
+		if (plid == layout.getPlid()) {
+			return true;
+		}
+
+		Layout draftLayout = layout.fetchDraftLayout();
+
+		if ((draftLayout != null) && (plid == draftLayout.getPlid())) {
+			return true;
+		}
+
+		return false;
+	}
+
 	private SitePage _toSitePage(Layout layout) throws Exception {
 		return _sitePageDTOConverter.toDTO(
 			DTOConverterContextUtil.getDTOConverterContext(
@@ -1115,6 +1176,9 @@ public class SitePageResourceImpl
 
 		_validatePageSpecificationExternalReferenceCode(
 			serviceContext, sitePage);
+
+		_validatePageExperienceUUIDsAvailable(
+			layout.getGroupId(), layout, sitePage);
 
 		Map<Locale, String> nameMap = layout.getNameMap();
 
@@ -1300,6 +1364,113 @@ public class SitePageResourceImpl
 			serviceContext);
 	}
 
+	private void _validateFragmentInstanceUUID(
+			FragmentInstance fragmentInstance, long groupId, Layout layout)
+		throws Exception {
+
+		if (fragmentInstance == null) {
+			return;
+		}
+
+		String uuid = fragmentInstance.getUuid();
+
+		if (Validator.isNull(uuid)) {
+			return;
+		}
+
+		FragmentEntryLink fragmentEntryLink =
+			_fragmentEntryLinkLocalService.
+				fetchFragmentEntryLinkByUuidAndGroupId(uuid, groupId);
+
+		if ((fragmentEntryLink == null) ||
+			_isLayoutPlid(layout, fragmentEntryLink.getPlid())) {
+
+			return;
+		}
+
+		throw new IllegalArgumentException(
+			StringBundler.concat(
+				"A fragment instance with UUID \"", uuid, "\" already exists"));
+	}
+
+	private void _validateFragmentInstanceUUIDsAvailable(
+			long groupId, Layout layout, PageElement[] pageElements)
+		throws Exception {
+
+		if (pageElements == null) {
+			return;
+		}
+
+		for (PageElement pageElement : pageElements) {
+			_validateFragmentInstanceUUID(
+				_getFragmentInstance(pageElement.getPageElementDefinition()),
+				groupId, layout);
+
+			_validateFragmentInstanceUUIDsAvailable(
+				groupId, layout, pageElement.getPageElements());
+		}
+	}
+
+	private void _validatePageExperienceUUIDAvailable(
+			long groupId, Layout layout, PageExperience pageExperience)
+		throws Exception {
+
+		String uuid = pageExperience.getUuid();
+
+		if (Validator.isNull(uuid)) {
+			return;
+		}
+
+		SegmentsExperience segmentsExperience =
+			_segmentsExperienceLocalService.
+				fetchSegmentsExperienceByUuidAndGroupId(uuid, groupId);
+
+		if ((segmentsExperience == null) ||
+			_isLayoutPlid(layout, segmentsExperience.getPlid())) {
+
+			return;
+		}
+
+		throw new IllegalArgumentException(
+			StringBundler.concat(
+				"A page experience with UUID \"", uuid, "\" already exists"));
+	}
+
+	private void _validatePageExperienceUUIDsAvailable(
+			long groupId, Layout layout, SitePage sitePage)
+		throws Exception {
+
+		PageSpecification[] pageSpecifications =
+			sitePage.getPageSpecifications();
+
+		if (pageSpecifications == null) {
+			return;
+		}
+
+		for (PageSpecification pageSpecification : pageSpecifications) {
+			if (!(pageSpecification instanceof
+					ContentPageSpecification contentPageSpecification)) {
+
+				continue;
+			}
+
+			PageExperience[] pageExperiences =
+				contentPageSpecification.getPageExperiences();
+
+			if (pageExperiences == null) {
+				continue;
+			}
+
+			for (PageExperience pageExperience : pageExperiences) {
+				_validatePageExperienceUUIDAvailable(
+					groupId, layout, pageExperience);
+
+				_validateFragmentInstanceUUIDsAvailable(
+					groupId, layout, pageExperience.getPageElements());
+			}
+		}
+	}
+
 	private void _validatePageSpecificationExternalReferenceCode(
 		ServiceContext serviceContext, SitePage sitePage) {
 
@@ -1317,9 +1488,9 @@ public class SitePageResourceImpl
 		if (Objects.equals(sitePage.getType(), SitePage.Type.CONTENT_PAGE) &&
 			(pageSpecifications.length == 1)) {
 
-			throw new ValidationException(
+			throw new IllegalArgumentException(
 				"A single content page specification cannot be applied to an " +
-					"existing page");
+					"existing content page");
 		}
 
 		PageSpecification publishedPageSpecification = null;
@@ -1347,10 +1518,15 @@ public class SitePageResourceImpl
 
 			publishedPageSpecification = pageSpecifications[0];
 		}
+		else if (Objects.equals(
+					sitePage.getType(), SitePage.Type.CONTENT_PAGE)) {
+
+			throw new IllegalArgumentException(
+				"Exactly two page specifications are required");
+		}
 		else {
-			throw new ValidationException(
-				"The number of page specifications does not match the page " +
-					"type requirements");
+			throw new IllegalArgumentException(
+				"Exactly one page specification is required");
 		}
 
 		if ((publishedPageSpecification.getExternalReferenceCode() != null) &&
@@ -1358,17 +1534,37 @@ public class SitePageResourceImpl
 				sitePage.getExternalReferenceCode(),
 				publishedPageSpecification.getExternalReferenceCode())) {
 
-			throw new ValidationException(
-				StringBundler.concat(
-					"Site page external reference code ",
-					sitePage.getExternalReferenceCode(),
-					" does not match published page specification external ",
-					"reference code ",
-					publishedPageSpecification.getExternalReferenceCode()));
+			throw new IllegalArgumentException(
+				"The published page specification's external reference code " +
+					"does not match the site page's external reference code");
 		}
 
 		publishedPageSpecification.setExternalReferenceCode(
 			sitePage::getExternalReferenceCode);
+	}
+
+	private void _validateSitePageUUIDAvailable(
+			long groupId, Layout layout, boolean privateLayout,
+			SitePage sitePage)
+		throws Exception {
+
+		String uuid = sitePage.getUuid();
+
+		if (Validator.isNull(uuid)) {
+			return;
+		}
+
+		Layout duplicateLayout =
+			_layoutLocalService.fetchLayoutByUuidAndGroupId(
+				uuid, groupId, privateLayout);
+
+		if ((duplicateLayout != null) &&
+			!_isLayoutPlid(layout, duplicateLayout.getPlid())) {
+
+			throw new IllegalArgumentException(
+				StringBundler.concat(
+					"A site page with UUID \"", uuid, "\" already exists"));
+		}
 	}
 
 	private static final String[] _TYPES = {
@@ -1387,6 +1583,9 @@ public class SitePageResourceImpl
 
 	@Reference
 	private DTOConverterRegistry _dtoConverterRegistry;
+
+	@Reference
+	private FragmentEntryLinkLocalService _fragmentEntryLinkLocalService;
 
 	@Reference
 	private FragmentEntryProcessorRegistry _fragmentEntryProcessorRegistry;
@@ -1412,6 +1611,9 @@ public class SitePageResourceImpl
 	)
 	private DTOConverter<Layout, PageSpecification>
 		_pageSpecificationDTOConverter;
+
+	@Reference
+	private SegmentsExperienceLocalService _segmentsExperienceLocalService;
 
 	@Reference(
 		target = "(component.name=com.liferay.headless.admin.site.internal.dto.v1_0.converter.SitePageDTOConverter)"

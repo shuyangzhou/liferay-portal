@@ -240,9 +240,11 @@ public abstract class BaseShippingMethodResourceImpl
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		if (parameters.containsKey("channelId")) {
+		Serializable channelId = parameters.get("channelId");
+
+		if (channelId != null) {
 			return getChannelShippingMethodsPage(
-				_parseLong((String)parameters.get("channelId")), pagination);
+				_parseLong((String)channelId), pagination);
 		}
 		else {
 			throw new NotSupportedException(
@@ -861,4 +863,4 @@ public abstract class BaseShippingMethodResourceImpl
 		LogFactoryUtil.getLog(BaseShippingMethodResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:1899652209
+// LIFERAY-REST-BUILDER-HASH:2064370477

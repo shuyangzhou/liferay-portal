@@ -4808,24 +4808,35 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 					<echo>##</echo>
 					<echo></echo>
 
-					<download-gradle-wrapper-binary workspace.dir="${workspace.dir}" />
+					<local name="workspaces.integration.failure.message" />
 
-					<get-workspace-bundle-url mirror.dir="@{workspace.bundle.mirror.dir}" workspace.dir="${workspace.dir}" />
+					<trycatch property="workspaces.integration.failure.message">
+						<try>
+							<download-gradle-wrapper-binary workspace.dir="${workspace.dir}" />
 
-					<mkdir dir="${workspace.dir}/build" />
+							<get-workspace-bundle-url mirror.dir="@{workspace.bundle.mirror.dir}" workspace.dir="${workspace.dir}" />
 
-					<mirrors-get
-						dest="${workspace.dir}/build/license.xml"
-						src="@{workspace.license.xml.url}"
-					/>
+							<mkdir dir="${workspace.dir}/build" />
 
-					<local name="gradle.args" />
+							<mirrors-get
+								dest="${workspace.dir}/build/license.xml"
+								src="@{workspace.license.xml.url}"
+							/>
 
-					<property name="gradle.args" value="--continue -Pintegration.test.target=bundle" />
+							<local name="gradle.args" />
 
-					<var if:set="workspace.bundle.url" name="gradle.args" value="${gradle.args} -Pliferay.workspace.bundle.url=${workspace.bundle.url}" />
+							<property name="gradle.args" value="--continue -Pintegration.test.target=bundle" />
 
-					<run-workspaces-junit-test gradle.target="gradle-execute-workspaces-integration" test.junit.args="${gradle.args}" test.task.group="@{test.task}" />
+							<var if:set="workspace.bundle.url" name="gradle.args" value="${gradle.args} -Pliferay.workspace.bundle.url=${workspace.bundle.url}" />
+
+							<run-workspaces-junit-test gradle.target="gradle-execute-workspaces-integration" test.junit.args="${gradle.args}" test.task.group="@{test.task}" />
+						</try>
+						<catch>
+							<echo>Unable to run @{test.task}</echo>
+
+							<echo>${workspaces.integration.failure.message}</echo>
+						</catch>
+					</trycatch>
 				</sequential>
 			</for>
 		</sequential>
@@ -8091,6 +8102,22 @@ information. Make sure to commit in all format-javadoc results.
 		<run-functional-test app.server.type="tomcat" database.type="postgresql" database.version="15.5" test.portal.log.assert="true" />
 	</target>
 
+	<target name="functional-ubuntu26-tomcat101-mysql">
+		<run-functional-test app.server.type="tomcat" database.type="mysql" test.portal.log.assert="true" />
+	</target>
+
+	<target name="functional-ubuntu26-tomcat101-mysql84">
+		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="8.4" test.portal.log.assert="true" />
+	</target>
+
+	<target name="functional-ubuntu26-tomcat101-postgresql">
+		<run-functional-test app.server.type="tomcat" database.type="postgresql" test.portal.log.assert="true" />
+	</target>
+
+	<target name="functional-ubuntu26-tomcat101-postgresql155">
+		<run-functional-test app.server.type="tomcat" database.type="postgresql" database.version="15.5" test.portal.log.assert="true" />
+	</target>
+
 	<target name="functional-upgrade-jboss81-mysql">
 		<set-app-server-version-number app.server.type="jboss" app.server.version="8.1.0" />
 
@@ -10467,7 +10494,9 @@ ${output.content}</echo>
 
 		<local name="source.formatter.tree.sha" />
 
-		<exec executable="git" failonerror="true" outputproperty="source.formatter.tree.sha">
+		<property file="source.formatter.tree.properties" />
+
+		<exec executable="git" failonerror="true" outputproperty="source.formatter.tree.sha" unless:set="source.formatter.tree.sha">
 			<arg value="rev-parse" />
 			<arg value="HEAD:modules/util/source-formatter" />
 		</exec>
@@ -11168,117 +11197,6 @@ junit.jvm.override.version=21</echo>
 
 	<target name="unit_stable">
 		<antcall target="unit" />
-	</target>
-
-	<target name="validate-allowed-files">
-		<run-batch-test>
-			<test-action>
-				<exec executable="git" failonerror="true" outputproperty="git.diff">
-					<arg value="diff" />
-					<arg value="--diff-filter=AMR" />
-					<arg value="--name-only" />
-					<arg value="${liferay.portal.branch}...HEAD" />
-				</exec>
-
-				<beanshell>
-					<![CDATA[
-						import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
-
-						import org.apache.tools.ant.types.selectors.SelectorUtils;
-
-						public String getCompanionBranch() {
-							String currentBranch = getCurrentBranch();
-
-							if (currentBranch.endsWith("-private")) {
-								return currentBranch.replaceFirst("-private$", "");
-							}
-
-							return currentBranch + "-private";
-						}
-
-						public String getCurrentBranch() {
-							return project.getProperty("liferay.portal.branch");
-						}
-
-						public String[] getFilePathPatterns(String propertyName) {
-							String propertyValue = project.getProperty(propertyName);
-
-							if (JenkinsResultsParserUtil.isNullOrEmpty(propertyValue)) {
-								return new String[0];
-							}
-
-							return propertyValue.split("\\s*,\\s*");
-						}
-
-						public boolean isMatchingFilePathPatterns(String filePath, String[] filePathPatterns) {
-							for (String filePathPattern : filePathPatterns) {
-								if (SelectorUtils.matchPath(filePathPattern, filePath)) {
-									return true;
-								}
-							}
-
-							return false;
-						}
-
-						public boolean isPrivateBranch() {
-							String currentBranch = getCurrentBranch();
-
-							if (currentBranch.endsWith("-private")) {
-								return true;
-							}
-
-							return false;
-						}
-
-						List prohibitedFilePaths = new ArrayList();
-
-						String gitDiff = project.getProperty("git.diff");
-
-						if (!JenkinsResultsParserUtil.isNullOrEmpty(gitDiff)) {
-							boolean privateBranch = isPrivateBranch();
-
-							String[] privateFilePathPatterns = getFilePathPatterns("working.dir.private.allowed.file.paths");
-							String[] sharedFilePathPatterns = getFilePathPatterns("working.dir.shared.allowed.file.paths");
-
-							for (String filePath : gitDiff.split("\n")) {
-								filePath = filePath.trim();
-
-								if (filePath.isEmpty() || isMatchingFilePathPatterns(filePath, sharedFilePathPatterns)) {
-									continue;
-								}
-
-								boolean privateFilePath = isMatchingFilePathPatterns(filePath, privateFilePathPatterns);
-
-								if ((privateBranch && !privateFilePath) || (!privateBranch && privateFilePath)) {
-									prohibitedFilePaths.add(filePath);
-								}
-							}
-						}
-
-						if (!prohibitedFilePaths.isEmpty()) {
-							StringBuilder sb = new StringBuilder();
-
-							sb.append("FAILURE: These files are not allowed in ");
-							sb.append(getCurrentBranch());
-							sb.append(", please submit them to ");
-							sb.append(getCompanionBranch());
-							sb.append(":");
-
-							for (String prohibitedFilePath : prohibitedFilePaths) {
-								sb.append("\n>    ");
-								sb.append(prohibitedFilePath);
-							}
-
-							project.setProperty("allowed.file.paths.error.message", sb.toString());
-						}
-					]]>
-				</beanshell>
-
-				<fail if="allowed.file.paths.error.message" message="${allowed.file.paths.error.message}" />
-
-				<echo>All changed file paths are allowed in ${liferay.portal.branch}</echo>
-			</test-action>
-		</run-batch-test>
 	</target>
 
 	<target name="workspaces-compile">

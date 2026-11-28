@@ -73,6 +73,16 @@ export default function defaultFetch(resource, init = {}) {
 
 			resource = setNewLocation(resource, resourceLocation);
 		}
+
+		const launchSetMode = Liferay.ThemeDisplay.getLaunchSetMode?.();
+
+		if (launchSetMode) {
+			headers.set(
+				'x-liferay-launch-set-id',
+				Liferay.ThemeDisplay.getLaunchSetId()
+			);
+			headers.set('x-liferay-launch-set-mode', launchSetMode);
+		}
 	}
 
 	new Headers(init.headers || {}).forEach((value, key) => {

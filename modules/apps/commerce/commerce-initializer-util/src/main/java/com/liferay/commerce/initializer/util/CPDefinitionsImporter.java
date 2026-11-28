@@ -15,6 +15,7 @@ import com.liferay.account.service.AccountGroupLocalService;
 import com.liferay.account.service.AccountGroupRelLocalService;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
+import com.liferay.asset.kernel.service.AssetTagLocalService;
 import com.liferay.commerce.constants.CPDefinitionInventoryConstants;
 import com.liferay.commerce.inventory.service.CommerceInventoryWarehouseItemLocalService;
 import com.liferay.commerce.model.CPDAvailabilityEstimate;
@@ -337,6 +338,32 @@ public class CPDefinitionsImporter {
 		).build();
 	}
 
+	private void _importAssetTags(
+			JSONArray jsonArray, long scopeGroupId, long userId)
+		throws Exception {
+
+		User user = _userLocalService.getUser(userId);
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setCompanyId(user.getCompanyId());
+		serviceContext.setScopeGroupId(scopeGroupId);
+		serviceContext.setUserId(userId);
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			String assetTagName = jsonArray.getString(i);
+
+			if (_assetTagLocalService.fetchTag(scopeGroupId, assetTagName) !=
+					null) {
+
+				continue;
+			}
+
+			_assetTagLocalService.addTag(
+				null, userId, scopeGroupId, assetTagName, serviceContext);
+		}
+	}
+
 	private CPDefinition _importCPDefinition(
 			JSONObject jsonObject, String assetVocabularyName,
 			long catalogGroupId, long commerceChannelId,
@@ -365,7 +392,7 @@ public class CPDefinitionsImporter {
 		JSONArray tagsJSONArray = jsonObject.getJSONArray("tags");
 
 		if (tagsJSONArray != null) {
-			_assetTagsImporter.importAssetTags(
+			_importAssetTags(
 				tagsJSONArray, company.getGroupId(),
 				serviceContext.getUserId());
 		}
@@ -1101,7 +1128,7 @@ public class CPDefinitionsImporter {
 	private AssetCategoryLocalService _assetCategoryLocalService;
 
 	@Reference
-	private AssetTagsImporter _assetTagsImporter;
+	private AssetTagLocalService _assetTagLocalService;
 
 	@Reference
 	private CommerceAvailabilityEstimateLocalService

@@ -17,13 +17,14 @@ import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
 import com.liferay.notification.handler.NotificationHandler;
 import com.liferay.notification.term.evaluator.NotificationTermEvaluator;
 import com.liferay.object.constants.ObjectActionTriggerConstants;
-import com.liferay.object.definition.security.permission.resource.util.ObjectDefinitionResourcePermissionUtil;
 import com.liferay.object.deployer.ObjectDefinitionDeployer;
 import com.liferay.object.field.business.type.ObjectFieldBusinessTypeRegistry;
+import com.liferay.object.internal.definition.security.permission.resource.util.ObjectDefinitionResourcePermissionUtil;
 import com.liferay.object.internal.layout.tab.screen.navigation.category.ObjectLayoutTabScreenNavigationCategory;
 import com.liferay.object.internal.layout.tab.screen.navigation.entry.ObjectLayoutTabScreenNavigationEntry;
 import com.liferay.object.internal.notification.handler.ObjectDefinitionNotificationHandler;
 import com.liferay.object.internal.notification.term.contributor.ObjectDefinitionNotificationTermEvaluator;
+import com.liferay.object.internal.related.models.ObjectEntry1to1ObjectRelatedModelsPredicateProviderImpl;
 import com.liferay.object.internal.related.models.ObjectEntry1to1ObjectRelatedModelsProviderImpl;
 import com.liferay.object.internal.related.models.ObjectEntry1toMObjectRelatedModelsPredicateProviderImpl;
 import com.liferay.object.internal.related.models.ObjectEntry1toMObjectRelatedModelsProviderImpl;
@@ -394,6 +395,11 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				HashMapDictionaryBuilder.<String, Object>put(
 					"class.name", objectDefinition.getClassName()
 				).build()),
+			_bundleContext.registerService(
+				ObjectRelatedModelsPredicateProvider.class,
+				new ObjectEntry1to1ObjectRelatedModelsPredicateProviderImpl(
+					objectDefinition, _objectFieldLocalService),
+				null),
 			_bundleContext.registerService(
 				ObjectRelatedModelsPredicateProvider.class,
 				new ObjectEntry1toMObjectRelatedModelsPredicateProviderImpl(

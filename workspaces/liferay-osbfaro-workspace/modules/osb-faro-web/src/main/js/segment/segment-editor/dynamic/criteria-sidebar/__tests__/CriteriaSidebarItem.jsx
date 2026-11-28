@@ -39,6 +39,21 @@ describe('CriteriaSidebarItem', () => {
 		expect(container.querySelector('.lexicon-icon-drag')).toBeNull();
 	});
 
+	it('shows a campaign with the same check icon as an interest', () => {
+		const {container} = render(
+			<CriteriaSidebarItem
+				connectDragSource={connectDnd}
+				label='Spring Sale'
+				propertyKey='campaign'
+				type={PropertyTypes.Campaign}
+			/>
+		);
+
+		expect(
+			container.querySelector('.sticker .lexicon-icon-check')
+		).toBeTruthy();
+	});
+
 	it('marks the item as dragging while it is being dragged', () => {
 		const {container} = render(
 			<CriteriaSidebarItem
@@ -102,32 +117,6 @@ describe('CriteriaSidebarItem', () => {
 			expect(property).toEqual({label: 'Click'});
 		}
 	);
-
-	it('fades the item while it is being moved with the keyboard', () => {
-		render(
-			<KeyboardMovementContext.Provider
-				value={{
-					source: {
-						criterion: {propertyName: 'click'},
-						property: {propertyKey: 'event'}
-					},
-					startMovement: jest.fn(),
-					target: null
-				}}
-			>
-				<CriteriaSidebarItem
-					connectDragSource={connectDnd}
-					label='Click'
-					name='click'
-					propertyKey='event'
-					type={PropertyTypes.Event}
-				/>
-			</KeyboardMovementContext.Provider>
-		);
-
-		expect(screen.getByRole('menuitem')).toHaveClass('dragging');
-		expect(screen.queryByRole('button')).toBeNull();
-	});
 
 	it('replaces the native drag image with an empty image', () => {
 		const connectDragPreview = jest.fn();
@@ -205,6 +194,30 @@ describe('CriteriaSidebarItem', () => {
 
 			expect(criterion.touched).toEqual({customInput: false});
 			expect(criterion.valid).toEqual({customInput: false});
+			expect(validateSegmentInputs(criterion)).toBe(false);
+		});
+
+		it('should seed a Campaign criterion valid when the dragged campaign carries its ID', () => {
+			const {criterion} = beginDrag({
+				defaultValue: {},
+				name: 'id',
+				property: {id: 'c1'},
+				type: PropertyTypes.Campaign
+			});
+
+			expect(criterion.valid).toBe(true);
+			expect(validateSegmentInputs(criterion)).toBe(true);
+		});
+
+		it('should seed a Campaign criterion invalid when no campaign is set', () => {
+			const {criterion} = beginDrag({
+				defaultValue: {},
+				name: 'id',
+				property: {},
+				type: PropertyTypes.Campaign
+			});
+
+			expect(criterion.valid).toBe(false);
 			expect(validateSegmentInputs(criterion)).toBe(false);
 		});
 

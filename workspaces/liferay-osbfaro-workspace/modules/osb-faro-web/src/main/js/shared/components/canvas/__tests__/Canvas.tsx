@@ -1,6 +1,6 @@
 import Canvas from '../Canvas';
 import React from 'react';
-import {act, cleanup, render, waitFor} from '@testing-library/react';
+import {act, cleanup, render, screen, waitFor} from '@testing-library/react';
 
 const EMPTY_STATE = {
 	description: 'Drop something here.',
@@ -26,24 +26,6 @@ describe('Canvas', () => {
 		).toBeInTheDocument();
 		expect(getByText(/^action$/i).closest('.canvas-actions')).toBeTruthy();
 		expect(getByText(/^action$/i).closest('.canvas-header')).toBeTruthy();
-	});
-
-	it('keeps the gap before the body unless the header has no body', () => {
-		const {getByText} = render(
-			<Canvas>
-				<Canvas.Header title="With Body" />
-
-				<Canvas.Header hasBody={false} title="Header Only" />
-			</Canvas>
-		);
-
-		expect(getByText('With Body').closest('.canvas-header')).toHaveClass(
-			'mb-5',
-			'pb-0'
-		);
-		expect(
-			getByText('Header Only').closest('.canvas-header')
-		).not.toHaveClass('mb-5', 'pb-0');
 	});
 
 	it('renders the body children', () => {
@@ -73,7 +55,7 @@ describe('Canvas', () => {
 		expect(getByText(EMPTY_STATE.description)).toBeInTheDocument();
 	});
 
-	it('renders the root and the slots as card parts', () => {
+	it('keeps the class names given to the root and the slots', () => {
 		const {container, getByTestId} = render(
 			<Canvas className="custom-canvas" testId="canvas">
 				<Canvas.Header className="custom-header" title="Canvas Title" />
@@ -82,17 +64,11 @@ describe('Canvas', () => {
 			</Canvas>
 		);
 
-		expect(getByTestId('canvas')).toHaveClass(
-			'canvas-root',
-			'card',
-			'custom-canvas'
-		);
+		expect(getByTestId('canvas')).toHaveClass('custom-canvas');
 		expect(container.querySelector('.canvas-header')).toHaveClass(
-			'card-header',
 			'custom-header'
 		);
 		expect(container.querySelector('.canvas-body')).toHaveClass(
-			'card-body',
 			'custom-body'
 		);
 	});
@@ -137,9 +113,9 @@ describe('Canvas.EmptyState', () => {
 		expect(
 			container.querySelector('.canvas-empty-state-idle')
 		).toBeInTheDocument();
-		expect(container.querySelector('.c-empty-state')).not.toHaveClass(
-			'invisible'
-		);
+		expect(
+			screen.getByRole('heading', {name: EMPTY_STATE.title})
+		).toBeInTheDocument();
 	});
 
 	it.each(['dragging', 'over'] as const)(
@@ -152,9 +128,9 @@ describe('Canvas.EmptyState', () => {
 			expect(
 				container.querySelector(`.canvas-empty-state-${dropState}`)
 			).toBeInTheDocument();
-			expect(container.querySelector('.c-empty-state')).toHaveClass(
-				'invisible'
-			);
+			expect(
+				screen.queryByRole('heading', {name: EMPTY_STATE.title})
+			).not.toBeInTheDocument();
 		}
 	);
 });

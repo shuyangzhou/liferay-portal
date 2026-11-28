@@ -1,0 +1,8 @@
+dependencies {
+	testIntegrationImplementation project(":modules:osb-faro-api")
+	testIntegrationImplementation project(":modules:osb-faro-provisioning-client")
+}
+
+jar {
+	enabled = false
+}

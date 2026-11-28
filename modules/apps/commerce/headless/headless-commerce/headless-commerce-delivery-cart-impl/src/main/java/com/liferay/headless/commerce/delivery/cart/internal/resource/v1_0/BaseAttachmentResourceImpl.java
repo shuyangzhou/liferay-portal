@@ -509,10 +509,11 @@ public abstract class BaseAttachmentResourceImpl
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		if (parameters.containsKey("cartId")) {
+		Serializable cartId = parameters.get("cartId");
+
+		if (cartId != null) {
 			return getCartAttachmentsPage(
-				_parseLong((String)parameters.get("cartId")), search, filter,
-				pagination, sorts);
+				_parseLong((String)cartId), search, filter, pagination, sorts);
 		}
 		else {
 			throw new NotSupportedException(
@@ -1130,4 +1131,4 @@ public abstract class BaseAttachmentResourceImpl
 		LogFactoryUtil.getLog(BaseAttachmentResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:-1884272242
+// LIFERAY-REST-BUILDER-HASH:413496128

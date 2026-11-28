@@ -559,11 +559,13 @@ public abstract class BaseAttachmentResourceImpl
 			"createStrategy", "INSERT");
 
 		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
-			if (parameters.containsKey("externalReferenceCode")) {
+			Serializable externalReferenceCode = parameters.get(
+				"externalReferenceCode");
+
+			if (externalReferenceCode != null) {
 				attachmentUnsafeFunction =
 					attachment -> postOrderByExternalReferenceCodeAttachment(
-						(String)parameters.get("externalReferenceCode"),
-						attachment);
+						(String)externalReferenceCode, attachment);
 			}
 			else {
 				throw new NotSupportedException(
@@ -1240,4 +1242,4 @@ public abstract class BaseAttachmentResourceImpl
 		LogFactoryUtil.getLog(BaseAttachmentResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:1844322809
+// LIFERAY-REST-BUILDER-HASH:-1811995709

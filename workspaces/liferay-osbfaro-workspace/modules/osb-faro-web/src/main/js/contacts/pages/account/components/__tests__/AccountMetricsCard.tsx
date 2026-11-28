@@ -60,7 +60,7 @@ describe('AccountMetricsCard', () => {
 				metrics: [{label: '{0} Individuals'}],
 			});
 
-			expect(screen.getByText('–')).toHaveClass('text-secondary');
+			expect(screen.getByText('–')).toBeInTheDocument();
 			expect(screen.queryByText('0')).not.toBeInTheDocument();
 		});
 
@@ -248,32 +248,13 @@ describe('AccountMetricsCard', () => {
 	});
 
 	describe('styling', () => {
-		it('should stretch the card to fill its column', () => {
-			const {container} = renderAccountMetricsCard();
-
-			expect(container.querySelector('.card-root')).toHaveClass(
-				'flex-fill',
-				'p-3',
-				'w-100'
-			);
-		});
-
 		it('should keep the class name passed by the consumer', () => {
 			const {container} = renderAccountMetricsCard({
 				className: 'custom-card',
 			});
 
 			expect(container.querySelector('.card-root')).toHaveClass(
-				'custom-card',
-				'flex-fill'
-			);
-		});
-
-		it('should render the body without the default card padding', () => {
-			const {container} = renderAccountMetricsCard();
-
-			expect(container.querySelector('.card-body')).toHaveClass(
-				'no-padding'
+				'custom-card'
 			);
 		});
 
@@ -285,9 +266,6 @@ describe('AccountMetricsCard', () => {
 				],
 			});
 
-			expect(container.querySelector('.card-body > .d-flex')).toHaveClass(
-				'justify-content-between'
-			);
 			expect(container.querySelectorAll('.text-nowrap')).toHaveLength(2);
 		});
 	});

@@ -6,6 +6,7 @@
 package com.liferay.sharepoint.rest.repository.internal.document.library.repository.external;
 
 import com.liferay.document.library.kernel.exception.SourceFileNameException;
+import com.liferay.document.library.kernel.model.DLVersionNumberIncrease;
 import com.liferay.document.library.repository.authorization.oauth2.Token;
 import com.liferay.document.library.repository.authorization.oauth2.TokenStore;
 import com.liferay.document.library.repository.external.CredentialsProvider;
@@ -63,6 +64,7 @@ import java.net.MalformedURLException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -71,11 +73,13 @@ import java.util.concurrent.ExecutionException;
 public class SharepointExtRepository implements ExtRepository {
 
 	public SharepointExtRepository(
-		TokenStore tokenStore,
-		SharepointRepositoryConfiguration sharepointRepositoryConfiguration) {
+		Map<String, Object> properties,
+		SharepointRepositoryConfiguration sharepointRepositoryConfiguration,
+		TokenStore tokenStore) {
 
-		_tokenStore = tokenStore;
+		_properties = properties;
 		_sharepointRepositoryConfiguration = sharepointRepositoryConfiguration;
+		_tokenStore = tokenStore;
 	}
 
 	@Override
@@ -149,9 +153,21 @@ public class SharepointExtRepository implements ExtRepository {
 			String changeLog)
 		throws PortalException {
 
+		checkInExtRepositoryFileEntry(
+			extRepositoryFileEntryKey,
+			DLVersionNumberIncrease.fromMajorVersion(createMajorVersion),
+			changeLog);
+	}
+
+	@Override
+	public void checkInExtRepositoryFileEntry(
+			String extRepositoryFileEntryKey,
+			DLVersionNumberIncrease dlVersionNumberIncrease, String changeLog)
+		throws PortalException {
+
 		try {
 			String url = _sharepointURLHelper.getCheckInFileURL(
-				extRepositoryFileEntryKey, createMajorVersion, changeLog);
+				extRepositoryFileEntryKey, dlVersionNumberIncrease, changeLog);
 
 			_post(url);
 		}
@@ -283,13 +299,30 @@ public class SharepointExtRepository implements ExtRepository {
 			ExtRepositoryFileEntry extRepositoryFileEntry, String version)
 		throws PortalException {
 
+		String extRepositoryFileVersionKey = StringBundler.concat(
+			extRepositoryFileEntry.getExtRepositoryModelKey(), StringPool.COLON,
+			version);
+
+		ExtRepositoryFileVersion latestExtRepositoryFileVersion =
+			getLatestExtRepositoryFileVersion(extRepositoryFileEntry);
+
+		if (_isMatch(
+				latestExtRepositoryFileVersion, extRepositoryFileVersionKey,
+				version)) {
+
+			return latestExtRepositoryFileVersion;
+		}
+
 		List<ExtRepositoryFileVersion> extRepositoryFileVersions =
 			getExtRepositoryFileVersions(extRepositoryFileEntry);
 
 		for (ExtRepositoryFileVersion extRepositoryFileVersion :
 				extRepositoryFileVersions) {
 
-			if (version.equals(extRepositoryFileVersion.getVersion())) {
+			if (_isMatch(
+					extRepositoryFileVersion, extRepositoryFileVersionKey,
+					version)) {
+
 				return extRepositoryFileVersion;
 			}
 		}
@@ -320,6 +353,22 @@ public class SharepointExtRepository implements ExtRepository {
 				getExtRepositoryFileVersions(
 					(SharepointFileEntry)extRepositoryFileEntry,
 					_getJSONObject(url));
+		}
+		catch (UnirestException unirestException) {
+			throw new PortalException(unirestException);
+		}
+	}
+
+	public List<ExtRepositoryFolder> getExtRepositoryFoldersWithChildrenCount(
+			String extRepositoryFolderKey)
+		throws PortalException {
+
+		try {
+			String url = _sharepointURLHelper.getFoldersWithChildrenCountURL(
+				extRepositoryFolderKey);
+
+			return _sharepointServerResponseConverter.getExtRepositoryFolders(
+				_getJSONObject(url));
 		}
 		catch (UnirestException unirestException) {
 			throw new PortalException(unirestException);
@@ -480,6 +529,16 @@ public class SharepointExtRepository implements ExtRepository {
 	}
 
 	@Override
+	public ExtRepositoryFileVersion getLatestExtRepositoryFileVersion(
+		ExtRepositoryFileEntry extRepositoryFileEntry) {
+
+		SharepointModel sharepointModel =
+			(SharepointModel)extRepositoryFileEntry;
+
+		return sharepointModel.asFileVersion();
+	}
+
+	@Override
 	public String getLiferayLogin(String extRepositoryLogin) {
 		return String.valueOf(PrincipalThreadLocal.getUserId());
 	}
@@ -540,6 +599,18 @@ public class SharepointExtRepository implements ExtRepository {
 		_sharepointServerResponseConverter =
 			new SharepointServerResponseConverter(
 				_sharepointURLHelper, this, _siteAbsoluteURL, _libraryPath);
+	}
+
+	public boolean isMinorVersionEnabled() throws PortalException {
+		try {
+			String url = _sharepointURLHelper.getListURL(_libraryPath);
+
+			return _sharepointServerResponseConverter.isMinorVersionEnabled(
+				_getJSONObject(url));
+		}
+		catch (UnirestException unirestException) {
+			throw new PortalException(unirestException);
+		}
 	}
 
 	@Override
@@ -706,7 +777,7 @@ public class SharepointExtRepository implements ExtRepository {
 		try {
 			SharepointRepositoryTokenBroker sharepointRepositoryTokenBroker =
 				SharepointRepositoryTokenBrokerFactoryUtil.create(
-					_sharepointRepositoryConfiguration);
+					_properties, _sharepointRepositoryConfiguration);
 
 			SharepointRepositoryAuthenticationResult
 				sharepointRepositoryAuthenticationResult =
@@ -828,6 +899,20 @@ public class SharepointExtRepository implements ExtRepository {
 		}
 	}
 
+	private boolean _isMatch(
+		ExtRepositoryFileVersion extRepositoryFileVersion,
+		String extRepositoryFileVersionKey, String version) {
+
+		if (extRepositoryFileVersionKey.equals(
+				extRepositoryFileVersion.getExtRepositoryModelKey()) ||
+			version.equals(extRepositoryFileVersion.getVersion())) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	private void _post(String url) throws PortalException, UnirestException {
 		HttpRequestWithBody httpRequestWithBody = Unirest.post(url);
 
@@ -928,6 +1013,7 @@ public class SharepointExtRepository implements ExtRepository {
 		"8413cd39-2156-4e00-b54d-11efd9abdb89";
 
 	private String _libraryPath;
+	private final Map<String, Object> _properties;
 	private ExtRepositoryFolder _rootFolder;
 	private final SharepointRepositoryConfiguration
 		_sharepointRepositoryConfiguration;

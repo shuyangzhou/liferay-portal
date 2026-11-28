@@ -50,17 +50,15 @@ public class ProductMenuTemplateContextContributor
 		String cssClass = GetterUtil.getString(
 			contextObjects.get("bodyCssClass"));
 
-		boolean unifiedSidebar = FeatureFlagManagerUtil.isEnabled(
-			themeDisplay.getCompanyId(), "LPD-88120");
+		if (FeatureFlagManagerUtil.isEnabled(
+				themeDisplay.getCompanyId(), "LPD-88120")) {
 
-		if (unifiedSidebar) {
 			cssClass += " product-menu-unified-sidebar";
 		}
 
 		String productMenuState = SessionClicks.get(
-			httpServletRequest,
-			"com.liferay.product.navigation.product.menu.web_productMenuState",
-			unifiedSidebar ? "open" : "closed");
+			httpServletRequest, "com.liferay.application.list_sidebarState",
+			"closed");
 
 		if (Objects.equals(productMenuState, "open")) {
 			cssClass += " open product-menu-open";

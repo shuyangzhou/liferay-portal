@@ -158,8 +158,8 @@ public class OpenIdConnectProviderPortalInstanceLifecycleListener
 				companyId -> _deleteOAuthClientEntry(companyId, properties));
 		}
 		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception);
+			if (_log.isWarnEnabled()) {
+				_log.warn(exception);
 			}
 		}
 	}
@@ -455,38 +455,49 @@ public class OpenIdConnectProviderPortalInstanceLifecycleListener
 		}
 
 		try {
+			OAuthClientEntry oAuthClientEntry = null;
+
 			if (oldProperties != null) {
 				String oldAuthServerWellKnownURI =
 					_updateOAuthClientASLocalMetadata(
 						companyId, guestUserId, oldProperties);
 
-				OAuthClientEntry oldOAuthClientEntry =
+				oAuthClientEntry =
 					_oAuthClientEntryLocalService.fetchOAuthClientEntry(
 						companyId, oldAuthServerWellKnownURI,
 						_getPropertyAsString(
 							"openIdConnectClientId", oldProperties));
+			}
 
-				if (oldOAuthClientEntry != null) {
-					_oAuthClientEntryLocalService.updateOAuthClientEntry(
-						oldOAuthClientEntry.getOAuthClientEntryId(),
-						_generateAuthRequestParametersJSON(properties),
-						_updateOAuthClientASLocalMetadata(
-							companyId, guestUserId, properties),
-						_generateCustomClaimsJSON(properties),
-						_generateInfoJSON(properties),
-						GetterUtil.getString(properties.get("matcherField")),
-						GetterUtil.getLong(
-							properties.get("discoveryEndpointCacheInMillis")),
-						oldOAuthClientEntry.getOIDCUserInfoMapperJSON(),
-						GetterUtil.getInteger(
-							properties.get("tokenConnectionTimeout"),
-							OAuthClientEntryConstants.
-								TOKEN_CONNECTION_TIMEOUT_DEFAULT),
-						_generateTokenRequestParametersJSON(properties));
-				}
-				else {
-					_addOAuthClientEntry(companyId, properties, guestUserId);
-				}
+			if (oAuthClientEntry == null) {
+				String authServerWellKnownURI =
+					_updateOAuthClientASLocalMetadata(
+						companyId, guestUserId, properties);
+
+				oAuthClientEntry =
+					_oAuthClientEntryLocalService.fetchOAuthClientEntry(
+						companyId, authServerWellKnownURI,
+						_getPropertyAsString(
+							"openIdConnectClientId", properties));
+			}
+
+			if (oAuthClientEntry != null) {
+				_oAuthClientEntryLocalService.updateOAuthClientEntry(
+					oAuthClientEntry.getOAuthClientEntryId(),
+					_generateAuthRequestParametersJSON(properties),
+					_updateOAuthClientASLocalMetadata(
+						companyId, guestUserId, properties),
+					_generateCustomClaimsJSON(properties),
+					_generateInfoJSON(properties),
+					GetterUtil.getString(properties.get("matcherField")),
+					GetterUtil.getLong(
+						properties.get("discoveryEndpointCacheInMillis")),
+					oAuthClientEntry.getOIDCUserInfoMapperJSON(),
+					GetterUtil.getInteger(
+						properties.get("tokenConnectionTimeout"),
+						OAuthClientEntryConstants.
+							TOKEN_CONNECTION_TIMEOUT_DEFAULT),
+					_generateTokenRequestParametersJSON(properties));
 			}
 			else {
 				_addOAuthClientEntry(companyId, properties, guestUserId);
@@ -496,8 +507,8 @@ public class OpenIdConnectProviderPortalInstanceLifecycleListener
 				companyId);
 		}
 		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Unable to update OAuth client entry", exception);
+			if (_log.isWarnEnabled()) {
+				_log.warn("Unable to update OAuth client entry", exception);
 			}
 		}
 	}
@@ -576,8 +587,8 @@ public class OpenIdConnectProviderPortalInstanceLifecycleListener
 						});
 				}
 				catch (Exception exception) {
-					if (_log.isDebugEnabled()) {
-						_log.debug(exception);
+					if (_log.isWarnEnabled()) {
+						_log.warn(exception);
 					}
 				}
 
